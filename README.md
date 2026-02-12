@@ -1,15 +1,13 @@
 # Welcome to your Lovable project
 
-## Project infottps://lovable.dev/projects/94163093-3aa8-4642-906d-589697c692a2
-
+## Project info https://lovable.dev/projects/94163093-3aa8-4642-906d-589697c692a2
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
+Simply visit the [Lovable Project]https://lovable.dev/projects/94163093-3aa8-4642-906d-589697c692a2
 Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
