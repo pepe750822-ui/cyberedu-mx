@@ -1,0 +1,43 @@
+import { PlayCircle, Clock } from "lucide-react";
+import type { Video } from "@/data/areas";
+
+interface VideoCardProps {
+  video: Video;
+  index: number;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+const VideoCard = ({ video, index, isActive, onClick }: VideoCardProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full text-left p-4 rounded-lg transition-all duration-200 border ${
+        isActive
+          ? "bg-primary/10 border-primary/30 shadow-sm"
+          : "bg-card border-border hover:bg-muted/50 hover:border-primary/20"
+      }`}
+    >
+      <div className="flex items-start gap-3">
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+          isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+        }`}>
+          {index + 1}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className={`font-semibold text-sm mb-1 ${isActive ? "text-primary" : "text-foreground"}`}>
+            {video.title}
+          </h4>
+          <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
+          <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+            <Clock className="h-3 w-3" />
+            <span>{video.duration}</span>
+          </div>
+        </div>
+        <PlayCircle className={`h-5 w-5 flex-shrink-0 mt-0.5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+      </div>
+    </button>
+  );
+};
+
+export default VideoCard;
