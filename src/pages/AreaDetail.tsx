@@ -11,7 +11,7 @@ const AreaDetail = () => {
   const { areaId } = useParams<{ areaId: string }>();
   const area = areas.find((a) => a.id === areaId);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
-  const [showNotebook, setShowNotebook] = useState(false);
+  
 
   if (!area) {
     return (
@@ -60,62 +60,44 @@ const AreaDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Video Player + Notebook */}
           <div className="lg:col-span-2 space-y-4">
-            {/* Toggle buttons */}
-            {notebookUrl && (
-              <div className="flex gap-2">
-                <Button
-                  variant={!showNotebook ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setShowNotebook(false)}
-                >
-                  <Video className="h-4 w-4 mr-1" />
-                  Video
-                </Button>
-                <Button
-                  variant={showNotebook ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setShowNotebook(true)}
-                >
-                  <BookOpen className="h-4 w-4 mr-1" />
-                  Abrir Notebook
-                </Button>
-              </div>
-            )}
-
             <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
-              {showNotebook && notebookUrl ? (
-                <div className="aspect-video">
+              <div className="aspect-video bg-foreground/5 flex items-center justify-center">
+                {activeVideo.videoUrl ? (
                   <iframe
-                    src={notebookUrl}
-                    title={`Notebook - ${activeVideo.title}`}
+                    src={activeVideo.videoUrl}
+                    title={activeVideo.title}
                     className="w-full h-full"
-                    allow="clipboard-write"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
                   />
-                </div>
-              ) : (
-                <div className="aspect-video bg-foreground/5 flex items-center justify-center">
-                  {activeVideo.videoUrl ? (
-                    <iframe
-                      src={activeVideo.videoUrl}
-                      title={activeVideo.title}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <div className="text-center p-8">
-                      <Video className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
-                      <p className="text-muted-foreground font-medium">Video próximamente</p>
-                      <p className="text-sm text-muted-foreground/70 mt-1">
-                        Agrega la URL del video en el archivo de datos
-                      </p>
-                    </div>
+                ) : (
+                  <div className="text-center p-8">
+                    <Video className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
+                    <p className="text-muted-foreground font-medium">Video próximamente</p>
+                    <p className="text-sm text-muted-foreground/70 mt-1">
+                      Agrega la URL del video en el archivo de datos
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-xl font-bold text-foreground mb-2">{activeVideo.title}</h2>
+                    <p className="text-muted-foreground">{activeVideo.description}</p>
+                  </div>
+                  {notebookUrl && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-shrink-0"
+                      onClick={() => window.open(notebookUrl, "_blank")}
+                    >
+                      <BookOpen className="h-4 w-4 mr-1" />
+                      Abrir Notebook
+                    </Button>
                   )}
                 </div>
-              )}
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-foreground mb-2">{activeVideo.title}</h2>
-                <p className="text-muted-foreground">{activeVideo.description}</p>
               </div>
             </div>
           </div>
@@ -133,10 +115,7 @@ const AreaDetail = () => {
                   video={video}
                   index={index}
                   isActive={index === activeVideoIndex}
-                  onClick={() => {
-                    setActiveVideoIndex(index);
-                    setShowNotebook(false);
-                  }}
+                  onClick={() => setActiveVideoIndex(index)}
                 />
               ))}
             </div>
