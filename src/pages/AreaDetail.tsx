@@ -87,15 +87,17 @@ const AreaDetail = () => {
                     <p className="text-muted-foreground">{activeVideo.description}</p>
                   </div>
                   {notebookUrl && (
-                    <Button
-                      size="sm"
-                      variant="outline"
+                    <a
+                      href={notebookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex-shrink-0"
-                      onClick={() => window.open(notebookUrl, "_blank")}
                     >
-                      <BookOpen className="h-4 w-4 mr-1" />
-                      Abrir Notebook
-                    </Button>
+                      <Button size="sm" variant="outline" type="button">
+                        <BookOpen className="h-4 w-4 mr-1" />
+                        Abrir Notebook
+                      </Button>
+                    </a>
                   )}
                 </div>
               </div>
