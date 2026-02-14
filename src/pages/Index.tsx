@@ -1,16 +1,18 @@
 import { useState, useMemo } from "react";
-import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown } from "lucide-react";
+import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown, Goal, Trophy, RotateCcw } from "lucide-react";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
-  const { isViewed } = useVideoProgress();
+  const { isViewed, viewedCount, totalVideos: total, resetProgress } = useVideoProgress();
   const [sortByProgress, setSortByProgress] = useState(false);
 
   const areaProgress = useMemo(() => {
@@ -33,6 +35,15 @@ const Index = () => {
       return percB - percA;
     });
   }, [sortByProgress, areaProgress]);
+
+  const globalPercent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+
+  const completedAreas = useMemo(() => {
+    return areas.filter((area) => {
+      const ap = areaProgress[area.id];
+      return ap && ap.total > 0 && ap.viewed === ap.total;
+    }).length;
+  }, [areaProgress]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,6 +83,45 @@ const Index = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Global Progress */}
+      <section className="container mx-auto px-4 -mt-8 relative z-10">
+        <Card className="border-border shadow-lg">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="flex items-center gap-4 flex-1">
+                <div className="p-3 rounded-xl bg-primary/10">
+                  <Goal className="h-8 w-8 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-foreground">Tu progreso general</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Has completado {viewedCount} de {total} materiales
+                  </p>
+                  <div className="flex items-center gap-3 mt-3">
+                    <Progress value={globalPercent} className="h-3 flex-1 bg-secondary [&>div]:bg-primary" />
+                    <span className="text-sm font-bold text-foreground min-w-[3ch]">{globalPercent}%</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 md:gap-8">
+                <div className="text-center">
+                  <p className="text-2xl font-extrabold text-foreground">{globalPercent}%</p>
+                  <p className="text-xs text-muted-foreground">📊 Completado</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-extrabold text-foreground">{completedAreas}</p>
+                  <p className="text-xs text-muted-foreground">🏆 Áreas listas</p>
+                </div>
+                <Button variant="outline" size="sm" onClick={resetProgress}>
+                  <RotateCcw className="h-4 w-4 mr-1" />
+                  Reiniciar todo
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Areas Section */}
