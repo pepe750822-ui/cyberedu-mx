@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Video, BookOpen } from "lucide-react";
+import { ArrowLeft, Video, BookOpen, CheckCircle2, RotateCcw } from "lucide-react";
 import { areas } from "@/data/areas";
-import { getNotebookUrl } from "@/data/notebookMap";
+import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
+import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 const AreaDetail = () => {
   const { areaId } = useParams<{ areaId: string }>();
   const area = areas.find((a) => a.id === areaId);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
-  
+  const { markAsViewed, isViewed, viewedCount, totalVideos, resetProgress } = useVideoProgress();
 
   if (!area) {
     return (
@@ -28,6 +30,15 @@ const AreaDetail = () => {
   const Icon = area.icon;
   const activeVideo = area.videos[activeVideoIndex];
   const notebookUrl = getNotebookUrl(activeVideo.id);
+  const notebookKey = getNotebookKey(activeVideo.id);
+
+  const handleOpenNotebook = () => {
+    if (notebookKey) {
+      markAsViewed(notebookKey);
+    }
+  };
+
+  const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,6 +103,7 @@ const AreaDetail = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-shrink-0"
+                      onClick={handleOpenNotebook}
                     >
                       <Button size="sm" variant="outline" type="button">
                         <BookOpen className="h-4 w-4 mr-1" />
@@ -106,20 +118,42 @@ const AreaDetail = () => {
 
           {/* Video List */}
           <div>
+            {/* Progress Bar */}
+            <div className="bg-card rounded-xl border border-border p-4 mb-4 card-shadow">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-semibold text-foreground">
+                  📊 Progreso: {viewedCount}/{totalVideos} materiales vistos
+                </span>
+                <button
+                  onClick={resetProgress}
+                  className="text-xs text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
+                  title="Reiniciar progreso"
+                >
+                  <RotateCcw className="h-3 w-3" />
+                  Reiniciar
+                </button>
+              </div>
+              <Progress value={progressPercent} className="h-2.5 bg-muted [&>div]:bg-green-500" />
+            </div>
+
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-foreground">Lista de videos</h3>
               <span className="text-sm text-muted-foreground">{area.videoCount} videos</span>
             </div>
             <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
-              {area.videos.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  index={index}
-                  isActive={index === activeVideoIndex}
-                  onClick={() => setActiveVideoIndex(index)}
-                />
-              ))}
+              {area.videos.map((video, index) => {
+                const vKey = getNotebookKey(video.id);
+                return (
+                  <VideoCard
+                    key={video.id}
+                    video={video}
+                    index={index}
+                    isActive={index === activeVideoIndex}
+                    isViewed={vKey ? isViewed(vKey) : false}
+                    onClick={() => setActiveVideoIndex(index)}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

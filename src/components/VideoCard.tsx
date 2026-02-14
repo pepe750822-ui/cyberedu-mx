@@ -1,23 +1,27 @@
-import { PlayCircle, Clock } from "lucide-react";
+import { PlayCircle, Clock, CheckCircle2 } from "lucide-react";
 import type { Video } from "@/data/areas";
 
 interface VideoCardProps {
   video: Video;
   index: number;
   isActive: boolean;
+  isViewed?: boolean;
   onClick: () => void;
 }
 
-const VideoCard = ({ video, index, isActive, onClick }: VideoCardProps) => {
+const VideoCard = ({ video, index, isActive, isViewed, onClick }: VideoCardProps) => {
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left p-4 rounded-lg transition-all duration-200 border ${
+      className={`w-full text-left p-4 rounded-lg transition-all duration-200 border relative ${
         isActive
           ? "bg-primary/10 border-primary/30 shadow-sm"
           : "bg-card border-border hover:bg-muted/50 hover:border-primary/20"
       }`}
     >
+      {isViewed && (
+        <CheckCircle2 className="absolute top-2 right-2 h-5 w-5 text-green-500" />
+      )}
       <div className="flex items-start gap-3">
         <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
           isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
