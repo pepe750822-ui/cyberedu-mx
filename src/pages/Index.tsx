@@ -1,11 +1,38 @@
-import { GraduationCap, BookOpen, Video, CheckCircle } from "lucide-react";
+import { useState, useMemo } from "react";
+import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown } from "lucide-react";
 import { areas } from "@/data/areas";
+import { getAreaNotebookKeys } from "@/data/notebookMap";
+import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
+  const { isViewed } = useVideoProgress();
+  const [sortByProgress, setSortByProgress] = useState(false);
+
+  const areaProgress = useMemo(() => {
+    const map: Record<string, { viewed: number; total: number }> = {};
+    for (const area of areas) {
+      const keys = getAreaNotebookKeys(area.id);
+      const viewed = keys.filter((k) => isViewed(k)).length;
+      map[area.id] = { viewed, total: keys.length };
+    }
+    return map;
+  }, [isViewed]);
+
+  const sortedAreas = useMemo(() => {
+    if (!sortByProgress) return areas;
+    return [...areas].sort((a, b) => {
+      const pA = areaProgress[a.id];
+      const pB = areaProgress[b.id];
+      const percA = pA.total > 0 ? pA.viewed / pA.total : 0;
+      const percB = pB.total > 0 ? pB.viewed / pB.total : 0;
+      return percB - percA;
+    });
+  }, [sortByProgress, areaProgress]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,10 +84,29 @@ const Index = () => {
             Selecciona un área para comenzar a estudiar con nuestros videos
           </p>
         </div>
+        <div className="flex justify-end mb-4">
+          <Button
+            variant={sortByProgress ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSortByProgress((v) => !v)}
+          >
+            <ArrowUpDown className="h-4 w-4 mr-1" />
+            {sortByProgress ? "Orden original" : "Ordenar por progreso"}
+          </Button>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {areas.map((area, index) => (
-            <AreaCard key={area.id} area={area} index={index} />
-          ))}
+          {sortedAreas.map((area, index) => {
+            const ap = areaProgress[area.id];
+            return (
+              <AreaCard
+                key={area.id}
+                area={area}
+                index={index}
+                viewedCount={ap?.viewed ?? 0}
+                totalCount={ap?.total}
+              />
+            );
+          })}
         </div>
       </section>
 
