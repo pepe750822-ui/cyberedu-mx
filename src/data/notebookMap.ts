@@ -24,3 +24,11 @@ export function getNotebookUrl(videoId: string): string | undefined {
 export function getNotebookKey(videoId: string): string | undefined {
   return videoIdToNotebookKey[videoId];
 }
+
+export function getAreaNotebookKeys(areaId: string): string[] {
+  const area = areas.find((a) => a.id === areaId);
+  if (!area) return [];
+  return area.videos
+    .map((v) => videoIdToNotebookKey[v.id])
+    .filter((k): k is string => !!k);
+}
