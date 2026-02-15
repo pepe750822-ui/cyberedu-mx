@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Header = () => {
+  const { user, profile, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -13,13 +18,38 @@ const Header = () => {
             PrepáraTE
           </span>
         </Link>
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-4">
           <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Inicio
           </Link>
           <Link to="/#areas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Áreas
           </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                {profile?.avatar_url ? (
+                  <AvatarImage src={profile.avatar_url} alt={profile.name || "Avatar"} />
+                ) : null}
+                <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                  {(profile?.name || user.email || "U").charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-sm font-medium text-foreground hidden sm:inline max-w-[120px] truncate">
+                {profile?.name || user.email}
+              </span>
+              <Button variant="ghost" size="icon" onClick={signOut} title="Cerrar sesión">
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <Link to="/auth">
+              <Button variant="outline" size="sm">
+                <UserCircle className="h-4 w-4 mr-1" />
+                Ingresar
+              </Button>
+            </Link>
+          )}
         </nav>
       </div>
     </header>
