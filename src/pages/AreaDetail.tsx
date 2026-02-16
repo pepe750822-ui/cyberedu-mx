@@ -5,6 +5,7 @@ import { areas } from "@/data/areas";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
+import MaterialComplementario from "@/components/MaterialComplementario";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -112,8 +113,11 @@ const AreaDetail = () => {
                     </a>
                   )}
                 </div>
-              </div>
             </div>
+
+            {/* Material Complementario */}
+            <MaterialComplementario videoId={activeVideo.id} />
+          </div>
           </div>
 
           {/* Video List */}
