@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Video, BookOpen, CheckCircle2, RotateCcw } from "lucide-react";
 import { areas } from "@/data/areas";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
@@ -12,8 +12,19 @@ import { Progress } from "@/components/ui/progress";
 
 const AreaDetail = () => {
   const { areaId } = useParams<{ areaId: string }>();
+  const [searchParams] = useSearchParams();
   const area = areas.find((a) => a.id === areaId);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+
+  // Handle ?video= query param from search
+  useEffect(() => {
+    if (!area) return;
+    const videoParam = searchParams.get("video");
+    if (videoParam) {
+      const idx = area.videos.findIndex((v) => v.id === videoParam);
+      if (idx >= 0) setActiveVideoIndex(idx);
+    }
+  }, [searchParams, area]);
   const { markAsViewed, isViewed, viewedCount, totalVideos, resetProgress } = useVideoProgress();
 
   if (!area) {
