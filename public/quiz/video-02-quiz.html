@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOEMS 2026 | Habilidad Verbal Avanzada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header - igual al Quiz 1 */
+        .header {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4f46e5;
+        }
+
+        .badge {
+            background: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Navegación - igual al Quiz 1 */
+        .nav {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            padding: 15px 30px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            border-top: 1px solid #e5e7eb;
+            scrollbar-width: thin;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+
+        .nav-btn.active {
+            background: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+
+        .nav-btn.completed {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .nav-btn.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f3f4f6;
+        }
+
+        /* Tarjeta principal - igual al Quiz 1 */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        /* Progreso - igual al Quiz 1 */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4f46e5;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Títulos - igual al Quiz 1 */
+        h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Opciones - igual al Quiz 1 */
+        .option {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover:not(:disabled) {
+            border-color: #4f46e5;
+            background: #f5f3ff;
+        }
+
+        .option.selected {
+            border-color: #4f46e5;
+            background: #eef2ff;
+        }
+
+        .option.correct {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .option.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .option:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .letter {
+            width: 32px;
+            height: 32px;
+            background: #f3f4f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 1px solid #d1d5db;
+        }
+
+        .correct .letter {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .incorrect .letter {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        /* Botones - igual al Quiz 1 */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #4338ca;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        /* Resultados - igual al Quiz 1 */
+        .result-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid #4f46e5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+
+        .score-circle small {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .review-item {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #f9fafb;
+        }
+
+        .review-question {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .review-answer {
+            font-size: 0.95rem;
+            margin: 4px 0;
+        }
+
+        .review-correct {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .review-incorrect {
+            color: #ef4444;
+        }
+
+        .review-explanation {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #e5e7eb;
+        }
+
+        /* Footer - igual al Quiz 1 */
+        .footer {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .footer strong {
+            color: #ffd700;
+        }
+
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid white;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header CyberEdu MX -->
+    <div class="header">
+        <div class="logo">
+            <span>📚 CyberEdu MX</span>
+        </div>
+        <div class="badge">
+            <span>⚡ ECOEMS 2026</span>
+        </div>
+    </div>
+
+    <!-- Navegación de módulos -->
+    <div class="nav" id="nav-container"></div>
+
+    <!-- Contenido principal -->
+    <div class="card">
+        <div class="progress">
+            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+        <div id="content-container"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Desarrollado por <strong>CyberEdu MX</strong> © 2026
+    </div>
+
+    <!-- Botón reinicio total -->
+    <button class="reset-btn" onclick="resetAll()">
+        <span>🔄</span> Reiniciar todo el progreso
+    </button>
+
+    <script>
+        // --- 5 MÓDULOS COMPLETOS (VIDEO 2) ---
+        const MODULOS = [
+            {
+                titulo: "Secuencia de acontecimientos",
+                preguntas: [
+                    { q: "¿Qué permite identificar la secuencia de acontecimientos según el video?", o: ["Adivinar el futuro", "Ordenar eventos por desarrollo temporal", "Ignorar el desenlace", "Leer el primer párrafo"], c: 1, e: "Reconocer el orden cronológico de los hechos." },
+                    { q: "En la frase 'Primero desayunó, luego salió y finalmente llegó', el marcador es:", o: ["Primero / Luego / Finalmente", "Salió", "Desayunó", "Llegó"], c: 0, e: "Son conectores que indican el orden cronológico." },
+                    { q: "¿Qué significa 'progresión lógica'?", o: ["Saltar ideas", "Repetir", "Seguir el hilo conductor del tiempo", "Escribir sin verbos"], c: 2, e: "Conexión coherente de eventos temporales." },
+                    { q: "Si un texto narra un accidente, ¿cuál sería la secuencia lógica típica?", o: ["Choque, Viaje, Auxilio", "Auxilio, Choque", "Viaje, Choque, Auxilio", "Cura, Choque"], c: 2, e: "Sigue el orden natural: inicio, nudo y desenlace." },
+                    { q: "¿Cuál de estos iconos representa mejor el subíndice 1.1.6?", o: ["Una lupa", "Una línea de tiempo", "Una balanza", "Un árbol"], c: 1, e: "Representa el avance cronológico." },
+                    { q: "Para identificar secuencias, ¿en qué debemos fijarnos?", o: ["En verbos y adverbios de tiempo", "En adjetivos", "En el autor", "En el título"], c: 0, e: "Las palabras temporales dan la pista del orden." },
+                    { q: "Ordenar eventos es clave para:", o: ["Ortografía", "Caligrafía", "La comprensión narrativa", "Vocabulario"], c: 2, e: "Ayuda a entender el desarrollo de la historia." },
+                    { q: "Si el texto dice 'Al final sonrió', ¿dónde ubicamos ese evento?", o: ["Inicio", "Problema", "En la conclusión", "Antes"], c: 2, e: "Indica el cierre de la secuencia." },
+                    { q: "Un evento que ocurre 'simultáneamente' significa que:", o: ["Ocurre después", "Nunca ocurre", "Ocurre antes", "Ocurre al mismo tiempo"], c: 3, e: "Coincidencia temporal entre hechos." },
+                    { q: "¿Cuál es el objetivo final de dominar el subíndice 1.1.6?", o: ["Perfeccionar el análisis textual", "Memorizar", "Escribir", "Contar"], c: 0, e: "Permite reconocer cómo progresa la información." }
+                ]
+            },
+            {
+                titulo: "Relaciones Textuales",
+                preguntas: [
+                    { q: "¿Cuál es un conector de 'Oposición'?", o: ["Porque", "Además", "Sin embargo", "Por lo tanto"], c: 2, e: "Indica un contraste entre dos ideas." },
+                    { q: "La relación 'Causa-Efecto' se identifica con:", o: ["Porque / Por lo tanto", "Semejanza", "Problema", "Imagen"], c: 0, e: "Vincula el origen con la consecuencia." },
+                    { q: "Si un texto plantea una dificultad y luego la resuelve, es:", o: ["Comparación", "Causa-Efecto", "Oposición", "Problema-Solución"], c: 3, e: "Estructura de conflicto y resolución." },
+                    { q: "El conector 'En cambio' pertenece a:", o: ["Oposición/Contraste", "Causa", "Efecto", "Adición"], c: 0, e: "Muestra una diferencia directa." },
+                    { q: "¿Qué representan las 'Cadenas conectadas' en el video?", o: ["Secuencia", "Las relaciones textuales", "Ortografía", "Dudas"], c: 1, e: "Unión lógica de las ideas." },
+                    { q: "La relación de 'Semejanza' busca:", o: ["Diferencias", "Causas", "Similitudes/Comparaciones", "Efectos"], c: 2, e: "Busca puntos en común." },
+                    { q: "'Debido a la lluvia, se mojó'. ¿Qué relación es?", o: ["Contraste", "Secuencia", "Causa-Consecuencia", "Problema"], c: 2, e: "Establece el origen de un hecho." },
+                    { q: "Los conectores son descritos en el video como:", o: ["Adjetivos", "Sujetos", "Estorbos", "Tus pistas"], c: 3, e: "Señales que guían el sentido." },
+                    { q: "Comparar dos ciudades por su clima es una relación de:", o: ["Oposición", "Problema", "Comparación/Semejanza", "Causa"], c: 2, e: "Busca establecer paralelos." },
+                    { q: "Identificar relaciones textuales permite:", o: ["Leer rápido", "Contar párrafos", "Dibujar", "Reconocer conexiones lógicas"], c: 3, e: "Fundamental para entender la estructura profunda." }
+                ]
+            },
+            {
+                titulo: "Hechos vs Opiniones",
+                preguntas: [
+                    { q: "¿Qué caracteriza a un 'Hecho'?", o: ["Es verificable y objetivo", "Es subjetivo", "Es personal", "Es duda"], c: 0, e: "Se puede comprobar objetivamente." },
+                    { q: "'La Tierra gira alrededor del Sol' es un/a:", o: ["Opinión", "Creencia", "Hecho", "Duda"], c: 2, e: "Dato científico comprobado." },
+                    { q: "'Es hermoso ver amanecer' es un/a:", o: ["Hecho", "Opinión", "Ley", "Datos"], c: 1, e: "Juicio subjetivo basado en el gusto." },
+                    { q: "¿Qué icono representa este tema en el video?", o: ["Reloj", "Flecha", "Cerebro", "Balanza"], c: 3, e: "Representa el equilibrio de la objetividad." },
+                    { q: "Las opiniones se identifican por el uso de:", o: ["Adjetivos valorativos", "Números", "Fechas", "Nombres"], c: 0, e: "Expresan juicios de valor." },
+                    { q: "Distinguir hechos de opiniones es clave para:", o: ["Gramática", "Poesía", "El pensamiento crítico", "Dibujo"], c: 2, e: "Evita tomar juicios como verdades." },
+                    { q: "Un hecho suele expresarse con:", o: ["Metáforas", "Lenguaje denotativo/objetivo", "Exageración", "Dudas"], c: 1, e: "Busca la precisión técnica." },
+                    { q: "Si el autor dice 'Yo creo que...', está expresando:", o: ["Hecho", "Ley", "Opinión", "Cita"], c: 2, e: "Postura personal." },
+                    { q: "¿Cuál es el color asociado a los Hechos en el video?", o: ["Naranja", "Azul", "Rojo", "Verde"], c: 1, e: "Color asignado para la objetividad." },
+                    { q: "Un reporte del clima que dice 'Hay 20 grados' es:", o: ["Opinión", "Fantasía", "Relación", "Hecho"], c: 3, e: "Medición técnica verificable." }
+                ]
+            },
+            {
+                titulo: "Jerarquía (Idea Principal)",
+                preguntas: [
+                    { q: "¿Qué icono representa la jerarquía en el video?", o: ["Círculo", "Casa", "Un árbol jerárquico", "Libro"], c: 2, e: "Visualiza la importancia relativa de las ideas." },
+                    { q: "El 'Tronco' en la analogía representa:", o: ["Secundarias", "Ejemplos", "Título", "Idea principal"], c: 3, e: "Parte esencial que sostiene todo." },
+                    { q: "Las 'Ramas' en la analogía representan:", o: ["Título", "Ideas secundarias", "Conclusión", "Autor"], c: 1, e: "Detalles que amplían la idea central." },
+                    { q: "Jerarquizar información significa:", o: ["Dar un orden de importancia", "Copiar todo", "Borrar", "Contar"], c: 0, e: "Priorizar lo esencial sobre lo accesorio." },
+                    { q: "Una idea secundaria sirve para:", o: ["Eliminar", "Resumir", "Ejemplificar o ampliar la principal", "Cambiar"], c: 2, e: "Aporta profundidad y ejemplos." },
+                    { q: "Si un párrafo habla de 'Perros' y menciona 'Labradores', 'Perros' es:", o: ["Principal", "Secundaria", "Contexto", "Duda"], c: 0, e: "Concepto general subordinante." },
+                    { q: "Identificar la jerarquía ayuda a:", o: ["Caligrafía", "Hacer resúmenes efectivos", "Dibujar", "Correr"], c: 1, e: "Permite sintetizar lo relevante." },
+                    { q: "La idea principal suele responder a la pregunta:", o: ["¿Cuándo?", "¿Dónde?", "¿Quién?", "¿De qué trata esencialmente?"], c: 3, e: "Núcleo del mensaje." },
+                    { q: "Un error en la jerarquía es tomar:", o: ["El tronco como base", "Un ejemplo como idea central", "La idea principal como eje", "Las ramas"], c: 1, e: "Dar importancia central a un detalle." },
+                    { q: "El subíndice 1.1.9 se enfoca en:", o: ["Ortografía", "Jerarquía de ideas", "Contexto", "Opinión"], c: 1, e: "Orden de relevancia." }
+                ]
+            },
+            {
+                titulo: "Significado por Contexto",
+                preguntas: [
+                    { q: "¿Cómo se descifra una palabra desconocida según el video?", o: ["Pistas del texto circundante", "Buscando en Google", "Saltando", "Preguntando a alguien"], c: 0, e: "Usa el sentido de las palabras vecinas." },
+                    { q: "¿Qué icono representa este tema?", o: ["Reloj", "Libro con palabra resaltada", "Balanza", "Candado"], c: 1, e: "Enfoque en el léxico dinámico." },
+                    { q: "El contexto léxico evita que usemos:", o: ["Vista", "Lógica", "Texto", "El diccionario para cada palabra"], c: 3, e: "Deduce significados rápidamente." },
+                    { q: "Si leo 'La gélida brisa congeló mis manos', gélida significa:", o: ["Cálida", "Muy fría", "Suave", "Rápida"], c: 1, e: "El verbo congelar define el adjetivo." },
+                    { q: "¿Qué es el 'texto circundante'?", o: ["Lo que rodea a la palabra", "Título", "Índice", "Autor"], c: 0, e: "Entorno semántico inmediato." },
+                    { q: "Deducir por contexto es una habilidad de:", o: ["Adivinación", "Análisis lógico", "Memoria", "Azar"], c: 1, e: "Observación y conexión." },
+                    { q: "El subíndice 1.1.10 es el último paso para:", o: ["Ser escritor", "Comer", "Dominar la comprensión lectora", "Dormir"], c: 2, e: "Cierra la estrategia." },
+                    { q: "Si una palabra tiene varios significados, el contexto:", o: ["No importa", "Nos dice cuál es el correcto", "Miente", "Borra"], c: 1, e: "Selecciona el sentido pertinente." },
+                    { q: "Un beneficio de esta técnica es:", o: ["Dormir", "Aumentar el vocabulario pasivo", "Escribir", "Dibujar"], c: 1, e: "Incorporación natural de léxico." },
+                    { q: "El Video 2 completa los subíndices del:", o: ["6 al 10", "1 al 5", "5 al 10", "1 al 10"], c: 0, e: "Segunda mitad de los temas." }
+                ]
+            }
+        ];
+
+        // --- Estado de la aplicación ---
+        let state = {
+            modulo: 0,
+            pregunta: 0,
+            respuestas: Array(5).fill().map(() => Array(10).fill(null)),
+            aprobado: Array(5).fill(false)
+        };
+
+        // --- Funciones principales ---
+        function init() {
+            const saved = localStorage.getItem('ecoems_video2');
+            if (saved) {
+                try {
+                    state = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error cargando estado');
+                }
+            }
+            renderNav();
+            renderContent();
+        }
+
+        function save() {
+            localStorage.setItem('ecoems_video2', JSON.stringify(state));
+        }
+
+        function renderNav() {
+            const nav = document.getElementById('nav-container');
+            nav.innerHTML = MODULOS.map((m, i) => {
+                let clase = 'nav-btn';
+                if (i === state.modulo) clase += ' active';
+                if (state.aprobado[i]) clase += ' completed';
+                if (i > 0 && !state.aprobado[i-1]) clase += ' locked';
+                
+                let icon = i > 0 && !state.aprobado[i-1] ? '🔒' : (state.aprobado[i] ? '✅' : '○');
+                
+                return `<button class="${clase}" onclick="cambiarModulo(${i})" ${i > 0 && !state.aprobado[i-1] ? 'disabled' : ''}>
+                    <span>${icon}</span> ${m.titulo}
+                </button>`;
+            }).join('');
+        }
+
+        function renderContent() {
+            const container = document.getElementById('content-container');
+            const barra = document.getElementById('progress-bar');
+            
+            const m = state.modulo;
+            const p = state.pregunta;
+            const pregunta = MODULOS[m].preguntas[p];
+            const respuesta = state.respuestas[m][p];
+            
+            barra.style.width = `${(p+1)*10}%`;
+            
+            // Generar opciones
+            let opciones = '';
+            pregunta.o.forEach((opt, i) => {
+                let clase = 'option';
+                if (respuesta !== null) {
+                    if (i === pregunta.c) clase += ' correct';
+                    else if (i === respuesta) clase += ' incorrect';
+                } else if (respuesta === i) {
+                    clase += ' selected';
+                }
+                
+                opciones += `
+                    <button class="${clase}" onclick="responder(${i})" ${respuesta !== null ? 'disabled' : ''}>
+                        <span class="letter">${String.fromCharCode(65+i)}</span>
+                        <span>${opt}</span>
+                    </button>
+                `;
+            });
+            
+            // Controles
+            let controles = '';
+            if (respuesta !== null) {
+                if (p < 9) {
+                    controles = `<button class="btn btn-primary" onclick="siguiente()">Siguiente →</button>`;
+                } else {
+                    controles = `<button class="btn btn-primary" onclick="evaluar()">Ver resultados</button>`;
+                }
+            } else {
+                controles = `<span class="subtitle">Selecciona una respuesta</span>`;
+            }
+            
+            container.innerHTML = `
+                <h2>${MODULOS[m].titulo}</h2>
+                <div class="subtitle">Pregunta ${p+1} de 10</div>
+                <div class="question-text">${pregunta.q}</div>
+                ${opciones}
+                <div class="controls">
+                    <button class="btn btn-outline" onclick="anterior()" ${p === 0 ? 'disabled' : ''}>← Anterior</button>
+                    ${controles}
+                </div>
+            `;
+        }
+
+        function renderResultados() {
+            const container = document.getElementById('content-container');
+            const m = state.modulo;
+            const respuestas = state.respuestas[m];
+            const preguntas = MODULOS[m].preguntas;
+            
+            let aciertos = 0;
+            for (let i = 0; i < 10; i++) {
+                if (respuestas[i] === preguntas[i].c) aciertos++;
+            }
+            
+            const aprobado = aciertos >= 9;
+            
+            if (aprobado) {
+                state.aprobado[m] = true;
+                save();
+            }
+            
+            let revisionHtml = '';
+            for (let i = 0; i < 10; i++) {
+                const esCorrecta = respuestas[i] === preguntas[i].c;
+                revisionHtml += `
+                    <div class="review-item">
+                        <div class="review-question">${i+1}. ${preguntas[i].q}</div>
+                        <div class="review-answer ${esCorrecta ? 'review-correct' : 'review-incorrect'}">
+                            Tu respuesta: ${respuestas[i] !== null ? preguntas[i].o[respuestas[i]] : 'No respondiste'}
+                        </div>
+                        ${!esCorrecta ? `<div class="review-answer review-correct">Correcta: ${preguntas[i].o[preguntas[i].c]}</div>` : ''}
+                        <div class="review-explanation">${preguntas[i].e}</div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = `
+                <div class="result-box">
+                    <h2>${aprobado ? '✅ ¡Módulo completado!' : '❌ Inténtalo de nuevo'}</h2>
+                    <div class="score-circle">
+                        <span>${aciertos}/10</span>
+                        <small>${aciertos*10}%</small>
+                    </div>
+                    <p style="margin-bottom: 20px; color: #6b7280;">
+                        ${aprobado ? '¡Excelente trabajo!' : 'Necesitas 9/10 aciertos para avanzar'}
+                    </p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                        <button class="btn btn-outline" onclick="reintentar()">🔄 Reintentar</button>
+                        ${aprobado && m < 4 ? '<button class="btn btn-primary" onclick="siguienteModulo()">Siguiente módulo →</button>' : ''}
+                        ${aprobado && m === 4 ? '<button class="btn btn-primary" onclick="finalizar()">🏆 Finalizar</button>' : ''}
+                    </div>
+                    <h3 style="text-align: left; margin-bottom: 15px;">Revisión detallada:</h3>
+                    ${revisionHtml}
+                </div>
+            `;
+            
+            renderNav();
+        }
+
+        // --- Acciones ---
+        window.responder = (i) => {
+            state.respuestas[state.modulo][state.pregunta] = i;
+            save();
+            renderContent();
+        };
+
+        window.siguiente = () => {
+            if (state.pregunta < 9) {
+                state.pregunta++;
+                save();
+                renderContent();
+            }
+        };
+
+        window.anterior = () => {
+            if (state.pregunta > 0) {
+                state.pregunta--;
+                save();
+                renderContent();
+            }
+        };
+
+        window.cambiarModulo = (i) => {
+            if (i > 0 && !state.aprobado[i-1]) return;
+            state.modulo = i;
+            state.pregunta = 0;
+            save();
+            renderNav();
+            renderContent();
+        };
+
+        window.evaluar = () => {
+            renderResultados();
+        };
+
+        window.reintentar = () => {
+            state.respuestas[state.modulo] = Array(10).fill(null);
+            state.aprobado[state.modulo] = false;
+            state.pregunta = 0;
+            save();
+            renderNav();
+            renderContent();
+        };
+
+        window.siguienteModulo = () => {
+            if (state.modulo < 4) {
+                state.modulo++;
+                state.pregunta = 0;
+                save();
+                renderNav();
+                renderContent();
+            }
+        };
+
+        window.finalizar = () => {
+            alert('🏆 ¡Felicidades! Has completado todos los módulos del Video 2');
+        };
+
+        window.resetAll = () => {
+            if (confirm('¿Borrar todo el progreso?')) {
+                localStorage.removeItem('ecoems_video2');
+                location.reload();
+            }
+        };
+
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>
