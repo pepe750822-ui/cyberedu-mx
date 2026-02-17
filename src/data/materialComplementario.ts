@@ -32,8 +32,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 0 - Presentación (sin quiz)
   // ============================================
-  "video-00": {
-    videoId: "video-00",
+  "hv-0": {
+    videoId: "hv-0",
     podcast: {
       url: "/videos/video0/podcast.mp3",
       duracion: "8:30"
@@ -52,8 +52,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 1 - Habilidad Verbal (con quiz)
   // ============================================
-  "video-01": {
-    videoId: "video-01",
+  "hv-1": {
+    videoId: "hv-1",
     cuestionario: {
       preguntas: [
         {
@@ -138,8 +138,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 2 - (pendiente de completar)
   // ============================================
-  "video-02": {
-    videoId: "video-02",
+  "hv-2": {
+    videoId: "hv-2",
     podcast: {
       url: "/videos/video2/podcast.mp3",
       duracion: "8:30"
@@ -160,8 +160,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 3 - (pendiente de completar)
   // ============================================
-  "video-03": {
-    videoId: "video-03",
+  "hv-3": {
+    videoId: "hv-3",
     podcast: {
       url: "/videos/video3/podcast.mp3",
       duracion: "8:30"
@@ -182,8 +182,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 4 - (pendiente de completar)
   // ============================================
-  "video-04": {
-    videoId: "video-04",
+  "hv-4": {
+    videoId: "hv-4",
     podcast: {
       url: "/videos/video4/podcast.mp3",
       duracion: "8:30"
@@ -204,8 +204,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 5 - (pendiente de completar)
   // ============================================
-  "video-05": {
-    videoId: "video-05",
+  "hv-5": {
+    videoId: "hv-5",
     podcast: {
       url: "/videos/video5/podcast.mp3",
       duracion: "8:30"
@@ -226,8 +226,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 6 - (pendiente de completar)
   // ============================================
-  "video-06": {
-    videoId: "video-06",
+  "hv-6": {
+    videoId: "hv-6",
     podcast: {
       url: "/videos/video6/podcast.mp3",
       duracion: "8:30"
@@ -248,8 +248,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 7 - (pendiente de completar)
   // ============================================
-  "video-07": {
-    videoId: "video-07",
+  "hv-7": {
+    videoId: "hv-7",
     podcast: {
       url: "/videos/video7/podcast.mp3",
       duracion: "8:30"
@@ -270,8 +270,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 8 - (pendiente de completar)
   // ============================================
-  "video-08": {
-    videoId: "video-08",
+  "hv-8": {
+    videoId: "hv-8",
     podcast: {
       url: "/videos/video8/podcast.mp3",
       duracion: "8:30"
@@ -292,8 +292,8 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   // VIDEO 9 - (pendiente de completar)
   // ============================================
-  "video-09": {
-    videoId: "video-09",
+  "hv-9": {
+    videoId: "hv-9",
     podcast: {
       url: "/videos/video9/podcast.mp3",
       duracion: "8:30"
