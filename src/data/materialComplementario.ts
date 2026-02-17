@@ -23,6 +23,9 @@ export interface MaterialVideo {
     url: string;
     titulo: string;
   };
+  quiz?: {
+    url: string;
+  };
 }
 
 export const materiales: Record<string, MaterialVideo> = {
