@@ -1,698 +1,671 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECOEMS 2026 | Habilidad Verbal Avanzada</title>
+    <title>Habilidad Verbal Pro - ECOEMS 2026 | Video 2</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --hint-bg: #f1f5f9;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --border: #334155;
+            --hint-bg: #2d3748;
+            --glass: rgba(30, 41, 59, 0.8);
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.2s, color 0.2s; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0; padding: 0;
             min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Header - igual al Quiz 1 */
-        .header {
-            background: white;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px 30px;
-            border-radius: 15px 15px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .navbar {
+            width: 100%; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #4f46e5;
+        .logo { font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+        .nav-tools { display: flex; align-items: center; gap: 12px; }
+
+        .timer-container {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg); border: 1px solid var(--border);
+            padding: 4px 10px; border-radius: 12px;
         }
 
-        .badge {
-            background: #4f46e5;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .timer-box { font-variant-numeric: tabular-nums; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+
+        .main-container { max-width: 900px; width: 95%; margin: 1.5rem 0; flex-grow: 1; }
+
+        .subindex-nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .subindex-nav::-webkit-scrollbar { display: none; }
+
+        .tab {
+            padding: 8px 16px; background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; cursor: pointer; white-space: nowrap; font-weight: 500;
+            color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 6px;
         }
 
-        /* Navegación - igual al Quiz 1 */
-        .nav {
-            background: white;
-            width: 100%;
-            max-width: 800px;
-            padding: 15px 30px;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            border-top: 1px solid #e5e7eb;
-            scrollbar-width: thin;
+        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab.completed { border-color: var(--secondary); color: var(--secondary); }
+        .tab.locked { opacity: 0.5; cursor: not-allowed; background: #e5e7eb; }
+
+        .quiz-card {
+            background: var(--card); border-radius: 20px; padding: 2.5rem;
+            box-shadow: var(--shadow); border: 1px solid var(--border); min-height: 550px;
+            position: relative;
         }
 
-        .nav-btn {
-            padding: 10px 20px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            white-space: nowrap;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
+        .module-title { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
 
-        .nav-btn:hover:not(:disabled) {
-            border-color: #4f46e5;
-            color: #4f46e5;
-        }
+        .progress-bar-wrap { height: 6px; background: var(--bg); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.4s; }
 
-        .nav-btn.active {
-            background: #4f46e5;
-            color: white;
-            border-color: #4f46e5;
-        }
+        .question-text { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4; }
 
-        .nav-btn.completed {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
-        }
+        .options-grid { display: grid; gap: 12px; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .options-grid { grid-template-columns: 1fr 1fr; } }
 
-        .nav-btn.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #f3f4f6;
-        }
-
-        /* Tarjeta principal - igual al Quiz 1 */
-        .card {
-            background: white;
-            width: 100%;
-            max-width: 800px;
-            padding: 30px;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            min-height: 500px;
-        }
-
-        /* Progreso - igual al Quiz 1 */
-        .progress {
-            width: 100%;
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 3px;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: #4f46e5;
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        /* Títulos - igual al Quiz 1 */
-        h2 {
-            font-size: 1.5rem;
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        .question-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        /* Opciones - igual al Quiz 1 */
-        .option {
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .option:hover:not(:disabled) {
-            border-color: #4f46e5;
-            background: #f5f3ff;
-        }
-
-        .option.selected {
-            border-color: #4f46e5;
-            background: #eef2ff;
-        }
-
-        .option.correct {
-            border-color: #10b981;
-            background: #ecfdf5;
-        }
-
-        .option.incorrect {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .option:disabled {
-            cursor: default;
-            opacity: 0.8;
-        }
-
-        .letter {
-            width: 32px;
-            height: 32px;
-            background: #f3f4f6;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 1px solid #d1d5db;
-        }
-
-        .correct .letter {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
-        }
-
-        .incorrect .letter {
-            background: #ef4444;
-            color: white;
-            border-color: #ef4444;
-        }
-
-        /* Botones - igual al Quiz 1 */
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .option-btn {
+            background: var(--bg); border: 2px solid var(--border); padding: 1rem;
+            border-radius: 12px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px;
             transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: #4f46e5;
-            color: white;
-        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .option-btn.correct { border-color: var(--secondary); background: rgba(16, 185, 129, 0.1); color: var(--secondary); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 
-        .btn-primary:hover:not(:disabled) {
-            background: #4338ca;
-        }
+        .letter { width: 28px; height: 28px; background: var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .correct .letter { background: var(--secondary); color: white; }
+        .incorrect .letter { background: var(--danger); color: white; }
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #e5e7eb;
-            color: #6b7280;
-        }
+        .btn { padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; justify-content: center; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: none; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-danger-outline { background: none; border: 1px solid var(--danger); color: var(--danger); }
+        .btn-ghost { background: none; color: var(--text-muted); border: none; }
 
-        .btn-outline:hover:not(:disabled) {
-            border-color: #4f46e5;
-            color: #4f46e5;
-        }
+        .info-box { margin-top: 1rem; padding: 1.25rem; border-radius: 12px; font-size: 0.95rem; border-left: 4px solid var(--primary); line-height: 1.5; }
+        .hint-box { background: var(--hint-bg); border-color: var(--warning); font-style: italic; color: var(--text-main); }
+        .explanation-box { background: rgba(37, 99, 235, 0.05); }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .stats-panel { text-align: center; animation: fadeIn 0.5s; }
+        .stat-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; border: 8px solid var(--border); }
+        .stat-circle.high { border-color: var(--secondary); color: var(--secondary); }
+        .stat-circle.low { border-color: var(--danger); color: var(--danger); }
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            gap: 10px;
-        }
+        .review-list { text-align: left; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .review-item { padding: 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--card); }
+        .review-item:last-child { border-bottom: none; }
+        .review-item:hover { background: var(--bg); }
 
-        /* Resultados - igual al Quiz 1 */
-        .result-box {
-            text-align: center;
-            padding: 20px;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.95rem; }
+        th, td { padding: 14px; border-bottom: 1px solid var(--border); text-align: center; }
+        th { background: var(--bg); font-weight: 700; color: var(--text-muted); }
 
-        .score-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 8px solid #4f46e5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 20px auto;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #4f46e5;
-        }
-
-        .score-circle small {
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        .review-item {
-            text-align: left;
-            padding: 15px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            background: #f9fafb;
-        }
-
-        .review-question {
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .review-answer {
-            font-size: 0.95rem;
-            margin: 4px 0;
-        }
-
-        .review-correct {
-            color: #10b981;
-            font-weight: 500;
-        }
-
-        .review-incorrect {
-            color: #ef4444;
-        }
-
-        .review-explanation {
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px dashed #e5e7eb;
-        }
-
-        /* Footer - igual al Quiz 1 */
+        #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .footer {
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
             font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
         }
-
+        
         .footer strong {
-            color: #ffd700;
+            color: var(--primary);
         }
-
-        .reset-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid white;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-        }
-
-        .reset-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        
+        @media (max-width: 600px) {
+            .quiz-card { padding: 1.25rem; min-height: 650px; }
+            .navbar { padding: 1rem; }
+            .module-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header CyberEdu MX -->
-    <div class="header">
-        <div class="logo">
-            <span>📚 CyberEdu MX</span>
+<canvas id="confetti"></canvas>
+
+<nav class="navbar">
+    <div class="logo"><i data-lucide="award"></i> ECOEMS 2026 | Habilidad Verbal - Video 2</div>
+    <div class="nav-tools">
+        <div class="timer-container" title="Tiempo del módulo actual">
+            <div class="timer-box"><i data-lucide="clock" size="16"></i> <span id="time-string">00:00</span></div>
+            <button class="btn-ghost" id="timer-ctrl" onclick="togglePause()"><i data-lucide="pause" size="16"></i></button>
         </div>
-        <div class="badge">
-            <span>⚡ ECOEMS 2026</span>
-        </div>
+        <button class="btn-outline" onclick="toggleTheme()" title="Cambiar Tema"><i data-lucide="moon" id="theme-icon"></i></button>
     </div>
+</nav>
 
-    <!-- Navegación de módulos -->
-    <div class="nav" id="nav-container"></div>
-
-    <!-- Contenido principal -->
-    <div class="card">
-        <div class="progress">
-            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
-        </div>
-        <div id="content-container"></div>
+<div class="main-container">
+    <div class="subindex-nav" id="subindex-nav"></div>
+    <div id="quiz-app">
+        <div class="quiz-card fade-in" id="current-card"></div>
     </div>
+</div>
 
-    <!-- Footer -->
-    <div class="footer">
-        Desarrollado por <strong>CyberEdu MX</strong> © 2026
-    </div>
+<div class="footer">
+    Desarrollado por <strong>CyberEdu MX</strong> © 2026 - Todos los derechos reservados
+</div>
 
-    <!-- Botón reinicio total -->
-    <button class="reset-btn" onclick="resetAll()">
-        <span>🔄</span> Reiniciar todo el progreso
-    </button>
+<script>
+    // --- CONSTANTES ---
+    const SUBINDICES = ["Secuencia", "Relaciones Textuales", "Hechos vs Opiniones", "Jerarquía", "Contexto Léxico"];
 
-    <script>
-        // --- 5 MÓDULOS COMPLETOS (VIDEO 2) ---
-        const MODULOS = [
-            {
-                titulo: "Secuencia de acontecimientos",
-                preguntas: [
-                    { q: "¿Qué permite identificar la secuencia de acontecimientos según el video?", o: ["Adivinar el futuro", "Ordenar eventos por desarrollo temporal", "Ignorar el desenlace", "Leer el primer párrafo"], c: 1, e: "Reconocer el orden cronológico de los hechos." },
-                    { q: "En la frase 'Primero desayunó, luego salió y finalmente llegó', el marcador es:", o: ["Primero / Luego / Finalmente", "Salió", "Desayunó", "Llegó"], c: 0, e: "Son conectores que indican el orden cronológico." },
-                    { q: "¿Qué significa 'progresión lógica'?", o: ["Saltar ideas", "Repetir", "Seguir el hilo conductor del tiempo", "Escribir sin verbos"], c: 2, e: "Conexión coherente de eventos temporales." },
-                    { q: "Si un texto narra un accidente, ¿cuál sería la secuencia lógica típica?", o: ["Choque, Viaje, Auxilio", "Auxilio, Choque", "Viaje, Choque, Auxilio", "Cura, Choque"], c: 2, e: "Sigue el orden natural: inicio, nudo y desenlace." },
-                    { q: "¿Cuál de estos iconos representa mejor el subíndice 1.1.6?", o: ["Una lupa", "Una línea de tiempo", "Una balanza", "Un árbol"], c: 1, e: "Representa el avance cronológico." },
-                    { q: "Para identificar secuencias, ¿en qué debemos fijarnos?", o: ["En verbos y adverbios de tiempo", "En adjetivos", "En el autor", "En el título"], c: 0, e: "Las palabras temporales dan la pista del orden." },
-                    { q: "Ordenar eventos es clave para:", o: ["Ortografía", "Caligrafía", "La comprensión narrativa", "Vocabulario"], c: 2, e: "Ayuda a entender el desarrollo de la historia." },
-                    { q: "Si el texto dice 'Al final sonrió', ¿dónde ubicamos ese evento?", o: ["Inicio", "Problema", "En la conclusión", "Antes"], c: 2, e: "Indica el cierre de la secuencia." },
-                    { q: "Un evento que ocurre 'simultáneamente' significa que:", o: ["Ocurre después", "Nunca ocurre", "Ocurre antes", "Ocurre al mismo tiempo"], c: 3, e: "Coincidencia temporal entre hechos." },
-                    { q: "¿Cuál es el objetivo final de dominar el subíndice 1.1.6?", o: ["Perfeccionar el análisis textual", "Memorizar", "Escribir", "Contar"], c: 0, e: "Permite reconocer cómo progresa la información." }
-                ]
-            },
-            {
-                titulo: "Relaciones Textuales",
-                preguntas: [
-                    { q: "¿Cuál es un conector de 'Oposición'?", o: ["Porque", "Además", "Sin embargo", "Por lo tanto"], c: 2, e: "Indica un contraste entre dos ideas." },
-                    { q: "La relación 'Causa-Efecto' se identifica con:", o: ["Porque / Por lo tanto", "Semejanza", "Problema", "Imagen"], c: 0, e: "Vincula el origen con la consecuencia." },
-                    { q: "Si un texto plantea una dificultad y luego la resuelve, es:", o: ["Comparación", "Causa-Efecto", "Oposición", "Problema-Solución"], c: 3, e: "Estructura de conflicto y resolución." },
-                    { q: "El conector 'En cambio' pertenece a:", o: ["Oposición/Contraste", "Causa", "Efecto", "Adición"], c: 0, e: "Muestra una diferencia directa." },
-                    { q: "¿Qué representan las 'Cadenas conectadas' en el video?", o: ["Secuencia", "Las relaciones textuales", "Ortografía", "Dudas"], c: 1, e: "Unión lógica de las ideas." },
-                    { q: "La relación de 'Semejanza' busca:", o: ["Diferencias", "Causas", "Similitudes/Comparaciones", "Efectos"], c: 2, e: "Busca puntos en común." },
-                    { q: "'Debido a la lluvia, se mojó'. ¿Qué relación es?", o: ["Contraste", "Secuencia", "Causa-Consecuencia", "Problema"], c: 2, e: "Establece el origen de un hecho." },
-                    { q: "Los conectores son descritos en el video como:", o: ["Adjetivos", "Sujetos", "Estorbos", "Tus pistas"], c: 3, e: "Señales que guían el sentido." },
-                    { q: "Comparar dos ciudades por su clima es una relación de:", o: ["Oposición", "Problema", "Comparación/Semejanza", "Causa"], c: 2, e: "Busca establecer paralelos." },
-                    { q: "Identificar relaciones textuales permite:", o: ["Leer rápido", "Contar párrafos", "Dibujar", "Reconocer conexiones lógicas"], c: 3, e: "Fundamental para entender la estructura profunda." }
-                ]
-            },
-            {
-                titulo: "Hechos vs Opiniones",
-                preguntas: [
-                    { q: "¿Qué caracteriza a un 'Hecho'?", o: ["Es verificable y objetivo", "Es subjetivo", "Es personal", "Es duda"], c: 0, e: "Se puede comprobar objetivamente." },
-                    { q: "'La Tierra gira alrededor del Sol' es un/a:", o: ["Opinión", "Creencia", "Hecho", "Duda"], c: 2, e: "Dato científico comprobado." },
-                    { q: "'Es hermoso ver amanecer' es un/a:", o: ["Hecho", "Opinión", "Ley", "Datos"], c: 1, e: "Juicio subjetivo basado en el gusto." },
-                    { q: "¿Qué icono representa este tema en el video?", o: ["Reloj", "Flecha", "Cerebro", "Balanza"], c: 3, e: "Representa el equilibrio de la objetividad." },
-                    { q: "Las opiniones se identifican por el uso de:", o: ["Adjetivos valorativos", "Números", "Fechas", "Nombres"], c: 0, e: "Expresan juicios de valor." },
-                    { q: "Distinguir hechos de opiniones es clave para:", o: ["Gramática", "Poesía", "El pensamiento crítico", "Dibujo"], c: 2, e: "Evita tomar juicios como verdades." },
-                    { q: "Un hecho suele expresarse con:", o: ["Metáforas", "Lenguaje denotativo/objetivo", "Exageración", "Dudas"], c: 1, e: "Busca la precisión técnica." },
-                    { q: "Si el autor dice 'Yo creo que...', está expresando:", o: ["Hecho", "Ley", "Opinión", "Cita"], c: 2, e: "Postura personal." },
-                    { q: "¿Cuál es el color asociado a los Hechos en el video?", o: ["Naranja", "Azul", "Rojo", "Verde"], c: 1, e: "Color asignado para la objetividad." },
-                    { q: "Un reporte del clima que dice 'Hay 20 grados' es:", o: ["Opinión", "Fantasía", "Relación", "Hecho"], c: 3, e: "Medición técnica verificable." }
-                ]
-            },
-            {
-                titulo: "Jerarquía (Idea Principal)",
-                preguntas: [
-                    { q: "¿Qué icono representa la jerarquía en el video?", o: ["Círculo", "Casa", "Un árbol jerárquico", "Libro"], c: 2, e: "Visualiza la importancia relativa de las ideas." },
-                    { q: "El 'Tronco' en la analogía representa:", o: ["Secundarias", "Ejemplos", "Título", "Idea principal"], c: 3, e: "Parte esencial que sostiene todo." },
-                    { q: "Las 'Ramas' en la analogía representan:", o: ["Título", "Ideas secundarias", "Conclusión", "Autor"], c: 1, e: "Detalles que amplían la idea central." },
-                    { q: "Jerarquizar información significa:", o: ["Dar un orden de importancia", "Copiar todo", "Borrar", "Contar"], c: 0, e: "Priorizar lo esencial sobre lo accesorio." },
-                    { q: "Una idea secundaria sirve para:", o: ["Eliminar", "Resumir", "Ejemplificar o ampliar la principal", "Cambiar"], c: 2, e: "Aporta profundidad y ejemplos." },
-                    { q: "Si un párrafo habla de 'Perros' y menciona 'Labradores', 'Perros' es:", o: ["Principal", "Secundaria", "Contexto", "Duda"], c: 0, e: "Concepto general subordinante." },
-                    { q: "Identificar la jerarquía ayuda a:", o: ["Caligrafía", "Hacer resúmenes efectivos", "Dibujar", "Correr"], c: 1, e: "Permite sintetizar lo relevante." },
-                    { q: "La idea principal suele responder a la pregunta:", o: ["¿Cuándo?", "¿Dónde?", "¿Quién?", "¿De qué trata esencialmente?"], c: 3, e: "Núcleo del mensaje." },
-                    { q: "Un error en la jerarquía es tomar:", o: ["El tronco como base", "Un ejemplo como idea central", "La idea principal como eje", "Las ramas"], c: 1, e: "Dar importancia central a un detalle." },
-                    { q: "El subíndice 1.1.9 se enfoca en:", o: ["Ortografía", "Jerarquía de ideas", "Contexto", "Opinión"], c: 1, e: "Orden de relevancia." }
-                ]
-            },
-            {
-                titulo: "Significado por Contexto",
-                preguntas: [
-                    { q: "¿Cómo se descifra una palabra desconocida según el video?", o: ["Pistas del texto circundante", "Buscando en Google", "Saltando", "Preguntando a alguien"], c: 0, e: "Usa el sentido de las palabras vecinas." },
-                    { q: "¿Qué icono representa este tema?", o: ["Reloj", "Libro con palabra resaltada", "Balanza", "Candado"], c: 1, e: "Enfoque en el léxico dinámico." },
-                    { q: "El contexto léxico evita que usemos:", o: ["Vista", "Lógica", "Texto", "El diccionario para cada palabra"], c: 3, e: "Deduce significados rápidamente." },
-                    { q: "Si leo 'La gélida brisa congeló mis manos', gélida significa:", o: ["Cálida", "Muy fría", "Suave", "Rápida"], c: 1, e: "El verbo congelar define el adjetivo." },
-                    { q: "¿Qué es el 'texto circundante'?", o: ["Lo que rodea a la palabra", "Título", "Índice", "Autor"], c: 0, e: "Entorno semántico inmediato." },
-                    { q: "Deducir por contexto es una habilidad de:", o: ["Adivinación", "Análisis lógico", "Memoria", "Azar"], c: 1, e: "Observación y conexión." },
-                    { q: "El subíndice 1.1.10 es el último paso para:", o: ["Ser escritor", "Comer", "Dominar la comprensión lectora", "Dormir"], c: 2, e: "Cierra la estrategia." },
-                    { q: "Si una palabra tiene varios significados, el contexto:", o: ["No importa", "Nos dice cuál es el correcto", "Miente", "Borra"], c: 1, e: "Selecciona el sentido pertinente." },
-                    { q: "Un beneficio de esta técnica es:", o: ["Dormir", "Aumentar el vocabulario pasivo", "Escribir", "Dibujar"], c: 1, e: "Incorporación natural de léxico." },
-                    { q: "El Video 2 completa los subíndices del:", o: ["6 al 10", "1 al 5", "5 al 10", "1 al 10"], c: 0, e: "Segunda mitad de los temas." }
-                ]
+    // --- DATABASE PARA VIDEO 2 (Secuencia de acontecimientos a Significado por Contexto) ---
+    const modulos = [
+        {
+            id: 0,
+            titulo: "Secuencia de acontecimientos",
+            preguntas: [
+                { q: "¿Qué permite identificar la secuencia de acontecimientos según el video?", o: ["Adivinar el futuro", "Ordenar eventos por desarrollo temporal", "Ignorar el desenlace", "Leer el primer párrafo"], c: 1, e: "Reconocer el orden cronológico de los hechos.", h: "Busca palabras que indiquen orden como 'primero', 'luego', 'finalmente'." },
+                { q: "En la frase 'Primero desayunó, luego salió y finalmente llegó', el marcador es:", o: ["Primero / Luego / Finalmente", "Salió", "Desayunó", "Llegó"], c: 0, e: "Son conectores que indican el orden cronológico.", h: "Identifica las palabras que marcan la secuencia temporal." },
+                { q: "¿Qué significa 'progresión lógica'?", o: ["Saltar ideas", "Repetir", "Seguir el hilo conductor del tiempo", "Escribir sin verbos"], c: 2, e: "Conexión coherente de eventos temporales.", h: "Es la forma en que las ideas se conectan en el tiempo." },
+                { q: "Si un texto narra un accidente, ¿cuál sería la secuencia lógica típica?", o: ["Choque, Viaje, Auxilio", "Auxilio, Choque", "Viaje, Choque, Auxilio", "Cura, Choque"], c: 2, e: "Sigue el orden natural: inicio, nudo y desenlace.", h: "Piensa en el orden cronológico normal de los eventos." },
+                { q: "¿Cuál de estos iconos representa mejor el subíndice 1.1.6?", o: ["Una lupa", "Una línea de tiempo", "Una balanza", "Un árbol"], c: 1, e: "Representa el avance cronológico.", h: "El icono muestra eventos en orden temporal." },
+                { q: "Para identificar secuencias, ¿en qué debemos fijarnos?", o: ["En verbos y adverbios de tiempo", "En adjetivos", "En el autor", "En el título"], c: 0, e: "Las palabras temporales dan la pista del orden.", h: "Busca palabras como 'antes', 'después', 'mientras'." },
+                { q: "Ordenar eventos es clave para:", o: ["Ortografía", "Caligrafía", "La comprensión narrativa", "Vocabulario"], c: 2, e: "Ayuda a entender el desarrollo de la historia.", h: "Sin orden, no entendemos la historia completa." },
+                { q: "Si el texto dice 'Al final sonrió', ¿dónde ubicamos ese evento?", o: ["Inicio", "Problema", "En la conclusión", "Antes"], c: 2, e: "Indica el cierre de la secuencia.", h: "'Al final' es un marcador de conclusión." },
+                { q: "Un evento que ocurre 'simultáneamente' significa que:", o: ["Ocurre después", "Nunca ocurre", "Ocurre antes", "Ocurre al mismo tiempo"], c: 3, e: "Coincidencia temporal entre hechos.", h: "Dos cosas pasan a la vez." },
+                { q: "¿Cuál es el objetivo final de dominar el subíndice 1.1.6?", o: ["Perfeccionar el análisis textual", "Memorizar", "Escribir", "Contar"], c: 0, e: "Permite reconocer cómo progresa la información.", h: "Es una habilidad fundamental para la comprensión." }
+            ]
+        },
+        {
+            id: 1,
+            titulo: "Relaciones Textuales",
+            preguntas: [
+                { q: "¿Cuál es un conector de 'Oposición'?", o: ["Porque", "Además", "Sin embargo", "Por lo tanto"], c: 2, e: "Indica un contraste entre dos ideas.", h: "Busca palabras que muestren diferencia o contraste." },
+                { q: "La relación 'Causa-Efecto' se identifica con:", o: ["Porque / Por lo tanto", "Semejanza", "Problema", "Imagen"], c: 0, e: "Vincula el origen con la consecuencia.", h: "Relaciona una razón con su resultado." },
+                { q: "Si un texto plantea una dificultad y luego la resuelve, es:", o: ["Comparación", "Causa-Efecto", "Oposición", "Problema-Solución"], c: 3, e: "Estructura de conflicto y resolución.", h: "Identifica el problema y cómo se soluciona." },
+                { q: "El conector 'En cambio' pertenece a:", o: ["Oposición/Contraste", "Causa", "Efecto", "Adición"], c: 0, e: "Muestra una diferencia directa.", h: "Indica que algo es diferente a lo mencionado." },
+                { q: "¿Qué representan las 'Cadenas conectadas' en el video?", o: ["Secuencia", "Las relaciones textuales", "Ortografía", "Dudas"], c: 1, e: "Unión lógica de las ideas.", h: "Son las conexiones entre ideas." },
+                { q: "La relación de 'Semejanza' busca:", o: ["Diferencias", "Causas", "Similitudes/Comparaciones", "Efectos"], c: 2, e: "Busca puntos en común.", h: "Compara elementos parecidos." },
+                { q: "'Debido a la lluvia, se mojó'. ¿Qué relación es?", o: ["Contraste", "Secuencia", "Causa-Consecuencia", "Problema"], c: 2, e: "Establece el origen de un hecho.", h: "La lluvia es la causa, mojarse es el efecto." },
+                { q: "Los conectores son descritos en el video como:", o: ["Adjetivos", "Sujetos", "Estorbos", "Tus pistas"], c: 3, e: "Señales que guían el sentido.", h: "Son palabras que nos ayudan a entender las relaciones." },
+                { q: "Comparar dos ciudades por su clima es una relación de:", o: ["Oposición", "Problema", "Comparación/Semejanza", "Causa"], c: 2, e: "Busca establecer paralelos.", h: "Se buscan similitudes o diferencias." },
+                { q: "Identificar relaciones textuales permite:", o: ["Leer rápido", "Contar párrafos", "Dibujar", "Reconocer conexiones lógicas"], c: 3, e: "Fundamental para entender la estructura profunda.", h: "Ayuda a ver cómo se conectan las ideas." }
+            ]
+        },
+        {
+            id: 2,
+            titulo: "Hechos vs Opiniones",
+            preguntas: [
+                { q: "¿Qué caracteriza a un 'Hecho'?", o: ["Es verificable y objetivo", "Es subjetivo", "Es personal", "Es duda"], c: 0, e: "Se puede comprobar objetivamente.", h: "Puede ser demostrado con evidencia." },
+                { q: "'La Tierra gira alrededor del Sol' es un/a:", o: ["Opinión", "Creencia", "Hecho", "Duda"], c: 2, e: "Dato científico comprobado.", h: "Es un dato verificable científicamente." },
+                { q: "'Es hermoso ver amanecer' es un/a:", o: ["Hecho", "Opinión", "Ley", "Datos"], c: 1, e: "Juicio subjetivo basado en el gusto.", h: "Expresa un sentimiento o preferencia personal." },
+                { q: "¿Qué icono representa este tema en el video?", o: ["Reloj", "Flecha", "Cerebro", "Balanza"], c: 3, e: "Representa el equilibrio de la objetividad.", h: "La balanza simboliza el equilibrio entre hecho y opinión." },
+                { q: "Las opiniones se identifican por el uso de:", o: ["Adjetivos valorativos", "Números", "Fechas", "Nombres"], c: 0, e: "Expresan juicios de valor.", h: "Palabras como 'hermoso', 'feo', 'mejor' indican opinión." },
+                { q: "Distinguir hechos de opiniones es clave para:", o: ["Gramática", "Poesía", "El pensamiento crítico", "Dibujo"], c: 2, e: "Evita tomar juicios como verdades.", h: "Ayuda a evaluar la información objetivamente." },
+                { q: "Un hecho suele expresarse con:", o: ["Metáforas", "Lenguaje denotativo/objetivo", "Exageración", "Dudas"], c: 1, e: "Busca la precisión técnica.", h: "Usa lenguaje directo y preciso." },
+                { q: "Si el autor dice 'Yo creo que...', está expresando:", o: ["Hecho", "Ley", "Opinión", "Cita"], c: 2, e: "Postura personal.", h: "'Creo que' indica una opinión personal." },
+                { q: "¿Cuál es el color asociado a los Hechos en el video?", o: ["Naranja", "Azul", "Rojo", "Verde"], c: 1, e: "Color asignado para la objetividad.", h: "El azul representa la objetividad." },
+                { q: "Un reporte del clima que dice 'Hay 20 grados' es:", o: ["Opinión", "Fantasía", "Relación", "Hecho"], c: 3, e: "Medición técnica verificable.", h: "Es un dato medible y verificable." }
+            ]
+        },
+        {
+            id: 3,
+            titulo: "Jerarquía (Idea Principal)",
+            preguntas: [
+                { q: "¿Qué icono representa la jerarquía en el video?", o: ["Círculo", "Casa", "Un árbol jerárquico", "Libro"], c: 2, e: "Visualiza la importancia relativa de las ideas.", h: "El árbol muestra tronco (principal) y ramas (secundarias)." },
+                { q: "El 'Tronco' en la analogía representa:", o: ["Secundarias", "Ejemplos", "Título", "Idea principal"], c: 3, e: "Parte esencial que sostiene todo.", h: "Es lo que da estructura al texto." },
+                { q: "Las 'Ramas' en la analogía representan:", o: ["Título", "Ideas secundarias", "Conclusión", "Autor"], c: 1, e: "Detalles que amplían la idea central.", h: "Son las ideas que desarrollan la principal." },
+                { q: "Jerarquizar información significa:", o: ["Dar un orden de importancia", "Copiar todo", "Borrar", "Contar"], c: 0, e: "Priorizar lo esencial sobre lo accesorio.", h: "Organizar de lo más a lo menos importante." },
+                { q: "Una idea secundaria sirve para:", o: ["Eliminar", "Resumir", "Ejemplificar o ampliar la principal", "Cambiar"], c: 2, e: "Aporta profundidad y ejemplos.", h: "Apoya y desarrolla la idea principal." },
+                { q: "Si un párrafo habla de 'Perros' y menciona 'Labradores', 'Perros' es:", o: ["Principal", "Secundaria", "Contexto", "Duda"], c: 0, e: "Concepto general subordinante.", h: "'Perros' es la categoría general." },
+                { q: "Identificar la jerarquía ayuda a:", o: ["Caligrafía", "Hacer resúmenes efectivos", "Dibujar", "Correr"], c: 1, e: "Permite sintetizar lo relevante.", h: "Ayuda a quedarse con lo importante." },
+                { q: "La idea principal suele responder a la pregunta:", o: ["¿Cuándo?", "¿Dónde?", "¿Quién?", "¿De qué trata esencialmente?"], c: 3, e: "Núcleo del mensaje.", h: "Es el tema central del texto." },
+                { q: "Un error en la jerarquía es tomar:", o: ["El tronco como base", "Un ejemplo como idea central", "La idea principal como eje", "Las ramas"], c: 1, e: "Dar importancia central a un detalle.", h: "Confundir un ejemplo con la idea principal." },
+                { q: "El subíndice 1.1.9 se enfoca en:", o: ["Ortografía", "Jerarquía de ideas", "Contexto", "Opinión"], c: 1, e: "Orden de relevancia.", h: "Trata sobre la organización de ideas por importancia." }
+            ]
+        },
+        {
+            id: 4,
+            titulo: "Significado por Contexto",
+            preguntas: [
+                { q: "¿Cómo se descifra una palabra desconocida según el video?", o: ["Pistas del texto circundante", "Buscando en Google", "Saltando", "Preguntando a alguien"], c: 0, e: "Usa el sentido de las palabras vecinas.", h: "Las palabras alrededor dan pistas del significado." },
+                { q: "¿Qué icono representa este tema?", o: ["Reloj", "Libro con palabra resaltada", "Balanza", "Candado"], c: 1, e: "Enfoque en el léxico dinámico.", h: "Muestra una palabra y su contexto." },
+                { q: "El contexto léxico evita que usemos:", o: ["Vista", "Lógica", "Texto", "El diccionario para cada palabra"], c: 3, e: "Deduce significados rápidamente.", h: "No necesitas detenerte a buscar cada palabra." },
+                { q: "Si leo 'La gélida brisa congeló mis manos', gélida significa:", o: ["Cálida", "Muy fría", "Suave", "Rápida"], c: 1, e: "El verbo congelar define el adjetivo.", h: "'Congelar' te da la pista de que es algo frío." },
+                { q: "¿Qué es el 'texto circundante'?", o: ["Lo que rodea a la palabra", "Título", "Índice", "Autor"], c: 0, e: "Entorno semántico inmediato.", h: "Son las palabras que están antes y después." },
+                { q: "Deducir por contexto es una habilidad de:", o: ["Adivinación", "Análisis lógico", "Memoria", "Azar"], c: 1, e: "Observación y conexión.", h: "Usas la lógica para conectar pistas." },
+                { q: "El subíndice 1.1.10 es el último paso para:", o: ["Ser escritor", "Comer", "Dominar la comprensión lectora", "Dormir"], c: 2, e: "Cierra la estrategia.", h: "Completa las habilidades de comprensión." },
+                { q: "Si una palabra tiene varios significados, el contexto:", o: ["No importa", "Nos dice cuál es el correcto", "Miente", "Borra"], c: 1, e: "Selecciona el sentido pertinente.", h: "El contexto elimina la ambigüedad." },
+                { q: "Un beneficio de esta técnica es:", o: ["Dormir", "Aumentar el vocabulario pasivo", "Escribir", "Dibujar"], c: 1, e: "Incorporación natural de léxico.", h: "Aprendes nuevas palabras sin diccionario." },
+                { q: "El Video 2 completa los subíndices del:", o: ["6 al 10", "1 al 5", "5 al 10", "1 al 10"], c: 0, e: "Segunda mitad de los temas.", h: "Son los últimos 5 subíndices." }
+            ]
+        }
+    ];
+
+    // --- STATE MANAGEMENT ---
+    let state = {
+        moduloActual: 0,
+        preguntaActual: 0,
+        respuestas: Array(5).fill().map(() => Array(10).fill(null)),
+        tiempos: Array(5).fill(0),
+        completado: Array(5).fill(false),
+        isPaused: false,
+        isDark: false,
+        showHint: false,
+        started: false
+    };
+
+    let ticker = null;
+
+    // --- FUNCIONES CORE ---
+
+    function init() {
+        lucide.createIcons();
+        load();
+        renderTabs();
+        renderCurrent();
+        startTicker();
+    }
+
+    function load() {
+        const saved = localStorage.getItem('ecoems_2026_verbal');
+        if (saved) {
+            state = { ...state, ...JSON.parse(saved) };
+            if (state.isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            updateThemeIcon();
+        }
+    }
+
+    function save() {
+        localStorage.setItem('ecoems_2026_verbal', JSON.stringify(state));
+    }
+
+    function toggleTheme() {
+        state.isDark = !state.isDark;
+        document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
+        updateThemeIcon();
+        save();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+            icon.setAttribute('data-lucide', state.isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+    }
+
+    function startTicker() {
+        if (ticker) clearInterval(ticker);
+        ticker = setInterval(() => {
+            if (!state.isPaused && state.started && isUnlocked(state.moduloActual) && !state.completado[state.moduloActual]) {
+                state.tiempos[state.moduloActual]++;
+                updateTimerDisplay();
+                if (state.tiempos[state.moduloActual] % 5 === 0) save();
             }
-        ];
+        }, 1000);
+    }
 
-        // --- Estado de la aplicación ---
-        let state = {
-            modulo: 0,
-            pregunta: 0,
-            respuestas: Array(5).fill().map(() => Array(10).fill(null)),
-            aprobado: Array(5).fill(false)
-        };
+    function updateTimerDisplay() {
+        const t = state.tiempos[state.moduloActual];
+        const m = Math.floor(t / 60);
+        const s = t % 60;
+        const display = document.getElementById('time-string');
+        if (display) {
+            display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+    }
 
-        // --- Funciones principales ---
-        function init() {
-            const saved = localStorage.getItem('ecoems_video2');
-            if (saved) {
-                try {
-                    state = JSON.parse(saved);
-                } catch (e) {
-                    console.error('Error cargando estado');
-                }
-            }
-            renderNav();
-            renderContent();
+    function togglePause() {
+        state.isPaused = !state.isPaused;
+        const btn = document.getElementById('timer-ctrl');
+        if (btn) {
+            btn.innerHTML = `<i data-lucide="${state.isPaused ? 'play' : 'pause'}" size="16"></i>`;
+            lucide.createIcons();
+        }
+    }
+
+    function isUnlocked(idx) {
+        if (idx === 0) return true;
+        return state.completado[idx - 1];
+    }
+
+    function renderTabs() {
+        const nav = document.getElementById('subindex-nav');
+        if (!nav) return;
+        nav.innerHTML = SUBINDICES.map((name, i) => {
+            const unlocked = isUnlocked(i);
+            let cls = `tab ${i === state.moduloActual ? 'active' : ''} ${state.completado[i] ? 'completed' : ''}`;
+            if (!unlocked) cls += ' locked';
+            const icon = unlocked ? (state.completado[i] ? 'check-circle' : 'circle') : 'lock';
+            return `<button class="${cls}" onclick="changeModule(${i})"><i data-lucide="${icon}" size="14"></i> ${i + 1}. ${name}</button>`;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function changeModule(i) {
+        if (!isUnlocked(i)) return;
+        state.moduloActual = i;
+        state.preguntaActual = 0;
+        state.showHint = false;
+        state.isPaused = false;
+        renderTabs();
+        renderCurrent();
+        updateTimerDisplay();
+        save();
+    }
+
+    function resetModule(auto = false) {
+        if (!auto && !confirm("¿Seguro que quieres reiniciar este módulo? Perderás tus respuestas y el tiempo de esta sección.")) return;
+        
+        state.respuestas[state.moduloActual] = Array(10).fill(null);
+        state.tiempos[state.moduloActual] = 0;
+        state.completado[state.moduloActual] = false;
+        state.preguntaActual = 0;
+        state.showHint = false;
+        state.isPaused = false;
+
+        for (let j = state.moduloActual + 1; j < 5; j++) {
+            state.completado[j] = false;
+            state.respuestas[j] = Array(10).fill(null);
+            state.tiempos[j] = 0;
         }
 
-        function save() {
-            localStorage.setItem('ecoems_video2', JSON.stringify(state));
-        }
+        renderTabs();
+        renderCurrent();
+        updateTimerDisplay();
+        save();
+    }
 
-        function renderNav() {
-            const nav = document.getElementById('nav-container');
-            nav.innerHTML = MODULOS.map((m, i) => {
-                let clase = 'nav-btn';
-                if (i === state.modulo) clase += ' active';
-                if (state.aprobado[i]) clase += ' completed';
-                if (i > 0 && !state.aprobado[i-1]) clase += ' locked';
-                
-                let icon = i > 0 && !state.aprobado[i-1] ? '🔒' : (state.aprobado[i] ? '✅' : '○');
-                
-                return `<button class="${clase}" onclick="cambiarModulo(${i})" ${i > 0 && !state.aprobado[i-1] ? 'disabled' : ''}>
-                    <span>${icon}</span> ${m.titulo}
-                </button>`;
-            }).join('');
-        }
+    function renderCurrent() {
+        const container = document.getElementById('current-card');
+        if (!container) return;
+        
+        container.classList.remove('fade-in');
+        void container.offsetWidth;
+        container.classList.add('fade-in');
 
-        function renderContent() {
-            const container = document.getElementById('content-container');
-            const barra = document.getElementById('progress-bar');
-            
-            const m = state.modulo;
-            const p = state.pregunta;
-            const pregunta = MODULOS[m].preguntas[p];
-            const respuesta = state.respuestas[m][p];
-            
-            barra.style.width = `${(p+1)*10}%`;
-            
-            // Generar opciones
-            let opciones = '';
-            pregunta.o.forEach((opt, i) => {
-                let clase = 'option';
-                if (respuesta !== null) {
-                    if (i === pregunta.c) clase += ' correct';
-                    else if (i === respuesta) clase += ' incorrect';
-                } else if (respuesta === i) {
-                    clase += ' selected';
-                }
+        const mIdx = state.moduloActual;
+
+        if (!state.started) {
+            renderInstructions(container);
+        } else if (state.completado.every(c => c)) {
+            renderFinalStats(container);
+        } else if (state.completado[mIdx]) {
+            renderModuleStats(container);
+        } else {
+            renderQuiz(container);
+        }
+        save();
+    }
+
+    function renderInstructions(container) {
+        container.innerHTML = `
+            <div class="stats-panel">
+                <i data-lucide="info" size="64" style="color:var(--primary); margin-bottom:1rem"></i>
+                <h1>Instrucciones del Simulador ECOEMS 2026 - Video 2</h1>
+                <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:2rem">Bienvenido al entrenamiento intensivo de CyberEdu MX.</p>
                 
-                opciones += `
-                    <button class="${clase}" onclick="responder(${i})" ${respuesta !== null ? 'disabled' : ''}>
-                        <span class="letter">${String.fromCharCode(65+i)}</span>
-                        <span>${opt}</span>
-                    </button>
-                `;
-            });
-            
-            // Controles
-            let controles = '';
-            if (respuesta !== null) {
-                if (p < 9) {
-                    controles = `<button class="btn btn-primary" onclick="siguiente()">Siguiente →</button>`;
-                } else {
-                    controles = `<button class="btn btn-primary" onclick="evaluar()">Ver resultados</button>`;
-                }
+                <div class="info-box" style="text-align:left; border-color:var(--warning); margin-bottom:1.5rem">
+                    <h3 style="margin-top:0">Reglas de aprobación:</h3>
+                    <ul style="padding-left:1.5rem">
+                        <li><strong>Exigencia:</strong> Debes obtener un puntaje mayor al <strong>80%</strong> (9 o 10 aciertos) para pasar de módulo.</li>
+                        <li><strong>Reinicio automático:</strong> Si obtienes 8 aciertos o menos al finalizar, el módulo se <strong>reiniciará automáticamente</strong> para que vuelvas a practicar.</li>
+                        <li><strong>Bloqueo secuencial:</strong> Los módulos se desbloquean solo cuando apruebas el anterior con excelencia.</li>
+                        <li><strong>Tiempo:</strong> Cada módulo tiene su propio cronómetro independiente.</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary" style="width:100%; height:50px; font-size:1.1rem" onclick="state.started=true; renderCurrent()">
+                    Entendido, ¡Comenzar ahora!
+                </button>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function renderQuiz(container) {
+        const qData = modulos[state.moduloActual].preguntas[state.preguntaActual];
+        const userAns = state.respuestas[state.moduloActual][state.preguntaActual];
+        const prog = ((state.preguntaActual + 1) / 10) * 100;
+
+        container.innerHTML = `
+            <div class="module-header">
+                <div class="module-title">Módulo ${state.moduloActual + 1}: ${SUBINDICES[state.moduloActual]}</div>
+                <button class="btn btn-outline" onclick="resetModule()" style="padding: 6px 12px; font-size: 0.8rem; height: auto;">
+                    <i data-lucide="rotate-ccw" size="14"></i> Reiniciar Módulo
+                </button>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+            <div class="question-text">${qData.q}</div>
+            <div class="options-grid">
+                ${qData.o.map((opt, i) => {
+                    let cls = 'option-btn';
+                    if (userAns !== null) {
+                        if (i === qData.c) cls += ' correct';
+                        else if (i === userAns) cls += ' incorrect';
+                    }
+                    return `<button class="${cls}" onclick="selectOption(${i})" ${userAns !== null ? 'disabled' : ''}>
+                        <div class="letter">${String.fromCharCode(65 + i)}</div><span>${opt}</span>
+                    </button>`;
+                }).join('')}
+            </div>
+            ${state.showHint && userAns === null ? `<div class="info-box hint-box fade-in"><strong>💡 Ayuda:</strong> ${qData.h}</div>` : ''}
+            ${userAns !== null ? `<div class="info-box explanation-box fade-in"><strong>📘 Estrategia:</strong> ${qData.e}</div>` : ''}
+            <div class="actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                <button class="btn btn-outline" onclick="prevQ()" ${state.preguntaActual === 0 ? 'disabled' : ''}><i data-lucide="chevron-left"></i> Anterior</button>
+                ${userAns === null ? `<button class="btn btn-outline" onclick="toggleHint()"><i data-lucide="lightbulb"></i> Ayuda</button>` : '<span></span>'}
+                <button class="btn btn-primary" onclick="nextQ()" ${userAns === null ? 'disabled' : ''}>
+                    ${state.preguntaActual === 9 ? 'Finalizar Módulo' : 'Siguiente'} <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function toggleHint() {
+        state.showHint = !state.showHint;
+        renderCurrent();
+    }
+
+    function selectOption(i) {
+        state.respuestas[state.moduloActual][state.preguntaActual] = i;
+        renderCurrent();
+    }
+
+    function nextQ() {
+        if (state.preguntaActual < 9) {
+            state.preguntaActual++;
+            state.showHint = false;
+            renderCurrent();
+        } else {
+            const moduleAns = state.respuestas[state.moduloActual];
+            const moduleQuestions = modulos[state.moduloActual].preguntas;
+            const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+            const perc = score * 10;
+
+            if (perc > 80) {
+                state.completado[state.moduloActual] = true;
+                renderTabs();
+                renderCurrent();
             } else {
-                controles = `<span class="subtitle">Selecciona una respuesta</span>`;
+                alert(`❌ PUNTUACIÓN INSUFICIENTE: ${score}/10 (${perc}%).\n\nRecuerda que para pasar de módulo necesitas más del 80% de aciertos. El módulo se reiniciará automáticamente.`);
+                resetModule(true);
             }
-            
-            container.innerHTML = `
-                <h2>${MODULOS[m].titulo}</h2>
-                <div class="subtitle">Pregunta ${p+1} de 10</div>
-                <div class="question-text">${pregunta.q}</div>
-                ${opciones}
-                <div class="controls">
-                    <button class="btn btn-outline" onclick="anterior()" ${p === 0 ? 'disabled' : ''}>← Anterior</button>
-                    ${controles}
-                </div>
-            `;
         }
+    }
 
-        function renderResultados() {
-            const container = document.getElementById('content-container');
-            const m = state.modulo;
-            const respuestas = state.respuestas[m];
-            const preguntas = MODULOS[m].preguntas;
-            
-            let aciertos = 0;
-            for (let i = 0; i < 10; i++) {
-                if (respuestas[i] === preguntas[i].c) aciertos++;
-            }
-            
-            const aprobado = aciertos >= 9;
-            
-            if (aprobado) {
-                state.aprobado[m] = true;
-                save();
-            }
-            
-            let revisionHtml = '';
-            for (let i = 0; i < 10; i++) {
-                const esCorrecta = respuestas[i] === preguntas[i].c;
-                revisionHtml += `
-                    <div class="review-item">
-                        <div class="review-question">${i+1}. ${preguntas[i].q}</div>
-                        <div class="review-answer ${esCorrecta ? 'review-correct' : 'review-incorrect'}">
-                            Tu respuesta: ${respuestas[i] !== null ? preguntas[i].o[respuestas[i]] : 'No respondiste'}
+    function prevQ() {
+        if (state.preguntaActual > 0) {
+            state.preguntaActual--;
+            state.showHint = false;
+            renderCurrent();
+        }
+    }
+
+    function renderModuleStats(container) {
+        const moduleAns = state.respuestas[state.moduloActual];
+        const moduleQuestions = modulos[state.moduloActual].preguntas;
+        const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+        const time = state.tiempos[state.moduloActual];
+        const perc = score * 10;
+
+        container.innerHTML = `
+            <div class="stats-panel">
+                <h2>✅ ¡Módulo Aprobado!</h2>
+                <p>Has terminado el módulo: <strong>${SUBINDICES[state.moduloActual]}</strong></p>
+                <div class="stat-circle high"><div>${score}/10</div><small>${perc}%</small></div>
+                <p>Tiempo empleado: <strong>${Math.floor(time / 60)}m ${time % 60}s</strong></p>
+                
+                <div class="review-list">
+                    ${moduleQuestions.map((q, i) => `
+                        <div class="review-item" onclick="toggleRev(${i})">
+                            <span style="font-weight:600">Pregunta ${i + 1}</span>
+                            <span>${moduleAns[i] === q.c ? '<b style="color:var(--secondary)">Correcta ✅</b>' : '<b style="color:var(--danger)">Incorrecta ❌</b>'} <i data-lucide="chevron-down" size="14"></i></span>
                         </div>
-                        ${!esCorrecta ? `<div class="review-answer review-correct">Correcta: ${preguntas[i].o[preguntas[i].c]}</div>` : ''}
-                        <div class="review-explanation">${preguntas[i].e}</div>
-                    </div>
-                `;
-            }
-            
-            container.innerHTML = `
-                <div class="result-box">
-                    <h2>${aprobado ? '✅ ¡Módulo completado!' : '❌ Inténtalo de nuevo'}</h2>
-                    <div class="score-circle">
-                        <span>${aciertos}/10</span>
-                        <small>${aciertos*10}%</small>
-                    </div>
-                    <p style="margin-bottom: 20px; color: #6b7280;">
-                        ${aprobado ? '¡Excelente trabajo!' : 'Necesitas 9/10 aciertos para avanzar'}
-                    </p>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
-                        <button class="btn btn-outline" onclick="reintentar()">🔄 Reintentar</button>
-                        ${aprobado && m < 4 ? '<button class="btn btn-primary" onclick="siguienteModulo()">Siguiente módulo →</button>' : ''}
-                        ${aprobado && m === 4 ? '<button class="btn btn-primary" onclick="finalizar()">🏆 Finalizar</button>' : ''}
-                    </div>
-                    <h3 style="text-align: left; margin-bottom: 15px;">Revisión detallada:</h3>
-                    ${revisionHtml}
+                        <div id="rev-${i}" class="info-box explanation-box" style="display:none; text-align:left; margin:5px 10px 15px 10px;">
+                            <strong>Respuesta Correcta:</strong> ${q.o[q.c]}<br>
+                            <strong>Estrategia ECOEMS 2026:</strong> ${q.e}
+                        </div>
+                    `).join('')}
                 </div>
-            `;
-            
-            renderNav();
+
+                <div class="info-box" style="text-align:left; border-color:var(--secondary)">
+                    <strong>🎯 Recomendación:</strong> Dominas este tema. Estás listo para avanzar.
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 2rem;">
+                    <button class="btn btn-outline" onclick="resetModule()"><i data-lucide="rotate-ccw"></i> Reintentar módulo</button>
+                    ${state.moduloActual < 4 ? 
+                        `<button class="btn btn-primary" onclick="changeModule(${state.moduloActual + 1})">Siguiente Módulo <i data-lucide="chevron-right"></i></button>` : 
+                        `<button class="btn btn-primary" onclick="renderCurrent()">Ver Reporte Global <i data-lucide="award"></i></button>`
+                    }
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function toggleRev(i) {
+        const el = document.getElementById(`rev-${i}`);
+        if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function renderFinalStats(container) {
+        const scores = state.respuestas.map((ans, si) => ans.filter((a, qi) => a === modulos[si].preguntas[qi].c).length);
+        const totalScore = scores.reduce((a, b) => a + b, 0);
+        const totalTime = state.tiempos.reduce((a, b) => a + b, 0);
+
+        if (totalScore >= 45) triggerConfetti();
+
+        container.innerHTML = `
+            <div class="stats-panel">
+                <h1>🏆 Reporte Global ECOEMS 2026 - Video 2</h1>
+                <div class="stat-circle high" style="width:140px; height:140px; font-size:2rem">
+                    ${totalScore}/50<small>${totalScore * 2}%</small>
+                </div>
+                <p>Tiempo total acumulado: <strong>${Math.floor(totalTime / 60)} min ${totalTime % 60} seg</strong></p>
+                
+                <table>
+                    <thead><tr><th style="text-align:left">Módulo</th><th>Aciertos</th><th>Tiempo</th><th>%</th></tr></thead>
+                    <tbody>
+                        ${SUBINDICES.map((n, i) => `
+                            <tr>
+                                <td style="text-align:left">${n}</td>
+                                <td>${scores[i]}/10</td>
+                                <td>${Math.floor(state.tiempos[i] / 60)}:${(state.tiempos[i] % 60).toString().padStart(2, '0')}</td>
+                                <td>${scores[i] * 10}%</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 2rem; display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-danger-outline" onclick="clearAll()"><i data-lucide="refresh-cw"></i> Reiniciar TODO el Quiz</button>
+                    <button class="btn btn-primary" onclick="window.print()"><i data-lucide="printer"></i> Imprimir Resultados</button>
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function clearAll() {
+        if (confirm("¿Seguro que quieres borrar todo el progreso?")) {
+            localStorage.removeItem('ecoems_2026_verbal');
+            location.reload();
         }
+    }
 
-        // --- Acciones ---
-        window.responder = (i) => {
-            state.respuestas[state.modulo][state.pregunta] = i;
-            save();
-            renderContent();
-        };
+    function triggerConfetti() {
+        const canvas = document.getElementById('confetti');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = Array(150).fill().map(() => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            c: `hsl(${Math.random() * 360}, 70%, 50%)`,
+            v: Math.random() * 3 + 2
+        }));
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath(); ctx.fillStyle = p.c; ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
+                p.y += p.v; if (p.y > canvas.height) p.y = -20;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
 
-        window.siguiente = () => {
-            if (state.pregunta < 9) {
-                state.pregunta++;
-                save();
-                renderContent();
-            }
-        };
-
-        window.anterior = () => {
-            if (state.pregunta > 0) {
-                state.pregunta--;
-                save();
-                renderContent();
-            }
-        };
-
-        window.cambiarModulo = (i) => {
-            if (i > 0 && !state.aprobado[i-1]) return;
-            state.modulo = i;
-            state.pregunta = 0;
-            save();
-            renderNav();
-            renderContent();
-        };
-
-        window.evaluar = () => {
-            renderResultados();
-        };
-
-        window.reintentar = () => {
-            state.respuestas[state.modulo] = Array(10).fill(null);
-            state.aprobado[state.modulo] = false;
-            state.pregunta = 0;
-            save();
-            renderNav();
-            renderContent();
-        };
-
-        window.siguienteModulo = () => {
-            if (state.modulo < 4) {
-                state.modulo++;
-                state.pregunta = 0;
-                save();
-                renderNav();
-                renderContent();
-            }
-        };
-
-        window.finalizar = () => {
-            alert('🏆 ¡Felicidades! Has completado todos los módulos del Video 2');
-        };
-
-        window.resetAll = () => {
-            if (confirm('¿Borrar todo el progreso?')) {
-                localStorage.removeItem('ecoems_video2');
-                location.reload();
-            }
-        };
-
-        // Iniciar
-        init();
-    </script>
+    window.onload = init;
+    window.resetModule = resetModule;
+    window.togglePause = togglePause;
+    window.toggleTheme = toggleTheme;
+    window.changeModule = changeModule;
+    window.selectOption = selectOption;
+    window.nextQ = nextQ;
+    window.prevQ = prevQ;
+    window.toggleHint = toggleHint;
+    window.toggleRev = toggleRev;
+    window.clearAll = clearAll;
+</script>
 </body>
 </html>
