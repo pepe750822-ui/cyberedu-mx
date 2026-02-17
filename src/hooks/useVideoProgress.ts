@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { notebookLinks } from "@/data/notebooks";
+import { materiales } from "@/data/materialComplementario";
 
 const STORAGE_PREFIX = "video-";
 const TOTAL_VIDEOS = notebookLinks.length; // 90
@@ -46,5 +47,13 @@ export function useVideoProgress() {
     setProgress({});
   }, []);
 
-  return { progress, markAsViewed, isViewed, viewedCount, totalVideos: TOTAL_VIDEOS, resetProgress };
+  const isVideoCompleto = useCallback((videoId: string): boolean => {
+    const visto = isViewed(`video-${videoId}`) || isViewed(videoId);
+    const tieneQuiz = !!materiales[videoId]?.quiz;
+    const quizAprobado = localStorage.getItem(`quiz_aprobado_${videoId}`) === 'true';
+    if (!tieneQuiz) return visto;
+    return visto && quizAprobado;
+  }, [isViewed]);
+
+  return { progress, markAsViewed, isViewed, isVideoCompleto, viewedCount, totalVideos: TOTAL_VIDEOS, resetProgress };
 }

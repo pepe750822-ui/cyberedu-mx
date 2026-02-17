@@ -1,5 +1,6 @@
 import { PlayCircle, Clock, CheckCircle2 } from "lucide-react";
 import type { Video } from "@/data/areas";
+import { materiales } from "@/data/materialComplementario";
 
 interface VideoCardProps {
   video: Video;
@@ -10,6 +11,10 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, index, isActive, isViewed, onClick }: VideoCardProps) => {
+  const tieneQuiz = !!materiales[video.id]?.quiz;
+  const quizAprobado = typeof window !== 'undefined' && localStorage.getItem(`quiz_aprobado_${video.id}`) === 'true';
+  const completo = !tieneQuiz ? !!isViewed : (!!isViewed && quizAprobado);
+
   return (
     <button
       onClick={onClick}
@@ -19,7 +24,7 @@ const VideoCard = ({ video, index, isActive, isViewed, onClick }: VideoCardProps
           : "bg-card border-border hover:bg-muted/50 hover:border-primary/20"
       }`}
     >
-      {isViewed && (
+      {completo && (
         <CheckCircle2 className="absolute top-2 right-2 h-5 w-5 text-green-500" />
       )}
       <div className="flex items-start gap-3">
