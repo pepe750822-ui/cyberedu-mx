@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Headphones, Image, ClipboardList, CheckCircle2, XCircle, ChevronDown, ChevronUp, Play, Pause, Download, ZoomIn } from "lucide-react";
+import { FileText, Headphones, Image, ClipboardList, CheckCircle2, XCircle, ChevronDown, ChevronUp, Play, Pause, Download, ZoomIn, PenLine } from "lucide-react";
 import { materiales, type Pregunta } from "@/data/materialComplementario";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -163,11 +163,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasPodcast = !!material.podcast;
   const hasInfografia = !!material.infografia;
   const hasPdf = !!material.pdf;
-  const hasAny = hasCuestionario || hasPodcast || hasInfografia || hasPdf;
+  const hasQuiz = !!material.quiz;
+  const hasAny = hasCuestionario || hasPodcast || hasInfografia || hasPdf || hasQuiz;
 
   if (!hasAny) return null;
 
-  const defaultTab = hasCuestionario ? "quiz" : hasPodcast ? "podcast" : hasInfografia ? "infografia" : "pdf";
+  const defaultTab = hasCuestionario ? "cuestionario" : hasQuiz ? "quiz" : hasPodcast ? "podcast" : hasInfografia ? "infografia" : "pdf";
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
@@ -176,7 +177,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
         <Tabs defaultValue={defaultTab}>
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1">
             {hasCuestionario && (
-              <TabsTrigger value="quiz" className="gap-1.5 text-xs sm:text-sm">
+              <TabsTrigger value="cuestionario" className="gap-1.5 text-xs sm:text-sm">
                 <ClipboardList className="h-4 w-4" />
                 Cuestionario
               </TabsTrigger>
@@ -199,10 +200,16 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 PDF
               </TabsTrigger>
             )}
+            {hasQuiz && (
+              <TabsTrigger value="quiz" className="gap-1.5 text-xs sm:text-sm">
+                <PenLine className="h-4 w-4" />
+                📝 QUIZ
+              </TabsTrigger>
+            )}
           </TabsList>
 
           {hasCuestionario && (
-            <TabsContent value="quiz">
+            <TabsContent value="cuestionario">
               <Cuestionario preguntas={material.cuestionario!.preguntas} />
             </TabsContent>
           )}
@@ -219,6 +226,20 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           {hasPdf && (
             <TabsContent value="pdf">
               <PdfViewer url={material.pdf!.url} titulo={material.pdf!.titulo} />
+            </TabsContent>
+          )}
+          {hasQuiz && (
+            <TabsContent value="quiz">
+              <div className="border border-border rounded-lg overflow-hidden">
+                <iframe
+                  src={material.quiz!.url}
+                  width="100%"
+                  height="800"
+                  frameBorder="0"
+                  title="Quiz"
+                  className="bg-background"
+                />
+              </div>
             </TabsContent>
           )}
         </Tabs>
