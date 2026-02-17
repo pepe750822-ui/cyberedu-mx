@@ -25,7 +25,7 @@ const AreaDetail = () => {
       if (idx >= 0) setActiveVideoIndex(idx);
     }
   }, [searchParams, area]);
-  const { markAsViewed, isViewed, viewedCount, totalVideos, resetProgress } = useVideoProgress();
+  const { markAsViewed, isViewed, isVideoCompleto, viewedCount, totalVideos, resetProgress } = useVideoProgress();
 
   if (!area) {
     return (

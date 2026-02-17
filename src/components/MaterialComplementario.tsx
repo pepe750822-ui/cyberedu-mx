@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileText, Headphones, Image, ClipboardList, CheckCircle2, XCircle, ChevronDown, ChevronUp, Play, Pause, Download, ZoomIn, PenLine } from "lucide-react";
 import { materiales, type Pregunta } from "@/data/materialComplementario";
 import { Button } from "@/components/ui/button";
@@ -156,6 +156,16 @@ const PdfViewer = ({ url, titulo }: { url: string; titulo: string }) => (
 
 const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const material = materiales[videoId];
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === 'quiz-aprobado' && e.data?.videoId === videoId) {
+        localStorage.setItem(`quiz_aprobado_${videoId}`, 'true');
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [videoId]);
 
   if (!material) return null;
 
