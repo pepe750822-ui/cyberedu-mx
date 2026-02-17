@@ -106,6 +106,15 @@ export const materiales: Record<string, MaterialVideo> = {
     pdf: {
       url: "/material/video-01/material.pdf",
       titulo: "Guía de comprensión lectora"
+    },
+    quiz: {
+      url: "/quiz/video-01-quiz.html"
+    }
+  },
+  "hv-0": {
+    videoId: "hv-0",
+    quiz: {
+      url: "/quiz/video-01-quiz.html"
     }
   },
 };
