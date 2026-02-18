@@ -84,9 +84,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Dashboard de Progreso Personalizado */}
+      {/* Dashboard de Progreso Personalizado (Temporalmente desactivado para diagnóstico) */}
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16">
-        <ProgresoDashboard />
+        <div className="bg-card p-8 rounded-xl border border-border shadow-lg text-center">
+          <p className="text-muted-foreground">Sistema de progreso en mantenimiento...</p>
+        </div>
+        {/* <ProgresoDashboard /> */}
       </section>
 
       {/* Areas Section */}
