@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habilidad Matemática - ECOEMS 2026 | Sucesiones Numéricas</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #06b6d4; /* Cyan para Sucesiones */
+            --primary-hover: #0891b2;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --hint-bg: #f1f5f9;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #06b6d4;
+            --border: #334155;
+            --hint-bg: #2d3748;
+            --glass: rgba(30, 41, 59, 0.8);
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.2s, color 0.2s; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .navbar {
+            width: 100%; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+        .nav-tools { display: flex; align-items: center; gap: 12px; }
+
+        .timer-container {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg); border: 1px solid var(--border);
+            padding: 4px 10px; border-radius: 12px;
+        }
+
+        .timer-box { font-variant-numeric: tabular-nums; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+
+        .main-container { max-width: 900px; width: 95%; margin: 1.5rem 0; flex-grow: 1; }
+
+        .subindex-nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .subindex-nav::-webkit-scrollbar { display: none; }
+
+        .tab {
+            padding: 8px 16px; background: var(--card); border: 1px solid var(--border);
+            border-radius: 10px; cursor: pointer; white-space: nowrap; font-weight: 500;
+            color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 6px;
+        }
+
+        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab.completed { border-color: var(--secondary); color: var(--secondary); }
+        .tab.locked { opacity: 0.5; cursor: not-allowed; background: #e5e7eb; }
+
+        .quiz-card {
+            background: var(--card); border-radius: 20px; padding: 2.5rem;
+            box-shadow: var(--shadow); border: 1px solid var(--border); min-height: 550px;
+            position: relative;
+        }
+
+        .module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
+        .module-title { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+
+        .progress-bar-wrap { height: 6px; background: var(--bg); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.4s; }
+
+        .question-text { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4; }
+        .sequence-display { 
+            background: var(--bg); padding: 15px 20px; border-radius: 12px; 
+            font-family: 'Courier New', monospace; font-size: 1.8rem; 
+            text-align: center; color: var(--primary); margin-bottom: 25px; 
+            border: 2px dashed var(--border); letter-spacing: 2px;
+        }
+
+        .options-grid { display: grid; gap: 12px; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+
+        .option-btn {
+            background: var(--bg); border: 2px solid var(--border); padding: 1rem;
+            border-radius: 12px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .option-btn.correct { border-color: var(--secondary); background: rgba(16, 185, 129, 0.1); color: var(--secondary); }
+        .option-btn.incorrect { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        .letter { width: 28px; height: 28px; background: var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .correct .letter { background: var(--secondary); color: white; }
+        .incorrect .letter { background: var(--danger); color: white; }
+
+        .btn { padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; justify-content: center; transition: transform 0.2s; }
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: none; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-danger-outline { background: none; border: 1px solid var(--danger); color: var(--danger); }
+        .btn-ghost { background: none; color: var(--text-muted); border: none; }
+
+        .info-box { margin-top: 1rem; padding: 1.25rem; border-radius: 12px; font-size: 0.95rem; border-left: 4px solid var(--primary); line-height: 1.5; }
+        .hint-box { background: var(--hint-bg); border-color: var(--warning); font-style: italic; color: var(--text-main); }
+        .explanation-box { background: rgba(6, 182, 212, 0.05); }
+
+        .stats-panel { text-align: center; animation: fadeIn 0.5s; }
+        .stat-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; border: 8px solid var(--border); }
+        .stat-circle.high { border-color: var(--secondary); color: var(--secondary); }
+        .stat-circle.low { border-color: var(--danger); color: var(--danger); }
+
+        .review-list { text-align: left; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .review-item { padding: 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--card); }
+        .review-item:last-child { border-bottom: none; }
+        .review-item:hover { background: var(--bg); }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.95rem; }
+        th, td { padding: 14px; border-bottom: 1px solid var(--border); text-align: center; }
+        th { background: var(--bg); font-weight: 700; color: var(--text-muted); }
+
+        #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .footer {
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        
+        .footer strong {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 600px) {
+            .quiz-card { padding: 1.25rem; min-height: 650px; }
+            .navbar { padding: 1rem; }
+            .module-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<nav class="navbar">
+    <div class="logo"><i data-lucide="award"></i> ECOEMS 2026 | Sucesiones Numéricas</div>
+    <div class="nav-tools">
+        <div class="timer-container" title="Tiempo del módulo actual">
+            <div class="timer-box"><i data-lucide="clock" size="16"></i> <span id="time-string">00:00</span></div>
+            <button class="btn-ghost" id="timer-ctrl" onclick="togglePause()"><i data-lucide="pause" size="16"></i></button>
+        </div>
+        <button class="btn-outline" onclick="toggleTheme()" title="Cambiar Tema"><i data-lucide="moon" id="theme-icon"></i></button>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="subindex-nav" id="subindex-nav"></div>
+    <div id="quiz-app">
+        <div class="quiz-card fade-in" id="current-card"></div>
+    </div>
+</div>
+
+<div class="footer">
+    Desarrollado por <strong>CyberEdu MX</strong> © 2026 - Todos los derechos reservados
+</div>
+
+<script>
+    // --- CONSTANTES ---
+    const SUBINDICES = ["Fundamentos", "Patrones Complejos", "Nivel Examen"];
+
+    // --- DATABASE PARA SUCESIONES NUMÉRICAS ---
+    const modulos = [
+        {
+            id: 0,
+            titulo: "Fundamentos",
+            preguntas: [
+                { q: "¿Cuál es el siguiente número en la sucesión?", s: "5, 10, 15, 20, ...", o: ["22", "25", "30", "24"], c: 1, e: "Es una sucesión aritmética simple con diferencia constante (+5).", h: "Suma 5 al último término." },
+                { q: "Encuentra el término que falta:", s: "2, 4, 8, 16, __, 64", o: ["24", "30", "32", "48"], c: 2, e: "Es una sucesión geométrica donde se multiplica por 2 (doble).", h: "Multiplica el anterior por 2." },
+                { q: "¿Qué número sigue en la serie descendente?", s: "50, 45, 40, 35, ...", o: ["30", "25", "32", "33"], c: 0, e: "Patrón de resta constante (-5).", h: "Resta 5." },
+                { q: "Identifica el patrón:", s: "1, 4, 9, 16, 25, ...", o: ["30", "36", "49", "35"], c: 1, e: "Son los cuadrados de los números naturales: 1², 2², 3², 4², 5², 6².", h: "¿Cuál es el cuadrado de 6?" },
+                { q: "Completa la sucesión especial de Fibonacci:", s: "1, 1, 2, 3, 5, 8, ...", o: ["11", "13", "10", "12"], c: 1, e: "Cada término es la suma de los dos anteriores (5 + 8 = 13).", h: "Suma los dos últimos números." },
+                { q: "Sucesión fraccionaria:", s: "1/2, 1/4, 1/8, ...", o: ["1/10", "1/12", "1/16", "1/6"], c: 2, e: "El denominador se duplica en cada paso (x2).", h: "Observa solo los números de abajo." },
+                { q: "¿Qué fórmula genera los números pares?", s: "2, 4, 6, 8...", o: ["n + 2", "2n", "n²", "2n + 1"], c: 1, e: "2n genera pares (2x1, 2x2...); 2n+1 genera impares.", h: "Multiplicar por 2." },
+                { q: "Encuentra el error en la sucesión:", s: "3, 6, 9, 13, 15", o: ["3", "6", "13", "15"], c: 2, e: "La regla es +3. El 13 rompe el patrón (debería ser 12).", h: "Cuenta de 3 en 3." },
+                { q: "¿Qué número sigue?", s: "100, 50, 25, ...", o: ["10", "12.5", "15", "5"], c: 1, e: "Cada término es la mitad del anterior (dividir entre 2).", h: "La mitad de 25." },
+                { q: "Sucesión de números primos:", s: "2, 3, 5, 7, 11, ...", o: ["13", "15", "12", "14"], c: 0, e: "Busca el siguiente número que solo sea divisible por sí mismo y 1.", h: "Siguiente primo." }
+            ]
+        },
+        {
+            id: 1,
+            titulo: "Patrones Complejos",
+            preguntas: [
+                { q: "Sucesión combinada (dos en una):", s: "2, 20, 4, 18, 6, 16, __", o: ["14", "8", "12", "10"], c: 1, e: "Serie 1 (pares crecientes): 2, 4, 6, -> 8. Serie 2 (descendente): 20, 18, 16.", h: "Fíjate en las posiciones impares (1º, 3º, 5º...)." },
+                { q: "Encuentra el valor de X:", s: "3, 6, 9, 18, 21, 42, X", o: ["45", "84", "44", "63"], c: 0, e: "El patrón es alterno: x2, +3, x2, +3, x2... Sigue +3 (42+3).", h: "Operaciones alternas: multiplica, suma..." },
+                { q: "¿Qué letra sigue en la sucesión lógica?", s: "A, C, E, G, ...", o: ["H", "I", "J", "F"], c: 1, e: "Se salta una letra del abecedario (B, D, F, H...). Sigue la I.", h: "Salta una letra." },
+                { q: "Sucesión de 'un paso adelante, dos atrás':", s: "10, 11, 9, 10, 8, ...", o: ["7", "9", "6", "11"], c: 1, e: "Patrón: +1, -2, +1, -2... (8 + 1 = 9).", h: "Suma 1, resta 2." },
+                { q: "Determina el número faltante:", s: "1, 2, 6, 24, __, 720", o: ["100", "120", "60", "48"], c: 1, e: "Patrón factorial: x2, x3, x4, x5... (24 x 5 = 120).", h: "Multiplica por números consecutivos (x2, x3, x4...)." },
+                { q: "Sucesión espacial (imagina un reloj):", s: "12, 3, 6, 9, ...", o: ["10", "12", "1", "11"], c: 1, e: "Giro de 90 grados en sentido horario. Vuelve a las 12.", h: "Cuartos de hora." },
+                { q: "Serie alterna:", s: "5, 40, 10, 30, 15, 20, __", o: ["10", "20", "25", "5"], c: 1, e: "Serie A: 5, 10, 15 -> 20. Serie B: 40, 30, 20.", h: "Saltando uno." },
+                { q: "Patrón de potencias:", s: "2, 4, 16, 256, ...", o: ["512", "65536", "1024", "4096"], c: 1, e: "Cada número se eleva al cuadrado o es el cuadrado del anterior? No, es n^2 del anterior (16^2 = 256) o secuencia 2^1, 2^2, 2^4, 2^8...", h: "El número anterior se multiplica por sí mismo." },
+                { q: "¿Cuál rompe la regla?", s: "4, 8, 12, 15, 20", o: ["4", "12", "15", "20"], c: 2, e: "Múltiplos de 4. 15 no es múltiplo de 4.", h: "Tabla del 4." },
+                { q: "Sucesión decimal:", s: "0.5, 1.5, 3, 5, 7.5, ...", o: ["10", "10.5", "11", "9.5"], c: 1, e: "Se suma incrementalmente: +1, +1.5, +2, +2.5, +3 (7.5 + 3 = 10.5).", h: "Lo que sumas va creciendo de 0.5 en 0.5." }
+            ]
+        },
+        {
+            id: 2,
+            titulo: "Nivel Examen",
+            preguntas: [
+                { q: "Halla el término 20 de la sucesión: 3n - 2", s: "Fórmula: 3n - 2", o: ["58", "60", "56", "38"], c: 0, e: "Sustituye n=20 en la fórmula: 3(20) - 2 = 60 - 2 = 58.", h: "Sustituye 20 en la n." },
+                { q: "¿Qué número completa el cuadro mágico?", s: "Fila 1: 2, 4, 6 | Fila 2: 3, 6, 9 | Fila 3: 4, 8, __", o: ["10", "12", "16", "14"], c: 1, e: "Cada fila es la tabla de multiplicar (x2, x3). Fila 3 es tabla del 4: 4, 8, 12.", h: "Tabla del 4." },
+                { q: "Sucesión de letras inversa:", s: "Z, X, V, T, ...", o: ["S", "R", "Q", "P"], c: 1, e: "Retrocede saltando una letra (Y, W, U...). Sigue la R.", h: "Hacia atrás en el abecedario." },
+                { q: "Patrón numérico complejo:", s: "1, 3, 7, 15, 31, ...", o: ["63", "60", "33", "45"], c: 0, e: "Regla: x2 + 1. (31 x 2 + 1 = 63). O potencias de 2 menos 1.", h: "Doble más uno." },
+                { q: "Encuentra x e y:", s: "1, 2, 4, 5, 7, 8, x, y", o: ["9, 10", "10, 11", "11, 12", "10, 13"], c: 1, e: "Patrón: +1, +2, +1, +2... (8+2=10, 10+1=11).", h: "Suma 1, luego suma 2." },
+                { q: "Sucesión visual (lados):", s: "Triángulo, Cuadrado, Pentágono, ...", o: ["Círculo", "Hexágono", "Rombo", "Trapecio"], c: 1, e: "Aumenta el número de lados: 3, 4, 5 -> 6 (Hexágono).", h: "Cuenta los lados." },
+                { q: "Si an = n² + 1, halla el 5º término.", s: "n=1,2,3,4,5", o: ["25", "26", "24", "11"], c: 1, e: "Sustituye n=5: 5² + 1 = 25 + 1 = 26.", h: "5 al cuadrado más 1." },
+                { q: "Sucesión de fracciones decreciente:", s: "1, 2/3, 4/9, ...", o: ["8/27", "6/18", "3/9", "5/12"], c: 0, e: "Se multiplica por 2/3 cada vez. (4/9 * 2/3 = 8/27).", h: "Multiplica arriba por 2, abajo por 3." },
+                { q: "Identifica la relación:", s: "3 : 9 :: 4 : 16 :: 5 : __", o: ["20", "25", "10", "30"], c: 1, e: "Relación de cuadrado (n -> n²). 5 al cuadrado es 25.", h: "El número por sí mismo." },
+                { q: "Desafío Final:", s: "0, 1, 10, 11, 100, ...", o: ["101", "111", "110", "1000"], c: 0, e: "Son números binarios contando en orden (0, 1, 2, 3, 4...). Sigue 101 (5).", h: "Sistema binario (ceros y unos)." }
+            ]
+        }
+    ];
+
+    // --- STATE MANAGEMENT ---
+    let state = {
+        moduloActual: 0,
+        preguntaActual: 0,
+        respuestas: Array(3).fill().map(() => Array(10).fill(null)),
+        tiempos: Array(3).fill(0),
+        completado: Array(3).fill(false),
+        isPaused: false,
+        isDark: false,
+        showHint: false,
+        started: false
+    };
+
+    let ticker = null;
+
+    // --- FUNCIONES CORE ---
+
+    function init() {
+        lucide.createIcons();
+        load();
+        renderTabs();
+        renderCurrent();
+        startTicker();
+    }
+
+    function load() {
+        const saved = localStorage.getItem('ecoems_2026_sucesiones');
+        if (saved) {
+            state = { ...state, ...JSON.parse(saved) };
+            if (state.isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            updateThemeIcon();
+        }
+    }
+
+    function save() {
+        localStorage.setItem('ecoems_2026_sucesiones', JSON.stringify(state));
+    }
+
+    function toggleTheme() {
+        state.isDark = !state.isDark;
+        document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
+        updateThemeIcon();
+        save();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+            icon.setAttribute('data-lucide', state.isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+    }
+
+    function startTicker() {
+        if (ticker) clearInterval(ticker);
+        ticker = setInterval(() => {
+            if (!state.isPaused && state.started && isUnlocked(state.moduloActual) && !state.completado[state.moduloActual]) {
+                state.tiempos[state.moduloActual]++;
+                updateTimerDisplay();
+                if (state.tiempos[state.moduloActual] % 5 === 0) save();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const t = state.tiempos[state.moduloActual];
+        const m = Math.floor(t / 60);
+        const s = t % 60;
+        const display = document.getElementById('time-string');
+        if (display) {
+            display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+    }
+
+    function togglePause() {
+        state.isPaused = !state.isPaused;
+        const btn = document.getElementById('timer-ctrl');
+        if (btn) {
+            btn.innerHTML = `<i data-lucide="${state.isPaused ? 'play' : 'pause'}" size="16"></i>`;
+            lucide.createIcons();
+        }
+    }
+
+    function isUnlocked(idx) {
+        if (idx === 0) return true;
+        return state.completado[idx - 1];
+    }
+
+    function renderTabs() {
+        const nav = document.getElementById('subindex-nav');
+        if (!nav) return;
+        nav.innerHTML = SUBINDICES.map((name, i) => {
+            const unlocked = isUnlocked(i);
+            let cls = `tab ${i === state.moduloActual ? 'active' : ''} ${state.completado[i] ? 'completed' : ''}`;
+            if (!unlocked) cls += ' locked';
+            const icon = unlocked ? (state.completado[i] ? 'check-circle' : 'circle') : 'lock';
+            return `<button class="${cls}" onclick="changeModule(${i})"><i data-lucide="${icon}" size="14"></i> ${i + 1}. ${name}</button>`;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function changeModule(i) {
+        if (!isUnlocked(i)) return;
+        state.moduloActual = i;
+        state.preguntaActual = 0;
+        state.showHint = false;
+        state.isPaused = false;
+        renderTabs();
+        renderCurrent();
+        updateTimerDisplay();
+        save();
+    }
+
+    function resetModule(auto = false) {
+        if (!auto && !confirm("¿Seguro que quieres reiniciar este módulo? Perderás tus respuestas y el tiempo de esta sección.")) return;
+        
+        state.respuestas[state.moduloActual] = Array(10).fill(null);
+        state.tiempos[state.moduloActual] = 0;
+        state.completado[state.moduloActual] = false;
+        state.preguntaActual = 0;
+        state.showHint = false;
+        state.isPaused = false;
+
+        for (let j = state.moduloActual + 1; j < 3; j++) {
+            state.completado[j] = false;
+            state.respuestas[j] = Array(10).fill(null);
+            state.tiempos[j] = 0;
+        }
+
+        renderTabs();
+        renderCurrent();
+        updateTimerDisplay();
+        save();
+    }
+
+    function renderCurrent() {
+        const container = document.getElementById('current-card');
+        if (!container) return;
+        
+        container.classList.remove('fade-in');
+        void container.offsetWidth;
+        container.classList.add('fade-in');
+
+        const mIdx = state.moduloActual;
+
+        if (!state.started) {
+            renderInstructions(container);
+        } else if (state.completado.every(c => c)) {
+            renderFinalStats(container);
+        } else if (state.completado[mIdx]) {
+            renderModuleStats(container);
+        } else {
+            renderQuiz(container);
+        }
+        save();
+    }
+
+    function renderInstructions(container) {
+        container.innerHTML = `
+            <div class="stats-panel">
+                <i data-lucide="brain" size="64" style="color:var(--primary); margin-bottom:1rem"></i>
+                <h1>Entrenamiento de Sucesiones Numéricas</h1>
+                <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:2rem">Domina los patrones y secuencias lógicas</p>
+                
+                <div class="info-box" style="text-align:left; border-color:var(--warning); margin-bottom:1.5rem">
+                    <h3 style="margin-top:0">Reglas del entrenamiento:</h3>
+                    <ul style="padding-left:1.5rem">
+                        <li><strong>Requisito:</strong> Necesitas <strong>9/10 aciertos</strong> para avanzar al siguiente nivel.</li>
+                        <li><strong>Progresión:</strong> Los niveles se desbloquean secuencialmente (Fundamentos → Patrones Complejos → Nivel Examen).</li>
+                        <li><strong>Reinicio automático:</strong> Si obtienes 8 o menos, el módulo se reinicia para que sigas practicando.</li>
+                        <li><strong>Tiempo:</strong> Cada nivel tiene su propio cronómetro.</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary" style="width:100%; height:50px; font-size:1.1rem" onclick="state.started=true; renderCurrent()">
+                    Comenzar Entrenamiento
+                </button>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function renderQuiz(container) {
+        const qData = modulos[state.moduloActual].preguntas[state.preguntaActual];
+        const userAns = state.respuestas[state.moduloActual][state.preguntaActual];
+        const prog = ((state.preguntaActual + 1) / 10) * 100;
+
+        container.innerHTML = `
+            <div class="module-header">
+                <div class="module-title">${state.moduloActual + 1}. ${SUBINDICES[state.moduloActual]}</div>
+                <button class="btn btn-outline" onclick="resetModule()" style="padding: 6px 12px; font-size: 0.8rem; height: auto;">
+                    <i data-lucide="rotate-ccw" size="14"></i> Reiniciar
+                </button>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+            
+            ${qData.s ? `<div class="sequence-display">${qData.s}</div>` : ''}
+            
+            <div class="question-text">${qData.q}</div>
+            
+            <div class="options-grid">
+                ${qData.o.map((opt, i) => {
+                    let cls = 'option-btn';
+                    if (userAns !== null) {
+                        if (i === qData.c) cls += ' correct';
+                        else if (i === userAns) cls += ' incorrect';
+                    }
+                    return `<button class="${cls}" onclick="selectOption(${i})" ${userAns !== null ? 'disabled' : ''}>
+                        <div class="letter">${String.fromCharCode(65 + i)}</div><span>${opt}</span>
+                    </button>`;
+                }).join('')}
+            </div>
+            ${state.showHint && userAns === null ? `<div class="info-box hint-box fade-in"><strong>💡 Pista:</strong> ${qData.h}</div>` : ''}
+            ${userAns !== null ? `<div class="info-box explanation-box fade-in"><strong>📘 Análisis:</strong> ${qData.e}</div>` : ''}
+            <div class="actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                <button class="btn btn-outline" onclick="prevQ()" ${state.preguntaActual === 0 ? 'disabled' : ''}><i data-lucide="chevron-left"></i> Anterior</button>
+                ${userAns === null ? `<button class="btn btn-outline" onclick="toggleHint()"><i data-lucide="lightbulb"></i> Pista</button>` : '<span></span>'}
+                <button class="btn btn-primary" onclick="nextQ()" ${userAns === null ? 'disabled' : ''}>
+                    ${state.preguntaActual === 9 ? 'Finalizar Módulo' : 'Siguiente'} <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function toggleHint() {
+        state.showHint = !state.showHint;
+        renderCurrent();
+    }
+
+    function selectOption(i) {
+        state.respuestas[state.moduloActual][state.preguntaActual] = i;
+        renderCurrent();
+    }
+
+    function nextQ() {
+        if (state.preguntaActual < 9) {
+            state.preguntaActual++;
+            state.showHint = false;
+            renderCurrent();
+        } else {
+            const moduleAns = state.respuestas[state.moduloActual];
+            const moduleQuestions = modulos[state.moduloActual].preguntas;
+            const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+            const perc = score * 10;
+
+            if (perc > 80) {
+                state.completado[state.moduloActual] = true;
+                renderTabs();
+                renderCurrent();
+            } else {
+                alert(`❌ PRECISIÓN INSUFICIENTE: ${score}/10 (${perc}%).\n\nNecesitas mínimo 9 aciertos para avanzar. El módulo se reiniciará.`);
+                resetModule(true);
+            }
+        }
+    }
+
+    function prevQ() {
+        if (state.preguntaActual > 0) {
+            state.preguntaActual--;
+            state.showHint = false;
+            renderCurrent();
+        }
+    }
+
+    function renderModuleStats(container) {
+        const moduleAns = state.respuestas[state.moduloActual];
+        const moduleQuestions = modulos[state.moduloActual].preguntas;
+        const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+        const time = state.tiempos[state.moduloActual];
+        const perc = score * 10;
+
+        container.innerHTML = `
+            <div class="stats-panel">
+                <h2>✅ ¡Nivel Superado!</h2>
+                <p>Has completado: <strong>${SUBINDICES[state.moduloActual]}</strong></p>
+                <div class="stat-circle high"><div>${score}/10</div><small>${perc}%</small></div>
+                <p>Tiempo: <strong>${Math.floor(time / 60)}m ${time % 60}s</strong></p>
+                
+                <div class="review-list">
+                    ${moduleQuestions.map((q, i) => `
+                        <div class="review-item" onclick="toggleRev(${i})">
+                            <span style="font-weight:600">Pregunta ${i + 1}</span>
+                            <span>${moduleAns[i] === q.c ? '<b style="color:var(--secondary)">Correcta ✅</b>' : '<b style="color:var(--danger)">Incorrecta ❌</b>'} <i data-lucide="chevron-down" size="14"></i></span>
+                        </div>
+                        <div id="rev-${i}" class="info-box explanation-box" style="display:none; text-align:left; margin:5px 10px 15px 10px;">
+                            <strong>Respuesta Correcta:</strong> ${q.o[q.c]}<br>
+                            <strong>Análisis:</strong> ${q.e}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="info-box" style="text-align:left; border-color:var(--secondary)">
+                    <strong>🎯 Siguiente paso:</strong> Continúa al siguiente nivel de dificultad.
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 2rem;">
+                    <button class="btn btn-outline" onclick="resetModule()"><i data-lucide="rotate-ccw"></i> Reintentar</button>
+                    ${state.moduloActual < 2 ? 
+                        `<button class="btn btn-primary" onclick="changeModule(${state.moduloActual + 1})">Siguiente Nivel <i data-lucide="chevron-right"></i></button>` : 
+                        `<button class="btn btn-primary" onclick="renderCurrent()">Ver Reporte Global <i data-lucide="award"></i></button>`
+                    }
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function toggleRev(i) {
+        const el = document.getElementById(`rev-${i}`);
+        if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function renderFinalStats(container) {
+        const scores = state.respuestas.map((ans, si) => ans.filter((a, qi) => a === modulos[si].preguntas[qi].c).length);
+        const totalScore = scores.reduce((a, b) => a + b, 0);
+        const totalTime = state.tiempos.reduce((a, b) => a + b, 0);
+
+        if (totalScore >= 27) triggerConfetti();
+
+        container.innerHTML = `
+            <div class="stats-panel">
+                <h1>🏆 REPORTE FINAL - SUCESIONES</h1>
+                <div class="stat-circle high" style="width:140px; height:140px; font-size:2rem">
+                    ${totalScore}/30<small>${Math.round(totalScore * 100 / 30)}%</small>
+                </div>
+                <p>Tiempo total: <strong>${Math.floor(totalTime / 60)} min ${totalTime % 60} seg</strong></p>
+                
+                <table>
+                    <thead><tr><th style="text-align:left">Nivel</th><th>Aciertos</th><th>Tiempo</th><th>%</th></tr></thead>
+                    <tbody>
+                        ${SUBINDICES.map((n, i) => `
+                            <tr>
+                                <td style="text-align:left">${n}</td>
+                                <td>${scores[i]}/10</td>
+                                <td>${Math.floor(state.tiempos[i] / 60)}:${(state.tiempos[i] % 60).toString().padStart(2, '0')}</td>
+                                <td>${scores[i] * 10}%</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 2rem; display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-danger-outline" onclick="clearAll()"><i data-lucide="refresh-cw"></i> Reiniciar Entrenamiento</button>
+                    <button class="btn btn-primary" onclick="window.print()"><i data-lucide="printer"></i> Imprimir Resultados</button>
+                </div>
+
+                <div class="info-box" style="margin-top:2rem; border-color:var(--warning)">
+                    <strong>🎓 ¡Felicidades!</strong> Has completado el entrenamiento de Sucesiones Numéricas. 
+                    Ahora dominas los patrones y secuencias lógicas.
+                </div>
+            </div>
+        `;
+        lucide.createIcons();
+    }
+
+    function clearAll() {
+        if (confirm("¿Seguro que quieres borrar todo el progreso del entrenamiento?")) {
+            localStorage.removeItem('ecoems_2026_sucesiones');
+            location.reload();
+        }
+    }
+
+    function triggerConfetti() {
+        const canvas = document.getElementById('confetti');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = Array(200).fill().map(() => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            c: `hsl(${Math.random() * 360}, 80%, 60%)`,
+            v: Math.random() * 4 + 2
+        }));
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath(); ctx.fillStyle = p.c; ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
+                p.y += p.v; if (p.y > canvas.height) p.y = -20;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+
+    window.onload = init;
+    window.resetModule = resetModule;
+    window.togglePause = togglePause;
+    window.toggleTheme = toggleTheme;
+    window.changeModule = changeModule;
+    window.selectOption = selectOption;
+    window.nextQ = nextQ;
+    window.prevQ = prevQ;
+    window.toggleHint = toggleHint;
+    window.toggleRev = toggleRev;
+    window.clearAll = clearAll;
+</script>
+</body>
+</html>
