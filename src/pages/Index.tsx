@@ -5,6 +5,7 @@ import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
+import ProgresoDashboard from "@/components/ProgresoDashboard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -50,24 +51,24 @@ const Index = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden mb-12">
         <div className="absolute inset-0">
           <img src={heroImage} alt="Estudiantes preparándose" className="w-full h-full object-cover" />
           <div className="absolute inset-0 hero-gradient opacity-85" />
         </div>
-        <div className="relative container mx-auto px-4 py-20 md:py-28">
+        <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700">
               <GraduationCap className="h-4 w-4" />
               Examen de Educación Media Superior
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight text-balance">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
               Tu camino al éxito empieza aquí
             </h1>
-            <p className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed max-w-lg">
+            <p className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
               Prepárate con {totalVideos} videos organizados en {areas.length} áreas de conocimiento. Estudia a tu ritmo, desde cualquier lugar.
             </p>
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
               <div className="flex items-center gap-2 text-white/90">
                 <Video className="h-5 w-5" />
                 <span className="text-sm font-medium">{totalVideos} Videos</span>
@@ -85,43 +86,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Global Progress */}
-      <section className="container mx-auto px-4 -mt-8 relative z-10">
-        <Card className="border-border shadow-lg">
-          <CardContent className="p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
-              <div className="flex items-center gap-4 flex-1">
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <Goal className="h-8 w-8 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-foreground">Tu progreso general</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Has completado {viewedCount} de {total} materiales
-                  </p>
-                  <div className="flex items-center gap-3 mt-3">
-                    <Progress value={globalPercent} className="h-3 flex-1 bg-secondary [&>div]:bg-primary" />
-                    <span className="text-sm font-bold text-foreground min-w-[3ch]">{globalPercent}%</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-6 md:gap-8">
-                <div className="text-center">
-                  <p className="text-2xl font-extrabold text-foreground">{globalPercent}%</p>
-                  <p className="text-xs text-muted-foreground">📊 Completado</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-2xl font-extrabold text-foreground">{completedAreas}</p>
-                  <p className="text-xs text-muted-foreground">🏆 Áreas listas</p>
-                </div>
-                <Button variant="outline" size="sm" onClick={resetProgress}>
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  Reiniciar todo
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Dashboard de Progreso Personalizado */}
+      <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16">
+        <ProgresoDashboard />
       </section>
 
       {/* Areas Section */}
