@@ -31,7 +31,7 @@ const VideoCard = ({ video, index, isActive, isViewed, onClick }: VideoCardProps
         <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
           isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
         }`}>
-          {index + 1}
+          {index }
         </div>
         <div className="flex-1 min-w-0">
           <h4 className={`font-semibold text-sm mb-1 ${isActive ? "text-primary" : "text-foreground"}`}>
