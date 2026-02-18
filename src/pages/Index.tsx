@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown, Goal, Trophy, RotateCcw } from "lucide-react";
+import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown } from "lucide-react";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
@@ -7,8 +7,6 @@ import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
 import ProgresoDashboard from "@/components/ProgresoDashboard";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent } from "@/components/ui/card";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
