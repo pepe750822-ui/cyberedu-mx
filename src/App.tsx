@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,11 +12,77 @@ import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import AITutor from "./components/AITutor";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import PWAInstallBanner from "./components/PWAInstallBanner";
+import PWAStatusBar from "./components/PWAStatusBar";
+import { useNotifications } from "./hooks/useNotifications";
+import { useSync } from "./hooks/useSync";
+import { useOfflineCache } from "./hooks/useOfflineCache";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
   // Force a full-page navigation so the request reaches the server
   window.location.reload();
+  return null;
+};
+
+/**
+ * StreakAutoSync — invisible component that:
+ * 1. Updates streak count when user studies today
+ * 2. Triggers streak notifications
+ * 3. Syncs progress automatically
+ * 4. Caches viewed pages for offline
+ */
+const StreakAutoSync = () => {
+  const { showStreakNotification, permission } = useNotifications();
+  const { syncProgress, syncStreak } = useSync();
+  const { cacheCurrentPage } = useOfflineCache();
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const lastDate = localStorage.getItem("last_study_date");
+    const currentStreak = parseInt(localStorage.getItem("study_streak_count") || "0");
+
+    if (lastDate !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+      if (lastDate === yesterdayStr) {
+        // Continued streak!
+        const newStreak = currentStreak + 1;
+        localStorage.setItem("study_streak_count", String(newStreak));
+        localStorage.setItem("last_study_date", today);
+        // Congratulate on milestones
+        if (permission === "granted" && (newStreak % 5 === 0 || newStreak === 3)) {
+          showStreakNotification(newStreak, "congrats");
+        }
+        syncStreak();
+      } else if (lastDate && lastDate !== today) {
+        // Streak broken
+        if (permission === "granted" && currentStreak > 2) {
+          showStreakNotification(currentStreak, "lost");
+        }
+        localStorage.setItem("study_streak_count", "1");
+        localStorage.setItem("last_study_date", today);
+        syncStreak();
+      } else {
+        // First visit ever
+        localStorage.setItem("study_streak_count", "1");
+        localStorage.setItem("last_study_date", today);
+      }
+    }
+
+    // Sync progress 5s after app load
+    const syncTimeout = setTimeout(() => {
+      syncProgress();
+    }, 5000);
+
+    // Cache current page for offline
+    cacheCurrentPage();
+
+    return () => clearTimeout(syncTimeout);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return null;
 };
 
@@ -29,6 +96,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <AITutor />
+        <StreakAutoSync />
+        <PWAInstallBanner />
+        <PWAStatusBar />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />

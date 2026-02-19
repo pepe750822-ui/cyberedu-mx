@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Icon Gen</title>
+</head>
+
+<body>
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const maskableSizes = [192, 512];
+
+        function generateIcon(size, maskable = false) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            if (maskable) {
+                // Maskable: fill entire canvas with safe zone consideration
+                const grad = ctx.createLinearGradient(0, 0, size, size);
+                grad.addColorStop(0, '#1e1145');
+                grad.addColorStop(0.5, '#0a0e1a');
+                grad.addColorStop(1, '#0f172a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, size, size);
+            } else {
+                // Regular: rounded rect
+                const rad = size * 0.18;
+                ctx.beginPath();
+                ctx.moveTo(rad, 0);
+                ctx.lineTo(size - rad, 0);
+                ctx.quadraticCurveTo(size, 0, size, rad);
+                ctx.lineTo(size, size - rad);
+                ctx.quadraticCurveTo(size, size, size - rad, size);
+                ctx.lineTo(rad, size);
+                ctx.quadraticCurveTo(0, size, 0, size - rad);
+                ctx.lineTo(0, rad);
+                ctx.quadraticCurveTo(0, 0, rad, 0);
+                ctx.closePath();
+
+                const grad = ctx.createLinearGradient(0, 0, size, size);
+                grad.addColorStop(0, '#1e1145');
+                grad.addColorStop(0.5, '#0a0e1a');
+                grad.addColorStop(1, '#0f172a');
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
+
+            // Glow effect
+            const glowGrad = ctx.createRadialGradient(size * 0.3, size * 0.3, 0, size * 0.5, size * 0.5, size * 0.6);
+            glowGrad.addColorStop(0, 'rgba(124, 58, 237, 0.3)');
+            glowGrad.addColorStop(1, 'rgba(124, 58, 237, 0)');
+            ctx.fillStyle = glowGrad;
+            ctx.fillRect(0, 0, size, size);
+
+            // Graduation cap - main body
+            const cx = size / 2;
+            const cy = size * 0.42;
+            const capW = size * 0.52;
+            const capH = size * 0.16;
+
+            // Cap diamond shape
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - capH);
+            ctx.lineTo(cx + capW / 2, cy);
+            ctx.lineTo(cx, cy + capH * 0.5);
+            ctx.lineTo(cx - capW / 2, cy);
+            ctx.closePath();
+
+            const capGrad = ctx.createLinearGradient(cx - capW / 2, cy - capH, cx + capW / 2, cy + capH);
+            capGrad.addColorStop(0, '#a78bfa');
+            capGrad.addColorStop(1, '#7c3aed');
+            ctx.fillStyle = capGrad;
+            ctx.fill();
+
+            // Tassel line
+            ctx.beginPath();
+            ctx.moveTo(cx + capW * 0.3, cy);
+            ctx.lineTo(cx + capW * 0.3, cy + capH * 2.2);
+            ctx.strokeStyle = '#c4b5fd';
+            ctx.lineWidth = Math.max(2, size * 0.02);
+            ctx.stroke();
+
+            // Tassel ball
+            ctx.beginPath();
+            ctx.arc(cx + capW * 0.3, cy + capH * 2.4, size * 0.025, 0, Math.PI * 2);
+            ctx.fillStyle = '#c4b5fd';
+            ctx.fill();
+
+            // Base band under cap
+            ctx.beginPath();
+            ctx.moveTo(cx - capW * 0.3, cy + capH * 0.3);
+            ctx.lineTo(cx + capW * 0.3, cy + capH * 0.3);
+            ctx.lineTo(cx + capW * 0.25, cy + capH * 1.5);
+            ctx.quadraticCurveTo(cx, cy + capH * 2, cx - capW * 0.25, cy + capH * 1.5);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(124, 58, 237, 0.4)';
+            ctx.fill();
+
+            // "MX" text
+            const fontSize = Math.max(10, size * 0.1);
+            ctx.font = `900 ${fontSize}px system-ui, sans-serif`;
+            ctx.fillStyle = '#e2e8f0';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('MX', cx, size * 0.78);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        // Generate all icons
+        const container = document.createElement('div');
+        container.style.cssText = 'display:flex;flex-wrap:wrap;gap:20px;padding:20px;background:#111;';
+
+        sizes.forEach(s => {
+            const dataUrl = generateIcon(s, false);
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = `icon-${s}x${s}.png`;
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.style.cssText = `width:${Math.min(s, 128)}px;height:${Math.min(s, 128)}px;border:1px solid #333;cursor:pointer;`;
+            img.title = `Click to download icon-${s}x${s}.png`;
+            link.appendChild(img);
+            container.appendChild(link);
+        });
+
+        maskableSizes.forEach(s => {
+            const dataUrl = generateIcon(s, true);
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = `icon-maskable-${s}x${s}.png`;
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.style.cssText = `width:${Math.min(s, 128)}px;height:${Math.min(s, 128)}px;border:1px solid #555;cursor:pointer;`;
+            img.title = `Click to download icon-maskable-${s}x${s}.png (maskable)`;
+            link.appendChild(img);
+            container.appendChild(link);
+        });
+
+        document.body.appendChild(container);
+        document.body.style.background = '#000';
+        document.body.innerHTML += '<p style="color:#888;padding:20px;">Click each icon to download. Place all files in public/icons/</p>';
+    </script>
+</body>
+
+</html>

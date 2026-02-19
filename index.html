@@ -12,6 +12,17 @@
   <meta name="author" content="CyberEdu MX" />
   <link rel="canonical" href="https://cyberedumx.com/cyberedu-mx/" />
 
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CyberEdu MX" />
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="msapplication-TileColor" content="#0a0e1a" />
+  <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://cyberedumx.com/cyberedu-mx/" />
@@ -30,12 +41,44 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png">
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <script>
+    // Register Service Worker with update detection
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => {
+            console.log('⚡ SW registered:', reg.scope);
+
+            // Pre-cache offline page
+            caches.open('cyberedu-static-v3').then(cache => {
+              cache.add('/offline.html').catch(() => { });
+            });
+
+            // Check for updates every 30 min
+            setInterval(() => reg.update(), 30 * 60 * 1000);
+
+            // Notify user when new version available
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                    console.log('🔄 Nueva versión disponible');
+                  }
+                });
+              }
+            });
+          })
+          .catch((err) => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
 </body>
 
 </html>
