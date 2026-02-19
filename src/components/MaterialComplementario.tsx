@@ -89,6 +89,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
     const handleMessage = (e: MessageEvent) => {
       if (e.data?.type === 'quiz-aprobado' && e.data?.videoId === videoId) {
         localStorage.setItem(`quiz_aprobado_${videoId}`, 'true');
+        localStorage.setItem(`quiz_update_${videoId}`, Date.now().toString());
       }
     };
     window.addEventListener('message', handleMessage);
