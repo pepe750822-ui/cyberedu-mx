@@ -11,6 +11,7 @@ import MaterialComplementario from "@/components/MaterialComplementario";
 import RecommendedVideos from "@/components/RecommendedVideos";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import StudioModal from "@/components/StudioModal";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -58,9 +59,13 @@ const AreaDetail = () => {
     isViewed,
     viewedCount,
     totalVideos,
-    resetProgress,
+    getEstadisticas,
     obtenerProgresoVideo
   } = useVideoProgress();
+
+  const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
+
+  const stats = getEstadisticas();
 
   if (!activeVideo || !area) {
     return (
@@ -180,18 +185,22 @@ const AreaDetail = () => {
                   {studioMapping[area.id].map((sim, sIdx) => (
                     <Button
                       key={sIdx}
-                      asChild
                       variant="outline"
                       size="sm"
+                      onClick={() => setActiveSimulator({
+                        url: sim.path,
+                        title: sim.name,
+                        description: sim.description
+                      })}
                       className="w-full justify-start h-10 bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-400/50 group transition-all"
                     >
-                      <a href={sim.path} target="_blank" rel="noopener noreferrer" title={sim.description} className="flex items-center w-full">
+                      <div className="flex items-center w-full">
                         <div className="h-6 w-6 rounded bg-indigo-500/20 flex items-center justify-center mr-3 group-hover:bg-indigo-500 transition-colors">
                           <CheckCircle2 className="h-3 w-3 text-indigo-100" />
                         </div>
                         <span className="text-[10px] font-black uppercase text-indigo-100 truncate">{sim.name}</span>
                         <ChevronRight className="h-3 w-3 ml-auto text-indigo-500 group-hover:translate-x-1 transition-transform" />
-                      </a>
+                      </div>
                     </Button>
                   ))}
                 </div>
@@ -297,6 +306,15 @@ const AreaDetail = () => {
         </div>
       </div>
       <Footer />
+
+      {/* Studio Modal for simulators */}
+      <StudioModal
+        isOpen={activeSimulator !== null}
+        onClose={() => setActiveSimulator(null)}
+        url={activeSimulator?.url || ""}
+        title={activeSimulator?.title || ""}
+        description={activeSimulator?.description}
+      />
     </div>
   );
 };

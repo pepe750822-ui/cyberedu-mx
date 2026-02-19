@@ -23,6 +23,7 @@ import { materiales } from "@/data/materialComplementario";
 import { aiContent } from "@/data/aiContent";
 import { areas } from "@/data/areas";
 import { studioMapping } from "@/data/studioMap";
+import StudioModal from "@/components/StudioModal";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -200,6 +201,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const defaultTab = hasQuiz ? "quiz" : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf"));
 
   const [activeTab, setActiveTab] = useState(defaultTab);
+  const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
   // Reset tab to default whenever a new video is selected
   useEffect(() => {
@@ -305,13 +307,15 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                     {studioSims.map((sim, sIdx) => (
                       <Button
                         key={sIdx}
-                        asChild
+                        onClick={() => setActiveSimulator({
+                          url: sim.path,
+                          title: sim.name,
+                          description: sim.description
+                        })}
                         className="h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-widest rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-95"
                       >
-                        <a href={sim.path} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          {sim.name}
-                        </a>
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        {sim.name}
                       </Button>
                     ))}
                   </div>
@@ -320,6 +324,15 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
             </TabsContent>
           )}
         </Tabs>
+
+        {/* Studio Modal for simulators */}
+        <StudioModal
+          isOpen={activeSimulator !== null}
+          onClose={() => setActiveSimulator(null)}
+          url={activeSimulator?.url || ""}
+          title={activeSimulator?.title || ""}
+          description={activeSimulator?.description}
+        />
       </div>
     </div>
   );

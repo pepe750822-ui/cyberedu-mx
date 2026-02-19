@@ -29,6 +29,7 @@ import WeeklyChallenges from "@/components/WeeklyChallenges";
 import PlanEstudioDiario from "@/components/PlanEstudioDiario";
 import NewsECOEMS from "@/components/NewsECOEMS";
 import CountdownExam from "@/components/CountdownExam";
+import StudioModal from "@/components/StudioModal";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
@@ -47,6 +48,8 @@ const Index = () => {
   const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
   const location = useLocation();
+
+  const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
   useEffect(() => {
     if (location.hash === "#areas") {
@@ -175,7 +178,11 @@ const Index = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => window.open("/studio/nguia.html", "_blank")}
+                  onClick={() => setActiveSimulator({
+                    url: "/studio/nguia.html",
+                    title: "Consola Maestro Studio",
+                    description: "Centro de mando con 630+ reactivos y estadísticas"
+                  })}
                   className="h-14 rounded-2xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-400 group transition-all"
                 >
                   CONSOLA STUDIO (PRO)
@@ -189,7 +196,11 @@ const Index = () => {
                       key={idx}
                       variant="ghost"
                       size="sm"
-                      onClick={() => window.open(sim.path, "_blank")}
+                      onClick={() => setActiveSimulator({
+                        url: sim.path,
+                        title: sim.name,
+                        description: sim.description
+                      })}
                       className={cn(
                         "flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all",
                         sim.name.includes("Politécnico") ? "text-rose-400 hover:text-rose-300" : "text-indigo-300 hover:text-indigo-200"
@@ -240,16 +251,18 @@ const Index = () => {
                 </div>
                 <div className="space-y-2">
                   {studioMapping[area.id].map((sim, idx) => (
-                    <a
+                    <button
                       key={idx}
-                      href={sim.path}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 text-[11px] font-bold text-slate-300 hover:text-white transition-all border border-transparent hover:border-indigo-500/20"
+                      onClick={() => setActiveSimulator({
+                        url: sim.path,
+                        title: sim.name,
+                        description: sim.description
+                      })}
+                      className="flex items-center justify-between w-full p-3 rounded-xl bg-white/5 hover:bg-white/10 text-[11px] font-bold text-slate-300 hover:text-white transition-all border border-transparent hover:border-indigo-500/20"
                     >
                       <span className="truncate mr-2 uppercase tracking-tight">{sim.name}</span>
                       <ChevronRight className="h-3 w-3 text-indigo-500 shrink-0" />
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -295,6 +308,15 @@ const Index = () => {
       </section>
 
       <Footer />
+
+      {/* Studio Modal for simulators */}
+      <StudioModal
+        isOpen={activeSimulator !== null}
+        onClose={() => setActiveSimulator(null)}
+        url={activeSimulator?.url || ""}
+        title={activeSimulator?.title || ""}
+        description={activeSimulator?.description}
+      />
     </div>
   );
 };
