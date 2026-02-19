@@ -15,7 +15,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { areas } from "@/data/areas";
-import { studioMapping } from "@/data/studioMap";
+import { studioMapping, fullSimulators } from "@/data/studioMap";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
@@ -30,6 +30,7 @@ import PlanEstudioDiario from "@/components/PlanEstudioDiario";
 import NewsECOEMS from "@/components/NewsECOEMS";
 import CountdownExam from "@/components/CountdownExam";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
@@ -180,6 +181,24 @@ const Index = () => {
                   CONSOLA STUDIO (PRO)
                   <Zap className="ml-2 h-4 w-4 text-yellow-500 group-hover:scale-125 transition-transform" />
                 </Button>
+
+                {/* Nuevos Simuladores PHP */}
+                <div className="flex gap-2">
+                  {fullSimulators.map((sim, idx) => (
+                    <Button
+                      key={idx}
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => window.open(sim.path, "_blank")}
+                      className={cn(
+                        "flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all",
+                        sim.name.includes("Politécnico") ? "text-rose-400 hover:text-rose-300" : "text-indigo-300 hover:text-indigo-200"
+                      )}
+                    >
+                      {sim.name}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

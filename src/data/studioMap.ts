@@ -38,3 +38,16 @@ export const studioMapping: Record<string, StudioSimulator[]> = {
         { name: "Simulador Geografía", path: "/studio/geografia.html", description: "Espacio geográfico y economía global" }
     ]
 };
+
+export const fullSimulators: StudioSimulator[] = [
+    {
+        name: "Simulador ECOEMS 2026 (Completo)",
+        path: "/studio/simulador_completo.php",
+        description: "Examen integral con todas las materias y cronómetro de 3 horas"
+    },
+    {
+        name: "Simulador Politécnico (IPN)",
+        path: "/studio/simulador_politecnico.php",
+        description: "Examen especializado para ingreso al IPN con estilo interactivo"
+    }
+];
