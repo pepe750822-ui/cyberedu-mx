@@ -20,7 +20,11 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!~oauth|api).*)",
+      "source": "/~oauth/:path*",
+      "destination": "/~oauth/:path*"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
