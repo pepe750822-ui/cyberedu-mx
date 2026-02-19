@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Bell,
     Calendar,
@@ -8,11 +8,95 @@ import {
     FileText,
     Clock,
     Sparkles,
-    ArrowRight
+    ArrowRight,
+    Trophy,
+    GraduationCap,
+    TrendingUp,
+    ChevronDown,
+    ChevronUp,
+    School,
+    Target
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type ScoreCategory = "enp" | "cch" | "cecyt";
+
+interface SchoolScore {
+    name: string;
+    min: number;
+    difficulty: "extreme" | "high" | "medium" | "accessible";
+}
+
+const scoreData: Record<ScoreCategory, { title: string; subtitle: string; color: string; borderColor: string; bgColor: string; icon: React.ElementType; schools: SchoolScore[] }> = {
+    enp: {
+        title: "Prepas UNAM (ENP)",
+        subtitle: "Rango: 94-111 aciertos",
+        color: "text-blue-400",
+        borderColor: "border-blue-500/30",
+        bgColor: "bg-blue-500/10",
+        icon: GraduationCap,
+        schools: [
+            { name: "ENP 6 — \"Antonio Caso\"", min: 111, difficulty: "extreme" },
+            { name: "ENP 9 — \"Pedro de Alba\"", min: 108, difficulty: "extreme" },
+            { name: "ENP 2 — \"Erasmo C. de Romo\"", min: 105, difficulty: "extreme" },
+            { name: "ENP 5 — \"José Vasconcelos\"", min: 103, difficulty: "high" },
+            { name: "ENP 1 — \"Gabino Barreda\"", min: 101, difficulty: "high" },
+            { name: "ENP 7 — \"Ezequiel A. Chávez\"", min: 100, difficulty: "high" },
+            { name: "ENP 3 — \"Justo Sierra\"", min: 98, difficulty: "medium" },
+            { name: "ENP 8 — \"Miguel E. Schulz\"", min: 96, difficulty: "medium" },
+            { name: "ENP 4 — \"Vidal Castañeda\"", min: 94, difficulty: "medium" },
+        ]
+    },
+    cch: {
+        title: "CCH UNAM",
+        subtitle: "Rango: 84-94 aciertos",
+        color: "text-amber-400",
+        borderColor: "border-amber-500/30",
+        bgColor: "bg-amber-500/10",
+        icon: School,
+        schools: [
+            { name: "CCH Sur", min: 94, difficulty: "high" },
+            { name: "CCH Oriente", min: 93, difficulty: "high" },
+            { name: "CCH Vallejo", min: 90, difficulty: "medium" },
+            { name: "CCH Azcapotzalco", min: 89, difficulty: "medium" },
+            { name: "CCH Naucalpan", min: 84, difficulty: "accessible" },
+        ]
+    },
+    cecyt: {
+        title: "CECyT (Vocacionales) IPN",
+        subtitle: "Rango: 80-104 aciertos",
+        color: "text-rose-400",
+        borderColor: "border-rose-500/30",
+        bgColor: "bg-rose-500/10",
+        icon: Target,
+        schools: [
+            { name: "CECyT 9 — \"Juan de Dios Bátiz\"", min: 104, difficulty: "extreme" },
+            { name: "CECyT 7 — \"Cuauhtémoc\"", min: 98, difficulty: "high" },
+            { name: "CECyT 6 — \"Miguel Othón de M.\"", min: 95, difficulty: "high" },
+            { name: "CECyT 1 — \"Gonzalo V. López\"", min: 92, difficulty: "medium" },
+            { name: "CECyT 2 — \"Miguel Bernard\"", min: 90, difficulty: "medium" },
+            { name: "CECyT 3 — \"Estanislao Ramírez\"", min: 88, difficulty: "medium" },
+            { name: "CECyT 4 — \"Lázaro Cárdenas\"", min: 86, difficulty: "accessible" },
+            { name: "CECyT 10 — \"Carlos Vallejo\"", min: 85, difficulty: "accessible" },
+            { name: "CECyT 11 — \"Wilfrido Massieu\"", min: 84, difficulty: "accessible" },
+            { name: "CECyT 12 — \"José Ma. Morelos\"", min: 82, difficulty: "accessible" },
+            { name: "CECyT 14 — \"Luis Enrique Erro\"", min: 81, difficulty: "accessible" },
+            { name: "CECyT 15 — \"Diódoro A. Guzmán\"", min: 80, difficulty: "accessible" },
+        ]
+    }
+};
+
+const difficultyConfig = {
+    extreme: { label: "MUY ALTA", color: "text-red-400 bg-red-500/20 border-red-500/30" },
+    high: { label: "ALTA", color: "text-orange-400 bg-orange-500/20 border-orange-500/30" },
+    medium: { label: "MEDIA", color: "text-amber-400 bg-amber-500/20 border-amber-500/30" },
+    accessible: { label: "ACCESIBLE", color: "text-emerald-400 bg-emerald-500/20 border-emerald-500/30" },
+};
+
 const NewsECOEMS = () => {
+    const [activeTab, setActiveTab] = useState<ScoreCategory>("enp");
+    const [showScores, setShowScores] = useState(false);
+
     const dates = [
         { event: "Publicación de Convocatoria", date: "13 Feb 2026", status: "completed" },
         { event: "Registro de Aspirantes", date: "17 Mar - 14 Abr", status: "upcoming" },
@@ -20,6 +104,8 @@ const NewsECOEMS = () => {
         { event: "Aplicación Examen Digital", date: "20, 21, 27, 28 Jun", status: "upcoming" },
         { event: "Publicación de Resultados", date: "18 Ago 2026", status: "upcoming" }
     ];
+
+    const active = scoreData[activeTab];
 
     return (
         <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden group">
@@ -122,6 +208,130 @@ const NewsECOEMS = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* ── Puntajes Mínimos Referenciales ── */}
+                <div className="mt-10 pt-8 border-t border-white/5">
+                    <button
+                        onClick={() => setShowScores(!showScores)}
+                        className="w-full flex items-center justify-between group/toggle"
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-br from-amber-500/20 to-rose-500/20 rounded-xl border border-amber-500/20">
+                                <Trophy className="h-5 w-5 text-amber-400" />
+                            </div>
+                            <div className="text-left">
+                                <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white">
+                                    Puntajes Mínimos <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-rose-400 italic">Referenciales</span>
+                                </h3>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-1">
+                                    COMIPEMS / ECOEMS 2025-2026 • Total: 128 aciertos
+                                </p>
+                            </div>
+                        </div>
+                        <div className="p-2 bg-white/5 rounded-xl border border-white/10 group-hover/toggle:bg-white/10 transition-colors">
+                            {showScores ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+                        </div>
+                    </button>
+
+                    {showScores && (
+                        <div className="mt-6 space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                            {/* Requirement Banner */}
+                            <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 flex items-center gap-3">
+                                <div className="p-2 bg-emerald-500/20 rounded-lg shrink-0">
+                                    <AlertCircle className="h-4 w-4 text-emerald-400" />
+                                </div>
+                                <p className="text-[11px] text-slate-300 leading-relaxed">
+                                    <span className="font-black text-emerald-400">Requisito indispensable:</span> Promedio mínimo de <span className="font-black text-white">7.0</span> en la secundaria.
+                                    Los puntajes definitivos se establecen con base en la demanda de cada año.
+                                </p>
+                            </div>
+
+                            {/* Category Tabs */}
+                            <div className="flex flex-wrap gap-2">
+                                {(Object.keys(scoreData) as ScoreCategory[]).map((key) => {
+                                    const cat = scoreData[key];
+                                    const Icon = cat.icon;
+                                    return (
+                                        <button
+                                            key={key}
+                                            onClick={() => setActiveTab(key)}
+                                            className={cn(
+                                                "flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
+                                                activeTab === key
+                                                    ? `${cat.bgColor} ${cat.borderColor} ${cat.color}`
+                                                    : "bg-white/5 border-white/10 text-slate-500 hover:bg-white/10 hover:text-slate-300"
+                                            )}
+                                        >
+                                            <Icon className="h-3.5 w-3.5" />
+                                            {cat.title}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Score Table */}
+                            <div className={cn("rounded-2xl border overflow-hidden", active.borderColor)}>
+                                <div className={cn("px-5 py-4 flex items-center justify-between", active.bgColor)}>
+                                    <div className="flex items-center gap-3">
+                                        <active.icon className={cn("h-5 w-5", active.color)} />
+                                        <div>
+                                            <h4 className={cn("text-sm font-black uppercase tracking-tight", active.color)}>{active.title}</h4>
+                                            <p className="text-[10px] text-slate-500 font-bold">{active.subtitle}</p>
+                                        </div>
+                                    </div>
+                                    <TrendingUp className={cn("h-4 w-4", active.color)} />
+                                </div>
+
+                                <div className="divide-y divide-white/5">
+                                    {active.schools.map((school, idx) => {
+                                        const diff = difficultyConfig[school.difficulty];
+                                        const barWidth = Math.round((school.min / 128) * 100);
+                                        return (
+                                            <div key={idx} className="px-5 py-3 flex items-center gap-4 hover:bg-white/[0.02] transition-colors">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-bold text-slate-200 truncate">{school.name}</p>
+                                                    <div className="mt-1.5 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                        <div
+                                                            className={cn(
+                                                                "h-full rounded-full transition-all duration-500",
+                                                                school.difficulty === "extreme" ? "bg-red-500" :
+                                                                    school.difficulty === "high" ? "bg-orange-500" :
+                                                                        school.difficulty === "medium" ? "bg-amber-500" :
+                                                                            "bg-emerald-500"
+                                                            )}
+                                                            style={{ width: `${barWidth}%` }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="text-right shrink-0 flex items-center gap-3">
+                                                    <span className={cn(
+                                                        "text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border",
+                                                        diff.color
+                                                    )}>
+                                                        {diff.label}
+                                                    </span>
+                                                    <span className="text-lg font-black text-white tabular-nums w-10 text-right">
+                                                        {school.min}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Legend */}
+                            <div className="flex flex-wrap items-center gap-3 px-2">
+                                <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">Demanda:</span>
+                                {Object.entries(difficultyConfig).map(([key, val]) => (
+                                    <span key={key} className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded border", val.color)}>
+                                        {val.label}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
