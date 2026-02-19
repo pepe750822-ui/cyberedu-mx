@@ -13,6 +13,7 @@ import UltimoVideoCard from "@/components/UltimoVideoCard";
 import BadgeSystem from "@/components/BadgeSystem";
 import WeeklyChallenges from "@/components/WeeklyChallenges";
 import PlanEstudioDiario from "@/components/PlanEstudioDiario";
+import NewsECOEMS from "@/components/NewsECOEMS";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
@@ -115,6 +116,7 @@ const Index = () => {
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
         <PlanEstudioDiario />
         <UltimoVideoCard />
+        <NewsECOEMS />
         <BadgeSystem />
         <WeeklyChallenges />
         <ProgresoDashboard />
