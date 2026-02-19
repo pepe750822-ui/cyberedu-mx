@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { materiales } from "@/data/materialComplementario";
 import { aiContent } from "@/data/aiContent";
+import { areas } from "@/data/areas";
+import { studioMapping } from "@/data/studioMap";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -186,7 +188,11 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasQuiz = !!material.quiz?.url;
   const hasAI = !!aiContent[videoId];
 
-  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI;
+  const areaId = areas.find(a => a.videos.some(v => v.id === videoId))?.id;
+  const studioSims = areaId ? studioMapping[areaId] : [];
+  const hasStudio = studioSims && studioSims.length > 0;
+
+  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI || hasStudio;
 
   if (!hasAny) return null;
 
@@ -239,6 +245,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 Podcast de Repaso
               </TabsTrigger>
             )}
+            {hasStudio && (
+              <TabsTrigger value="studio" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 data-[state=active]:bg-indigo-600 data-[state=active]:text-white transition-all">
+                <Sparkles className="h-4 w-4" />
+                🚀 ENTRENAMIENTO STUDIO
+              </TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="ai-tutor" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -275,6 +287,36 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           {hasPodcast && (
             <TabsContent value="podcast" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
               <PodcastPlayer url={material.podcast!.url} duracion={material.podcast!.duracion} />
+            </TabsContent>
+          )}
+
+          {hasStudio && (
+            <TabsContent value="studio" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 rounded-2xl border border-indigo-500/30 p-6 sm:p-10 text-center shadow-xl">
+                <div className="max-w-md mx-auto space-y-6">
+                  <div className="h-16 w-16 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/30">
+                    <Sparkles className="h-8 w-8 text-indigo-400" />
+                  </div>
+                  <h4 className="text-xl font-black uppercase tracking-tighter text-white">Simuladores de Entrenamiento Intensivo</h4>
+                  <p className="text-sm text-indigo-200/70">
+                    Domina cada subíndice de esta materia con reactivos extraídos de guías oficiales y exámenes pasados.
+                  </p>
+                  <div className="grid gap-3 pt-4">
+                    {studioSims.map((sim, sIdx) => (
+                      <Button
+                        key={sIdx}
+                        asChild
+                        className="h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-widest rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-95"
+                      >
+                        <a href={sim.path} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          {sim.name}
+                        </a>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           )}
         </Tabs>

@@ -11,9 +11,11 @@ import {
   Target,
   Clock,
   BarChart3,
-  ChevronRight
+  ChevronRight,
+  Sparkles
 } from "lucide-react";
 import { areas } from "@/data/areas";
+import { studioMapping } from "@/data/studioMap";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
@@ -189,6 +191,52 @@ const Index = () => {
         <WeeklyChallenges />
         <ProgresoDashboard />
         <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
+
+        {/* Studio Simulators Section */}
+        <div className="pt-16 pb-8">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-10 w-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+              <Sparkles className="h-5 w-5 text-indigo-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white">Consola Studio: Por Materia</h2>
+              <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest mt-1">Entrenamiento Intensivo (630+ Reactivos)</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {areas.filter(a => studioMapping[a.id]).map((area) => (
+              <div
+                key={area.id}
+                className="bg-slate-900/50 border border-white/5 rounded-2xl p-5 hover:border-indigo-500/40 transition-all group relative overflow-hidden"
+              >
+                <div className={`absolute top-0 left-0 w-1 h-full ${area.gradientClass.split(' ')[1]}`} />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-white/5 rounded-lg">
+                      <area.icon className="h-4 w-4 text-white/70" />
+                    </div>
+                    <h4 className="font-bold text-white text-sm">{area.name}</h4>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {studioMapping[area.id].map((sim, idx) => (
+                    <a
+                      key={idx}
+                      href={sim.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 text-[11px] font-bold text-slate-300 hover:text-white transition-all border border-transparent hover:border-indigo-500/20"
+                    >
+                      <span className="truncate mr-2 uppercase tracking-tight">{sim.name}</span>
+                      <ChevronRight className="h-3 w-3 text-indigo-500 shrink-0" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Areas Section */}
