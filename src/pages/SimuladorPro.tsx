@@ -474,18 +474,17 @@ const SimuladorPro = () => {
                                 const isCurrent = currentQuestionIndex === idx;
                                 const isAnswered = userAnswers[q.id] !== undefined;
                                 const isMarked = markedForReview[q.id];
-                                const isCorrect = isAnswered && userAnswers[q.id] === q.correctIndex;
 
                                 return (
                                     <button
                                         key={q.id}
                                         onClick={() => setCurrentQuestionIndex(idx)}
                                         className={cn(
-                                            "h-7 w-7 rounded-full text-[9px] font-bold transition-all flex items-center justify-center shrink-0 shadow-sm",
-                                            isCurrent ? "bg-blue-600 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-900 shadow-[0_0_15px_rgba(37,99,235,0.8)] z-10 scale-110" :
-                                                !isAnswered ? "bg-slate-700/50 text-slate-400 border border-white/5 hover:bg-white/10" :
-                                                    isMarked ? "bg-amber-500 text-white" : // 🟡 Amarillo: Respondida pero no revisada (marcada)
-                                                        isCorrect ? "bg-emerald-500 text-white" : "bg-red-500 text-white"
+                                            "h-8 w-8 rounded-full text-[10px] font-black transition-all flex items-center justify-center shrink-0 shadow-sm border-2",
+                                            isCurrent ? "bg-white text-blue-600 border-blue-600 scale-110 z-10 shadow-[0_0_15px_rgba(37,99,235,0.4)]" :
+                                                isMarked ? "bg-amber-500 text-white border-amber-600 animate-pulse" : // Máxima prioridad si está marcada
+                                                    isAnswered ? "bg-blue-600 text-white border-blue-700" : // Respondida normal
+                                                        "bg-slate-800 text-slate-500 border-white/5 hover:border-white/20" // Sin responder
                                         )}
                                     >
                                         {idx + 1}
