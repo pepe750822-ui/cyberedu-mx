@@ -191,8 +191,8 @@ const ProgresoDashboard = () => {
         </Card>
 
         {/* Heatmap Card */}
-        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/50 backdrop-blur-xl cyber-grid overflow-hidden">
-          <CardHeader className="pb-2 pt-5 px-6 flex flex-row items-center justify-between space-y-0">
+        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/50 backdrop-blur-xl cyber-grid relative">
+          <CardHeader className="pb-2 pt-5 px-6 flex flex-row items-center justify-between space-y-0 text-foreground">
             <CardTitle className="text-sm font-black flex items-center gap-2 uppercase tracking-tighter">
               <Grid3X3 className="h-4 w-4 text-emerald-500" />
               Mapa de Dominio
@@ -203,7 +203,7 @@ const ProgresoDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="px-5 pb-5 pt-2">
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-2 mb-6">
               {areaData.map((area) => (
                 <div
                   key={area.id}
@@ -212,17 +212,41 @@ const ProgresoDashboard = () => {
                     getHeatmapColor(area.percentage)
                   )}
                 >
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-black/90 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50 shadow-2xl border border-white/10 backdrop-blur-md scale-90 group-hover:scale-100">
-                    <p className="font-black text-xs mb-1">{area.name}</p>
-                    <p className="text-emerald-400 font-bold">{area.percentage}% completado</p>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-black/90" />
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-[#0a0a0c] text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-[100] shadow-[0_0_30px_rgba(0,0,0,0.8)] border border-white/20 backdrop-blur-md scale-90 group-hover:scale-100 pointer-events-none">
+                    <p className="font-black text-xs mb-1 text-white">{area.name}</p>
+                    <p className="text-emerald-400 font-black">{area.percentage}% completado</p>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#0a0a0c]" />
                   </div>
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-[10px] text-muted-foreground font-medium italic text-right">
-              * Datos calculados en tiempo real según tu navegación
-            </p>
+
+            <div className="flex items-center justify-between border-t border-border/50 pt-4">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Leyenda:</span>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-sm bg-slate-800/50 border border-white/5" />
+                    <span className="text-[9px] font-bold text-muted-foreground">0%</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500/20 border border-emerald-500/30" />
+                    <span className="text-[9px] font-bold text-muted-foreground">1-50%</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500/70 border border-emerald-500/80" />
+                    <span className="text-[9px] font-bold text-muted-foreground">75%</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-sm bg-emerald-400 border border-white/40" />
+                    <span className="text-[9px] font-bold text-muted-foreground">100%</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground font-medium italic">
+                * Dominio acumulado por área
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
