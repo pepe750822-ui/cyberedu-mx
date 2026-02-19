@@ -218,6 +218,13 @@ const SimuladorPro = () => {
                                             {isCorrect ? <CheckCircle2 className="text-emerald-500 h-5 w-5" /> : <XSquare className="text-red-500 h-5 w-5" />}
                                         </div>
                                         <p className="text-sm font-bold text-white mb-6">{q.text}</p>
+
+                                        {q.imageUrl && (
+                                            <div className="mb-6 rounded-2xl overflow-hidden border border-white/10 bg-black/20">
+                                                <img src={q.imageUrl} alt={`Imagen reactivo ${idx + 1}`} className="max-h-64 mx-auto object-contain" />
+                                            </div>
+                                        )}
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                                             {q.options.map((opt, i) => (
                                                 <div key={i} className={cn(
@@ -314,6 +321,16 @@ const SimuladorPro = () => {
                         <h2 className="text-xl md:text-2xl font-bold text-white leading-snug">
                             {currentQuestion.text}
                         </h2>
+
+                        {currentQuestion.imageUrl && (
+                            <div className="rounded-3xl overflow-hidden border border-white/10 bg-black/20 p-4">
+                                <img
+                                    src={currentQuestion.imageUrl}
+                                    alt="Visual del reactivo"
+                                    className="max-h-80 mx-auto object-contain animate-in fade-in zoom-in duration-500"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 relative z-10">

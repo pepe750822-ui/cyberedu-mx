@@ -5,6 +5,7 @@ export interface Question {
     options: string[];
     correctIndex: number;
     explanation: string;
+    imageUrl?: string;
 }
 
 export const simuladoECOEMS: Question[] = [
@@ -246,10 +247,11 @@ export const simuladoECOEMS: Question[] = [
     {
         id: "hm14",
         area: "Habilidad Matemática",
-        text: "En una estructura de cubos pintada exteriormente, ¿cuántos cubos quedan con exactamente 4 caras pintadas?",
-        options: ["5", "6", "7", "8"],
-        correctIndex: 3,
-        explanation: "En un cubo sólido formado por cubos más pequeños, los cubos con 4 caras pintadas suelen ser 8 según la disposición de las esquinas o aristas específicas."
+        text: "¿Cuántos cubos conforman la siguiente estructura sólida considerando que no hay huecos ocultos?",
+        options: ["10", "12", "14", "16"],
+        correctIndex: 2,
+        explanation: "Al contar por niveles: Nivel 1 (base): 3x3=9 cubos. Nivel 2: 4 cubos. Nivel 3: 1 cubo. Total = 9 + 4 + 1 = 14 cubos.",
+        imageUrl: "https://images.unsplash.com/photo-1580136608260-42d1c49e6a72?q=80&w=600&auto=format&fit=crop"
     },
     {
         id: "hm15",
