@@ -18,14 +18,40 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const PlanEstudioDiario = () => {
-    const [showPlan, setShowPlan] = useState(false);
     const { isViewed, getEstadisticas, obtenerUltimoVideo } = useVideoProgress();
     const navigate = useNavigate();
     const lastVideo = obtenerUltimoVideo();
 
-    // Calculation Logic for the Daily Plan - Improved to avoid duplicity
+    // Persistence Keys
+    const PLAN_STORAGE_KEY = "cyberedu_daily_plan";
+    const PLAN_DATE_KEY = "cyberedu_daily_plan_date";
+
+    // State
+    const [showPlan, setShowPlan] = useState(() => {
+        const savedDate = localStorage.getItem(PLAN_DATE_KEY);
+        const today = new Date().toDateString();
+        return savedDate === today;
+    });
+
+    // Calculation Logic - Stable for the day
     const dailyPlan = useMemo(() => {
-        // 1. Calculate progress per area
+        const today = new Date().toDateString();
+        const savedDate = localStorage.getItem(PLAN_DATE_KEY);
+        const savedPlan = localStorage.getItem(PLAN_STORAGE_KEY);
+
+        // If we have a saved plan for today, use it
+        if (savedDate === today && savedPlan) {
+            try {
+                const parsedPlan = JSON.parse(savedPlan);
+                // Filter out videos that are ALREADY viewed since they were added to the plan
+                const remainingVideos = parsedPlan.filter((p: { video: Video; area: Area }) => !isViewed(p.video.id));
+                if (remainingVideos.length > 0) return remainingVideos;
+            } catch (e) {
+                console.error("Error parsing saved plan", e);
+            }
+        }
+
+        // Otherwise, generate a new one
         const areaStats = areas.map(area => {
             const keys = getAreaNotebookKeys(area.id);
             const viewed = keys.filter(k => isViewed(k)).length;
@@ -33,42 +59,40 @@ const PlanEstudioDiario = () => {
             return { area, progress };
         });
 
-        // 2. Filter out the last video seen so we don't repeat it
         const lastVideoId = lastVideo?.videoId;
-
-        // 3. Find 3 specific videos (next unseen in areas with lowest progress)
         const recommendedVideos: { video: Video; area: Area }[] = [];
-
-        // Sort areas by lowest progress
         const sortedAreas = [...areaStats].sort((a, b) => a.progress - b.progress);
 
         for (const { area } of sortedAreas) {
             if (recommendedVideos.length >= 3) break;
-
-            const nextVideo = area.videos.find(v =>
-                !isViewed(v.id) && v.id !== lastVideoId
-            );
-
-            if (nextVideo) {
-                recommendedVideos.push({ video: nextVideo, area });
-            }
+            const nextVideo = area.videos.find(v => !isViewed(v.id) && v.id !== lastVideoId);
+            if (nextVideo) recommendedVideos.push({ video: nextVideo, area: { id: area.id, name: area.name } as Area });
         }
 
-        // Fallback if we still need more videos and low progress areas didn't provide enough
         if (recommendedVideos.length < 3) {
             for (const area of areas) {
                 if (recommendedVideos.length >= 3) break;
                 const nextVideo = area.videos.find(v =>
-                    !isViewed(v.id) &&
-                    v.id !== lastVideoId &&
-                    !recommendedVideos.some(r => r.video.id === v.id)
+                    !isViewed(v.id) && v.id !== lastVideoId && !recommendedVideos.some(r => r.video.id === v.id)
                 );
-                if (nextVideo) recommendedVideos.push({ video: nextVideo, area });
+                if (nextVideo) recommendedVideos.push({ video: nextVideo, area: { id: area.id, name: area.name } as Area });
             }
+        }
+
+        // Save only if we have at least one
+        if (recommendedVideos.length > 0) {
+            localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(recommendedVideos));
+            localStorage.setItem(PLAN_DATE_KEY, today);
         }
 
         return recommendedVideos;
     }, [isViewed, lastVideo]);
+
+    const handleGeneratePlan = () => {
+        setShowPlan(true);
+        // Logic is handled by useMemo normally, but we ensure the date is set
+        localStorage.setItem(PLAN_DATE_KEY, new Date().toDateString());
+    };
 
     const handleStartStudy = (areaId: string, videoId: string) => {
         navigate(`/area/${areaId}?video=${videoId}`);
@@ -80,7 +104,7 @@ const PlanEstudioDiario = () => {
         <div className="w-full">
             {!showPlan ? (
                 <Button
-                    onClick={() => setShowPlan(true)}
+                    onClick={handleGeneratePlan}
                     className="w-full h-16 bg-gradient-to-r from-primary via-purple-600 to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-[0_10px_30px_rgba(124,58,237,0.3)] transition-all hover:scale-[1.02] active:scale-95 group relative overflow-hidden"
                 >
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-20 transition-opacity" />
