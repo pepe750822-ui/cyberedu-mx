@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { GraduationCap, Mail, Lock, User, Chrome } from "lucide-react";
+import { GraduationCap, Mail, Lock, User, Chrome, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
 import Footer from "@/components/Footer";
 
 const Auth = () => {
@@ -30,144 +28,210 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (isLogin) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        toast({ title: "Error al iniciar sesión", description: error.message, variant: "destructive" });
-      } else {
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
         navigate("/");
-      }
-    } else {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin,
-          data: { full_name: name },
-        },
-      });
-      if (error) {
-        toast({ title: "Error al registrarse", description: error.message, variant: "destructive" });
+        toast({ title: "¡Bienvenido de nuevo!", description: "Sesión iniciada correctamente." });
       } else {
-        toast({ title: "¡Registro exitoso!", description: "Revisa tu correo para confirmar tu cuenta." });
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: { full_name: name },
+          },
+        });
+        if (error) throw error;
+        toast({
+          title: "¡Registro exitoso!",
+          description: "Revisa tu correo para confirmar tu cuenta y empezar a estudiar.",
+          variant: "default"
+        });
       }
+    } catch (error: any) {
+      toast({
+        title: isLogin ? "Error al iniciar sesión" : "Error al registrarse",
+        description: error.message || "Ocurrió un error inesperado.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleGoogleLogin = async () => {
-    const { error } = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (error) {
-      toast({ title: "Error con Google", description: String(error), variant: "destructive" });
+    try {
+      setLoading(true);
+      const { error } = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Error con Google",
+        description: error.message || String(error),
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto p-2 hero-gradient rounded-xl w-fit mb-2">
-            <GraduationCap className="h-8 w-8 text-white" />
-          </div>
-          <CardTitle className="text-2xl">
-            {isLogin ? "Iniciar sesión" : "Crear cuenta"}
-          </CardTitle>
-          <CardDescription>
-            {isLogin
-              ? "Accede a tu progreso de estudio"
-              : "Regístrate para guardar tu avance"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleGoogleLogin}
-            disabled={loading}
-          >
-            <Chrome className="h-4 w-4 mr-2" />
-            Continuar con Google
-          </Button>
+    <div className="min-h-screen bg-background relative overflow-hidden flex flex-col items-center justify-center p-4 cyber-grid">
+      {/* Decorative Blur Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 rounded-full blur-[120px] animate-pulse" />
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">o con email</span>
-            </div>
+      <div className="w-full max-w-[440px] z-10 space-y-8 animate-in fade-in zoom-in duration-500">
+        {/* Branding Area */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center justify-center p-4 rounded-2xl bg-gradient-to-br from-primary via-primary/50 to-secondary card-shadow animate-float">
+            <GraduationCap className="h-10 w-10 text-white" />
           </div>
+          <div className="space-y-2">
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white">
+              CyberEdu <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary italic">MX</span>
+            </h1>
+            <p className="text-slate-400 font-medium tracking-wide flex items-center justify-center gap-2">
+              <Sparkles className="h-4 w-4 text-emerald-400" />
+              Plataforma de Alto Rendimiento 2026
+            </p>
+          </div>
+        </div>
 
-          <form onSubmit={handleEmailAuth} className="space-y-3">
-            {!isLogin && (
-              <div className="space-y-1.5">
-                <Label htmlFor="name">Nombre</Label>
+        {/* Auth Card */}
+        <div className="glass-card-premium rounded-[2rem] p-8 md:p-10 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          <div className="relative z-10 space-y-6">
+            <div className="space-y-2 text-center">
+              <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
+                {isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
+              </h2>
+              <p className="text-slate-400 text-sm">
+                {isLogin
+                  ? "Accede a tu arsenal de estudio y simuladores."
+                  : "Únete a la nueva generación de estudiantes."}
+              </p>
+            </div>
+
+            <Button
+              variant="outline"
+              className="w-full h-12 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all font-bold text-slate-200"
+              onClick={handleGoogleLogin}
+              disabled={loading}
+            >
+              <Chrome className="h-5 w-5 mr-3 text-red-500" />
+              Continuar con Google
+            </Button>
+
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-white/10"></div>
+              <span className="flex-shrink mx-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                o vía protocolo email
+              </span>
+              <div className="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <form onSubmit={handleEmailAuth} className="space-y-4">
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Nombre Completo</Label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Input
+                      id="name"
+                      placeholder="Ej. Juan Pérez"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
+                      required
+                      maxLength={100}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Terminal de Email</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <Input
-                    id="name"
-                    placeholder="Tu nombre"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="pl-9"
+                    id="email"
+                    type="email"
+                    placeholder="aspirante@cyberedu.mx"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
                     required
-                    maxLength={100}
                   />
                 </div>
               </div>
-            )}
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Correo electrónico</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9"
-                  required
-                  maxLength={255}
-                />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Contraseña</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9"
-                  required
-                  minLength={6}
-                />
-              </div>
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Cargando..." : isLogin ? "Iniciar sesión" : "Crear cuenta"}
-            </Button>
-          </form>
 
-          <p className="text-center text-sm text-muted-foreground">
-            {isLogin ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}{" "}
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-primary font-medium hover:underline"
-            >
-              {isLogin ? "Regístrate" : "Inicia sesión"}
-            </button>
-          </p>
-        </CardContent>
-      </Card>
-      <Footer />
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Clave de Acceso</Label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
+                    required
+                    minLength={6}
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest text-xs group transition-all"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Sincronizando...
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    {isLogin ? "Desbloquear Dashboard" : "Inicializar Cuenta"}
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                )}
+              </Button>
+            </form>
+
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 mx-auto"
+              >
+                {isLogin ? "¿Nuevo aspirante?" : "¿Ya tienes credenciales?"}
+                <span className="text-primary hover:underline underline-offset-4">
+                  {isLogin ? "Acceso al Registro" : "Ir al Login"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Badge */}
+        <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+          <ShieldCheck className="h-3 w-3" />
+          Conexión Segura vía Supabase Cloud
+        </div>
+      </div>
+
+      <div className="w-full mt-auto pt-8">
+        <Footer />
+      </div>
     </div>
   );
 };

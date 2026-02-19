@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import AITutor from "./components/AITutor";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
@@ -30,9 +31,9 @@ const App = () => (
         <AITutor />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/area/:areaId" element={<AreaDetail />} />
-            <Route path="/simulador-pro" element={<SimuladorPro />} />
+            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            <Route path="/area/:areaId" element={<ProtectedRoute><AreaDetail /></ProtectedRoute>} />
+            <Route path="/simulador-pro" element={<ProtectedRoute><SimuladorPro /></ProtectedRoute>} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/~oauth/*" element={<OAuthPassthrough />} />
             <Route path="*" element={<NotFound />} />
