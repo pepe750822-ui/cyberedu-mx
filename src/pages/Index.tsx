@@ -6,6 +6,7 @@ import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import ProgresoDashboard from "@/components/ProgresoDashboard";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
@@ -138,14 +139,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card">
-        <div className="container mx-auto px-4 py-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2026 PrepáraTE — Preparación para el examen de educación media superior
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { GraduationCap, Mail, Lock, User, Chrome } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
+import Footer from "@/components/Footer";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -169,6 +170,7 @@ const Auth = () => {
           </p>
         </CardContent>
       </Card>
+      <Footer />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
 import MaterialComplementario from "@/components/MaterialComplementario";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -179,6 +180,7 @@ const AreaDetail = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
