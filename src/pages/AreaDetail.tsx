@@ -5,6 +5,7 @@ import { areas } from "@/data/areas";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
+import YouTubePlayer from "@/components/YouTubePlayer";
 import MaterialComplementario from "@/components/MaterialComplementario";
 import RecommendedVideos from "@/components/RecommendedVideos";
 import Header from "@/components/Header";
@@ -33,7 +34,14 @@ const AreaDetail = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [areaId, activeVideoIndex]);
 
-  const { markAsViewed, isViewed, isVideoCompleto, viewedCount, totalVideos, resetProgress } = useVideoProgress();
+  const {
+    markAsViewed,
+    isViewed,
+    viewedCount,
+    totalVideos,
+    resetProgress,
+    obtenerProgresoVideo
+  } = useVideoProgress();
 
   if (!area) {
     return (
@@ -59,6 +67,21 @@ const AreaDetail = () => {
   };
 
   const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;
+
+  // Logic to determine initial time
+  const getInitialTime = () => {
+    // 1. Check URL param
+    const timeParam = searchParams.get("t") || searchParams.get("tiempo");
+    if (timeParam) return parseInt(timeParam);
+
+    // 2. Check local storage
+    const stored = obtenerProgresoVideo(activeVideo.id);
+    if (stored && !stored.completed) return stored.seconds;
+
+    return 0;
+  };
+
+  const initialTime = getInitialTime();
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,21 +115,20 @@ const AreaDetail = () => {
           {/* Video Player + Notebook */}
           <div className="lg:col-span-2 space-y-4">
             <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
-              <div className="aspect-video bg-foreground/5 flex items-center justify-center">
+              <div className="aspect-video bg-foreground/5 overflow-hidden">
                 {activeVideo.videoUrl ? (
-                  <iframe
-                    src={activeVideo.videoUrl}
-                    title={activeVideo.title}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+                  <YouTubePlayer
+                    videoId={activeVideo.id}
+                    videoUrl={activeVideo.videoUrl}
+                    tiempoInicial={initialTime}
+                    autoPlay={true}
                   />
                 ) : (
-                  <div className="text-center p-8">
-                    <Video className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
-                    <p className="text-muted-foreground font-medium">Video próximamente</p>
-                    <p className="text-sm text-muted-foreground/70 mt-1">
-                      Agrega la URL del video en el archivo de datos
+                  <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-900">
+                    <Video className="h-16 w-16 text-muted-foreground/40 mb-4" />
+                    <p className="text-white font-medium">Video próximamente</p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Este contenido está siendo procesado por el equipo de CyberEdu Mx.
                     </p>
                   </div>
                 )}

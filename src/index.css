@@ -273,4 +273,22 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.5);
   }
+
+  /* Video System Specifics */
+  .yt-player-glow {
+    box-shadow: 0 0 50px -10px hsl(var(--primary) / 0.3);
+  }
+
+  .progress-glow {
+    box-shadow: 0 0 15px -2px currentColor;
+  }
+
+  .card-hover-bright {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover-bright:hover {
+    filter: brightness(1.1);
+    transform: translateY(-4px) scale(1.01);
+  }
 }

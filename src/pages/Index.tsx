@@ -9,12 +9,21 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProgresoDashboard from "@/components/ProgresoDashboard";
 import RecommendedVideos from "@/components/RecommendedVideos";
+import UltimoVideoCard from "@/components/UltimoVideoCard";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
-  const { isViewed, viewedCount, totalVideos: total, resetProgress } = useVideoProgress();
+  const {
+    isViewed,
+    viewedCount,
+    totalVideos: total,
+    resetProgress,
+    getEstadisticas
+  } = useVideoProgress();
+
+  const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
   const location = useLocation();
 
@@ -92,7 +101,7 @@ const Index = () => {
               </div>
               <div className="flex items-center gap-2 text-white/90 glass-card px-4 py-2 rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.2)]">
                 <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-sm font-medium">100% Libre</span>
+                <span className="text-sm font-medium">{stats.completos} Completados</span>
               </div>
             </div>
           </div>
@@ -101,6 +110,7 @@ const Index = () => {
 
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
+        <UltimoVideoCard />
         <ProgresoDashboard />
         <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
       </section>
