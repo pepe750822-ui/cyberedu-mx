@@ -1,6 +1,26 @@
 import { useState, useEffect } from "react";
-import { FileText, Headphones, Image, ClipboardList, CheckCircle2, XCircle, ChevronDown, ChevronUp, Play, Pause, Download, ZoomIn, PenLine, Sparkles } from "lucide-react";
+import {
+  FileText,
+  Headphones,
+  Image,
+  ClipboardList,
+  CheckCircle2,
+  XCircle,
+  ChevronDown,
+  ChevronUp,
+  Play,
+  Pause,
+  Download,
+  ZoomIn,
+  PenLine,
+  Sparkles,
+  Brain,
+  Lightbulb,
+  BookCopy,
+  ExternalLink
+} from "lucide-react";
 import { materiales } from "@/data/materialComplementario";
+import { aiContent } from "@/data/aiContent";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -82,6 +102,68 @@ const PdfViewer = ({ url, titulo }: { url: string; titulo: string }) => (
   </div>
 );
 
+const AISupport = ({ videoId }: { videoId: string }) => {
+  const content = aiContent[videoId];
+  if (!content) return (
+    <div className="p-8 text-center bg-white/5 rounded-xl border border-dashed border-white/10">
+      <Brain className="h-10 w-10 text-slate-600 mx-auto mb-3 opacity-50" />
+      <p className="text-sm font-medium text-slate-500 italic">
+        El Tutor AI está procesando el material extendido para este video...
+      </p>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* Resumen Automático */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-slate-900/50 p-6 rounded-2xl border border-white/5 flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            <h4 className="text-xs font-black uppercase tracking-widest text-white">Resumen AI</h4>
+          </div>
+          <p className="text-sm text-slate-300 leading-relaxed italic">"{content.summary}"</p>
+        </div>
+
+        <div className="bg-indigo-500/5 p-6 rounded-2xl border border-indigo-500/20 flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 text-primary" />
+            <h4 className="text-xs font-black uppercase tracking-widest text-primary">Análisis del Experto</h4>
+          </div>
+          <p className="text-sm text-indigo-100/80 leading-relaxed font-medium">{content.deepExplanation}</p>
+        </div>
+      </div>
+
+      {/* Material Extra Recomendado */}
+      <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+        <div className="flex items-center gap-2 mb-4">
+          <BookCopy className="h-4 w-4 text-emerald-500" />
+          <h4 className="text-xs font-black uppercase tracking-widest text-white">Ruta de Ampliación</h4>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {content.extraMaterials.map((item, idx) => (
+            <a
+              key={idx}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-white/5 hover:border-primary/50 transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="px-2 py-0.5 rounded bg-white/10 text-[8px] font-black uppercase text-slate-400">
+                  {item.type}
+                </div>
+                <span className="text-xs font-bold text-slate-300 group-hover:text-white">{item.title}</span>
+              </div>
+              <ExternalLink className="h-3 w-3 text-slate-600 group-hover:text-primary" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const material = materiales[videoId];
 
@@ -104,20 +186,14 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasQuiz = !!material.quiz?.url;
   const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz;
 
-  if (!hasAny) return null;
+  if (!hasAny && !aiContent[videoId]) return null; // Also check for AI content
 
-  // REORDERED LOGIC: QUIZ -> Infografia -> PDF -> Podcast
-  const defaultTab = hasQuiz
-    ? "quiz"
-    : hasInfografia
-      ? "infografia"
-      : hasPdf
-        ? "pdf"
-        : "podcast";
+  // REORDERED LOGIC: QUIZ -> AI Tutor -> Infografia -> PDF -> Podcast
+  const defaultTab = hasQuiz ? "quiz" : "ai-tutor";
 
   const [activeTab, setActiveTab] = useState(defaultTab);
 
-  // Reset tab to Quiz whenever a new video is selected
+  // Reset tab to default whenever a new video is selected
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [videoId, defaultTab]);
@@ -127,7 +203,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
       <div className="p-6">
         <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-          Material Complementario
+          Centro de Aprendizaje Avanzado
         </h3>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1 mb-6">
@@ -137,6 +213,10 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 📝 QUIZ Inteligente
               </TabsTrigger>
             )}
+            <TabsTrigger value="ai-tutor" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter">
+              <Brain className="h-4 w-4 text-primary" />
+              🧠 Asistencia AI
+            </TabsTrigger>
             {hasInfografia && (
               <TabsTrigger value="infografia" className="gap-1.5 text-xs sm:text-sm">
                 <Image className="h-4 w-4" />
@@ -156,6 +236,10 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
               </TabsTrigger>
             )}
           </TabsList>
+
+          <TabsContent value="ai-tutor" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <AISupport videoId={videoId} />
+          </TabsContent>
 
           {hasQuiz && (
             <TabsContent value="quiz" className="animate-in fade-in slide-in-from-bottom-2 duration-500">

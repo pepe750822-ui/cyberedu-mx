@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import AITutor from "./components/AITutor";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
@@ -25,6 +26,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <AITutor />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
