@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Video, BookOpen, CheckCircle2, RotateCcw, GraduationCap } from "lucide-react";
+import { ArrowLeft, Video, BookOpen, RotateCcw, GraduationCap, ChevronRight, CheckCircle2 } from "lucide-react";
 import { areas } from "@/data/areas";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
@@ -12,33 +12,41 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const AreaDetail = () => {
   const { areaId } = useParams<{ areaId: string }>();
   const [searchParams] = useSearchParams();
 
-  // Flatten all videos for global navigation (0-90)
+  // Flatten all videos for global index calculation
   const allVideos = useMemo(() => areas.flatMap(a => a.videos.map(v => ({ ...v, areaId: a.id }))), []);
 
   const [activeGlobalIndex, setActiveGlobalIndex] = useState(0);
-
   const activeVideo = allVideos[activeGlobalIndex];
   const area = areas.find((a) => a.id === activeVideo?.areaId);
 
-  // Handle ?video= query param from search
+  // Expanded areas in accordion
+  const [expandedAreas, setExpandedAreas] = useState<string[]>([]);
+
+  // Handle initialization and URL params
   useEffect(() => {
     const videoParam = searchParams.get("video");
+    let targetIndex = -1;
+
     if (videoParam) {
-      const idx = allVideos.findIndex((v) => v.id === videoParam);
-      if (idx >= 0) setActiveGlobalIndex(idx);
+      targetIndex = allVideos.findIndex((v) => v.id === videoParam);
     } else if (areaId) {
-      // If no video param, find the first video of the requested area
-      const idx = allVideos.findIndex((v) => v.areaId === areaId);
-      if (idx >= 0) setActiveGlobalIndex(idx);
+      targetIndex = allVideos.findIndex((v) => v.areaId === areaId);
+    }
+
+    if (targetIndex >= 0) {
+      setActiveGlobalIndex(targetIndex);
+      // Auto-expand the area of the active video
+      const vAreaId = allVideos[targetIndex].areaId;
+      setExpandedAreas(prev => prev.includes(vAreaId) ? prev : [...prev, vAreaId]);
     }
   }, [searchParams, areaId, allVideos]);
 
-  // Always scroll to top when video changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeGlobalIndex]);
@@ -69,22 +77,18 @@ const AreaDetail = () => {
   const notebookKey = getNotebookKey(activeVideo.id);
 
   const handleOpenNotebook = () => {
-    if (notebookKey) {
-      markAsViewed(notebookKey);
-    }
+    if (notebookKey) markAsViewed(notebookKey);
   };
 
   const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;
 
-  const getInitialTime = () => {
+  const initialTime = (() => {
     const timeParam = searchParams.get("t") || searchParams.get("tiempo");
     if (timeParam) return parseInt(timeParam);
     const stored = obtenerProgresoVideo(activeVideo.id);
     if (stored && !stored.completed) return stored.seconds;
     return 0;
-  };
-
-  const initialTime = getInitialTime();
+  })();
 
   return (
     <div className="min-h-screen bg-background">
@@ -93,124 +97,149 @@ const AreaDetail = () => {
       {/* Area Header */}
       <div className={`${area.gradientClass} text-white`}>
         <div className="container mx-auto px-4 py-8">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm mb-4"
-          >
+          <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm mb-4">
             <ArrowLeft className="h-4 w-4" />
-            Volver a áreas
+            Volver a inicio
           </Link>
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
               <Icon className="h-8 w-8" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold uppercase tracking-tighter">{area.name}</h1>
-              <p className="text-white/80 mt-1 italic text-sm">{area.description}</p>
+              <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">{area.name}</h1>
+              <p className="text-white/80 mt-1 italic text-xs">{area.description}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Video Player + Notebook */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
-              <div className="aspect-video bg-foreground/5 overflow-hidden">
-                {activeVideo.videoUrl ? (
-                  <YouTubePlayer
-                    videoId={activeVideo.id}
-                    videoUrl={activeVideo.videoUrl}
-                    tiempoInicial={initialTime}
-                    autoPlay={true}
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-slate-900">
-                    <Video className="h-16 w-16 text-muted-foreground/40 mb-4" />
-                    <p className="text-white font-medium">Video próximamente</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Este contenido está siendo procesado por el equipo de CyberEdu Mx.
-                    </p>
-                  </div>
-                )}
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-2xl">
+              <div className="aspect-video bg-black overflow-hidden relative">
+                <YouTubePlayer
+                  videoId={activeVideo.id}
+                  videoUrl={activeVideo.videoUrl}
+                  tiempoInicial={initialTime}
+                  autoPlay={true}
+                />
               </div>
               <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="text-xl font-bold text-foreground mb-2 italic uppercase tracking-tight">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <h2 className="text-xl font-black text-foreground uppercase italic leading-tight">
                       {activeGlobalIndex}. {activeVideo.title}
                     </h2>
-                    <p className="text-muted-foreground text-sm">{activeVideo.description}</p>
+                    <p className="text-muted-foreground text-sm font-medium">{activeVideo.description}</p>
                   </div>
                   {notebookUrl && (
-                    <a
-                      href={notebookUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-shrink-0"
-                      onClick={handleOpenNotebook}
-                    >
-                      <Button size="sm" variant="outline" type="button">
-                        <BookOpen className="h-4 w-4 mr-1 text-primary" />
+                    <Button asChild variant="outline" size="sm" className="shrink-0">
+                      <a href={notebookUrl} target="_blank" rel="noopener noreferrer" onClick={handleOpenNotebook}>
+                        <BookOpen className="h-4 w-4 mr-2 text-primary" />
                         Notebook
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                 </div>
               </div>
 
-              {/* Material Complementario */}
               <MaterialComplementario videoId={activeVideo.id} />
-
-              {/* Sugerencias Personalizadas */}
-              <div className="p-6 border-t border-border/50">
-                <RecommendedVideos
-                  currentVideoId={activeVideo.id}
-                  currentAreaId={activeVideo.areaId}
-                />
+              <div className="p-6 border-t border-border/50 bg-muted/5">
+                <RecommendedVideos currentVideoId={activeVideo.id} currentAreaId={activeVideo.areaId} />
               </div>
             </div>
           </div>
 
-          {/* Right Sidebar - Global Video List */}
-          <div className="lg:sticky lg:top-24 h-fit">
-            {/* Progress Bar */}
-            <div className="bg-card rounded-xl border border-border p-4 mb-4 card-shadow">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-foreground">
-                  Progreso Total: {viewedCount}/{totalVideos}
-                </span>
-                <button
-                  onClick={resetProgress}
-                  className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
-                >
-                  <RotateCcw className="h-3 w-3" />
-                  Reset
-                </button>
+          {/* Sidebar - Branching Global Navigation */}
+          <div className="lg:sticky lg:top-24 h-fit space-y-4">
+            <div className="bg-card rounded-2xl border border-border p-5 shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Tu Ruta (0-90)</span>
+                <span className="text-[10px] font-black uppercase text-emerald-500">{Math.round(progressPercent)}% OK</span>
               </div>
-              <Progress value={progressPercent} className="h-2 bg-muted [&>div]:bg-green-500" />
+              <Progress value={progressPercent} className="h-1.5 bg-muted [&>div]:bg-emerald-500" />
             </div>
 
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-black text-xs uppercase tracking-widest text-foreground italic">Plan Maestro (0-90)</h3>
-              <span className="text-[10px] font-bold text-muted-foreground">{allVideos.length} Videos</span>
-            </div>
-            <div className="space-y-2 lg:max-h-[800px] overflow-y-auto pr-1 custom-scrollbar">
-              {allVideos.map((video, index) => {
-                const vKey = getNotebookKey(video.id);
-                return (
-                  <VideoCard
-                    key={`${video.id}-${index}`}
-                    video={video}
-                    index={index}
-                    isActive={index === activeGlobalIndex}
-                    isViewed={vKey ? isViewed(vKey) : false}
-                    onClick={() => setActiveGlobalIndex(index)}
-                  />
-                );
-              })}
+            <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-lg">
+              <div className="p-4 border-b border-border bg-muted/20">
+                <h3 className="text-xs font-black uppercase tracking-widest text-foreground flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4 text-primary" />
+                  Estructura del Curso
+                </h3>
+              </div>
+
+              <div className="p-2 lg:max-h-[700px] overflow-y-auto custom-scrollbar">
+                <Accordion type="multiple" value={expandedAreas} onValueChange={setExpandedAreas} className="space-y-1">
+                  {areas.map((areaObj) => {
+                    const areaVideos = allVideos.filter(v => v.areaId === areaObj.id);
+                    const startIndex = allVideos.findIndex(v => v.areaId === areaObj.id);
+                    const isCurrentArea = areaObj.id === activeVideo.areaId;
+                    const AreaIcon = areaObj.icon;
+
+                    return (
+                      <AccordionItem key={areaObj.id} value={areaObj.id} className="border-none">
+                        <AccordionTrigger className={cn(
+                          "px-3 py-3 rounded-xl hover:no-underline hover:bg-muted/50 transition-all text-left",
+                          isCurrentArea ? "bg-primary/5 text-primary border border-primary/10" : "text-muted-foreground"
+                        )}>
+                          <div className="flex items-center gap-3">
+                            <div className={cn(
+                              "h-8 w-8 rounded-lg flex items-center justify-center shrink-0",
+                              isCurrentArea ? "bg-primary text-white" : "bg-muted text-muted-foreground"
+                            )}>
+                              <AreaIcon className="h-4 w-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-black uppercase tracking-tight truncate leading-none">
+                                {areaObj.name}
+                              </p>
+                              <p className="text-[9px] font-bold opacity-60 mt-1">
+                                Videos {startIndex}-{startIndex + areaObj.videoCount - 1}
+                              </p>
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-2 pb-1 space-y-1 pl-4">
+                          {areaVideos.map((video) => {
+                            const globalIdx = allVideos.findIndex(v => v.id === video.id);
+                            const isActive = globalIdx === activeGlobalIndex;
+                            const vKey = getNotebookKey(video.id);
+                            const viewed = vKey ? isViewed(vKey) : false;
+
+                            return (
+                              <button
+                                key={video.id}
+                                onClick={() => setActiveGlobalIndex(globalIdx)}
+                                className={cn(
+                                  "w-full text-left p-3 rounded-lg transition-all flex items-center gap-3 group relative border",
+                                  isActive
+                                    ? "bg-primary/10 border-primary/30 text-primary shadow-sm"
+                                    : "bg-transparent border-transparent hover:bg-muted/50 text-muted-foreground"
+                                )}
+                              >
+                                <div className={cn(
+                                  "h-6 w-6 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0",
+                                  isActive ? "bg-primary text-white" : "bg-muted text-muted-foreground"
+                                )}>
+                                  {globalIdx}
+                                </div>
+                                <span className="text-[11px] font-bold font-display truncate pr-4">
+                                  {video.title}
+                                </span>
+                                {viewed && (
+                                  <CheckCircle2 className="h-3 w-3 text-emerald-500 absolute right-2" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              </div>
             </div>
           </div>
         </div>
