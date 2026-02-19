@@ -8,10 +8,13 @@ import GlobalSearch from "@/components/GlobalSearch";
 import { useTheme } from "@/hooks/useTheme";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useState } from "react";
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+import { Users } from "lucide-react";
 
 const Header = () => {
   const { user, profile, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const onlineCount = useOnlineUsers();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,6 +37,18 @@ const Header = () => {
             PrepáraTE
           </span>
         </Link>
+
+        {/* Online Users Indicator */}
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+          <div className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-tight text-emerald-600 dark:text-emerald-400">
+            {onlineCount} {onlineCount === 1 ? 'estudiante' : 'estudiantes'} en línea
+          </span>
+        </div>
+
         <nav className="flex items-center gap-2 sm:gap-4">
           <div className="hidden md:flex items-center gap-4 mr-2">
             <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
@@ -102,6 +117,15 @@ const Header = () => {
                   </div>
                   PrepáraTE
                 </SheetTitle>
+                <div className="flex items-center gap-2 mt-2 px-1">
+                  <div className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </div>
+                  <span className="text-[9px] font-black uppercase tracking-tight text-emerald-600 dark:text-emerald-400">
+                    {onlineCount} en línea
+                  </span>
+                </div>
               </SheetHeader>
 
               <div className="mb-8">
