@@ -5,7 +5,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Mail, Lock, User, Chrome, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import { GraduationCap, Mail, Lock, User, Chrome, ArrowRight, Sparkles, ShieldCheck, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
@@ -14,6 +14,8 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -24,8 +26,20 @@ const Auth = () => {
     if (user) navigate("/", { replace: true });
   }, [user, navigate]);
 
+  const passwordsMatch = isLogin || password === confirmPassword;
+
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isLogin && password !== confirmPassword) {
+      toast({
+        title: "Error de validación",
+        description: "Las contraseñas no coinciden.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -177,21 +191,54 @@ const Auth = () => {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <Input
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
+                    className="h-12 pl-12 pr-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
                     required
                     minLength={6}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
                 </div>
               </div>
 
+              {!isLogin && (
+                <div className="space-y-2 animate-in slide-in-from-top-2 duration-300">
+                  <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Confirmar Clave</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className={`h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600 ${!passwordsMatch && confirmPassword !== "" ? "border-red-500/50 focus:border-red-500" : "focus:border-primary/50"
+                        }`}
+                      required
+                      minLength={6}
+                    />
+                  </div>
+                  {!passwordsMatch && confirmPassword !== "" && (
+                    <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest ml-1 flex items-center gap-1 animate-pulse">
+                      <AlertCircle className="h-3 w-3" /> Las contraseñas no coinciden
+                    </p>
+                  )}
+                </div>
+              )}
+
               <Button
                 type="submit"
-                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest text-xs group transition-all"
-                disabled={loading}
+                className={`w-full h-12 rounded-xl font-black uppercase tracking-widest text-xs group transition-all ${!passwordsMatch && !isLogin ? "bg-slate-700 cursor-not-allowed" : "bg-primary hover:bg-primary/80 text-white"
+                  }`}
+                disabled={loading || (!passwordsMatch && !isLogin)}
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
