@@ -77,28 +77,24 @@ export const materiales: Record<string, MaterialVideo> = {
   },
   "hm-2": {
     videoId: "hm-2",
-    quiz: { url: "/quiz/video-07-quiz.html" },
     infografia: { url: "/videos/video7/infografia.png", descripcion: "Series Espaciales" },
     pdf: { url: "/videos/video7/presentacion.pdf", titulo: "Guía: Series Espaciales" },
     podcast: { url: "/videos/video7/podcast.m4a", duracion: "3:00" }
   },
   "hm-3": {
     videoId: "hm-3",
-    quiz: { url: "/quiz/video-08-quiz.html" },
     infografia: { url: "/videos/video8/infografia.png", descripcion: "Imaginación Espacial" },
     pdf: { url: "/videos/video8/presentacion.pdf", titulo: "Guía: Imaginación Espacial" },
     podcast: { url: "/videos/video8/podcast.m4a", duracion: "3:00" }
   },
   "hm-4": {
     videoId: "hm-4",
-    quiz: { url: "/quiz/video-09-quiz.html" },
     infografia: { url: "/videos/video9/infografia.png", descripcion: "Razonamiento Lógico" },
     pdf: { url: "/videos/video9/presentacion.pdf", titulo: "Guía: Razonamiento" },
     podcast: { url: "/videos/video9/podcast.m4a", duracion: "3:00" }
   },
   "hm-5": {
     videoId: "hm-5",
-    quiz: { url: "/quiz/video-10-quiz.html" },
     infografia: { url: "/videos/video10/infografia.png", descripcion: "Integración HM" },
     pdf: { url: "/videos/video10/presentacion.pdf", titulo: "Guía: Integración HM" },
     podcast: { url: "/videos/video10/podcast.m4a", duracion: "3:00" }
@@ -109,49 +105,42 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "bio-1": {
     videoId: "bio-1",
-    quiz: { url: "/quiz/video-11-quiz.html" },
     infografia: { url: "/videos/video11/infografia.png", descripcion: "Bases de Biología" },
     pdf: { url: "/videos/video11/presentacion.pdf", titulo: "Guía: Biología 1" },
     podcast: { url: "/videos/video11/podcast.m4a", duracion: "3:00" }
   },
   "bio-2": {
     videoId: "bio-2",
-    quiz: { url: "/quiz/video-12-quiz.html" },
     infografia: { url: "/videos/video12/infografia.png", descripcion: "Biodiversidad" },
     pdf: { url: "/videos/video12/presentacion.pdf", titulo: "Guía: Biodiversidad" },
     podcast: { url: "/videos/video12/podcast.m4a", duracion: "3:00" }
   },
   "bio-3": {
     videoId: "bio-3",
-    quiz: { url: "/quiz/video-13-quiz.html" },
     infografia: { url: "/videos/video13/infografia.png", descripcion: "Metabolismo" },
     pdf: { url: "/videos/video13/presentacion.pdf", titulo: "Guía: Metabolismo" },
     podcast: { url: "/videos/video13/podcast.m4a", duracion: "3:00" }
   },
   "bio-4": {
     videoId: "bio-4",
-    quiz: { url: "/quiz/video-14-quiz.html" },
     infografia: { url: "/videos/video14/infografia.png", descripcion: "Ciclos y Nutrición" },
     pdf: { url: "/videos/video14/presentacion.pdf", titulo: "Guía: Ciclos" },
     podcast: { url: "/videos/video14/podcast.m4a", duracion: "3:00" }
   },
   "bio-5": {
     videoId: "bio-5",
-    quiz: { url: "/quiz/video-15-quiz.html" },
     infografia: { url: "/videos/video15/infografia.png", descripcion: "Salud y Reproducción" },
     pdf: { url: "/videos/video15/presentacion.pdf", titulo: "Guía: Salud" },
     podcast: { url: "/videos/video15/podcast.m4a", duracion: "3:00" }
   },
   "bio-6": {
     videoId: "bio-6",
-    quiz: { url: "/quiz/video-16-quiz.html" },
     infografia: { url: "/videos/video16/infografia.png", descripcion: "Genética" },
     pdf: { url: "/videos/video16/presentacion.pdf", titulo: "Guía: Genética" },
     podcast: { url: "/videos/video16/podcast.m4a", duracion: "3:00" }
   },
   "bio-7": {
     videoId: "bio-7",
-    quiz: { url: "/quiz/video-17-quiz.html" },
     infografia: { url: "/videos/video17/infografia.png", descripcion: "Integración Biología" },
     pdf: { url: "/videos/video17/presentacion.pdf", titulo: "Guía: Biología Integral" },
     podcast: { url: "/videos/video17/podcast.m4a", duracion: "3:00" }
@@ -162,49 +151,42 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "fis-1": {
     videoId: "fis-1",
-    quiz: { url: "/quiz/video-18-quiz.html" },
     infografia: { url: "/videos/video18/infografia.png", descripcion: "Introducción a Física" },
     pdf: { url: "/videos/video18/presentacion.pdf", titulo: "Guía: Física 1" },
     podcast: { url: "/videos/video18/podcast.m4a", duracion: "3:00" }
   },
   "fis-2": {
     videoId: "fis-2",
-    quiz: { url: "/quiz/video-19-quiz.html" },
     infografia: { url: "/videos/video19/infografia.png", descripcion: "Leyes de Newton" },
     pdf: { url: "/videos/video19/presentacion.pdf", titulo: "Guía: Leyes de Newton" },
     podcast: { url: "/videos/video19/podcast.m4a", duracion: "3:00" }
   },
   "fis-3": {
     videoId: "fis-3",
-    quiz: { url: "/quiz/video-20-quiz.html" },
     infografia: { url: "/videos/video20/infografia.png", descripcion: "Tercera Ley" },
     pdf: { url: "/videos/video20/presentacion.pdf", titulo: "Guía: Fuerzas" },
     podcast: { url: "/videos/video20/podcast.m4a", duracion: "3:00" }
   },
   "fis-4": {
     videoId: "fis-4",
-    quiz: { url: "/quiz/video-21-quiz.html" },
     infografia: { url: "/videos/video21/infografia.png", descripcion: "Energía y Trabajo" },
     pdf: { url: "/videos/video21/presentacion.pdf", titulo: "Guía: Energía" },
     podcast: { url: "/videos/video21/podcast.m4a", duracion: "3:00" }
   },
   "fis-5": {
     videoId: "fis-5",
-    quiz: { url: "/quiz/video-22-quiz.html" },
     infografia: { url: "/videos/video22/infografia.png", descripcion: "Electricidad" },
     pdf: { url: "/videos/video22/presentacion.pdf", titulo: "Guía: Electricidad" },
     podcast: { url: "/videos/video22/podcast.m4a", duracion: "3:00" }
   },
   "fis-6": {
     videoId: "fis-6",
-    quiz: { url: "/quiz/video-23-quiz.html" },
     infografia: { url: "/videos/video23/infografia.png", descripcion: "Ondas y Luz" },
     pdf: { url: "/videos/video23/presentacion.pdf", titulo: "Guía: Ondas" },
     podcast: { url: "/videos/video23/podcast.m4a", duracion: "3:00" }
   },
   "fis-7": {
     videoId: "fis-7",
-    quiz: { url: "/quiz/video-24-quiz.html" },
     infografia: { url: "/videos/video24/infografia.png", descripcion: "Física Moderna" },
     pdf: { url: "/videos/video24/presentacion.pdf", titulo: "Guía: Física Moderna" },
     podcast: { url: "/videos/video24/podcast.m4a", duracion: "3:00" }
@@ -215,42 +197,36 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "qui-1": {
     videoId: "qui-1",
-    quiz: { url: "/quiz/video-25-quiz.html" },
     infografia: { url: "/videos/video25/infografia.png", descripcion: "Introducción a Química" },
     pdf: { url: "/videos/video25/presentacion.pdf", titulo: "Guía: Química 1" },
     podcast: { url: "/videos/video25/podcast.m4a", duracion: "3:00" }
   },
   "qui-2": {
     videoId: "qui-2",
-    quiz: { url: "/quiz/video-26-quiz.html" },
     infografia: { url: "/videos/video26/infografia.png", descripcion: "Estructura Atómica" },
     pdf: { url: "/videos/video26/presentacion.pdf", titulo: "Guía: Átomos" },
     podcast: { url: "/videos/video26/podcast.m4a", duracion: "3:00" }
   },
   "qui-3": {
     videoId: "qui-3",
-    quiz: { url: "/quiz/video-27-quiz.html" },
     infografia: { url: "/videos/video27/infografia.png", descripcion: "Tabla Periódica" },
     pdf: { url: "/videos/video27/presentacion.pdf", titulo: "Guía: Tabla Periódica" },
     podcast: { url: "/videos/video27/podcast.m4a", duracion: "3:00" }
   },
   "qui-4": {
     videoId: "qui-4",
-    quiz: { url: "/quiz/video-28-quiz.html" },
     infografia: { url: "/videos/video28/infografia.png", descripcion: "Enlaces Químicos" },
     pdf: { url: "/videos/video28/presentacion.pdf", titulo: "Guía: Enlaces" },
     podcast: { url: "/videos/video28/podcast.m4a", duracion: "3:00" }
   },
   "qui-5": {
     videoId: "qui-5",
-    quiz: { url: "/quiz/video-29-quiz.html" },
     infografia: { url: "/videos/video29/infografia.png", descripcion: "Reacciones Químicas" },
     pdf: { url: "/videos/video29/presentacion.pdf", titulo: "Guía: Reacciones" },
     podcast: { url: "/videos/video29/podcast.mp4", duracion: "3:00" }
   },
   "qui-6": {
     videoId: "qui-6",
-    quiz: { url: "/quiz/video-30-quiz.html" },
     infografia: { url: "/videos/video30/infografia.png", descripcion: "Ácidos y Redox" },
     pdf: { url: "/videos/video30/presentacion.pdf", titulo: "Guía: Ácidos" },
     podcast: { url: "/videos/video30/podcast.mp4", duracion: "3:00" }
@@ -261,101 +237,74 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "mat-1": {
     videoId: "mat-1",
-    quiz: { url: "/quiz/video-31-quiz.html" },
     infografia: { url: "/videos/video31/infografia.png", descripcion: "Números Enteros" },
     pdf: { url: "/videos/video31/presentacion.pdf", titulo: "Guía: Enteros" },
     podcast: { url: "/videos/video31/podcast.m4a", duracion: "3:00" }
   },
   "mat-2": {
     videoId: "mat-2",
-    quiz: { url: "/quiz/video-32-quiz.html" },
     infografia: { url: "/videos/video32/infografia.png", descripcion: "Fracciones y Decimales" },
-    pdf: { url: "/videos/video32/presentacion.pdf", titulo: "Guía: Fracciones" },
-    podcast: { url: "/videos/video32/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video32/presentacion.pdf", titulo: "Guía: Fracciones" }
   },
   "mat-3": {
     videoId: "mat-3",
-    quiz: { url: "/quiz/video-33-quiz.html" },
     infografia: { url: "/videos/video33/infografia.png", descripcion: "Introducción al Álgebra" },
-    pdf: { url: "/videos/video33/presentacion.pdf", titulo: "Guía: Álgebra" },
-    podcast: { url: "/videos/video33/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video33/presentacion.pdf", titulo: "Guía: Álgebra" }
   },
   "mat-4": {
     videoId: "mat-4",
-    quiz: { url: "/quiz/video-34-quiz.html" },
     infografia: { url: "/videos/video34/infografia.png", descripcion: "Ecuaciones de Primer Grado" },
-    pdf: { url: "/videos/video34/presentacion.pdf", titulo: "Guía: Ecuaciones 1" },
-    podcast: { url: "/videos/video34/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video34/presentacion.pdf", titulo: "Guía: Ecuaciones 1" }
   },
   "mat-5": {
     videoId: "mat-5",
-    quiz: { url: "/quiz/video-35-quiz.html" },
     infografia: { url: "/videos/video35/infografia.png", descripcion: "Sistemas de Ecuaciones" },
-    pdf: { url: "/videos/video35/presentacion.pdf", titulo: "Guía: Sistemas" },
-    podcast: { url: "/videos/video35/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video35/presentacion.pdf", titulo: "Guía: Sistemas" }
   },
   "mat-6": {
     videoId: "mat-6",
-    quiz: { url: "/quiz/video-36-quiz.html" },
     infografia: { url: "/videos/video36/infografia.png", descripcion: "Ecuaciones Cuadráticas" },
-    pdf: { url: "/videos/video36/presentacion.pdf", titulo: "Guía: Cuadráticas" },
-    podcast: { url: "/videos/video36/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video36/presentacion.pdf", titulo: "Guía: Cuadráticas" }
   },
   "mat-7": {
     videoId: "mat-7",
-    quiz: { url: "/quiz/video-37-quiz.html" },
     infografia: { url: "/videos/video37/infografia.png", descripcion: "Proporcionalidad" },
-    pdf: { url: "/videos/video37/presentacion.pdf", titulo: "Guía: Proporcionalidad" },
-    podcast: { url: "/videos/video37/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video37/presentacion.pdf", titulo: "Guía: Proporcionalidad" }
   },
   "mat-8": {
     videoId: "mat-8",
-    quiz: { url: "/quiz/video-38-quiz.html" },
     infografia: { url: "/videos/video38/infografia.png", descripcion: "Estadística Descriptiva" },
-    pdf: { url: "/videos/video38/presentacion.pdf", titulo: "Guía: Estadística" },
-    podcast: { url: "/videos/video38/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video38/presentacion.pdf", titulo: "Guía: Estadística" }
   },
   "mat-9": {
     videoId: "mat-9",
-    quiz: { url: "/quiz/video-39-quiz.html" },
     infografia: { url: "/videos/video39/infografia.png", descripcion: "Probabilidad Básica" },
-    pdf: { url: "/videos/video39/presentacion.pdf", titulo: "Guía: Probabilidad" },
-    podcast: { url: "/videos/video39/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video39/presentacion.pdf", titulo: "Guía: Probabilidad" }
   },
   "mat-10": {
     videoId: "mat-10",
-    quiz: { url: "/quiz/video-40-quiz.html" },
     infografia: { url: "/videos/video40/infografia.png", descripcion: "Elementos de Geometría" },
-    pdf: { url: "/videos/video40/presentacion.pdf", titulo: "Guía: Geometría 1" },
-    podcast: { url: "/videos/video40/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video40/presentacion.pdf", titulo: "Guía: Geometría 1" }
   },
   "mat-11": {
     videoId: "mat-11",
-    quiz: { url: "/quiz/video-41-quiz.html" },
     infografia: { url: "/videos/video41/infografia.png", descripcion: "Semejanza y Pitágoras" },
-    pdf: { url: "/videos/video41/presentacion.pdf", titulo: "Guía: Pitágoras" },
-    podcast: { url: "/videos/video41/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video41/presentacion.pdf", titulo: "Guía: Pitágoras" }
   },
   "mat-12": {
     videoId: "mat-12",
-    quiz: { url: "/quiz/video-42-quiz.html" },
     infografia: { url: "/videos/video42/infografia.png", descripcion: "Razones Trigonométricas" },
-    pdf: { url: "/videos/video42/presentacion.pdf", titulo: "Guía: Trigonometría" },
-    podcast: { url: "/videos/video42/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video42/presentacion.pdf", titulo: "Guía: Trigonometría" }
   },
   "mat-13": {
     videoId: "mat-13",
-    quiz: { url: "/quiz/video-43-quiz.html" },
     infografia: { url: "/videos/video43/infografia.png", descripcion: "Perímetros y Áreas" },
-    pdf: { url: "/videos/video43/presentacion.pdf", titulo: "Guía: Perímetros" },
-    podcast: { url: "/videos/video43/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video43/presentacion.pdf", titulo: "Guía: Perímetros" }
   },
   "mat-14": {
     videoId: "mat-14",
-    quiz: { url: "/quiz/video-44-quiz.html" },
     infografia: { url: "/videos/video44/infografia.png", descripcion: "Volúmenes" },
-    pdf: { url: "/videos/video44/presentacion.pdf", titulo: "Guía: Volúmenes" },
-    podcast: { url: "/videos/video44/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video44/presentacion.pdf", titulo: "Guía: Volúmenes" }
   },
 
   // ============================================
@@ -363,52 +312,38 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "hu-1": {
     videoId: "hu-1",
-    quiz: { url: "/quiz/video-45-quiz.html" },
     infografia: { url: "/videos/video45/infografia.png", descripcion: "Renacimiento" },
-    pdf: { url: "/videos/video45/presentacion.pdf", titulo: "Guía: Renacimiento" },
-    podcast: { url: "/videos/video45/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video45/presentacion.pdf", titulo: "Guía: Renacimiento" }
   },
   "hu-2": {
     videoId: "hu-2",
-    quiz: { url: "/quiz/video-46-quiz.html" },
     infografia: { url: "/videos/video46/infografia.png", descripcion: "Ilustración" },
-    pdf: { url: "/videos/video46/presentacion.pdf", titulo: "Guía: Ilustración" },
-    podcast: { url: "/videos/video46/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video46/presentacion.pdf", titulo: "Guía: Ilustración" }
   },
   "hu-3": {
     videoId: "hu-3",
-    quiz: { url: "/quiz/video-47-quiz.html" },
     infografia: { url: "/videos/video47/infografia.png", descripcion: "Revolución Industrial" },
-    pdf: { url: "/videos/video47/presentacion.pdf", titulo: "Guía: Revolución Industrial" },
-    podcast: { url: "/videos/video47/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video47/presentacion.pdf", titulo: "Guía: Revolución Industrial" }
   },
   "hu-4": {
     videoId: "hu-4",
-    quiz: { url: "/quiz/video-48-quiz.html" },
     infografia: { url: "/videos/video48/infografia.png", descripcion: "Imperialismo y 1GM" },
-    pdf: { url: "/videos/video48/presentacion.pdf", titulo: "Guía: Imperialismo" },
-    podcast: { url: "/videos/video48/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video48/presentacion.pdf", titulo: "Guía: Imperialismo" }
   },
   "hu-5": {
     videoId: "hu-5",
-    quiz: { url: "/quiz/video-49-quiz.html" },
     infografia: { url: "/videos/video49/infografia.png", descripcion: "Entreguerras" },
-    pdf: { url: "/videos/video49/presentacion.pdf", titulo: "Guía: Entreguerras" },
-    podcast: { url: "/videos/video49/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video49/presentacion.pdf", titulo: "Guía: Entreguerras" }
   },
   "hu-6": {
     videoId: "hu-6",
-    quiz: { url: "/quiz/video-50-quiz.html" },
     infografia: { url: "/videos/video50/infografia.png", descripcion: "Segunda Guerra Mundial" },
-    pdf: { url: "/videos/video50/presentacion.pdf", titulo: "Guía: 2GM" },
-    podcast: { url: "/videos/video50/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video50/presentacion.pdf", titulo: "Guía: 2GM" }
   },
   "hu-7": {
     videoId: "hu-7",
-    quiz: { url: "/quiz/video-51-quiz.html" },
     infografia: { url: "/videos/video51/infografia.png", descripcion: "Guerra Fría" },
-    pdf: { url: "/videos/video51/presentacion.pdf", titulo: "Guía: Guerra Fría" },
-    podcast: { url: "/videos/video51/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video51/presentacion.pdf", titulo: "Guía: Guerra Fría" }
   },
 
   // ============================================
@@ -416,52 +351,38 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "hm-mx-1": {
     videoId: "hm-mx-1",
-    quiz: { url: "/quiz/video-52-quiz.html" },
     infografia: { url: "/videos/video52/infografia.png", descripcion: "Culturas Prehispánicas" },
-    pdf: { url: "/videos/video52/presentacion.pdf", titulo: "Guía: Prehispánico" },
-    podcast: { url: "/videos/video52/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video52/presentacion.pdf", titulo: "Guía: Prehispánico" }
   },
   "hm-mx-2": {
     videoId: "hm-mx-2",
-    quiz: { url: "/quiz/video-53-quiz.html" },
     infografia: { url: "/videos/video53/infografia.png", descripcion: "Conquista de México" },
-    pdf: { url: "/videos/video53/presentacion.pdf", titulo: "Guía: Conquista" },
-    podcast: { url: "/videos/video53/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video53/presentacion.pdf", titulo: "Guía: Conquista" }
   },
   "hm-mx-3": {
     videoId: "hm-mx-3",
-    quiz: { url: "/quiz/video-54-quiz.html" },
     infografia: { url: "/videos/video54/infografia.png", descripcion: "Virreinato" },
-    pdf: { url: "/videos/video54/presentacion.pdf", titulo: "Guía: Virreinato" },
-    podcast: { url: "/videos/video54/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video54/presentacion.pdf", titulo: "Guía: Virreinato" }
   },
   "hm-mx-4": {
     videoId: "hm-mx-4",
-    quiz: { url: "/quiz/video-55-quiz.html" },
     infografia: { url: "/videos/video55/infografia.png", descripcion: "Independencia" },
-    pdf: { url: "/videos/video55/presentacion.pdf", titulo: "Guía: Independencia" },
-    podcast: { url: "/videos/video55/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video55/presentacion.pdf", titulo: "Guía: Independencia" }
   },
   "hm-mx-5": {
     videoId: "hm-mx-5",
-    quiz: { url: "/quiz/video-56-quiz.html" },
     infografia: { url: "/videos/video56/infografia.png", descripcion: "México Siglo XIX" },
-    pdf: { url: "/videos/video56/presentacion.pdf", titulo: "Guía: Siglo XIX" },
-    podcast: { url: "/videos/video56/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video56/presentacion.pdf", titulo: "Guía: Siglo XIX" }
   },
   "hm-mx-6": {
     videoId: "hm-mx-6",
-    quiz: { url: "/quiz/video-57-quiz.html" },
     infografia: { url: "/videos/video57/infografia.png", descripcion: "Revolución Mexicana" },
-    pdf: { url: "/videos/video57/presentacion.pdf", titulo: "Guía: Revolución" },
-    podcast: { url: "/videos/video57/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video57/presentacion.pdf", titulo: "Guía: Revolución" }
   },
   "hm-mx-7": {
     videoId: "hm-mx-7",
-    quiz: { url: "/quiz/video-58-quiz.html" },
     infografia: { url: "/videos/video58/infografia.png", descripcion: "México Contemporáneo" },
-    pdf: { url: "/videos/video58/presentacion.pdf", titulo: "Guía: Contemporáneo" },
-    podcast: { url: "/videos/video58/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video58/presentacion.pdf", titulo: "Guía: Contemporáneo" }
   },
 
   // ============================================
@@ -469,73 +390,55 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "esp-1": {
     videoId: "esp-1",
-    quiz: { url: "/quiz/video-59-quiz.html" },
     infografia: { url: "/videos/video59/infografia.png", descripcion: "Fichas Bibliográficas" },
     pdf: { url: "/videos/video59/presentacion.pdf", titulo: "Guía: Fichas" },
     podcast: { url: "/videos/video59/podcast.m4a", duracion: "3:00" }
   },
   "esp-2": {
     videoId: "esp-2",
-    quiz: { url: "/quiz/video-60-quiz.html" },
     infografia: { url: "/videos/video60/infografia.png", descripcion: "Coherencia y Cohesión I" },
-    pdf: { url: "/videos/video60/presentacion.pdf", titulo: "Guía: Coherencia 1" },
-    podcast: { url: "/videos/video60/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video60/presentacion.pdf", titulo: "Guía: Coherencia 1" }
   },
   "esp-3": {
     videoId: "esp-3",
-    quiz: { url: "/quiz/video-61-quiz.html" },
     infografia: { url: "/videos/video61/infografia.png", descripcion: "Coherencia y Cohesión II" },
-    pdf: { url: "/videos/video61/presentacion.pdf", titulo: "Guía: Coherencia 2" },
-    podcast: { url: "/videos/video61/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video61/presentacion.pdf", titulo: "Guía: Coherencia 2" }
   },
   "esp-4": {
     videoId: "esp-4",
-    quiz: { url: "/quiz/video-62-quiz.html" },
     infografia: { url: "/videos/video62/infografia.png", descripcion: "Textos Informativos" },
     pdf: { url: "/videos/video62/presentacion.pdf", titulo: "Guía: Informativos" },
     podcast: { url: "/videos/video62/podcast.m4a", duracion: "3:00" }
   },
   "esp-5": {
     videoId: "esp-5",
-    quiz: { url: "/quiz/video-63-quiz.html" },
     infografia: { url: "/videos/video63/infografia.png", descripcion: "Textos Publicitarios" },
-    pdf: { url: "/videos/video63/presentacion.pdf", titulo: "Guía: Publicitarios" },
-    podcast: { url: "/videos/video63/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video63/presentacion.pdf", titulo: "Guía: Publicitarios" }
   },
   "esp-6": {
     videoId: "esp-6",
-    quiz: { url: "/quiz/video-64-quiz.html" },
     infografia: { url: "/videos/video64/infografia.png", descripcion: "Textos Literarios I - Narrativa" },
-    pdf: { url: "/videos/video64/presentacion.pdf", titulo: "Guía: Narrativa" },
-    podcast: { url: "/videos/video64/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video64/presentacion.pdf", titulo: "Guía: Narrativa" }
   },
   "esp-7": {
     videoId: "esp-7",
-    quiz: { url: "/quiz/video-65-quiz.html" },
     infografia: { url: "/videos/video65/infografia.png", descripcion: "Textos Literarios II - Lírica" },
-    pdf: { url: "/videos/video65/presentacion.pdf", titulo: "Guía: Lírica" },
-    podcast: { url: "/videos/video65/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video65/presentacion.pdf", titulo: "Guía: Lírica" }
   },
   "esp-8": {
     videoId: "esp-8",
-    quiz: { url: "/quiz/video-66-quiz.html" },
     infografia: { url: "/videos/video66/infografia.png", descripcion: "Ortografía Estratégica" },
-    pdf: { url: "/videos/video66/presentacion.pdf", titulo: "Guía: Ortografía" },
-    podcast: { url: "/videos/video66/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video66/presentacion.pdf", titulo: "Guía: Ortografía" }
   },
   "esp-9": {
     videoId: "esp-9",
-    quiz: { url: "/quiz/video-67-quiz.html" },
     infografia: { url: "/videos/video67/infografia.png", descripcion: "Redacción Efectiva" },
-    pdf: { url: "/videos/video67/presentacion.pdf", titulo: "Guía: Redacción" },
-    podcast: { url: "/videos/video67/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video67/presentacion.pdf", titulo: "Guía: Redacción" }
   },
   "esp-10": {
     videoId: "esp-10",
-    quiz: { url: "/quiz/video-68-quiz.html" },
     infografia: { url: "/videos/video68/infografia.png", descripcion: "Integración Total Español" },
-    pdf: { url: "/videos/video68/presentacion.pdf", titulo: "Guía: Integración Español" },
-    podcast: { url: "/videos/video68/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video68/presentacion.pdf", titulo: "Guía: Integración Español" }
   },
 
   // ============================================
@@ -543,59 +446,43 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "fce-1": {
     videoId: "fce-1",
-    quiz: { url: "/quiz/video-69-quiz.html" },
     infografia: { url: "/videos/video69/infografia.png", descripcion: "Fundamentos Personales" },
-    pdf: { url: "/videos/video69/presentacion.pdf", titulo: "Guía: Fundamentos" },
-    podcast: { url: "/videos/video69/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video69/presentacion.pdf", titulo: "Guía: Fundamentos" }
   },
   "fce-2": {
     videoId: "fce-2",
-    quiz: { url: "/quiz/video-70-quiz.html" },
     infografia: { url: "/videos/video70/infografia.png", descripcion: "Adolescencia y Sociedad" },
-    pdf: { url: "/videos/video70/presentacion.pdf", titulo: "Guía: Adolescencia" },
-    podcast: { url: "/videos/video70/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video70/presentacion.pdf", titulo: "Guía: Adolescencia" }
   },
   "fce-3": {
     videoId: "fce-3",
-    quiz: { url: "/quiz/video-71-quiz.html" },
     infografia: { url: "/videos/video71/infografia.png", descripcion: "El Estado Mexicano" },
-    pdf: { url: "/videos/video71/presentacion.pdf", titulo: "Guía: Estado" },
-    podcast: { url: "/videos/video71/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video71/presentacion.pdf", titulo: "Guía: Estado" }
   },
   "fce-4": {
     videoId: "fce-4",
-    quiz: { url: "/quiz/video-72-quiz.html" },
     infografia: { url: "/videos/video72/infografia.png", descripcion: "Democracia y Derechos Humanos" },
-    pdf: { url: "/videos/video72/presentacion.pdf", titulo: "Guía: Democracia" },
-    podcast: { url: "/videos/video72/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video72/presentacion.pdf", titulo: "Guía: Democracia" }
   },
   "fce-5": {
     videoId: "fce-5",
-    quiz: { url: "/quiz/video-73-quiz.html" },
     infografia: { url: "/videos/video73/infografia.png", descripcion: "Sistema de Partidos" },
-    pdf: { url: "/videos/video73/presentacion.pdf", titulo: "Guía: Partidos" },
-    podcast: { url: "/videos/video73/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video73/presentacion.pdf", titulo: "Guía: Partidos" }
   },
   "fce-6": {
     videoId: "fce-6",
-    quiz: { url: "/quiz/video-74-quiz.html" },
     infografia: { url: "/videos/video74/infografia.png", descripcion: "Organizaciones de la Sociedad Civil" },
-    pdf: { url: "/videos/video74/presentacion.pdf", titulo: "Guía: Sociedad Civil" },
-    podcast: { url: "/videos/video74/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video74/presentacion.pdf", titulo: "Guía: Sociedad Civil" }
   },
   "fce-7": {
     videoId: "fce-7",
-    quiz: { url: "/quiz/video-75-quiz.html" },
     infografia: { url: "/videos/video75/infografia.png", descripcion: "Medios de Comunicación" },
-    pdf: { url: "/videos/video75/presentacion.pdf", titulo: "Guía: Medios" },
-    podcast: { url: "/videos/video75/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video75/presentacion.pdf", titulo: "Guía: Medios" }
   },
   "fce-8": {
     videoId: "fce-8",
-    quiz: { url: "/quiz/video-76-quiz.html" },
     infografia: { url: "/videos/video76/infografia.png", descripcion: "Corrupción y Transparencia" },
-    pdf: { url: "/videos/video76/presentacion.pdf", titulo: "Guía: Corrupción" },
-    podcast: { url: "/videos/video76/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video76/presentacion.pdf", titulo: "Guía: Corrupción" }
   },
 
   // ============================================
@@ -603,73 +490,53 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "geo-1": {
     videoId: "geo-1",
-    quiz: { url: "/quiz/video-77-quiz.html" },
     infografia: { url: "/videos/video77/infografia.png", descripcion: "Espacio Geográfico" },
-    pdf: { url: "/videos/video77/presentacion.pdf", titulo: "Guía: Geografía 1" },
-    podcast: { url: "/videos/video77/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video77/presentacion.pdf", titulo: "Guía: Geografía 1" }
   },
   "geo-2": {
     videoId: "geo-2",
-    quiz: { url: "/quiz/video-78-quiz.html" },
     infografia: { url: "/videos/video78/infografia.png", descripcion: "Recursos Naturales" },
-    pdf: { url: "/videos/video78/presentacion.pdf", titulo: "Guía: Recursos" },
-    podcast: { url: "/videos/video78/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video78/presentacion.pdf", titulo: "Guía: Recursos" }
   },
   "geo-3": {
     videoId: "geo-3",
-    quiz: { url: "/quiz/video-79-quiz.html" },
     infografia: { url: "/videos/video79/infografia.png", descripcion: "Biosfera y Biodiversidad" },
-    pdf: { url: "/videos/video79/presentacion.pdf", titulo: "Guía: Biosfera" },
-    podcast: { url: "/videos/video79/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video79/presentacion.pdf", titulo: "Guía: Biosfera" }
   },
   "geo-4": {
     videoId: "geo-4",
-    quiz: { url: "/quiz/video-80-quiz.html" },
     infografia: { url: "/videos/video80/infografia.png", descripcion: "Desarrollo Sustentable" },
-    pdf: { url: "/videos/video80/presentacion.pdf", titulo: "Guía: Sustentable" },
-    podcast: { url: "/videos/video80/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video80/presentacion.pdf", titulo: "Guía: Sustentable" }
   },
   "geo-5": {
     videoId: "geo-5",
-    quiz: { url: "/quiz/video-81-quiz.html" },
     infografia: { url: "/videos/video81/infografia.png", descripcion: "Población y Migración" },
-    pdf: { url: "/videos/video81/presentacion.pdf", titulo: "Guía: Población" },
-    podcast: { url: "/videos/video81/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video81/presentacion.pdf", titulo: "Guía: Población" }
   },
   "geo-6": {
     videoId: "geo-6",
-    quiz: { url: "/quiz/video-82-quiz.html" },
     infografia: { url: "/videos/video82/infografia.png", descripcion: "Vulnerabilidad y Resiliencia" },
-    pdf: { url: "/videos/video82/presentacion.pdf", titulo: "Guía: Resiliencia" },
-    podcast: { url: "/videos/video82/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video82/presentacion.pdf", titulo: "Guía: Resiliencia" }
   },
   "geo-7": {
     videoId: "geo-7",
-    quiz: { url: "/quiz/video-83-quiz.html" },
     infografia: { url: "/videos/video83/infografia.png", descripcion: "Economía Global" },
-    pdf: { url: "/videos/video83/presentacion.pdf", titulo: "Guía: Economía" },
-    podcast: { url: "/videos/video83/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video83/presentacion.pdf", titulo: "Guía: Economía" }
   },
   "geo-8": {
     videoId: "geo-8",
-    quiz: { url: "/quiz/video-84-quiz.html" },
     infografia: { url: "/videos/video84/infografia.png", descripcion: "El Mundo Desigual" },
-    pdf: { url: "/videos/video84/presentacion.pdf", titulo: "Guía: Desigualdad" },
-    podcast: { url: "/videos/video84/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video84/presentacion.pdf", titulo: "Guía: Desigualdad" }
   },
   "geo-9": {
     videoId: "geo-9",
-    quiz: { url: "/quiz/video-85-quiz.html" },
     infografia: { url: "/videos/video85/infografia.png", descripcion: "Cultura e Identidad" },
-    pdf: { url: "/videos/video85/presentacion.pdf", titulo: "Guía: Cultura" },
-    podcast: { url: "/videos/video85/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video85/presentacion.pdf", titulo: "Guía: Cultura" }
   },
   "geo-10": {
     videoId: "geo-10",
-    quiz: { url: "/quiz/video-86-quiz.html" },
     infografia: { url: "/videos/video86/infografia.png", descripcion: "Patrimonio y Soberanía" },
-    pdf: { url: "/videos/video86/presentacion.pdf", titulo: "Guía: Patrimonio" },
-    podcast: { url: "/videos/video86/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video86/presentacion.pdf", titulo: "Guía: Patrimonio" }
   },
 
   // ============================================
@@ -677,30 +544,22 @@ export const materiales: Record<string, MaterialVideo> = {
   // ============================================
   "rep-1": {
     videoId: "rep-1",
-    quiz: { url: "/quiz/video-87-quiz.html" },
     infografia: { url: "/videos/video87/infografia.png", descripcion: "Repaso Ciencias y Matemáticas" },
-    pdf: { url: "/videos/video87/presentacion.pdf", titulo: "Guía: Repaso Ciencias" },
-    podcast: { url: "/videos/video87/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video87/presentacion.pdf", titulo: "Guía: Repaso Ciencias" }
   },
   "rep-2": {
     videoId: "rep-2",
-    quiz: { url: "/quiz/video-88-quiz.html" },
     infografia: { url: "/videos/video88/infografia.png", descripcion: "Repaso Historia y Sociales" },
-    pdf: { url: "/videos/video88/presentacion.pdf", titulo: "Guía: Repaso Historia" },
-    podcast: { url: "/videos/video88/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video88/presentacion.pdf", titulo: "Guía: Repaso Historia" }
   },
   "rep-3": {
     videoId: "rep-3",
-    quiz: { url: "/quiz/video-89-quiz.html" },
     infografia: { url: "/videos/video89/infografia.png", descripcion: "Estrategias Examen en Línea" },
-    pdf: { url: "/videos/video89/presentacion.pdf", titulo: "Guía: Estrategias" },
-    podcast: { url: "/videos/video89/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video89/presentacion.pdf", titulo: "Guía: Estrategias" }
   },
   "rep-4": {
     videoId: "rep-4",
-    quiz: { url: "/quiz/video-90-quiz.html" },
     infografia: { url: "/videos/video90/infografia.png", descripcion: "Cierre Total" },
-    pdf: { url: "/videos/video90/presentacion.pdf", titulo: "Guía: Cierre" },
-    podcast: { url: "/videos/video90/podcast.m4a", duracion: "3:00" }
+    pdf: { url: "/videos/video90/presentacion.pdf", titulo: "Guía: Cierre" }
   }
 };
