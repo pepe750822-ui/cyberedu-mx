@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -61,6 +61,25 @@ const Header = () => {
             >
               Áreas
             </Link>
+            <a
+              href="https://cyberedumx.com/libro/manual_digital_ECOEMS.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              Manual
+            </a>
+            <a
+              href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-bold text-emerald-500 hover:text-emerald-400 transition-colors flex items-center gap-1 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 hover:border-emerald-500/40"
+            >
+              <ShoppingCart className="h-3.5 w-3.5" />
+              Curso Udemy
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </div>
 
           <GlobalSearch className="hidden md:block" />
@@ -153,6 +172,27 @@ const Header = () => {
                   >
                     Áreas de Estudio
                   </Link>
+                  <a
+                    href="https://cyberedumx.com/libro/manual_digital_ECOEMS.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <BookOpen className="h-5 w-5 text-amber-500" />
+                    Manual Digital ECOEMS
+                  </a>
+                  <a
+                    href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors text-emerald-500 font-bold border border-emerald-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <ShoppingCart className="h-5 w-5 text-emerald-500" />
+                    Curso Udemy – 128 Preguntas
+                    <ExternalLink className="h-4 w-4 ml-auto" />
+                  </a>
                 </div>
 
                 <div className="space-y-1">

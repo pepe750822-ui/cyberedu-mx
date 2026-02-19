@@ -12,7 +12,11 @@ import {
   Clock,
   BarChart3,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  ExternalLink,
+  ShoppingCart,
+  Star,
+  Brain
 } from "lucide-react";
 import { areas } from "@/data/areas";
 import { studioMapping, fullSimulators } from "@/data/studioMap";
@@ -203,6 +207,134 @@ const Index = () => {
                   >
                     Simulador POLI (IPN)
                   </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Manual Digital ECOEMS Section */}
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+          <div className="relative bg-slate-900 border border-white/10 rounded-[2.5rem] p-8 md:p-12 overflow-hidden">
+            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+              <BookOpen className="h-48 w-48 text-white -rotate-12" />
+            </div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="space-y-4 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400">
+                  <BookOpen className="h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Guía Completa</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">
+                  Manual <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 italic">Digital ECOEMS</span>
+                </h2>
+                <p className="text-slate-400 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                  Tu guía estratégica completa para dominar el examen. Temas desglosados, tips de estudio, ejercicios resueltos y todo lo que necesitas en un solo lugar.
+                </p>
+                <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <BookOpen className="h-3 w-3 text-amber-500" /> Temario Completo
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <Target className="h-3 w-3 text-orange-500" /> Ejercicios Resueltos
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <Sparkles className="h-3 w-3 text-rose-500" /> Tips Estratégicos
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-3 w-full md:w-auto">
+                <Button
+                  onClick={() => window.open("https://cyberedumx.com/libro/manual_digital_ECOEMS.html", "_blank")}
+                  className="h-20 px-10 rounded-3xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 group"
+                >
+                  <BookOpen className="mr-2 h-6 w-6" />
+                  ABRIR MANUAL
+                  <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 🔥 Curso de Udemy - ECOEMS 2026: 128 Preguntas Resueltas con NotebookLM */}
+        <div className="relative group" id="curso-udemy">
+          <div className="absolute -inset-1 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 rounded-[2.5rem] blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+          <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-2 border-emerald-500/40 rounded-[2.5rem] p-8 md:p-12 overflow-hidden">
+            {/* Decorative background elements */}
+            <div className="absolute top-0 right-0 p-8 opacity-[0.07] pointer-events-none">
+              <Brain className="h-56 w-56 text-emerald-400 -rotate-12" />
+            </div>
+            <div className="absolute bottom-0 left-0 p-8 opacity-[0.04] pointer-events-none">
+              <Star className="h-40 w-40 text-yellow-400 rotate-12" />
+            </div>
+            {/* Animated sparkles */}
+            <div className="absolute top-6 left-1/4 h-2 w-2 bg-emerald-400 rounded-full animate-ping opacity-40"></div>
+            <div className="absolute bottom-12 right-1/3 h-1.5 w-1.5 bg-yellow-400 rounded-full animate-ping opacity-30" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute top-1/3 right-1/4 h-1 w-1 bg-teal-300 rounded-full animate-ping opacity-50" style={{ animationDelay: '1s' }}></div>
+
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="space-y-5 text-center md:text-left flex-1">
+                {/* Badges row */}
+                <div className="flex flex-wrap justify-center md:justify-start gap-2">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 animate-bounce" style={{ animationDuration: '2s' }}>
+                    <ShoppingCart className="h-4 w-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Curso de Paga</span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
+                    <Brain className="h-4 w-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">NotebookLM AI</span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-400">
+                    <Star className="h-4 w-4" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Guía 2025 → 2026</span>
+                  </div>
+                </div>
+
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white leading-tight">
+                  ECOEMS 2026: <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-400 to-teal-400 italic">128 Preguntas</span>
+                  <br />
+                  <span className="text-2xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-400">Resueltas con NotebookLM</span>
+                </h2>
+
+                <p className="text-slate-300 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                  El <span className="text-emerald-400 font-bold">único recurso de paga</span> de la plataforma. Domina las 128 preguntas del examen con explicaciones detalladas potenciadas por IA con Google NotebookLM. Preparación definitiva para tu examen.
+                </p>
+
+                <div className="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                    <Target className="h-3.5 w-3.5 text-emerald-500" /> 128 Reactivos Resueltos
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                    <Brain className="h-3.5 w-3.5 text-teal-400" /> Explicaciones con IA
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                    <Video className="h-3.5 w-3.5 text-purple-400" /> Videos en Udemy
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                    <Star className="h-3.5 w-3.5 text-yellow-500" /> Acceso de por Vida
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4 w-full md:w-auto md:min-w-[280px]">
+                {/* Main CTA Button */}
+                <a
+                  href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3 h-20 px-10 rounded-3xl bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-500 hover:via-green-500 hover:to-teal-500 text-white text-lg font-black uppercase tracking-[0.15em] shadow-[0_10px_50px_rgba(16,185,129,0.4)] transition-all hover:scale-105 active:scale-95 hover:shadow-[0_15px_60px_rgba(16,185,129,0.5)] group"
+                >
+                  <ShoppingCart className="h-6 w-6" />
+                  IR AL CURSO
+                  <ExternalLink className="h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </a>
+
+                {/* Secondary info */}
+                <div className="text-center p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl">
+                  <p className="text-yellow-400 text-[10px] font-black uppercase tracking-widest mb-1">📚 Disponible en Udemy</p>
+                  <p className="text-slate-400 text-[10px] font-medium">Este es el único recurso de paga de toda la plataforma</p>
                 </div>
               </div>
             </div>
