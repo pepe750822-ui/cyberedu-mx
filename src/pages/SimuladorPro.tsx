@@ -352,6 +352,50 @@ const SimuladorPro = () => {
                         </Button>
                     </div>
 
+                    {/* Performance Map */}
+                    <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-6">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <h3 className="text-lg font-black uppercase text-white flex items-center gap-2">
+                                <BarChart3 className="h-5 w-5 text-indigo-400" /> Mapa de Desempeño
+                            </h3>
+                            <div className="flex flex-wrap gap-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="h-3 w-3 rounded-full bg-emerald-500" />
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Correctas</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="h-3 w-3 rounded-full bg-red-500" />
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Incorrectas</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="h-3 w-3 rounded-full border-2 border-amber-500" />
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Marcadas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-2 p-2">
+                            {simuladoECOEMS.map((q, idx) => {
+                                const isCorrect = userAnswers[q.id] === q.correctIndex;
+                                const isMarked = markedForReview[q.id];
+                                return (
+                                    <a
+                                        key={q.id}
+                                        href={`#question-${q.id}`}
+                                        className={cn(
+                                            "h-8 w-8 rounded-full text-[10px] font-black flex items-center justify-center transition-all hover:scale-110",
+                                            isCorrect ? "bg-emerald-500 text-white" : "bg-red-500 text-white",
+                                            isMarked && "ring-2 ring-amber-500 ring-offset-2 ring-offset-slate-950"
+                                        )}
+                                        title={`Pregunta ${idx + 1}: ${isCorrect ? 'Correcta' : 'Incorrecta'}${isMarked ? ' (Marcada para revisión)' : ''}`}
+                                    >
+                                        {idx + 1}
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+
                     {/* Review Questions */}
                     <div className="space-y-6 pt-10 border-t border-white/5">
                         <h3 className="text-lg font-black uppercase text-white flex items-center gap-2">
@@ -361,7 +405,11 @@ const SimuladorPro = () => {
                             {simuladoECOEMS.map((q, idx) => {
                                 const isCorrect = userAnswers[q.id] === q.correctIndex;
                                 return (
-                                    <div key={q.id} className={cn("p-6 rounded-3xl border transition-all", isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-red-500/5 border-red-500/20")}>
+                                    <div
+                                        key={q.id}
+                                        id={`question-${q.id}`}
+                                        className={cn("p-6 rounded-3xl border transition-all scroll-mt-24", isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-red-500/5 border-red-500/20")}
+                                    >
                                         <div className="flex justify-between items-start mb-4">
                                             <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Reactivo {idx + 1} - {q.area}</span>
                                             {isCorrect ? <CheckCircle2 className="text-emerald-500 h-5 w-5" /> : <XSquare className="text-red-500 h-5 w-5" />}
