@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 
 const AreaDetail = () => {
   const { areaId } = useParams<{ areaId: string }>();
@@ -153,7 +154,7 @@ const AreaDetail = () => {
           </div>
 
           {/* Sidebar - Branching Global Navigation */}
-          <div className="lg:sticky lg:top-24 h-fit space-y-4">
+          <div className="lg:sticky lg:top-24 h-fit max-h-[calc(100vh-120px)] flex flex-col space-y-4">
             <div className="bg-card rounded-2xl border border-border p-5 shadow-lg">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Tu Ruta (0-90)</span>
@@ -170,7 +171,7 @@ const AreaDetail = () => {
                 </h3>
               </div>
 
-              <div className="p-2 lg:max-h-[700px] overflow-y-auto custom-scrollbar">
+              <div className="p-2 overflow-y-auto custom-scrollbar flex-1">
                 <Accordion type="multiple" value={expandedAreas} onValueChange={setExpandedAreas} className="space-y-1">
                   {areas.map((areaObj) => {
                     const areaVideos = allVideos.filter(v => v.areaId === areaObj.id);
