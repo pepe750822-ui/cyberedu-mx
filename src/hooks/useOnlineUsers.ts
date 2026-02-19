@@ -5,19 +5,13 @@ export const useOnlineUsers = () => {
     const [onlineCount, setOnlineCount] = useState(1);
 
     useEffect(() => {
-        const channel = supabase.channel("online-users", {
-            config: {
-                presence: {
-                    key: "user",
-                },
-            },
-        });
+        const channel = supabase.channel("online-users");
 
         channel
             .on("presence", { event: "sync" }, () => {
                 const state = channel.presenceState();
-                const count = Object.keys(state).length;
-                // Ensure at least 1 (the current user) or a fallback
+                // Sum all presence entries across all keys
+                const count = Object.values(state).reduce((acc, presences) => acc + (presences as any[]).length, 0);
                 setOnlineCount(Math.max(1, count));
             })
             .on("presence", { event: "join" }, ({ newPresences }) => {
