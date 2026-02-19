@@ -19,24 +19,144 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { simuladoECOEMS, Question } from "@/data/simuladorData";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60; // 3 hours
 
+interface SimuladorState {
+    activo: boolean;
+    fechaInicio: string;
+    tiempoTotal: number;
+    tiempoRestante: number;
+    preguntaActual: number;
+    respuestas: (number | null)[];
+    correctas: boolean[];
+    pausado: boolean;
+    timestamp: number;
+}
+
+
 const SimuladorPro = () => {
     const navigate = useNavigate();
+    const { toast } = useToast();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
+    const [markedForReview, setMarkedForReview] = useState<Record<string, boolean>>({});
     const [showResults, setShowResults] = useState(false);
     const [timeLeft, setTimeLeft] = useState(EXAM_TIME_SECONDS);
     const [isExamActive, setIsExamActive] = useState(false);
     const [startTime, setStartTime] = useState<number | null>(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const [showRestoreModal, setShowRestoreModal] = useState(false);
+    const [savedState, setSavedState] = useState<SimuladorState | null>(null);
+
+    // Load saved state on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('simulador_estado');
+        if (saved) {
+            try {
+                const state: SimuladorState = JSON.parse(saved);
+                if (state.activo) {
+                    setSavedState(state);
+                    setShowRestoreModal(true);
+                }
+            } catch (e) {
+                console.error("Error parsing saved state", e);
+            }
+        }
+    }, []);
+
+    const saveStateToLocalStorage = useCallback((overrides: Partial<SimuladorState> = {}) => {
+        const answersArray = simuladoECOEMS.map(q => userAnswers[q.id] ?? null);
+        const state: SimuladorState = {
+            activo: true,
+            fechaInicio: new Date(startTime || Date.now()).toISOString(),
+            tiempoTotal: EXAM_TIME_SECONDS,
+            tiempoRestante: timeLeft,
+            preguntaActual: currentQuestionIndex,
+            respuestas: answersArray,
+            correctas: simuladoECOEMS.map(q => userAnswers[q.id] === q.correctIndex),
+            pausado: isPaused,
+            timestamp: Date.now(),
+            ...overrides
+        };
+        localStorage.setItem('simulador_estado', JSON.stringify(state));
+        // Save marked for review separately or include it in state? 
+        // The interface didn't mention it, but it's needed for the 🟡 state.
+        localStorage.setItem('simulador_revision', JSON.stringify(markedForReview));
+    }, [currentQuestionIndex, userAnswers, timeLeft, isPaused, startTime, markedForReview]);
+
+    const handleRestore = () => {
+        if (savedState) {
+            setIsExamActive(true);
+            setCurrentQuestionIndex(savedState.preguntaActual);
+            setTimeLeft(savedState.tiempoRestante);
+            setStartTime(new Date(savedState.fechaInicio).getTime());
+
+            const restoredAnswers: Record<string, number> = {};
+            savedState.respuestas.forEach((ans, idx) => {
+                if (ans !== null && simuladoECOEMS[idx]) {
+                    restoredAnswers[simuladoECOEMS[idx].id] = ans;
+                }
+            });
+            setUserAnswers(restoredAnswers);
+
+            const savedRevision = localStorage.getItem('simulador_revision');
+            if (savedRevision) {
+                setMarkedForReview(JSON.parse(savedRevision));
+            }
+
+            setIsPaused(savedState.pausado);
+            setShowRestoreModal(false);
+        }
+    };
+
+    const handleNewExam = () => {
+        localStorage.removeItem('simulador_estado');
+        localStorage.removeItem('simulador_revision');
+        handleStartExam();
+        setShowRestoreModal(false);
+    };
+
+    const handlePause = () => {
+        setIsPaused(true);
+        saveStateToLocalStorage({ pausado: true });
+        toast({
+            title: "Simulador Pausado",
+            description: "Puedes continuar más tarde. Tu progreso está guardado.",
+        });
+    };
+
+    const handleResume = () => {
+        setIsPaused(false);
+        saveStateToLocalStorage({ pausado: false });
+    };
+
+    const handleSaveAndExit = () => {
+        saveStateToLocalStorage();
+        toast({
+            title: "Progreso Guardado",
+            description: "Vuelve cuando quieras a continuar tu examen.",
+        });
+        navigate("/");
+    };
+
+    // Auto-save on important actions
+    useEffect(() => {
+        if (isExamActive && !showResults) {
+            const timer = setTimeout(() => {
+                saveStateToLocalStorage();
+            }, 10000); // Auto-save every 10 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [isExamActive, showResults, currentQuestionIndex, userAnswers, timeLeft, isPaused, saveStateToLocalStorage]);
 
     // Timer logic
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (isExamActive && timeLeft > 0) {
+        if (isExamActive && timeLeft > 0 && !isPaused) {
             timer = setInterval(() => {
                 setTimeLeft(prev => prev - 1);
             }, 1000);
@@ -44,7 +164,7 @@ const SimuladorPro = () => {
             handleFinishExam();
         }
         return () => clearInterval(timer);
-    }, [isExamActive, timeLeft]);
+    }, [isExamActive, timeLeft, isPaused]);
 
     const formatTime = (seconds: number) => {
         const h = Math.floor(seconds / 3600);
@@ -59,6 +179,7 @@ const SimuladorPro = () => {
         setIsExamActive(true);
         setStartTime(Date.now());
         setUserAnswers({});
+        setMarkedForReview({});
         setCurrentQuestionIndex(0);
         setTimeLeft(EXAM_TIME_SECONDS);
         setShowResults(false);
@@ -87,6 +208,8 @@ const SimuladorPro = () => {
     const handleFinishExam = () => {
         setIsExamActive(false);
         setShowResults(true);
+        localStorage.removeItem('simulador_estado');
+        localStorage.removeItem('simulador_revision');
     };
 
     // Calculations for results
@@ -99,6 +222,32 @@ const SimuladorPro = () => {
         });
         return correct;
     };
+
+    if (showRestoreModal) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+                <div className="max-w-md w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
+                    <div className="h-20 w-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto">
+                        <RotateCcw className="h-10 w-10 text-primary" />
+                    </div>
+                    <div className="space-y-4">
+                        <h2 className="text-2xl font-black uppercase tracking-tighter text-white">¿Continuar Anterior?</h2>
+                        <p className="text-slate-400 text-sm leading-relaxed">
+                            Detectamos un simulador en progreso. ¿Deseas retomarlo exactamente donde lo dejaste?
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Button onClick={handleRestore} className="h-14 rounded-2xl bg-primary hover:bg-primary/90 font-bold uppercase">
+                            Sí, Continuar
+                        </Button>
+                        <Button onClick={handleNewExam} variant="outline" className="h-14 rounded-2xl border-white/10 text-white font-bold uppercase">
+                            No, Nuevo
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     if (!isExamActive && !showResults) {
         return (
@@ -124,7 +273,7 @@ const SimuladorPro = () => {
                         <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
                             <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                             <span className="text-[10px] font-black uppercase text-slate-500">Reactivos</span>
-                            <span className="text-sm font-bold text-white">ECOEMS Oficial</span>
+                            <span className="text-sm font-bold text-white">128 Reactivos</span>
                         </div>
                     </div>
                     <Button
@@ -255,7 +404,7 @@ const SimuladorPro = () => {
         <div className="min-h-screen bg-slate-950 flex flex-col">
             {/* HUD Header */}
             <div className="bg-slate-900/80 backdrop-blur-xl border-b border-white/10 p-4 md:p-6 sticky top-0 z-50">
-                <div className="container mx-auto flex items-center justify-between">
+                <div className="container mx-auto flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                         <div className="h-10 w-10 bg-primary/20 rounded-xl flex items-center justify-center">
                             <Timer className="h-6 w-6 text-primary" />
@@ -268,40 +417,82 @@ const SimuladorPro = () => {
                         </div>
                     </div>
 
-                    <div className="hidden md:flex flex-1 max-w-md mx-10 flex-col gap-1">
+                    <div className="hidden lg:flex flex-1 max-w-md mx-4 flex-col gap-1">
                         <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase">
-                            <span>Progreso del Examen</span>
-                            <span>{currentQuestionIndex + 1} de {simuladoECOEMS.length}</span>
+                            <span>Preguntas respondidas</span>
+                            <span>{Object.keys(userAnswers).length} de {simuladoECOEMS.length}</span>
                         </div>
-                        <Progress value={((currentQuestionIndex + 1) / simuladoECOEMS.length) * 100} className="h-2" />
+                        <Progress value={(Object.keys(userAnswers).length / simuladoECOEMS.length) * 100} className="h-2" />
                     </div>
 
-                    <Button onClick={handleFinishExam} variant="destructive" className="rounded-xl px-6 h-12 text-[10px] font-black uppercase tracking-widest">
-                        Finalizar
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onClick={isPaused ? handleResume : handlePause}
+                            variant="outline"
+                            className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
+                        >
+                            {isPaused ? "▶️ Continuar" : "⏸️ Pausar"}
+                        </Button>
+                        <Button
+                            onClick={handleSaveAndExit}
+                            variant="outline"
+                            className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
+                        >
+                            💾 Guardar y salir
+                        </Button>
+                        <Button onClick={handleFinishExam} variant="destructive" className="rounded-xl px-6 h-12 text-[10px] font-black uppercase tracking-widest">
+                            🏁 Finalizar
+                        </Button>
+                    </div>
                 </div>
             </div>
 
             {/* Question Main Area */}
-            <div className="flex-1 container mx-auto px-4 py-10 max-w-4xl">
+            <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
+                {isPaused && (
+                    <div className="fixed inset-0 z-[60] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-6">
+                        <div className="max-w-md w-full text-center space-y-6">
+                            <div className="h-20 w-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto">
+                                <Timer className="h-10 w-10 text-primary" />
+                            </div>
+                            <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Simulador Pausado</h2>
+                            <p className="text-slate-400">Puedes continuar más tarde. Tu progreso está guardado.</p>
+                            <Button onClick={handleResume} className="w-full h-16 rounded-2xl bg-primary text-lg font-black uppercase tracking-widest">
+                                Reanudar Simulador
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
                 <div className="bg-slate-900/40 border border-white/5 rounded-[2.5rem] p-8 md:p-12 space-y-10 shadow-2xl relative overflow-hidden">
 
-                    {/* Quick Navigator Bar */}
-                    <div className="flex flex-wrap gap-2 mb-8 p-4 bg-black/20 rounded-2xl border border-white/5 max-h-32 overflow-y-auto custom-scrollbar">
-                        {simuladoECOEMS.map((q, idx) => (
-                            <button
-                                key={q.id}
-                                onClick={() => setCurrentQuestionIndex(idx)}
-                                className={cn(
-                                    "h-8 w-8 rounded-lg text-[10px] font-black transition-all",
-                                    currentQuestionIndex === idx ? "bg-primary text-white scale-110 shadow-lg" :
-                                        userAnswers[q.id] !== undefined ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/30" :
-                                            "bg-white/5 text-slate-500 border border-white/5 hover:bg-white/10"
-                                )}
-                            >
-                                {idx + 1}
-                            </button>
-                        ))}
+                    {/* Navigation Panel */}
+                    <div className="space-y-4">
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Panel de Navegación (128 Preguntas)</h3>
+                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-1.5 p-4 bg-black/20 rounded-2xl border border-white/5 max-h-[300px] overflow-y-auto custom-scrollbar">
+                            {simuladoECOEMS.map((q, idx) => {
+                                const isCurrent = currentQuestionIndex === idx;
+                                const isAnswered = userAnswers[q.id] !== undefined;
+                                const isMarked = markedForReview[q.id];
+                                const isCorrect = isAnswered && userAnswers[q.id] === q.correctIndex;
+
+                                return (
+                                    <button
+                                        key={q.id}
+                                        onClick={() => setCurrentQuestionIndex(idx)}
+                                        className={cn(
+                                            "h-7 w-7 rounded-full text-[9px] font-bold transition-all flex items-center justify-center shrink-0 shadow-sm",
+                                            isCurrent ? "bg-blue-600 text-white ring-2 ring-white ring-offset-2 ring-offset-slate-900 shadow-[0_0_15px_rgba(37,99,235,0.8)] z-10 scale-110" :
+                                                !isAnswered ? "bg-slate-700/50 text-slate-400 border border-white/5 hover:bg-white/10" :
+                                                    isMarked ? "bg-amber-500 text-white" : // 🟡 Amarillo: Respondida pero no revisada (marcada)
+                                                        isCorrect ? "bg-emerald-500 text-white" : "bg-red-500 text-white"
+                                        )}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Subtle Area Indicator */}
@@ -370,16 +561,34 @@ const SimuladorPro = () => {
                         <ChevronLeft className="mr-2 h-4 w-4" /> Anterior
                     </Button>
 
-                    <div className="flex gap-2 text-[10px] font-black text-slate-600 uppercase">
-                        {userAnswers[currentQuestion.id] !== undefined ? (
-                            <div className="flex items-center gap-1 text-emerald-500">
-                                <CheckCircle2 className="h-3 w-3" /> Respuesta Guardada
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-1">
-                                <AlertCircle className="h-3 w-3" /> Sin Responder
-                            </div>
-                        )}
+                    <div className="flex gap-4 items-center">
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setMarkedForReview(prev => ({
+                                    ...prev,
+                                    [currentQuestion.id]: !prev[currentQuestion.id]
+                                }));
+                            }}
+                            className={cn(
+                                "rounded-xl border-white/10 px-4 h-12 text-[10px] font-black uppercase tracking-widest",
+                                markedForReview[currentQuestion.id] ? "bg-amber-500/20 border-amber-500 text-amber-500" : "text-slate-400 hover:bg-white/5"
+                            )}
+                        >
+                            <AlertCircle className="mr-1 h-3 w-3" /> {markedForReview[currentQuestion.id] ? "Marcada" : "Marcar Revisión"}
+                        </Button>
+
+                        <div className="hidden sm:flex gap-2 text-[10px] font-black text-slate-600 uppercase">
+                            {userAnswers[currentQuestion.id] !== undefined ? (
+                                <div className="flex items-center gap-1 text-emerald-500">
+                                    <CheckCircle2 className="h-3 w-3" /> Respuesta Guardada
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-1">
+                                    <AlertCircle className="h-3 w-3" /> Sin Responder
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <Button
