@@ -190,7 +190,7 @@ const Index = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => window.location.href = "https://cyberedumx.com/simulador-ecoems-completo"}
+                    onClick={() => window.location.href = `https://cyberedumx.com/simulador-ecoems-completo?origin=${encodeURIComponent(window.location.origin)}`}
                     className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-indigo-300 hover:text-indigo-200"
                   >
                     Simulador ECOEMS (Completo)
@@ -198,7 +198,7 @@ const Index = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => window.location.href = "https://cyberedumx.com/ecoems2026/simuladores/simulador_politecnico.php"}
+                    onClick={() => window.location.href = `https://cyberedumx.com/ecoems2026/simuladores/simulador_politecnico.php?origin=${encodeURIComponent(window.location.origin)}`}
                     className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-rose-400 hover:text-rose-300"
                   >
                     Simulador POLI (IPN)

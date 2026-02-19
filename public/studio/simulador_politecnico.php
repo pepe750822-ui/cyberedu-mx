@@ -22,15 +22,15 @@ $userId = $_GET['u'] ?? $_SESSION['tracking_user_id'] ?? null;
 $tiene_acceso = true; // ACCESO GRATUITO PARA TODOS 🚀
 $nombre_usuario = "";
 
-// Lógica de retorno inteligente
-$referer = $_SERVER['HTTP_REFERER'] ?? '';
-$returnUrl = "https://cyberedumx.com/";
+// Lógica de retorno inteligente (Hardened)
+$returnUrl = $_GET['origin'] ?? $_SESSION['smart_return_url'] ?? $_SERVER['HTTP_REFERER'] ?? "https://cyberedumx.com/";
 
-if (strpos($referer, 'lovable.app') !== false || strpos($referer, 'vercel.app') !== false) {
-    $returnUrl = $referer;
+// Validar y limpiar URL de retorno para evitar bucles o URLs externas peligrosas
+if (strpos($returnUrl, 'lovable.app') !== false || strpos($returnUrl, 'vercel.app') !== false || strpos($returnUrl, 'localhost') !== false) {
     $_SESSION['smart_return_url'] = $returnUrl;
-} elseif (isset($_SESSION['smart_return_url'])) {
-    $returnUrl = $_SESSION['smart_return_url'];
+} else if (strpos($returnUrl, 'simulador') !== false) {
+    // Si el referer es otro simulador, intentar recuperar de la sesión
+    $returnUrl = $_SESSION['smart_return_url'] ?? "https://cyberedumx.com/";
 }
 
 if ($userId) {
@@ -180,14 +180,20 @@ if (!$tiene_acceso): ?>
         </div>
 
         <script>
-            // Persistencia del Dashboard de origen
+            // Persistencia del Dashboard de origen (Hardened)
+            const urlParams = new URLSearchParams(window.location.search);
+            const originParam = urlParams.get('origin');
             const currentReferer = document.referrer;
-            if (currentReferer && (currentReferer.includes('lovable.app') || currentReferer.includes('vercel.app'))) {
+
+            if (originParam) {
+                localStorage.setItem('original_dashboard_url', originParam);
+            } else if (currentReferer && (currentReferer.includes('lovable.app') || currentReferer.includes('vercel.app') || currentReferer.includes('localhost'))) {
                 localStorage.setItem('original_dashboard_url', currentReferer);
             }
 
             const savedDashboard = localStorage.getItem('original_dashboard_url');
             if (savedDashboard) {
+                // Aplicar a todos los botones de regreso
                 document.querySelectorAll('.smart-back-link, .btn-volver, .back-to-dashboard').forEach(link => {
                     link.href = savedDashboard;
                 });
@@ -195,9 +201,12 @@ if (!$tiene_acceso): ?>
 
             // Gestión de sesión tracking
             const storedId = localStorage.getItem('tracking_user_id');
-            const urlParams = new URLSearchParams(window.location.search);
             if (storedId && !urlParams.has('u')) {
-                window.location.href = window.location.pathname + '?u=' + storedId;
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set('u', storedId);
+                if (window.location.search !== newUrl.search) {
+                    window.location.href = newUrl.href;
+                }
             }
         </script>
     </body>
@@ -1917,14 +1926,29 @@ $tiempo_examen_segundos = $tiempo_examen_minutos * 60;
             font-family: 'Inter', sans-serif;
         }
     </style>
-    <a href="https://cyberedumx.com/" class="back-to-dashboard">
+    <a href="<?= $returnUrl ?>" class="back-to-dashboard">
         🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
     </a>
+    <script>
+        (function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const originParam = urlParams.get('origin');
+            const currentReferer = document.referrer;
+            if (originParam) { localStorage.setItem('original_dashboard_url', originParam); }
+            else if (currentReferer && (currentReferer.includes('lovable.app') || currentReferer.includes('vercel.app') || currentReferer.includes('localhost'))) {
+                localStorage.setItem('original_dashboard_url', currentReferer);
+            }
+            const savedDashboard = localStorage.getItem('original_dashboard_url');
+            if (savedDashboard) {
+                document.querySelectorAll('.smart-back-link, .btn-volver, .back-to-dashboard').forEach(link => { link.href = savedDashboard; });
+            }
+        })();
+    </script>
     <div class="container">
         <!-- HEADER ANIME -->
         <div class="header">
             <div class="academia-badge">⚗️ Academia Politécnico</div>
-            <a href="https://cyberedumx.com/" class="btn-volver">
+            <a href="<?= $returnUrl ?>" class="btn-volver">
                 🏠 Volver al Dashboard
             </a>
             <h1>⚡ Simulador Politécnico - Guías 2025-2026
