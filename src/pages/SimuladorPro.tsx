@@ -278,10 +278,29 @@ const SimuladorPro = () => {
             {/* Question Main Area */}
             <div className="flex-1 container mx-auto px-4 py-10 max-w-4xl">
                 <div className="bg-slate-900/40 border border-white/5 rounded-[2.5rem] p-8 md:p-12 space-y-10 shadow-2xl relative overflow-hidden">
+
+                    {/* Quick Navigator Bar */}
+                    <div className="flex flex-wrap gap-2 mb-8 p-4 bg-black/20 rounded-2xl border border-white/5 max-h-32 overflow-y-auto custom-scrollbar">
+                        {simuladoECOEMS.map((q, idx) => (
+                            <button
+                                key={q.id}
+                                onClick={() => setCurrentQuestionIndex(idx)}
+                                className={cn(
+                                    "h-8 w-8 rounded-lg text-[10px] font-black transition-all",
+                                    currentQuestionIndex === idx ? "bg-primary text-white scale-110 shadow-lg" :
+                                        userAnswers[q.id] !== undefined ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/30" :
+                                            "bg-white/5 text-slate-500 border border-white/5 hover:bg-white/10"
+                                )}
+                            >
+                                {idx + 1}
+                            </button>
+                        ))}
+                    </div>
+
                     {/* Subtle Area Indicator */}
                     <div className="absolute top-0 right-0 p-8">
                         <span className="text-[40px] font-black text-white/5 uppercase select-none pointer-events-none">
-                            {currentQuestion.area.split(" ")[0]}
+                            {currentQuestion.area}
                         </span>
                     </div>
 
