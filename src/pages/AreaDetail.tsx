@@ -25,6 +25,12 @@ const AreaDetail = () => {
       if (idx >= 0) setActiveVideoIndex(idx);
     }
   }, [searchParams, area]);
+
+  // Always scroll to top when area or video changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [areaId, activeVideoIndex]);
+
   const { markAsViewed, isViewed, isVideoCompleto, viewedCount, totalVideos, resetProgress } = useVideoProgress();
 
   if (!area) {
@@ -124,15 +130,15 @@ const AreaDetail = () => {
                     </a>
                   )}
                 </div>
-            </div>
+              </div>
 
-            {/* Material Complementario */}
-            <MaterialComplementario videoId={activeVideo.id} />
-          </div>
+              {/* Material Complementario */}
+              <MaterialComplementario videoId={activeVideo.id} />
+            </div>
           </div>
 
           {/* Video List */}
-          <div>
+          <div className="lg:sticky lg:top-24 h-fit">
             {/* Progress Bar */}
             <div className="bg-card rounded-xl border border-border p-4 mb-4 card-shadow">
               <div className="flex items-center justify-between mb-2">
@@ -155,7 +161,7 @@ const AreaDetail = () => {
               <h3 className="font-bold text-foreground">Lista de videos</h3>
               <span className="text-sm text-muted-foreground">{area.videoCount} videos</span>
             </div>
-            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+            <div className="space-y-2 lg:max-h-[800px] overflow-y-auto pr-1 custom-scrollbar">
               {area.videos.map((video, index) => {
                 const vKey = getNotebookKey(video.id);
                 return (

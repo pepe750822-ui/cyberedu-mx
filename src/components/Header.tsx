@@ -1,15 +1,27 @@
-import { Link } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import GlobalSearch from "@/components/GlobalSearch";
 import { useTheme } from "@/hooks/useTheme";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const Header = () => {
   const { user, profile, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleAreasClick = (e: React.MouseEvent) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      document.getElementById('areas')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border transition-colors duration-300">
@@ -23,14 +35,20 @@ const Header = () => {
           </span>
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4">
-          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
-            Inicio
-          </Link>
-          <Link to="/#areas" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
-            Áreas
-          </Link>
+          <div className="hidden md:flex items-center gap-4 mr-2">
+            <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Inicio
+            </Link>
+            <Link
+              to="/#areas"
+              onClick={handleAreasClick}
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Áreas
+            </Link>
+          </div>
 
-          <GlobalSearch />
+          <GlobalSearch className="hidden md:block" />
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -42,7 +60,7 @@ const Header = () => {
           </Tooltip>
 
           {user ? (
-            <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-3">
               <Avatar className="h-8 w-8">
                 {profile?.avatar_url ? (
                   <AvatarImage src={profile.avatar_url} alt={profile.name || "Avatar"} />
@@ -51,7 +69,7 @@ const Header = () => {
                   {(profile?.name || user.email || "U").charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium text-foreground hidden sm:inline max-w-[120px] truncate">
+              <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
                 {profile?.name || user.email}
               </span>
               <Button variant="ghost" size="icon" onClick={signOut} title="Cerrar sesión">
@@ -59,13 +77,92 @@ const Header = () => {
               </Button>
             </div>
           ) : (
-            <Link to="/auth">
-              <Button variant="outline" size="sm">
-                <UserCircle className="h-4 w-4 mr-1" />
-                Ingresar
-              </Button>
-            </Link>
+            <div className="hidden sm:block">
+              <Link to="/auth">
+                <Button variant="outline" size="sm">
+                  <UserCircle className="h-4 w-4 mr-1" />
+                  Ingresar
+                </Button>
+              </Link>
+            </div>
           )}
+
+          {/* Mobile Menu */}
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[85%] sm:w-[380px] bg-card/95 backdrop-blur-xl border-l border-border pt-12 overflow-y-auto">
+              <SheetHeader className="mb-8">
+                <SheetTitle className="text-left flex items-center gap-2">
+                  <div className="p-1.5 hero-gradient rounded-lg">
+                    <GraduationCap className="h-4 w-4 text-white" />
+                  </div>
+                  PrepáraTE
+                </SheetTitle>
+              </SheetHeader>
+
+              <div className="mb-8">
+                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Búsqueda Rápida</p>
+                <GlobalSearch className="block" />
+              </div>
+
+              <div className="flex flex-col gap-6">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Navegación</p>
+                  <Link
+                    to="/"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Inicio
+                  </Link>
+                  <Link
+                    to="/#areas"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={(e) => {
+                      handleAreasClick(e);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Áreas de Estudio
+                  </Link>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Sesión</p>
+                  {user ? (
+                    <>
+                      <div className="flex items-center gap-3 px-3 py-3 bg-muted/30 rounded-lg mb-2">
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback className="bg-primary/20 text-primary">
+                            {(profile?.name || user.email || "U").charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold truncate">{profile?.name || user.email}</p>
+                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                        </div>
+                      </div>
+                      <Button variant="ghost" className="w-full justify-start gap-3 hover:bg-destructive/10 hover:text-destructive h-12" onClick={() => { signOut(); setIsMenuOpen(false); }}>
+                        <LogOut className="h-5 w-5" />
+                        Cerrar Sesión
+                      </Button>
+                    </>
+                  ) : (
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="default" className="w-full h-12 font-bold uppercase tracking-widest text-xs">
+                        <UserCircle className="h-5 w-5 mr-2" />
+                        Ingresar a la Plataforma
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </nav>
       </div>
     </header>

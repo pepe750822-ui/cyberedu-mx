@@ -1,24 +1,27 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  ResponsiveContainer, 
-  Cell 
+import { useNavigate } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell
 } from "recharts";
-import { 
-  Flame, 
-  Clock, 
-  Grid3X3, 
-  BarChart3, 
-  Trophy, 
+import {
+  Flame,
+  Clock,
+  Grid3X3,
+  BarChart3,
+  Trophy,
   Calendar,
-  Hourglass
+  Hourglass,
+  Sparkles
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
@@ -26,6 +29,7 @@ import { cn } from "@/lib/utils";
 
 const ProgresoDashboard = () => {
   const { isViewed } = useVideoProgress();
+  const navigate = useNavigate();
   const [streak, setStreak] = useState(0);
 
   // 1. Calculate Progress per Area
@@ -33,9 +37,9 @@ const ProgresoDashboard = () => {
     return areas.map((area) => {
       const keys = getAreaNotebookKeys(area.id);
       const viewedCount = keys.filter((k) => isViewed(k)).length;
-      const totalCount = keys.length || 1; // avoid division by zero
+      const totalCount = keys.length || 1;
       const percentage = Math.round((viewedCount / totalCount) * 100);
-      
+
       return {
         name: area.name,
         shortName: area.name.split(" ").slice(0, 2).join(" "),
@@ -46,13 +50,13 @@ const ProgresoDashboard = () => {
     });
   }, [isViewed]);
 
-  // 2. Heatmap Data (Colors)
+  // 2. Heatmap Color Logic with extra luminance
   const getHeatmapColor = (percent: number) => {
-    if (percent === 0) return "bg-slate-200 dark:bg-slate-800";
-    if (percent < 25) return "bg-emerald-200";
-    if (percent < 50) return "bg-emerald-400";
-    if (percent < 75) return "bg-emerald-600";
-    return "bg-emerald-800";
+    if (percent === 0) return "bg-slate-800/50 border-white/5";
+    if (percent < 25) return "bg-emerald-500/20 border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]";
+    if (percent < 50) return "bg-emerald-500/40 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
+    if (percent < 75) return "bg-emerald-500/70 border-emerald-500/80 shadow-[0_0_20px_rgba(16,185,129,0.3)]";
+    return "bg-emerald-400 border-white/40 shadow-[0_0_25px_rgba(16,185,129,0.5)]";
   };
 
   // 3. Time Calculations
@@ -86,7 +90,26 @@ const ProgresoDashboard = () => {
     };
   }, [isViewed]);
 
-  // 4. Streak Logic
+  // 4. Calculate Global Progress for "Siguiente Meta"
+  const globalProgress = useMemo(() => {
+    const totalVideos = areas.reduce((acc, area) => acc + area.videos.length, 0);
+    let viewedTotal = 0;
+    areas.forEach(area => {
+      area.videos.forEach(v => {
+        if (isViewed(getNotebookKey(v.id) || "")) viewedTotal++;
+      });
+    });
+    return Math.round((viewedTotal / (totalVideos || 1)) * 100);
+  }, [isViewed]);
+
+  // 5. Find Milestone Area (Closest to 100%)
+  const milestoneArea = useMemo(() => {
+    return [...areaData]
+      .filter(a => a.percentage > 0 && a.percentage < 100)
+      .sort((a, b) => b.percentage - a.percentage)[0] || null;
+  }, [areaData]);
+
+  // 6. Streak Logic
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     const lastDate = localStorage.getItem("last_study_date");
@@ -100,144 +123,160 @@ const ProgresoDashboard = () => {
       const yesterdayStr = yesterday.toISOString().split("T")[0];
 
       if (lastDate === yesterdayStr) {
-        // Continue streak - this would normally be triggered by an action, 
-        // but for the dashboard viewing we'll just show the current value.
-        setStreak(currentStreak);
-      } else if (lastDate) {
-        // Streak broken
-        // setStreak(0);
-        // But for display purposes, let's keep it until they study today?
         setStreak(currentStreak);
       } else {
-        setStreak(0);
+        setStreak(currentStreak);
       }
     }
-    
-    // Simple mock: if user is on this dashboard and has seen at least 1 video, give them a streak of 1 if 0
+
     if (currentStreak === 0 && Object.keys(localStorage).some(k => k.startsWith("video-"))) {
-        localStorage.setItem("study_streak_count", "1");
-        localStorage.setItem("last_study_date", today);
-        setStreak(1);
+      localStorage.setItem("study_streak_count", "1");
+      localStorage.setItem("last_study_date", today);
+      setStreak(1);
     }
   }, []);
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-1000">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Streak Card */}
-        <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-orange-500 to-red-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-orange-600 via-red-600 to-orange-700 text-white animate-float">
+          <CardContent className="p-6 relative">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <Flame className="h-24 w-24 fill-white" />
+            </div>
+            <div className="flex items-center justify-between relative z-10">
               <div>
-                <p className="text-orange-100 text-sm font-medium">Racha de estudio</p>
-                <h3 className="text-3xl font-bold mt-1">{streak} {streak === 1 ? 'Día' : 'Días'}</h3>
+                <p className="text-orange-100/80 text-xs font-bold uppercase tracking-widest mb-1">Racha de estudio</p>
+                <h3 className="text-5xl font-black mt-1 flex items-baseline gap-2">
+                  {streak} <span className="text-lg font-normal opacity-80">{streak === 1 ? 'Día' : 'Días'}</span>
+                </h3>
               </div>
-              <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm animate-pulse">
-                <Flame className="h-8 w-8 fill-white" />
+              <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner border border-white/20">
+                <Flame className="h-8 w-8 fill-white animate-pulse" />
               </div>
+            </div>
+            <div className="mt-4 flex items-center gap-2 text-xs text-orange-100 bg-white/10 w-fit px-3 py-1 rounded-full border border-white/10">
+              <Sparkles className="h-3 w-3" />
+              <span>¡Nivel Dios activado!</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Time Card */}
-        <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white hover:scale-[1.02] transition-transform duration-500">
+          <CardContent className="p-6 relative">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-blue-100 text-sm font-medium">Tiempo invertido</p>
-                <h3 className="text-2xl font-bold mt-1">{timeStats.invested}</h3>
+                <p className="text-blue-100/80 text-xs font-bold uppercase tracking-widest mb-1">Tiempo invertido</p>
+                <h3 className="text-3xl font-black mt-1">{timeStats.invested}</h3>
               </div>
-              <div className="p-2 bg-white/20 rounded-lg">
+              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md border border-white/20">
                 <Clock className="h-6 w-6" />
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs text-blue-100">
-                <span>Total estimado: {timeStats.total}</span>
+            <div className="space-y-3">
+              <div className="flex justify-between text-[10px] font-bold text-blue-100/80 uppercase">
+                <span>Total: {timeStats.total}</span>
                 <span>{Math.round(timeStats.percentage)}%</span>
               </div>
-              <Progress value={timeStats.percentage} className="h-1.5 bg-blue-900/30 [&>div]:bg-white" />
+              <div className="relative h-2 w-full bg-blue-900/40 rounded-full overflow-hidden border border-white/10">
+                <div
+                  className="absolute top-0 left-0 h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-1000 ease-out"
+                  style={{ width: `${timeStats.percentage}%` }}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Heatmap Card */}
-        <Card className="lg:col-span-2 shadow-sm border-border">
-          <CardHeader className="pb-2 pt-4 px-6 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/50 backdrop-blur-xl cyber-grid overflow-hidden">
+          <CardHeader className="pb-2 pt-5 px-6 flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-sm font-black flex items-center gap-2 uppercase tracking-tighter">
               <Grid3X3 className="h-4 w-4 text-emerald-500" />
-              Mapa de Dominio por Área
+              Mapa de Dominio
             </CardTitle>
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Intensidad = % Avance</span>
+            <div className="flex items-center gap-1.5 ring-1 ring-border p-1 px-2 rounded-full bg-background/50">
+              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] text-muted-foreground uppercase font-black">Online</span>
+            </div>
           </CardHeader>
-          <CardContent className="px-6 pb-4">
-            <div className="grid grid-cols-6 sm:grid-cols-11 gap-2">
+          <CardContent className="px-5 pb-5 pt-2">
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-2">
               {areaData.map((area) => (
-                <div 
+                <div
                   key={area.id}
                   className={cn(
-                    "aspect-square rounded-sm relative group transition-all duration-300 hover:scale-110 cursor-help",
+                    "aspect-square rounded-md relative group transition-all duration-500 hover:scale-125 cursor-help border",
                     getHeatmapColor(area.percentage)
                   )}
-                  title={`${area.name}: ${area.percentage}%`}
                 >
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-popover-foreground text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-md pointer-events-none border border-border">
-                    {area.name}: {area.percentage}%
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-black/90 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50 shadow-2xl border border-white/10 backdrop-blur-md scale-90 group-hover:scale-100">
+                    <p className="font-black text-xs mb-1">{area.name}</p>
+                    <p className="text-emerald-400 font-bold">{area.percentage}% completado</p>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-black/90" />
                   </div>
                 </div>
               ))}
-              {/* Fill remaining with empty squares if needed, but we have 11 areas */}
             </div>
+            <p className="mt-4 text-[10px] text-muted-foreground font-medium italic text-right">
+              * Datos calculados en tiempo real según tu navegación
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Bar Chart Section */}
-        <Card className="lg:col-span-2 shadow-sm border-border overflow-hidden">
-          <CardHeader className="pb-0">
-            <CardTitle className="text-lg font-bold flex items-center gap-2">
+        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden group">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-black flex items-center gap-2 uppercase tracking-tighter">
               <BarChart3 className="h-5 w-5 text-primary" />
-              Avance por Asignatura
+              Análisis de Avance Profesional
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-[300px] p-4">
+          <CardContent className="h-[320px] p-6 pt-2">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={areaData} layout="vertical" margin={{ left: 10, right: 30, top: 10, bottom: 10 }}>
+              <BarChart data={areaData} layout="vertical" margin={{ left: 0, right: 40, top: 0, bottom: 0 }}>
                 <XAxis type="number" hide domain={[0, 100]} />
-                <YAxis 
-                  dataKey="shortName" 
-                  type="category" 
-                  width={100} 
-                  fontSize={11}
+                <YAxis
+                  dataKey="shortName"
+                  type="category"
+                  width={90}
+                  fontSize={9}
                   tickLine={false}
                   axisLine={false}
+                  className="font-bold uppercase text-muted-foreground pl-2"
                 />
-                <Tooltip 
-                  cursor={{ fill: 'transparent' }}
+                <Tooltip
+                  cursor={{ fill: 'rgba(255,255,255,0.03)' }}
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-popover border border-border p-2 shadow-sm rounded-lg text-xs">
-                          <p className="font-bold">{data.name}</p>
-                          <p className="text-primary">{payload[0].value}% completado</p>
+                        <div className="bg-black/90 border border-white/10 p-3 shadow-2xl rounded-xl backdrop-blur-xl">
+                          <p className="font-black text-white text-sm uppercase tracking-tighter mb-1">{data.name}</p>
+                          <div className="flex items-center gap-2">
+                            <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
+                            <p className="text-primary font-bold text-xs">{payload[0].value}% Progreso</p>
+                          </div>
                         </div>
                       );
                     }
                     return null;
                   }}
                 />
-                <Bar 
-                  dataKey="percentage" 
-                  radius={[0, 4, 4, 0]} 
-                  barSize={16}
+                <Bar
+                  dataKey="percentage"
+                  radius={[0, 10, 10, 0]}
+                  barSize={12}
                 >
                   {areaData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.percentage === 100 ? '#10b981' : '#6366f1'} 
-                      className="transition-all duration-500"
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.percentage === 100 ? '#10b981' : '#6366f1'}
+                      className="transition-all duration-1000 opacity-80 hover:opacity-100"
                     />
                   ))}
                 </Bar>
@@ -247,37 +286,60 @@ const ProgresoDashboard = () => {
         </Card>
 
         {/* Success / Next Steps Card */}
-        <Card className="shadow-sm border-border bg-slate-50 dark:bg-slate-900/50">
+        <Card className="shadow-2xl border-primary/20 bg-gradient-to-b from-card to-background relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 h-48 w-48 bg-primary/10 rounded-full blur-[80px]" />
+          <div className="absolute -bottom-24 -left-24 h-48 w-48 bg-secondary/10 rounded-full blur-[80px]" />
+
           <CardHeader>
-            <CardTitle className="text-lg font-bold flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-yellow-500" />
-              Logros y Metas
+            <CardTitle className="text-xl font-black flex items-center gap-2 uppercase tracking-tighter">
+              <Trophy className="h-6 w-6 text-yellow-500" />
+              Objetivos Elite
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 bg-white dark:bg-card rounded-xl border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-2">
-                <Calendar className="h-4 w-4 text-blue-500" />
-                <span className="text-xs font-bold text-muted-foreground uppercase">Siguiente Objetivo</span>
+          <CardContent className="space-y-6 relative z-10">
+            <div className="p-5 bg-card/80 border border-border/50 rounded-2xl shadow-lg group/item hover:border-primary/50 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-blue-500/10 rounded-lg">
+                  <Calendar className="h-4 w-4 text-blue-500" />
+                </div>
+                <div className="flex-1">
+                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest block">Siguiente Meta</span>
+                  <span className="text-[10px] font-bold text-primary">{globalProgress}% del total</span>
+                </div>
               </div>
-              <p className="text-sm font-semibold">Examen ECOEMS 2026</p>
-              <p className="text-xs text-muted-foreground mt-1">¡Sigue así, vas por excelente camino!</p>
+              <p className="text-base font-black text-foreground mb-1 group-hover/item:text-primary transition-colors uppercase tracking-tight font-heading">Ecomems 2026 Core</p>
+              <Progress value={globalProgress} className="h-1 bg-muted mt-2 [&>div]:bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
             </div>
 
-            <div className="p-4 bg-white dark:bg-card rounded-xl border border-border shadow-sm">
-              <div className="flex items-center gap-3 mb-2">
-                <Hourglass className="h-4 w-4 text-purple-500" />
-                <span className="text-xs font-bold text-muted-foreground uppercase">Hito más cercano</span>
+            {milestoneArea && (
+              <div
+                onClick={() => navigate(`/area/${milestoneArea.id}`)}
+                className="p-5 bg-card/80 border border-border/50 rounded-2xl shadow-lg group/item transition-all hover:border-purple-500/50 cursor-pointer hover:scale-[1.02]"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2 bg-purple-500/10 rounded-lg">
+                    <Hourglass className="h-4 w-4 text-purple-500" />
+                  </div>
+                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Hito de área</span>
+                </div>
+                <p className="text-base font-black text-foreground mb-1 uppercase tracking-tight font-heading">
+                  {milestoneArea.name}
+                </p>
+                <p className="text-xs text-muted-foreground font-medium">
+                  ¡Estás al {milestoneArea.percentage}%! Solo falta un poco.
+                </p>
               </div>
-              <p className="text-sm font-semibold">
-                {areaData.find(a => a.percentage < 100 && a.percentage > 0)?.name || "¡Nueva área!"}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">Falta poco para completar este módulo.</p>
-            </div>
+            )}
 
-            <Button className="w-full mt-2 group" variant="default">
-              Continuar estudiando
-              <Trophy className="ml-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+            <Button
+              onClick={() => document.getElementById('areas')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-sm shadow-[0_8px_30px_rgb(99,102,241,0.4)] hover:shadow-[0_8px_40px_rgb(99,102,241,0.6)] border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all group overflow-hidden relative"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Maximizar Estudio
+                <Trophy className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             </Button>
           </CardContent>
         </Card>

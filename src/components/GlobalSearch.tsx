@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { areas } from "@/data/areas";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 interface SearchResult {
   videoId: string;
@@ -30,7 +31,7 @@ function buildIndex(): SearchResult[] {
   return results;
 }
 
-const GlobalSearch = () => {
+const GlobalSearch = ({ className }: { className?: string }) => {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -72,7 +73,7 @@ const GlobalSearch = () => {
   };
 
   return (
-    <div ref={containerRef} className="relative hidden sm:block">
+    <div ref={containerRef} className={cn("relative", className)}>
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
         <Input
@@ -80,17 +81,17 @@ const GlobalSearch = () => {
           onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           placeholder="Buscar videos..."
-          className="pl-8 pr-8 h-9 w-48 lg:w-64 text-sm bg-muted/50 border-border focus:bg-card transition-colors"
+          className="pl-8 pr-8 h-10 md:h-9 w-full md:w-48 lg:w-64 text-sm bg-muted/30 md:bg-muted/50 border-border focus:bg-card transition-colors"
         />
         {query && (
           <button onClick={() => { setQuery(""); setOpen(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-            <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4 md:h-3.5 md:w-3.5" />
           </button>
         )}
       </div>
 
       {open && debouncedQuery && (
-        <div className="absolute top-full mt-1.5 left-0 right-0 lg:w-80 bg-popover border border-border rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto">
+        <div className="absolute top-full mt-2 left-0 right-0 md:w-80 bg-popover border border-border rounded-lg shadow-2xl z-50 max-h-[60vh] md:max-h-72 overflow-y-auto">
           {results.length === 0 ? (
             <p className="text-sm text-muted-foreground p-4 text-center">No se encontraron videos</p>
           ) : (

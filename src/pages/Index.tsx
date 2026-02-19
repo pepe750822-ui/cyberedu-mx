@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown } from "lucide-react";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
@@ -13,6 +14,18 @@ const Index = () => {
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
   const { isViewed, viewedCount, totalVideos: total, resetProgress } = useVideoProgress();
   const [sortByProgress, setSortByProgress] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#areas") {
+      const element = document.getElementById("areas");
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   const areaProgress = useMemo(() => {
     const map: Record<string, { viewed: number; total: number }> = {};
@@ -49,57 +62,54 @@ const Index = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden mb-12">
+      <section className="relative overflow-hidden mb-12 border-b border-primary/20">
         <div className="absolute inset-0">
           <img src={heroImage} alt="Estudiantes preparándose" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 hero-gradient opacity-85" />
+          <div className="absolute inset-0 hero-gradient opacity-90" />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700">
+            <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-md border border-primary/30 text-primary-foreground text-sm font-medium px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 neon-border-purple">
               <GraduationCap className="h-4 w-4" />
               Examen de Educación Media Superior
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
-              Tu camino al éxito empieza aquí
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
+              Tu camino al <span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">éxito</span> <br /> empieza aquí
             </h1>
             <p className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-              Prepárate con {totalVideos} videos organizados en {areas.length} áreas de conocimiento. Estudia a tu ritmo, desde cualquier lugar.
+              Prepárate con esta plataforma de <span className="text-accent font-bold">última generación</span>. 100% gratuita y diseñada para que entres a la primera.
             </p>
             <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-              <div className="flex items-center gap-2 text-white/90">
-                <Video className="h-5 w-5" />
-                <span className="text-sm font-medium">{totalVideos} Videos</span>
+              <div className="flex items-center gap-2 text-white/90 glass-card px-4 py-2 rounded-lg">
+                <Video className="h-5 w-5 text-secondary" />
+                <span className="text-sm font-medium">{totalVideos} Videos HD</span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <BookOpen className="h-5 w-5" />
-                <span className="text-sm font-medium">{areas.length} Áreas</span>
+              <div className="flex items-center gap-2 text-white/90 glass-card px-4 py-2 rounded-lg">
+                <BookOpen className="h-5 w-5 text-accent" />
+                <span className="text-sm font-medium">{areas.length} Áreas Críticas</span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <CheckCircle className="h-5 w-5" />
-                <span className="text-sm font-medium">100% Gratuito</span>
+              <div className="flex items-center gap-2 text-white/90 glass-card px-4 py-2 rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="text-sm font-medium">100% Libre</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Dashboard de Progreso Personalizado (Temporalmente desactivado para diagnóstico) */}
+      {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16">
-        <div className="bg-card p-8 rounded-xl border border-border shadow-lg text-center">
-          <p className="text-muted-foreground">Sistema de progreso en mantenimiento...</p>
-        </div>
-        {/* <ProgresoDashboard /> */}
+        <ProgresoDashboard />
       </section>
 
       {/* Areas Section */}
       <section id="areas" className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-foreground mb-4">
-            Áreas de Conocimiento
+          <h2 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-gradient-blue italic">
+            Sistemas de Aprendizaje
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Selecciona un área para comenzar a estudiar con nuestros videos
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium">
+            Entrena en las áreas que el examen demanda. Domina cada módulo y asegura tu lugar.
           </p>
         </div>
         <div className="flex justify-end mb-4">
