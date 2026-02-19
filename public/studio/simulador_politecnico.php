@@ -19,7 +19,7 @@ if (!isset($_SESSION['estadisticas_usuario_poli'])) {
 
 // ===================== CONTROL DE ACCESO (DE PAGO) =====================
 $userId = $_GET['u'] ?? $_SESSION['tracking_user_id'] ?? null;
-$tiene_acceso = false;
+$tiene_acceso = true; // ACCESO GRATUITO ACTIVADO
 $nombre_usuario = "";
 
 if ($userId) {
@@ -114,7 +114,30 @@ if (!$tiene_acceso): ?>
         </style>
     </head>
 
-    <body>
+    <body class="with-back-banner">
+        <style>
+            .back-to-dashboard {
+                background: linear-gradient(90deg, #1a237e, #d50000);
+                color: white !important;
+                text-align: center;
+                padding: 10px;
+                position: sticky;
+                top: 0;
+                z-index: 9999;
+                font-weight: bold;
+                text-decoration: none !important;
+                display: block;
+                border-bottom: 2px solid #ffab00;
+                font-family: 'Inter', sans-serif;
+            }
+
+            .with-back-banner {
+                padding-top: 0 !important;
+            }
+        </style>
+        <a href="https://cyberedumx.com/" class="back-to-dashboard">
+            🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
+        </a>
         <div class="access-card">
             <div class="icon-wrapper">⚔️</div>
             <h2>¡Hola <?php echo htmlspecialchars($nombre_usuario ?: 'Guerrero'); ?>!</h2>
@@ -136,8 +159,8 @@ if (!$tiene_acceso): ?>
             </a>
 
             <div class="mt-4">
-                <a href="../../ecoems2026.php" style="color: #bdc3c7; text-decoration: none; font-size: 0.9rem;">
-                    <i class="fas fa-arrow-left"></i> Volver al curso gratuito
+                <a href="https://cyberedumx.com/" style="color: #bdc3c7; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left"></i> Volver al Dashboard Principal
                 </a>
             </div>
         </div>
@@ -1843,13 +1866,32 @@ $tiempo_examen_segundos = $tiempo_examen_minutos * 60;
     </style>
 </head>
 
-<body>
+<body class="with-back-banner">
+    <style>
+        .back-to-dashboard {
+            background: linear-gradient(90deg, #1a237e, #d50000);
+            color: white !important;
+            text-align: center;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            font-weight: bold;
+            text-decoration: none !important;
+            display: block;
+            border-bottom: 2px solid #ffab00;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <a href="https://cyberedumx.com/" class="back-to-dashboard">
+        🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
+    </a>
     <div class="container">
         <!-- HEADER ANIME -->
         <div class="header">
             <div class="academia-badge">⚗️ Academia Politécnico</div>
-            <a href="../../ecoems2026.php" class="btn-volver">
-                🏠 Volver al Curso (91 Videos)
+            <a href="https://cyberedumx.com/" class="btn-volver">
+                🏠 Volver al Dashboard
             </a>
             <h1>⚡ Simulador Politécnico - Guías 2025-2026
                 <span class="year-badge" id="badge-modo">

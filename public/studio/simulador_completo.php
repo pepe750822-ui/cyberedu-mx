@@ -19,7 +19,7 @@ if (!isset($_SESSION['estadisticas_usuario'])) {
 
 // ===================== CONTROL DE ACCESO (DE PAGO) =====================
 $userId = $_GET['u'] ?? $_SESSION['tracking_user_id'] ?? null;
-$tiene_acceso = false;
+$tiene_acceso = true; // ACCESO GRATUITO ACTIVADO
 $nombre_usuario = "";
 
 if ($userId) {
@@ -114,11 +114,11 @@ if (!$tiene_acceso): ?>
 
             /* BANNER BETA CUSTOM */
             #beta-banner {
-                background: linear-gradient(90deg, #1A1A2E, #9D4EDD);
-                border-bottom: 2px solid #4ECDC4;
-                padding: 8px 0;
+                background: linear-gradient(90deg, #6a11cb, #2575fc);
+                border-bottom: 2px solid #ffde59;
+                padding: 10px 0;
                 text-align: center;
-                font-size: 0.85rem;
+                font-size: 0.9rem;
                 position: fixed;
                 top: 0;
                 width: 100%;
@@ -126,10 +126,10 @@ if (!$tiene_acceso): ?>
             }
 
             #beta-banner a {
-                color: #4ECDC4;
-                text-decoration: underline;
-                font-weight: bold;
-                margin-left: 10px;
+                color: white !important;
+                text-decoration: none !important;
+                font-weight: 900;
+                display: block;
             }
 
             body.with-beta-banner {
@@ -142,9 +142,9 @@ if (!$tiene_acceso): ?>
     <body class="with-beta-banner">
         <!-- BETA HEADER BANNER -->
         <div id="beta-banner">
-            🔥 <strong>NUEVA VERSIÓN BIORETO PRO:</strong> Prueba el nuevo simulador 2026.
-            <a href="https://cyberedumx.lovable.app/" target="_blank">IR A LA VERSIÓN PRO <i
-                    class="fas fa-external-link-alt"></i></a>
+            <a href="https://cyberedumx.com/">
+                🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
+            </a>
         </div>
 
         <div class="access-card">
@@ -167,8 +167,8 @@ if (!$tiene_acceso): ?>
             </a>
 
             <div class="mt-4">
-                <a href="../../ecoems2026.php" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">
-                    <i class="fas fa-arrow-left"></i> Volver al curso gratuito
+                <a href="https://cyberedumx.com/" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left"></i> Volver al Dashboard Principal
                 </a>
             </div>
         </div>
@@ -1924,8 +1924,8 @@ $tiempo_examen_segundos = $tiempo_examen_minutos * 60;
         <!-- HEADER ANIME -->
         <div class="header">
             <div class="academia-badge">🎌 Simulador UNAM</div>
-            <a href="../../ecoems2026.php" class="btn-volver">
-                🏠 Volver al Dojo Principal
+            <a href="https://cyberedumx.com/" class="btn-volver">
+                🏠 Volver al Dashboard
             </a>
             <h1>🌸 Simulador UNAM y ECOEMS
                 <span class="year-badge" id="badge-modo">

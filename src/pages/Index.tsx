@@ -146,12 +146,12 @@ const Index = () => {
             </div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="space-y-4 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
                   <Zap className="h-4 w-4 animate-bounce" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">NUEVO: Acceso Total</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">NUEVO: Acceso Libre</span>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">
-                  Simulador <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400 italic">Premium ECOEMS</span>
+                  Simulador <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-indigo-400 italic">Oficial ECOEMS</span>
                 </h2>
                 <p className="text-slate-400 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Pon a prueba tus conocimientos con una réplica exacta del examen real. Cronómetro oficial, resultados con predicción AI y explicaciones paso a paso.
