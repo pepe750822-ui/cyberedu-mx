@@ -11,8 +11,6 @@ import NotFound from "./pages/NotFound";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
-  // Force a full-page navigation so the request reaches the server
-  window.location.reload();
   return null;
 };
 
