@@ -1,4 +1,5 @@
 {
+  "buildCommand": "NODE_OPTIONS=--max-old-space-size=4096 npm run build",
   "headers": [
     {
       "source": "/~oauth/(.*)",
@@ -27,26 +28,13 @@
         {
           "key": "Service-Worker-Allowed",
           "value": "/"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/manifest+json"
         }
       ]
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!sw\\.js|manifest\\.json|offline\\.html|icons/|favicon\\.ico|robots\\.txt|quiz/|material/|studio/|videos/|placeholder\\.svg|generate-icons\\.html).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
