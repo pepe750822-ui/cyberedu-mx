@@ -163,7 +163,7 @@ const AreaDetail = () => {
               <Progress value={progressPercent} className="h-1.5 bg-muted [&>div]:bg-emerald-500" />
             </div>
 
-            <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-lg">
+            <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-lg flex flex-col">
               <div className="p-4 border-b border-border bg-muted/20">
                 <h3 className="text-xs font-black uppercase tracking-widest text-foreground flex items-center gap-2">
                   <GraduationCap className="h-4 w-4 text-primary" />
@@ -171,7 +171,23 @@ const AreaDetail = () => {
                 </h3>
               </div>
 
-              <div className="p-2 overflow-y-auto custom-scrollbar flex-1">
+              <div className="p-2 overflow-y-auto overflow-x-hidden max-h-[60vh] lg:max-h-[calc(100vh-350px)] scrollbar-visible">
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                  .scrollbar-visible::-webkit-scrollbar {
+                    width: 6px;
+                    display: block !important;
+                  }
+                  .scrollbar-visible::-webkit-scrollbar-track {
+                    background: rgba(0,0,0,0.05);
+                    border-radius: 10px;
+                  }
+                  .scrollbar-visible::-webkit-scrollbar-thumb {
+                    background: rgba(var(--primary), 0.5);
+                    background-color: #3b82f6; /* Blue thumb for high visibility */
+                    border-radius: 10px;
+                  }
+                `}} />
                 <Accordion type="multiple" value={expandedAreas} onValueChange={setExpandedAreas} className="space-y-1">
                   {areas.map((areaObj) => {
                     const areaVideos = allVideos.filter(v => v.areaId === areaObj.id);
