@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Video, BookOpen, RotateCcw, GraduationCap, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Video, BookOpen, RotateCcw, GraduationCap, ChevronRight, CheckCircle2, Brain } from "lucide-react";
 import { areas } from "@/data/areas";
+import { studioMapping } from "@/data/studioMap";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
@@ -162,6 +163,40 @@ const AreaDetail = () => {
               </div>
               <Progress value={progressPercent} className="h-1.5 bg-muted [&>div]:bg-emerald-500" />
             </div>
+
+            {/* ZONA STUDIO: Entrenamiento por Subíndices */}
+            {area && studioMapping[area.id] && (
+              <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 rounded-2xl border border-indigo-500/30 p-5 shadow-xl shadow-indigo-500/10 space-y-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="h-6 w-6 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                    <Brain className="h-3 w-3 text-indigo-400" />
+                  </div>
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100">Zona Studio (Pro)</h3>
+                </div>
+                <p className="text-[10px] font-medium text-indigo-200/60 leading-relaxed italic">
+                  Especializado en subíndices de {area.name}
+                </p>
+                <div className="grid gap-2">
+                  {studioMapping[area.id].map((sim, sIdx) => (
+                    <Button
+                      key={sIdx}
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className="w-full justify-start h-10 bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-400/50 group transition-all"
+                    >
+                      <a href={sim.path} target="_blank" rel="noopener noreferrer" title={sim.description} className="flex items-center w-full">
+                        <div className="h-6 w-6 rounded bg-indigo-500/20 flex items-center justify-center mr-3 group-hover:bg-indigo-500 transition-colors">
+                          <CheckCircle2 className="h-3 w-3 text-indigo-100" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase text-indigo-100 truncate">{sim.name}</span>
+                        <ChevronRight className="h-3 w-3 ml-auto text-indigo-500 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-lg flex flex-col">
               <div className="p-4 border-b border-border bg-muted/20">

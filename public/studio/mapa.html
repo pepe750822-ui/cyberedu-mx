@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗺️ Mapa Temático de Geografía | ECOEMS 2026</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a365d, #2d3748);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        
+        /* Main Container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 80px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+            gap: 1rem;
+        }
+        
+        /* Panel Izquierdo */
+        .left-panel {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #4299e1;
+            padding-bottom: 0.5rem;
+        }
+        
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        
+        .topic-info {
+            background: #ebf8ff;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #2d3748;
+            margin-top: 1rem;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem;
+            background: #edf2f7;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            background: #4299e1;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Leyenda */
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        /* Mapa */
+        .map-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #mapCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            cursor: move;
+        }
+        
+        /* Controles del Mapa */
+        .map-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #4299e1;
+            color: white;
+        }
+        
+        /* Coordenadas */
+        .coords-display {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        /* Popup */
+        .popup {
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 250px;
+            display: none;
+        }
+        
+        .popup h4 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .popup p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.4;
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #718096;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .left-panel {
+                width: 100%;
+            }
+            
+            .map-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>🗺️ Mapa Temático de Geografía</h1>
+                <p>ECOEMS 2026 | Visualización Interactiva</p>
+            </div>
+            <div class="exam-info">
+                <div>📅 Examen: 15 Junio 2026</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Panel Izquierdo -->
+        <div class="left-panel">
+            <!-- Selector de Tema -->
+            <div class="card">
+                <h3>📚 Subíndices Principales</h3>
+                <select id="topicSelect" onchange="loadTopic(this.value)">
+                    <option value="">-- Selecciona un tema --</option>
+                    <optgroup label="🌍 Espacio Geográfico">
+                        <option value="1.1">1.1 - Componentes del Espacio</option>
+                        <option value="1.4">1.4 - Coordenadas Geográficas</option>
+                    </optgroup>
+                    <optgroup label="🌿 Recursos Naturales">
+                        <option value="2.2">2.2 - Tectónica y Sismos</option>
+                        <option value="2.5" selected>2.5 - Climas del Mundo</option>
+                    </optgroup>
+                    <optgroup label="👥 Dinámica Poblacional">
+                        <option value="3.1">3.1 - Crecimiento Poblacional</option>
+                        <option value="3.3">3.3 - Migraciones</option>
+                    </optgroup>
+                    <optgroup label="🏭 Espacios Económicos">
+                        <option value="4.1">4.1 - Regiones Económicas</option>
+                        <option value="4.4">4.4 - Espacios Turísticos</option>
+                    </optgroup>
+                </select>
+                
+                <div class="topic-info" id="topicInfo">
+                    <strong>Climas del Mundo:</strong> Visualización de zonas climáticas según clasificación Köppen.
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="zoomToMexico()" title="Ver México completo">
+                        <span>🌎</span>
+                        <span>México</span>
+                    </button>
+                    <button class="action-btn" onclick="clearMap()" title="Limpiar mapa">
+                        <span>🗑️</span>
+                        <span>Limpiar</span>
+                    </button>
+                    <button class="action-btn" onclick="zoomIn()" title="Acercar">
+                        <span>➕</span>
+                        <span>Acercar</span>
+                    </button>
+                    <button class="action-btn" onclick="zoomOut()" title="Alejar">
+                        <span>➖</span>
+                        <span>Alejar</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Leyenda -->
+            <div class="card">
+                <h3>🗝️ Leyenda del Mapa</h3>
+                <div id="legendContent">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e53e3e;"></div>
+                        <div>Marcador Principal</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #38a169; opacity: 0.3;"></div>
+                        <div>Área de Influencia</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3182ce;"></div>
+                        <div>Línea/Límite</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mapa -->
+        <div class="map-container">
+            <canvas id="mapCanvas"></canvas>
+            
+            <!-- Controles -->
+            <div class="map-controls">
+                <button class="control-btn" onclick="zoomIn()" title="Acercar">➕</button>
+                <button class="control-btn" onclick="zoomOut()" title="Alejar">➖</button>
+                <button class="control-btn" onclick="resetView()" title="Restablecer">🔄</button>
+            </div>
+            
+            <!-- Coordenadas -->
+            <div class="coords-display" id="coordsDisplay">
+                Lat: 23.63°N | Long: 102.55°W
+            </div>
+            
+            <!-- Popup -->
+            <div class="popup" id="mapPopup">
+                <button class="popup-close" onclick="closePopup()">×</button>
+                <h4 id="popupTitle">Título</h4>
+                <p id="popupContent">Contenido del popup</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let canvas, ctx;
+        let currentTopic = '2.5';
+        let zoom = 1;
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+        let lastX = 0, lastY = 0;
+        let markers = [];
+        let circles = [];
+        let lines = [];
+        
+        // Información de temas
+        const topics = {
+            '1.1': {
+                name: 'Componentes del espacio geográfico',
+                description: 'Visualiza los tres componentes: natural, social y económico',
+                elements: [
+                    { type: 'marker', x: 400, y: 300, color: '#38a169', title: 'Componente Natural', desc: 'Bosque de Chapultepec - Área natural urbana' },
+                    { type: 'marker', x: 450, y: 320, color: '#3182ce', title: 'Componente Social', desc: 'Zócalo - Espacio público de reunión' },
+                    { type: 'marker', x: 380, y: 350, color: '#e53e3e', title: 'Componente Económico', desc: 'Paseo de la Reforma - Centro financiero' },
+                    { type: 'circle', x: 410, y: 323, radius: 50, color: '#38a169', title: 'Interacción', desc: 'Los tres componentes interactúan' }
+                ]
+            },
+            '1.4': {
+                name: 'Coordenadas geográficas',
+                description: 'Sistema de coordenadas: paralelos y meridianos',
+                elements: [
+                    { type: 'line', x1: 100, y1: 200, x2: 700, y2: 200, color: '#e53e3e', title: 'Paralelo 20°N', desc: 'Pasa por Ciudad de México' },
+                    { type: 'line', x1: 100, y1: 300, x2: 700, y2: 300, color: '#e53e3e', title: 'Paralelo 25°N', desc: 'Incluye Monterrey' },
+                    { type: 'line', x1: 350, y1: 100, x2: 350, y2: 500, color: '#3182ce', title: 'Meridiano 100°W', desc: 'Zona horaria central' },
+                    { type: 'marker', x: 400, y: 250, color: '#38a169', title: 'Centro Geográfico', desc: '23.6345°N, 102.5528°W - Punto medio de México' }
+                ]
+            },
+            '2.2': {
+                name: 'Tectónica y sismos',
+                description: 'Placas tectónicas y actividad sísmica en México',
+                elements: [
+                    { type: 'line', x1: 300, y1: 200, x2: 500, y2: 300, color: '#e53e3e', title: 'Límite de Placa', desc: 'Placa de Cocos - Zona de subducción' },
+                    { type: 'marker', x: 400, y: 300, color: '#e53e3e', title: 'Sismo 1985', desc: 'Terremoto de 8.1 Mw - Epicentro Michoacán' },
+                    { type: 'marker', x: 380, y: 280, color: '#9f7aea', title: 'Popocatépetl', desc: 'Volcán activo - 5,452 m' }
+                ]
+            },
+            '2.5': {
+                name: 'Climas del mundo',
+                description: 'Clasificación climática de Köppen en México',
+                elements: [
+                    { type: 'circle', x: 300, y: 200, radius: 60, color: '#e53e3e', title: 'Clima Desértico', desc: 'Baja California - <250 mm/año (BWh)' },
+                    { type: 'circle', x: 400, y: 300, radius: 80, color: '#38a169', title: 'Clima Templado', desc: 'Altiplano Central - Inviernos secos (Cwb)' },
+                    { type: 'circle', x: 500, y: 350, radius: 70, color: '#3182ce', title: 'Clima Tropical', desc: 'Costas del Pacífico - Estación seca (Aw)' },
+                    { type: 'circle', x: 450, y: 200, radius: 50, color: '#9f7aea', title: 'Clima Semiárido', desc: 'Norte - Gran amplitud térmica (BSk)' }
+                ]
+            },
+            '3.1': {
+                name: 'Crecimiento poblacional',
+                description: 'Distribución y densidad de población en México',
+                elements: [
+                    { type: 'circle', x: 400, y: 300, radius: 100, color: '#9f7aea', title: 'CDMX', desc: '9 millones - Alta densidad urbana' },
+                    { type: 'circle', x: 450, y: 250, radius: 70, color: '#9f7aea', title: 'Monterrey', desc: '5 millones - Crecimiento industrial' },
+                    { type: 'circle', x: 350, y: 320, radius: 70, color: '#9f7aea', title: 'Guadalajara', desc: '5 millones - Segunda ciudad más grande' }
+                ]
+            },
+            '4.1': {
+                name: 'Regiones económicas',
+                description: 'Macrorregiones económicas de México',
+                elements: [
+                    { type: 'circle', x: 400, y: 300, radius: 90, color: '#38a169', title: 'Región Centro', desc: 'Servicios, gobierno, finanzas' },
+                    { type: 'circle', x: 450, y: 250, radius: 80, color: '#3182ce', title: 'Región Norte', desc: 'Industria, manufactura, maquiladoras' },
+                    { type: 'circle', x: 350, y: 320, radius: 70, color: '#9f7aea', title: 'Región Occidente', desc: 'Agroindustria, tecnología' }
+                ]
+            },
+            '4.4': {
+                name: 'Espacios turísticos',
+                description: 'Principales destinos turísticos de México',
+                elements: [
+                    { type: 'circle', x: 500, y: 350, radius: 70, color: '#3182ce', title: 'Cancún-Riviera Maya', desc: 'Turismo de sol y playa' },
+                    { type: 'marker', x: 480, y: 340, color: '#e53e3e', title: 'Chichén Itzá', desc: 'Patrimonio Mundial - Maravilla del mundo' },
+                    { type: 'marker', x: 400, y: 300, color: '#38a169', title: 'Ciudad de México', desc: 'Turismo cultural y de negocios' }
+                ]
+            }
+        };
+        
+        // Inicialización
+        window.onload = function() {
+            canvas = document.getElementById('mapCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Ajustar tamaño del canvas
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Eventos del mouse
+            canvas.addEventListener('mousedown', startDrag);
+            canvas.addEventListener('mousemove', drag);
+            canvas.addEventListener('mouseup', endDrag);
+            canvas.addEventListener('wheel', handleZoom);
+            canvas.addEventListener('click', handleClick);
+            
+            // Cargar tema por defecto
+            loadTopic('2.5');
+            
+            // Dibujar mapa inicial
+            drawMap();
+        };
+        
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            drawMap();
+        }
+        
+        function drawMap() {
+            // Limpiar canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Fondo del mapa (simulación de territorio mexicano)
+            drawBackground();
+            
+            // Aplicar transformaciones de zoom y desplazamiento
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(zoom, zoom);
+            
+            // Dibujar elementos del tema actual
+            drawElements();
+            
+            ctx.restore();
+            
+            // Dibujar cuadrícula (si es necesario)
+            drawGrid();
+        }
+        
+        function drawBackground() {
+            // Fondo azul para océanos
+            ctx.fillStyle = '#e8f4f8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Forma aproximada de México
+            ctx.fillStyle = '#f0f0f0';
+            ctx.strokeStyle = '#d0d0d0';
+            ctx.lineWidth = 2;
+            
+            // Dibujar forma simplificada de México
+            ctx.beginPath();
+            // Península de Baja California
+            ctx.moveTo(100, 100);
+            ctx.lineTo(150, 120);
+            ctx.lineTo(180, 150);
+            ctx.lineTo(200, 200);
+            // Costa oeste
+            ctx.lineTo(250, 250);
+            ctx.lineTo(300, 280);
+            ctx.lineTo(350, 300);
+            // Sur
+            ctx.lineTo(400, 350);
+            ctx.lineTo(450, 380);
+            // Este (Golfo)
+            ctx.lineTo(500, 350);
+            ctx.lineTo(550, 300);
+            ctx.lineTo(500, 250);
+            // Norte
+            ctx.lineTo(400, 200);
+            ctx.lineTo(300, 150);
+            ctx.lineTo(200, 120);
+            ctx.closePath();
+            
+            ctx.fill();
+            ctx.stroke();
+            
+            // Texto "MÉXICO"
+            ctx.fillStyle = '#666';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('MÉXICO', canvas.width/2, canvas.height/2);
+            
+            // Puntos cardinales
+            ctx.font = '14px Arial';
+            ctx.fillText('N', canvas.width/2, 30);
+            ctx.fillText('S', canvas.width/2, canvas.height - 20);
+            ctx.fillText('E', canvas.width - 30, canvas.height/2);
+            ctx.fillText('O', 30, canvas.height/2);
+        }
+        
+        function drawGrid() {
+            if (zoom > 1.5) {
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.lineWidth = 1;
+                
+                const gridSize = 50;
+                
+                // Líneas verticales
+                for (let x = 0; x < canvas.width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                
+                // Líneas horizontales
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        function drawElements() {
+            const topic = topics[currentTopic];
+            if (!topic) return;
+            
+            // Dibujar elementos del tema
+            topic.elements.forEach(element => {
+                switch(element.type) {
+                    case 'marker':
+                        drawMarker(element);
+                        break;
+                    case 'circle':
+                        drawCircle(element);
+                        break;
+                    case 'line':
+                        drawLine(element);
+                        break;
+                }
+            });
+        }
+        
+        function drawMarker(marker) {
+            const x = marker.x;
+            const y = marker.y;
+            
+            // Círculo exterior
+            ctx.fillStyle = marker.color;
+            ctx.beginPath();
+            ctx.arc(x, y, 12, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Círculo interior (blanco)
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(x, y, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Punto central
+            ctx.fillStyle = marker.color;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Guardar referencia para clics
+            markers.push({
+                x: x,
+                y: y,
+                radius: 12,
+                title: marker.title,
+                desc: marker.desc
+            });
+        }
+        
+        function drawCircle(circle) {
+            const x = circle.x;
+            const y = circle.y;
+            
+            // Círculo con relleno semitransparente
+            ctx.fillStyle = circle.color + '30'; // Agrega transparencia
+            ctx.beginPath();
+            ctx.arc(x, y, circle.radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Borde
+            ctx.strokeStyle = circle.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, circle.radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Guardar referencia
+            circles.push({
+                x: x,
+                y: y,
+                radius: circle.radius,
+                title: circle.title,
+                desc: circle.desc
+            });
+        }
+        
+        function drawLine(line) {
+            ctx.strokeStyle = line.color;
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            
+            ctx.beginPath();
+            ctx.moveTo(line.x1, line.y1);
+            ctx.lineTo(line.x2, line.y2);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            
+            // Guardar referencia
+            lines.push({
+                x1: line.x1,
+                y1: line.y1,
+                x2: line.x2,
+                y2: line.y2,
+                title: line.title,
+                desc: line.desc
+            });
+        }
+        
+        // Funciones de interacción
+        function startDrag(e) {
+            isDragging = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            canvas.style.cursor = 'grabbing';
+        }
+        
+        function drag(e) {
+            if (!isDragging) return;
+            
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+            
+            offsetX += dx;
+            offsetY += dy;
+            
+            lastX = e.clientX;
+            lastY = e.clientY;
+            
+            drawMap();
+            
+            // Actualizar coordenadas display
+            updateCoordsDisplay(e);
+        }
+        
+        function endDrag() {
+            isDragging = false;
+            canvas.style.cursor = 'move';
+        }
+        
+        function handleZoom(e) {
+            e.preventDefault();
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            const newZoom = Math.max(0.5, Math.min(3, zoom * zoomFactor));
+            
+            // Ajustar offset para zoom hacia el cursor
+            offsetX = x - (x - offsetX) * (newZoom / zoom);
+            offsetY = y - (y - offsetY) * (newZoom / zoom);
+            
+            zoom = newZoom;
+            drawMap();
+        }
+        
+        function handleClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left - offsetX) / zoom;
+            const y = (e.clientY - rect.top - offsetY) / zoom;
+            
+            // Verificar si se hizo clic en un marcador
+            for (let marker of markers) {
+                const distance = Math.sqrt(Math.pow(x - marker.x, 2) + Math.pow(y - marker.y, 2));
+                if (distance <= marker.radius) {
+                    showPopup(marker.title, marker.desc, e.clientX, e.clientY);
+                    return;
+                }
+            }
+            
+            // Verificar si se hizo clic en un círculo
+            for (let circle of circles) {
+                const distance = Math.sqrt(Math.pow(x - circle.x, 2) + Math.pow(y - circle.y, 2));
+                if (distance <= circle.radius) {
+                    showPopup(circle.title, circle.desc, e.clientX, e.clientY);
+                    return;
+                }
+            }
+            
+            // Verificar si se hizo clic cerca de una línea (simplificado)
+            for (let line of lines) {
+                // Distancia simplificada a la línea
+                const A = {x: line.x1, y: line.y1};
+                const B = {x: line.x2, y: line.y2};
+                const P = {x: x, y: y};
+                
+                const distance = distanceToLine(P, A, B);
+                if (distance < 10) {
+                    showPopup(line.title, line.desc, e.clientX, e.clientY);
+                    return;
+                }
+            }
+        }
+        
+        function distanceToLine(P, A, B) {
+            // Distancia de punto P a la línea AB
+            const numerator = Math.abs((B.y - A.y) * P.x - (B.x - A.x) * P.y + B.x * A.y - B.y * A.x);
+            const denominator = Math.sqrt(Math.pow(B.y - A.y, 2) + Math.pow(B.x - A.x, 2));
+            return numerator / denominator;
+        }
+        
+        function updateCoordsDisplay(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Convertir posición del mouse a coordenadas aproximadas de México
+            const lat = 32.0 - (y / canvas.height) * 24; // México va de ~14°N a 32°N
+            const lng = -118.0 + (x / canvas.width) * 36; // México va de ~118°W a ~86°W
+            
+            const latDir = lat >= 0 ? 'N' : 'S';
+            const lngDir = lng >= 0 ? 'E' : 'W';
+            
+            document.getElementById('coordsDisplay').textContent = 
+                `Lat: ${Math.abs(lat).toFixed(2)}°${latDir} | Long: ${Math.abs(lng).toFixed(2)}°${lngDir}`;
+        }
+        
+        // Funciones de control
+        function zoomIn() {
+            zoom = Math.min(3, zoom * 1.2);
+            drawMap();
+        }
+        
+        function zoomOut() {
+            zoom = Math.max(0.5, zoom * 0.8);
+            drawMap();
+        }
+        
+        function resetView() {
+            zoom = 1;
+            offsetX = 0;
+            offsetY = 0;
+            drawMap();
+            document.getElementById('coordsDisplay').textContent = 'Lat: 23.63°N | Long: 102.55°W';
+        }
+        
+        function zoomToMexico() {
+            resetView();
+            showNotification('Vista de México completo');
+        }
+        
+        function clearMap() {
+            markers = [];
+            circles = [];
+            lines = [];
+            drawMap();
+            showNotification('Mapa limpiado');
+        }
+        
+        function loadTopic(topicId) {
+            if (!topicId) return;
+            
+            currentTopic = topicId;
+            markers = [];
+            circles = [];
+            lines = [];
+            
+            const topic = topics[topicId];
+            if (topic) {
+                document.getElementById('topicInfo').innerHTML = 
+                    `<strong>${topic.name}:</strong> ${topic.description}`;
+                
+                // Actualizar leyenda según el tema
+                updateLegend(topicId);
+            }
+            
+            drawMap();
+            showNotification(`Tema cargado: ${topic?.name || topicId}`);
+        }
+        
+        function updateLegend(topicId) {
+            const legends = {
+                '1.1': [
+                    {color: '#38a169', label: 'Componente Natural'},
+                    {color: '#3182ce', label: 'Componente Social'},
+                    {color: '#e53e3e', label: 'Componente Económico'}
+                ],
+                '1.4': [
+                    {color: '#e53e3e', label: 'Paralelos (Latitud)'},
+                    {color: '#3182ce', label: 'Meridianos (Longitud)'},
+                    {color: '#38a169', label: 'Centro Geográfico'}
+                ],
+                '2.5': [
+                    {color: '#e53e3e', label: 'Clima Desértico'},
+                    {color: '#38a169', label: 'Clima Templado'},
+                    {color: '#3182ce', label: 'Clima Tropical'},
+                    {color: '#9f7aea', label: 'Clima Semiárido'}
+                ]
+            };
+            
+            const legendDiv = document.getElementById('legendContent');
+            const legendItems = legends[topicId] || [
+                {color: '#e53e3e', label: 'Marcador Principal'},
+                {color: '#38a169', label: 'Área de Influencia'},
+                {color: '#3182ce', label: 'Línea/Límite'}
+            ];
+            
+            legendDiv.innerHTML = legendItems.map(item => `
+                <div class="legend-item">
+                    <div class="legend-color" style="background: ${item.color}${item.label.includes('Área') ? '; opacity: 0.3' : ''}"></div>
+                    <div>${item.label}</div>
+                </div>
+            `).join('');
+        }
+        
+        function showPopup(title, content, x, y) {
+            const popup = document.getElementById('mapPopup');
+            const popupTitle = document.getElementById('popupTitle');
+            const popupContent = document.getElementById('popupContent');
+            
+            popupTitle.textContent = title;
+            popupContent.textContent = content;
+            
+            // Posicionar el popup
+            popup.style.left = (x + 10) + 'px';
+            popup.style.top = (y - 10) + 'px';
+            popup.style.display = 'block';
+            
+            // Asegurar que el popup no se salga de la pantalla
+            const rect = popup.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                popup.style.left = (x - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                popup.style.top = (y - rect.height - 10) + 'px';
+            }
+        }
+        
+        function closePopup() {
+            document.getElementById('mapPopup').style.display = 'none';
+        }
+        
+        function showNotification(message) {
+            // Crear notificación temporal
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #4299e1;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 2000);
+            
+            // Agregar estilos de animación
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+    </script>
+</body>
+</html>

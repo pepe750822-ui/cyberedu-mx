@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Estudio Interactivo: Ingreso IPN / UNAM</title>
+    <meta name="description" content="Simulador de examen de admisión para IPN y UNAM con seguimiento de progreso y base de datos masiva de 630 preguntas.">
+    
+    <!-- Librerías Externas (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <style>
+        /* Estilos Personalizados */
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Chips de materias */
+        .subject-chip {
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+        .subject-chip.active {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md z-10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-graduation-cap text-indigo-900 text-2xl mr-3"></i>
+                    <span class="font-bold text-xl text-gray-800 tracking-tight hidden sm:block">Preparación Total IPN/UNAM</span>
+                    <span class="font-bold text-lg text-gray-800 tracking-tight sm:hidden">Prep. IPN/UNAM</span>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="switchView('dashboard')" class="nav-btn text-indigo-900 bg-indigo-50 px-3 py-2 rounded-md text-sm font-medium transition-colors"><i class="fa-solid fa-house sm:mr-1"></i> <span class="hidden sm:inline">Inicio</span></button>
+                    <button onclick="switchView('study')" class="nav-btn text-gray-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"><i class="fa-solid fa-book-open sm:mr-1"></i> <span class="hidden sm:inline">Estudio</span></button>
+                    <button onclick="switchView('analytics')" class="nav-btn text-gray-600 hover:text-indigo-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"><i class="fa-solid fa-chart-pie sm:mr-1"></i> <span class="hidden sm:inline">Progreso</span></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- VISTA: DASHBOARD (INICIO) -->
+        <div id="dashboard-view" class="animate-fade-in space-y-8 block">
+            
+            <!-- Sección de Introducción -->
+            <div class="bg-white rounded-xl shadow-sm p-8 border-l-4 border-indigo-900">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Tu Centro de Comando</h1>
+                        <p class="text-lg text-gray-600">
+                            Base de datos optimizada: <span class="font-bold text-indigo-600">Modo Aleatorio Inteligente</span> activo.
+                        </p>
+                    </div>
+                    <!-- Selector Global de Longitud del Quiz -->
+                    <div class="mt-4 md:mt-0 bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                        <label class="block text-xs font-bold text-indigo-800 uppercase mb-1">Preguntas por Sesión:</label>
+                        <div class="flex space-x-2">
+                            <button onclick="setQuizLength(10)" class="length-btn bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded text-sm font-bold hover:bg-indigo-600 hover:text-white transition active-length" data-length="10">10</button>
+                            <button onclick="setQuizLength(20)" class="length-btn bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded text-sm font-bold hover:bg-indigo-600 hover:text-white transition" data-length="20">20</button>
+                            <!-- Botón 128 (Examen Real) -->
+                            <button onclick="setQuizLength(128)" class="length-btn bg-yellow-100 border border-yellow-300 text-yellow-800 px-3 py-1 rounded text-sm font-bold hover:bg-yellow-400 hover:text-indigo-900 transition flex items-center" data-length="128">
+                                <i class="fa-solid fa-star mr-1 text-xs"></i> 128 (Real)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div class="bg-indigo-50 p-3 rounded text-center">
+                        <span class="block text-2xl font-bold text-indigo-700">10</span>
+                        <span class="text-xs text-indigo-600 uppercase font-semibold">Materias</span>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded text-center">
+                        <span class="block text-2xl font-bold text-emerald-700" id="total-questions-count">630 Reactivos</span>
+                        <span class="text-xs text-emerald-600 uppercase font-semibold">Reactivos Totales</span>
+                    </div>
+                     <div class="bg-amber-50 p-3 rounded text-center">
+                        <span class="block text-2xl font-bold text-amber-700">128</span>
+                        <span class="text-xs text-amber-600 uppercase font-semibold">Simulacro</span>
+                    </div>
+                    <div class="bg-pink-50 p-3 rounded text-center">
+                        <span class="block text-2xl font-bold text-pink-700">Auto</span>
+                        <span class="text-xs text-pink-600 uppercase font-semibold">Guardado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid del Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Tarjeta Examen General -->
+                <div class="bg-gradient-to-br from-indigo-900 to-blue-800 rounded-xl shadow-lg p-6 text-white flex flex-col justify-between transform hover:scale-[1.01] transition duration-300">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold"><i class="fa-solid fa-bolt text-yellow-400 mr-2"></i> Simulacro General</h2>
+                            <span id="display-length-general" class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold border border-white/30">10 Preguntas</span>
+                        </div>
+                        <p class="text-indigo-100 mb-6 text-sm leading-relaxed" id="exam-desc-text">
+                            Este modo toma preguntas de todas las áreas (Matemáticas, Historia, Química, etc.) y las mezcla aleatoriamente para medir tu nivel real.
+                        </p>
+                    </div>
+                    <button onclick="startGeneralQuiz()" class="w-full bg-yellow-400 text-indigo-900 py-3 rounded-lg font-bold hover:bg-yellow-300 transition shadow-lg flex justify-center items-center">
+                        <span id="start-exam-text">Iniciar Examen Aleatorio</span>
+                        <i class="fa-solid fa-play ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Acciones Rápidas por Materia -->
+                <div class="bg-white rounded-xl shadow-sm p-6 flex flex-col">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Práctica por Materia</h2>
+                    <p class="text-sm text-gray-500 mb-6">Enfócate en un solo tema. Se usarán hasta <span class="current-length-span font-bold text-indigo-600">10</span> preguntas aleatorias de ese tema.</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <button onclick="startSubjectQuiz('quimica')" class="p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-left transition text-sm font-semibold border border-emerald-100">
+                            <i class="fa-solid fa-flask mr-2"></i> Química
+                        </button>
+                        <button onclick="startSubjectQuiz('hab_verb')" class="p-3 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-lg text-left transition text-sm font-semibold border border-blue-100">
+                            <i class="fa-solid fa-comments mr-2"></i> Hab. Verbal
+                        </button>
+                        <button onclick="startSubjectQuiz('matematicas')" class="p-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 rounded-lg text-left transition text-sm font-semibold border border-indigo-100">
+                            <i class="fa-solid fa-calculator mr-2"></i> Matemáticas
+                        </button>
+                        <button onclick="startSubjectQuiz('historia')" class="p-3 bg-orange-50 hover:bg-orange-100 text-orange-800 rounded-lg text-left transition text-sm font-semibold border border-orange-100">
+                            <i class="fa-solid fa-landmark mr-2"></i> Historia
+                        </button>
+                    </div>
+
+                    <button onclick="switchView('study')" class="mt-auto w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition flex justify-center items-center">
+                        <span>Ver Todas las Materias</span>
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                 <!-- Gráfica de Composición -->
+                <div class="bg-white rounded-xl shadow-sm p-6 card flex flex-col">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Peso del Examen Oficial</h2>
+                    <p class="text-sm text-gray-500 mb-4">Distribución de los 128 reactivos del examen real.</p>
+                    <div class="chart-container flex-grow">
+                        <canvas id="examCompositionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA: ZONA DE ESTUDIO (Explorador de Materias) -->
+        <div id="study-view" class="hidden animate-fade-in">
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">Zona de Estudio Integral</h2>
+                    <p class="text-gray-600 mt-2">Explora los recursos y simuladores para cada una de las 10 materias oficiales.</p>
+                </div>
+                <div class="hidden md:block">
+                     <span class="text-xs font-bold text-gray-500 uppercase">Configuración Actual:</span>
+                     <span class="current-length-span bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-sm font-bold">10 Preguntas</span>
+                </div>
+            </div>
+
+            <!-- Selector de Materias (Chips) -->
+            <div class="flex flex-wrap gap-2 mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'hab_verb')">Hab. Verbal</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'hab_mat')">Hab. Matem.</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'espanol')">Español</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'matematicas')">Matemáticas</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'biologia')">Ciencias I (Bio)</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'fisica')">Ciencias II (Fís)</button>
+                <button class="subject-chip active px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'quimica')">Ciencias III (Quím)</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'historia')">Historia</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'geografia')">Geografía</button>
+                <button class="subject-chip px-4 py-2 rounded-full text-sm font-medium bg-gray-50 text-gray-600 hover:bg-gray-100" onclick="filterSubject(event, 'civica')">F. Cívica y Ética</button>
+            </div>
+
+            <!-- Contenedor Dinámico de Contenido -->
+            <div id="subject-content-area" class="bg-white rounded-xl shadow-sm p-6 min-h-[400px]">
+                
+                <!-- Título e Icono Dinámico -->
+                <div class="flex items-center mb-6 pb-4 border-b border-gray-100">
+                    <div id="subject-icon-container" class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mr-4">
+                        <i id="subject-icon" class="fa-solid fa-flask text-emerald-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 id="subject-title" class="text-2xl font-bold text-gray-800">Ciencias III (Química)</h3>
+                        <p id="subject-desc" class="text-gray-500 text-sm">Materia, estructura atómica y reacciones.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Columna Conceptos -->
+                    <div class="md:col-span-2">
+                        <h4 class="font-bold text-gray-800 mb-4 text-lg">Conceptos Clave del Temario</h4>
+                        <div id="subject-concepts" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- JS Inyecta contenido aquí -->
+                        </div>
+                    </div>
+
+                    <!-- Columna Acción -->
+                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 h-fit">
+                        <h4 class="font-bold text-gray-800 mb-4 text-lg">Práctica del Tema</h4>
+                        <p class="text-sm text-gray-600 mb-6">
+                            Se seleccionarán aleatoriamente hasta <span class="current-length-span font-bold">10</span> preguntas de este tema.
+                        </p>
+                        <button id="start-quiz-btn" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-md flex justify-center items-center">
+                            <i class="fa-solid fa-play mr-2"></i> Iniciar Quiz
+                        </button>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Tu Nivel:</span>
+                                <span id="subject-level" class="font-bold text-indigo-600">--%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div id="subject-progress-bar" class="bg-indigo-500 h-1.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- VISTA: PROGRESO (Analytics) -->
+        <div id="analytics-view" class="hidden animate-fade-in">
+             <div class="bg-white rounded-xl shadow-sm p-6 md:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900">Análisis 360°</h2>
+                        <p class="text-gray-600 mt-1">Tu desempeño en las 10 áreas de conocimiento.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex gap-2">
+                         <div class="bg-indigo-50 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-indigo-800 font-bold">Promedio Global: <span id="global-average">0</span>%</span>
+                        </div>
+                         <button onclick="resetProgress()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 font-bold text-sm transition" title="Borrar todo el progreso"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Contenedor Radar Chart -->
+                    <div class="flex flex-col">
+                        <h3 class="font-bold text-gray-700 mb-4 text-center">Mapa de Dominio</h3>
+                        <div class="chart-container flex-grow">
+                            <canvas id="skillsRadarChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Desglose -->
+                    <div class="flex flex-col space-y-4">
+                        <h3 class="font-bold text-gray-700">Desglose por Materia</h3>
+                        <div class="overflow-y-auto max-h-[400px] pr-2 space-y-3 custom-scrollbar" id="analytics-list">
+                            <!-- Inyectado via JS -->
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE QUIZ -->
+    <div id="quiz-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Encabezado Quiz -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <div>
+                    <h3 id="quiz-title" class="text-lg font-bold text-gray-800">Simulador</h3>
+                    <p id="quiz-progress" class="text-xs text-gray-500">Pregunta 1 de 5</p>
+                </div>
+                <button onclick="closeQuiz()" class="text-gray-400 hover:text-gray-600 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <!-- Cuerpo Quiz -->
+            <div class="p-6 overflow-y-auto flex-grow custom-scrollbar">
+                <div id="question-container" class="animate-fade-in">
+                    <p id="question-text" class="text-lg font-medium text-gray-900 mb-6">Cargando...</p>
+                    <div id="options-container" class="space-y-3"></div>
+                </div>
+                <!-- Área de Retroalimentación -->
+                <div id="feedback-area" class="hidden mt-6 p-4 rounded-lg bg-blue-50 border border-blue-100">
+                    <div class="flex items-start">
+                        <i id="feedback-icon" class="fa-solid fa-circle-info mt-1 mr-3 text-blue-600"></i>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-blue-900 text-sm">Explicación</h4>
+                            <p id="feedback-text" class="text-sm text-blue-800 mt-1">...</p>
+                        </div>
+                    </div>
+                    <button id="next-btn" onclick="nextQuestion()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-blue-700 transition">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS (DATA STORE) ---
+        // Contiene 630 preguntas distribuidas en las 10 materias oficiales.
+        const subjectsData = {
+            'hab_verb': {
+                name: "Habilidad Verbal", icon: "fa-comments", color: "blue",
+                desc: "Comprensión de lectura (Explícita e Implícita) y Analogías.",
+                concepts: ["Comprensión Lectora", "Analogías", "Sinónimos y Antónimos", "Completamiento de oraciones"],
+                quiz: [
+                    { q: "1. OJO es a VER, como NARIZ es a...", options: ["Oler", "Oír", "Gustar", "Tocar"], correct: 0, rationale: "Función sensorial del órgano." },
+                    { q: "2. PÁGINA es a LIBRO como:", options: ["TECLA es a PIANO", "LÁPIZ es a PAPEL", "VOZ es a CANCIÓN", "OJO es a CARA"], correct: 0, rationale: "Parte es a Todo." },
+                    { q: "3. MÉDICO es a HOSPITAL como:", options: ["PROFESOR es a ESCUELA", "JUEZ es a LEY", "MECÁNICO es a COCHE", "ACTOR es a CINE"], correct: 0, rationale: "Relación de Sujeto a Lugar de trabajo." },
+                    { q: "4. ABEJA es a ENJAMBRE como:", options: ["LOBO es a MANADA", "PÁJARO es a CIELO", "PEZ es a AGUA", "PERRO es a CASA"], correct: 0, rationale: "Individuo es a Colectivo." },
+                    { q: "5. PINTOR es a BROCHA como:", options: ["ESCRITOR es a PLUMA", "CARPINTERO es a MESA", "MÉDICO es a PACIENTE", "COCINERO es a COMIDA"], correct: 0, rationale: "Sujeto a Instrumento." },
+                    { q: "6. LLANTA es a AUTO como:", options: ["PATA es a MESA", "VOLANTE es a CAMINO", "LUZ es a SOL", "MOTOR es a GASOLINA"], correct: 0, rationale: "Parte esencial de soporte/movimiento." },
+                    { q: "7. LECHE es a VACA como LANA es a...", options: ["OVEJA", "ALGODÓN", "ABRIGO", "TELA"], correct: 0, rationale: "Producto obtenido del animal." },
+                    { q: "8. MARTILLO es a GOLPEAR como CUCHILLO es a...", options: ["CORTAR", "AFILAR", "COCINAR", "COMER"], correct: 0, rationale: "Herramienta y su función." },
+                    { q: "9. Sinónimo de 'Efímero':", options: ["Pasajero", "Eterno", "Largo", "Duro"], correct: 0, rationale: "Algo efímero dura poco tiempo." },
+                    { q: "10. Antónimo de 'Altruista':", options: ["Egoísta", "Bondadoso", "Generoso", "Amable"], correct: 0, rationale: "Altruista es dar a otros; egoísta es pensar en uno mismo." },
+                    { q: "11. Sinónimo de 'Prolífico':", options: ["Que produce mucho", "Que habla mucho", "Que come mucho", "Que duerme mucho"], correct: 0, rationale: "Productivo o fértil." },
+                    { q: "12. Antónimo de 'Opaco':", options: ["Transparente", "Oscuro", "Sucio", "Negro"], correct: 0, rationale: "Opaco no deja pasar luz; transparente sí." },
+                    { q: "13. Sinónimo de 'Vasto':", options: ["Amplio", "Pequeño", "Corto", "Estrecho"], correct: 0, rationale: "Vasto significa muy extenso o grande." },
+                    { q: "14. Sinónimo de 'Discordia':", options: ["Conflicto", "Paz", "Amor", "Unión"], correct: 0, rationale: "Falta de acuerdo." },
+                    { q: "15. Antónimo de 'Ficticio':", options: ["Real", "Falso", "Imaginario", "Inventado"], correct: 0, rationale: "Ficticio es irreal." },
+                    { q: "16. Significado de 'Inefable':", options: ["Que no se puede explicar", "Que es feo", "Que es fácil", "Que es corto"], correct: 0, rationale: "Algo tan increíble que no tiene palabras." },
+                    { q: "17. En un texto sobre cambio climático, una causa explícita es:", options: ["Emisiones de CO2", "Lluvias", "Vientos", "Nubes"], correct: 0, rationale: "Se menciona directamente en el texto." },
+                    { q: "18. ¿Qué animal es explícitamente endémico de México?", options: ["Jaguar", "Elefante", "Canguro", "Panda"], correct: 0, rationale: "El jaguar (o ajolote) suele citarse como especie local." },
+                    { q: "19. Idea principal de un texto:", options: ["Lo más importante que dice el autor", "Un detalle secundario", "El título", "La conclusión"], correct: 0, rationale: "Es el núcleo del mensaje." },
+                    { q: "20. Completar: El _______ es un animal _______.", options: ["Perro - fiel", "Gato - volador", "Pez - terrestre", "Ave - acuática"], correct: 0, rationale: "Coherencia lógica y semántica." },
+                    { q: "21. Inferencia: Si 'Juan llega mojado', se infiere que:", options: ["Está lloviendo o se mojó", "Tiene calor", "Es de noche", "Tiene hambre"], correct: 0, rationale: "Conclusión lógica basada en evidencia." },
+                    { q: "22. Completar: La _______ es la ciencia que estudia los _______.", options: ["Biología - seres vivos", "Química - mapas", "Física - poemas", "Historia - números"], correct: 0, rationale: "Definición correcta." },
+                    { q: "23. Idea secundaria:", options: ["Apoya a la principal", "Es lo más importante", "Es el título", "No sirve"], correct: 0, rationale: "Complementa o ejemplifica." },
+                    { q: "24. Completar: El agua _______ a 100 grados.", options: ["Hierve", "Congela", "Derrite", "Sube"], correct: 0, rationale: "Hecho científico." },
+                    { q: "25. ¿Qué oración tiene coherencia?", options: ["El cielo es azul.", "El perro miau.", "La mesa corre rápido.", "El sol es frío."], correct: 0, rationale: "Sentido lógico." },
+                    { q: "26. Antónimo de 'Cándido':", options: ["Malicioso", "Blanco", "Puro", "Inocente"], correct: 0, rationale: "Cándido es ingenuo; malicioso tiene mala intención." },
+                    { q: "27. Sinónimo de 'Eficas':", options: ["Competente", "Lento", "Fuerte", "Grande"], correct: 0, rationale: "Que logra el efecto deseado." },
+                    { q: "28. Analogía: ARQUITECTO es a EDIFICIO como:", options: ["AGRICULTOR es a TIERRA", "MÉDICO es a CURAR", "ABOGADO es a LEY", "JARDINERO es a FLOR"], correct: 0, rationale: "Sujeto creador y su obra/ámbito." },
+                    { q: "29. Completar: La _______ es vital para la _______.", options: ["Educación - sociedad", "Mesa - silla", "Lluvia - sequía", "Noche - luna"], correct: 0, rationale: "Relación lógica de necesidad." },
+                    { q: "30. Idea implícita:", options: ["No se dice directamente", "Se escribe tal cual", "Es el título", "Es la bibliografía"], correct: 0, rationale: "Se debe deducir." },
+                    { q: "31. Analogía: MÚSICO es a PARTITURA como:", options: ["ACTOR es a GUION", "PINTOR es a COLOR", "ESCRITOR es a LIBRO", "BAILARÍN es a MÚSICA"], correct: 0, rationale: "El músico interpreta la partitura como el actor interpreta el guion." },
+                    { q: "32. Sinónimo de 'Magnánimo':", options: ["Generoso", "Egoísta", "Pequeño", "Débil"], correct: 0, rationale: "Que tiene grandeza de ánimo." },
+                    { q: "33. Antónimo de 'Pródigo':", options: ["Ahorrador", "Derrochador", "Lento", "Rápido"], correct: 0, rationale: "Pródigo significa derrochador." },
+                    { q: "34. Completar: El _______ es la capital de _______.", options: ["París - Francia", "México - Madrid", "Lima - Brasil", "Bogotá - Argentina"], correct: 0, rationale: "Relación correcta capital-país." },
+                    { q: "35. Idea implícita en un texto sobre contaminación:", options: ["Debemos cuidar el planeta", "La lluvia es buena", "Los carros son rápidos", "El plástico flota"], correct: 0, rationale: "Se deduce la necesidad de protección ambiental." },
+                    { q: "36. Analogía: PROFESOR es a AULA como:", options: ["JUEZ es a TRIBUNAL", "MÉDICO es a PACIENTE", "COCINERO es a COMIDA", "ARTISTA es a PINTURA"], correct: 0, rationale: "Lugar donde ejerce su profesión." },
+                    { q: "37. Sinónimo de 'Sagaz':", options: ["Astuto", "Tonto", "Lento", "Débil"], correct: 0, rationale: "Que tiene perspicacia e inteligencia." },
+                    { q: "38. Antónimo de 'Tácito':", options: ["Expreso", "Silencioso", "Oculto", "Secreto"], correct: 0, rationale: "Tácito es implícito; expreso es explícito." },
+                    { q: "39. Completar: La _______ requiere _______.", options: ["Fotosíntesis - luz solar", "Digestión - sonido", "Respiración - oscuridad", "Circulación - frío"], correct: 0, rationale: "Proceso biológico correcto." },
+                    { q: "40. En un texto sobre energía solar, una idea secundaria sería:", options: ["Funciona incluso en días nublados", "Es la mejor energía", "Debemos usarla", "El sol es una estrella"], correct: 0, rationale: "Complementa la idea principal." },
+                    { q: "41. Analogía: SEMILLA es a PLANTA como:", options: ["HUEVO es a AVE", "AGUA es a SED", "FUEGO es a CALOR", "AIRE es a VIENTO"], correct: 0, rationale: "Origen y desarrollo." },
+                    { q: "42. Sinónimo de 'Ubicuo':", options: ["Omnipresente", "Ausente", "Pequeño", "Lejano"], correct: 0, rationale: "Que está en todas partes." },
+                    { q: "43. Antónimo de 'Cóncavo':", options: ["Convexo", "Plano", "Hueco", "Profundo"], correct: 0, rationale: "Formas opuestas." },
+                    { q: "44. Completar: El _______ descubrió _______.", options: ["Newton - la gravedad", "Einstein - el teléfono", "Darwin - la electricidad", "Pasteur - la relatividad"], correct: 0, rationale: "Descubrimiento científico correcto." },
+                    { q: "45. Inferencia: Si 'María estudia medicina y siempre lleva una bata blanca', se infiere que:", options: ["Es estudiante o profesional de salud", "Le gusta el color blanco", "Tiene frío", "Es modista"], correct: 0, rationale: "Evidencia contextual." },
+                    { q: "46. Analogía: ARQUITECTO es a PLANOS como:", options: ["COMPOSITOR es a PARTITURA", "PINTOR es a LIENZO", "ESCRITOR es a PAPEL", "ESCULTOR es a MÁRMOL"], correct: 0, rationale: "Profesional y su herramienta de diseño." },
+                    { q: "47. Sinónimo de 'Pulcro':", options: ["Aseado", "Sucio", "Desordenado", "Rápido"], correct: 0, rationale: "Limpio y ordenado." },
+                    { q: "48. Antónimo de 'Inhóspito':", options: ["Acogedor", "Desierto", "Árido", "Vacío"], correct: 0, rationale: "Inhóspito es poco acogedor." },
+                    { q: "49. Completar: Los _______ son animales _______.", options: ["Mamíferos - de sangre caliente", "Reptiles - voladores", "Peces - terrestres", "Aves - acuáticos"], correct: 0, rationale: "Característica biológica correcta." },
+                    { q: "50. ¿Qué oración tiene mejor coherencia?:", options: ["El agua hierve a 100°C.", "El fuego es frío.", "La nieve es caliente.", "El hielo quema."], correct: 0, rationale: "Hecho científico verificable." },
+                    { q: "51. Analogía: POETA es a POEMA como:", options: ["COMPOSITOR es a SINFONÍA", "PINTOR es a PINCEL", "ESCULTOR es a MÁRMOL", "ARQUITECTO es a EDIFICIO"], correct: 0, rationale: "Creador y su obra artística." },
+                    { q: "52. Sinónimo de 'Lacónico':", options: ["Breve", "Extenso", "Hablador", "Complejo"], correct: 0, rationale: "Que se expresa con pocas palabras." },
+                    { q: "53. Antónimo de 'Incipiente':", options: ["Avanzado", "Principiante", "Nuevo", "Joven"], correct: 0, rationale: "Incipiente es que comienza; avanzado es desarrollado." },
+                    { q: "54. Completar: El _______ es el proceso de _______.", options: ["Fotosíntesis - producción de alimento", "Digestión - respiración", "Circulación - excreción", "Reproducción - fotosíntesis"], correct: 0, rationale: "Relación correcta proceso-función." },
+                    { q: "55. Idea principal de un texto sobre reciclaje:", options: ["Importancia de reutilizar materiales", "Tipos de basura", "Colores de contenedores", "Historia del plástico"], correct: 0, rationale: "Núcleo del mensaje ambiental." },
+                    { q: "56. Analogía: SEMÁFORO es a TRÁFICO como:", options: ["FARO es a BARCO", "RELÓJ es a TIEMPO", "TERMÓMETRO es a TEMPERATURA", "BRÚJULA es a DIRECCIÓN"], correct: 0, rationale: "Elemento que regula/controla." },
+                    { q: "57. Sinónimo de 'Pertinaz':", options: ["Persistente", "Débil", "Flexible", "Inconstante"], correct: 0, rationale: "Que persiste con tenacidad." },
+                    { q: "58. Antónimo de 'Sucinto':", options: ["Prolijo", "Breve", "Corto", "Resumido"], correct: 0, rationale: "Sucinto es conciso; prolijo es extenso." },
+                    { q: "59. Completar: La _______ se produce por _______.", options: ["Electricidad estática - fricción", "Gravedad - magnetismo", "Luz - sonido", "Calor - frío"], correct: 0, rationale: "Fenómeno físico correcto." },
+                    { q: "60. Inferencia: Si 'todos los mamíferos tienen pulmones y la ballena es mamífero':", options: ["La ballena tiene pulmones", "La ballena tiene branquias", "La ballena no respira", "Los mamíferos no respiran"], correct: 0, rationale: "Aplicación de premisa general a caso particular." },
+                    { q: "61. Analogía: DICCIONARIO es a PALABRAS como:", options: ["ATLAS es a MAPAS", "LIBRO es a PÁGINAS", "ENCICLOPEDIA es a CONOCIMIENTO", "GUÍA es a INSTRUCCIONES"], correct: 0, rationale: "Compendio especializado." },
+                    { q: "62. Sinónimo de 'Ínsito':", options: ["Inherente", "Ajeno", "External", "Adquirido"], correct: 0, rationale: "Que existe desde el origen." },
+                    { q: "63. Antónimo de 'Lívido':", options: ["Sonrosado", "Pálido", "Blanco", "Azulado"], correct: 0, rationale: "Lívido es pálido/amoratado." },
+                    { q: "64. Completar: _______ escribió '_______'.", options: ["Shakespeare - Hamlet", "Cervantes - La Divina Comedia", "Homero - Don Quijote", "Dante - La Ilíada"], correct: 0, rationale: "Autor-obra correcta." },
+                    { q: "65. ¿Qué oración tiene sentido lógico?", options: ["El agua extingue el fuego.", "El fuego produce agua.", "El agua enciende fuego.", "El fuego genera hielo."], correct: 0, rationale: "Relación causa-efecto real." }
+                ]
+            },
+            'hab_mat': {
+                name: "Habilidad Matemática", icon: "fa-brain", color: "purple",
+                desc: "Sucesiones, series espaciales y lógica.",
+                concepts: ["Sucesiones numéricas", "Series espaciales", "Imaginación espacial", "Razonamiento lógico"],
+                quiz: [
+                    { q: "1. Sigue la serie: 2, 4, 8, 16...", options: ["32", "24", "30", "20"], correct: 0, rationale: "x2 en cada paso." },
+                    { q: "2. Sigue la serie: 1, 1, 2, 3, 5...", options: ["8", "7", "10", "6"], correct: 0, rationale: "Serie de Fibonacci (suma de los dos anteriores)." },
+                    { q: "3. ¿Cuántas caras tiene un cubo?", options: ["6", "4", "8", "12"], correct: 0, rationale: "Un cubo tiene 6 caras cuadradas." },
+                    { q: "4. Si un reloj marca las 3:00, el ángulo es:", options: ["90 grados", "180 grados", "45 grados", "0 grados"], correct: 0, rationale: "Un cuarto de círculo es 90 grados." },
+                    { q: "5. El doble de un número más 5 es 15. ¿El número es?", options: ["5", "10", "2", "8"], correct: 0, rationale: "2x + 5 = 15 -> 2x = 10 -> x = 5." },
+                    { q: "6. ¿Qué figura sigue? Cuadrado, Pentágono, Hexágono...", options: ["Heptágono", "Octágono", "Triángulo", "Círculo"], correct: 0, rationale: "Aumenta el número de lados (4, 5, 6 -> 7)." },
+                    { q: "7. 10% de 200 es:", options: ["20", "10", "200", "50"], correct: 0, rationale: "200 * 0.10 = 20." },
+                    { q: "8. ¿Cuántos vértices tiene un triángulo?", options: ["3", "4", "2", "5"], correct: 0, rationale: "Tres esquinas o vértices." },
+                    { q: "9. Si hoy es Lunes, en 3 días será:", options: ["Jueves", "Miércoles", "Viernes", "Martes"], correct: 0, rationale: "Lunes + 1(M) + 2(Mi) + 3(J)." },
+                    { q: "10. Mitad de 1/2:", options: ["1/4", "1/1", "1/8", "1/3"], correct: 0, rationale: "1/2 dividido por 2 es 1/4." },
+                    { q: "11. Serie: 3, 6, 9, 12...", options: ["15", "14", "16", "13"], correct: 0, rationale: "Suma 3." },
+                    { q: "12. ¿Cuántos lados tiene un hexágono?", options: ["6", "5", "8", "10"], correct: 0, rationale: "Hexa = 6." },
+                    { q: "13. El triple de 9:", options: ["27", "18", "30", "21"], correct: 0, rationale: "3 * 9 = 27." },
+                    { q: "14. 50% de 50:", options: ["25", "10", "5", "50"], correct: 0, rationale: "Mitad de 50." },
+                    { q: "15. Serie: 10, 20, 30, 40...", options: ["50", "60", "45", "55"], correct: 0, rationale: "Suma 10." },
+                    { q: "16. Imaginación: Al doblar una hoja por la mitad dos veces, ¿cuántas partes quedan?", options: ["4", "2", "6", "8"], correct: 0, rationale: "2^2 = 4." },
+                    { q: "17. Si x + 2 = 10, x vale:", options: ["8", "12", "5", "20"], correct: 0, rationale: "10 - 2 = 8." },
+                    { q: "18. Ángulo llano mide:", options: ["180 grados", "90 grados", "360 grados", "45 grados"], correct: 0, rationale: "Línea recta." },
+                    { q: "19. Número primo:", options: ["7", "4", "6", "9"], correct: 0, rationale: "Solo divisible por 1 y sí mismo." },
+                    { q: "20. Siguiente en serie: A, C, E, G...", options: ["I", "H", "J", "K"], correct: 0, rationale: "Salta una letra (B, D, F, H)." },
+                    { q: "21. Volumen cubo lado 2:", options: ["8", "4", "6", "12"], correct: 0, rationale: "2*2*2 = 8." },
+                    { q: "22. 1/4 de 100:", options: ["25", "20", "50", "10"], correct: 0, rationale: "100 / 4." },
+                    { q: "23. Si un tren va a 100 km/h, en 2 horas recorre:", options: ["200 km", "100 km", "300 km", "50 km"], correct: 0, rationale: "d = v * t." },
+                    { q: "24. ¿Qué número falta? 5, 10, __, 20", options: ["15", "12", "18", "14"], correct: 0, rationale: "Serie de 5 en 5." },
+                    { q: "24. ¿Cuántos minutos tiene 1.5 horas?", options: ["90", "60", "100", "120"], correct: 0, rationale: "60 + 30 = 90." },
+                    { q: "26. Serie: 100, 90, 80...", options: ["70", "60", "75", "65"], correct: 0, rationale: "Resta 10." },
+                    { q: "27. Si 3x = 12, x es:", options: ["4", "3", "6", "2"], correct: 0, rationale: "12 / 3 = 4." },
+                    { q: "28. Cuántos lados tiene un pentágono:", options: ["5", "6", "4", "8"], correct: 0, rationale: "Penta = 5." },
+                    { q: "29. 20% de 50:", options: ["10", "20", "5", "25"], correct: 0, rationale: "50 * 0.20." },
+                    { q: "30. Siguiente en serie: 1, 4, 9, 16...", options: ["25", "20", "24", "30"], correct: 0, rationale: "Cuadrados perfectos (1^2, 2^2... 5^2)." },
+                    { q: "31. Siguiente en serie: 1, 3, 6, 10, 15...", options: ["21", "20", "18", "25"], correct: 0, rationale: "Suma números consecutivos: +2, +3, +4, +5, +6." },
+                    { q: "32. ¿Cuántas aristas tiene un prisma rectangular?", options: ["12", "8", "6", "10"], correct: 0, rationale: "Un prisma rectangular tiene 12 aristas." },
+                    { q: "33. Si 5x - 3 = 22, x vale:", options: ["5", "4", "6", "7"], correct: 0, rationale: "5x = 25, x = 5." },
+                    { q: "34. Serie: 100, 81, 64, 49...", options: ["36", "35", "42", "38"], correct: 0, rationale: "Cuadrados perfectos descendentes: 10^2, 9^2, 8^2, 7^2, 6^2." },
+                    { q: "35. Ángulo agudo mide:", options: ["Menos de 90°", "Más de 90°", "90° exacto", "180°"], correct: 0, rationale: "Definición de ángulo agudo." },
+                    { q: "36. ¿Qué figura sigue? Triángulo, Cuadrado, Pentágono...", options: ["Hexágono", "Heptágono", "Octágono", "Círculo"], correct: 0, rationale: "Aumenta un lado cada vez." },
+                    { q: "37. Si hoy es Sábado, ¿qué día será en 15 días?", options: ["Domingo", "Sábado", "Lunes", "Martes"], correct: 0, rationale: "15 días = 2 semanas (14 días) + 1 día." },
+                    { q: "38. 25% de 200 es:", options: ["50", "25", "100", "75"], correct: 0, rationale: "200 × 0.25 = 50." },
+                    { q: "39. Siguiente en serie: Z, X, V, T...", options: ["R", "S", "U", "Q"], correct: 0, rationale: "Letras alternadas hacia atrás." },
+                    { q: "40. Volumen de un cilindro (radio=2, altura=5, π=3.14):", options: ["62.8", "31.4", "125.6", "15.7"], correct: 0, rationale: "V = πr²h = 3.14×4×5 = 62.8." },
+                    { q: "41. Si un número se duplica y se le suma 10 resulta 30, el número es:", options: ["10", "15", "20", "5"], correct: 0, rationale: "2x + 10 = 30 → 2x = 20 → x = 10." },
+                    { q: "42. ¿Cuántos triángulos hay en un pentágono dividido desde un vértice?", options: ["3", "5", "4", "2"], correct: 0, rationale: "Un pentágono puede dividirse en 3 triángulos desde un vértice." },
+                    { q: "43. Serie: 2, 6, 12, 20...", options: ["30", "24", "28", "32"], correct: 0, rationale: "Patrón: 1×2, 2×3, 3×4, 4×5, 5×6." },
+                    { q: "44. Si 3a = b y b = 12, entonces a =", options: ["4", "3", "6", "9"], correct: 0, rationale: "3a = 12 → a = 4." },
+                    { q: "45. ¿Cuántos cuadrados pequeños hay en un cubo Rubik 3x3?", options: ["54", "27", "9", "6"], correct: 0, rationale: "6 caras × 9 cuadrados = 54." },
+                    { q: "46. 1/3 de 90 es:", options: ["30", "60", "45", "33"], correct: 0, rationale: "90 ÷ 3 = 30." },
+                    { q: "47. Siguiente en serie: 1, 8, 27, 64...", options: ["125", "100", "216", "81"], correct: 0, rationale: "Cubos perfectos: 1^3, 2^3, 3^3, 4^3, 5^3." },
+                    { q: "48. Si un auto recorre 240 km en 3 horas, su velocidad promedio es:", options: ["80 km/h", "60 km/h", "90 km/h", "120 km/h"], correct: 0, rationale: "240 ÷ 3 = 80." },
+                    { q: "49. ¿Qué número falta? 7, 14, 21, __, 35", options: ["28", "30", "25", "42"], correct: 0, rationale: "Múltiplos de 7." },
+                    { q: "50. Área de un rombo (diagonales 6 y 8):", options: ["24", "14", "48", "28"], correct: 0, rationale: "A = (d1×d2)/2 = (6×8)/2 = 24." },
+                    { q: "51. Siguiente en serie: 1, 4, 9, 16, 25...", options: ["36", "30", "40", "49"], correct: 0, rationale: "Cuadrados perfectos: 1², 2², 3², 4², 5², 6²." },
+                    { q: "52. ¿Cuántos vértices tiene un dodecaedro regular?", options: ["20", "12", "30", "8"], correct: 0, rationale: "Poliedro de 12 caras pentagonales, 20 vértices." },
+                    { q: "53. Si 2^x = 32, x vale:", options: ["5", "6", "4", "3"], correct: 0, rationale: "2^5 = 32." },
+                    { q: "54. Serie: 1, 2, 4, 7, 11...", options: ["16", "15", "14", "18"], correct: 0, rationale: "Diferencias: +1, +2, +3, +4, +5." },
+                    { q: "55. Ángulo entre manecillas a las 6:00:", options: ["180°", "90°", "0°", "360°"], correct: 0, rationale: "Forman línea recta." },
+                    { q: "56. Patrón espacial: ▲, ▼, ▲, ▼, ?", options: ["▲", "▼", "●", "■"], correct: 0, rationale: "Alternancia simple." },
+                    { q: "57. Si 3 personas se saludan con apretones, ¿cuántos apretones?", options: ["3", "6", "9", "1"], correct: 0, rationale: "Combinaciones de 2: C(3,2)=3." },
+                    { q: "58. 0.75 como fracción:", options: ["3/4", "4/3", "75/100", "1/4"], correct: 0, rationale: "Forma simplificada." },
+                    { q: "59. Siguiente en serie alfabética: B, E, H, K...", options: ["N", "M", "L", "O"], correct: 0, rationale: "Saltos de 3 letras." },
+                    { q: "60. Área de un trapecio (bases 6 y 10, altura 4):", options: ["32", "24", "40", "16"], correct: 0, rationale: "A = ((B+b)/2)×h = 8×4 = 32." },
+                    { q: "61. Si 5 máquinas hacen 100 piezas en 2 horas, ¿10 máquinas en 1 hora?", options: ["100", "50", "200", "25"], correct: 0, rationale: "Proporcionalidad directa/inversa." },
+                    { q: "62. ¿Cuántos cubos pequeños en un cubo 4x4x4?", options: ["64", "16", "32", "48"], correct: 0, rationale: "4×4×4 = 64." },
+                    { q: "63. Si a+b=10 y a-b=2, a vale:", options: ["6", "8", "5", "4"], correct: 0, rationale: "Sumando ecuaciones: 2a=12, a=6." },
+                    { q: "64. Serie: 1, 1, 2, 3, 5, 8...", options: ["13", "12", "10", "11"], correct: 0, rationale: "Fibonacci: suma dos anteriores." },
+                    { q: "65. Un número más su mitad es 15, el número es:", options: ["10", "15", "20", "5"], correct: 0, rationale: "x + x/2 = 15 → 3x/2=15 → x=10." }
+                ]
+            },
+            'espanol': {
+                name: "Español", icon: "fa-book", color: "pink",
+                desc: "Gramática y tipos de texto.",
+                concepts: ["Funciones lengua", "Ortografía", "Gramática", "Textos"],
+                quiz: [
+                    { q: "1. Función poética busca:", options: ["Belleza", "Informar", "Convencer", "Ordenar"], correct: 0, rationale: "Estética del mensaje." },
+                    { q: "2. Nexo causal:", options: ["Porque", "Y", "Pero", "Aunque"], correct: 0, rationale: "Indica causa." },
+                    { q: "3. Sujeto en 'Juan corre':", options: ["Juan", "Corre", "Juan corre", "Ninguno"], correct: 0, rationale: "Quien realiza la acción." },
+                    { q: "4. Sinónimo de 'Rápido':", options: ["Veloz", "Lento", "Pausado", "Quieto"], correct: 0, rationale: "Significado igual." },
+                    { q: "5. Palabra aguda lleva tilde si:", options: ["Termina en N, S o Vocal", "Termina en cualquier consonante", "Es antepenúltima", "Nunca"], correct: 0, rationale: "Regla de acentuación." },
+                    { q: "6. Texto periodístico de opinión:", options: ["Editorial", "Noticia", "Reportaje", "Crónica"], correct: 0, rationale: "Refleja la postura del medio." },
+                    { q: "7. Verbo en infinitivo termina en:", options: ["-ar, -er, -ir", "-ando", "-ado", "-yo"], correct: 0, rationale: "Forma no personal." },
+                    { q: "8. Antónimo de 'Luz':", options: ["Oscuridad", "Sol", "Claridad", "Día"], correct: 0, rationale: "Opuesto." },
+                    { q: "9. Metáfora es:", options: ["Figura retórica", "Error gramatical", "Tipo de verbo", "Signo"], correct: 0, rationale: "Comparación implícita." },
+                    { q: "10. Punto y seguido separa:", options: ["Oraciones en mismo párrafo", "Párrafos", "Textos", "Palabras"], correct: 0, rationale: "Continuidad temática." },
+                    { q: "11. Adjetivo calificativo:", options: ["Hermoso", "Correr", "Ayer", "Y"], correct: 0, rationale: "Describe sustantivo." },
+                    { q: "12. Predicado en 'El perro ladra':", options: ["Ladra", "El perro", "Perro", "El"], correct: 0, rationale: "La acción realizada." },
+                    { q: "13. ¿Qué autor mexicano ganó el Premio Nobel?", options: ["Octavio Paz", "Juan Rulfo", "Carlos Fuentes", "Amado Nervo"], correct: 0, rationale: "En 1990." },
+                    { q: "14. Género literario de 'Romeo y Julieta':", options: ["Dramático", "Épico", "Lírico", "Didáctico"], correct: 0, rationale: "Es una obra de teatro (tragedia)." },
+                    { q: "15. Autor de 'El Quijote':", options: ["Cervantes", "Shakespeare", "Lope de Vega", "Góngora"], correct: 0, rationale: "Miguel de Cervantes Saavedra." },
+                    { q: "16. Movimiento literario de Rubén Darío:", options: ["Modernismo", "Romanticismo", "Barroco", "Realismo"], correct: 0, rationale: "Padre del modernismo." },
+                    { q: "17. 'Pedro Páramo' fue escrito por:", options: ["Juan Rulfo", "Octavio Paz", "García Márquez", "Cortázar"], correct: 0, rationale: "Autor mexicano clásico." },
+                    { q: "18. Figura retórica que exagera:", options: ["Hipérbole", "Metáfora", "Símil", "Anáfora"], correct: 0, rationale: "Exageración de la realidad." },
+                    { q: "19. Signo que indica pausa breve:", options: ["Coma", "Punto", "Paréntesis", "Guion"], correct: 0, rationale: "La coma separa elementos." },
+                    { q: "20. Oración imperativa expresa:", options: ["Orden", "Duda", "Deseo", "Pregunta"], correct: 0, rationale: "Mandato o ruego." },
+                    { q: "21. El sujeto tácito:", options: ["No está escrito pero se entiende", "Es el verbo", "Es un adjetivo", "No existe"], correct: 0, rationale: "Implícito en el verbo." },
+                    { q: "22. Palabras esdrújulas:", options: ["Siempre se acentúan", "Nunca se acentúan", "Solo si terminan en vocal", "A veces"], correct: 0, rationale: "Regla ortográfica." },
+                    { q: "23. Sinónimo de 'Efímero':", options: ["Breve", "Eterno", "Largo", "Duro"], correct: 0, rationale: "Que dura poco." },
+                    { q: "24. El dipongo es:", options: ["Unión de dos vocales", "Separación", "Consonantes juntas", "Un acento"], correct: 0, rationale: "En la misma sílaba." },
+                    { q: "25. Narrador omnisciente:", options: ["Sabe todo", "Sabe poco", "Es un personaje", "No sabe nada"], correct: 0, rationale: "Conoce pensamientos y hechos." },
+                    { q: "26. ¿Qué autor escribió 'Cien años de soledad'?", options: ["Gabriel García Márquez", "Mario Vargas Llosa", "Julio Cortázar", "Carlos Fuentes"], correct: 0, rationale: "Obra cumbre del realismo mágico." },
+                    { q: "27. Figura retórica que repite palabras al inicio:", options: ["Anáfora", "Epífora", "Aliteración", "Hipérbole"], correct: 0, rationale: "Repetición al comienzo de versos o frases." },
+                    { q: "28. 'Bajo', 'bajo' (instrumento) y 'vajo' (incorrecto) son ejemplo de:", options: ["Homófonos", "Homónimos", "Sinónimos", "Antónimos"], correct: 0, rationale: "Palabras que suenan igual pero se escriben diferente." },
+                    { q: "29. Texto que narra hechos reales de forma objetiva:", options: ["Crónica", "Leyenda", "Fábula", "Novela"], correct: 0, rationale: "Narración histórica en orden cronológico." },
+                    { q: "30. 'Aunque' es una conjunción:", options: ["Concesiva", "Copulativa", "Disyuntiva", "Causal"], correct: 0, rationale: "Expresa objeción o dificultad." },
+                    { q: "31. Oración compuesta por coordinación:", options: ["Estudia y trabaja", "Cuando llegues, avísame", "El libro que leíste", "Corriendo rápido"], correct: 0, rationale: "Dos proposiciones independientes unidas por conjunción." },
+                    { q: "32. Gentilicio de Perú:", options: ["Peruano", "Peruviano", "Perú", "Perueño"], correct: 0, rationale: "Forma correcta del gentilicio." },
+                    { q: "33. Palabra sobreesdrújula:", options: ["Dígamelo", "Cántaro", "Árbol", "Lápiz"], correct: 0, rationale: "Lleva acento antes de la antepenúltima sílaba." },
+                    { q: "34. Modo verbal para expresar duda:", options: ["Subjuntivo", "Indicativo", "Imperativo", "Infinitivo"], correct: 0, rationale: "Ej: 'Quizás venga mañana'." },
+                    { q: "35. Significado de 'Idiosincrasia':", options: ["Carácter propio", "Enfermedad", "Idea fija", "Tradición"], correct: 0, rationale: "Rasgos distintivos de un grupo." },
+                    { q: "36. Plural de 'álbum':", options: ["Álbumes", "Álbums", "Álbum", "Álbunes"], correct: 0, rationale: "Terminación en consonante, añade -es." },
+                    { q: "37. 'De repente' significa:", options: ["Súbitamente", "Despacio", "Nunca", "Siempre"], correct: 0, rationale: "De manera imprevista." },
+                    { q: "38. Oración en voz pasiva:", options: ["El libro fue leído por Juan", "Juan leyó el libro", "El libro es interesante", "Juan lee libros"], correct: 0, rationale: "Sujeto recibe la acción." },
+                    { q: "39. Autor de 'La vorágine':", options: ["José Eustasio Rivera", "Jorge Isaacs", "Tomás Carrasquilla", "Rómulo Gallegos"], correct: 0, rationale: "Novela de la selva colombiana." },
+                    { q: "40. ¿Cuál lleva tilde diacrítica?", options: ["Té (bebida)", "Te (pronombre)", "Se (pronombre)", "De (preposición)"], correct: 0, rationale: "Distingue significado." },
+                    { q: "41. 'Ambigüedad' lleva diéresis porque:", options: ["La u es pronunciada", "La u es muda", "Es extranjera", "Siempre lleva"], correct: 0, rationale: "Se marca la pronunciación de la u en güe, güi." },
+                    { q: "42. Significado de 'Prolijo':", options: ["Meticuloso", "Descuidado", "Rápido", "Simple"], correct: 0, rationale: "Que pone cuidado y atención." },
+                    { q: "43. 'Haya' del verbo haber vs 'halla' de hallar es:", options: ["Homófono", "Homógrafo", "Parónimo", "Sinónimo"], correct: 0, rationale: "Suenan igual, significado diferente." },
+                    { q: "44. Texto instructivo ejemplo:", options: ["Receta de cocina", "Noticia", "Poema", "Ensayo"], correct: 0, rationale: "Indica pasos a seguir." },
+                    { q: "45. Concordancia correcta:", options: ["Las casas son bonitas", "Las casa son bonita", "El casas son bonitos", "La casas es bonitas"], correct: 0, rationale: "Género y número concordados." },
+                    { q: "46. Palabra con diptongo creciente:", options: ["ciudad", "país", "baúl", "leer"], correct: 0, rationale: "Vocal débil + vocal fuerte (iu)." },
+                    { q: "47. Oración en modo subjuntivo:", options: ["Espero que vengas", "Vienes mañana", "Viniste ayer", "Ven aquí"], correct: 0, rationale: "Expresa duda, deseo, posibilidad." },
+                    { q: "48. Significado de 'Proclive':", options: ["Inclinado a", "Contrario a", "Indiferente", "Superior a"], correct: 0, rationale: "Que tiende a algo." },
+                    { q: "49. Acento diacrítico en 'aún':", options: ["Indica todavía", "Es preposición", "No lleva", "Siempre"], correct: 0, rationale: "Diferencia 'aún' (todavía) de 'aun' (incluso)." },
+                    { q: "50. Texto dramático incluye:", options: ["Diálogo y acotaciones", "Narración", "Descripción", "Exposición"], correct: 0, rationale: "Obra teatral." },
+                    { q: "51. Concordancia verbal correcta:", options: ["La mayoría vino", "La mayoría vinieron", "El mayoría viene", "Las mayoría vienen"], correct: 0, rationale: "Con 'mayoría' singular cuando se refiere a conjunto." },
+                    { q: "52. 'Hizo' y 'echo' son:", options: ["Homófonos", "Sinónimos", "Antónimos", "Parónimos"], correct: 0, rationale: "Suenan igual, diferente escritura y significado." },
+                    { q: "53. Significado de 'Inmarcesible':", options: ["Que no se marchita", "Que crece rápido", "Colorido", "Pequeño"], correct: 0, rationale: "Eterno, perenne." },
+                    { q: "54. Voz media o refleja:", options: ["Se lava", "Lava", "Es lavado", "Lavó"], correct: 0, rationale: "Acción recae sobre sujeto." },
+                    { q: "55. Género literario de 'La Odisea':", options: ["Épico", "Lírico", "Dramático", "Didáctico"], correct: 0, rationale: "Poema épico." },
+                    { q: "56. Uso correcto de 'por qué/porque':", options: ["¿Por qué viniste? Porque te extrañaba.", "Porque viniste? ¿Por qué te extrañaba.", "Por que viniste porque te extrañaba", "Porqué viniste por que te extrañaba"], correct: 0, rationale: "Interrogativa y causal." },
+                    { q: "57. Adverbio de duda:", options: ["Quizás", "Seguramente", "Ciertamente", "Definitivamente"], correct: 0, rationale: "Expresa incertidumbre." },
+                    { q: "58. 'Dequeísmo' es:", options: ["Usar 'de que' innecesariamente", "Omitir 'de que'", "Usar 'que'", "Omitir preposición"], correct: 0, rationale: "Error gramatical común." },
+                    { q: "59. Autor de 'Rayuela':", options: ["Julio Cortázar", "Jorge Luis Borges", "Mario Vargas Llosa", "Ernesto Sábato"], correct: 0, rationale: "Novela experimental argentina." },
+                    { q: "60. Oración compuesta subordinada adjetiva:", options: ["El libro que leíste es bueno", "Estudia y trabaja", "Si vienes, te espero", "Corre rápido"], correct: 0, rationale: "Proposición que funciona como adjetivo." }
+                ]
+            },
+            'matematicas': {
+                name: "Matemáticas", icon: "fa-calculator", color: "indigo",
+                desc: "Álgebra, aritmética y geometría.",
+                concepts: ["Álgebra", "Aritmética", "Geometría", "Probabilidad"],
+                quiz: [
+                    { q: "1. 1/2 * 4 + 0.5 =", options: ["2.5", "2", "3", "1.5"], correct: 0, rationale: "2 + 0.5." },
+                    { q: "2. Probabilidad par en dado:", options: ["1/2", "1/6", "1/3", "1/4"], correct: 0, rationale: "3/6." },
+                    { q: "3. Raíz cuadrada de 144:", options: ["12", "11", "10", "14"], correct: 0, rationale: "12*12." },
+                    { q: "4. Teorema Pitágoras:", options: ["a^2+b^2=c^2", "E=mc^2", "F=ma", "pi*r^2"], correct: 0, rationale: "Triángulos rectángulos." },
+                    { q: "5. Valor de Pi:", options: ["3.1416", "3.0", "4.5", "2.1"], correct: 0, rationale: "Constante." },
+                    { q: "6. Ecuación recta:", options: ["y=mx+b", "y=x^2", "x^2+y^2=r^2", "y=1/x"], correct: 0, rationale: "Lineal." },
+                    { q: "7. 3 al cubo:", options: ["27", "9", "6", "12"], correct: 0, rationale: "3*3*3." },
+                    { q: "8. Suma ángulos internos triángulo:", options: ["180", "360", "90", "270"], correct: 0, rationale: "Geometría plana." },
+                    { q: "9. -5 + 8 =", options: ["3", "-3", "13", "-13"], correct: 0, rationale: "Resta signos." },
+                    { q: "10. Área cuadrado lado 5:", options: ["25", "20", "10", "5"], correct: 0, rationale: "5*5." },
+                    { q: "11. Simplifica: 2x + 3x", options: ["5x", "6x", "x^2", "5"], correct: 0, rationale: "Suma de términos semejantes." },
+                    { q: "12. Perímetro cuadrado lado 4:", options: ["16", "8", "12", "20"], correct: 0, rationale: "4+4+4+4." },
+                    { q: "13. 3/4 en decimal:", options: ["0.75", "0.50", "0.25", "0.80"], correct: 0, rationale: "3 dividido entre 4." },
+                    { q: "14. Binomio cuadrado (a+b)^2:", options: ["a^2+2ab+b^2", "a^2+b^2", "2a+2b", "a^2-b^2"], correct: 0, rationale: "Producto notable." },
+                    { q: "15. Área círculo radio 2 (pi=3.14):", options: ["12.56", "6.28", "4", "3.14"], correct: 0, rationale: "3.14 * 2^2." },
+                    { q: "16. Moda en 2,2,3,5:", options: ["2", "3", "5", "2.5"], correct: 0, rationale: "El que más se repite." },
+                    { q: "17. Seno de 30 grados:", options: ["0.5", "1", "0", "0.86"], correct: 0, rationale: "Valor trigonométrico estándar." },
+                    { q: "18. Pendiente m=0 es:", options: ["Horizontal", "Vertical", "Inclinada", "Curva"], correct: 0, rationale: "Sin inclinación." },
+                    { q: "19. Solución de x^2 = 9:", options: ["3 y -3", "Solo 3", "9", "81"], correct: 0, rationale: "Dos raíces." },
+                    { q: "20. Mínimo Común Múltiplo de 2 y 3:", options: ["6", "5", "1", "12"], correct: 0, rationale: "2*3=6." },
+                    { q: "21. Factorizar x^2 - y^2:", options: ["(x+y)(x-y)", "(x-y)^2", "x(x-y)", "x+y"], correct: 0, rationale: "Diferencia de cuadrados." },
+                    { q: "22. Valor absoluto de -7:", options: ["7", "-7", "0", "1"], correct: 0, rationale: "Distancia a cero." },
+                    { q: "23. Si y = 2x + 1, y x=3, entonces y=:", options: ["7", "6", "5", "8"], correct: 0, rationale: "2(3)+1 = 7." },
+                    { q: "24. Coseno de 0 grados:", options: ["1", "0", "0.5", "-1"], correct: 0, rationale: "Círculo unitario." },
+                    { q: "25. Área triángulo base 4 altura 3:", options: ["6", "12", "7", "5"], correct: 0, rationale: "(4*3)/2." },
+                    { q: "26. Raíz cúbica de 27:", options: ["3", "9", "6", "1"], correct: 0, rationale: "3*3*3=27." },
+                    { q: "27. Logaritmo base 10 de 100:", options: ["2", "10", "1", "100"], correct: 0, rationale: "10^2 = 100." },
+                    { q: "28. Desigualdad x > 5 incluye:", options: ["6, 7, 8...", "5", "4", "0"], correct: 0, rationale: "Mayor estricto." },
+                    { q: "29. Suma de 1/2 + 1/2:", options: ["1", "1/4", "2", "0"], correct: 0, rationale: "Entero." },
+                    { q: "30. Ecuación cuadrática forma:", options: ["ax^2+bx+c=0", "mx+b", "y=x", "a+b"], correct: 0, rationale: "Estándar." },
+                    { q: "31. Resuelve: (x+3)(x-3) =", options: ["x² - 9", "x² + 9", "x² - 6", "x² + 6"], correct: 0, rationale: "Diferencia de cuadrados." },
+                    { q: "32. Ecuación de la circunferencia con centro (0,0) y radio 5:", options: ["x² + y² = 25", "x² + y² = 5", "x² - y² = 25", "y = x + 5"], correct: 0, rationale: "Fórmula estándar." },
+                    { q: "33. Logaritmo base 2 de 32:", options: ["5", "6", "4", "3"], correct: 0, rationale: "2^5 = 32." },
+                    { q: "34. Mediana de: 2, 4, 6, 8, 10", options: ["6", "5", "4", "8"], correct: 0, rationale: "Valor central en datos ordenados." },
+                    { q: "35. Pendiente de la recta que pasa por (1,2) y (3,8):", options: ["3", "2", "4", "1"], correct: 0, rationale: "m = (8-2)/(3-1) = 6/2 = 3." },
+                    { q: "36. Factor común de 12x² + 18x:", options: ["6x", "12x", "18x", "2x"], correct: 0, rationale: "6x(2x + 3)." },
+                    { q: "37. Volumen de una esfera radio 3 (V=4/3πr³):", options: ["36π", "27π", "18π", "12π"], correct: 0, rationale: "4/3 × π × 27 = 36π." },
+                    { q: "38. Resuelve sistema: x+y=5, x-y=1", options: ["x=3, y=2", "x=4, y=1", "x=2, y=3", "x=5, y=0"], correct: 0, rationale: "Sumando ecuaciones: 2x=6 → x=3, y=2." },
+                    { q: "39. Tangente de 45°:", options: ["1", "0", "√3", "1/√2"], correct: 0, rationale: "Valor trigonométrico estándar." },
+                    { q: "40. Probabilidad de sacar un rey de una baraja de 52 cartas:", options: ["1/13", "1/52", "4/52", "1/4"], correct: 0, rationale: "4 reyes / 52 cartas = 1/13." },
+                    { q: "41. Ecuación cuadrática con raíces 2 y 3:", options: ["x² - 5x + 6 = 0", "x² + 5x + 6 = 0", "x² - x + 6 = 0", "x² + x - 6 = 0"], correct: 0, rationale: "(x-2)(x-3) = x² -5x +6." },
+                    { q: "42. Área lateral de un cilindro (radio=4, altura=10):", options: ["80π", "40π", "160π", "20π"], correct: 0, rationale: "A = 2πrh = 2π×4×10 = 80π." },
+                    { q: "43. Si f(x) = 3x - 5, f(4) =", options: ["7", "9", "5", "12"], correct: 0, rationale: "3(4) - 5 = 12 - 5 = 7." },
+                    { q: "44. Número de diagonales de un hexágono:", options: ["9", "6", "12", "3"], correct: 0, rationale: "Fórmula: n(n-3)/2 = 6×3/2 = 9." },
+                    { q: "45. Desigualdad: 2x - 5 > 7", options: ["x > 6", "x < 6", "x > 1", "x < 1"], correct: 0, rationale: "2x > 12 → x > 6." },
+                    { q: "46. Promedio de 10, 20, 30, 40, 50:", options: ["30", "25", "35", "40"], correct: 0, rationale: "Suma = 150, 150/5 = 30." },
+                    { q: "47. Secante es recíproco de:", options: ["Coseno", "Seno", "Tangente", "Cotangente"], correct: 0, rationale: "sec θ = 1/cos θ." },
+                    { q: "48. Si un número aumenta en 20% y resulta 60, el número original es:", options: ["50", "48", "52", "55"], correct: 0, rationale: "1.2x = 60 → x = 60/1.2 = 50." },
+                    { q: "49. Simplifica: (x⁵)/(x²)", options: ["x³", "x⁷", "x¹⁰", "x²·⁵"], correct: 0, rationale: "Restar exponentes: 5-2 = 3." },
+                    { q: "50. Distancia entre puntos (1,1) y (4,5):", options: ["5", "4", "√13", "7"], correct: 0, rationale: "d = √((4-1)²+(5-1)²) = √(9+16) = √25 = 5." },
+                    { q: "51. Ecuación de la recta con pendiente 2 que pasa por (1,3):", options: ["y = 2x + 1", "y = 2x - 1", "y = x + 2", "y = 3x + 2"], correct: 0, rationale: "y - 3 = 2(x - 1) → y = 2x + 1." },
+                    { q: "52. Integral de 3x² dx:", options: ["x³ + C", "3x³ + C", "x² + C", "6x + C"], correct: 0, rationale: "∫3x² dx = x³ + C." },
+                    { q: "53. Número factorial 5!:", options: ["120", "60", "24", "720"], correct: 0, rationale: "5×4×3×2×1 = 120." },
+                    { q: "54. Ecuación exponencial: 2^(x+1) = 16", options: ["x = 3", "x = 4", "x = 2", "x = 5"], correct: 0, rationale: "2^(x+1)=2^4 → x+1=4 → x=3." },
+                    { q: "55. Volumen de un cono (r=3, h=4, π=3.14):", options: ["37.68", "12.56", "50.24", "25.12"], correct: 0, rationale: "V = (1/3)πr²h = (1/3)×3.14×9×4 = 37.68." },
+                    { q: "56. Determinante de matriz [[2,3],[1,4]]:", options: ["5", "8", "11", "6"], correct: 0, rationale: "2×4 - 3×1 = 8 - 3 = 5." },
+                    { q: "57. Resuelve: log₅(25) =", options: ["2", "5", "25", "1"], correct: 0, rationale: "5² = 25." },
+                    { q: "58. Binomio de Newton: (x+y)³ =", options: ["x³+3x²y+3xy²+y³", "x³+y³", "x³+2x²y+2xy²+y³", "x³+x²y+xy²+y³"], correct: 0, rationale: "Desarrollo del cubo." },
+                    { q: "59. Probabilidad de que al lanzar 2 monedas salga al menos un águila:", options: ["3/4", "1/2", "1/4", "1"], correct: 0, rationale: "Espacio muestral: 4 resultados, 3 con al menos un águila." },
+                    { q: "60. Ecuación trigonométrica: sen x = 1/2, solución en [0,π]:", options: ["π/6, 5π/6", "π/3", "π/2", "π/4"], correct: 0, rationale: "Ángulos donde seno es 1/2." },
+                    { q: "61. Media geométrica de 4 y 9:", options: ["6", "6.5", "5", "7"], correct: 0, rationale: "√(4×9) = √36 = 6." },
+                    { q: "62. Límite cuando x→∞ de (3x²+2)/(x²-1):", options: ["3", "0", "∞", "1"], correct: 0, rationale: "Se comparan grados." },
+                    { q: "63. Derivada de ln(x):", options: ["1/x", "x", "e^x", "1"], correct: 0, rationale: "d/dx[ln x] = 1/x." },
+                    { q: "64. Número complejo: (3+2i) + (1-4i) =", options: ["4 - 2i", "4 + 6i", "2 - 2i", "3 - 2i"], correct: 0, rationale: "Suma parte real e imaginaria." },
+                    { q: "65. Área de un sector circular (radio=5, ángulo=60°):", options: ["(25π)/6", "25π", "5π", "10π"], correct: 0, rationale: "A = (θ/360)πr² = (60/360)π×25 = (25π)/6." }
+                ]
+            },
+            'biologia': {
+                name: "Ciencias I (Biología)", icon: "fa-dna", color: "green",
+                desc: "Célula, genética y evolución.",
+                concepts: ["Célula", "Genética", "Evolución", "Ecología"],
+                quiz: [
+                    { q: "1. Unidad básica de la vida:", options: ["Célula", "Átomo", "Tejido", "Órgano"], correct: 0, rationale: "La célula es la unidad fundamental." },
+                    { q: "2. Padre de la genética:", options: ["Mendel", "Darwin", "Pasteur", "Newton"], correct: 0, rationale: "Gregor Mendel." },
+                    { q: "3. Teoría de la Evolución:", options: ["Darwin", "Lamarck", "Mendel", "Einstein"], correct: 0, rationale: "Selección Natural de Darwin." },
+                    { q: "4. Organelo que produce energía:", options: ["Mitocondria", "Núcleo", "Ribosoma", "Vacuola"], correct: 0, rationale: "La mitocondria realiza la respiración celular." },
+                    { q: "5. Proceso de división celular somática:", options: ["Mitosis", "Meiosis", "Fusión", "Fisión"], correct: 0, rationale: "Mitosis genera células idénticas." },
+                    { q: "6. Organismo que produce su alimento:", options: ["Autótrofo", "Heterótrofo", "Descomponedor", "Parásito"], correct: 0, rationale: "Como las plantas (fotosíntesis)." },
+                    { q: "7. Molécula de la herencia:", options: ["ADN", "ARN", "Proteína", "Lípido"], correct: 0, rationale: "Ácido Desoxirribonucleico." },
+                    { q: "8. Reino de las bacterias:", options: ["Monera", "Protista", "Fungi", "Plantae"], correct: 0, rationale: "Reino Monera (procariotas)." },
+                    { q: "9. Cambio en el ADN:", options: ["Mutación", "Clonación", "Transcripción", "Traducción"], correct: 0, rationale: "Alteración de la secuencia genética." },
+                    { q: "10. Huella ecológica mide:", options: ["Impacto en recursos", "Carbono", "Calor", "Lluvia"], correct: 0, rationale: "Demanda sobre la naturaleza." },
+                    { q: "11. Reproducción sexual requiere:", options: ["Dos gametos", "Un padre", "Clonación", "Esporas"], correct: 0, rationale: "Fusión de gametos." },
+                    { q: "12. Fotosíntesis libera:", options: ["Oxígeno", "CO2", "Metano", "Nitrógeno"], correct: 0, rationale: "Subproducto vital." },
+                    { q: "13. Células sin núcleo definido:", options: ["Procariotas", "Eucariotas", "Vegetales", "Animales"], correct: 0, rationale: "Bacterias." },
+                    { q: "14. Pigmento verde de plantas:", options: ["Clorofila", "Melanina", "Hemoglobina", "Queratina"], correct: 0, rationale: "Capta luz solar." },
+                    { q: "15. Respiración anaerobia es:", options: ["Sin oxígeno", "Con oxígeno", "Con luz", "Sin luz"], correct: 0, rationale: "Como fermentación." },
+                    { q: "16. Sistema que transporta sangre:", options: ["Circulatorio", "Digestivo", "Nervioso", "Óseo"], correct: 0, rationale: "Corazón y vasos." },
+                    { q: "17. Base nitrogenada exclusiva ARN:", options: ["Uracilo", "Timina", "Adenina", "Guanina"], correct: 0, rationale: "Reemplaza a Timina." },
+                    { q: "18. Nivel trófico de productores:", options: ["Primer nivel", "Segundo nivel", "Tercer nivel", "Último"], correct: 0, rationale: "Base de la cadena." },
+                    { q: "19. Vitamina del sol:", options: ["D", "C", "A", "B"], correct: 0, rationale: "Se sintetiza con luz UV." },
+                    { q: "20. Enfermedad por virus:", options: ["Gripe", "Cólera", "Tétanos", "Pie de atleta"], correct: 0, rationale: "Influenza." },
+                    { q: "21. Gametos humanos tienen:", options: ["23 cromosomas", "46 cromosomas", "92 cromosomas", "10 cromosomas"], correct: 0, rationale: "Haploides." },
+                    { q: "22. Donde ocurre la fecundación:", options: ["Trompas de Falopio", "Útero", "Ovario", "Vagina"], correct: 0, rationale: "Unión óvulo-espermatozoide." },
+                    { q: "23. Órgano principal sistema nervioso:", options: ["Cerebro", "Corazón", "Hígado", "Piel"], correct: 0, rationale: "Centro de control." },
+                    { q: "24. Reino de los hongos:", options: ["Fungi", "Plantae", "Animalia", "Monera"], correct: 0, rationale: "Levaduras y setas." },
+                    { q: "25. Evolución por selección natural:", options: ["Sobrevive el más apto", "El más fuerte", "El más grande", "El más rápido"], correct: 0, rationale: "Adaptación al medio." },
+                    { q: "26. Célula eucariota tiene:", options: ["Núcleo", "Sin núcleo", "Sin membrana", "Sin ADN"], correct: 0, rationale: "ADN protegido." },
+                    { q: "27. Homeostasis es:", options: ["Equilibrio interno", "Crecimiento", "Reproducción", "Movimiento"], correct: 0, rationale: "Regulación." },
+                    { q: "28. Biodiversidad:", options: ["Variedad de vida", "Solo animales", "Solo plantas", "Clima"], correct: 0, rationale: "Especies y ecosistemas." },
+                    { q: "29. Ribosomas sintetizan:", options: ["Proteínas", "Grasas", "Azúcares", "ADN"], correct: 0, rationale: "Traducción." },
+                    { q: "30. ADN está en:", options: ["Núcleo", "Aparato Golgi", "Lisosoma", "Pared"], correct: 0, rationale: "Material genético." },
+                    { q: "31. Órgano donde ocurre la fotosíntesis:", options: ["Hoja", "Raíz", "Tallo", "Flor"], correct: 0, rationale: "Contiene cloroplastos." },
+                    { q: "32. Tejido conductor de savia en plantas:", options: ["Xilema", "Fl oema", "Parénquima", "Epidermis"], correct: 0, rationale: "Transporta agua y minerales." },
+                    { q: "33. Sistema de clasificación binomial creado por:", options: ["Linneo", "Darwin", "Mendel", "Aristóteles"], correct: 0, rationale: "Carlos Linneo, siglo XVIII." },
+                    { q: "34. Animal con metamorfosis completa:", options: ["Mariposa", "Grillo", "Araña", "Cangrejo"], correct: 0, rationale: "Huevo, larva, pupa, adulto." },
+                    { q: "35. Hormona del crecimiento es producida por:", options: ["Hipófisis", "Tiroides", "Páncreas", "Suprarrenales"], correct: 0, rationale: "Glándula pituitaria." },
+                    { q: "36. Mendel cruzó plantas de guisantes para estudiar:", options: ["Herencia", "Fotosíntesis", "Crecimiento", "Nutrición"], correct: 0, rationale: "Leyes de la herencia genética." },
+                    { q: "37. Reino que incluye amebas y paramecios:", options: ["Protista", "Monera", "Fungi", "Animalia"], correct: 0, rationale: "Organismos eucariotas unicelulares." },
+                    { q: "38. Vasos que llevan sangre al corazón:", options: ["Venas", "Arterias", "Capilares", "Ventrículos"], correct: 0, rationale: "Transportan sangre desoxigenada." },
+                    { q: "39. Tipo de respiración en levaduras:", options: ["Fermentación", "Fotosíntesis", "Quimiosíntesis", "Difusión"], correct: 0, rationale: "Respiración anaerobia." },
+                    { q: "40. Charles Darwin viajó en el:", options: ["HMS Beagle", "Santa María", "Titanic", "Mayflower"], correct: 0, rationale: "Expedición a las Islas Galápagos." },
+                    { q: "41. Molécula que almacena energía en células:", options: ["ATP", "ADN", "ARN", "Glucosa"], correct: 0, rationale: "Adenosín trifosfato." },
+                    { q: "42. Invertebrado con exoesqueleto quitinoso:", options: ["Artrópodos", "Moluscos", "Anélidos", "Equinodermos"], correct: 0, rationale: "Como insectos y crustáceos." },
+                    { q: "43. Órgano del sistema excretor:", options: ["Riñón", "Pulmón", "Corazón", "Estómago"], correct: 0, rationale: "Filtra la sangre." },
+                    { q: "44. Tejido muscular del corazón:", options: ["Miocardio", "Endocardio", "Pericardio", "Epicardio"], correct: 0, rationale: "Músculo cardíaco." },
+                    { q: "45. Relación simbiótica donde ambos se benefician:", options: ["Mutualismo", "Comensalismo", "Parasitismo", "Depredación"], correct: 0, rationale: "Ej: líquenes (alga+hongo)." },
+                    { q: "46. Células sanguíneas que defienden de infecciones:", options: ["Leucocitos", "Eritrocitos", "Plaquetas", "Hemoglobina"], correct: 0, rationale: "Glóbulos blancos." },
+                    { q: "47. Capa externa protectora de la piel:", options: ["Epidermis", "Dermis", "Hipodermis", "Tejido adiposo"], correct: 0, rationale: "Estrato córneo." },
+                    { q: "48. Movimiento de plantas hacia la luz:", options: ["Fototropismo", "Geotropismo", "Hidrotropismo", "Tigmotropismo"], correct: 0, rationale: "Respuesta a estímulo luminoso." },
+                    { q: "49. Grupo sanguíneo donante universal:", options: ["O negativo", "A positivo", "AB positivo", "B negativo"], correct: 0, rationale: "No tiene antígenos A ni B." },
+                    { q: "50. Órgano linfoide donde maduran linfocitos T:", options: ["Timo", "Bazo", "Médula ósea", "Ganglios"], correct: 0, rationale: "Situado detrás del esternón." },
+                    { q: "51. Enzima que digiere almidón:", options: ["Amilasa", "Pepsina", "Lipasa", "Tripsina"], correct: 0, rationale: "Producida en glándulas salivales." },
+                    { q: "52. Tejido vegetal de crecimiento:", options: ["Meristemo", "Parénquima", "Colénquima", "Esclerénquima"], correct: 0, rationale: "Permite crecimiento en longitud y grosor." },
+                    { q: "53. Hormona que baja glucosa en sangre:", options: ["Insulina", "Glucagón", "Adrenalina", "Tiroxina"], correct: 0, rationale: "Producida por páncreas." },
+                    { q: "54. Órgano vestigial en humanos:", options: ["Apéndice", "Corazón", "Pulmón", "Hígado"], correct: 0, rationale: "Sin función aparente, vestigio evolutivo." },
+                    { q: "55. Fase de la mitosis donde cromosomas se alinean:", options: ["Metafase", "Profase", "Anafase", "Telofase"], correct: 0, rationale: "Plano ecuatorial." },
+                    { q: "56. Síndrome de Down es trisomía del cromosoma:", options: ["21", "18", "13", "X"], correct: 0, rationale: "Tres copias del cromosoma 21." },
+                    { q: "57. Pigmento respiratorio en sangre:", options: ["Hemoglobina", "Clorofila", "Melanina", "Queratina"], correct: 0, rationale: "Transporta oxígeno." },
+                    { q: "58. Célula nerviosa:", options: ["Neurona", "Leucocito", "Eritrocito", "Osteocito"], correct: 0, rationale: "Unidad funcional del sistema nervioso." },
+                    { q: "59. Reacción alérgica involucra:", options: ["Histamina", "Insulina", "Adrenalina", "Dopamina"], correct: 0, rationale: "Mediador químico de inflamación." },
+                    { q: "60. Polinización por viento:", options: ["Anemófila", "Entomófila", "Ornitófila", "Hidrófila"], correct: 0, rationale: "Plantas como gramíneas." },
+                    { q: "61. Glándula que produce melatonina:", options: ["Pineal", "Hipófisis", "Tiroides", "Suprarrenal"], correct: 0, rationale: "Regula ciclo sueño-vigilia." },
+                    { q: "62. Darwin observó variaciones en:", options: ["Pinzones de Galápagos", "Tortugas del Amazonas", "Orquídeas de África", "Mariposas de Europa"], correct: 0, rationale: "Clave para teoría de evolución." },
+                    { q: "63. Célula reproductora femenina:", options: ["Óvulo", "Espermatozoide", "Cigoto", "Gameto"], correct: 0, rationale: "Gameto femenino haploide." },
+                    { q: "64. Mecanismo de defensa inespecífico:", options: ["Piel", "Anticuerpos", "Linfocitos", "Vacunas"], correct: 0, rationale: "Barrera física primaria." },
+                    { q: "65. Plantas C4 ejemplo:", options: ["Maíz", "Trigo", "Arroz", "Frijol"], correct: 0, rationale: "Adaptación a climas cálidos." }
+                ]
+            },
+            'fisica': {
+                name: "Ciencias II (Física)", icon: "fa-atom", color: "blue",
+                desc: "Fuerzas, energía y movimiento.",
+                concepts: ["Cinemática", "Dinámica", "Energía", "Ondas"],
+                quiz: [
+                    { q: "1. Equilibrio térmico:", options: ["Misma temperatura", "Diferente temp", "Mucho calor", "Frío"], correct: 0, rationale: "Igualdad de T." },
+                    { q: "2. Fibra óptica usa:", options: ["Reflexión total interna", "Refracción", "Difracción", "Dispersión"], correct: 0, rationale: "Luz atrapada." },
+                    { q: "3. Unidad de Fuerza:", options: ["Newton", "Joule", "Watt", "Metro"], correct: 0, rationale: "Sistema Internacional." },
+                    { q: "4. Velocidad es:", options: ["Distancia/Tiempo", "Tiempo/Distancia", "Masa*Acel", "Fuerza*Dist"], correct: 0, rationale: "v = d/t." },
+                    { q: "5. Energía cinética depende de:", options: ["Velocidad", "Altura", "Posición", "Resorte"], correct: 0, rationale: "Movimiento." },
+                    { q: "6. Ley de Inercia:", options: ["1ra Ley Newton", "2da Ley", "3ra Ley", "Ley Ohm"], correct: 0, rationale: "Objeto en reposo se queda en reposo." },
+                    { q: "7. Aceleración gravedad:", options: ["9.8 m/s2", "100 m/s", "5 m/s", "1 m/s"], correct: 0, rationale: "Promedio en Tierra." },
+                    { q: "8. El átomo tiene:", options: ["Protones, Neutrones, Electrones", "Solo aire", "Células", "Tejidos"], correct: 0, rationale: "Partículas subatómicas." },
+                    { q: "9. El sonido es una onda:", options: ["Mecánica", "Electromagnética", "Luz", "Radio"], correct: 0, rationale: "Requiere medio." },
+                    { q: "10. Calor se mide en:", options: ["Joules/Calorías", "Newtons", "Metros", "Segundos"], correct: 0, rationale: "Es energía." },
+                    { q: "11. F = m * a es:", options: ["2da Ley Newton", "1ra Ley", "3ra Ley", "Ley Gravitación"], correct: 0, rationale: "Ley de la Dinámica." },
+                    { q: "12. Energía potencial depende de:", options: ["Altura", "Velocidad", "Tiempo", "Calor"], correct: 0, rationale: "Posición en campo gravitatorio." },
+                    { q: "13. Carga del electrón:", options: ["Negativa", "Positiva", "Neutra", "Variable"], correct: 0, rationale: "-1." },
+                    { q: "14. Unidad de Potencia:", options: ["Watt", "Joule", "Newton", "Volt"], correct: 0, rationale: "Trabajo/Tiempo." },
+                    { q: "15. Cambio de sólido a líquido:", options: ["Fusión", "Solidificación", "Evaporación", "Sublimación"], correct: 0, rationale: "Derretimiento." },
+                    { q: "16. Espejo que converge luz:", options: ["Cóncavo", "Convexo", "Plano", "Roto"], correct: 0, rationale: "Foco real." },
+                    { q: "17. Ley de Ohm:", options: ["V=IR", "F=ma", "E=mc2", "P=IV"], correct: 0, rationale: "Electricidad." },
+                    { q: "18. Máquina simple:", options: ["Palanca", "Motor", "Computadora", "Reloj"], correct: 0, rationale: "Reduce esfuerzo." },
+                    { q: "19. Unidad de Presión:", options: ["Pascal", "Newton", "Joule", "Watt"], correct: 0, rationale: "N/m2." },
+                    { q: "20. La luz es onda y:", options: ["Partícula", "Sonido", "Calor", "Masa"], correct: 0, rationale: "Dualidad onda-partícula." },
+                    { q: "21. El cero absoluto es:", options: ["0 Kelvin", "0 Celsius", "0 Fahrenheit", "-100 C"], correct: 0, rationale: "Ausencia de movimiento molecular." },
+                    { q: "22. Vector tiene:", options: ["Magnitud y dirección", "Solo magnitud", "Solo dirección", "Nada"], correct: 0, rationale: "Como velocidad o fuerza." },
+                    { q: "23. Fricción:", options: ["Se opone al movimiento", "Ayuda a mover", "No hace nada", "Acelera"], correct: 0, rationale: "Fuerza resistiva." },
+                    { q: "24. Densidad es:", options: ["Masa/Volumen", "Peso/Altura", "Fuerza/Area", "Volumen/Masa"], correct: 0, rationale: "rho = m/v." },
+                    { q: "25. Imanes tienen polos:", options: ["Norte y Sur", "Este y Oeste", "Positivo y Negativo", "Arriba y Abajo"], correct: 0, rationale: "Dipolos magnéticos." },
+                    { q: "26. Arcoíris es por:", options: ["Refracción/Dispersión", "Reflexión", "Difracción", "Interferencia"], correct: 0, rationale: "Luz en gotas de agua." },
+                    { q: "27. Unidad de frecuencia:", options: ["Hertz", "Segundo", "Metro", "Watt"], correct: 0, rationale: "Ciclos por segundo." },
+                    { q: "28. Energía no se crea ni destruye:", options: ["Se transforma", "Se pierde", "Se gana", "Se olvida"], correct: 0, rationale: "Conservación de la energía." },
+                    { q: "29. Caída libre:", options: ["Gravedad actúa sola", "Con paracaídas", "Hacia arriba", "Horizontal"], correct: 0, rationale: "Sin resistencia del aire." },
+                    { q: "30. Electrón gira en:", options: ["Orbitales", "Núcleo", "Protones", "Nada"], correct: 0, rationale: "Nube electrónica." },
+                    { q: "31. Segunda Ley de Newton:", options: ["F = m·a", "Acción-Reacción", "Inercia", "Gravedad"], correct: 0, rationale: "Relación fuerza-masa-aceleración." },
+                    { q: "32. Unidad de carga eléctrica:", options: ["Coulomb", "Volt", "Amper", "Ohm"], correct: 0, rationale: "Sistema Internacional." },
+                    { q: "33. Presión atmosférica a nivel del mar:", options: ["1 atm", "760 mmHg", "1013 hPa", "Todas las anteriores"], correct: 3, rationale: "Todas son equivalentes." },
+                    { q: "34. Onda longitudinal ejemplo:", options: ["Sonido", "Luz", "Radio", "Microondas"], correct: 0, rationale: "Vibración paralela a propagación." },
+                    { q: "35. Capacidad calorífica:", options: ["Calor para elevar 1°C", "Temperatura", "Energía cinética", "Conductividad"], correct: 0, rationale: "C = Q/ΔT." },
+                    { q: "36. Lente que diverge rayos de luz:", options: ["Cóncava", "Convexa", "Plana", "Esférica"], correct: 0, rationale: "Lente divergente." },
+                    { q: "37. Principio de Arquímedes:", options: ["Empuje = peso fluido desplazado", "Palancas", "Poleas", "Flotación"], correct: 0, rationale: "Fuerza boyante." },
+                    { q: "38. Velocidad de la luz en el vacío:", options: ["300,000 km/s", "150,000 km/s", "340 m/s", "10 m/s"], correct: 0, rationale: "Constante universal." },
+                    { q: "39. Trabajo mecánico:", options: ["Fuerza × distancia", "Masa × aceleración", "Presión × volumen", "Carga × voltaje"], correct: 0, rationale: "W = F·d." },
+                    { q: "40. Refracción es:", options: ["Cambio de dirección al cambiar medio", "Rebote de onda", "Dispersión", "Difracción"], correct: 0, rationale: "Ley de Snell." },
+                    { q: "41. Corriente alterna:", options: ["Cambia dirección periódicamente", "Fluye en un sentido", "Es continua", "No existe"], correct: 0, rationale: "Como en enchufes domésticos." },
+                    { q: "42. Efecto fotoeléctrico demostró:", options: ["Naturaleza corpuscular de luz", "Ondas electromagnéticas", "Gravedad", "Relatividad"], correct: 0, rationale: "Einstein, Premio Nobel 1921." },
+                    { q: "43. Energía interna de un sistema:", options: ["Suma de energías cinética y potencial molecular", "Solo temperatura", "Solo calor", "Solo trabajo"], correct: 0, rationale: "Energía microscópica." },
+                    { q: "44. Péndulo simple período depende de:", options: ["Longitud y gravedad", "Masa y amplitud", "Material", "Temperatura"], correct: 0, rationale: "T = 2π√(L/g)." },
+                    { q: "45. Campo magnético terrestre protege de:", options: ["Viento solar", "Meteoritos", "Sonido", "Calor"], correct: 0, rationale: "Cinturones de Van Allen." },
+                    { q: "46. Fusión nuclear ocurre en:", options: ["Sol", "Reactores nucleares", "Bombas atómicas", "Rayos"], correct: 0, rationale: "Unión de núcleos pequeños." },
+                    { q: "47. Conductor eléctrico ejemplo:", options: ["Cobre", "Madera", "Plástico", "Vidrio"], correct: 0, rationale: "Baja resistividad." },
+                    { q: "48. Efecto Doppler:", options: ["Cambio frecuencia por movimiento", "Reflexión", "Refracción", "Polarización"], correct: 0, rationale: "Ej: sirena ambulancia." },
+                    { q: "49. Máquina térmica convierte:", options: ["Calor en trabajo", "Trabajo en calor", "Luz en electricidad", "Sonido en calor"], correct: 0, rationale: "Segunda ley termodinámica." },
+                    { q: "50. Índice de refracción:", options: ["n = c/v", "v = λf", "E = mc²", "F = qE"], correct: 0, rationale: "Razón entre velocidad luz en vacío y medio." },
+                    { q: "51. Potencia eléctrica:", options: ["P = V·I", "P = F·d", "P = m·v", "P = R·I"], correct: 0, rationale: "Vatios = Voltios × Amperios." },
+                    { q: "52. Efecto Joule:", options: ["Calentamiento por corriente", "Enfriamiento", "Magnetismo", "Luminiscencia"], correct: 0, rationale: "Conversión de energía eléctrica en calor." },
+                    { q: "53. Imagen en espejo plano:", options: ["Virtual, mismo tamaño", "Real, invertida", "Aumentada", "Disminuida"], correct: 0, rationale: "Características de imagen en espejo plano." },
+                    { q: "54. Frecuencia de oscilación de péndulo:", options: ["f = 1/(2π√(L/g))", "f = √(g/L)", "f = 2π√(L/g)", "f = g/L"], correct: 0, rationale: "Fórmula del período." },
+                    { q: "55. Transformador ideal:", options: ["V₁/V₂ = N₁/N₂", "V₁·V₂ = N₁·N₂", "V₁ = V₂", "N₁ = N₂"], correct: 0, rationale: "Relación de voltajes y espiras." },
+                    { q: "56. Energía de un fotón:", options: ["E = h·f", "E = m·c²", "E = ½mv²", "E = P·t"], correct: 0, rationale: "h = constante de Planck, f = frecuencia." },
+                    { q: "57. Densidad del agua a 4°C:", options: ["1 g/cm³", "0.9 g/cm³", "1.1 g/cm³", "1000 kg/m³"], correct: 3, rationale: "Ambas respuestas 1 y 4 son correctas, pero 4 es en SI." },
+                    { q: "58. Sonido no se propaga en:", options: ["Vacío", "Aire", "Agua", "Acero"], correct: 0, rationale: "Requiere medio material." },
+                    { q: "59. Resistencia equivalente en paralelo de 2Ω y 2Ω:", options: ["1Ω", "2Ω", "4Ω", "0.5Ω"], correct: 0, rationale: "1/R = 1/2 + 1/2 = 1 → R = 1Ω." },
+                    { q: "60. Tercera Ley de Kepler:", options: ["T² ∝ r³", "v = constante", "F ∝ 1/r²", "a = constante"], correct: 0, rationale: "Relación período-radio orbital." },
+                    { q: "61. Velocidad de escape terrestre:", options: ["11.2 km/s", "7.9 km/s", "5 km/s", "3.1 km/s"], correct: 0, rationale: "Para salir del campo gravitatorio." },
+                    { q: "62. Principio de Bernoulli:", options: ["P + ½ρv² + ρgh = constante", "F = ma", "PV = nRT", "Q = mcΔT"], correct: 0, rationale: "Fluidos en movimiento." },
+                    { q: "63. Constante de gravitación universal:", options: ["6.67×10⁻¹¹ N·m²/kg²", "9.8 m/s²", "3×10⁸ m/s", "1.6×10⁻¹⁹ C"], correct: 0, rationale: "G en ley de gravitación." },
+                    { q: "64. Momento de inercia de disco:", options: ["½MR²", "MR²", "⅔MR²", "⅕MR²"], correct: 0, rationale: "Para eje perpendicular por centro." },
+                    { q: "65. Espectro electromagnético: orden energético creciente:", options: ["Radio, microondas, infrarrojo, visible, UV, rayos X, gamma", "Gamma, rayos X, UV, visible, infrarrojo, microondas, radio", "Visible, UV, infrarrojo, rayos X", "Microondas, radio, visible, gamma"], correct: 0, rationale: "Menor a mayor frecuencia/energía." }
+                ]
+            },
+            'quimica': {
+                name: "Ciencias III (Química)", icon: "fa-flask", color: "emerald",
+                desc: "Reacciones Redox, Balanceo y conceptos de Oxidación.",
+                concepts: ["Redox y Transferencia de electrones", "Agentes Oxidantes y Reductores", "Número de Oxidación", "Balance de Ecuaciones"],
+                quiz: [
+                    { q: "1. Redox se define como:", options: ["Transferencia electrones (oxidación-reducción)", "Igualdad de masa", "Reacción ácido-base", "Ninguno"], correct: 0, rationale: "Redox implica transferencia de electrones." },
+                    { q: "2. La Oxidación consiste en:", options: ["Pérdida de electrones", "Ganancia de electrones", "Ninguno", "Igual"], correct: 0, rationale: "Oxidación = Pérdida de electrones." },
+                    { q: "3. La Reducción consiste en:", options: ["Ganancia de electrones", "Pérdida de electrones", "Ninguno", "Igual"], correct: 0, rationale: "Reducción = Ganancia de electrones." },
+                    { q: "4. Un Agente oxidante:", options: ["Se reduce (gana e-)", "Se oxida", "Ninguno", "Igual"], correct: 0, rationale: "El agente oxidante gana electrones y se reduce." },
+                    { q: "5. Un Agente reductor:", options: ["Se oxida (pierde e-)", "Se reduce", "Ninguno", "Igual"], correct: 0, rationale: "El agente reductor pierde electrones y se oxida." },
+                    { q: "6. Número de oxidación es:", options: ["Carga hipotética", "Carga real", "Ninguno", "Masa atómica"], correct: 0, rationale: "Es una carga formal o hipotética asignada al átomo." },
+                    { q: "7. La Combustión es un tipo de reacción:", options: ["Redox", "Ácido-base", "Ninguno", "Neutralización"], correct: 0, rationale: "La combustión implica oxidación rápida (Redox)." },
+                    { q: "8. La Corrosión es:", options: ["Oxidación del metal", "Reducción del metal", "Ninguno", "Cambio físico"], correct: 0, rationale: "Es el deterioro de un material (metal) por oxidación." },
+                    { q: "9. La Fotosíntesis es un proceso:", options: ["Redox", "No químico", "Ninguno", "Solo respiración"], correct: 0, rationale: "Involucra transferencia de electrones (Redox)." },
+                    { q: "10. El Balance redox utiliza:", options: ["Medios ácidos/básicos, electrones", "Solo átomos", "Ninguno", "Método simple"], correct: 0, rationale: "Se balancean cargas y masas usando e-, H+ o OH-." },
+                    { q: "11. Símbolo del Oro:", options: ["Au", "Ag", "Or", "Fe"], correct: 0, rationale: "Aurum." },
+                    { q: "12. pH menor a 7 es:", options: ["Ácido", "Base", "Neutro", "Sal"], correct: 0, rationale: "Escala de acidez." },
+                    { q: "13. Elemento más abundante universo:", options: ["Hidrógeno", "Oxígeno", "Carbono", "Helio"], correct: 0, rationale: "H." },
+                    { q: "14. Enlace compartir electrones:", options: ["Covalente", "Iónico", "Metálico", "Puente H"], correct: 0, rationale: "Co-valente." },
+                    { q: "15. Masa atómica:", options: ["Protones + Neutrones", "Solo electrones", "Solo protones", "Peso"], correct: 0, rationale: "Núcleo." },
+                    { q: "16. Tabla periódica se ordena por:", options: ["Número atómico", "Masa", "Nombre", "Descubrimiento"], correct: 0, rationale: "Z (protones)." },
+                    { q: "17. Gas noble:", options: ["Helio", "Oxígeno", "Cloro", "Sodio"], correct: 0, rationale: "Grupo 18, estable." },
+                    { q: "18. Mol es unidad de:", options: ["Cantidad de sustancia", "Peso", "Volumen", "Densidad"], correct: 0, rationale: "6.022x10^23." },
+                    { q: "19. Reacción endotérmica:", options: ["Absorbe calor", "Libera calor", "Sin calor", "Explota"], correct: 0, rationale: "Necesita energía." },
+                    { q: "20. Soluto y solvente forman:", options: ["Solución", "Elemento", "Compuesto", "Átomo"], correct: 0, rationale: "Mezcla homogénea." },
+                    { q: "21. Isótopos tienen diferente:", options: ["Número de neutrones", "Protones", "Electrones", "Nombre"], correct: 0, rationale: "Mismo Z, diferente A." },
+                    { q: "22. Ácido libera:", options: ["H+", "OH-", "Cl-", "Na+"], correct: 0, rationale: "Protones." },
+                    { q: "23. Catalizador:", options: ["Acelera reacción", "Detiene reacción", "No hace nada", "Se consume"], correct: 0, rationale: "Baja energía activación." },
+                    { q: "24. Estado plasma:", options: ["Gas ionizado", "Líquido", "Sólido", "Gel"], correct: 0, rationale: "Alta energía." },
+                    { q: "25. Fórmula agua:", options: ["H2O", "HO2", "H2O2", "OH"], correct: 0, rationale: "Universal." },
+                    { q: "26. Aire es:", options: ["Mezcla", "Compuesto", "Elemento", "Puro"], correct: 0, rationale: "Nitrógeno, Oxígeno, etc." },
+                    { q: "27. Destilación separa por:", options: ["Punto de ebullición", "Densidad", "Color", "Peso"], correct: 0, rationale: "Líquidos miscibles." },
+                    { q: "28. Enlace NaCl es:", options: ["Iónico", "Covalente", "Metálico", "Fuerte"], correct: 0, rationale: "Metal + No metal." },
+                    { q: "29. Alcano fórmula general:", options: ["CnH2n+2", "CnH2n", "CnHn", "CH"], correct: 0, rationale: "Hidrocarburo saturado." },
+                    { q: "30. Carbono forma:", options: ["4 enlaces", "2 enlaces", "1 enlace", "3 enlaces"], correct: 0, rationale: "Tetravalencia." },
+                    { q: "31. Metal alcalinotérreo:", options: ["Calcio", "Sodio", "Aluminio", "Hierro"], correct: 0, rationale: "Grupo 2 de tabla periódica." },
+                    { q: "32. Isomería geométrica (cis-trans) requiere:", options: ["Doble enlace carbono-carbono", "Enlace simple", "Anillo aromático", "Triple enlace"], correct: 0, rationale: "Restricción a rotación." },
+                    { q: "33. Ley de Dalton de presiones parciales:", options: ["Ptotal = ΣPi", "V ∝ n", "P ∝ T", "V ∝ 1/P"], correct: 0, rationale: "Para mezcla de gases ideales." },
+                    { q: "34. Puente de hidrógeno más fuerte:", options: ["F-H...F", "O-H...O", "N-H...N", "C-H...O"], correct: 0, rationale: "Mayor electronegatividad del F." },
+                    { q: "35. Radio atómico aumenta:", options: ["Abajo y a la izquierda", "Arriba y derecha", "Solo abajo", "Solo izquierda"], correct: 0, rationale: "Tendencia periódica." },
+                    { q: "36. Compuesto aromático ejemplo:", options: ["Benceno", "Metano", "Etileno", "Acetileno"], correct: 0, rationale: "Anillo con resonancia." },
+                    { q: "37. Electrolito fuerte:", options: ["HCl acuoso", "Sacarosa", "Etanol", "Agua pura"], correct: 0, rationale: "Se disocia completamente." },
+                    { q: "38. Punto de ebullición del nitrógeno líquido:", options: ["-196°C", "-78°C", "0°C", "100°C"], correct: 0, rationale: "77 K aproximadamente." },
+                    { q: "39. Número cuántico magnético (m_l):", options: ["Orientación orbital", "Energía", "Forma", "Spin electrón"], correct: 0, rationale: "Valores de -l a +l." },
+                    { q: "40. Reacción de saponificación produce:", options: ["Jabón y glicerol", "Éster", "Alcohol", "Ácido"], correct: 0, rationale: "Grasa + base → jabón." },
+                    { q: "41. Elemento con configuración [Ar]4s²3d¹⁰4p³:", options: ["Arsénico", "Fósforo", "Nitrógeno", "Antimonio"], correct: 0, rationale: "Z=33, grupo 15." },
+                    { q: "42. Constante de equilibrio Kc:", options: ["Productos]/[Reactantes", "Reactantes]/[Productos", "Presiones", "Temperatura"], correct: 0, rationale: "En términos de concentración." },
+                    { q: "43. Combustible de cohetes común:", options: ["Hidrógeno líquido", "Gasolina", "Carbón", "Gas natural"], correct: 0, rationale: "Alto impulso específico." },
+                    { q: "44. Vitamina C es:", options: ["Ácido ascórbico", "Retinol", "Calciferol", "Tocoferol"], correct: 0, rationale: "Antioxidante, soluble en agua." },
+                    { q: "45. Polímero natural:", options: ["Celulosa", "PVC", "Polietileno", "Nailon"], correct: 0, rationale: "Pared celular vegetal." },
+                    { q: "46. Metal más reactivo de los alcalinos:", options: ["Francio", "Sodio", "Potasio", "Litio"], correct: 0, rationale: "Mayor radio atómico, menor energía ionización." },
+                    { q: "47. Configuración electrónica del Oxígeno (Z=8):", options: ["1s² 2s² 2p⁴", "1s² 2s² 2p⁶", "1s² 2s² 2p²", "1s² 2s⁴ 2p²"], correct: 0, rationale: "8 electrones totales." },
+                    { q: "48. Reacción de neutralización:", options: ["Ácido + Base → Sal + Agua", "Combustión", "Desplazamiento", "Descomposición"], correct: 0, rationale: "Formación de agua y sal." },
+                    { q: "49. Elemento con mayor electronegatividad:", options: ["Flúor", "Oxígeno", "Nitrógeno", "Cloro"], correct: 0, rationale: "4.0 en escala Pauling." },
+                    { q: "50. Hidrocarburo con triple enlace:", options: ["Alquino", "Alcano", "Alqueno", "Cicloalcano"], correct: 0, rationale: "Ej: acetileno (C₂H₂)." },
+                    { q: "51. Ley de conservación de la masa:", options: ["Lavoisier", "Proust", "Dalton", "Gay-Lussac"], correct: 0, rationale: "La masa no se crea ni destruye." },
+                    { q: "52. Sustancia que cambia color según pH:", options: ["Indicador", "Catalizador", "Electrolito", "Solvente"], correct: 0, rationale: "Ej: fenolftaleína, tornasol." },
+                    { q: "53. Mezcla homogénea de dos metales:", options: ["Aleación", "Compuesto", "Coloide", "Suspensión"], correct: 0, rationale: "Ej: bronce (cobre+estaño)." },
+                    { q: "54. Número atómico del Carbono:", options: ["6", "12", "14", "8"], correct: 0, rationale: "6 protones." },
+                    { q: "55. Símbolo del Mercurio:", options: ["Hg", "Me", "Mr", "Mg"], correct: 0, rationale: "Del latín 'hydrargyrum'." },
+                    { q: "56. Ácido presente en vinagre:", options: ["Acético", "Cítrico", "Clorhídrico", "Sulfúrico"], correct: 0, rationale: "CH₃COOH." },
+                    { q: "57. Isótopo radiactivo del Carbono:", options: ["Carbono-14", "Carbono-12", "Carbono-13", "Carbono-11"], correct: 0, rationale: "Usado en datación." },
+                    { q: "58. Compuesto iónico ejemplo:", options: ["NaCl", "H₂O", "CO₂", "CH₄"], correct: 0, rationale: "Cloruro de sodio." },
+                    { q: "59. Temperatura a la que hierve el agua a nivel del mar:", options: ["100°C", "90°C", "110°C", "80°C"], correct: 0, rationale: "Punto de ebullición estándar." },
+                    { q: "60. Gas noble más abundante en atmósfera:", options: ["Argón", "Neón", "Helio", "Xenón"], correct: 0, rationale: "0.93% del aire." },
+                    { q: "61. Combustible fósil gaseoso:", options: ["Gas natural", "Carbón", "Petróleo", "Gasolina"], correct: 0, rationale: "Principalmente metano." },
+                    { q: "62. Fenómeno de capilaridad se debe a:", options: ["Adhesión y cohesión", "Gravedad", "Presión", "Temperatura"], correct: 0, rationale: "Ascenso de líquidos en tubos delgados." },
+                    { q: "63. Reacción exotérmica:", options: ["Libera calor", "Absorbe calor", "Mantiene temperatura", "Ninguna"], correct: 0, rationale: "ΔH negativo." },
+                    { q: "64. Metal líquido a temperatura ambiente:", options: ["Mercurio", "Galio", "Sodio", "Plomo"], correct: 0, rationale: "Hg, punto fusión -38.8°C." },
+                    { q: "65. Compuesto orgánico más simple:", options: ["Metano", "Etanol", "Glucosa", "Benceno"], correct: 0, rationale: "CH₄." }
+                ]
+            },
+            'civica': {
+                name: "F. Cívica y Ética", icon: "fa-scale-balanced", color: "teal",
+                desc: "Derechos, valores y leyes.",
+                concepts: ["Constitución", "Valores", "Derechos Humanos", "Democracia"],
+                quiz: [
+                    { q: "1. Ley suprema de México:", options: ["Constitución", "Código Penal", "Ley Federal", "Bando Municipal"], correct: 0, rationale: "La Constitución de 1917." },
+                    { q: "2. Valor de aceptar diferencias:", options: ["Tolerancia", "Respeto", "Justicia", "Libertad"], correct: 0, rationale: "Aceptación de la diversidad." },
+                    { q: "3. Poder que hace las leyes:", options: ["Legislativo", "Ejecutivo", "Judicial", "Federal"], correct: 0, rationale: "Diputados y Senadores." },
+                    { q: "4. Derecho a la educación es:", options: ["Social", "Político", "Civil", "Económico"], correct: 0, rationale: "Derecho fundamental social." },
+                    { q: "5. Democracia significa:", options: ["Poder del pueblo", "Poder del rey", "Poder militar", "Poder rico"], correct: 0, rationale: "Demos (pueblo) Kratos (poder)." },
+                    { q: "6. Voto libre y secreto es característica de:", options: ["Elección democrática", "Dictadura", "Monarquía", "Oligarquía"], correct: 0, rationale: "Base del sistema electoral." },
+                    { q: "7. La CNDH protege:", options: ["Derechos Humanos", "Animales", "Empresas", "Calles"], correct: 0, rationale: "Comisión Nacional de los Derechos Humanos." },
+                    { q: "8. Valor de dar a cada quien lo que toca:", options: ["Justicia", "Amor", "Paz", "Fe"], correct: 0, rationale: "Definición clásica de justicia." },
+                    { q: "9. Obligación ciudadana:", options: ["Votar", "Viajar", "Comer", "Dormir"], correct: 0, rationale: "Derecho y obligación cívica." },
+                    { q: "10. Artículo 3ro habla de:", options: ["Educación", "Trabajo", "Salud", "Tierra"], correct: 0, rationale: "Educación laica y gratuita." },
+                    { q: "11. Soberanía reside en:", options: ["El pueblo", "El presidente", "El ejército", "Los jueces"], correct: 0, rationale: "Art. 39 Constitucional." },
+                    { q: "12. Valor de decir la verdad:", options: ["Honestidad", "Lealtad", "Solidaridad", "Amistad"], correct: 0, rationale: "Sinceridad." },
+                    { q: "13. Tres poderes de la unión:", options: ["Ejecutivo, Legislativo, Judicial", "Federal, Estatal, Municipal", "Iglesia, Estado, Ejército", "Ricos, Pobres, Medios"], correct: 0, rationale: "División de poderes." },
+                    { q: "14. Artículo 123:", options: ["Trabajo", "Educación", "Salud", "Petróleo"], correct: 0, rationale: "Derechos laborales." },
+                    { q: "15. Equidad de género:", options: ["Igualdad hombre-mujer", "Solo mujeres", "Solo hombres", "Niños"], correct: 0, rationale: "Mismos derechos." },
+                    { q: "16. Bullying es:", options: ["Acoso escolar", "Juego", "Deporte", "Estudio"], correct: 0, rationale: "Violencia entre pares." },
+                    { q: "17. Identidad nacional:", options: ["Sentido de pertenencia", "Pasaporte", "Nombre", "Edad"], correct: 0, rationale: "Ser mexicano." },
+                    { q: "18. Libertad de expresión:", options: ["Decir lo que piensas", "Gritar", "Insultar", "Callar"], correct: 0, rationale: "Derecho fundamental." },
+                    { q: "19. Norma jurídica es:", options: ["Obligatoria", "Opcional", "Moral", "Religiosa"], correct: 0, rationale: "Impuesta por el Estado." },
+                    { q: "20. Solidaridad es:", options: ["Ayuda mutua", "Soledad", "Egoísmo", "Dinero"], correct: 0, rationale: "Apoyo en crisis." },
+                    { q: "21. Municipio es:", options: ["Base división territorial", "Un estado", "Un país", "Una colonia"], correct: 0, rationale: "Nivel de gobierno local." },
+                    { q: "22. Constitución de 1917 fue promulgada en:", options: ["Querétaro", "CDMX", "Guadalajara", "Puebla"], correct: 0, rationale: "Teatro de la República." },
+                    { q: "23. Estado laico:", options: ["Sin religión oficial", "Católico", "Ateo", "Protestante"], correct: 0, rationale: "Separación Iglesia-Estado." },
+                    { q: "24. Sufragio efectivo:", options: ["No reelección", "Sí reelección", "Voto nulo", "Fraude"], correct: 0, rationale: "Lema Maderista." },
+                    { q: "25. Derechos de los niños incluyen:", options: ["Juego y educación", "Trabajo", "Votar", "Militar"], correct: 0, rationale: "Protección especial." },
+                    { q: "26. Juicio de amparo protege:", options: ["Garantías individuales", "Propiedad privada", "Elecciones", "Impuestos"], correct: 0, rationale: "Recurso constitucional." },
+                    { q: "27. Valor de cumplir promesas:", options: ["Lealtad", "Honestidad", "Responsabilidad", "Justicia"], correct: 0, rationale: "Fidelidad a compromisos." },
+                    { q: "28. Artículo 1° constitucional prohíbe:", options: ["Discriminación", "Trabajo", "Educación", "Propiedad"], correct: 0, rationale: "Igualdad ante la ley." },
+                    { q: "29. Organismo internacional de derechos humanos:", options: ["ONU", "FMI", "OTAN", "OMC"], correct: 0, rationale: "Organización de las Naciones Unidas." },
+                    { q: "30. Valor de ayudar sin esperar recompensa:", options: ["Solidaridad", "Justicia", "Tolerancia", "Responsabilidad"], correct: 0, rationale: "Apoyo desinteresado." },
+                    { q: "31. Sistema político mexicano:", options: ["República representativa", "Monarquía", "Dictadura", "Teocracia"], correct: 0, rationale: "Federal y democrática." },
+                    { q: "32. Edad para votar en México:", options: ["18 años", "21 años", "16 años", "25 años"], correct: 0, rationale: "Derecho político." },
+                    { q: "33. Poder que interpreta las leyes:", options: ["Judicial", "Legislativo", "Ejecutivo", "Electoral"], correct: 0, rationale: "Suprema Corte de Justicia." },
+                    { q: "34. Principio de legalidad:", options: ["Nadie está por encima de la ley", "Derecho al trabajo", "Libertad de expresión", "Derecho a huelga"], correct: 0, rationale: "Estado de derecho." },
+                    { q: "35. Derecho humano de primera generación:", options: ["Libertad", "Educación", "Salud", "Trabajo"], correct: 0, rationale: "Derechos civiles y políticos." },
+                    { q: "36. Valor de reconocer errores:", options: ["Humildad", "Valentía", "Honestidad", "Perseverancia"], correct: 0, rationale: "Modestia y autocrítica." },
+                    { q: "37. Secretaría que atiende educación:", options: ["SEP", "SRE", "SEDENA", "SEMAR"], correct: 0, rationale: "Secretaría de Educación Pública." },
+                    { q: "38. Garantía de audiencia:", options: ["Derecho a defenderse", "Voto secreto", "Libertad culto", "Derecho petición"], correct: 0, rationale: "Debido proceso." },
+                    { q: "39. Pacto federal une a:", options: ["Estados y Federación", "Municipios", "Ciudadanos", "Partidos"], correct: 0, rationale: "Organización territorial." },
+                    { q: "40. Valor en la diversidad cultural:", options: ["Respeto", "Uniformidad", "Imposición", "Ignorancia"], correct: 0, rationale: "Aprecio por diferencias." },
+                    { q: "41. Derecho a la información garantizado en:", options: ["Artículo 6°", "Artículo 3°", "Artículo 27", "Artículo 123"], correct: 0, rationale: "Libertad de expresión." },
+                    { q: "42. Forma de gobierno en estados mexicanos:", options: ["República representativa", "Monarquía", "Autocracia", "Oligarquía"], correct: 0, rationale: "Similar al federal." },
+                    { q: "43. Organismo autónomo electoral:", options: ["INE", "PEMEX", "CFE", "IMSS"], correct: 0, rationale: "Instituto Nacional Electoral." },
+                    { q: "44. Responsabilidad ciudadana ambiental:", options: ["Cuidar recursos naturales", "Contaminar", "Desperdiciar agua", "Talar árboles"], correct: 0, rationale: "Deber ecológico." },
+                    { q: "45. Valor de decir la verdad siempre:", options: ["Honestidad", "Lealtad", "Solidaridad", "Justicia"], correct: 0, rationale: "Sinceridad constante." },
+                    { q: "46. Secretaría de Gobernación (SEGOB) se encarga de:", options: ["Política interior", "Educación", "Salud", "Economía"], correct: 0, rationale: "Asuntos internos del país." },
+                    { q: "47. Valor de tratar a todos por igual:", options: ["Igualdad", "Libertad", "Fraternidad", "Equidad"], correct: 0, rationale: "No discriminación." },
+                    { q: "48. Artículo 27 constitucional trata sobre:", options: ["Propiedad de la tierra", "Educación", "Trabajo", "Salud"], correct: 0, rationale: "Dominio originario de la Nación." },
+                    { q: "49. ONU fue fundada en:", options: ["1945", "1919", "1950", "1948"], correct: 0, rationale: "Tras Segunda Guerra Mundial." },
+                    { q: "50. Responsabilidad social empresarial:", options: ["Contribuir al bienestar social", "Solo ganar dinero", "Evadir impuestos", "Contaminar"], correct: 0, rationale: "Ética en los negocios." },
+                    { q: "51. División de poderes propuesta por:", options: ["Montesquieu", "Rousseau", "Voltaire", "Locke"], correct: 0, rationale: "Filósofo ilustrado francés." },
+                    { q: "52. Municipio libre establecido en:", options: ["Artículo 115", "Artículo 3", "Artículo 27", "Artículo 123"], correct: 0, rationale: "Autonomía municipal." },
+                    { q: "53. Valor de aceptar consecuencias de actos:", options: ["Responsabilidad", "Honestidad", "Solidaridad", "Tolerancia"], correct: 0, rationale: "Asumir efectos de decisiones." },
+                    { q: "54. Derecho humano de tercera generación:", options: ["Derechos de solidaridad", "Derechos civiles", "Derechos sociales", "Derechos políticos"], correct: 0, rationale: "Derechos colectivos como paz, ambiente." },
+                    { q: "55. Juicio político se aplica a:", options: ["Altos funcionarios", "Ciudadanos comunes", "Extranjeros", "Menores"], correct: 0, rationale: "Responsabilidad de servidores públicos." },
+                    { q: "56. Valor de resolver conflictos pacíficamente:", options: ["Paz", "Violencia", "Indiferencia", "Agresividad"], correct: 0, rationale: "Diálogo y negociación." },
+                    { q: "57. Día de la Constitución Mexicana:", options: ["5 de febrero", "16 de septiembre", "20 de noviembre", "1 de mayo"], correct: 0, rationale: "Promulgada en 1917." },
+                    { q: "58. Secretaría de Hacienda y Crédito Público (SHCP):", options: ["Política económica y fiscal", "Educación", "Salud", "Agricultura"], correct: 0, rationale: "Finanzas públicas." },
+                    { q: "59. Principio de no retroactividad de la ley:", options: ["Nueva ley no afecta hechos pasados", "Leyes siempre retroactivas", "Solo penas retroactivas", "Ninguna"], correct: 0, rationale: "Seguridad jurídica." },
+                    { q: "60. Valor de reconocer méritos ajenos:", options: ["Justicia", "Envidia", "Egoísmo", "Indiferencia"], correct: 0, rationale: "Dar a cada quien su reconocimiento." }
+                ]
+            },
+            'geografia': {
+                name: "Geografía", icon: "fa-earth-americas", color: "cyan",
+                desc: "Espacio geográfico y mapas.",
+                concepts: ["Espacio geográfico", "Coordenadas", "Población", "Economía"],
+                quiz: [
+                    { q: "1. Componentes naturales:", options: ["Ríos y montañas", "Casas", "Carreteras", "Gente"], correct: 0, rationale: "Naturaleza física." },
+                    { q: "2. Paralelos indican:", options: ["Latitud", "Longitud", "Altura", "Hora"], correct: 0, rationale: "Norte-Sur." },
+                    { q: "3. Meridiano 0:", options: ["Greenwich", "Ecuador", "Cáncer", "Capricornio"], correct: 0, rationale: "Base longitud." },
+                    { q: "4. Movimiento placas tectónicas causa:", options: ["Sismos", "Lluvias", "Viento", "Calor"], correct: 0, rationale: "Tectónica." },
+                    { q: "5. País más poblado:", options: ["India/China", "Rusia", "México", "Canadá"], correct: 0, rationale: "Demografía." },
+                    { q: "6. Globalización es:", options: ["Interconexión mundial", "Aislamiento", "Guerra", "Paz"], correct: 0, rationale: "Económica y cultural." },
+                    { q: "7. Migración es:", options: ["Movimiento población", "Quedarse", "Nacer", "Morir"], correct: 0, rationale: "Desplazamiento." },
+                    { q: "8. Recurso renovable:", options: ["Sol", "Petróleo", "Carbón", "Gas"], correct: 0, rationale: "Inagotable." },
+                    { q: "9. IDH mide:", options: ["Desarrollo Humano", "Dinero solo", "Armas", "Territorio"], correct: 0, rationale: "Índice Desarrollo Humano." },
+                    { q: "10. Capital de México:", options: ["CDMX", "Guadalajara", "Monterrey", "Cancún"], correct: 0, rationale: "Ciudad de México." },
+                    { q: "11. Río más largo del mundo:", options: ["Amazonas", "Nilo", "Bravo", "Misisipi"], correct: 0, rationale: "Caudaloso y largo." },
+                    { q: "12. Capa externa de la Tierra:", options: ["Corteza", "Manto", "Núcleo", "Atmósfera"], correct: 0, rationale: "Suelo." },
+                    { q: "13. Clima de selva:", options: ["Tropical Lluvioso", "Seco", "Frío", "Polar"], correct: 0, rationale: "Caluroso y húmedo." },
+                    { q: "14. Actividad primaria:", options: ["Agricultura", "Industria", "Comercio", "Turismo"], correct: 0, rationale: "Extracción." },
+                    { q: "15. Continente más grande:", options: ["Asia", "América", "África", "Europa"], correct: 0, rationale: "Superficie." },
+                    { q: "16. Frontera norte de México:", options: ["Estados Unidos", "Guatemala", "Belice", "Canadá"], correct: 0, rationale: "Río Bravo." },
+                    { q: "17. Marea es causada por:", options: ["Luna", "Sol", "Viento", "Peces"], correct: 0, rationale: "Gravedad lunar." },
+                    { q: "18. Bloque económico de Norteamérica:", options: ["T-MEC", "UE", "MERCOSUR", "OTAN"], correct: 0, rationale: "Tratado Libre Comercio." },
+                    { q: "19. País bota europea:", options: ["Italia", "Francia", "España", "Grecia"], correct: 0, rationale: "Forma península." },
+                    { q: "20. Atmósfera protege de:", options: ["Rayos UV", "Lluvia", "Viento", "Ruido"], correct: 0, rationale: "Capa ozono." },
+                    { q: "21. Husos horarios dependen de:", options: ["Meridianos", "Paralelos", "Clima", "Luna"], correct: 0, rationale: "Rotación terrestre." },
+                    { q: "22. País con más costa:", options: ["Canadá", "México", "Chile", "Australia"], correct: 0, rationale: "Litoral extenso." },
+                    { q: "23. Zona sísmica México:", options: ["Pacífico", "Golfo", "Norte", "Caribe"], correct: 0, rationale: "Cinturón de Fuego." },
+                    { q: "24. Cartografía estudia:", options: ["Mapas", "Rocas", "Agua", "Aire"], correct: 0, rationale: "Representación terrestre." },
+                    { q: "25. Efecto invernadero causa:", options: ["Calentamiento global", "Frío", "Lluvia ácida", "Sismos"], correct: 0, rationale: "Gases retienen calor." },
+                    { q: "26. Cordillera más larga del mundo:", options: ["Andes", "Himalaya", "Alpes", "Montes Rocallosos"], correct: 0, rationale: "América del Sur, 7,000 km." },
+                    { q: "27. País más grande por superficie:", options: ["Rusia", "Canadá", "China", "EEUU"], correct: 0, rationale: "17 millones km²." },
+                    { q: "28. Lago más profundo del mundo:", options: ["Baikal", "Superior", "Tanganica", "Victoria"], correct: 0, rationale: "Siberia, 1,642 m." },
+                    { q: "29. Desierto más grande:", options: ["Sahara", "Gobi", "Kalahari", "Atacama"], correct: 0, rationale: "África, 9 millones km²." },
+                    { q: "30. Río que atraviesa más países:", options: ["Danubio", "Amazonas", "Nilo", "Misisipi"], correct: 0, rationale: "10 países europeos." },
+                    { q: "31. Capital más alta del mundo:", options: ["La Paz", "Quito", "Bogotá", "Lhasa"], correct: 0, rationale: "Bolivia, 3,650 msnm." },
+                    { q: "32. País con más volcanes activos:", options: ["Indonesia", "Japón", "Chile", "Islandia"], correct: 0, rationale: "Anillo de Fuego del Pacífico." },
+                    { q: "33. Estrecho que separa Europa de África:", options: ["Gibraltar", "Bering", "Magallanes", "Bósforo"], correct: 0, rationale: "Conecta Mediterráneo y Atlántico." },
+                    { q: "34. Mayor productor de café:", options: ["Brasil", "Colombia", "Vietnam", "Indonesia"], correct: 0, rationale: "Un tercio mundial." },
+                    { q: "35. País sin salida al mar en Sudamérica:", options: ["Paraguay", "Bolivia", "Uruguay", "Perú"], correct: 1, rationale: "Bolivia perdió costa en 1884." },
+                    { q: "36. Archipiélago más grande del mundo:", options: ["Indonesia", "Filipinas", "Japón", "Maldivas"], correct: 0, rationale: "Más de 17,000 islas." },
+                    { q: "37. Lugar más seco de la Tierra:", options: ["Desierto de Atacama", "Sahara", "Antártida", "Valle de la Muerte"], correct: 0, rationale: "Chile/Perú, zonas sin lluvia." },
+                    { q: "38. Continentalidad afecta:", options: ["Amplitud térmica", "Precipitación", "Humedad", "Presión"], correct: 0, rationale: "Lejanía al mar, mayores diferencias temperatura." },
+                    { q: "39. Trópico en hemisferio sur:", options: ["Capricornio", "Cáncer", "Ecuador", "Ártico"], correct: 0, rationale: "23.5° S." },
+                    { q: "40. Erosión eólica es por:", options: ["Viento", "Agua", "Hielo", "Gravedad"], correct: 0, rationale: "Desgaste por partículas en aire." },
+                    { q: "41. País con mayor biodiversidad:", options: ["Brasil", "Colombia", "Indonesia", "México"], correct: 0, rationale: "Amazonas, mayor número especies." },
+                    { q: "42. Capital de Australia:", options: ["Canberra", "Sídney", "Melbourne", "Perth"], correct: 0, rationale: "Ciudad planificada." },
+                    { q: "43. Mar cerrado más grande:", options: ["Mediterráneo", "Caspio", "Muerto", "Negro"], correct: 1, rationale: "Considerado lago por algunos." },
+                    { q: "44. Actividad económica terciaria:", options: ["Turismo", "Agricultura", "Minería", "Pesca"], correct: 0, rationale: "Servicios." },
+                    { q: "45. Efecto Coriolis desvía:", options: ["Vientos y corrientes", "Placas tectónicas", "Ríos", "Carreteras"], correct: 0, rationale: "Rotación terrestre." },
+                    { q: "46. Relieve submarino:", options: ["Dorsal oceánica", "Montaña", "Valle", "Llanura"], correct: 0, rationale: "Cordillera en fondo oceánico." },
+                    { q: "47. País con mayor esperanza de vida:", options: ["Japón", "México", "EEUU", "India"], correct: 0, rationale: "Alrededor de 84 años." },
+                    { q: "48. Capital de Canadá:", options: ["Ottawa", "Toronto", "Vancouver", "Montreal"], correct: 0, rationale: "No confundir con ciudades más grandes." },
+                    { q: "49. Bioma de pastizales:", options: ["Pradera", "Desierto", "Selva", "Tundra"], correct: 0, rationale: "Clima templado, herbáceas." },
+                    { q: "50. Río que forma frontera México-Guatemala:", options: ["Usumacinta", "Bravo", "Lerma", "Balsas"], correct: 0, rationale: "Nace en Guatemala." },
+                    { q: "51. Lago más grande de México:", options: ["Chapala", "Pátzcuaro", "Cuitzeo", "Texcoco"], correct: 0, rationale: "Entre Jalisco y Michoacán." },
+                    { q: "52. Trópico de Cáncer atraviesa México por:", options: ["Baja California Sur, Sinaloa, Durango, San Luis Potosí", "Chiapas, Oaxaca", "Yucatán, Quintana Roo", "Sonora, Chihuahua"], correct: 0, rationale: "Latitud 23°26' N." },
+                    { q: "53. Erosión fluvial forma:", options: ["Cañones", "Dunas", "Morrenas", "Acantilados"], correct: 0, rationale: "Acción del agua corriente." },
+                    { q: "54. País con mayor población musulmana:", options: ["Indonesia", "Arabia Saudita", "Pakistán", "Egipto"], correct: 0, rationale: "Aunque no es país árabe." },
+                    { q: "55. Estrecho de Bering separa:", options: ["Rusia y Alaska", "Europa y África", "Asia y Australia", "América del Sur y Antártida"], correct: 0, rationale: "Conecta Pacífico y Ártico." },
+                    { q: "56. Península de Yucatán estados:", options: ["Yucatán, Quintana Roo, Campeche", "Tabasco, Chiapas", "Veracruz, Oaxaca", "Tamaulipas, San Luis Potosí"], correct: 0, rationale: "Tres estados mexicanos." },
+                    { q: "57. Fenómeno de El Niño afecta:", options: ["Clima mundial", "Solo Perú", "Solo Asia", "Solo Europa"], correct: 0, rationale: "Calentamiento Pacífico ecuatorial." },
+                    { q: "58. País sin ejército:", options: ["Costa Rica", "Panamá", "Suiza", "Israel"], correct: 0, rationale: "Abolido desde 1949." },
+                    { q: "59. Capital más poblada del mundo:", options: ["Tokio", "Ciudad de México", "Nueva Delhi", "Pekín"], correct: 0, rationale: "Área metropolitana más grande." },
+                    { q: "60. Vertiente hidrográfica del Río Bravo:", options: ["Golfo de México", "Pacífico", "Mar Caribe", "Lago interior"], correct: 0, rationale: "Desemboca en Golfo de México." }
+                ]
+            },
+            'historia': {
+                name: "Historia", icon: "fa-landmark", color: "orange",
+                desc: "Historia Universal y de México.",
+                concepts: ["Guerras Mundiales", "Revoluciones", "Independencia", "Siglo XX"],
+                quiz: [
+                    { q: "1. Detonante 1ra Guerra Mundial:", options: ["Asesinato Archiduque", "Invasión Polonia", "Bomba atómica", "Muro Berlín"], correct: 0, rationale: "Sarajevo 1914." },
+                    { q: "2. Guerra México-EEUU:", options: ["1846-1848", "1810-1821", "1910-1920", "1521"], correct: 0, rationale: "Pérdida territorio." },
+                    { q: "3. Revolución Francesa inició:", options: ["1789", "1492", "1914", "2000"], correct: 0, rationale: "Toma de la Bastilla." },
+                    { q: "4. Conquista de México:", options: ["1521", "1810", "1910", "1492"], correct: 0, rationale: "Caída Tenochtitlan." },
+                    { q: "5. Independencia de México:", options: ["1810", "1910", "1857", "1917"], correct: 0, rationale: "Grito de Dolores." },
+                    { q: "6. Constitución actual:", options: ["1917", "1857", "1824", "1994"], correct: 0, rationale: "Querétaro." },
+                    { q: "7. Segunda Guerra Mundial:", options: ["1939-1945", "1914-1918", "1800-1815", "1950-1953"], correct: 0, rationale: "Aliados vs Eje." },
+                    { q: "8. Cultura Madre mesoamericana:", options: ["Olmeca", "Azteca", "Maya", "Tolteca"], correct: 0, rationale: "Preclásico." },
+                    { q: "9. Porfiriato duró:", options: ["30+ años", "10 años", "5 años", "100 años"], correct: 0, rationale: "Dictadura Díaz." },
+                    { q: "10. Caída Muro Berlín:", options: ["1989", "1945", "1991", "1960"], correct: 0, rationale: "Fin Guerra Fría." },
+                    { q: "11. Ilustración se basa en:", options: ["Razón", "Fe", "Rey", "Mito"], correct: 0, rationale: "Movimiento intelectual del siglo XVIII." },
+                    { q: "12. Consecuencia Revolución Industrial:", options: ["Surgimiento proletariado", "Feudalismo", "Esclavitud", "Monarquía"], correct: 0, rationale: "Nueva clase social obrera." },
+                    { q: "13. Crisis de 1929 inició en:", options: ["EEUU", "Europa", "Asia", "México"], correct: 0, rationale: "Caída de la bolsa de Wall Street." },
+                    { q: "14. Guerra Fría enfrentó a:", options: ["EEUU vs URSS", "Alemania vs Francia", "China vs Japón", "Inglaterra vs España"], correct: 0, rationale: "Capitalismo vs Socialismo." },
+                    { q: "15. Expropiación Petrolera (México):", options: ["Lázaro Cárdenas", "Porfirio Díaz", "Benito Juárez", "Santa Anna"], correct: 0, rationale: "18 de marzo de 1938." },
+                    { q: "16. Plan de Ayala (Zapata) pedía:", options: ["Tierra y Libertad", "Sufragio Efectivo", "Educación Laica", "Reelección"], correct: 0, rationale: "Reforma agraria." },
+                    { q: "17. Primer Virrey de Nueva España:", options: ["Antonio de Mendoza", "Hernán Cortés", "Iturbide", "Maximilian"], correct: 0, rationale: "Representante del Rey." },
+                    { q: "18. Movimiento estudiantil de 1968 ocurrió en:", options: ["Díaz Ordaz", "Echeverría", "López Portillo", "Salinas"], correct: 0, rationale: "Presidencia de Gustavo Díaz Ordaz." },
+                    { q: "19. Autor de 'Los Sentimientos de la Nación':", options: ["Morelos", "Hidalgo", "Allende", "Guerrero"], correct: 0, rationale: "Documento independentista." },
+                    { q: "20. Tratado de Córdoba firmó:", options: ["Independencia México", "Paz con EEUU", "Venta de Texas", "Reforma"], correct: 0, rationale: "Iturbide y O'Donojú (1821)." },
+                    { q: "21. Guerra de los Pasteles fue contra:", options: ["Francia", "EEUU", "España", "Inglaterra"], correct: 0, rationale: "Reclamación pastelero." },
+                    { q: "22. Maximato fue liderado por:", options: ["Plutarco E. Calles", "Cárdenas", "Obregón", "Huerta"], correct: 0, rationale: "Jefe Máximo." },
+                    { q: "23. Dios de la guerra azteca:", options: ["Huitzilopochtli", "Tláloc", "Quetzalcóatl", "Coatlicue"], correct: 0, rationale: "Mexica." },
+                    { q: "24. Renacimiento surgió en:", options: ["Italia", "Francia", "Alemania", "Inglaterra"], correct: 0, rationale: "Florencia." },
+                    { q: "25. Descubrimiento América:", options: ["1492", "1521", "1810", "1992"], correct: 0, rationale: "Colón." },
+                    { q: "26. Plan de San Luis:", options: ["Madero contra Díaz", "Zapata contra Madero", "Villa contra Carranza", "Obregón"], correct: 0, rationale: "Sufragio efectivo." },
+                    { q: "27. Tenochtitlan cayó en:", options: ["1521", "1810", "1500", "1200"], correct: 0, rationale: "Cortés." },
+                    { q: "28. Reforma liberal:", options: ["Juárez", "Díaz", "Santa Anna", "Iturbide"], correct: 0, rationale: "Separación Iglesia-Estado." },
+                    { q: "29. Revolución Cubana:", options: ["Fidel Castro", "Che Guevara", "Batista", "Allende"], correct: 0, rationale: "1959." },
+                    { q: "30. Caída URSS:", options: ["1991", "1989", "2000", "1945"], correct: 0, rationale: "Fin bloque soviético." },
+                    { q: "31. Imperio más extenso de la historia:", options: ["Británico", "Mongol", "Romano", "Español"], correct: 0, rationale: "33 millones km² en 1920." },
+                    { q: "32. Descubridor del camino marítimo a India:", options: ["Vasco da Gama", "Cristóbal Colón", "Magallanes", "Marco Polo"], correct: 0, rationale: "1498, Portugal." },
+                    { q: "33. Caída de Constantinopla (año):", options: ["1453", "1492", "1521", "476"], correct: 0, rationale: "Fin Imperio Romano de Oriente." },
+                    { q: "34. Teoría Heliocéntrica de Copérnico:", options: ["Sol centro del sistema", "Tierra centro", "Universo infinito", "Órbitas elípticas"], correct: 0, rationale: "Revolución científica." },
+                    { q: "35. Tratado que terminó Primera Guerra Mundial:", options: ["Versalles", "Tordesillas", "París", "Viena"], correct: 0, rationale: "1919, impuso duras condiciones a Alemania." },
+                    { q: "36. Civilización que inventó la escritura:", options: ["Sumeria", "Egipcia", "China", "Fenicia"], correct: 0, rationale: "Cuneiforme, Mesopotamia." },
+                    { q: "37. Reforma Protestante iniciada por:", options: ["Martín Lutero", "Juan Calvino", "Enrique VIII", "Erasmo"], correct: 0, rationale: "95 tesis, 1517." },
+                    { q: "38. Presidente de México durante Revolución:", options: ["Francisco I. Madero", "Porfirio Díaz", "Venustiano Carranza", "Álvaro Obregón"], correct: 0, rationale: "1911-1913." },
+                    { q: "39. Primera civilización de América:", options: ["Caral", "Olmeca", "Chavín", "Teotihuacana"], correct: 0, rationale: "Perú, 3000 a.C." },
+                    { q: "40. Guerra de los Cien Años enfrentó a:", options: ["Inglaterra y Francia", "España y Portugal", "Roma y Cartago", "Grecia y Persia"], correct: 0, rationale: "1337-1453." },
+                    { q: "41. Emperador azteca durante la Conquista:", options: ["Moctezuma II", "Cuitláhuac", "Cuauhtémoc", "Itzcóatl"], correct: 0, rationale: "1519-1520." },
+                    { q: "42. Invención de la imprenta (año aproximado):", options: ["1450", "1500", "1400", "1300"], correct: 0, rationale: "Gutenberg, Renacimiento." },
+                    { q: "43. Movimiento independentista liderado por Hidalgo:", options: ["Grito de Dolores", "Conspiración de Querétaro", "Abrazo de Acatempan", "Plan de Iguala"], correct: 0, rationale: "16 septiembre 1810." },
+                    { q: "44. Imperio que construyó el Taj Mahal:", options: ["Mogol", "Otomano", "Persa", "Bizantino"], correct: 0, rationale: "India, siglo XVII." },
+                    { q: "45. Caída del Muro de Berlín simbolizó:", options: ["Fin Guerra Fría", "Inicio Segunda Guerra", "Revolución Industrial", "Independencia Alemania"], correct: 0, rationale: "1989, reunificación alemana." },
+                    { q: "46. Líder de la Revolución Mexicana del Sur:", options: ["Emiliano Zapata", "Pancho Villa", "Venustiano Carranza", "Álvaro Obregón"], correct: 0, rationale: "Ejército Libertador del Sur, Plan de Ayala." },
+                    { q: "47. Batalla de Puebla (5 de mayo) fue contra:", options: ["Francia", "EEUU", "España", "Inglaterra"], correct: 0, rationale: "1862, ejército de Napoleón III." },
+                    { q: "48. Descubrimiento de la penicilina por:", options: ["Alexander Fleming", "Louis Pasteur", "Robert Koch", "Marie Curie"], correct: 0, rationale: "1928, primer antibiótico." },
+                    { q: "49. Caída de Tenochtitlán liderada por:", options: ["Hernán Cortés", "Francisco Pizarro", "Pedro de Alvarado", "Nuño de Guzmán"], correct: 0, rationale: "1521, conquista española." },
+                    { q: "50. Imperio que construyó Machu Picchu:", options: ["Inca", "Maya", "Azteca", "Olmeca"], correct: 0, rationale: "Siglo XV, Perú." },
+                    { q: "51. Presidente de México durante Expropiación Petrolera:", options: ["Lázaro Cárdenas", "Plutarco Elías Calles", "Miguel Alemán", "Manuel Ávila Camacho"], correct: 0, rationale: "18 de marzo de 1938." },
+                    { q: "52. Movimiento de Independencia de India liderado por:", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose", "Muhammad Ali Jinnah"], correct: 0, rationale: "Resistencia no violenta." },
+                    { q: "53. Caída del Imperio Romano de Occidente (año):", options: ["476 d.C.", "410 d.C.", "1453 d.C.", "27 a.C."], correct: 0, rationale: "Rómulo Augústulo depuesto." },
+                    { q: "54. Revolución Cubana triunfó en:", options: ["1959", "1962", "1945", "1975"], correct: 0, rationale: "Fidel Castro entra a La Habana." },
+                    { q: "55. Cultura que construyó Teotihuacán:", options: ["Teotihuacana", "Azteca", "Tolteca", "Zapoteca"], correct: 0, rationale: "Preclásico y Clásico, no se conoce su nombre original." },
+                    { q: "56. Primera Guerra del Opio enfrentó a:", options: ["China y Reino Unido", "India y Portugal", "Japón y Rusia", "EEUU y España"], correct: 0, rationale: "1839-1842, comercio opio." },
+                    { q: "57. Tratado de Tordesillas (1494) dividió mundo entre:", options: ["España y Portugal", "Francia e Inglaterra", "Holanda y España", "Portugal e Inglaterra"], correct: 0, rationale: "Línea a 370 leguas de Cabo Verde." },
+                    { q: "58. Fidel Castro derrocó a:", options: ["Fulgencio Batista", "Gerardo Machado", "Carlos Prío", "Tomás Estrada Palma"], correct: 0, rationale: "Dictadura cubana." },
+                    { q: "59. Civilización que inventó la brújula:", options: ["China", "Grecia", "Egipto", "Mesopotamia"], correct: 0, rationale: "Siglo II a.C., para geomancia." },
+                    { q: "60. Matanza de Tlatelolco ocurrió en:", options: ["1968", "1971", "1954", "1985"], correct: 0, rationale: "Movimiento estudiantil, Juegos Olímpicos México 1968." }
+                ]
+            }
+        };
+
+        // --- ESTADO Y VARIABLES GLOBALES ---
+        let userScores = {};
+        let currentSubjectKey = 'quimica';
+        let currentQuiz = [];
+        let currentQuestionIndex = 0;
+        let selectedQuizLength = 10; // Default
+
+        // --- CONFIGURACIÓN Y UI ---
+        function setQuizLength(len) {
+            selectedQuizLength = len;
+            // Actualizar botones UI
+            document.querySelectorAll('.length-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'active-length', 'bg-yellow-400', 'text-indigo-900', 'border-yellow-300');
+                
+                // Estilo base
+                if(btn.dataset.length === "128") {
+                     btn.classList.add('bg-yellow-100', 'text-yellow-800', 'border-yellow-300');
+                } else {
+                     btn.classList.add('bg-white', 'text-indigo-700', 'border-indigo-200');
+                }
+                
+                // Estilo activo
+                if(parseInt(btn.getAttribute('data-length')) === len) {
+                    btn.classList.remove('bg-white', 'text-indigo-700', 'bg-yellow-100', 'text-yellow-800');
+                    if(len === 128) {
+                        btn.classList.add('bg-yellow-400', 'text-indigo-900', 'active-length');
+                    } else {
+                        btn.classList.add('bg-indigo-600', 'text-white', 'active-length');
+                    }
+                }
+            });
+            // Actualizar textos informativos
+            if(len === 128) {
+                document.querySelectorAll('.current-length-span').forEach(span => span.innerText = "128 Preguntas (Examen Real)");
+                document.getElementById('display-length-general').innerText = "128 Preguntas (Distribución Oficial)";
+                document.getElementById('exam-desc-text').innerHTML = "Modo <strong>Simulacro Real</strong>: Se generará un examen con la distribución oficial: <br>• 21 Hab. Verbal • 21 Hab. Mat • 11 Español • 13 Matemáticas • 11 Física • 11 Biología • 10 Química • 10 Historia • 10 Geografía • 10 Cívica.";
+                document.getElementById('start-exam-text').innerText = "Iniciar Simulacro Oficial";
+            } else {
+                document.querySelectorAll('.current-length-span').forEach(span => span.innerText = len + (len === 1 ? ' Pregunta' : ' Preguntas'));
+                document.getElementById('display-length-general').innerText = len + (len === 1 ? ' Pregunta' : ' Preguntas');
+                document.getElementById('exam-desc-text').innerText = "Este modo toma todas las preguntas de la guía (Matemáticas, Historia, Química, etc.), las mezcla y selecciona aleatoriamente la cantidad que configuraste.";
+                document.getElementById('start-exam-text').innerText = "Iniciar Examen Aleatorio";
+            }
+        }
+
+        // --- PERSISTENCIA (GUARDADO AUTOMÁTICO) ---
+        function saveProgress() {
+            localStorage.setItem('ipn_unam_scores', JSON.stringify(userScores));
+            // Si estamos en la vista de progreso, actualizar gráfico
+            if(document.getElementById('analytics-view').classList.contains('block')) {
+                renderAnalytics();
+            }
+        }
+
+        function resetProgress() {
+            if(confirm("¿Estás seguro de querer borrar todo tu progreso y empezar de cero?")) {
+                Object.keys(subjectsData).forEach(key => userScores[key] = 0);
+                saveProgress();
+                alert("Progreso borrado correctamente.");
+                renderAnalytics();
+            }
+        }
+
+        // --- NAVEGACIÓN ---
+        function switchView(viewId) {
+            // Ocultar todas
+            ['dashboard-view', 'study-view', 'analytics-view'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                document.getElementById(id).classList.remove('block');
+            });
+            // Mostrar seleccionada
+            document.getElementById(viewId + '-view').classList.remove('hidden');
+            document.getElementById(viewId + '-view').classList.add('block');
+
+            // Actualizar estilos navbar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-900');
+                btn.classList.add('text-gray-600');
+            });
+
+            if(viewId === 'analytics') renderAnalytics();
+            if(viewId === 'study') {
+                 // Check defensivo
+                 if (!subjectsData[currentSubjectKey]) {
+                     currentSubjectKey = 'quimica';
+                 }
+                 renderSubjectContent(currentSubjectKey);
+            }
+        }
+
+        // --- ZONA DE ESTUDIO (LÓGICA) ---
+        function filterSubject(evt, subjectKey) {
+            currentSubjectKey = subjectKey;
+            
+            // Actualizar Chips
+            document.querySelectorAll('.subject-chip').forEach(c => c.classList.remove('active', 'bg-indigo-600', 'text-white'));
+            evt.currentTarget.classList.add('active'); 
+
+            renderSubjectContent(subjectKey);
+        }
+
+        function renderSubjectContent(key) {
+            const data = subjectsData[key];
+            
+            // Texto e Icono
+            document.getElementById('subject-title').innerText = data.name;
+            document.getElementById('subject-desc').innerText = data.desc;
+            document.getElementById('subject-icon').className = `fa-solid ${data.icon} text-${data.color}-600 text-xl`;
+            document.getElementById('subject-icon-container').className = `w-12 h-12 rounded-full bg-${data.color}-100 flex items-center justify-center mr-4`;
+            
+            // Conceptos
+            const conceptsContainer = document.getElementById('subject-concepts');
+            conceptsContainer.innerHTML = '';
+            data.concepts.forEach(c => {
+                const div = document.createElement('div');
+                div.className = "flex items-center p-3 bg-gray-50 rounded border border-gray-100";
+                div.innerHTML = `<i class="fa-solid fa-check text-green-500 mr-3"></i><span class="text-sm text-gray-700">${c}</span>`;
+                conceptsContainer.appendChild(div);
+            });
+
+            // Barra de Progreso
+            const score = userScores[key] || 0;
+            document.getElementById('subject-level').innerText = score + "%";
+            document.getElementById('subject-progress-bar').style.width = score + "%";
+            document.getElementById('subject-progress-bar').className = `h-1.5 rounded-full bg-${data.color}-500`;
+
+            // Botón de Quiz
+            document.getElementById('start-quiz-btn').onclick = () => startSubjectQuiz(key);
+            document.getElementById('start-quiz-btn').innerText = `Iniciar Bloque`;
+            document.getElementById('start-quiz-btn').className = `w-full bg-${data.color}-600 text-white py-3 rounded-lg font-bold hover:bg-${data.color}-700 transition shadow-md flex justify-center items-center`;
+        }
+
+        // --- UTILIDADES ---
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function randomizeAnswers(questions) {
+            // Clonar para no modificar la fuente original
+            let questionsCopy = JSON.parse(JSON.stringify(questions));
+            
+            questionsCopy.forEach(q => {
+                // 1. Identificar texto correcto
+                const correctText = q.options[q.correct];
+                
+                // 2. Mezclar opciones
+                for (let i = q.options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+                }
+                
+                // 3. Actualizar índice correcto
+                q.correct = q.options.indexOf(correctText);
+            });
+            
+            return questionsCopy;
+        }
+
+        function generateRealExamDistribution() {
+            // Distribución oficial aproximada para 128 preguntas
+            const targets = {
+                'hab_verb': 21,
+                'hab_mat': 21,
+                'matematicas': 13,
+                'espanol': 11,
+                'biologia': 11,
+                'fisica': 11,
+                'quimica': 10,
+                'civica': 10,
+                'geografia': 10,
+                'historia': 10
+            };
+
+            let examQuestions = [];
+
+            for (const [key, count] of Object.entries(targets)) {
+                if(subjectsData[key]) {
+                    // Mezclar preguntas del tema y tomar 'count'
+                    const subjectQs = shuffleArray(subjectsData[key].quiz).slice(0, count);
+                    // ETIQUETAR la pregunta con su materia para puntuar correctamente después
+                    const taggedQs = subjectQs.map(q => ({...q, subjectKey: key}));
+                    examQuestions = examQuestions.concat(taggedQs);
+                }
+            }
+            
+            // Mezclar todo el examen final
+            return shuffleArray(examQuestions);
+        }
+
+        // --- LÓGICA DEL QUIZ ---
+        function startSubjectQuiz(key) {
+            currentSubjectKey = key;
+            const data = subjectsData[key];
+            
+            // Si está en modo 128, limitar práctica individual a 20 para no saturar
+            let limit = selectedQuizLength;
+            if (limit === 128) limit = 20; 
+
+            // Mezclar preguntas y respuestas
+            const selectedQuestions = shuffleArray(data.quiz).slice(0, limit);
+            currentQuiz = randomizeAnswers(selectedQuestions);
+            
+            currentQuestionIndex = 0;
+            document.getElementById('quiz-title').innerText = "Simulador: " + data.name;
+            openModal();
+            loadQuestion();
+        }
+
+        function startGeneralQuiz() {
+            if (selectedQuizLength === 128) {
+                // Modo Examen Real
+                const realExamQuestions = generateRealExamDistribution();
+                currentQuiz = randomizeAnswers(realExamQuestions);
+                document.getElementById('quiz-title').innerText = "Simulacro Oficial (128 Reactivos)";
+            } else {
+                // Modo Aleatorio Rápido (10, 20)
+                let allQuestions = [];
+                Object.keys(subjectsData).forEach(key => {
+                    const tagged = subjectsData[key].quiz.map(q => ({...q, subjectKey: key}));
+                    allQuestions = allQuestions.concat(tagged);
+                });
+                
+                const randomQuestions = shuffleArray(allQuestions).slice(0, selectedQuizLength);
+                currentQuiz = randomizeAnswers(randomQuestions);
+                
+                document.getElementById('quiz-title').innerText = "Simulacro Aleatorio Rápido";
+            }
+            
+            currentSubjectKey = 'general'; 
+            currentQuestionIndex = 0;
+            openModal();
+            loadQuestion();
+        }
+
+        function openModal() {
+            document.getElementById('quiz-modal').classList.remove('hidden');
+            document.getElementById('quiz-modal').classList.add('flex');
+        }
+
+        function closeQuiz() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+            document.getElementById('quiz-modal').classList.remove('flex');
+            if(subjectsData[currentSubjectKey]) renderSubjectContent(currentSubjectKey);
+        }
+
+        function loadQuestion() {
+            const q = currentQuiz[currentQuestionIndex];
+            document.getElementById('quiz-progress').innerText = `Pregunta ${currentQuestionIndex + 1} de ${currentQuiz.length}`;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const cont = document.getElementById('options-container');
+            cont.innerHTML = '';
+            
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center group";
+                btn.innerHTML = `<span class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex items-center justify-center text-xs text-gray-400 group-hover:border-indigo-500">${String.fromCharCode(65+i)}</span> ${opt}`;
+                btn.onclick = () => checkAnswer(i, btn);
+                cont.appendChild(btn);
+            });
+            
+            document.getElementById('feedback-area').classList.add('hidden');
+        }
+
+        function checkAnswer(idx, btn) {
+            const q = currentQuiz[currentQuestionIndex];
+            const isCorrect = idx === q.correct;
+            const buttons = document.getElementById('options-container').children;
+            
+            // Deshabilitar botones
+            for(let b of buttons) { b.disabled = true; b.classList.add('opacity-60'); }
+            
+            btn.classList.remove('opacity-60', 'hover:bg-gray-50', 'border-gray-200');
+            if(isCorrect) {
+                btn.classList.add('bg-green-100', 'border-green-500', 'text-green-900');
+                
+                // Actualizar puntaje: Si es general, usar la materia etiquetada, si no, la actual
+                const keyToUpdate = (currentSubjectKey === 'general' && q.subjectKey) ? q.subjectKey : currentSubjectKey;
+
+                if(subjectsData[keyToUpdate] && userScores[keyToUpdate] < 100) {
+                     // Incremento simple (puedes ajustar lógica de puntaje aquí)
+                     userScores[keyToUpdate] = Math.min(100, userScores[keyToUpdate] + 5); 
+                     saveProgress(); 
+                }
+            } else {
+                btn.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+                buttons[q.correct].classList.remove('opacity-60', 'border-gray-200');
+                buttons[q.correct].classList.add('bg-green-100', 'border-green-500', 'text-green-900');
+            }
+
+            // Mostrar retroalimentación
+            const fb = document.getElementById('feedback-area');
+            fb.className = `mt-6 p-4 rounded-lg border animate-fade-in ${isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`;
+            document.getElementById('feedback-title').innerText = isCorrect ? "¡Correcto!" : "Respuesta Incorrecta";
+            document.getElementById('feedback-title').className = `font-bold text-sm ${isCorrect ? 'text-green-900' : 'text-red-900'}`;
+            document.getElementById('feedback-icon').className = `fa-solid ${isCorrect ? 'fa-check-circle text-green-600' : 'fa-xmark-circle text-red-600'} mt-1 mr-3`;
+            document.getElementById('feedback-text').innerText = q.rationale;
+            
+            fb.classList.remove('hidden');
+
+            const nextBtn = document.getElementById('next-btn');
+            if(currentQuestionIndex === currentQuiz.length - 1) {
+                nextBtn.innerText = "Finalizar Bloque";
+                nextBtn.onclick = closeQuiz;
+            } else {
+                nextBtn.innerText = "Siguiente";
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // --- GRÁFICAS Y ANALYTICS ---
+        let radarChart;
+        function renderAnalytics() {
+            const values = Object.values(userScores);
+            const avg = values.length > 0 ? Math.round(values.reduce((a,b)=>a+b,0) / values.length) : 0;
+            document.getElementById('global-average').innerText = avg;
+
+            const list = document.getElementById('analytics-list');
+            list.innerHTML = '';
+            
+            // Ordenar por puntaje
+            const sortedKeys = Object.keys(userScores).sort((a,b) => userScores[a] - userScores[b]);
+            
+            sortedKeys.forEach(key => {
+                const s = subjectsData[key];
+                if(!s) return; 
+
+                const sc = userScores[key];
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-100";
+                item.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded bg-${s.color}-100 flex items-center justify-center mr-3 text-${s.color}-600"><i class="fa-solid ${s.icon} text-xs"></i></div>
+                        <span class="text-sm font-medium text-gray-700">${s.name}</span>
+                    </div>
+                    <span class="font-bold text-${sc < 60 ? 'red' : (sc > 80 ? 'green' : 'yellow')}-600">${sc}%</span>
+                `;
+                list.appendChild(item);
+            });
+
+            // Renderizar Radar Chart
+            const ctxElement = document.getElementById('skillsRadarChart');
+            if(!ctxElement) return;
+
+            const ctx = ctxElement.getContext('2d');
+            if(radarChart) radarChart.destroy();
+
+            const order = ['hab_verb', 'espanol', 'hab_mat', 'matematicas', 'fisica', 'quimica', 'biologia', 'geografia', 'historia', 'civica'];
+            const labels = order.map(k => subjectsData[k].name.replace('Ciencias ', '').replace('Habilidad ', 'Hab. ').replace('F. Cívica y Ética', 'Cívica'));
+            const data = order.map(k => userScores[k]);
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Dominio por Materia (%)',
+                        data: data,
+                        fill: true,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgb(79, 70, 229)',
+                        pointBackgroundColor: 'rgb(79, 70, 229)',
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0, max: 100,
+                            ticks: { display: false },
+                            pointLabels: { font: { size: 10 } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+        
+        // --- INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+             // 1. Cargar datos guardados
+             const saved = localStorage.getItem('ipn_unam_scores');
+             if (saved) {
+                 try {
+                     userScores = JSON.parse(saved);
+                     Object.keys(subjectsData).forEach(k => {
+                         if(typeof userScores[k] === 'undefined') userScores[k] = 0;
+                     });
+                 } catch(e) {
+                     Object.keys(subjectsData).forEach(key => userScores[key] = 0);
+                 }
+             } else {
+                 Object.keys(subjectsData).forEach(key => userScores[key] = 0);
+             }
+
+             // Mostrar conteo total
+             let totalQ = 0;
+             Object.values(subjectsData).forEach(s => totalQ += s.quiz.length);
+             const countEl = document.getElementById('total-questions-count');
+             if(countEl) countEl.innerText = totalQ + " Reactivos";
+
+             // Iniciar UI
+             setQuizLength(10); 
+             renderSubjectContent('quimica');
+
+             // Gráfica Dashboard (Doughnut)
+             const ctxCompElement = document.getElementById('examCompositionChart');
+             if(ctxCompElement) {
+                const ctxComp = ctxCompElement.getContext('2d');
+                new Chart(ctxComp, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Habilidades', 'Español/Matemáticas', 'Ciencias Nat.', 'Ciencias Soc.'],
+                        datasets: [{
+                            data: [32, 24, 32, 24],
+                            backgroundColor: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } } }
+                    }
+                });
+             }
+        });
+
+    </script>
+</body>
+</html>

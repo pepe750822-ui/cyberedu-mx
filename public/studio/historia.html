@@ -1,0 +1,3642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Historia Universal ECOEMS 2026 | 150 Preguntas</title>
+    
+    <meta name="description" content="Guía completa de Historia Universal para ECOEMS 2026: 150 preguntas (10 por subíndice) organizadas en 5 bloques cronológicos">
+    <meta name="keywords" content="ECOEMS 2026, Historia Universal, 150 preguntas, examen ingreso, IPN, UNAM">
+    <meta name="author" content="CyberEdu MX">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --hist-blue: #1e3a8a;
+            --hist-purple: #7c3aed;
+            --hist-red: #dc2626;
+            --hist-orange: #ea580c;
+            --hist-green: #10b981;
+            --hist-bg: #fef9c3;
+            --hist-card: #ffffff;
+            --hist-text: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fef9c3, #fef3c7);
+            color: var(--hist-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .hist-header {
+            background: linear-gradient(135deg, var(--hist-blue), #4c1d95);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        .hist-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hist-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .hist-container {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+        
+        .blocks-nav {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid var(--hist-blue);
+        }
+        
+        .blocks-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--hist-blue);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .blocks-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .block-tab {
+            padding: 0.8rem;
+            background: #e0e7ff;
+            border: 2px solid #c7d2fe;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .block-tab.active {
+            background: var(--hist-blue);
+            color: white;
+            border-color: var(--hist-blue);
+        }
+        
+        .subindices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .subindice-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--hist-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .subindice-card.active {
+            background: rgba(30, 58, 138, 0.1);
+            border-left-color: var(--hist-orange);
+        }
+        
+        .subindice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subindice-code {
+            background: var(--hist-blue);
+            color: white;
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+        }
+        
+        .subindice-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .subindice-count {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .questions-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .question-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--hist-blue);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+        
+        .question-number {
+            background: var(--hist-blue);
+            color: white;
+            font-weight: 800;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #cbd5e1;
+        }
+        
+        .option-label.selected {
+            background: rgba(30, 58, 138, 0.1);
+            border-color: var(--hist-blue);
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: var(--hist-blue);
+            color: white;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            font-weight: 800;
+            font-size: 0.8rem;
+        }
+        
+        .progress-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid var(--hist-orange);
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-stat-card {
+            background: #e0e7ff;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .stat-card-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--hist-blue);
+            margin-bottom: 0.2rem;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .hist-button {
+            padding: 0.8rem 1.5rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hist-button.primary {
+            background: var(--hist-blue);
+            color: white;
+        }
+        
+        .hist-button.secondary {
+            background: var(--hist-purple);
+            color: white;
+        }
+        
+        .results-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .results-panel.active {
+            display: block;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--hist-blue);
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hist-title {
+                font-size: 1.8rem;
+            }
+            
+            .blocks-tabs {
+                grid-template-columns: 1fr;
+            }
+            
+            .subindices-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="hist-header">
+        <h1 class="hist-title">Historia Universal ECOEMS 2026</h1>
+        <p class="hist-subtitle">150 preguntas completas - 10 por cada subíndice</p>
+    </header>
+
+    <main class="hist-container">
+        <!-- NAVEGACIÓN POR BLOQUES -->
+        <div class="blocks-nav">
+            <h2 class="blocks-title">Selecciona un bloque histórico</h2>
+            
+            <div class="blocks-tabs">
+                <button class="block-tab active" onclick="selectBlock('bloque1')">
+                    <i class="fas fa-ship"></i> Bloque 1: s. XVI-XVIII
+                </button>
+                <button class="block-tab" onclick="selectBlock('bloque2')">
+                    <i class="fas fa-gavel"></i> Bloque 2: s. XVIII-XIX
+                </button>
+                <button class="block-tab" onclick="selectBlock('bloque3')">
+                    <i class="fas fa-flag"></i> Bloque 3: 1850-1920
+                </button>
+                <button class="block-tab" onclick="selectBlock('bloque4')">
+                    <i class="fas fa-crosshairs"></i> Bloque 4: 1920-1960
+                </button>
+                <button class="block-tab" onclick="selectBlock('bloque5')">
+                    <i class="fas fa-globe-americas"></i> Bloque 5: Reciente
+                </button>
+            </div>
+            
+            <!-- SUBÍNDICES BLOQUE 1 -->
+            <div id="subindices-bloque1" class="subindices-grid">
+                <div class="subindice-card active" onclick="selectSubindice('1.1')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">1.1</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Contexto mundial y nuevas rutas</div>
+                    <div class="subindice-count"><span id="count-1.1">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('1.2')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">1.2</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Humanismo y Renacimiento</div>
+                    <div class="subindice-count"><span id="count-1.2">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('1.3')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">1.3</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Expediciones y conquistas</div>
+                    <div class="subindice-count"><span id="count-1.3">0/10</span></div>
+                </div>
+            </div>
+            
+            <!-- SUBÍNDICES BLOQUE 2 -->
+            <div id="subindices-bloque2" class="subindices-grid" style="display: none;">
+                <div class="subindice-card" onclick="selectSubindice('2.1')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.1</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Ilustración y enciclopedia</div>
+                    <div class="subindice-count"><span id="count-2.1">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('2.2')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.2</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Absolutismo europeo</div>
+                    <div class="subindice-count"><span id="count-2.2">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('2.3')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.3</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Independencia USA</div>
+                    <div class="subindice-count"><span id="count-2.3">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('2.4')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.4</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Revolución Francesa</div>
+                    <div class="subindice-count"><span id="count-2.4">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('2.5')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.5</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Consecuencias en América</div>
+                    <div class="subindice-count"><span id="count-2.5">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('2.6')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">2.6</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Revolución Industrial</div>
+                    <div class="subindice-count"><span id="count-2.6">0/10</span></div>
+                </div>
+            </div>
+            
+            <!-- SUBÍNDICES BLOQUE 3 -->
+            <div id="subindices-bloque3" class="subindices-grid" style="display: none;">
+                <div class="subindice-card" onclick="selectSubindice('3.1')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">3.1</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Nacionalismo</div>
+                    <div class="subindice-count"><span id="count-3.1">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('3.2')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">3.2</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Imperialismo</div>
+                    <div class="subindice-count"><span id="count-3.2">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('3.3')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">3.3</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Primera Guerra Mundial</div>
+                    <div class="subindice-count"><span id="count-3.3">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('3.4')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">3.4</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Paz de Versalles</div>
+                    <div class="subindice-count"><span id="count-3.4">0/10</span></div>
+                </div>
+            </div>
+            
+            <!-- SUBÍNDICES BLOQUE 4 -->
+            <div id="subindices-bloque4" class="subindices-grid" style="display: none;">
+                <div class="subindice-card" onclick="selectSubindice('4.1')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">4.1</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Período de entreguerras</div>
+                    <div class="subindice-count"><span id="count-4.1">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('4.2')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">4.2</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Pobreza mundial</div>
+                    <div class="subindice-count"><span id="count-4.2">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('4.3')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">4.3</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Avances científicos</div>
+                    <div class="subindice-count"><span id="count-4.3">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('4.4')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">4.4</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Segunda Guerra Mundial</div>
+                    <div class="subindice-count"><span id="count-4.4">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('4.5')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">4.5</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Etapas de la SGM</div>
+                    <div class="subindice-count"><span id="count-4.5">0/10</span></div>
+                </div>
+            </div>
+            
+            <!-- SUBÍNDICES BLOQUE 5 -->
+            <div id="subindices-bloque5" class="subindices-grid" style="display: none;">
+                <div class="subindice-card" onclick="selectSubindice('5.1')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">5.1</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Bloques capitalista/socialista</div>
+                    <div class="subindice-count"><span id="count-5.1">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('5.2')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">5.2</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Globalización económica</div>
+                    <div class="subindice-count"><span id="count-5.2">0/10</span></div>
+                </div>
+                
+                <div class="subindice-card" onclick="selectSubindice('5.3')">
+                    <div class="subindice-header">
+                        <div class="subindice-code">5.3</div>
+                        <div>10 preguntas</div>
+                    </div>
+                    <div class="subindice-name">Golfo Pérsico</div>
+                    <div class="subindice-count"><span id="count-5.3">0/10</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR DE PREGUNTAS -->
+        <div id="questions-container" class="questions-container"></div>
+
+        <!-- PANEL DE PROGRESO -->
+        <div class="progress-panel">
+            <h2 style="color: var(--hist-blue); margin-bottom: 1rem;">
+                <i class="fas fa-chart-line"></i> Progreso General
+            </h2>
+            
+            <div class="progress-stats">
+                <div class="progress-stat-card">
+                    <div class="stat-card-value" id="total-questions">150</div>
+                    <div class="stat-card-label">Total Preguntas</div>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-card-value" id="total-answered">0</div>
+                    <div class="stat-card-label">Respondidas</div>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-card-value" id="total-correct">0</div>
+                    <div class="stat-card-label">Correctas</div>
+                </div>
+                <div class="progress-stat-card">
+                    <div class="stat-card-value" id="accuracy-rate">0%</div>
+                    <div class="stat-card-label">Precisión</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="control-buttons">
+            <button class="hist-button primary" onclick="checkAnswers()">
+                <i class="fas fa-check-circle"></i> Verificar Respuestas
+            </button>
+            <button class="hist-button secondary" onclick="resetSubindice()">
+                <i class="fas fa-redo"></i> Reiniciar Subíndice
+            </button>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div class="results-panel" id="results-panel">
+            <h2 style="text-align: center; color: var(--hist-blue);">
+                <i class="fas fa-trophy"></i> Resultados
+            </h2>
+            <div class="score-display" id="final-score">0/10</div>
+            <div id="results-details"></div>
+        </div>
+    </main>
+
+    <script>
+        // BASE DE DATOS COMPLETA - 150 PREGUNTAS
+        const questionsDatabase = {
+            // BLOQUE 1: De principios del siglo XVI a principios del siglo XVIII
+            "1.1": [
+                {
+                    id: 1,
+                    question: "¿Cuál fue el principal factor económico que impulsó la búsqueda de nuevas rutas marítimas en el siglo XV?",
+                    options: [
+                        "La alta demanda europea de especias, sedas y productos de lujo asiáticos",
+                        "La necesidad de encontrar nuevas tierras para cultivo",
+                        "El exceso de población en Europa",
+                        "La búsqueda de metales preciosos en África"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Las especias asiáticas (pimienta, clavo, canela) eran muy valiosas en Europa para conservar alimentos y dar sabor.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué evento de 1453 bloqueó las rutas terrestres tradicionales hacia Asia?",
+                    options: [
+                        "La caída de Constantinopla en manos del Imperio Otomano",
+                        "El descubrimiento de América",
+                        "La invención de la imprenta",
+                        "El fin de la Guerra de los Cien Años"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los otomanos controlaron las rutas comerciales e impusieron altos impuestos, encareciendo las especias.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué instrumento de navegación permitía calcular la latitud observando las estrellas?",
+                    options: [
+                        "El astrolabio",
+                        "La brújula",
+                        "El sextante",
+                        "El cuadrante"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El astrolabio ayudaba a determinar la posición en el mar según la altura de las estrellas.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué nación europea lideró inicialmente la exploración de la costa africana?",
+                    options: [
+                        "Portugal bajo Enrique el Navegante",
+                        "España con los Reyes Católicos",
+                        "Inglaterra con Enrique VII",
+                        "Francia con Francisco I"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Portugal estableció la Escuela de Navegación de Sagres y exploró sistemáticamente África.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué tratado de 1494 dividió el mundo entre España y Portugal?",
+                    options: [
+                        "Tratado de Tordesillas",
+                        "Tratado de Alcaçovas",
+                        "Tratado de Zaragoza",
+                        "Tratado de Utrecht"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Papa Alejandro VI estableció una línea a 370 leguas al oeste de Cabo Verde.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué producto americano transformó radicalmente la dieta europea?",
+                    options: [
+                        "Papa, maíz, tomate y cacao",
+                        "Trigo y cebada",
+                        "Arroz y té",
+                        "Café y azúcar"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Estos alimentos americanos se incorporaron a la dieta europea y mundial.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué enfermedad europea causó la mayor mortalidad entre los pueblos indígenas americanos?",
+                    options: [
+                        "Viruela",
+                        "Sarampión",
+                        "Gripe",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Los indígenas no tenían inmunidad contra las enfermedades europeas, causando una catástrofe demográfica.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué sistema de trabajo forzado se implantó en la América española?",
+                    options: [
+                        "La encomienda",
+                        "La esclavitud",
+                        "El feudalismo",
+                        "El capitalismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La encomienda entregaba indígenas a colonos para 'protegerlos y evangelizarlos' a cambio de trabajo.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué navegante portugués llegó a la India por mar en 1498?",
+                    options: [
+                        "Vasco da Gama",
+                        "Cristóbal Colón",
+                        "Fernando de Magallanes",
+                        "Bartolomeu Dias"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Vasco da Gama llegó a Calicut, estableciendo la ruta marítima directa a la India.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué estimación errónea hizo Colón sobre la distancia a Asia?",
+                    options: [
+                        "Subestimó el tamaño de la Tierra",
+                        "Sobreestimó la velocidad de sus barcos",
+                        "Calculó mal la circunferencia terrestre",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Colón usó cálculos incorrectos y creyó que Japón estaba a solo 4,500 km al oeste.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "1.2": [
+                {
+                    id: 1,
+                    question: "¿Qué movimiento cultural del Renacimiento enfatizaba el estudio de los clásicos grecolatinos?",
+                    options: [
+                        "Humanismo",
+                        "Ilustración",
+                        "Romanticismo",
+                        "Barroco"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El humanismo recuperó la cultura clásica y valoró la razón humana sobre la fe.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué invención de Gutenberg revolucionó la difusión del conocimiento?",
+                    options: [
+                        "La imprenta de tipos móviles",
+                        "El papel",
+                        "La tinta de impresión",
+                        "El grabado en madera"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La imprenta permitió reproducir libros masivamente, bajando costos y acelerando difusión de ideas.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué artista pintó la Capilla Sixtina en el Vaticano?",
+                    options: [
+                        "Miguel Ángel",
+                        "Leonardo da Vinci",
+                        "Rafael",
+                        "Donatello"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Miguel Ángel trabajó 4 años (1508-1512) pintando el techo de la Capilla Sixtina.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué obra de Maquiavelo analiza el ejercicio del poder político?",
+                    options: [
+                        "El Príncipe",
+                        "La Ciudad de Dios",
+                        "Utopía",
+                        "El Contrato Social"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. 'El Príncipe' de Maquiavelo es un tratado sobre teoría política realista.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué humanista escribió 'Elogio de la locura' criticando la corrupción eclesiástica?",
+                    options: [
+                        "Erasmo de Rotterdam",
+                        "Tomás Moro",
+                        "Petrarca",
+                        "Lorenzo Valla"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Erasmo fue el 'Príncipe de los Humanistas' y precursor de la Reforma.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué característica principal distingue el arte renacentista del medieval?",
+                    options: [
+                        "Antropocentrismo y uso de la perspectiva",
+                        "Temas exclusivamente religiosos",
+                        "Figuras planas y simbólicas",
+                        "Ausencia de realismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Renacimiento puso al ser humano en el centro y usó técnicas como la perspectiva lineal.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué documento de Martín Lutero inició la Reforma Protestante en 1517?",
+                    options: [
+                        "Las 95 tesis",
+                        "La Biblia alemana",
+                        "La confesión de Augsburgo",
+                        "El catecismo de Lutero"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Lutero clavó sus 95 tesis contra las indulgencias en la puerta de la iglesia de Wittenberg.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué principio defendió Lutero sobre la salvación?",
+                    options: [
+                        "Solo la fe (Sola fide)",
+                        "Las buenas obras",
+                        "Los sacramentos",
+                        "La autoridad papal"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Lutero enseñaba que la salvación venía solo por la fe en Dios, no por obras o indulgencias.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué rey inglés fundó la Iglesia Anglicana?",
+                    options: [
+                        "Enrique VIII",
+                        "Eduardo VI",
+                        "María I",
+                        "Isabel I"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Enrique VIII rompió con Roma para divorciarse de Catalina de Aragón y casarse con Ana Bolena.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué Concilio católico inició la Contrarreforma?",
+                    options: [
+                        "Concilio de Trento",
+                        "Concilio de Nicea",
+                        "Concilio de Constantinopla",
+                        "Concilio Vaticano I"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Concilio de Trento (1545-1563) reformó la Iglesia Católica y definió doctrina frente al protestantismo.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "1.3": [
+                {
+                    id: 1,
+                    question: "¿En qué año llegó Colón a América?",
+                    options: [
+                        "1492",
+                        "1502",
+                        "1488",
+                        "1519"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 12 de octubre de 1492 Colón llegó a la isla de Guanahaní (San Salvador).",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué conquistador derrotó al Imperio Azteca?",
+                    options: [
+                        "Hernán Cortés",
+                        "Francisco Pizarro",
+                        "Pedro de Alvarado",
+                        "Vasco Núñez de Balboa"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Cortés conquistó Tenochtitlán en 1521 con ayuda de pueblos indígenas enemigos de los aztecas.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué imperio conquistó Francisco Pizarro?",
+                    options: [
+                        "Imperio Inca",
+                        "Imperio Azteca",
+                        "Imperio Maya",
+                        "Imperio Chibcha"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Pizarro capturó al Inca Atahualpa en 1532 y conquistó el imperio.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué expedición completó la primera circunnavegación del mundo?",
+                    options: [
+                        "Magallanes-Elcano",
+                        "Colón",
+                        "Vasco da Gama",
+                        "Cabral"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Magallanes inició el viaje en 1519 y Elcano lo completó en 1522.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué navegante portugués descubrió Brasil?",
+                    options: [
+                        "Pedro Álvares Cabral",
+                        "Vasco da Gama",
+                        "Bartolomeu Dias",
+                        "Ferdinand Magellan"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Cabral llegó a Brasil en abril de 1500, reclamándolo para Portugal.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué producto de América tenía gran valor en Europa por su uso en monedas?",
+                    options: [
+                        "Plata",
+                        "Oro",
+                        "Cobre",
+                        "Estaño"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La plata de Potosí (Bolivia) y Zacatecas (México) financió el imperio español.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué sistema de gobierno colonial estableció España en América?",
+                    options: [
+                        "Virreinatos",
+                        "Provincias",
+                        "Departamentos",
+                        "Estados"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Se crearon los virreinatos de Nueva España, Perú, Nueva Granada y Río de la Plata.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué navegante descubrió el Océano Pacífico para los europeos?",
+                    options: [
+                        "Vasco Núñez de Balboa",
+                        "Cristóbal Colón",
+                        "Fernando de Magallanes",
+                        "Juan Sebastián Elcano"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Balboa avistó el Pacífico en 1513 desde Panamá.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué tratado modificó la línea de Tordesillas en 1529?",
+                    options: [
+                        "Tratado de Zaragoza",
+                        "Tratado de Utrecht",
+                        "Tratado de París",
+                        "Tratado de Madrid"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Estableció una nueva línea en el Pacífico para delimitar posesiones españolas y portuguesas.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué porcentaje aproximado de población indígena murió por enfermedades europeas?",
+                    options: [
+                        "80-90%",
+                        "20-30%",
+                        "40-50%",
+                        "60-70%"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La viruela, sarampión y otras enfermedades causaron una catástrofe demográfica en América.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            // BLOQUE 2: De mediados del siglo XVIII a mediados del siglo XIX
+            "2.1": [
+                {
+                    id: 1,
+                    question: "¿Qué movimiento intelectual del siglo XVIII enfatizaba la razón y la ciencia?",
+                    options: [
+                        "La Ilustración",
+                        "El Romanticismo",
+                        "El Renacimiento",
+                        "El Humanismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Ilustración promovió la razón como herramienta para comprender y mejorar el mundo.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué obra colectiva dirigida por Diderot reunió el conocimiento de la época?",
+                    options: [
+                        "La Enciclopedia",
+                        "El Contrato Social",
+                        "El Espíritu de las Leyes",
+                        "Cándido"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Enciclopedia (1751-1772) difundió ideas ilustradas y fue prohibida por la Iglesia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué pensador francés defendió la separación de poderes?",
+                    options: [
+                        "Montesquieu",
+                        "Voltaire",
+                        "Rousseau",
+                        "Diderot"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Montesquieu propuso separar poder ejecutivo, legislativo y judicial.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué concepto político defendió Rousseau?",
+                    options: [
+                        "El contrato social",
+                        "La monarquía absoluta",
+                        "El derecho divino",
+                        "El despotismo ilustrado"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Rousseau propuso que el gobierno se basa en un contrato entre ciudadanos.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué frase resume el pensamiento de Voltaire?",
+                    options: [
+                        "No estoy de acuerdo con lo que dices, pero defenderé hasta la muerte tu derecho a decirlo",
+                        "El hombre nace libre, pero en todas partes está encadenado",
+                        "La propiedad es un robo",
+                        "El fin justifica los medios"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Voltaire defendió la libertad de pensamiento y expresión.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué teoría económica defendía Adam Smith?",
+                    options: [
+                        "El liberalismo económico",
+                        "El mercantilismo",
+                        "El socialismo",
+                        "El feudalismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Smith defendió el libre mercado en 'La riqueza de las naciones' (1776).",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué forma de gobierno promovieron muchos ilustrados?",
+                    options: [
+                        "Despotismo ilustrado",
+                        "Monarquía absoluta",
+                        "República democrática",
+                        "Teocracia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. 'Todo para el pueblo, pero sin el pueblo' era el lema del despotismo ilustrado.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué país fue centro de la Ilustración?",
+                    options: [
+                        "Francia",
+                        "Inglaterra",
+                        "Alemania",
+                        "Italia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. París fue el centro intelectual con salones donde se reunían los philosophes.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué enciclopedista fue también matemático y físico?",
+                    options: [
+                        "D'Alembert",
+                        "Diderot",
+                        "Rousseau",
+                        "Voltaire"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Jean le Rond d'Alembert fue matemático, físico y coeditor de la Enciclopedia.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué concepto criticaron los ilustrados de la sociedad estamental?",
+                    options: [
+                        "Los privilegios del clero y la nobleza",
+                        "La monarquía",
+                        "La propiedad privada",
+                        "El comercio"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Criticaron que clero y nobleza tuvieran privilegios sin pagar impuestos.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            "2.2": [
+                {
+                    id: 1,
+                    question: "¿Qué rey francés dijo 'El Estado soy yo'?",
+                    options: [
+                        "Luis XIV",
+                        "Luis XVI",
+                        "Enrique IV",
+                        "Carlos V"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Luis XIV, el 'Rey Sol', gobernó 72 años y centralizó todo el poder.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué monarca ruso modernizó su país imitando a Occidente?",
+                    options: [
+                        "Pedro el Grande",
+                        "Catalina la Grande",
+                        "Iván el Terrible",
+                        "Alejandro I"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Pedro I viajó a Europa y trajo técnicos para modernizar Rusia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué dinastía gobernó Austria durante el absolutismo?",
+                    options: [
+                        "Habsburgo",
+                        "Borbón",
+                        "Romanov",
+                        "Hohenzollern"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los Habsburgo gobernaron Austria y el Sacro Imperio Romano Germánico.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué monarca prusiano fue llamado 'el rey soldado'?",
+                    options: [
+                        "Federico Guillermo I",
+                        "Federico II",
+                        "Guillermo I",
+                        "Federico III"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Federico Guillermo I convirtió a Prusia en un estado militarizado.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué imperio controló el sudeste europeo durante este período?",
+                    options: [
+                        "Imperio Otomano",
+                        "Imperio Austríaco",
+                        "Imperio Ruso",
+                        "Imperio Británico"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los otomanos controlaban los Balcanes y amenazaban a Europa central.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué guerra europea duró 30 años (1618-1648)?",
+                    options: [
+                        "Guerra de los Treinta Años",
+                        "Guerra de los Cien Años",
+                        "Guerra de los Siete Años",
+                        "Guerras Napoleónicas"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Conflicto religioso y político que devastó Europa central.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué tratado de 1648 terminó la Guerra de los Treinta Años?",
+                    options: [
+                        "Paz de Westfalia",
+                        "Paz de Utrecht",
+                        "Paz de Augsburgo",
+                        "Paz de París"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Estableció el principio de soberanía nacional y equilibrio de poder.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué rey español de la dinastía Borbón impulsó reformas administrativas?",
+                    options: [
+                        "Carlos III",
+                        "Felipe V",
+                        "Fernando VI",
+                        "Carlos IV"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Carlos III modernizó España con reformas ilustradas.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué institución colonial administraba las posesiones españolas en América?",
+                    options: [
+                        "Consejo de Indias",
+                        "Casa de Contratación",
+                        "Audiencia",
+                        "Virreinato"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Consejo de Indias era el máximo órgano administrativo para América.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué producto generaba más riqueza para España en América?",
+                    options: [
+                        "Plata",
+                        "Oro",
+                        "Azúcar",
+                        "Tabaco"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Las minas de plata de Potosí y Zacatecas financiaban el imperio.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            "2.3": [
+                {
+                    id: 1,
+                    question: "¿En qué año declararon su independencia las 13 colonias británicas?",
+                    options: [
+                        "1776",
+                        "1789",
+                        "1765",
+                        "1804"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 4 de julio de 1776 se firmó la Declaración de Independencia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué evento de 1773 protestó contra los impuestos británicos?",
+                    options: [
+                        "Motín del Té en Boston",
+                        "Masacre de Boston",
+                        "Revuelta de Shays",
+                        "Rebelión de Whisky"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Colonos disfrazados de indígenas arrojaron té al mar para protestar contra impuestos.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué lema representó la protesta colonial contra los impuestos británicos?",
+                    options: [
+                        "No taxation without representation",
+                        "Liberty or death",
+                        "Don't tread on me",
+                        "Give me liberty or give me death"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. 'No a los impuestos sin representación' resumía la queja principal.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Quién fue comandante del ejército continental americano?",
+                    options: [
+                        "George Washington",
+                        "Thomas Jefferson",
+                        "Benjamin Franklin",
+                        "John Adams"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Washington dirigió las fuerzas revolucionarias y luego fue primer presidente.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué país apoyó militarmente a los colonos americanos?",
+                    options: [
+                        "Francia",
+                        "España",
+                        "Holanda",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Francia proporcionó ayuda crucial, incluyendo tropas y marina.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué tratado de 1783 reconoció la independencia de Estados Unidos?",
+                    options: [
+                        "Tratado de París",
+                        "Tratado de Versalles",
+                        "Tratado de Utrecht",
+                        "Tratado de Gante"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Gran Bretaña reconoció la independencia de las 13 colonias.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué documento estableció el gobierno de Estados Unidos?",
+                    options: [
+                        "Constitución de 1787",
+                        "Declaración de Independencia",
+                        "Artículos de la Confederación",
+                        "Carta de Derechos"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Constitución creó un gobierno federal con separación de poderes.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 8,
+                    question: "¿Quién redactó principalmente la Declaración de Independencia?",
+                    options: [
+                        "Thomas Jefferson",
+                        "Benjamin Franklin",
+                        "John Adams",
+                        "James Madison"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Jefferson escribió el borrador, luego revisado por Franklin y Adams.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué principio político innovador estableció la Constitución americana?",
+                    options: [
+                        "Federalismo y separación de poderes",
+                        "Monarquía constitucional",
+                        "Despotismo ilustrado",
+                        "Democracia directa"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Dividió poder entre gobierno federal y estados, con tres poderes independientes.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué presidente estadounidense compró Luisiana a Francia?",
+                    options: [
+                        "Thomas Jefferson",
+                        "George Washington",
+                        "John Adams",
+                        "James Madison"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Jefferson compró el territorio de Luisiana en 1803, duplicando el tamaño de EE.UU.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            "2.4": [
+                {
+                    id: 1,
+                    question: "¿Qué evento inició la Revolución Francesa el 14 de julio de 1789?",
+                    options: [
+                        "Toma de la Bastilla",
+                        "Ejecución de Luis XVI",
+                        "Declaración de Derechos",
+                        "Reinado del Terror"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La toma de la prisión real de la Bastilla simbolizó el fin del absolutismo.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué documento de 1789 proclamó los derechos del hombre?",
+                    options: [
+                        "Declaración de Derechos del Hombre y del Ciudadano",
+                        "Constitución francesa",
+                        "Código Civil",
+                        "Acta de Unión"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Proclamaba libertad, igualdad, propiedad y resistencia a la opresión.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Cuál era el lema de la Revolución Francesa?",
+                    options: [
+                        "Libertad, Igualdad, Fraternidad",
+                        "Pan, Paz, Tierra",
+                        "Trabajo, Familia, Patria",
+                        "Dios, Patria, Rey"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Este lema resume los ideales revolucionarios.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué institución convocó Luis XVI en 1789 por problemas financieros?",
+                    options: [
+                        "Estados Generales",
+                        "Asamblea Nacional",
+                        "Convención Nacional",
+                        "Directorio"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. No se habían reunido desde 1614, mostrando la crisis de la monarquía.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué jacobino lideró el Reinado del Terror?",
+                    options: [
+                        "Maximilien Robespierre",
+                        "Georges Danton",
+                        "Jean-Paul Marat",
+                        "Napoleón Bonaparte"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Robespierre dirigió el Comité de Salvación Pública durante el Terror.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué grupo social lideró inicialmente la Revolución?",
+                    options: [
+                        "La burguesía",
+                        "Los campesinos",
+                        "Los nobles",
+                        "Los obreros"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La burguesía (clase media educada) dirigió las primeras etapas.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué reforma importante hizo la Revolución respecto a la Iglesia?",
+                    options: [
+                        "Separación Iglesia-Estado y venta de bienes eclesiásticos",
+                        "Establecimiento de una religión de estado",
+                        "Persecución de todas las religiones",
+                        "Nombramiento de obispos por el rey"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Se confiscaron bienes de la Iglesia para resolver la crisis financiera.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué país lideró las guerras contra la Francia revolucionaria?",
+                    options: [
+                        "Austria y Prusia",
+                        "Inglaterra",
+                        "Rusia",
+                        "España"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Temían que la revolución se expandiera a sus territorios.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué institución gobernó Francia después de la caída de Robespierre?",
+                    options: [
+                        "El Directorio",
+                        "La Convención",
+                        "El Consulado",
+                        "La Asamblea"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Directorio (1795-1799) fue un gobierno débil que precedió a Napoleón.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "2.5": [
+                {
+                    id: 1,
+                    question: "¿Qué líder sudamericano fue conocido como 'El Libertador'?",
+                    options: [
+                        "Simón Bolívar",
+                        "José de San Martín",
+                        "Miguel Hidalgo",
+                        "José Martí"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Bolívar liberó Venezuela, Colombia, Ecuador, Perú y Bolivia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué país lideró San Martín hacia la independencia?",
+                    options: [
+                        "Argentina, Chile y Perú",
+                        "México",
+                        "Brasil",
+                        "Uruguay"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. San Martín cruzó los Andes para liberar Chile y luego Perú.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué cura mexicano inició la lucha por la independencia en 1810?",
+                    options: [
+                        "Miguel Hidalgo",
+                        "José María Morelos",
+                        "Agustín de Iturbide",
+                        "Vicente Guerrero"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Hidalgo dio el Grito de Dolores el 16 de septiembre de 1810.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Cómo influyó Napoleón en las independencias americanas?",
+                    options: [
+                        "Invadió España y debilitó el control colonial",
+                        "Envió tropas para ayudar a los independentistas",
+                        "Proclamó la abolición de la esclavitud",
+                        "Firmó tratados con las colonias"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La invasión napoleónica a España (1808) creó un vacío de poder que aprovecharon las colonias.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué país americano tuvo una independencia pacífica encabezada por la monarquía?",
+                    options: [
+                        "Brasil",
+                        "México",
+                        "Argentina",
+                        "Colombia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Brasil se independizó cuando el hijo del rey portugués se proclamó emperador.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿En qué batalla decisiva venció Bolívar a los españoles en 1824?",
+                    options: [
+                        "Batalla de Ayacucho",
+                        "Batalla de Boyacá",
+                        "Batalla de Carabobo",
+                        "Batalla de Pichincha"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Ayacucho (Perú) fue la batalla final que aseguró la independencia sudamericana.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué doctrina estadounidense de 1823 advertía a Europa sobre intervenir en América?",
+                    options: [
+                        "Doctrina Monroe",
+                        "Doctrina Truman",
+                        "Doctrina Eisenhower",
+                        "Doctrina Reagan"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. 'América para los americanos' buscaba evitar recolonización europea.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué líder haitiano logró la primera independencia negra en América?",
+                    options: [
+                        "Toussaint Louverture",
+                        "Jean-Jacques Dessalines",
+                        "Henri Christophe",
+                        "Alexandre Pétion"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Louverture lideró la revuelta esclava que creó Haití en 1804.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué congreso reunió a los nuevos estados americanos en 1826?",
+                    options: [
+                        "Congreso de Panamá",
+                        "Congreso de Tucumán",
+                        "Congreso de Angostura",
+                        "Congreso de Cúcuta"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Bolívar convocó este congreso para unificar a las nuevas naciones.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué problema afectó a las nuevas naciones americanas tras la independencia?",
+                    options: [
+                        "Guerras civiles y caudillismo",
+                        "Intervención europea",
+                        "Falta de recursos naturales",
+                        "Exceso de población"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Las luchas internas y líderes autoritarios (caudillos) caracterizaron el siglo XIX.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            "2.6": [
+                {
+                    id: 1,
+                    question: "¿En qué país comenzó la Revolución Industrial?",
+                    options: [
+                        "Inglaterra",
+                        "Francia",
+                        "Alemania",
+                        "Estados Unidos"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Inglaterra tenía capital, recursos (carbón), tecnología y mercado colonial.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué invento revolucionó la industria textil?",
+                    options: [
+                        "La máquina de hilar (spinning jenny)",
+                        "La locomotora",
+                        "El telégrafo",
+                        "La bombilla"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. James Hargreaves inventó la spinning jenny en 1764.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué combustible impulsó la primera Revolución Industrial?",
+                    options: [
+                        "Carbón",
+                        "Petróleo",
+                        "Gas natural",
+                        "Electricidad"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El carbón alimentaba las máquinas de vapor y la siderurgia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué medio de transporte revolucionó en el siglo XIX?",
+                    options: [
+                        "El ferrocarril",
+                        "El automóvil",
+                        "El avión",
+                        "El barco de vapor"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. George Stephenson desarrolló la locomotora de vapor práctica.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué teoría económica criticó las condiciones obreras?",
+                    options: [
+                        "El socialismo de Marx y Engels",
+                        "El liberalismo de Adam Smith",
+                        "El mercantilismo",
+                        "El keynesianismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Marx y Engels denunciaron la explotación en 'El Manifiesto Comunista' (1848).",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué movimiento obrero destruía máquinas por miedo al desempleo?",
+                    options: [
+                        "Ludismo",
+                        "Cartismo",
+                        "Sindicalismo",
+                        "Socialismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los 'ludditas' atacaban máquinas que reemplazaban trabajadores.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué filósofo propuso el socialismo utópico?",
+                    options: [
+                        "Robert Owen",
+                        "Karl Marx",
+                        "Adam Smith",
+                        "John Stuart Mill"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Owen creó comunidades modelo para trabajadores.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué enfermedad afectaba a los niños en las minas de carbón?",
+                    options: [
+                        "Raquitismo y problemas respiratorios",
+                        "Cólera",
+                        "Tuberculosis",
+                        "Viruela"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La falta de sol y aire puro causaba graves problemas de salud.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué ciudad británica fue símbolo de la industrialización?",
+                    options: [
+                        "Manchester",
+                        "Londres",
+                        "Liverpool",
+                        "Birmingham"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Manchester era el centro textil con condiciones obreras deplorables.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué invento de James Watt impulsó la Revolución Industrial?",
+                    options: [
+                        "Máquina de vapor mejorada",
+                        "Telar mecánico",
+                        "Locomotora",
+                        "Generador eléctrico"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La máquina de vapor de Watt (1769) fue clave para fábricas y transporte.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            // BLOQUE 3: De mediados del siglo XIX a 1920
+            "3.1": [
+                {
+                    id: 1,
+                    question: "¿Qué político prusiano unificó Alemania con 'sangre y hierro'?",
+                    options: [
+                        "Otto von Bismarck",
+                        "Guillermo I",
+                        "Metternich",
+                        "Cavour"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Bismarck usó guerra y diplomacia para unificar Alemania bajo Prusia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué líder italiano unificó su país?",
+                    options: [
+                        "Conde de Cavour y Giuseppe Garibaldi",
+                        "Mazzini",
+                        "Victor Manuel II",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Cavour (diplomacia), Garibaldi (acción militar) y Victor Manuel II (rey) unificaron Italia.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué expedición de Garibaldi conquistó Sicilia en 1860?",
+                    options: [
+                        "Expedición de los Mil",
+                        "Marcha sobre Roma",
+                        "Cruzada italiana",
+                        "Campaña de los Alpes"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Garibaldi y sus 'Camisas Rojas' liberaron Sicilia y Nápoles.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué guerra de 1870 completó la unificación alemana?",
+                    options: [
+                        "Guerra franco-prusiana",
+                        "Guerra de los Ducados",
+                        "Guerra austro-prusiana",
+                        "Guerra de los Siete Años"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La victoria sobre Francia permitió proclamar el Imperio Alemán en Versalles.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué imperio multiétnico se desintegró en el siglo XIX?",
+                    options: [
+                        "Imperio Otomano",
+                        "Imperio Austrohúngaro",
+                        "Imperio Ruso",
+                        "Todos los anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Los nacionalismos amenazaban a estos imperios con poblaciones diversas.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué congreso de 1815 restauró el orden monárquico en Europa?",
+                    options: [
+                        "Congreso de Viena",
+                        "Congreso de Berlín",
+                        "Congreso de París",
+                        "Congreso de Versalles"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Tras Napoleón, las monarquías buscaron restaurar el antiguo régimen.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué principio defendió el Congreso de Viena?",
+                    options: [
+                        "Equilibrio de poder y legitimidad monárquica",
+                        "Derechos nacionales",
+                        "Democracia",
+                        "Liberalismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Buscaban evitar nuevas revoluciones y mantener el statu quo.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué movimiento nacionalista buscaba unificar a los pueblos eslavos?",
+                    options: [
+                        "Panslavismo",
+                        "Pan germanismo",
+                        "Irredentismo",
+                        "Sionismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Rusia promovía la unión de todos los eslavos bajo su protección.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué país logró independizarse del Imperio Otomano en 1830?",
+                    options: [
+                        "Grecia",
+                        "Serbia",
+                        "Bulgaria",
+                        "Rumania"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Grecia fue el primer país en independizarse del decadente Imperio Otomano.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué concepto político oponía liberales y conservadores en el siglo XIX?",
+                    options: [
+                        "Soberanía nacional vs derecho divino",
+                        "Capitalismo vs socialismo",
+                        "Imperialismo vs aislacionismo",
+                        "Democracia vs aristocracia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los liberales defendían la soberanía popular, los conservadores la monarquía tradicional.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "3.2": [
+                {
+                    id: 1,
+                    question: "¿Qué conferencia de 1884-1885 repartió África entre potencias europeas?",
+                    options: [
+                        "Conferencia de Berlín",
+                        "Conferencia de París",
+                        "Conferencia de Viena",
+                        "Conferencia de Londres"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Estableció reglas para la colonización sin considerar a los pueblos africanos.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué país europeo controló la India como colonia?",
+                    options: [
+                        "Gran Bretaña",
+                        "Francia",
+                        "Portugal",
+                        "Holanda"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Compañía Británica de las Indias Orientales controló India hasta 1857.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué guerra de 1898 hizo a EE.UU. potencia imperial?",
+                    options: [
+                        "Guerra hispano-estadounidense",
+                        "Guerra filipino-estadounidense",
+                        "Guerra mexicano-estadounidense",
+                        "Guerra de Secesión"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. EE.UU. ganó Puerto Rico, Filipinas y Guam de España.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué país africano resistió la colonización hasta 1896?",
+                    options: [
+                        "Etiopía",
+                        "Liberia",
+                        "Sudáfrica",
+                        "Egipto"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Etiopía derrotó a Italia en la batalla de Adua.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué potencia imperial dominó Indochina?",
+                    options: [
+                        "Francia",
+                        "Gran Bretaña",
+                        "Holanda",
+                        "Portugal"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Francia controló Vietnam, Laos y Camboya.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué teoría justificaba el imperialismo?",
+                    options: [
+                        "La misión civilizadora",
+                        "El destino manifiesto",
+                        "La superioridad racial",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estas ideas justificaban la dominación sobre otros pueblos.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué recurso motivó la colonización del Congo?",
+                    options: [
+                        "Marfil y caucho",
+                        "Oro",
+                        "Diamantes",
+                        "Petróleo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La brutal explotación del caucho causó millones de muertes.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué país colonizó Corea en 1910?",
+                    options: [
+                        "Japón",
+                        "China",
+                        "Rusia",
+                        "Gran Bretaña"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Japón anexó Corea, comenzando una ocupación de 35 años.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué rebelión india de 1857 desafió al dominio británico?",
+                    options: [
+                        "Motín de los Cipayos",
+                        "Revuelta de los Boxers",
+                        "Rebelión Taiping",
+                        "Sublevación de los Zulúes"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los cipayos (soldados indios) se rebelaron contra la Compañía Británica.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué canal abierto en 1869 conectó el Mediterráneo con el Mar Rojo?",
+                    options: [
+                        "Canal de Suez",
+                        "Canal de Panamá",
+                        "Canal de Kiel",
+                        "Canal de Corinto"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Canal de Suez acortó la ruta Europa-Asia y fue vital para el imperialismo.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            "3.3": [
+                {
+                    id: 1,
+                    question: "¿Qué asesinato desencadenó la Primera Guerra Mundial?",
+                    options: [
+                        "Del archiduque Francisco Fernando",
+                        "Del zar Nicolás II",
+                        "Del káiser Guillermo II",
+                        "Del presidente Poincaré"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 28 de junio de 1914 en Sarajevo, Bosnia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué alianzas se enfrentaron en la Primera Guerra?",
+                    options: [
+                        "Triple Entente vs Potencias Centrales",
+                        "Aliados vs Eje",
+                        "OTAN vs Pacto de Varsovia",
+                        "Liga Hanseática vs Liga Lombarda"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Triple Entente: Francia, Rusia, Gran Bretaña. Potencias Centrales: Alemania, Austria-Hungría, Imperio Otomano.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué tipo de guerra caracterizó a la Primera Guerra Mundial?",
+                    options: [
+                        "Guerra de trincheras",
+                        "Guerra relámpago",
+                        "Guerra de guerrillas",
+                        "Guerra naval"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El frente occidental se estancó en trincheras desde 1914 a 1918.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué nuevo arma se usó por primera vez en la Primera Guerra?",
+                    options: [
+                        "Gas venenoso, tanques y aviones de combate",
+                        "Bomba atómica",
+                        "Misiles balísticos",
+                        "Submarinos nucleares"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La guerra aceleró el desarrollo de nuevas tecnologías mortíferas.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué país abandonó la guerra en 1917 por la Revolución Rusa?",
+                    options: [
+                        "Rusia",
+                        "Italia",
+                        "Estados Unidos",
+                        "Japón"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los bolcheviques firmaron la paz por separado con Alemania.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué país entró en la guerra en 1917 inclinando la balanza?",
+                    options: [
+                        "Estados Unidos",
+                        "España",
+                        "Suiza",
+                        "Suecia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. EE.UU. entró tras el hundimiento del Lusitania y el telegrama Zimmerman.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Cuántos millones de personas murieron en la Primera Guerra?",
+                    options: [
+                        "Unos 20 millones",
+                        "5 millones",
+                        "50 millones",
+                        "100 millones"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Incluyendo 10 millones de militares y 10 millones de civiles.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué batalla de 1916 fue la más larga y sangrienta?",
+                    options: [
+                        "Batalla de Verdún",
+                        "Batalla del Somme",
+                        "Batalla de Tannenberg",
+                        "Batalla de Galípoli"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Verdún duró 10 meses con 700,000 bajas, simbolizando el horror de la guerra.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué imperios desaparecieron tras la Primera Guerra?",
+                    options: [
+                        "Alemán, austrohúngaro, otomano y ruso",
+                        "Británico y francés",
+                        "Español y portugués",
+                        "Italiano y belga"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La guerra aceleró el fin de estos imperios multiétnicos.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué tratado principal terminó la guerra con Alemania?",
+                    options: [
+                        "Tratado de Versalles",
+                        "Tratado de Saint-Germain",
+                        "Tratado de Trianon",
+                        "Tratado de Sèvres"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Firmado el 28 de junio de 1919, impuso duras condiciones a Alemania.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            "3.4": [
+                {
+                    id: 1,
+                    question: "¿Qué tratado impuso reparaciones de guerra a Alemania?",
+                    options: [
+                        "Tratado de Versalles",
+                        "Tratado de Brest-Litovsk",
+                        "Tratado de Locarno",
+                        "Tratado de Rapallo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Alemania debía pagar 132,000 millones de marcos oro.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué cláusula culpaba a Alemania de la guerra?",
+                    options: [
+                        "Cláusula de culpabilidad de guerra",
+                        "Cláusula de reparaciones",
+                        "Cláusula de desmilitarización",
+                        "Cláusula territorial"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El artículo 231 responsabilizaba solo a Alemania y sus aliados.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué organización internacional se creó en Versalles?",
+                    options: [
+                        "Sociedad de Naciones",
+                        "Organización de Naciones Unidas",
+                        "Fondo Monetario Internacional",
+                        "Unión Europea"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Propuesta por Wilson para mantener la paz, pero EE.UU. no se unió.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué territorio alemán fue devuelto a Francia?",
+                    options: [
+                        "Alsacia y Lorena",
+                        "Sarre",
+                        "Renania",
+                        "Schleswig"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Estas provincias ricas en carbón y hierro volvieron a Francia.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué economista predijo que Versalles llevaría a otra guerra?",
+                    options: [
+                        "John Maynard Keynes",
+                        "Adam Smith",
+                        "Karl Marx",
+                        "Milton Friedman"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Keynes advirtió que las reparaciones arruinarían a Alemania.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué país no firmó el Tratado de Versalles?",
+                    options: [
+                        "Estados Unidos",
+                        "Gran Bretaña",
+                        "Francia",
+                        "Italia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El Senado estadounidense rechazó el tratado y la Sociedad de Naciones.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué región alemana fue desmilitarizada?",
+                    options: [
+                        "Renania",
+                        "Baviera",
+                        "Prusia",
+                        "Sajonia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. No podía tener tropas alemanas, como zona amortiguadora con Francia.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué imperio se dividió en nuevos países?",
+                    options: [
+                        "Imperio Austrohúngaro",
+                        "Imperio Otomano",
+                        "Imperio Ruso",
+                        "Todos los anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Surgieron países como Checoslovaquia, Yugoslavia, Polonia, etc.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué país obtuvo mandatos sobre territorios del Imperio Otomano?",
+                    options: [
+                        "Francia y Gran Bretaña",
+                        "Italia",
+                        "Grecia",
+                        "Rusia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Dividieron el Medio Oriente, creando problemas actuales.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué sentimiento generó Versalles en Alemania?",
+                    options: [
+                        "Humillación y deseo de revancha",
+                        "Aceptación de la derrota",
+                        "Gratitud por la paz",
+                        "Indiferencia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 'diktat' de Versalles alimentó el nacionalismo y el ascenso de Hitler.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            // BLOQUE 4: El mundo entre 1920 y 1960
+            "4.1": [
+                {
+                    id: 1,
+                    question: "¿Qué líder italiano fundó el fascismo?",
+                    options: [
+                        "Benito Mussolini",
+                        "Adolf Hitler",
+                        "Francisco Franco",
+                        "Antonio Salazar"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Mussolini fundó el Partido Fascista y tomó el poder en 1922.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué partido llegó al poder en Alemania en 1933?",
+                    options: [
+                        "Partido Nacionalsocialista (Nazi)",
+                        "Partido Comunista",
+                        "Partido Socialdemócrata",
+                        "Partido del Centro"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Hitler fue nombrado canciller el 30 de enero de 1933.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué libro escribió Hitler en prisión?",
+                    options: [
+                        "Mein Kampf (Mi lucha)",
+                        "El mito del siglo XX",
+                        "Doctrina del fascismo",
+                        "El capital"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Expone sus ideas racistas y expansionistas.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué líder soviético sucedió a Lenin?",
+                    options: [
+                        "Joseph Stalin",
+                        "Leon Trotsky",
+                        "Nikita Khrushchev",
+                        "Georgy Malenkov"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Stalin consolidó el poder tras la muerte de Lenin en 1924.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué política económica implementó Stalin?",
+                    options: [
+                        "Planificación central y colectivización",
+                        "Nueva Política Económica (NEP)",
+                        "Comunismo de guerra",
+                        "Perestroika"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los planes quinquenales industrializaron la URSS rápidamente.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué evento de 1938 mostró la política de apaciguamiento?",
+                    options: [
+                        "Acuerdo de Múnich",
+                        "Pacto Molotov-Ribbentrop",
+                        "Anschluss de Austria",
+                        "Invasión de Polonia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Gran Bretaña y Francia permitieron a Hitler anexar los Sudetes checos.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué guerra civil precedió a la Segunda Guerra Mundial?",
+                    options: [
+                        "Guerra Civil Española",
+                        "Guerra Civil Rusa",
+                        "Guerra Civil China",
+                        "Guerra Civil Griega"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Ensayo general de la Segunda Guerra con intervención fascista y soviética.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué pacto firmaron Alemania y la URSS en 1939?",
+                    options: [
+                        "Pacto Molotov-Ribbentrop",
+                        "Pacto de Acero",
+                        "Pacto Antikomintern",
+                        "Pacto Tripartito"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Acuerdo de no agresión con protocolo secreto para repartirse Europa oriental.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué ideología promovía la superioridad de la raza aria?",
+                    options: [
+                        "Nazismo",
+                        "Fascismo",
+                        "Comunismo",
+                        "Socialismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Los nazis consideraban a los arios como raza superior.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué crisis económica facilitó el ascenso de los totalitarismos?",
+                    options: [
+                        "La Gran Depresión de 1929",
+                        "La hiperinflación alemana",
+                        "La crisis del petróleo",
+                        "La burbuja de los tulipanes"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El desempleo masivo hizo atractivas las soluciones autoritarias.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            "4.2": [
+                {
+                    id: 1,
+                    question: "¿Qué crisis económica mundial comenzó en 1929?",
+                    options: [
+                        "La Gran Depresión",
+                        "La crisis del petróleo",
+                        "La hiperinflación alemana",
+                        "La crisis de los tulipanes"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Comenzó con el crack bursátil de Wall Street en octubre de 1929.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué presidente estadounidense enfrentó la Gran Depresión?",
+                    options: [
+                        "Franklin D. Roosevelt",
+                        "Herbert Hoover",
+                        "Woodrow Wilson",
+                        "Calvin Coolidge"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Roosevelt implementó el New Deal para reactivar la economía.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué programa de Roosevelt combatía la Depresión?",
+                    options: [
+                        "New Deal",
+                        "Fair Deal",
+                        "Great Society",
+                        "New Frontier"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Incluía obras públicas, regulación bancaria y seguros sociales.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué porcentaje de desempleo hubo en EE.UU. durante la Depresión?",
+                    options: [
+                        "25%",
+                        "10%",
+                        "50%",
+                        "5%"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Casi 13 millones de desempleados en el peor momento.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué fenómeno afectó a agricultores estadounidenses en los años 30?",
+                    options: [
+                        "Dust Bowl (Cuenco de Polvo)",
+                        "Inundaciones del Mississippi",
+                        "Plaga de langostas",
+                        "Sequía del Sahara"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Tormentas de polvo arruinaron tierras en las Grandes Llanuras.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué país sufrió hiperinflación en 1923?",
+                    options: [
+                        "Alemania",
+                        "Francia",
+                        "Gran Bretaña",
+                        "Italia"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El marco alemán perdió todo valor, arruinando a la clase media.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué teoría económica propuso Keynes para superar la Depresión?",
+                    options: [
+                        "Intervención estatal y gasto público",
+                        "Libre mercado sin intervención",
+                        "Comunismo",
+                        "Mercantilismo"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Keynes propuso que el estado gastara para crear empleo y demanda.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué organización laboral protege ahorros en EE.UU.?",
+                    options: [
+                        "FDIC (Seguro de depósitos)",
+                        "Federal Reserve",
+                        "SEC (Comisión de valores)",
+                        "Social Security"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Creada en 1933 para asegurar depósitos bancarios.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué sector industrial creció durante la Depresión?",
+                    options: [
+                        "Cine y entretenimiento",
+                        "Automotriz",
+                        "Construcción",
+                        "Agricultura"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Hollywood prosperó porque la gente buscaba evasión barata.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Cuándo terminó realmente la Gran Depresión?",
+                    options: [
+                        "Con la Segunda Guerra Mundial",
+                        "En 1933 con el New Deal",
+                        "En 1929 mismo",
+                        "En 1945"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La producción de guerra finalmente reactivó la economía mundial.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "4.3": [
+                {
+                    id: 1,
+                    question: "¿Qué proyecto desarrolló la bomba atómica?",
+                    options: [
+                        "Proyecto Manhattan",
+                        "Proyecto Apollo",
+                        "Proyecto Genoma",
+                        "Proyecto Vanguard"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Dirigido por Oppenheimer con científicos como Fermi y Einstein.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué enfermedad se controló con la penicilina?",
+                    options: [
+                        "Infecciones bacterianas",
+                        "Viruela",
+                        "Polio",
+                        "Cáncer"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Descubierta por Fleming en 1928, masificada en los años 40.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué invento revolucionó las comunicaciones?",
+                    options: [
+                        "La radio y la televisión",
+                        "El telégrafo",
+                        "El teléfono",
+                        "El internet"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La radio se popularizó en los años 20, la TV en los 50.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué teoría científica revolucionó la física?",
+                    options: [
+                        "Teoría de la relatividad",
+                        "Teoría cuántica",
+                        "Teoría atómica",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Einstein, Planck y otros transformaron la comprensión del universo.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué vehículo cambió el transporte personal?",
+                    options: [
+                        "Automóvil en masa",
+                        "Bicicleta",
+                        "Motocicleta",
+                        "Avión comercial"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Henry Ford popularizó el automóvil con la cadena de montaje.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué invento permitió vuelos comerciales?",
+                    options: [
+                        "Avión a reacción",
+                        "Globo aerostático",
+                        "Dirigible",
+                        "Helicóptero"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El jet hizo los vuelos más rápidos y accesibles.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué enfermedad se erradicó con vacunas?",
+                    options: [
+                        "Viruela",
+                        "Tuberculosis",
+                        "SIDA",
+                        "Malaria"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La viruela es la única enfermedad erradicada completamente.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué científico propuso la teoría de la relatividad?",
+                    options: [
+                        "Albert Einstein",
+                        "Isaac Newton",
+                        "Niels Bohr",
+                        "Marie Curie"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Einstein revolucionó la física con E=mc².",
+                    difficulty: "facil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué tecnología se usó para diagnóstico médico?",
+                    options: [
+                        "Rayos X",
+                        "Resonancia magnética",
+                        "Tomografía",
+                        "Ultrasonido"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Descubiertos por Röntgen en 1895, masificados en el siglo XX.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué arma nueva definió la Segunda Guerra Mundial?",
+                    options: [
+                        "Bomba atómica",
+                        "Tanque",
+                        "Avión",
+                        "Submarino"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Hiroshima y Nagasaki mostraron el poder destructivo sin precedentes.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            "4.4": [
+                {
+                    id: 1,
+                    question: "¿Qué evento inició la Segunda Guerra Mundial en Europa?",
+                    options: [
+                        "Invasión alemana de Polonia",
+                        "Ataque a Pearl Harbor",
+                        "Invasión de la URSS",
+                        "Batalla de Inglaterra"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 1 de septiembre de 1939, Alemania invadió Polonia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué países formaron el Eje?",
+                    options: [
+                        "Alemania, Italia y Japón",
+                        "URSS, China y Francia",
+                        "EE.UU., Gran Bretaña y Francia",
+                        "Alemania, Austria y Hungría"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Firmaron el Pacto Tripartito en 1940.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué atrocidad cometió Alemania contra los judíos?",
+                    options: [
+                        "Holocausto",
+                        "Gulag",
+                        "Gran Purga",
+                        "Armenio"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. 6 millones de judíos murieron en campos de exterminio.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué batalla fue el punto de inflexión en Europa oriental?",
+                    options: [
+                        "Batalla de Stalingrado",
+                        "Batalla de Moscú",
+                        "Batalla de Kursk",
+                        "Batalla de Berlín"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Alemania perdió su mejor ejército, iniciando el retroceso.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué día los aliados desembarcaron en Normandía?",
+                    options: [
+                        "Día D (6 de junio de 1944)",
+                        "Día V-E (8 de mayo de 1945)",
+                        "Día V-J (2 de septiembre de 1945)",
+                        "Día del Armisticio (11 de noviembre)"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La mayor operación anfibia de la historia.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué ciudad japonesa fue bombardeada atómicamente primero?",
+                    options: [
+                        "Hiroshima",
+                        "Nagasaki",
+                        "Tokio",
+                        "Osaka"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 6 de agosto de 1945, muriendo 140,000 personas.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué conferencia decidió el destino de la postguerra?",
+                    options: [
+                        "Conferencia de Yalta",
+                        "Conferencia de Potsdam",
+                        "Conferencia de Teherán",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estas conferencias moldearon el mundo de la Guerra Fría.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Cuántas personas murieron en la Segunda Guerra Mundial?",
+                    options: [
+                        "Unos 70 millones",
+                        "20 millones",
+                        "100 millones",
+                        "50 millones"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Incluyendo 25 millones de militares y 45 millones de civiles.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué organización internacional reemplazó a la Sociedad de Naciones?",
+                    options: [
+                        "Naciones Unidas",
+                        "Unión Europea",
+                        "OTAN",
+                        "FMI"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Fundada en 1945 para mantener la paz internacional.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué juicios juzgaron a criminales de guerra nazis?",
+                    options: [
+                        "Juicios de Núremberg",
+                        "Juicios de Tokio",
+                        "Juicios de La Haya",
+                        "Juicios de Eichmann"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Establecieron el principio de responsabilidad individual por crímenes contra la humanidad.",
+                    difficulty: "medio"
+                }
+            ],
+            
+            "4.5": [
+                {
+                    id: 1,
+                    question: "¿Qué táctica alemana usó al inicio de la guerra?",
+                    options: [
+                        "Blitzkrieg (guerra relámpago)",
+                        "Guerra de trincheras",
+                        "Guerra de desgaste",
+                        "Guerra de guerrillas"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Combinaba tanques, aviones e infantería para avances rápidos.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué país resistió solo a Alemania en 1940-1941?",
+                    options: [
+                        "Gran Bretaña",
+                        "Francia",
+                        "URSS",
+                        "Estados Unidos"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Batalla de Inglaterra evitó la invasión alemana.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué operación fue la invasión alemana de la URSS?",
+                    options: [
+                        "Operación Barbarroja",
+                        "Operación Overlord",
+                        "Operación Tormenta del Desierto",
+                        "Operación Market Garden"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Comenzó el 22 de junio de 1941, rompiendo el pacto nazi-soviético.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué batalla naval fue crucial en el Pacífico?",
+                    options: [
+                        "Batalla de Midway",
+                        "Batalla del Mar del Coral",
+                        "Batalla de Guadalcanal",
+                        "Batalla de Iwo Jima"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Junio 1942, EE.UU. destruyó 4 portaaviones japoneses.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué desembarco aliado abrió el frente italiano?",
+                    options: [
+                        "Desembarco de Sicilia",
+                        "Desembarco de Normandía",
+                        "Desembarco de Anzio",
+                        "Desembarco de Salerno"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Julio de 1943, llevó a la caída de Mussolini.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué batalla fue la última ofensiva alemana en occidente?",
+                    options: [
+                        "Batalla de las Ardenas",
+                        "Batalla de Berlín",
+                        "Batalla del Rhin",
+                        "Batalla de Normandía"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Diciembre 1944 - enero 1945, agotó las últimas reservas alemanas.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué isla tuvo combates muy sangrientos entre EE.UU. y Japón?",
+                    options: [
+                        "Iwo Jima",
+                        "Guam",
+                        "Midway",
+                        "Filipinas"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Febrero-marzo 1945, famosa por la foto del izado de bandera.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué conferencia exigió la rendición incondicional de Japón?",
+                    options: [
+                        "Conferencia de Potsdam",
+                        "Conferencia de Yalta",
+                        "Conferencia de Teherán",
+                        "Conferencia de Casablanca"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Julio 1945, amenazó con 'destrucción total' si no se rendían.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 9,
+                    question: "¿Cuándo se rindió Alemania?",
+                    options: [
+                        "8 de mayo de 1945",
+                        "6 de junio de 1944",
+                        "2 de septiembre de 1945",
+                        "11 de noviembre de 1918"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Día V-E (Victoria en Europa).",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Cuándo terminó oficialmente la Segunda Guerra Mundial?",
+                    options: [
+                        "2 de septiembre de 1945",
+                        "8 de mayo de 1945",
+                        "6 de agosto de 1945",
+                        "14 de agosto de 1945"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Japón firmó la rendición a bordo del USS Missouri.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            // BLOQUE 5: Décadas recientes
+            "5.1": [
+                {
+                    id: 1,
+                    question: "¿Qué muro dividió Berlín desde 1961 hasta 1989?",
+                    options: [
+                        "Muro de Berlín",
+                        "Muro de la Vergüenza",
+                        "Muro del Atlántico",
+                        "Muro de Adriano"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Símbolo de la división entre comunismo y capitalismo.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué alianza militar creó Occidente en 1949?",
+                    options: [
+                        "OTAN",
+                        "Pacto de Varsovia",
+                        "CENTO",
+                        "SEATO"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Organización del Tratado del Atlántico Norte contra la URSS.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué alianza respondió la URSS en 1955?",
+                    options: [
+                        "Pacto de Varsovia",
+                        "COMECON",
+                        "Kominform",
+                        "Pacto Tripartito"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Alianza militar de países comunistas.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué crisis de 1962 casi causa guerra nuclear?",
+                    options: [
+                        "Crisis de los misiles en Cuba",
+                        "Crisis de Berlín",
+                        "Crisis de Suez",
+                        "Crisis de Corea"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. URSS instaló misiles en Cuba, a 90 millas de EE.UU.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué guerra fue un conflicto proxy entre EE.UU. y URSS?",
+                    options: [
+                        "Guerra de Vietnam",
+                        "Guerra de Corea",
+                        "Guerra de Afganistán",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Ambos apoyaban bandos opuestos sin enfrentarse directamente.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué presidente estadounidense inició la política de contención?",
+                    options: [
+                        "Harry Truman",
+                        "Dwight Eisenhower",
+                        "John F. Kennedy",
+                        "Richard Nixon"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La Doctrina Truman buscaba contener la expansión comunista.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué plan ayudó a reconstruir Europa occidental?",
+                    options: [
+                        "Plan Marshall",
+                        "Plan Morgenthau",
+                        "Plan Dawes",
+                        "Plan Young"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. EE.UU. dio 13,000 millones de dólares para reconstrucción.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué evento simbolizó el fin de la Guerra Fría?",
+                    options: [
+                        "Caída del Muro de Berlín",
+                        "Disolución de la URSS",
+                        "Reunificación alemana",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estos eventos marcaron el fin del conflicto (1989-1991).",
+                    difficulty: "facil"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué líder soviético impulsó la perestroika?",
+                    options: [
+                        "Mikhail Gorbachov",
+                        "Leonid Brezhnev",
+                        "Nikita Khrushchev",
+                        "Yuri Andropov"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Reformas que aceleraron el colapso de la URSS.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué organización económica unió a Europa occidental?",
+                    options: [
+                        "Comunidad Económica Europea",
+                        "COMECON",
+                        "ASEAN",
+                        "Mercosur"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Precursora de la Unión Europea, creada en 1957.",
+                    difficulty: "dificil"
+                }
+            ],
+            
+            "5.2": [
+                {
+                    id: 1,
+                    question: "¿Qué organización promueve el libre comercio mundial?",
+                    options: [
+                        "Organización Mundial del Comercio",
+                        "Fondo Monetario Internacional",
+                        "Banco Mundial",
+                        "ONU"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Sucesora del GATT, regula el comercio internacional.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué bloque económico une a países europeos?",
+                    options: [
+                        "Unión Europea",
+                        "NAFTA",
+                        "Mercosur",
+                        "ASEAN"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Creada con el Tratado de Maastricht en 1993.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué término describe la interdependencia económica mundial?",
+                    options: [
+                        "Globalización",
+                        "Mundialización",
+                        "Internacionalización",
+                        "Transnacionalización"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Aumento del comercio, inversión y flujos de capital globales.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué país asiático tuvo rápido crecimiento económico?",
+                    options: [
+                        "China",
+                        "India",
+                        "Corea del Sur",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estos países experimentaron milagros económicos.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué crisis económica afectó al mundo en 2008?",
+                    options: [
+                        "Crisis financiera global",
+                        "Crisis del petróleo",
+                        "Crisis de la deuda latinoamericana",
+                        "Crisis asiática"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Comenzó con las hipotecas subprime en EE.UU.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué problema global afecta a países en desarrollo?",
+                    options: [
+                        "Deuda externa",
+                        "Corrupción",
+                        "Desigualdad",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estos problemas obstaculizan el desarrollo económico.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué organización da créditos a países en desarrollo?",
+                    options: [
+                        "Banco Mundial",
+                        "FMI",
+                        "BID",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estas instituciones financieras internacionales apoyan el desarrollo.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué fenómeno aumenta la brecha entre ricos y pobres?",
+                    options: [
+                        "Desigualdad económica",
+                        "Globalización",
+                        "Tecnologización",
+                        "Urbanización"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El 1% más rico posee más riqueza que el 50% más pobre.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué tecnología revolucionó las comunicaciones?",
+                    options: [
+                        "Internet",
+                        "Teléfono celular",
+                        "Computadora personal",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estas tecnologías conectaron el mundo como nunca antes.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué desafío global enfrenta la humanidad actualmente?",
+                    options: [
+                        "Cambio climático",
+                        "Pandemia",
+                        "Crisis alimentaria",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Problemas que requieren cooperación internacional.",
+                    difficulty: "facil"
+                }
+            ],
+            
+            "5.3": [
+                {
+                    id: 1,
+                    question: "¿Qué país invadió Kuwait en 1990?",
+                    options: [
+                        "Irak",
+                        "Irán",
+                        "Arabia Saudita",
+                        "Israel"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Saddam Hussein invadió Kuwait el 2 de agosto de 1990.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 2,
+                    question: "¿Qué operación liberó Kuwait en 1991?",
+                    options: [
+                        "Tormenta del Desierto",
+                        "Libertad Duradera",
+                        "Iraqi Freedom",
+                        "Escudo del Desierto"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Coalición de 35 países liderada por EE.UU.",
+                    difficulty: "facil"
+                },
+                {
+                    id: 3,
+                    question: "¿Qué resolución de la ONU autorizó el uso de la fuerza?",
+                    options: [
+                        "Resolución 678",
+                        "Resolución 1441",
+                        "Resolución 660",
+                        "Resolución 687"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Dio plazo a Irak hasta el 15 de enero de 1991 para retirarse.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 4,
+                    question: "¿Qué armas usó Irak contra Israel durante la guerra?",
+                    options: [
+                        "Misiles Scud",
+                        "Armas químicas",
+                        "Bombas de racimo",
+                        "Armas nucleares"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Buscaba arrastrar a Israel al conflicto y dividir la coalición.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 5,
+                    question: "¿Qué país fue principal aliado árabe de la coalición?",
+                    options: [
+                        "Arabia Saudita",
+                        "Egipto",
+                        "Siria",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Estos países árabes se unieron contra Irak.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 6,
+                    question: "¿Qué consecuencias tuvo la guerra para Irak?",
+                    options: [
+                        "Sanciones económicas y zonas de exclusión aérea",
+                        "Ocupación permanente",
+                        "División del país",
+                        "Cambio de régimen inmediato"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Las sanciones duraron hasta 2003, causando sufrimiento civil.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 7,
+                    question: "¿Qué problema ambiental causó Irak al retirarse?",
+                    options: [
+                        "Incendio de pozos petroleros",
+                        "Derrame de petróleo al Golfo",
+                        "Contaminación con uranio",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    explanation: "✅ Correcto. Daños ambientales masivos como represalia.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 8,
+                    question: "¿Qué guerra siguió en 2003 contra Irak?",
+                    options: [
+                        "Operación Libertad Iraquí",
+                        "Operación Tormenta del Desierto II",
+                        "Operación Renacer de la Esperanza",
+                        "Operación Phoenix"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. Basada en falsas acusaciones de armas de destrucción masiva.",
+                    difficulty: "medio"
+                },
+                {
+                    id: 9,
+                    question: "¿Qué organización terrorista surgió tras estas guerras?",
+                    options: [
+                        "Estado Islámico (ISIS)",
+                        "Al Qaeda",
+                        "Talibán",
+                        "Hezbolá"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. El caos posterior a la invasión de 2003 permitió su surgimiento.",
+                    difficulty: "dificil"
+                },
+                {
+                    id: 10,
+                    question: "¿Qué impacto tuvo la guerra en el precio del petróleo?",
+                    options: [
+                        "Aumento significativo",
+                        "Disminución",
+                        "Estabilidad",
+                        "Volatilidad extrema"
+                    ],
+                    correct: 0,
+                    explanation: "✅ Correcto. La incertidumbre en el Golfo Pérsico elevó los precios.",
+                    difficulty: "medio"
+                }
+            ]
+        };
+
+        // Variables
+        let currentSubindice = '1.1';
+        let userAnswers = {};
+        let progress = {};
+
+        // Inicializar
+        function initProgress() {
+            for (const subindice in questionsDatabase) {
+                if (!userAnswers[subindice]) {
+                    userAnswers[subindice] = {};
+                }
+                if (!progress[subindice]) {
+                    progress[subindice] = {
+                        total: 10,
+                        answered: 0,
+                        correct: 0
+                    };
+                }
+            }
+            updateProgressDisplay();
+        }
+
+        // Seleccionar bloque
+        function selectBlock(blockId) {
+            // Actualizar pestañas
+            document.querySelectorAll('.block-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Mostrar subíndices
+            document.querySelectorAll('.subindices-grid').forEach(grid => {
+                grid.style.display = 'none';
+            });
+            document.getElementById(`subindices-${blockId}`).style.display = 'grid';
+            
+            // Seleccionar primer subíndice
+            const firstCard = document.querySelector(`#subindices-${blockId} .subindice-card`);
+            if (firstCard) {
+                firstCard.click();
+            }
+        }
+
+        // Seleccionar subíndice
+        function selectSubindice(subindiceCode) {
+            currentSubindice = subindiceCode;
+            
+            // Actualizar tarjetas
+            document.querySelectorAll('.subindice-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Cargar preguntas
+            loadQuestions(subindiceCode);
+        }
+
+        // Cargar preguntas
+        function loadQuestions(subindiceCode) {
+            const container = document.getElementById('questions-container');
+            const questions = questionsDatabase[subindiceCode] || [];
+            
+            let html = '<h2 style="color: var(--hist-blue); margin-bottom: 1rem;">';
+            html += `Subíndice ${subindiceCode}: ${getSubindiceName(subindiceCode)}</h2>`;
+            
+            questions.forEach(q => {
+                html += `
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">Pregunta ${q.id}</div>
+                        <div style="font-size: 0.8rem; color: ${q.difficulty === 'facil' ? 'var(--hist-green)' : q.difficulty === 'medio' ? 'orange' : 'var(--hist-red)'}">
+                            ${q.difficulty === 'facil' ? 'Fácil' : q.difficulty === 'medio' ? 'Medio' : 'Difícil'}
+                        </div>
+                    </div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-container" id="options-${subindiceCode}-${q.id}">
+                `;
+                
+                q.options.forEach((option, index) => {
+                    const isSelected = userAnswers[subindiceCode] && userAnswers[subindiceCode][q.id] === index;
+                    html += `
+                        <label class="option-label ${isSelected ? 'selected' : ''}" 
+                               onclick="selectOption('${subindiceCode}', ${q.id}, ${index})">
+                            <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                            ${option}
+                        </label>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            });
+            
+            container.innerHTML = html;
+            updateSubindiceCount(subindiceCode);
+        }
+
+        // Seleccionar opción
+        function selectOption(subindiceCode, questionId, optionIndex) {
+            if (!userAnswers[subindiceCode]) {
+                userAnswers[subindiceCode] = {};
+            }
+            userAnswers[subindiceCode][questionId] = optionIndex;
+            
+            // Actualizar visual
+            const container = document.getElementById(`options-${subindiceCode}-${questionId}`);
+            if (container) {
+                container.querySelectorAll('.option-label').forEach((label, idx) => {
+                    label.classList.remove('selected');
+                    if (idx === optionIndex) {
+                        label.classList.add('selected');
+                    }
+                });
+            }
+            
+            // Actualizar progreso
+            updateSubindiceCount(subindiceCode);
+            updateProgressDisplay();
+        }
+
+        // Actualizar contador
+        function updateSubindiceCount(subindiceCode) {
+            const answered = userAnswers[subindiceCode] ? Object.keys(userAnswers[subindiceCode]).length : 0;
+            const countElement = document.getElementById(`count-${subindiceCode}`);
+            if (countElement) {
+                countElement.textContent = `${answered}/10`;
+            }
+            
+            if (progress[subindiceCode]) {
+                progress[subindiceCode].answered = answered;
+            }
+        }
+
+        // Actualizar progreso general
+        function updateProgressDisplay() {
+            let totalAnswered = 0;
+            let totalCorrect = 0;
+            
+            for (const subindice in progress) {
+                totalAnswered += progress[subindice].answered || 0;
+                
+                // Calcular correctas
+                const questions = questionsDatabase[subindice] || [];
+                let correct = 0;
+                if (userAnswers[subindice]) {
+                    questions.forEach(q => {
+                        if (userAnswers[subindice][q.id] === q.correct) {
+                            correct++;
+                        }
+                    });
+                }
+                progress[subindice].correct = correct;
+                totalCorrect += correct;
+            }
+            
+            // Actualizar UI
+            document.getElementById('total-answered').textContent = totalAnswered;
+            document.getElementById('total-correct').textContent = totalCorrect;
+            
+            const accuracy = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+            document.getElementById('accuracy-rate').textContent = `${accuracy}%`;
+        }
+
+        // Verificar respuestas
+        function checkAnswers() {
+            const questions = questionsDatabase[currentSubindice] || [];
+            let correctCount = 0;
+            let resultsHTML = '<h3 style="color: var(--hist-blue); margin-bottom: 1rem;">Resultados detallados:</h3>';
+            
+            questions.forEach(q => {
+                const userAnswer = userAnswers[currentSubindice] ? userAnswers[currentSubindice][q.id] : undefined;
+                const isCorrect = userAnswer === q.correct;
+                
+                if (isCorrect) correctCount++;
+                
+                resultsHTML += `
+                <div class="question-card" style="margin-bottom: 1rem; border-color: ${isCorrect ? 'var(--hist-green)' : 'var(--hist-red)'}">
+                    <div class="question-text">${q.question}</div>
+                    <div><strong>Tu respuesta:</strong> ${userAnswer !== undefined ? q.options[userAnswer] : 'No respondida'}</div>
+                    <div><strong>Respuesta correcta:</strong> ${q.options[q.correct]}</div>
+                    <div style="margin-top: 0.5rem; color: #666;">${q.explanation}</div>
+                </div>
+                `;
+            });
+            
+            // Mostrar resultados
+            document.getElementById('final-score').textContent = `${correctCount}/10`;
+            document.getElementById('results-details').innerHTML = resultsHTML;
+            document.getElementById('results-panel').classList.add('active');
+            
+            // Actualizar progreso
+            updateProgressDisplay();
+            
+            // Scroll a resultados
+            document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reiniciar subíndice
+        function resetSubindice() {
+            if (confirm('¿Reiniciar todas las respuestas de este subíndice?')) {
+                userAnswers[currentSubindice] = {};
+                loadQuestions(currentSubindice);
+                updateProgressDisplay();
+            }
+        }
+
+        // Nombre del subíndice
+        function getSubindiceName(code) {
+            const names = {
+                '1.1': 'El contexto mundial y nuevas rutas',
+                '1.2': 'Humanismo y Renacimiento',
+                '1.3': 'Expediciones marítimas y conquistas',
+                '2.1': 'Ilustración y enciclopedia',
+                '2.2': 'Absolutismo europeo',
+                '2.3': 'Independencia de USA',
+                '2.4': 'Revolución Francesa',
+                '2.5': 'Consecuencias en América',
+                '2.6': 'Revolución Industrial',
+                '3.1': 'Nacionalismo',
+                '3.2': 'Imperialismo',
+                '3.3': 'Primera Guerra Mundial',
+                '3.4': 'Paz de Versalles',
+                '4.1': 'Período de entreguerras',
+                '4.2': 'Pobreza mundial',
+                '4.3': 'Avances científicos',
+                '4.4': 'Segunda Guerra Mundial',
+                '4.5': 'Etapas de la SGM',
+                '5.1': 'Bloques capitalista/socialista',
+                '5.2': 'Globalización económica',
+                '5.3': 'Conflicto del Golfo Pérsico'
+            };
+            return names[code] || `Subíndice ${code}`;
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            initProgress();
+            loadQuestions('1.1');
+        });
+    </script>
+</body>
+</html>

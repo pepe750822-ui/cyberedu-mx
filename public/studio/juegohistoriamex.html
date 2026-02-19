@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER-HISTORIA MX | Visual Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --error: #ef4444;
+            --bg-body: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-main: 'Inter', sans-serif;
+            --radius: 16px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            /* Fondo oscuro profundo */
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 80%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 30px 20px;
+            padding-bottom: 80px;
+        }
+
+        /* ANIMACIONES */
+        .screen { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
+        .active { display: block; opacity: 1; transform: translateY(0); }
+
+        /* HEADER */
+        h1 {
+            text-align: center;
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        /* --- CARDS CON IMÁGENES --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .world-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .world-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: 0.3s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .world-card:hover .card-image { opacity: 1; height: 170px; }
+
+        .card-content { padding: 20px; }
+        .world-title { font-size: 1.2rem; font-weight: 700; color: white; display: block; margin-bottom: 5px; }
+        .world-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* --- BANNER DE MISIÓN --- */
+        .mission-header {
+            position: relative;
+            height: 200px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .mission-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mission-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(15,23,42,1), rgba(15,23,42,0));
+            padding: 30px;
+            padding-top: 80px;
+        }
+
+        .mission-title-large {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- BOTONES DE TEMA --- */
+        .mission-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 18px 25px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .mission-btn:hover {
+            background: var(--card-hover);
+            border-color: var(--primary);
+            transform: scale(1.01);
+        }
+
+        .arrow-icon { color: var(--primary); opacity: 0; transition: 0.2s; transform: translateX(-10px); }
+        .mission-btn:hover .arrow-icon { opacity: 1; transform: translateX(0); }
+
+        /* --- QUIZ --- */
+        .quiz-wrapper {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            margin: 12px 0;
+            text-align: left;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: var(--font-main);
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .correct { background: rgba(16, 185, 129, 0.15) !important; border-color: var(--success) !important; color: var(--success) !important; font-weight: 600; }
+        .wrong { background: rgba(239, 68, 68, 0.15) !important; border-color: var(--error) !important; color: var(--error) !important; font-weight: 600; }
+
+        #feedback-area {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border-left: 4px solid var(--success);
+        }
+
+        /* UTILS */
+        .btn-back {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.2); }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            float: right;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.5s; }
+
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .mission-header { height: 150px; }
+            .mission-title-large { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    
+    <!-- PANTALLA 1: MUNDOS -->
+    <div id="screen-worlds" class="screen active">
+        <h1>CYBER-HISTORIA MX</h1>
+        <div class="subtitle">Explora la historia de México a través de imágenes y desafíos.</div>
+        <div id="worlds-grid" class="grid-container"></div>
+    </div>
+
+    <!-- PANTALLA 2: MISIONES -->
+    <div id="screen-missions" class="screen">
+        <button class="btn-back" onclick="showScreen('screen-worlds')">← Volver al Mapa</button>
+        
+        <div class="mission-header">
+            <img id="mission-bg-img" src="" class="mission-bg" alt="Tema Header">
+            <div class="mission-overlay">
+                <h2 id="world-title-display" class="mission-title-large">Mundo X</h2>
+            </div>
+        </div>
+
+        <p style="color:var(--text-muted); margin-bottom:20px;">Selecciona un capítulo para iniciar:</p>
+        <div id="missions-list"></div>
+    </div>
+
+    <!-- PANTALLA 3: QUIZ -->
+    <div id="screen-game" class="screen">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <button class="btn-back" onclick="backToMissions()">← Salir</button>
+            <span id="q-counter" style="background:rgba(6,182,212,0.15); color:var(--accent); padding:4px 12px; border-radius:12px; font-size:0.85rem; font-weight:600;">1 / 10</span>
+        </div>
+
+        <div class="quiz-wrapper">
+            <h3 id="question-text" style="margin-top:0; font-size:1.3rem; margin-bottom:25px;">...</h3>
+            <div id="options-container"></div>
+
+            <div id="feedback-area">
+                <strong id="fb-title" style="display:block; margin-bottom:8px;">Explicación</strong>
+                <p id="fb-text" style="color:#cbd5e1; margin:0; line-height:1.5;"></p>
+                <button id="btn-next" class="btn-primary" onclick="nextQuestion()">Siguiente →</button>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+        
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+    </div>
+
+    <!-- PANTALLA 4: RESULTADO -->
+    <div id="screen-result" class="screen" style="text-align:center; padding-top:50px;">
+        <div style="font-size:5rem; margin-bottom:20px;">🎉</div>
+        <h2 style="color:white; font-size:2rem; margin:0;">¡Capítulo Completado!</h2>
+        <p style="color:var(--text-muted);">Has demostrado tu conocimiento en este tema.</p>
+        
+        <div style="background:var(--card-bg); display:inline-block; padding:20px 40px; border-radius:16px; margin:30px 0; border:1px solid rgba(255,255,255,0.05);">
+            <div style="font-size:0.9rem; color:var(--text-muted);">Puntaje Final</div>
+            <div id="final-score" style="font-size:2.5rem; font-weight:800; color:var(--success);">100%</div>
+        </div>
+        <br>
+        <button class="btn-primary" style="float:none;" onclick="backToMissions()">Continuar Explorando</button>
+    </div>
+
+</div>
+
+<script>
+    // --- FUNCIÓN DE IMÁGENES DINÁMICAS ---
+    // Genera URLs basadas en temas para que siempre haya una imagen relevante.
+    function getThemeImage(keyword) {
+        // Usamos Pollinations con un seed aleatorio para variedad visual
+        return `https://image.pollinations.ai/prompt/${encodeURIComponent(keyword)}%20realistic%20historical%20cinematic%20lighting?width=600&height=400&nologo=true`;
+    }
+
+    // --- BASE DE DATOS COMPLETA CON KEYWORDS VISUALES ---
+    const database = [
+        {
+            id: 1, 
+            title: "Raíces y Virreinato", 
+            desc: "Tema 6: Mesoamérica y Nueva España",
+            imgKeyword: "aztec pyramid teotihuacan mexico",
+            missions: [
+                {
+                    title: "6.1 Mesoamérica",
+                    keyword: "mayan ruins jungle",
+                    qs: [
+                        { q: "¿Qué define a Mesoamérica como área cultural?", opts: ["Sociedades agrícolas sedentarias y urbanas.", "Nómadas cazadores.", "Uso de hierro.", "Ausencia de religión."], correct: 0, why: "Mesoamérica se distingue por la agricultura y el urbanismo." },
+                        { q: "¿Cuáles son las 5 áreas culturales?", opts: ["Norte, Sur, Este, Oeste, Centro.", "Altiplano, Maya, Golfo, Oaxaca, Occidente.", "Oasisamérica, Aridoamérica.", "Azteca, Maya, Inca."], correct: 1, why: "División geográfica arqueológica estándar." },
+                        { q: "¿Cuáles son los horizontes cronológicos?", opts: ["Antiguo, Medio, Moderno.", "Preclásico, Clásico, Posclásico.", "Piedra, Bronce, Hierro.", "Colonial, Independiente."], correct: 1, why: "Son las etapas temporales de Mesoamérica." },
+                        { q: "¿Qué cultivo fue la base de la dieta mesoamericana?", opts: ["Trigo.", "Arroz.", "Maíz.", "Papa."], correct: 2, why: "El maíz fue el sustento principal y sagrado." },
+                        { q: "¿Qué característica distingue a Mesoamérica de Aridoamérica?", opts: ["El sedentarismo.", "El nomadismo.", "La falta de agua.", "La caza de búfalos."], correct: 0, why: "Aridoamérica era nómada; Mesoamérica sedentaria." },
+                        { q: "¿Qué cultura se desarrolló principalmente en el Altiplano Central?", opts: ["Maya.", "Olmeca.", "Mexica (Azteca).", "Zapoteca."], correct: 2, why: "Tenochtitlán estaba en el Altiplano." },
+                        { q: "¿En qué horizonte se dio el apogeo del urbanismo y la teocracia?", opts: ["Preclásico.", "Clásico.", "Posclásico.", "Histórico."], correct: 1, why: "El Clásico fue la era de las grandes ciudades teocráticas." },
+                        { q: "¿Qué horizonte se caracteriza por el militarismo y los sacrificios masivos?", opts: ["Preclásico.", "Clásico.", "Posclásico.", "Moderno."], correct: 2, why: "El Posclásico fue la era de los imperios guerreros." },
+                        { q: "¿Qué área cultural abarca la península de Yucatán?", opts: ["Occidente.", "Oaxaca.", "Área Maya.", "Altiplano."], correct: 2, why: "Es el hogar de la civilización Maya." },
+                        { q: "¿Qué tipo de religión predominaba en Mesoamérica?", opts: ["Monoteísta.", "Politeísta.", "Atea.", "Cristiana."], correct: 1, why: "Adoraban a múltiples dioses relacionados con la naturaleza." }
+                    ]
+                },
+                {
+                    title: "6.2 Virreinato y Audiencias",
+                    keyword: "colonial mexico city cathedral",
+                    qs: [
+                        { q: "¿Qué evento marcó el inicio del proceso virreinal?", opts: ["Caída de Tenochtitlán (1521).", "Grito de Dolores.", "Descubrimiento de América.", "Fundación de Veracruz."], correct: 0, why: "La caída del imperio mexica permitió la colonización." },
+                        { q: "¿Qué significa 'desinstitucionalización' en este contexto?", opts: ["Crear nuevas leyes.", "Eliminar estructuras indígenas.", "Construir iglesias.", "Fundar escuelas."], correct: 1, why: "Se desmantelaron los señoríos para imponer el sistema español." },
+                        { q: "¿En qué año se instauró formalmente el Virreinato?", opts: ["1521.", "1535.", "1810.", "1492."], correct: 1, why: "Con la llegada del primer virrey." },
+                        { q: "¿Quién fue el primer Virrey de la Nueva España?", opts: ["Hernán Cortés.", "Antonio de Mendoza.", "Cristóbal Colón.", "Nuño de Guzmán."], correct: 1, why: "Designado por el Rey Carlos I." },
+                        { q: "¿Cuál era la función de las Reales Audiencias?", opts: ["Dirigir el ejército.", "Tribunales de justicia y gobierno.", "Organizar fiestas.", "Cobrar el diezmo."], correct: 1, why: "Servían de contrapeso al poder de los conquistadores." },
+                        { q: "¿Por qué se crearon las Audiencias?", opts: ["Para ayudar a Cortés.", "Para limitar el poder de los conquistadores.", "Para expandir la fe.", "Para educar indígenas."], correct: 1, why: "La Corona temía que los conquistadores se volvieran independientes." },
+                        { q: "¿Quiénes componían las Audiencias?", opts: ["Soldados.", "Oidores (Jueces).", "Sacerdotes.", "Caciques."], correct: 1, why: "Eran letrados encargados de impartir justicia." },
+                        { q: "¿Qué autoridad representaba directamente al Rey en América?", opts: ["El Virrey.", "El Arzobispo.", "El Corregidor.", "El Encomendero."], correct: 0, why: "Era el alter ego del monarca." },
+                        { q: "¿Dónde se estableció la capital del Virreinato?", opts: ["Guadalajara.", "Veracruz.", "Ciudad de México.", "Puebla."], correct: 2, why: "Sobre las ruinas de Tenochtitlán." },
+                        { q: "¿Qué sistema político sustituyó a los señoríos indígenas?", opts: ["La República.", "El Virreinato.", "La Monarquía Constitucional.", "El Feudalismo."], correct: 1, why: "Fue la forma de gobierno colonial." }
+                    ]
+                },
+                {
+                    title: "6.3 Iglesia e Inquisición",
+                    keyword: "spanish inquisition monk",
+                    qs: [
+                        { q: "¿Qué órdenes religiosas iniciaron la evangelización?", opts: ["Jesuitas.", "Franciscanos, dominicos, agustinos.", "Benedictinos.", "Carmelitas."], correct: 1, why: "Fueron las primeras órdenes mendicantes en llegar." },
+                        { q: "¿Cómo se le llamó al proceso de conversión indígena?", opts: ["Conquista Militar.", "Conquista Espiritual.", "Inquisición.", "Reforma."], correct: 1, why: "Fue la imposición de la fe católica." },
+                        { q: "¿En qué año se estableció el Tribunal del Santo Oficio en México?", opts: ["1521.", "1571.", "1810.", "1600."], correct: 1, why: "Para perseguir la herejía." },
+                        { q: "¿Cuál era la función de la Inquisición?", opts: ["Cobrar impuestos.", "Perseguir la herejía y delitos contra la fe.", "Educar niños.", "Repartir tierras."], correct: 1, why: "Vigilaba la ortodoxia católica." },
+                        { q: "¿Quiénes estaban exentos de la Inquisición?", opts: ["Los españoles.", "Los criollos.", "Los indígenas.", "Los mestizos."], correct: 2, why: "Se les consideraba 'neófitos' (nuevos en la fe)." },
+                        { q: "¿Por qué se eximió a los indígenas?", opts: ["Tenían mucho poder.", "Eran considerados menores de edad en la fe.", "Pagaban bula.", "Eran inquisidores."], correct: 1, why: "Se creía que sus errores eran por ignorancia, no maldad." },
+                        { q: "¿Qué controlaba la Iglesia además de la fe?", opts: ["El ejército.", "La educación y gran parte de la economía.", "Las minas.", "El comercio exterior."], correct: 1, why: "Era la institución educativa y crediticia más importante." },
+                        { q: "¿Qué orden religiosa llegó después, destacando en educación?", opts: ["Franciscanos.", "Jesuitas.", "Dominicos.", "Agustinos."], correct: 1, why: "Llegaron en 1572 y fundaron colegios importantes." },
+                        { q: "¿Qué era un 'auto de fe'?", opts: ["Una misa.", "Una ceremonia de castigo público de la Inquisición.", "Un bautizo.", "Una boda."], correct: 1, why: "Era la ejecución pública de las sentencias." },
+                        { q: "¿Quién era la máxima autoridad religiosa en Nueva España?", opts: ["El Virrey.", "El Arzobispo.", "El Inquisidor.", "El Papa."], correct: 1, why: "Lideraba la jerarquía eclesiástica local." }
+                    ]
+                },
+                {
+                    title: "6.4 El Criollismo",
+                    keyword: "virgin of guadalupe painting",
+                    qs: [
+                        { q: "¿Quiénes eran los criollos?", opts: ["Españoles nacidos en España.", "Hijos de españoles nacidos en América.", "Mestizos.", "Indígenas."], correct: 1, why: "Descendientes directos de europeos pero nacidos aquí." },
+                        { q: "¿Cuál era la situación política de los criollos?", opts: ["Gobernaban el país.", "Estaban marginados de los altos cargos.", "Eran esclavos.", "No pagaban impuestos."], correct: 1, why: "Los puestos clave eran para los peninsulares." },
+                        { q: "¿Qué sentimiento desarrollaron los criollos?", opts: ["Amor a España.", "Identidad propia y nacionalismo.", "Indiferencia.", "Odio a la religión."], correct: 1, why: "Al sentirse rechazados, valoraron su tierra natal." },
+                        { q: "¿Qué símbolo religioso adoptaron los criollos?", opts: ["Virgen de los Remedios.", "Virgen de Guadalupe.", "Santiago Apóstol.", "San Francisco."], correct: 1, why: "Símbolo de identidad mexicana frente a la española." },
+                        { q: "¿Qué idealizaban los criollos para diferenciarse?", opts: ["La monarquía francesa.", "El pasado prehispánico.", "La cultura inglesa.", "El futuro industrial."], correct: 1, why: "Reivindicaban el imperio azteca como su pasado glorioso." },
+                        { q: "¿Cuál era la situación económica de los criollos?", opts: ["Eran muy pobres.", "Poseían riqueza y educación.", "Eran siervos.", "Vivían en la calle."], correct: 1, why: "Tenían poder económico pero no político." },
+                        { q: "¿Contra quiénes competían los criollos?", opts: ["Indígenas.", "Mestizos.", "Peninsulares (Gachupines).", "Extranjeros."], correct: 2, why: "Los peninsulares acaparaban el poder." },
+                        { q: "¿Qué papel jugó los criollos en la Independencia?", opts: ["Se opusieron.", "Fueron los líderes e ideólogos.", "No participaron.", "Apoyaron al Rey."], correct: 1, why: "Hidalgo, Allende, Morelos eran criollos." },
+                        { q: "¿Qué nombre despectivo usaban para los españoles?", opts: ["Amigos.", "Gachupines.", "Hermanos.", "Señores."], correct: 1, why: "Término peyorativo común en la época." },
+                        { q: "¿Qué buscaban los criollos inicialmente?", opts: ["Destruir la iglesia.", "Igualdad de derechos con los peninsulares.", "Vender el país.", "Ser indígenas."], correct: 1, why: "Autonomía y acceso al poder." }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 2, 
+            title: "Independencia", 
+            desc: "Tema 7: Ruptura y Formación",
+            imgKeyword: "miguel hidalgo mexican independence flag",
+            missions: [
+                {
+                    title: "7.1 Reformas Borbónicas",
+                    keyword: "king charles iii spain map",
+                    qs: [
+                        { q: "¿Qué dinastía impulsó estas reformas?", opts: ["Habsburgo.", "Borbón.", "Trastámara.", "Windsor."], correct: 1, why: "Llegaron al trono español en el siglo XVIII." },
+                        { q: "¿Cuál era el objetivo político de las reformas?", opts: ["Dar autonomía.", "Centralizar el poder en la Corona.", "Crear una república.", "Eliminar virreinatos."], correct: 1, why: "Restar poder a corporaciones locales." },
+                        { q: "¿Cuál era el objetivo económico?", opts: ["Bajar impuestos.", "Aumentar la recaudación fiscal.", "Regalar dinero.", "Cerrar minas."], correct: 1, why: "Financiar las guerras europeas de España." },
+                        { q: "¿En qué siglo se aplicaron?", opts: ["XVI.", "XVII.", "XVIII.", "XIX."], correct: 2, why: "Siglo de las Luces." },
+                        { q: "¿Qué impacto tuvieron en el Virrey?", opts: ["Aumentaron su poder.", "Limitaron su autonomía.", "Lo eliminaron.", "Lo hicieron Rey."], correct: 1, why: "Le quitaron funciones administrativas." },
+                        { q: "¿A quiénes afectaron estas reformas?", opts: ["Solo a indígenas.", "A la Iglesia, comerciantes y criollos.", "A nadie.", "A los ingleses."], correct: 1, why: "Atacaron privilegios corporativos." },
+                        { q: "¿Qué expulsión famosa decretaron los Borbones?", opts: ["Franciscanos.", "Jesuitas (1767).", "Dominicos.", "Agustinos."], correct: 1, why: "Por su gran poder y obediencia al Papa." },
+                        { q: "¿Cómo reaccionaron los habitantes de Nueva España?", opts: ["Con alegría.", "Con descontento y resentimiento.", "Con indiferencia.", "Con fiestas."], correct: 1, why: "Sentían que España los explotaba más." },
+                        { q: "¿Qué idea ilustrada influyó en estas reformas?", opts: ["Derecho divino.", "Absolutismo Ilustrado.", "Democracia.", "Comunismo."], correct: 1, why: "Todo para el pueblo pero sin el pueblo." },
+                        { q: "¿Qué consecuencia tuvieron a largo plazo?", opts: ["Fortalecieron la lealtad.", "Impulsaron el deseo de independencia.", "Ninguna.", "Mejoraron la vida."], correct: 1, why: "Aumentaron la tensión colonial." }
+                    ]
+                },
+                {
+                    title: "7.2 Economía y Crecimiento",
+                    keyword: "silver mine colonial mexico",
+                    qs: [
+                        { q: "¿Cuál fue el motor económico del siglo XVIII?", opts: ["Agricultura.", "Minería.", "Pesca.", "Turismo."], correct: 1, why: "La plata era el producto principal." },
+                        { q: "¿Qué metal precioso producía Nueva España?", opts: ["Oro.", "Plata.", "Cobre.", "Hierro."], correct: 1, why: "México era el mayor productor mundial." },
+                        { q: "¿Qué ocurrió con la producción minera entre 1740-1803?", opts: ["Disminuyó.", "Se triplicó.", "Desapareció.", "Se estancó."], correct: 1, why: "Hubo un auge bonanza." },
+                        { q: "¿Qué sistema administrativo se creó en 1786?", opts: ["Encomiendas.", "Intendencias.", "Estados.", "Condados."], correct: 1, why: "Para mejorar la recaudación y control." },
+                        { q: "¿Qué ciudades crecieron gracias a la minería?", opts: ["Veracruz y Acapulco.", "Guanajuato y Zacatecas.", "Mérida y Campeche.", "Monterrey y Saltillo."], correct: 1, why: "Eran centros mineros clave." },
+                        { q: "¿Cuál era la función de la agricultura en este periodo?", opts: ["Exportar a Europa.", "Abastecer minas y ciudades.", "Subsistencia solamente.", "Ninguna."], correct: 1, why: "Sostenía a la población minera y urbana." },
+                        { q: "¿Qué institución controlaba el comercio?", opts: ["La Iglesia.", "El Consulado de Comerciantes.", "El Ejército.", "Los indígenas."], correct: 1, why: "Tenían el monopolio comercial." },
+                        { q: "¿Qué era el 'Quinto Real'?", opts: ["Un rey.", "Un impuesto a la minería (20%).", "Una calle.", "Un barco."], correct: 1, why: "La parte que se llevaba la Corona." },
+                        { q: "¿Quiénes eran los dueños de las minas?", opts: ["El Rey.", "Particulares (criollos y peninsulares).", "Indígenas.", "Iglesia."], correct: 1, why: "La Corona daba concesiones." },
+                        { q: "¿Qué provocó el crecimiento económico?", opts: ["Igualdad social.", "Desigualdad y tensiones sociales.", "Paz total.", "Democracia."], correct: 1, why: "La riqueza se concentró en pocas manos." }
+                    ]
+                },
+                {
+                    title: "7.3 Independencia",
+                    keyword: "miguel hidalgo grito dolores",
+                    qs: [
+                        { q: "¿Quién inició la Independencia?", opts: ["Morelos.", "Hidalgo.", "Iturbide.", "Guerrero."], correct: 1, why: "Con el Grito de Dolores en 1810." },
+                        { q: "¿Cuáles son las 4 etapas?", opts: ["Inicio, Nudo, Clímax, Fin.", "Iniciación, Organización, Resistencia, Consumación.", "Guerra, Paz, Tratado, Ley.", "Uno, Dos, Tres, Cuatro."], correct: 1, why: "División histórica clásica." },
+                        { q: "¿Qué documento escribió Morelos?", opts: ["Plan de Iguala.", "Sentimientos de la Nación.", "Plan de Ayala.", "Constitución 1917."], correct: 1, why: "Definió la soberanía y la independencia." },
+                        { q: "¿Qué definía los 'Sentimientos de la Nación'?", opts: ["Lealtad al Rey.", "Soberanía popular y ruptura con España.", "Esclavitud.", "Monarquía."], correct: 1, why: "Fue el ideario social y político insurgente." },
+                        { q: "¿Quién consumó la Independencia?", opts: ["Hidalgo.", "Morelos.", "Iturbide y Guerrero.", "Mina."], correct: 2, why: "Con el abrazo de Acatempan." },
+                        { q: "¿Qué plan selló la consumación?", opts: ["Plan de San Luis.", "Plan de Iguala.", "Plan de Ayutla.", "Plan de Guadalupe."], correct: 1, why: "Estableció las Tres Garantías." },
+                        { q: "¿Cuáles eran las Tres Garantías?", opts: ["Libertad, Igualdad, Fraternidad.", "Religión, Unión, Independencia.", "Tierra, Trabajo, Pan.", "Oro, Plata, Bronce."], correct: 1, why: "Base del Ejército Trigarante." },
+                        { q: "¿En qué año se consumó la Independencia?", opts: ["1810.", "1821.", "1857.", "1910."], correct: 1, why: "Entrada del Ejército Trigarante a CDMX." },
+                        { q: "¿Qué tratado ratificó la Independencia?", opts: ["Guadalupe Hidalgo.", "Córdoba.", "Versalles.", "Tordesillas."], correct: 1, why: "Firmado por O'Donojú e Iturbide." },
+                        { q: "¿Qué forma de gobierno se estableció primero?", opts: ["República.", "Imperio (Monarquía).", "Dictadura.", "Comunismo."], correct: 1, why: "El Primer Imperio de Iturbide." }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 3, 
+            title: "Siglo XIX: Guerras", 
+            desc: "Tema 8: Conflictos y Porfiriato",
+            imgKeyword: "benito juarez portrait mexico history",
+            missions: [
+                {
+                    title: "8.1 Deuda y Conflictos",
+                    keyword: "battle of veracruz ships",
+                    qs: [
+                        { q: "¿Cómo nació la economía de México?", opts: ["Rica.", "Devastada y con deuda.", "Estable.", "Industrial."], correct: 1, why: "Tras 11 años de guerra." },
+                        { q: "¿Qué causó la Guerra de los Pasteles (1838)?", opts: ["Robo de pasteles.", "Reclamaciones francesas exageradas.", "Invasión USA.", "Deuda inglesa."], correct: 1, why: "Francia usó pretextos para invadir." },
+                        { q: "¿Qué país intervino en la Guerra de los Pasteles?", opts: ["España.", "Francia.", "Inglaterra.", "EEUU."], correct: 1, why: "Primera intervención francesa." },
+                        { q: "¿Por qué México pedía préstamos?", opts: ["Para fiestas.", "Para cubrir el déficit crónico.", "Para invertir.", "Para regalar."], correct: 1, why: "No había recaudación fiscal suficiente." },
+                        { q: "¿Qué consecuencia trajo la deuda?", opts: ["Riqueza.", "Intervenciones extranjeras.", "Paz.", "Amigos."], correct: 1, why: "Los acreedores usaban la fuerza." },
+                        { q: "¿Qué puerto bloquearon los franceses?", opts: ["Acapulco.", "Veracruz.", "Tampico.", "Mazatlán."], correct: 1, why: "Principal aduana de México." },
+                        { q: "¿Quién gobernaba recurrentemente en esta época?", opts: ["Juárez.", "Santa Anna.", "Díaz.", "Madero."], correct: 1, why: "Fue la figura central inestable." },
+                        { q: "¿Qué se perdió en 1836?", opts: ["Texas.", "California.", "Yucatán.", "Chiapas."], correct: 0, why: "Independencia de Texas." },
+                        { q: "¿Qué problema interno agravaba la situación?", opts: ["Lucha entre Liberales y Conservadores.", "Exceso de dinero.", "Paz aburrida.", "Mucho trabajo."], correct: 0, why: "Guerra civil constante." },
+                        { q: "¿Qué reclamaba el pastelero Remontel?", opts: ["60 pesos.", "60,000 pesos.", "Un millón.", "Nada."], correct: 1, why: "Por daños a su tienda." }
+                    ]
+                },
+                {
+                    title: "8.2 Guerra con EE.UU.",
+                    keyword: "chapultepec castle battle 1847",
+                    qs: [
+                        { q: "¿Causa principal de la guerra?", opts: ["Deuda.", "Anexión de Texas y expansionismo de EEUU.", "Religión.", "Petróleo."], correct: 1, why: "EEUU buscaba llegar al Pacífico." },
+                        { q: "¿Años de la guerra?", opts: ["1810-1821.", "1846-1848.", "1910-1917.", "1862-1867."], correct: 1, why: "Intervención estadounidense." },
+                        { q: "¿Qué tratado puso fin a la guerra?", opts: ["Córdoba.", "Guadalupe Hidalgo.", "Velasco.", "Mesilla."], correct: 1, why: "Firmado en 1848." },
+                        { q: "¿Qué territorio perdió México?", opts: ["Texas solamente.", "Más de la mitad (Alta California, NM).", "Yucatán.", "Baja California."], correct: 1, why: "55% del territorio nacional." },
+                        { q: "¿Qué río se fijó como frontera?", opts: ["Nueces.", "Bravo.", "Colorado.", "Misisipi."], correct: 1, why: "Límite sur de Texas." },
+                        { q: "¿Qué batalla ocurrió en la CDMX?", opts: ["Puebla.", "Castillo de Chapultepec.", "Alhóndiga.", "Celaya."], correct: 1, why: "Mito de los Niños Héroes." },
+                        { q: "¿Quién era presidente durante la guerra?", opts: ["Juárez.", "Santa Anna (intermitente).", "Díaz.", "Iturbide."], correct: 1, why: "Dirigió la defensa fallida." },
+                        { q: "¿Qué sentimiento dejó la guerra?", opts: ["Alegría.", "Trauma y desconfianza hacia EEUU.", "Amistad.", "Indiferencia."], correct: 1, why: "Marcó la relación bilateral." },
+                        { q: "¿Cuánto pagó EEUU por los territorios?", opts: ["Nada.", "15 millones de pesos.", "100 millones.", "1 peso."], correct: 1, why: "Una compensación irrisoria." },
+                        { q: "¿Qué estado se salvó de ser anexado?", opts: ["California.", "Baja California.", "Nuevo México.", "Arizona."], correct: 1, why: "EEUU quería la península pero se negoció." }
+                    ]
+                },
+                {
+                    title: "8.3 Intervención Francesa",
+                    keyword: "maximilian of habsburg emperor",
+                    qs: [
+                        { q: "¿Qué causó la intervención?", opts: ["Suspensión de pagos de deuda.", "Insulto al Rey.", "Ataque a Francia.", "Robo."], correct: 0, why: "Juárez decretó moratoria de pagos." },
+                        { q: "¿Quién apoyó la intervención?", opts: ["Liberales.", "Conservadores.", "Indígenas.", "EEUU."], correct: 1, why: "Querían una monarquía para poner orden." },
+                        { q: "¿Quién fue impuesto como Emperador?", opts: ["Napoleón III.", "Maximiliano de Habsburgo.", "Francisco José.", "Iturbide."], correct: 1, why: "Archiduque austriaco." },
+                        { q: "¿Qué batalla famosa ganó México?", opts: ["5 de Mayo (Puebla).", "Waterloo.", "Álamo.", "San Jacinto."], correct: 0, why: "Zaragoza derrotó a los franceses en 1862." },
+                        { q: "¿Cuánto duró el Segundo Imperio?", opts: ["1 año.", "1864-1867.", "10 años.", "100 años."], correct: 1, why: "Tres años de gobierno." },
+                        { q: "¿Por qué se retiró Francia?", opts: ["Miedo.", "Presión de EEUU y guerra con Prusia.", "Amistad.", "Calor."], correct: 1, why: "Napoleón III necesitaba sus tropas." },
+                        { q: "¿Cuál fue el destino de Maximiliano?", opts: ["Huyó.", "Fue fusilado en el Cerro de las Campanas.", "Regresó a Austria.", "Gobernó hasta morir."], correct: 1, why: "Juárez aplicó la ley." },
+                        { q: "¿Qué gobierno defendía Juárez?", opts: ["La República.", "La Monarquía.", "La Dictadura.", "El Imperio."], correct: 0, why: "República itinerante." },
+                        { q: "¿Qué caracterizó al gobierno de Maximiliano?", opts: ["Fue muy conservador.", "Fue liberal moderado.", "Fue comunista.", "Fue dictatorial."], correct: 1, why: "Decepcionó a los conservadores." },
+                        { q: "¿Quién era la esposa de Maximiliano?", opts: ["Isabel.", "Carlota.", "María.", "Juana."], correct: 1, why: "Emperatriz Carlota." }
+                    ]
+                },
+                {
+                    title: "8.4 Reforma Liberal",
+                    keyword: "benito juarez law",
+                    qs: [
+                        { q: "¿Qué grupo impulsó la Reforma?", opts: ["Conservadores.", "Liberales.", "Iglesia.", "Ejército."], correct: 1, why: "Buscaban modernizar el país." },
+                        { q: "¿Qué Constitución surgió?", opts: ["1824.", "1857.", "1917.", "1812."], correct: 1, why: "Liberal y federalista." },
+                        { q: "¿Cuál era el objetivo principal?", opts: ["Crear una monarquía.", "Separar Iglesia y Estado.", "Unirse a EEUU.", "Volver a España."], correct: 1, why: "Estado laico." },
+                        { q: "¿Qué ley quitó bienes a la Iglesia?", opts: ["Ley Juárez.", "Ley Lerdo (Desamortización).", "Ley Iglesias.", "Ley Calles."], correct: 1, why: "Poner bienes en circulación." },
+                        { q: "¿Qué ley quitó el fuero militar y eclesiástico?", opts: ["Ley Juárez.", "Ley Lerdo.", "Ley Iglesias.", "Ley Ocampo."], correct: 0, why: "Igualdad ante la ley." },
+                        { q: "¿Qué registro civil se creó?", opts: ["De mascotas.", "De nacimientos, matrimonios y defunciones.", "De autos.", "De casas."], correct: 1, why: "El Estado tomaba el control de la vida civil." },
+                        { q: "¿Quién fue el líder de la Reforma?", opts: ["Santa Anna.", "Benito Juárez.", "Iturbide.", "Miramón."], correct: 1, why: "El Benemérito de las Américas." },
+                        { q: "¿Qué guerra provocó la Reforma?", opts: ["Guerra de los Pasteles.", "Guerra de Reforma (Tres Años).", "Revolución.", "Independencia."], correct: 1, why: "Liberales vs Conservadores." },
+                        { q: "¿Qué se estableció sobre la religión?", opts: ["Prohibida.", "Libertad de cultos.", "Obligatoria.", "Única."], correct: 1, why: "Fin del monopolio católico." },
+                        { q: "¿Qué pasó con los cementerios?", opts: ["Se cerraron.", "Pasaron a control del Estado (secularización).", "Solo para ricos.", "Nada."], correct: 1, why: "Quitados a la Iglesia." }
+                    ]
+                },
+                {
+                    title: "8.7 El Porfiriato",
+                    keyword: "porfirio diaz old train mexico",
+                    qs: [
+                        { q: "¿Quién gobernó durante este periodo?", opts: ["Juárez.", "Porfirio Díaz.", "Madero.", "Carranza."], correct: 1, why: "Más de 30 años en el poder." },
+                        { q: "¿Cuál fue el lema del Porfiriato?", opts: ["Tierra y Libertad.", "Sufragio Efectivo.", "Orden y Progreso.", "La Patria es Primero."], correct: 2, why: "Paz para el desarrollo." },
+                        { q: "¿Cómo logró la estabilidad política?", opts: ["Democracia.", "Conciliación y represión.", "Votaciones.", "Diálogo puro."], correct: 1, why: "Pan o palo." },
+                        { q: "¿Qué avance tecnológico definió la época?", opts: ["Aviones.", "Ferrocarriles.", "Internet.", "Coches."], correct: 1, why: "Conectó el mercado nacional." },
+                        { q: "¿De qué países vino la inversión?", opts: ["Rusia.", "Francia, Inglaterra, EEUU.", "China.", "Brasil."], correct: 1, why: "Capital extranjero." },
+                        { q: "¿Cómo estaban las finanzas públicas?", opts: ["En quiebra.", "Saneadas (Superávit).", "Igual.", "Mal."], correct: 1, why: "Gracias a Limantour." },
+                        { q: "¿Qué grupo intelectual apoyaba a Díaz?", opts: ["Los Científicos.", "Los Jacobinos.", "Los Rojos.", "Los Curas."], correct: 0, why: "Positivistas." },
+                        { q: "¿Qué problema social creció?", opts: ["Igualdad.", "Desigualdad y miseria.", "Justicia.", "Educación para todos."], correct: 1, why: "Riqueza concentrada." },
+                        { q: "¿Qué pasó con las tierras indígenas?", opts: ["Se protegieron.", "Fueron despojadas por haciendas.", "Se repartieron.", "Aumentaron."], correct: 1, why: "Expansión de latifundios." },
+                        { q: "¿Cómo era la democracia?", opts: ["Real.", "Simulada (Reelección indefinida).", "Directa.", "Perfecta."], correct: 1, why: "Díaz se reelegía siempre." }
+                    ]
+                },
+                {
+                    title: "8.8 Huelgas y Represión",
+                    keyword: "cananea strike miners 1906",
+                    qs: [
+                        { q: "¿Qué huelga minera ocurrió en 1906?", opts: ["Río Blanco.", "Cananea.", "Puebla.", "CDMX."], correct: 1, why: "Sonora, minas de cobre." },
+                        { q: "¿Qué huelga textil ocurrió en 1907?", opts: ["Cananea.", "Río Blanco.", "Veracruz.", "Tizapán."], correct: 1, why: "Veracruz, fábricas textiles." },
+                        { q: "¿Qué pedían los obreros?", opts: ["Ser dueños.", "Mejores salarios y condiciones.", "Vacaciones.", "Nada."], correct: 1, why: "Explotación laboral extrema." },
+                        { q: "¿Cómo respondió el gobierno?", opts: ["Aceptó.", "Represión violenta.", "Negoció.", "Ignoró."], correct: 1, why: "Uso del ejército." },
+                        { q: "¿Qué demostraron estas huelgas?", opts: ["Que todo estaba bien.", "El colapso social del Porfiriato.", "Que Díaz era bueno.", "Que los obreros eran ricos."], correct: 1, why: "Fueron antecedentes de la Revolución." },
+                        { q: "¿Quiénes influyeron ideológicamente?", opts: ["Hermanos Flores Magón.", "Los Científicos.", "La Iglesia.", "EEUU."], correct: 0, why: "Partido Liberal Mexicano." },
+                        { q: "¿Había sindicatos libres?", opts: ["Sí.", "No, estaban prohibidos.", "A veces.", "Muchos."], correct: 1, why: "No existía derecho de asociación." },
+                        { q: "¿Qué pasó con los líderes?", opts: ["Premiados.", "Encarcelados o muertos.", "Electos.", "Exiliados felices."], correct: 1, why: "Persecución política." },
+                        { q: "¿Qué relación tenían con EEUU?", opts: ["Ninguna.", "Empresas dueñas extranjeras.", "Amistad.", "Guerra."], correct: 1, why: "Discriminación salarial vs gringos." },
+                        { q: "¿Por qué son importantes?", opts: ["Son anécdotas.", "Chispa de la Revolución.", "No importan.", "Son mentira."], correct: 1, why: "Despertar obrero." }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 4, 
+            title: "Revolución", 
+            desc: "Tema 9: Lucha Armada e Instituciones",
+            imgKeyword: "emiliano zapata mexican revolution horse",
+            missions: [
+                {
+                    title: "9.1 Maderismo",
+                    keyword: "francisco i madero portrait",
+                    qs: [
+                        { q: "¿Quién desafió a Díaz en 1910?", opts: ["Zapata.", "Francisco I. Madero.", "Villa.", "Obregón."], correct: 1, why: "Líder antirreeleccionista." },
+                        { q: "¿Qué plan inició la Revolución?", opts: ["Ayala.", "San Luis.", "Guadalupe.", "Noria."], correct: 1, why: "Llamado a las armas el 20 de nov." },
+                        { q: "¿Cuál era el lema de Madero?", opts: ["Tierra y Libertad.", "Sufragio Efectivo, No Reelección.", "México para los mexicanos.", "Paz y Justicia."], correct: 1, why: "Enfoque democrático político." },
+                        { q: "¿Qué logró Madero en 1911?", opts: ["Nada.", "La renuncia y exilio de Díaz.", "Morir.", "Ser dictador."], correct: 1, why: "Tratados de Ciudad Juárez." },
+                        { q: "¿Qué tipo de revolución buscaba Madero?", opts: ["Social.", "Política.", "Económica.", "Religiosa."], correct: 1, why: "Quería democracia, no cambios sociales profundos." },
+                        { q: "¿Qué pasó con Madero?", opts: ["Gobernó 30 años.", "Fue asesinado (Decena Trágica).", "Huyó.", "Se retiró."], correct: 1, why: "Golpe de estado de Huerta." },
+                        { q: "¿Quién traicionó a Madero?", opts: ["Zapata.", "Victoriano Huerta.", "Villa.", "Carranza."], correct: 1, why: "El Usurpador." },
+                        { q: "¿Por qué falló Madero?", opts: ["Era malo.", "Mantuvo la estructura porfirista y no hizo reformas sociales.", "Era pobre.", "No quiso."], correct: 1, why: "Decepcionó a campesinos (Zapata)." },
+                        { q: "¿Qué libro escribió Madero?", opts: ["La Sucesión Presidencial en 1910.", "México Bárbaro.", "El llano en llamas.", "La Revolución."], correct: 0, why: "Crítica a Díaz." },
+                        { q: "¿Quién fue su vicepresidente?", opts: ["Suárez.", "Pino Suárez.", "Carranza.", "Obregón."], correct: 1, why: "Asesinado junto a él." }
+                    ]
+                },
+                {
+                    title: "9.2 Facciones Revolucionarias",
+                    keyword: "pancho villa army train",
+                    qs: [
+                        { q: "¿Dónde operaba Zapata?", opts: ["Norte.", "Sur (Morelos).", "Costa.", "Selva."], correct: 1, why: "Ejército Libertador del Sur." },
+                        { q: "¿Qué plan lanzó Zapata?", opts: ["San Luis.", "Ayala.", "Guadalupe.", "Texcoco."], correct: 1, why: "Desconoció a Madero." },
+                        { q: "¿Qué exigía Zapata?", opts: ["Votos.", "Restitución de tierras.", "Armas.", "Dinero."], correct: 1, why: "Reforma agraria." },
+                        { q: "¿Dónde operaba Villa?", opts: ["Sur.", "Norte (Chihuahua).", "Centro.", "Mar."], correct: 1, why: "División del Norte." },
+                        { q: "¿Qué caracterizaba al Villismo?", opts: ["Legalidad.", "Fuerza popular y carga de caballería.", "Política.", "Religión."], correct: 1, why: "Movimiento popular masivo." },
+                        { q: "¿Quién lideraba el Constitucionalismo?", opts: ["Villa.", "Venustiano Carranza.", "Zapata.", "Huerta."], correct: 1, why: "Buscaba restaurar la legalidad." },
+                        { q: "¿Qué plan lanzó Carranza?", opts: ["Ayala.", "Guadalupe.", "San Luis.", "Noria."], correct: 1, why: "Contra Huerta." },
+                        { q: "¿Qué facción ganó?", opts: ["Villistas.", "Constitucionalistas.", "Zapatistas.", "Huertistas."], correct: 1, why: "Impulsaron la Constitución de 1917." },
+                        { q: "¿Qué Convención intentó unirlos?", opts: ["Aguascalientes.", "Querétaro.", "CDMX.", "Morelos."], correct: 0, why: "Fracasó, siguió la guerra." },
+                        { q: "¿Quién era el 'Centauro del Norte'?", opts: ["Zapata.", "Pancho Villa.", "Carranza.", "Obregón."], correct: 1, why: "Apodo famoso." }
+                    ]
+                },
+                {
+                    title: "9.3 Constitución de 1917",
+                    keyword: "mexican constitution 1917 book",
+                    qs: [
+                        { q: "¿Dónde se promulgó?", opts: ["CDMX.", "Querétaro.", "Guadalajara.", "Puebla."], correct: 1, why: "Teatro de la República." },
+                        { q: "¿Qué la hizo pionera en el mundo?", opts: ["Ser corta.", "Incluir derechos sociales.", "Ser religiosa.", "Ser monárquica."], correct: 1, why: "Antes que la rusa o Weimar." },
+                        { q: "¿Artículo sobre educación?", opts: ["27.", "3.", "123.", "130."], correct: 1, why: "Laica, gratuita y obligatoria." },
+                        { q: "¿Artículo sobre tierra?", opts: ["3.", "27.", "123.", "1."], correct: 1, why: "Propiedad de la Nación." },
+                        { q: "¿Artículo sobre trabajo?", opts: ["3.", "27.", "123.", "5."], correct: 2, why: "Derechos laborales." },
+                        { q: "¿Qué relación estableció Iglesia-Estado?", opts: ["Unión.", "Separación estricta y control.", "Amistad.", "Indiferencia."], correct: 1, why: "Anticlerical." },
+                        { q: "¿Quién era presidente al promulgarla?", opts: ["Madero.", "Carranza.", "Villa.", "Obregón."], correct: 1, why: "Primer Jefe." },
+                        { q: "¿Sigue vigente?", opts: ["No.", "Sí, con muchas reformas.", "A veces.", "Se olvidó."], correct: 1, why: "Es la ley suprema actual." },
+                        { q: "¿Qué pasó con la reelección?", opts: ["Se permitió.", "Se prohibió.", "Se dudó.", "Nada."], correct: 1, why: "Principio revolucionario." },
+                        { q: "¿Qué garantiza el Art. 123?", opts: ["Huelga, jornada 8h.", "Tierra.", "Escuela.", "Voto."], correct: 0, why: "Protección al obrero." }
+                    ]
+                },
+                {
+                    title: "9.5 Caudillismo a Instituciones",
+                    keyword: "plutarco elias calles",
+                    qs: [
+                        { q: "¿Qué es el caudillismo?", opts: ["Democracia.", "Poder de líderes militares carismáticos.", "Monarquía.", "Leyes."], correct: 1, why: "Poder personalista." },
+                        { q: "¿Quién fue el 'Jefe Máximo'?", opts: ["Obregón.", "Plutarco Elías Calles.", "Cárdenas.", "Madero."], correct: 1, why: "Controlaba presidentes títeres." },
+                        { q: "¿Qué partido fundó Calles en 1929?", opts: ["PRI.", "PNR.", "PRM.", "PAN."], correct: 1, why: "Abuelo del PRI." },
+                        { q: "¿Cuál era el objetivo del PNR?", opts: ["Guerra.", "Pasar de caudillos a instituciones.", "Religión.", "Dinero."], correct: 1, why: "Evitar violencia por sucesión." },
+                        { q: "¿Qué periodo controló Calles?", opts: ["Porfiriato.", "Maximato.", "Cardenismo.", "Reforma."], correct: 1, why: "1928-1934." },
+                        { q: "¿Qué guerra religiosa ocurrió?", opts: ["Reforma.", "Cristera.", "Pasteles.", "Independencia."], correct: 1, why: "Por leyes anticlericales." },
+                        { q: "¿Quién acabó con el Maximato?", opts: ["Obregón.", "Lázaro Cárdenas.", "Ávila Camacho.", "Nadie."], correct: 1, why: "Expulsó a Calles." },
+                        { q: "¿Qué organizaciones creó el sistema?", opts: ["Clubes.", "Corporativas (CNC, CTM).", "Religiosas.", "Deportivas."], correct: 1, why: "Control de obreros y campesinos." },
+                        { q: "¿Cómo se elegía al sucesor?", opts: ["Voto real.", "Dedazo.", "Sorteo.", "Guerra."], correct: 1, why: "El presidente elegía." },
+                        { q: "¿Qué logró el sistema de partido único?", opts: ["Democracia.", "Estabilidad política autoritaria.", "Caos.", "Pobreza."], correct: 1, why: "Paz priista." }
+                    ]
+                },
+                {
+                    title: "9.6 Cardenismo",
+                    keyword: "lazaro cardenas oil expropriation",
+                    qs: [
+                        { q: "¿Qué caracterizó a Cárdenas?", opts: ["Conservador.", "Reformas sociales profundas.", "Pasividad.", "Pro-EEUU."], correct: 1, why: "Cumplió promesas revolucionarias." },
+                        { q: "¿Qué hizo con la tierra?", opts: ["La vendió.", "Reparto agrario masivo (Ejidos).", "La quitó.", "Nada."], correct: 1, why: "Mayor reparto en la historia." },
+                        { q: "¿Qué hito ocurrió en 1938?", opts: ["Mundial.", "Expropiación Petrolera.", "Terremoto.", "Guerra."], correct: 1, why: "Nacionalización." },
+                        { q: "¿Qué empresa creó?", opts: ["Telmex.", "PEMEX.", "CFE.", "Televisa."], correct: 1, why: "Petróleos Mexicanos." },
+                        { q: "¿Qué tipo de educación impulsó?", opts: ["Religiosa.", "Socialista.", "Privada.", "Ninguna."], correct: 1, why: "Modificó el Art 3." },
+                        { q: "¿A quiénes apoyó en la Guerra Civil Española?", opts: ["Franco.", "A los republicanos (Exiliados).", "Nadie.", "Alemania."], correct: 1, why: "Recibió refugiados." },
+                        { q: "¿Cómo transformó el PNR?", opts: ["Lo cerró.", "En PRM (sectores).", "En PAN.", "En Morena."], correct: 1, why: "Incorporó masas al partido." },
+                        { q: "¿Cuál era su base de apoyo?", opts: ["Empresarios.", "Obreros y campesinos.", "Iglesia.", "Extranjeros."], correct: 1, why: "Pacto corporativo." },
+                        { q: "¿Qué edificio presidencial dejó de usar?", opts: ["Palacio.", "Castillo de Chapultepec.", "Pinos.", "Rancho."], correct: 1, why: "Lo hizo museo, se mudó a Los Pinos." },
+                        { q: "¿Qué ideología tenía?", opts: ["Nacionalismo revolucionario.", "Neoliberalismo.", "Fascismo.", "Anarquismo."], correct: 0, why: "Estado fuerte." }
+                    ]
+                },
+                {
+                    title: "9.7 Milagro Mexicano",
+                    keyword: "mexico city 1950s industry",
+                    qs: [
+                        { q: "¿Qué modelo económico se usó?", opts: ["Neoliberal.", "Sustitución de Importaciones (ISI).", "Libre mercado.", "Comunista."], correct: 1, why: "Producir aquí lo que se compraba fuera." },
+                        { q: "¿Qué evento internacional ayudó?", opts: ["WWI.", "Segunda Guerra Mundial.", "Guerra Fría.", "Vietnam."], correct: 1, why: "EEUU necesitaba productos." },
+                        { q: "¿Qué significa 'Milagro Mexicano'?", opts: ["Un santo.", "Crecimiento económico sostenido (6%).", "Suerte.", "Paz."], correct: 1, why: "Estabilidad y crecimiento." },
+                        { q: "¿Qué sector creció más?", opts: ["Campo.", "Industria.", "Pesca.", "Artesanía."], correct: 1, why: "Industrialización." },
+                        { q: "¿Qué fenómeno demográfico ocurrió?", opts: ["Muerte.", "Urbanización (Campo a Ciudad).", "Migración a Europa.", "Nada."], correct: 1, why: "Crecieron las ciudades." },
+                        { q: "¿Qué política aplicaba el Estado?", opts: ["Proteccionismo.", "Apertura.", "Abandono.", "Venta."], correct: 0, why: "Aranceles altos a lo extranjero." },
+                        { q: "¿Hasta cuándo duró?", opts: ["1950.", "Hasta 1970/82.", "2000.", "Sigue."], correct: 1, why: "Agotamiento del modelo." },
+                        { q: "¿Qué problema generó?", opts: ["Riqueza.", "Desigualdad y deuda.", "Felicidad.", "Salud."], correct: 1, why: "Campo abandonado." },
+                        { q: "¿Qué movimiento artístico acompañó?", opts: ["Barroco.", "Muralismo.", "Cubismo.", "Pop."], correct: 1, why: "Nacionalismo cultural." },
+                        { q: "¿Quién era el vecino aliado?", opts: ["Cuba.", "EEUU.", "España.", "Rusia."], correct: 1, why: "Integración económica." }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 5, 
+            title: "Era Global", 
+            desc: "Tema 10: Neoliberalismo y Democracia",
+            imgKeyword: "mexico city skyline modern reforma",
+            missions: [
+                {
+                    title: "10.1 Neoliberalismo",
+                    keyword: "mexican stock exchange building",
+                    qs: [
+                        { q: "¿Cuándo inició?", opts: ["1910.", "1982 (Miguel de la Madrid).", "2000.", "1940."], correct: 1, why: "Tras la crisis de la deuda." },
+                        { q: "¿Qué propone?", opts: ["Estado grande.", "Reducción del Estado y libre mercado.", "Socialismo.", "Cerrar todo."], correct: 1, why: "Menos intervención estatal." },
+                        { q: "¿Qué se hizo con las empresas estatales?", opts: ["Se crearon más.", "Privatización (Venta).", "Se regalaron.", "Nada."], correct: 1, why: "Venta de Telmex, bancos, etc." },
+                        { q: "¿Qué pasó con las fronteras?", opts: ["Se cerraron.", "Apertura comercial (GATT/TLC).", "Muros.", "Guerra."], correct: 1, why: "Competencia global." },
+                        { q: "¿Quiénes eran los 'Tecnócratas'?", opts: ["Militares.", "Economistas educados en el extranjero.", "Artistas.", "Obreros."], correct: 1, why: "Dirigieron el cambio." },
+                        { q: "¿Qué crisis precedió al cambio?", opts: ["1968.", "Crisis de 1982 (Deuda).", "1994.", "2008."], correct: 1, why: "Quiebra del modelo anterior." },
+                        { q: "¿Qué impacto tuvo en el salario?", opts: ["Subió.", "Pérdida de poder adquisitivo.", "Igual.", "Millonarios."], correct: 1, why: "Contención salarial." },
+                        { q: "¿Qué programa social surgió?", opts: ["Oportunidades/Solidaridad.", "Ninguno.", "Vales.", "Bonos."], correct: 0, why: "Para paliar la pobreza." },
+                        { q: "¿Qué presidente firmó el TLC?", opts: ["De la Madrid.", "Salinas de Gortari.", "Zedillo.", "Fox."], correct: 1, why: "Impulsor clave." },
+                        { q: "¿Qué crítica se le hace?", opts: ["Genera riqueza.", "Aumenta desigualdad y pobreza.", "Es perfecto.", "Es rojo."], correct: 1, why: "Concentración de riqueza." }
+                    ]
+                },
+                {
+                    title: "10.2 TLCAN",
+                    keyword: "nafta flags trade trucks",
+                    qs: [
+                        { q: "¿Qué significa TLCAN?", opts: ["Tratado de Libre Comercio de América del Norte.", "Todos Los Coches.", "Tratado Latino.", "Comercio Nuevo."], correct: 0, why: "NAFTA en inglés." },
+                        { q: "¿Cuándo entró en vigor?", opts: ["1988.", "1 de enero de 1994.", "2000.", "1910."], correct: 1, why: "Mismo día del EZLN." },
+                        { q: "¿Quiénes lo firmaron?", opts: ["México, España.", "México, EEUU, Canadá.", "México, Brasil.", "Solo EEUU."], correct: 1, why: "Bloque norteamericano." },
+                        { q: "¿Cuál era el objetivo?", opts: ["Guerra.", "Crear zona de libre comercio.", "Política.", "Moneda única."], correct: 1, why: "Eliminar aranceles." },
+                        { q: "¿Qué sector sufrió más?", opts: ["Industria.", "Pequeños agricultores (Maíz).", "Bancos.", "Turismo."], correct: 1, why: "No podían competir con EEUU." },
+                        { q: "¿Qué sector creció?", opts: ["Manufactura/Exportación.", "Artesanía.", "Pesca.", "Nada."], correct: 0, why: "Maquiladoras." },
+                        { q: "¿Qué dependencia generó?", opts: ["Hacia Europa.", "Hacia el mercado de EEUU.", "Hacia Asia.", "Ninguna."], correct: 1, why: "80% de exportaciones a EEUU." },
+                        { q: "¿Qué modernizó?", opts: ["Leyes.", "La economía y estándares.", "Religión.", "Idioma."], correct: 1, why: "Reglas claras." },
+                        { q: "¿Fue polémico?", opts: ["No.", "Sí, mucho.", "Nadie supo.", "Poco."], correct: 1, why: "Debate soberanía vs mercado." },
+                        { q: "¿Sigue vigente?", opts: ["No.", "Renegociado como T-MEC.", "Tal cual.", "Se canceló."], correct: 1, why: "Actualizado en 2020." }
+                    ]
+                },
+                {
+                    title: "10.3 Democracia / IFE",
+                    keyword: "voting mexico ife ine",
+                    qs: [
+                        { q: "¿Qué institución se creó en 1990?", opts: ["CFE.", "IFE (hoy INE).", "IMSS.", "SEP."], correct: 1, why: "Árbitro electoral." },
+                        { q: "¿Por qué se creó?", opts: ["Por gusto.", "Tras el fraude de 1988.", "Para gastar.", "Por moda."], correct: 1, why: "Crisis de legitimidad." },
+                        { q: "¿Qué característica clave tiene?", opts: ["Es del gobierno.", "Autonomía.", "Es militar.", "Es religioso."], correct: 1, why: "No depende del Presidente." },
+                        { q: "¿Qué reforma fue clave en 1996?", opts: ["Económica.", "Autonomía total del IFE.", "Educativa.", "Fiscal."], correct: 1, why: "Conseajeros ciudadanos." },
+                        { q: "¿Qué pasó en el año 2000?", opts: ["Fin del mundo.", "Alternancia (Ganó Fox/PAN).", "Ganó PRI.", "Golpe."], correct: 1, why: "Fin de 71 años de PRI." },
+                        { q: "¿Qué es la alternancia?", opts: ["Cambio de partido en el poder.", "Cambio de nombre.", "Votar.", "Nada."], correct: 0, why: "Prueba de democracia." },
+                        { q: "¿Quién organizaba elecciones antes?", opts: ["El pueblo.", "Secretaría de Gobernación (Gobierno).", "La Iglesia.", "Nadie."], correct: 1, why: "Juez y parte." },
+                        { q: "¿Qué documento expide?", opts: ["Pasaporte.", "Credencial para votar.", "Licencia.", "Acta."], correct: 1, why: "Identidad ciudadana." },
+                        { q: "¿Qué se logró?", opts: ["Elecciones confiables.", "Fraudes.", "Caos.", "Dictadura."], correct: 0, why: "Certeza en resultados." },
+                        { q: "¿Es perfecto?", opts: ["Sí.", "No, es perfectible.", "Es malo.", "No sirve."], correct: 1, why: "En constante reforma." }
+                    ]
+                },
+                {
+                    title: "10.4 Movimientos Sociales",
+                    keyword: "zapatista ezln chiapas 1994",
+                    qs: [
+                        { q: "¿Qué movimiento ocurrió en 1968?", opts: ["Obrero.", "Estudiantil.", "Campesino.", "Militar."], correct: 1, why: "Jóvenes universitarios." },
+                        { q: "¿Qué pedían los estudiantes?", opts: ["Dinero.", "Fin del autoritarismo y libertades.", "Viajes.", "Fiestas."], correct: 1, why: "Democracia." },
+                        { q: "¿Cómo terminó el 68?", opts: ["Bien.", "Matanza de Tlatelolco (2 oct).", "Acuerdo.", "Olvido."], correct: 1, why: "Represión brutal." },
+                        { q: "¿Qué grupo se levantó en 1994?", opts: ["EPR.", "EZLN (Zapatistas).", "YoSoy132.", "PAN."], correct: 1, why: "Indígenas en Chiapas." },
+                        { q: "¿Qué demandaba el EZLN?", opts: ["Poder.", "Techo, tierra, trabajo, democracia.", "Aviones.", "Mar."], correct: 1, why: "Derechos indígenas." },
+                        { q: "¿Quién era su vocero?", opts: ["Marcos.", "Durito.", "Pedro.", "Juan."], correct: 0, why: "Subcomandante Marcos." },
+                        { q: "¿Qué cuestionaron estos movimientos?", opts: ["La comida.", "El sistema político y económico.", "El clima.", "El fútbol."], correct: 1, why: "La hegemonía del PRI/Neoliberalismo." },
+                        { q: "¿Qué papel jugó la sociedad civil?", opts: ["Nulo.", "Despertar y participación.", "Dormir.", "Miedo."], correct: 1, why: "Terremoto 85 y movimientos." },
+                        { q: "¿Qué lograron?", opts: ["Nada.", "Apertura democrática y visibilidad.", "Guerra.", "Riqueza."], correct: 1, why: "Presión para cambios." },
+                        { q: "¿Son importantes?", opts: ["No.", "Sí, motores de cambio.", "A veces.", "Quizás."], correct: 1, why: "Conciencia social." }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    let currentWorld = null;
+    let currentMission = null;
+    let qIndex = 0;
+    let score = 0;
+
+    window.onload = () => renderWorlds();
+
+    function getThemeImage(keyword) {
+        return `https://image.pollinations.ai/prompt/${encodeURIComponent(keyword)}%20realistic%20historical%20cinematic%20lighting?width=600&height=400&nologo=true`;
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function renderWorlds() {
+        const grid = document.getElementById('worlds-grid');
+        grid.innerHTML = '';
+        database.forEach(w => {
+            const card = document.createElement('div');
+            card.className = 'world-card';
+            // Imagen generada dinámicamente
+            const imgUrl = getThemeImage(w.imgKeyword);
+            
+            card.innerHTML = `
+                <img src="${imgUrl}" class="card-image" alt="${w.title}" loading="lazy">
+                <div class="card-content">
+                    <span class="world-title">${w.title}</span>
+                    <span class="world-desc">${w.desc}</span>
+                </div>
+            `;
+            card.onclick = () => loadMissions(w);
+            grid.appendChild(card);
+        });
+    }
+
+    function loadMissions(world) {
+        currentWorld = world;
+        // Configurar Header Visual
+        const bgImg = document.getElementById('mission-bg-img');
+        bgImg.src = getThemeImage(world.imgKeyword + " wallpaper"); // Imagen más amplia
+        
+        document.getElementById('world-title-display').innerText = world.title;
+        
+        const list = document.getElementById('missions-list');
+        list.innerHTML = '';
+
+        world.missions.forEach(m => {
+            const btn = document.createElement('div');
+            btn.className = 'mission-btn';
+            btn.innerHTML = `<span>${m.title}</span> <span class="arrow-icon">➜</span>`;
+            btn.onclick = () => startQuiz(m);
+            list.appendChild(btn);
+        });
+
+        showScreen('screen-missions');
+    }
+
+    function backToMissions() {
+        if(currentWorld) loadMissions(currentWorld);
+        else showScreen('screen-worlds');
+    }
+
+    function startQuiz(mission) {
+        currentMission = mission;
+        qIndex = 0;
+        score = 0;
+        showScreen('screen-game');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const qData = currentMission.qs[qIndex];
+        
+        document.getElementById('question-text').innerText = qData.q;
+        document.getElementById('q-counter').innerText = `${qIndex + 1} / ${currentMission.qs.length}`;
+        
+        document.getElementById('feedback-area').style.display = 'none';
+        const optsContainer = document.getElementById('options-container');
+        optsContainer.style.pointerEvents = 'auto';
+        optsContainer.innerHTML = '';
+
+        // Barra de progreso
+        const pct = ((qIndex) / currentMission.qs.length) * 100;
+        document.getElementById('progress-fill').style.width = pct + '%';
+
+        qData.opts.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(idx, qData.correct, qData.why, btn);
+            optsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct, explanation, btn) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById('options-container').style.pointerEvents = 'none';
+
+        const fbArea = document.getElementById('feedback-area');
+        const fbTitle = document.getElementById('fb-title');
+        
+        if(selected === correct) {
+            btn.classList.add('correct');
+            fbArea.style.borderLeftColor = "var(--success)";
+            fbTitle.innerHTML = "✅ Correcto";
+            fbTitle.style.color = "var(--success)";
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            allBtns[correct].classList.add('correct');
+            fbArea.style.borderLeftColor = "var(--error)";
+            fbTitle.innerHTML = "❌ Incorrecto";
+            fbTitle.style.color = "var(--error)";
+        }
+
+        document.getElementById('fb-text').innerText = explanation;
+        fbArea.style.display = 'block';
+
+        const nextBtn = document.getElementById('btn-next');
+        if(qIndex < currentMission.qs.length - 1) {
+            nextBtn.innerText = "Siguiente →";
+            nextBtn.onclick = nextQuestion;
+        } else {
+            nextBtn.innerText = "Ver Resultados 🏆";
+            nextBtn.onclick = showResults;
+        }
+    }
+
+    function nextQuestion() {
+        qIndex++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        showScreen('screen-result');
+        const pct = Math.round((score / currentMission.qs.length) * 100);
+        document.getElementById('final-score').innerText = pct + "%";
+        document.getElementById('progress-fill').style.width = '100%';
+    }
+</script>
+
+</body>
+</html>

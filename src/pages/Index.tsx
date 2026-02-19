@@ -162,13 +162,23 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <Button
-                onClick={() => navigate("/simulador-pro")}
-                className="h-20 px-10 rounded-3xl bg-primary hover:bg-primary/90 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(var(--primary),0.3)] transition-all hover:scale-105 active:scale-95 group"
-              >
-                ENTRAR AHORA
-                <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
-              </Button>
+              <div className="flex flex-col gap-3 w-full md:w-auto">
+                <Button
+                  onClick={() => navigate("/simulador-pro")}
+                  className="h-20 px-10 rounded-3xl bg-primary hover:bg-primary/90 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(var(--primary),0.3)] transition-all hover:scale-105 active:scale-95 group"
+                >
+                  SIMULADOR REAL
+                  <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => window.open("/studio/nguia.html", "_blank")}
+                  className="h-14 rounded-2xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-400 group transition-all"
+                >
+                  CONSOLA STUDIO (PRO)
+                  <Zap className="ml-2 h-4 w-4 text-yellow-500 group-hover:scale-125 transition-transform" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,4029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Química ECOEMS 2026 | Ciencias III - Química</title>
+    
+    <!-- METADATOS SEO -->
+    <meta name="description" content="Guía completa de Química para ECOEMS 2026 basada en Ciencias III: 3 bloques con 150 preguntas especializadas por temas y subíndices.">
+    <meta name="keywords" content="ECOEMS 2026, Química, Ciencias III, preparación exámenes, guía química, IPN, UNAM">
+    <meta name="author" content="CyberEdu MX & QuímicaReto Academy">
+    
+    <!-- ESTILOS COMPLETOS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --chem-blue: #0066cc;
+            --chem-blue-dark: #004d99;
+            --chem-purple: #9933ff;
+            --chem-red: #ff3333;
+            --chem-orange: #ff6600;
+            --chem-yellow: #ffcc00;
+            --chem-green: #00cc66;
+            --chem-bg: #f9f7ff;
+            --chem-card: #ffffff;
+            --chem-text: #1a0033;
+            --chem-shadow: rgba(102, 0, 204, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Nunito', sans-serif;
+            background: var(--chem-bg);
+            color: var(--chem-text);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(102, 0, 204, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 204, 136, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 102, 0, 0.03) 0%, transparent 30%);
+            min-height: 100vh;
+        }
+        
+        /* Encabezado Principal */
+        .chem-header {
+            background: linear-gradient(135deg, var(--chem-blue-dark), var(--chem-purple));
+            color: white;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 77, 153, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .chem-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                var(--chem-yellow), 
+                var(--chem-blue), 
+                var(--chem-purple),
+                var(--chem-red));
+            animation: header-shine 3s infinite linear;
+        }
+        
+        @keyframes header-shine {
+            0% { background-position: -100px 0; }
+            100% { background-position: 100px 0; }
+        }
+        
+        .chem-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.5px;
+        }
+        
+        .chem-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Contenedor Principal */
+        .chem-container {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            padding: 0 1.5rem;
+        }
+        
+        /* Navegación por Bloques */
+        .blocks-nav {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 3px solid var(--chem-purple);
+            position: relative;
+        }
+        
+        .blocks-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--chem-purple);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .blocks-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .block-tab {
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, #f2e7ff, #ffffff);
+            border: 2px solid #d9c7ff;
+            border-radius: 15px;
+            font-weight: 700;
+            color: var(--chem-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .block-tab:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--chem-shadow);
+        }
+        
+        .block-tab.active {
+            background: linear-gradient(135deg, var(--chem-purple), var(--chem-blue));
+            color: white;
+            border-color: var(--chem-purple);
+            box-shadow: 0 5px 15px rgba(153, 51, 255, 0.3);
+        }
+        
+        /* Grid de Subíndices */
+        .subindices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+        
+        .subindice-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--chem-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .subindice-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--chem-shadow);
+            border-left-color: var(--chem-orange);
+        }
+        
+        .subindice-card.active {
+            background: linear-gradient(135deg, rgba(153, 51, 255, 0.1), rgba(0, 102, 204, 0.1));
+            border-left-color: var(--chem-yellow);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
+        }
+        
+        .subindice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .subindice-code {
+            background: var(--chem-purple);
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+        }
+        
+        .subindice-status {
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            background: rgba(153, 51, 255, 0.1);
+            color: var(--chem-purple);
+        }
+        
+        .subindice-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--chem-text);
+            line-height: 1.3;
+        }
+        
+        .subindice-count {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        /* Panel de Subíndice Seleccionado */
+        .subindice-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--chem-purple);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .subindice-panel.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed var(--chem-purple);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+        }
+        
+        .panel-code {
+            background: var(--chem-blue-dark);
+            color: white;
+            font-weight: 800;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+        }
+        
+        .panel-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: #f2e7ff;
+            border-radius: 12px;
+            border-left: 4px solid var(--chem-yellow);
+        }
+        
+        .panel-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 0.8rem 1.5rem;
+            background: #f2e7ff;
+            border-radius: 12px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Grid de Preguntas */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--chem-purple);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--chem-shadow);
+        }
+        
+        .question-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--chem-purple), var(--chem-blue));
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--chem-purple), var(--chem-blue-dark));
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(153, 51, 255, 0.3);
+        }
+        
+        .question-difficulty {
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+        }
+        
+        .difficulty-facil {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--chem-green);
+            border: 1px solid var(--chem-green);
+        }
+        
+        .difficulty-medio {
+            background: rgba(255, 215, 0, 0.1);
+            color: #cc9900;
+            border: 1px solid var(--chem-yellow);
+        }
+        
+        .difficulty-dificil {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--chem-red);
+            border: 1px solid var(--chem-red);
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            color: var(--chem-text);
+        }
+        
+        /* Opciones de Respuesta */
+        .options-container {
+            display: grid;
+            gap: 0.8rem;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            background: #f2e7ff;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #d9c7ff;
+            font-weight: 500;
+        }
+        
+        .option-label:hover {
+            background: #e6d6ff;
+            transform: translateX(5px);
+            border-color: var(--chem-purple);
+        }
+        
+        .option-label.selected {
+            background: rgba(153, 51, 255, 0.1);
+            border-color: var(--chem-purple);
+            box-shadow: 0 0 0 2px rgba(153, 51, 255, 0.2);
+        }
+        
+        .option-label.correct {
+            background: rgba(0, 204, 136, 0.1);
+            border-color: var(--chem-green);
+            box-shadow: 0 0 0 2px rgba(0, 204, 136, 0.2);
+        }
+        
+        .option-label.incorrect {
+            background: rgba(255, 71, 87, 0.1);
+            border-color: var(--chem-red);
+            box-shadow: 0 0 0 2px rgba(255, 71, 87, 0.2);
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.8rem;
+            height: 1.8rem;
+            background: var(--chem-purple);
+            color: white;
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+        
+        .option-letter.correct {
+            background: var(--chem-green);
+        }
+        
+        .option-letter.incorrect {
+            background: var(--chem-red);
+        }
+        
+        /* Retroalimentación */
+        .feedback-container {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid var(--chem-blue);
+            display: none;
+        }
+        
+        .feedback-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .feedback-title {
+            font-weight: 800;
+            color: var(--chem-blue);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .feedback-content {
+            line-height: 1.6;
+        }
+        
+        .feedback-tips {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid var(--chem-yellow);
+        }
+        
+        .tips-title {
+            font-weight: 700;
+            color: var(--chem-orange);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Panel de Progreso General */
+        .progress-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 3px solid var(--chem-yellow);
+        }
+        
+        .progress-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-stat-card {
+            background: #f2e7ff;
+            border-radius: 15px;
+            padding: 1.2rem;
+            text-align: center;
+            border-top: 4px solid var(--chem-purple);
+        }
+        
+        .progress-stat-card.block-1 {
+            border-top-color: var(--chem-purple);
+        }
+        
+        .progress-stat-card.block-2 {
+            border-top-color: var(--chem-blue);
+        }
+        
+        .progress-stat-card.block-3 {
+            border-top-color: var(--chem-orange);
+        }
+        
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+            margin-bottom: 0.3rem;
+        }
+        
+        .stat-card-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .progress-bars-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .progress-bar-item {
+            margin-bottom: 1rem;
+        }
+        
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .bar-label span:first-child {
+            color: var(--chem-text);
+        }
+        
+        .bar-label span:last-child {
+            color: var(--chem-purple);
+            font-weight: 800;
+        }
+        
+        .bar-bg {
+            height: 10px;
+            background: #d9c7ff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        
+        /* Botones de Control */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .chem-button {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            min-width: 220px;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chem-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .chem-button.primary {
+            background: linear-gradient(135deg, var(--chem-purple), var(--chem-blue-dark));
+            color: white;
+        }
+        
+        .chem-button.secondary {
+            background: linear-gradient(135deg, var(--chem-blue), #0066cc);
+            color: white;
+        }
+        
+        .chem-button.success {
+            background: linear-gradient(135deg, var(--chem-green), #00cc66);
+            color: white;
+        }
+        
+        .chem-button.warning {
+            background: linear-gradient(135deg, var(--chem-yellow), #ffcc00);
+            color: #333;
+        }
+        
+        .chem-button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+        
+        .chem-button:hover::after {
+            left: 120%;
+        }
+        
+        /* Panel de Resultados */
+        .results-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--chem-yellow);
+            display: none;
+        }
+        
+        .results-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .results-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--chem-purple), var(--chem-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 1.5rem 0;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .results-details {
+            margin-top: 2rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .result-item {
+            background: #f2e7ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 4px solid var(--chem-purple);
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--chem-purple);
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-label {
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .chem-footer {
+            background: linear-gradient(135deg, #1a0033, var(--chem-blue-dark));
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            margin-top: 4rem;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--chem-yellow);
+        }
+        
+        .footer-partners {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .partner-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chem-title {
+                font-size: 2rem;
+            }
+            
+            .chem-subtitle {
+                font-size: 1rem;
+            }
+            
+            .blocks-tabs {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-card {
+                padding: 1.2rem;
+            }
+            
+            .chem-button {
+                min-width: 100%;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* Indicador de Carga */
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(153, 51, 255, 0.3);
+            border-top: 4px solid var(--chem-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Notificación */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid var(--chem-green);
+            z-index: 1000;
+            display: none;
+            animation: slideInRight 0.3s ease;
+            max-width: 350px;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification.hide {
+            animation: slideOutRight 0.3s ease;
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Badge de Éxito/Error */
+        .answer-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+        
+        .badge-correct {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--chem-green);
+            border: 1px solid var(--chem-green);
+        }
+        
+        .badge-incorrect {
+            background: rgba(255, 51, 51, 0.1);
+            color: var(--chem-red);
+            border: 1px solid var(--chem-red);
+        }
+        
+        /* Marcador de Tiempo */
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 800;
+            color: var(--chem-purple);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid var(--chem-purple);
+        }
+        
+        /* Contador de Preguntas */
+        .counter-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 800;
+            color: var(--chem-blue);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid var(--chem-blue);
+        }
+        
+        /* Anotaciones del Usuario */
+        .user-notes {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .notes-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--chem-purple);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border: 2px solid #d9c7ff;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--chem-purple);
+            box-shadow: 0 0 0 2px rgba(153, 51, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado Principal -->
+    <header class="chem-header">
+        <h1 class="chem-title">GUÍA COMPLETA DE QUÍMICA ECOEMS 2026</h1>
+        <p class="chem-subtitle">Ciencias III (Química) • 3 bloques • 15 subíndices • 150 preguntas especializadas con retroalimentación</p>
+    </header>
+
+    <!-- Contador de Tiempo y Preguntas -->
+    <div class="timer-display">
+        <span>⏱️</span>
+        <span id="timer">00:00:00</span>
+    </div>
+    
+    <div class="counter-display">
+        <span>📊</span>
+        <span id="question-counter">0/150</span>
+    </div>
+
+    <!-- Contenedor Principal -->
+    <main class="chem-container">
+        <!-- Panel de Progreso General -->
+        <section class="progress-panel">
+            <h2 class="progress-title">📈 PROGRESO GENERAL DE LA GUÍA</h2>
+            
+            <div class="progress-stats">
+                <div class="progress-stat-card block-1">
+                    <div class="stat-card-value" id="total-questions">0/150</div>
+                    <div class="stat-card-label">Preguntas Totales</div>
+                </div>
+                <div class="progress-stat-card block-2">
+                    <div class="stat-card-value" id="correct-answers">0</div>
+                    <div class="stat-card-label">Respuestas Correctas</div>
+                </div>
+                <div class="progress-stat-card block-3">
+                    <div class="stat-card-value" id="accuracy-rate">0%</div>
+                    <div class="stat-card-label">Tasa de Acierto</div>
+                </div>
+                <div class="progress-stat-card block-1">
+                    <div class="stat-card-value" id="time-spent">0m</div>
+                    <div class="stat-card-label">Tiempo Invertido</div>
+                </div>
+            </div>
+
+            <div class="progress-bars-container">
+                <div class="progress-bar-item">
+                    <div class="bar-label">
+                        <span>Bloque 1: Características de los materiales</span>
+                        <span id="block1-progress">0%</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="block1-bar" style="width: 0%; background: var(--chem-purple);"></div>
+                    </div>
+                </div>
+                <div class="progress-bar-item">
+                    <div class="bar-label">
+                        <span>Bloque 2: Estructura y periodicidad</span>
+                        <span id="block2-progress">0%</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="block2-bar" style="width: 0%; background: var(--chem-blue);"></div>
+                    </div>
+                </div>
+                <div class="progress-bar-item">
+                    <div class="bar-label">
+                        <span>Bloque 3: La reacción química</span>
+                        <span id="block3-progress">0%</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="block3-bar" style="width: 0%; background: var(--chem-orange);"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegación por Bloques -->
+        <section class="blocks-nav">
+            <h2 class="blocks-title">🧪 SELECCIONA UN BLOQUE DE ESTUDIO - CIENCIAS III (QUÍMICA)</h2>
+            
+            <div class="blocks-tabs" id="blocks-tabs">
+                <!-- Bloques se generarán dinámicamente con JavaScript -->
+            </div>
+
+            <div class="subindices-grid" id="subindices-grid">
+                <!-- Subíndices se generarán dinámicamente con JavaScript -->
+            </div>
+        </section>
+
+        <!-- Panel de Subíndice Seleccionado -->
+        <div class="subindice-panel" id="subindice-panel">
+            <div class="panel-header">
+                <h3 class="panel-title" id="panel-title">Nombre del Subíndice</h3>
+                <div class="panel-code" id="panel-code">CQ-1.1</div>
+            </div>
+            
+            <div class="panel-description" id="panel-description">
+                Descripción detallada del tema seleccionado.
+            </div>
+            
+            <div class="panel-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="panel-total-questions">0</div>
+                    <div class="stat-label">Preguntas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="panel-correct-answers">0</div>
+                    <div class="stat-label">Correctas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="panel-accuracy">0%</div>
+                    <div class="stat-label">Precisión</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="panel-time">0m</div>
+                    <div class="stat-label">Tiempo estimado</div>
+                </div>
+            </div>
+
+            <!-- Grid de Preguntas -->
+            <div class="questions-grid" id="questions-grid">
+                <!-- Preguntas se generarán dinámicamente con JavaScript -->
+            </div>
+        </div>
+
+        <!-- Botones de Control -->
+        <div class="control-buttons">
+            <button class="chem-button primary" id="check-answers">
+                <span>✅</span>
+                VERIFICAR RESPUESTAS
+            </button>
+            <button class="chem-button secondary" id="show-incorrect">
+                <span>🔍</span>
+                REVISAR INCORRECTAS
+            </button>
+            <button class="chem-button success" id="show-results">
+                <span>📊</span>
+                VER RESULTADOS COMPLETOS
+            </button>
+            <button class="chem-button warning" id="reset-session">
+                <span>🔄</span>
+                REINICIAR SESIÓN
+            </button>
+        </div>
+
+        <!-- Panel de Resultados -->
+        <section class="results-panel" id="results-panel">
+            <div class="results-header">
+                <h2 class="results-title">📊 RESULTADOS DE LA SESIÓN</h2>
+                <p class="results-subtitle">Análisis detallado de tu desempeño en Ciencias III - Química</p>
+            </div>
+
+            <div class="score-display" id="final-score">0/150</div>
+
+            <div class="results-grid">
+                <div class="result-item">
+                    <div class="result-value" id="result-correct">0</div>
+                    <div class="result-label">Respuestas Correctas</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="result-incorrect">0</div>
+                    <div class="result-label">Respuestas Incorrectas</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="result-skipped">0</div>
+                    <div class="result-label">Sin Responder</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="result-percentage">0%</div>
+                    <div class="result-label">Porcentaje de Acierto</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="result-time">0:00</div>
+                    <div class="result-label">Tiempo Total</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-value" id="result-avg-time">0s</div>
+                    <div class="result-label">Tiempo Promedio por Pregunta</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="chem-button primary" id="download-report">
+                    <span>📥</span>
+                    DESCARGAR REPORTE COMPLETO
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="chem-footer">
+        <div class="footer-logo">CyberEdu MX & QuímicaReto Academy</div>
+        <p>Guía Completa de Química ECOEMS 2026 - Ciencias III (Química) • Todos los derechos reservados</p>
+        
+        <div class="footer-partners">
+            <div class="partner-badge">Programa Oficial Ciencias III</div>
+            <div class="partner-badge">ECOEMS 2026</div>
+            <div class="partner-badge">Química de Secundaria</div>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+            Esta guía contiene material educativo basado en el programa oficial de Ciencias III - Química.<br>
+            © 2026 CyberEdu MX - QuímicaReto Academy. Prohibida la reproducción total o parcial.
+        </p>
+    </footer>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <!-- Mensaje se generará dinámicamente -->
+    </div>
+
+    <!-- SCRIPT COMPLETO CON TODAS LAS 150 PREGUNTAS -->
+    <script>
+        // ===================== ESTRUCTURA COMPLETA =====================
+        const chemistryGuide = {
+            title: "GUÍA DE QUÍMICA - CIENCIAS III ECOEMS 2026",
+            totalQuestions: 150,
+            blocks: [
+                {
+                    id: 1,
+                    name: "BLOQUE 1: LAS CARACTERÍSTICAS DE LOS MATERIALES",
+                    color: "purple",
+                    subindices: [
+                        { id: "1.1", code: "CQ-1.1", name: "Características del conocimiento científico", questions: 10, difficulty: "facil" },
+                        { id: "1.2", code: "CQ-1.2", name: "Propiedades de los materiales", questions: 10, difficulty: "facil" },
+                        { id: "1.3", code: "CQ-1.3", name: "Cambios físicos y químicos", questions: 10, difficulty: "facil" },
+                        { id: "1.4", code: "CQ-1.4", name: "Propiedades físicas y caracterización", questions: 10, difficulty: "medio" },
+                        { id: "1.5", code: "CQ-1.5", name: "Conservación de la masa", questions: 10, difficulty: "medio" },
+                        { id: "1.6", code: "CQ-1.6", name: "Métodos de separación", questions: 10, difficulty: "medio" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "BLOQUE 2: ESTRUCTURA Y PERIODICIDAD",
+                    color: "blue",
+                    subindices: [
+                        { id: "2.1", code: "CQ-2.1", name: "Partículas subatómicas", questions: 10, difficulty: "facil" },
+                        { id: "2.2", code: "CQ-2.2", name: "Número atómico y masa", questions: 10, difficulty: "medio" },
+                        { id: "2.3", code: "CQ-2.3", name: "Iones, moléculas y átomos", questions: 10, difficulty: "medio" },
+                        { id: "2.4", code: "CQ-2.4", name: "Estructura de Lewis", questions: 10, difficulty: "dificil" },
+                        { id: "2.5", code: "CQ-2.5", name: "Tabla periódica", questions: 10, difficulty: "medio" },
+                        { id: "2.6", code: "CQ-2.6", name: "Enlace químico", questions: 10, difficulty: "dificil" }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "BLOQUE 3: LA REACCIÓN QUÍMICA",
+                    color: "orange",
+                    subindices: [
+                        { id: "3.1", code: "CQ-3.1", name: "El cambio químico", questions: 10, difficulty: "facil" },
+                        { id: "3.2", code: "CQ-3.2", name: "Ecuación química", questions: 10, difficulty: "medio" },
+                        { id: "3.3", code: "CQ-3.3", name: "El mol como unidad", questions: 10, difficulty: "dificil" },
+                        { id: "3.4", code: "CQ-3.4", name: "Ácidos y bases", questions: 10, difficulty: "medio" },
+                        { id: "3.5", code: "CQ-3.5", name: "Reacciones redox", questions: 10, difficulty: "dificil" }
+                    ]
+                }
+            ]
+        };
+
+        // ===================== BASE DE DATOS COMPLETA - 150 PREGUNTAS =====================
+        const questionsDatabase = {
+            // BLOQUE 1.1: Características del conocimiento científico
+            "1.1": [
+                {
+                    id: "CQ111",
+                    question: "¿Cuál es la característica principal del conocimiento científico en química?",
+                    options: [
+                        "Se basa únicamente en la observación sin experimentación",
+                        "Es estático y no cambia con el tiempo",
+                        "Se fundamenta en el método científico: observación, hipótesis, experimentación",
+                        "No requiere verificación experimental"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "El conocimiento científico en química se caracteriza por seguir el método científico: observación cuidadosa, formulación de hipótesis, experimentación controlada y análisis de resultados.",
+                    tips: "Recuerda que la ciencia es un proceso dinámico que se corrige y mejora constantemente con nueva evidencia."
+                },
+                {
+                    id: "CQ112",
+                    question: "¿Qué paso del método científico viene después de la observación?",
+                    options: ["Conclusión", "Hipótesis", "Experimento", "Teoría"],
+                    correctAnswer: 1,
+                    explanation: "El orden del método científico es: 1) Observación, 2) Hipótesis, 3) Experimentación, 4) Análisis de datos, 5) Conclusión.",
+                    tips: "Una hipótesis es una explicación tentativa que debe ser comprobable experimentalmente."
+                },
+                {
+                    id: "CQ113",
+                    question: "La química es la ciencia que estudia:",
+                    options: [
+                        "Solo los compuestos orgánicos",
+                        "La composición, estructura y propiedades de la materia",
+                        "Exclusivamente las reacciones químicas",
+                        "Únicamente los elementos naturales"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La química estudia la composición, estructura, propiedades y transformaciones de la materia, abarcando tanto sustancias orgánicas como inorgánicas.",
+                    tips: "La química es una ciencia central que conecta con la biología, física, medicina y muchas otras disciplinas."
+                },
+                {
+                    id: "CQ114",
+                    question: "¿Cuál es la diferencia entre una ley científica y una teoría?",
+                    options: [
+                        "Una ley es más importante que una teoría",
+                        "Una teoría explica el porqué, una ley describe el qué",
+                        "Una teoría es temporal, una ley es permanente",
+                        "No hay diferencia significativa"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Una ley científica describe fenómenos naturales (qué ocurre), mientras que una teoría explica por qué ocurren esos fenómenos.",
+                    tips: "Ejemplo: La ley de gravitación describe la atracción entre masas; la teoría de la relatividad explica por qué ocurre."
+                },
+                {
+                    id: "CQ115",
+                    question: "¿Qué caracteriza a un experimento controlado?",
+                    options: [
+                        "No tiene variables",
+                        "Se realiza sin hipótesis previa",
+                        "Mantiene constantes todas las variables excepto la que se estudia",
+                        "Siempre da resultados positivos"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "En un experimento controlado, todas las variables se mantienen constantes excepto la variable independiente que se está estudiando, para determinar su efecto sobre la variable dependiente.",
+                    tips: "El grupo control es esencial para comparar resultados y asegurar la validez del experimento."
+                },
+                {
+                    id: "CQ116",
+                    question: "La importancia de la química en la vida cotidiana se manifiesta en:",
+                    options: [
+                        "Solo en laboratorios especializados",
+                        "Exclusivamente en la industria farmacéutica",
+                        "En medicinas, alimentos, materiales y medio ambiente",
+                        "Únicamente en investigación científica"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "La química está presente en todos los aspectos de nuestra vida: medicamentos, alimentos procesados, materiales de construcción, productos de limpieza, combustibles, etc.",
+                    tips: "Desde cocinar hasta limpiar, muchas actividades cotidianas involucran principios químicos."
+                },
+                {
+                    id: "CQ117",
+                    question: "¿Qué es una hipótesis en el método científico?",
+                    options: [
+                        "Una conclusión definitiva",
+                        "Una ley establecida",
+                        "Una explicación tentativa y comprobable",
+                        "Un resultado experimental"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Una hipótesis es una suposición o explicación tentativa que se propone para explicar un fenómeno observado, y que debe ser comprobable mediante experimentación.",
+                    tips: "Una buena hipótesis debe ser específica, medible y refutable."
+                },
+                {
+                    id: "CQ118",
+                    question: "¿Por qué la química se considera una ciencia experimental?",
+                    options: [
+                        "Porque solo se estudia en laboratorios",
+                        "Porque su conocimiento se basa en observaciones y experimentos",
+                        "Porque no tiene bases teóricas",
+                        "Porque es exclusivamente práctica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La química es una ciencia experimental porque sus conocimientos se obtienen y verifican a través de observaciones sistemáticas y experimentos controlados.",
+                    tips: "Toda teoría química debe estar respaldada por evidencia experimental."
+                },
+                {
+                    id: "CQ119",
+                    question: "La replicabilidad en ciencia significa que:",
+                    options: [
+                        "Los experimentos solo los puede hacer el descubridor",
+                        "Cualquier investigador debe poder repetir el experimento y obtener resultados similares",
+                        "Los resultados no necesitan verificarse",
+                        "Los experimentos son únicos e irrepetibles"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La replicabilidad es un principio fundamental de la ciencia: otros investigadores deben poder repetir el experimento en las mismas condiciones y obtener resultados consistentes.",
+                    tips: "La replicabilidad es lo que da credibilidad y validez a los descubrimientos científicos."
+                },
+                {
+                    id: "CQ120",
+                    question: "¿Cuál es el objetivo principal de la experimentación en química?",
+                    options: [
+                        "Demostrar que siempre tenemos razón",
+                        "Obtener datos para confirmar o refutar hipótesis",
+                        "Producir reacciones espectaculares",
+                        "Solo observar fenómenos naturales"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La experimentación busca obtener datos empíricos que permitan confirmar o refutar una hipótesis, avanzando así en el conocimiento científico.",
+                    tips: "Un experimento que refuta una hipótesis es tan valioso como uno que la confirma, ya que ambos aportan conocimiento."
+                }
+            ],
+
+            // BLOQUE 1.2: Propiedades de los materiales
+            "1.2": [
+                {
+                    id: "CQ121",
+                    question: "¿Cuál de las siguientes es una propiedad extensiva?",
+                    options: ["Densidad", "Punto de ebullición", "Masa", "Color"],
+                    correctAnswer: 2,
+                    explanation: "La masa es una propiedad extensiva porque depende de la cantidad de materia. Las propiedades intensivas (densidad, punto de ebullición, color) no dependen de la cantidad.",
+                    tips: "Propiedades extensivas: masa, volumen, peso. Propiedades intensivas: densidad, temperatura, dureza."
+                },
+                {
+                    id: "CQ122",
+                    question: "La maleabilidad es la propiedad que permite:",
+                    options: [
+                        "Conducir electricidad",
+                        "Formar láminas sin romperse",
+                        "Disolverse en agua",
+                        "Reflejar la luz"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La maleabilidad es la capacidad de un material para deformarse y extenderse en láminas sin romperse. Ejemplo: el oro es muy maleable.",
+                    tips: "Los metales suelen ser maleables y dúctiles (forman hilos), mientras que los materiales cerámicos son frágiles."
+                },
+                {
+                    id: "CQ123",
+                    question: "¿Qué propiedad permite distinguir el diamante del grafito si ambos son carbono puro?",
+                    options: [
+                        "Composición química",
+                        "Dureza",
+                        "Punto de fusión",
+                        "Conductividad eléctrica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Aunque ambos son carbono puro, el diamante es el material más duro conocido, mientras que el grafito es blando. Esta diferencia se debe a su estructura cristalina.",
+                    tips: "Este es un excelente ejemplo de alotropía: mismo elemento, diferentes estructuras, diferentes propiedades."
+                },
+                {
+                    id: "CQ124",
+                    question: "La ductilidad se refiere a la capacidad de:",
+                    options: [
+                        "Conducir calor",
+                        "Formar hilos o alambres",
+                        "Resistir rayaduras",
+                        "Flotar en agua"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La ductilidad es la propiedad que permite estirar un material para formar hilos o alambres sin romperse. El cobre es muy dúctil.",
+                    tips: "La mayoría de los metales son dúctiles, lo que los hace útiles para cables eléctricos."
+                },
+                {
+                    id: "CQ125",
+                    question: "¿Cuál es una propiedad química?",
+                    options: [
+                        "Punto de fusión",
+                        "Densidad",
+                        "Inflamabilidad",
+                        "Conductividad térmica"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "La inflamabilidad es una propiedad química porque describe cómo una sustancia reacciona con el oxígeno durante la combustión. Las otras son propiedades físicas.",
+                    tips: "Propiedades químicas: reactividad, toxicidad, corrosividad, inflamabilidad."
+                },
+                {
+                    id: "CQ126",
+                    question: "La conductividad eléctrica es mayor en:",
+                    options: ["Plásticos", "Madera", "Metales", "Cerámica"],
+                    correctAnswer: 2,
+                    explanation: "Los metales son buenos conductores de electricidad debido a sus electrones libres. Plásticos, madera y cerámica son aislantes.",
+                    tips: "La plata es el mejor conductor, seguida del cobre y el oro. El aluminio también es buen conductor."
+                },
+                {
+                    id: "CQ127",
+                    question: "¿Qué propiedad permite que el mercurio se use en termómetros?",
+                    options: [
+                        "Alta densidad",
+                        "Expansión térmica uniforme",
+                        "Bajo punto de fusión",
+                        "Todas las anteriores"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "El mercurio se usa en termómetros porque: 1) Se expande uniformemente con la temperatura, 2) Es líquido a temperatura ambiente (-39°C a 357°C), 3) No moja el vidrio, 4) Es opaco y visible.",
+                    tips: "Actualmente se usan alternativas como alcohol coloreado por la toxicidad del mercurio."
+                },
+                {
+                    id: "CQ128",
+                    question: "La dureza de un mineral se mide con:",
+                    options: [
+                        "Escala de Richter",
+                        "Escala de Mohs",
+                        "Escala de pH",
+                        "Escala Celsius"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La escala de Mohs ordena minerales del 1 (talco, más blando) al 10 (diamante, más duro) según su capacidad para rayar o ser rayados.",
+                    tips: "El vidrio tiene dureza 5.5, una navaja 5.5, el cuarzo 7, y el topacio 8 en escala Mohs."
+                },
+                {
+                    id: "CQ129",
+                    question: "¿Qué propiedad hace que el aceite flote sobre el agua?",
+                    options: [
+                        "Viscosidad",
+                        "Densidad menor",
+                        "Tensión superficial",
+                        "Polaridad"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "El aceite flota sobre el agua porque tiene menor densidad (aproximadamente 0.92 g/mL vs 1.00 g/mL del agua). Los líquidos menos densos flotan sobre los más densos.",
+                    tips: "La densidad es masa/volumen. El hielo flota porque el agua sólida es menos densa que el agua líquida."
+                },
+                {
+                    id: "CQ130",
+                    question: "La solubilidad de una sustancia generalmente aumenta con:",
+                    options: [
+                        "Disminución de temperatura",
+                        "Aumento de presión",
+                        "Aumento de temperatura",
+                        "Cambio de color"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Para la mayoría de los sólidos en líquidos, la solubilidad aumenta con la temperatura. Para gases en líquidos, la solubilidad aumenta con la presión y disminuye con la temperatura.",
+                    tips: "Excepciones: La solubilidad del NaCl casi no cambia con la temperatura, y la del Ce₂(SO₄)₃ disminuye al calentar."
+                }
+            ],
+
+            // BLOQUE 1.3: Cambios físicos y químicos
+            "1.3": [
+                {
+                    id: "CQ131",
+                    question: "¿Cuál es un cambio físico?",
+                    options: [
+                        "Quemar papel",
+                        "Hervir agua",
+                        "Oxidar hierro",
+                        "Digerir comida"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Hervir agua es un cambio físico porque solo cambia su estado (líquido a gas) pero su composición química (H₂O) permanece igual.",
+                    tips: "En cambios físicos: no se forman nuevas sustancias, es reversible generalmente, y no cambia la identidad química."
+                },
+                {
+                    id: "CQ132",
+                    question: "La fermentación de la glucosa para producir alcohol es:",
+                    options: [
+                        "Cambio físico",
+                        "Cambio químico",
+                        "Cambio nuclear",
+                        "Cambio de estado"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Es un cambio químico porque la glucosa (C₆H₁₂O₆) se transforma en etanol (C₂H₅OH) y dióxido de carbono (CO₂), formando nuevas sustancias con propiedades diferentes.",
+                    tips: "Evidencias de cambio químico: cambio de color, formación de gas, precipitado, cambio de temperatura, olor característico."
+                },
+                {
+                    id: "CQ133",
+                    question: "¿Cuál evidencia indica un cambio químico?",
+                    options: [
+                        "Cambio de tamaño",
+                        "Formación de burbujas de gas",
+                        "Cambio de estado",
+                        "Mezcla de colores"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La formación de burbujas de gas indica que se está produciendo una nueva sustancia gaseosa, lo que es evidencia de cambio químico.",
+                    tips: "Otras evidencias: cambio de color permanente, formación de precipitado, liberación o absorción de energía."
+                },
+                {
+                    id: "CQ134",
+                    question: "La disolución de sal en agua es principalmente:",
+                    options: [
+                        "Cambio químico",
+                        "Cambio físico",
+                        "Cambio nuclear",
+                        "Tanto físico como químico"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Es un cambio físico porque la sal (NaCl) se dispersa en el agua pero mantiene su identidad química. Se puede recuperar por evaporación.",
+                    tips: "Aunque hay interacción iónica, no se forman nuevas sustancias químicas, por eso es físico."
+                },
+                {
+                    id: "CQ135",
+                    question: "La digestión de los alimentos involucra:",
+                    options: [
+                        "Solo cambios físicos",
+                        "Solo cambios químicos",
+                        "Cambios físicos y químicos",
+                        "Cambios nucleares"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "La digestión involucra cambios físicos (masticación, mezcla) y cambios químicos (hidrólisis enzimática de proteínas, carbohidratos y lípidos).",
+                    tips: "La saliva contiene amilasa que inicia la digestión química del almidón, transformándolo en azúcares simples."
+                },
+                {
+                    id: "CQ136",
+                    question: "¿Cuál es reversible generalmente?",
+                    options: [
+                        "Cambio químico",
+                        "Cambio físico",
+                        "Ambos",
+                        "Ninguno"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Los cambios físicos son generalmente reversibles (hielo → agua → vapor → agua → hielo). Los cambios químicos suelen ser irreversibles (huevo cocido).",
+                    tips: "Algunos cambios químicos son reversibles bajo condiciones especiales, como la síntesis de amoníaco: N₂ + 3H₂ ⇌ 2NH₃."
+                },
+                {
+                    id: "CQ137",
+                    question: "La combustión de la gasolina en un motor es:",
+                    options: [
+                        "Cambio físico por cambio de estado",
+                        "Cambio químico exotérmico",
+                        "Cambio físico endotérmico",
+                        "Cambio químico nuclear"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Es un cambio químico (oxidación) y exotérmico (libera energía en forma de calor y luz). La gasolina reacciona con oxígeno produciendo CO₂, H₂O y energía.",
+                    tips: "Todas las combustiones son cambios químicos exotérmicos que requieren oxígeno."
+                },
+                {
+                    id: "CQ138",
+                    question: "La formación de óxido en un clavo de hierro indica:",
+                    options: [
+                        "Cambio físico por humedad",
+                        "Cambio químico por oxidación",
+                        "Cambio de estado",
+                        "Mezcla física"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Es un cambio químico de oxidación: el hierro (Fe) reacciona con oxígeno (O₂) y agua formando óxido de hierro (Fe₂O₃·nH₂O), una sustancia nueva con propiedades diferentes.",
+                    tips: "La oxidación es un proceso lento que requiere oxígeno y agua. Es diferente a la corrosión, que puede ser por otros agentes."
+                },
+                {
+                    id: "CQ139",
+                    question: "¿Cuál NO es evidencia de cambio químico?",
+                    options: [
+                        "Cambio de color permanente",
+                        "Formación de precipitado",
+                        "Cambio de tamaño por corte",
+                        "Liberación de gas"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Cambiar el tamaño por corte es un cambio físico (la sustancia sigue siendo la misma, solo cambia su forma). Las otras opciones sí indican cambio químico.",
+                    tips: "Cortar papel, moler roca, doblar alambre son cambios físicos porque no cambia la identidad de la sustancia."
+                },
+                {
+                    id: "CQ140",
+                    question: "La fotosíntesis es un ejemplo de:",
+                    options: [
+                        "Cambio físico con absorción de luz",
+                        "Cambio químico endotérmico",
+                        "Cambio químico exotérmico",
+                        "Cambio nuclear"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "La fotosíntesis es un cambio químico endotérmico (absorbe energía luminosa) donde CO₂ y H₂O se transforman en glucosa y O₂, formando nuevas sustancias.",
+                    tips: "6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂. Es el proceso químico más importante para la vida en la Tierra."
+                }
+            ],
+
+            // BLOQUE 1.4: Propiedades físicas y caracterización
+            "1.4": [
+                {
+                    id: "CQ141",
+                    question: "¿Qué propiedad permite identificar una sustancia pura?",
+                    options: [
+                        "Color",
+                        "Punto de fusión constante",
+                        "Textura",
+                        "Sabor"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Las sustancias puras tienen puntos de fusión y ebullición constantes y definidos que sirven para identificarlas.",
+                    tips: "El agua pura hierve a 100°C y se congela a 0°C a nivel del mar (1 atm)."
+                },
+                {
+                    id: "CQ142",
+                    question: "La densidad se calcula como:",
+                    options: [
+                        "Masa × Volumen",
+                        "Masa / Volumen",
+                        "Volumen / Masa",
+                        "Peso × Gravedad"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Densidad = Masa / Volumen. Unidades comunes: g/cm³ o g/mL.",
+                    tips: "Agua: 1 g/mL, plomo: 11.34 g/cm³, corcho: 0.24 g/cm³."
+                },
+                {
+                    id: "CQ143",
+                    question: "¿Qué propiedad del agua cambia con la altitud?",
+                    options: [
+                        "Densidad",
+                        "Punto de ebullición",
+                        "Solubilidad",
+                        "Todas las anteriores"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "El punto de ebullición del agua disminuye con la altitud por menor presión atmosférica.",
+                    tips: "En Ciudad de México (2240 m), el agua hierve a aproximadamente 92°C."
+                },
+                {
+                    id: "CQ144",
+                    question: "La viscosidad mide:",
+                    options: [
+                        "Resistencia al flujo",
+                        "Capacidad de conducir calor",
+                        "Dureza del material",
+                        "Punto de fusión"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Viscosidad: resistencia de un fluido a fluir. Miel es más viscosa que agua.",
+                    tips: "La viscosidad generalmente disminuye al aumentar la temperatura."
+                },
+                {
+                    id: "CQ145",
+                    question: "¿Cuál tiene mayor punto de fusión?",
+                    options: ["Agua", "Alcohol", "Mercurio", "Hierro"],
+                    correctAnswer: 3,
+                    explanation: "Hierro: 1538°C. Agua: 0°C. Alcohol: -114°C. Mercurio: -39°C.",
+                    tips: "Los metales generalmente tienen altos puntos de fusión."
+                },
+                {
+                    id: "CQ146",
+                    question: "¿Cuál es buen conductor térmico?",
+                    options: ["Madera", "Plástico", "Cobre", "Lana"],
+                    correctAnswer: 2,
+                    explanation: "Los metales como el cobre son excelentes conductores térmicos.",
+                    tips: "Los aislantes térmicos (madera, plástico, lana) se usan para conservar temperatura."
+                },
+                {
+                    id: "CQ147",
+                    question: "¿Qué NO es propiedad característica?",
+                    options: [
+                        "Punto de ebullición",
+                        "Densidad",
+                        "Color",
+                        "Solubilidad"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "El color puede variar y no es confiable para identificar sustancias puras.",
+                    tips: "Propiedades características confiables: punto de fusión/ebullición, densidad, índice de refracción."
+                },
+                {
+                    id: "CQ148",
+                    question: "La solubilidad del oxígeno en agua:",
+                    options: [
+                        "Aumenta con la temperatura",
+                        "Disminuye con la temperatura",
+                        "No cambia",
+                        "Solo depende de la presión"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Los gases son menos solubles en líquidos calientes que en fríos.",
+                    tips: "Por eso el agua fría tiene más oxígeno disuelto que el agua caliente."
+                },
+                {
+                    id: "CQ149",
+                    question: "Propiedad única del agua:",
+                    options: [
+                        "Densidad máxima a 4°C",
+                        "Alta capacidad calorífica",
+                        "Alta tensión superficial",
+                        "Todas las anteriores"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "El agua tiene propiedades únicas que hacen posible la vida en la Tierra.",
+                    tips: "El hielo flota porque el agua sólida es menos densa que el líquida."
+                },
+                {
+                    id: "CQ150",
+                    question: "La refractividad es:",
+                    options: [
+                        "Conducir electricidad",
+                        "Desviar la luz",
+                        "Resistir rayaduras",
+                        "Disolverse"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Refractividad: cambio de dirección de la luz al pasar de un medio a otro.",
+                    tips: "El diamante tiene alta refractividad, por eso brilla intensamente."
+                }
+            ],
+
+            // BLOQUE 1.5: Conservación de la masa
+            "1.5": [
+                {
+                    id: "CQ151",
+                    question: "¿Quién formuló la ley de conservación de la masa?",
+                    options: ["Dalton", "Lavoisier", "Proust", "Avogadro"],
+                    correctAnswer: 1,
+                    explanation: "Antoine Lavoisier: 'La materia no se crea ni se destruye, solo se transforma'.",
+                    tips: "Lavoisier es considerado el padre de la química moderna."
+                },
+                {
+                    id: "CQ152",
+                    question: "En reacción química, masa de reactivos:",
+                    options: [
+                        "Es mayor que productos",
+                        "Es menor que productos",
+                        "Es igual a productos",
+                        "Depende de condiciones"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Ley de conservación: masa total reactivos = masa total productos (sistema cerrado).",
+                    tips: "Incluye sólidos, líquidos y gases."
+                },
+                {
+                    id: "CQ153",
+                    question: "12g C + 32g O₂ producen:",
+                    options: ["20g CO₂", "32g CO₂", "44g CO₂", "56g CO₂"],
+                    correctAnswer: 2,
+                    explanation: "C + O₂ → CO₂. 12g + 32g = 44g. Se conserva la masa.",
+                    tips: "C: 12 g/mol, O₂: 32 g/mol, CO₂: 44 g/mol."
+                },
+                {
+                    id: "CQ154",
+                    question: "En cambio físico, la masa:",
+                    options: [
+                        "Siempre aumenta",
+                        "Siempre disminuye",
+                        "Se conserva",
+                        "Depende del cambio"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "En cambios físicos también se conserva la masa total.",
+                    tips: "10g hielo → 10g agua → 10g vapor (masa constante)."
+                },
+                {
+                    id: "CQ155",
+                    question: "¿Por qué parece que la madera pierde masa al quemarse?",
+                    options: [
+                        "Se destruye materia",
+                        "Gases escapan al aire",
+                        "Excepción a la ley",
+                        "Por alta temperatura"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Productos gaseosos (CO₂, H₂O vapor) escapan, pareciendo pérdida de masa.",
+                    tips: "En sistema cerrado, masa total incluyendo gases se conserva."
+                },
+                {
+                    id: "CQ156",
+                    question: "2g H₂ + 16g O₂ producen:",
+                    options: ["14g H₂O", "16g H₂O", "18g H₂O", "20g H₂O"],
+                    correctAnswer: 2,
+                    explanation: "2H₂ + O₂ → 2H₂O. 2g + 16g = 18g H₂O.",
+                    tips: "H: 1 g/mol × 2 = 2g, O: 16 g/mol, H₂O: 18 g/mol."
+                },
+                {
+                    id: "CQ157",
+                    question: "La ley se cumple estrictamente en:",
+                    options: [
+                        "Solo laboratorios",
+                        "Sistemas abiertos",
+                        "Sistemas cerrados",
+                        "Condiciones especiales"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "En sistema cerrado (sin intercambio de materia), masa constante.",
+                    tips: "Experimentos de Lavoisier usaban recipientes sellados."
+                },
+                {
+                    id: "CQ158",
+                    question: "¿Qué demuestra la ley?",
+                    options: [
+                        "La materia es indestructible",
+                        "Los átomos son indivisibles",
+                        "La energía se conserva",
+                        "Las reacciones son reversibles"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "La materia no se crea ni destruye en transformaciones químicas.",
+                    tips: "Base para el balanceo de ecuaciones químicas."
+                },
+                {
+                    id: "CQ159",
+                    question: "En efervescencia de antiácido, en sistema cerrado:",
+                    options: [
+                        "Masa aumenta",
+                        "Masa disminuye",
+                        "Masa igual",
+                        "Masa varía"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "En sistema cerrado, masa total constante aunque se forme gas.",
+                    tips: "El gas queda dentro del sistema, no escapa."
+                },
+                {
+                    id: "CQ160",
+                    question: "La ley aplica a:",
+                    options: [
+                        "Solo reacciones químicas",
+                        "Solo cambios físicos",
+                        "Todos los cambios materiales",
+                        "Solo sustancias puras"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Aplica a cualquier transformación de materia.",
+                    tips: "Principio fundamental de toda la ciencia."
+                }
+            ],
+
+            // BLOQUE 1.6: Métodos de separación
+            "1.6": [
+                {
+                    id: "CQ161",
+                    question: "Para separar arena de agua:",
+                    options: ["Destilación", "Filtración", "Decantación", "Cromatografía"],
+                    correctAnswer: 1,
+                    explanation: "Filtración: sólido insoluble se retiene en filtro, líquido pasa.",
+                    tips: "Tamaño de poro menor que partículas del sólido."
+                },
+                {
+                    id: "CQ162",
+                    question: "Mezcla aceite-agua se separa por:",
+                    options: ["Filtración", "Destilación", "Decantación", "Evaporación"],
+                    correctAnswer: 2,
+                    explanation: "Decantación: diferencia de densidad. Aceite menos denso flota.",
+                    tips: "También con embudo de decantación para líquidos inmiscibles."
+                },
+                {
+                    id: "CQ163",
+                    question: "Para obtener sal de agua de mar:",
+                    options: ["Filtración", "Destilación", "Evaporación", "Cristalización"],
+                    correctAnswer: 2,
+                    explanation: "Evaporación: evaporar agua, queda sal sólida.",
+                    tips: "En salinas: sol y viento evaporan agua naturalmente."
+                },
+                {
+                    id: "CQ164",
+                    question: "Cromatografía separa según:",
+                    options: [
+                        "Diferencia de densidad",
+                        "Diferencia de solubilidad",
+                        "Tamaño de partícula",
+                        "Punto de ebullición"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Sustancias se mueven a distinta velocidad según afinidad por fases.",
+                    tips: "Usada en análisis forense, laboratorios."
+                },
+                {
+                    id: "CQ165",
+                    question: "Para separar alcohol y agua:",
+                    options: ["Filtración", "Destilación", "Decantación", "Imantación"],
+                    correctAnswer: 1,
+                    explanation: "Destilación: diferente punto de ebullición (alcohol 78°C, agua 100°C).",
+                    tips: "Alcohol se evapora primero, se condensa separadamente."
+                },
+                {
+                    id: "CQ166",
+                    question: "Imantación separa:",
+                    options: [
+                        "Materiales magnéticos",
+                        "Líquidos miscibles",
+                        "Sólidos solubles",
+                        "Gases mezclados"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Atrae materiales magnéticos (hierro, níquel, cobalto).",
+                    tips: "Útil para separar limaduras de hierro de arena."
+                },
+                {
+                    id: "CQ167",
+                    question: "Tamización separa por:",
+                    options: [
+                        "Densidad",
+                        "Tamaño de partícula",
+                        "Solubilidad",
+                        "Punto de fusión"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Tamizado: partículas pasan según tamaño de poros del tamiz.",
+                    tips: "Usado en construcción, cocina (harina)."
+                },
+                {
+                    id: "CQ168",
+                    question: "Centrifugación usa:",
+                    options: [
+                        "Diferencia de densidad",
+                        "Fuerza centrífuga",
+                        "Ambas",
+                        "Ninguna"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Fuerza centrífuga acelera separación por diferencia de densidad.",
+                    tips: "Usada en laboratorios médicos (sangre)."
+                },
+                {
+                    id: "CQ169",
+                    question: "Sublimación separa:",
+                    options: [
+                        "Sólidos que subliman",
+                        "Líquidos miscibles",
+                        "Gases mezclados",
+                        "Metales no magnéticos"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Sublimación: sólido → gas sin pasar por líquido.",
+                    tips: "Ejemplo: yodo, naftalina. El sólido sublimado se deposita en superficie fría."
+                },
+                {
+                    id: "CQ170",
+                    question: "Extracción con solvente separa por:",
+                    options: [
+                        "Diferente solubilidad",
+                        "Diferente densidad",
+                        "Diferente tamaño",
+                        "Diferente punto ebullición"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Sustancia se disuelve preferentemente en solvente específico.",
+                    tips: "Ejemplo: cafeína del café usando disolventes orgánicos."
+                }
+            ],
+
+            // BLOQUE 2.1: Partículas subatómicas
+            "2.1": [
+                {
+                    id: "CQ211",
+                    question: "¿Qué partícula tiene carga positiva?",
+                    options: ["Electrón", "Protón", "Neutrón", "Fotón"],
+                    correctAnswer: 1,
+                    explanation: "Protón: carga +1, masa ~1 uma. Electrón: carga -1, masa muy pequeña.",
+                    tips: "Los protones determinan el elemento químico (número atómico)."
+                },
+                {
+                    id: "CQ212",
+                    question: "¿Cuál es la partícula más ligera?",
+                    options: ["Protón", "Neutrón", "Electrón", "Núcleo"],
+                    correctAnswer: 2,
+                    explanation: "Electrón: masa ~1/1836 uma. Protón y neutrón: ~1 uma cada uno.",
+                    tips: "La masa del electrón es despreciable comparada con protones y neutrones."
+                },
+                {
+                    id: "CQ213",
+                    question: "Los neutrones tienen:",
+                    options: [
+                        "Carga positiva",
+                        "Carga negativa",
+                        "Sin carga eléctrica",
+                        "Carga variable"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Neutrón: carga 0 (neutra), masa ~1 uma, ubicada en el núcleo.",
+                    tips: "Los neutrones contribuyen a la masa atómica pero no a la carga."
+                },
+                {
+                    id: "CQ214",
+                    question: "¿Dónde se encuentran los electrones?",
+                    options: [
+                        "En el núcleo",
+                        "Girando alrededor del núcleo",
+                        "Mezclados con protones",
+                        "Fuera del átomo"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Electrones: fuera del núcleo, en niveles de energía u orbitales.",
+                    tips: "Modelo planetario: electrones orbitan núcleo como planetas al sol."
+                },
+                {
+                    id: "CQ215",
+                    question: "Átomo neutro tiene:",
+                    options: [
+                        "Más protones que electrones",
+                        "Más electrones que protones",
+                        "Igual número de protones y electrones",
+                        "Solo neutrones"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Átomo neutro: número protones = número electrones (carga neta cero).",
+                    tips: "Si pierde/gana electrones, se convierte en ión (catión/anón)."
+                },
+                {
+                    id: "CQ216",
+                    question: "¿Qué determina la identidad de un elemento?",
+                    options: [
+                        "Número de neutrones",
+                        "Número de electrones",
+                        "Número de protones",
+                        "Masa total"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Número atómico (Z) = número de protones. Define el elemento.",
+                    tips: "Cambiar número de protones cambia el elemento completamente."
+                },
+                {
+                    id: "CQ217",
+                    question: "Isótopos difieren en:",
+                    options: [
+                        "Número de protones",
+                        "Número de electrones",
+                        "Número de neutrones",
+                        "Configuración electrónica"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Isótopos: mismo elemento (mismo Z), diferente número de neutrones.",
+                    tips: "Ejemplo: carbono-12 (6n) y carbono-14 (8n) son isótopos."
+                },
+                {
+                    id: "CQ218",
+                    question: "La masa atómica considera:",
+                    options: [
+                        "Solo protones",
+                        "Protones y electrones",
+                        "Protones y neutrones",
+                        "Solo neutrones"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Masa atómica ≈ suma de protones + neutrones (electrones contribuyen poco).",
+                    tips: "Unidad: uma (unidad de masa atómica). 1 uma ≈ 1.66×10⁻²⁴ g."
+                },
+                {
+                    id: "CQ219",
+                    question: "¿Cuál es carga del núcleo atómico?",
+                    options: [
+                        "Negativa",
+                        "Positiva",
+                        "Neutra",
+                        "Variable"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Núcleo: protones (+) + neutrones (0) → carga positiva total.",
+                    tips: "La carga nuclear positiva atrae electrones negativos."
+                },
+                {
+                    id: "CQ220",
+                    question: "Partícula descubierta por Thomson:",
+                    options: ["Protón", "Neutrón", "Electrón", "Núcleo"],
+                    correctAnswer: 2,
+                    explanation: "J.J. Thomson descubrió el electrón (1897) con experimentos de rayos catódicos.",
+                    tips: "Thomson propuso el modelo del 'budín de pasas'."
+                }
+            ],
+
+            // BLOQUE 2.2: Número atómico y masa
+            "2.2": [
+                {
+                    id: "CQ221",
+                    question: "El número atómico (Z) representa:",
+                    options: [
+                        "Número de protones",
+                        "Número de neutrones",
+                        "Suma de protones y neutrones",
+                        "Número de electrones"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Z = número de protones en núcleo. Define el elemento químico.",
+                    tips: "En átomo neutro, Z también = número de electrones."
+                },
+                {
+                    id: "CQ222",
+                    question: "Número másico (A) es:",
+                    options: [
+                        "Solo protones",
+                        "Solo neutrones",
+                        "Protones + neutrones",
+                        "Protones + electrones"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "A = Z + N, donde N = número de neutrones.",
+                    tips: "Aproximadamente igual a la masa atómica en uma."
+                },
+                {
+                    id: "CQ223",
+                    question: "Para calcular neutrones:",
+                    options: [
+                        "N = A + Z",
+                        "N = A - Z",
+                        "N = Z - A",
+                        "N = A × Z"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Número de neutrones = Número másico - Número atómico (N = A - Z).",
+                    tips: "Ejemplo: carbono-14: A=14, Z=6 → N=14-6=8 neutrones."
+                },
+                {
+                    id: "CQ224",
+                    question: "Isótopos tienen mismo:",
+                    options: [
+                        "Número másico",
+                        "Número de neutrones",
+                        "Número atómico",
+                        "Masa atómica"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Isótopos: mismo Z (mismo elemento), diferente A (diferente N).",
+                    tips: "Propiedades químicas similares, propiedades físicas pueden variar."
+                },
+                {
+                    id: "CQ225",
+                    question: "Átomo con Z=11, A=23 tiene:",
+                    options: [
+                        "11p, 12n, 11e",
+                        "11p, 11n, 11e",
+                        "12p, 11n, 11e",
+                        "11p, 23n, 11e"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Z=11 → 11 protones. N = A-Z = 23-11 = 12 neutrones. Átomo neutro: 11 electrones.",
+                    tips: "Este es el sodio-23 (¹¹Na₂₃)."
+                },
+                {
+                    id: "CQ226",
+                    question: "Masa atómica en tabla periódica es:",
+                    options: [
+                        "Masa exacta de un átomo",
+                        "Promedio de isótopos naturales",
+                        "Masa del isótopo más común",
+                        "Masa teórica calculada"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Masa atómica: promedio ponderado de masas de isótopos según abundancia natural.",
+                    tips: "Ejemplo: Cloro: Cl-35 (75%), Cl-37 (25%) → masa atómica ≈ 35.45 uma."
+                },
+                {
+                    id: "CQ227",
+                    question: "¿Cuál representa mejor ⁶C¹²?",
+                    options: [
+                        "Z=12, A=6",
+                        "Z=6, A=12",
+                        "Z=6, A=6",
+                        "Z=12, A=12"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "⁶C¹²: Z=6 (subíndice izquierdo), A=12 (superíndice izquierdo).",
+                    tips: "Notación: ᴬX (X=símbolo, A=número másico, Z=número atómico)."
+                },
+                {
+                    id: "CQ228",
+                    question: "Ión Na⁺ tiene:",
+                    options: [
+                        "11p, 10e",
+                        "11p, 11e",
+                        "10p, 10e",
+                        "10p, 11e"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Na: Z=11 → 11 protones. Na⁺ pierde 1 electrón → 11-1=10 electrones.",
+                    tips: "Catión: carga positiva por pérdida de electrones."
+                },
+                {
+                    id: "CQ229",
+                    question: "Cl⁻ tiene configuración:",
+                    options: [
+                        "17p, 18e",
+                        "17p, 17e",
+                        "18p, 17e",
+                        "18p, 18e"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Cl: Z=17 → 17 protones. Cl⁻ gana 1 electrón → 17+1=18 electrones.",
+                    tips: "Anión: carga negativa por ganancia de electrones."
+                },
+                {
+                    id: "CQ230",
+                    question: "Isóbaros tienen mismo:",
+                    options: [
+                        "Z",
+                        "A",
+                        "N",
+                        "Configuración electrónica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Isóbaros: mismo A (misma masa atómica), diferente Z (diferente elemento).",
+                    tips: "Ejemplo: ⁴⁰K y ⁴⁰Ca son isóbaros."
+                }
+            ],
+
+            // BLOQUE 2.3: Iones, moléculas y átomos
+            "2.3": [
+                {
+                    id: "CQ231",
+                    question: "Un ión es:",
+                    options: [
+                        "Átomo neutro",
+                        "Átomo con carga eléctrica",
+                        "Grupo de átomos unidos",
+                        "Partícula subatómica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ión: átomo o molécula con carga eléctrica neta por ganar/perder electrones.",
+                    tips: "Catión: carga positiva (pierde e⁻). Anión: carga negativa (gana e⁻)."
+                },
+                {
+                    id: "CQ232",
+                    question: "Molécula es:",
+                    options: [
+                        "Átomo individual",
+                        "Grupo de átomos unidos",
+                        "Solo dos átomos",
+                        "Partícula cargada"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Molécula: grupo de átomos unidos por enlaces químicos.",
+                    tips: "Puede ser del mismo elemento (O₂) o diferentes (H₂O)."
+                },
+                {
+                    id: "CQ233",
+                    question: "Diferencia átomo-molécula:",
+                    options: [
+                        "Los átomos son más grandes",
+                        "Las moléculas son indivisibles",
+                        "Las moléculas son grupos de átomos",
+                        "No hay diferencia"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Átomo: unidad básica de elemento. Molécula: unidad de compuesto (grupo de átomos).",
+                    tips: "Ejemplo: H (átomo de hidrógeno), H₂ (molécula de hidrógeno)."
+                },
+                {
+                    id: "CQ234",
+                    question: "Catión se forma por:",
+                    options: [
+                        "Ganar electrones",
+                        "Perder electrones",
+                        "Ganar protones",
+                        "Perder neutrones"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Catión: carga positiva. Se forma cuando átomo pierde uno o más electrones.",
+                    tips: "Ejemplo: Na → Na⁺ + e⁻ (pierde 1 electrón)."
+                },
+                {
+                    id: "CQ235",
+                    question: "Anión se forma por:",
+                    options: [
+                        "Ganar electrones",
+                        "Perder electrones",
+                        "Ganar protones",
+                        "Perder neutrones"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Anión: carga negativa. Se forma cuando átomo gana uno o más electrones.",
+                    tips: "Ejemplo: Cl + e⁻ → Cl⁻ (gana 1 electrón)."
+                },
+                {
+                    id: "CQ236",
+                    question: "Molécula diatómica:",
+                    options: [
+                        "H₂O",
+                        "CO₂",
+                        "O₂",
+                        "CH₄"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Molécula diatómica: 2 átomos. O₂ (oxígeno), N₂, H₂, etc.",
+                    tips: "Siete elementos forman moléculas diatómicas naturales: H₂, N₂, O₂, F₂, Cl₂, Br₂, I₂."
+                },
+                {
+                    id: "CQ237",
+                    question: "¿Cuál es molécula?",
+                    options: ["He", "Na", "Fe", "H₂O"],
+                    correctAnswer: 3,
+                    explanation: "H₂O es molécula (2 átomos H + 1 átomo O). He, Na, Fe son átomos individuales.",
+                    tips: "Los gases nobles (He, Ne, Ar, etc.) existen como átomos individuales."
+                },
+                {
+                    id: "CQ238",
+                    question: "Ión poliatómico:",
+                    options: ["Na⁺", "Cl⁻", "SO₄²⁻", "Mg²⁺"],
+                    correctAnswer: 2,
+                    explanation: "SO₄²⁻ (sulfato) es ión poliatómico: grupo de átomos con carga neta.",
+                    tips: "Otros iones poliatómicos: NO₃⁻ (nitrato), CO₃²⁻ (carbonato), NH₄⁺ (amonio)."
+                },
+                {
+                    id: "CQ239",
+                    question: "NaCl está formado por:",
+                    options: [
+                        "Moléculas de NaCl",
+                        "Iones Na⁺ y Cl⁻",
+                        "Átomos de Na y Cl",
+                        "Moléculas de Na y Cl"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "NaCl (cloruro de sodio) es compuesto iónico: red de iones Na⁺ y Cl⁻.",
+                    tips: "En estado sólido forma estructura cristalina, no moléculas discretas."
+                },
+                {
+                    id: "CQ240",
+                    question: "Molécula de agua (H₂O) contiene:",
+                    options: [
+                        "2 átomos H, 1 átomo O",
+                        "1 átomo H, 2 átomos O",
+                        "2 moléculas H, 1 molécula O",
+                        "2 iones H⁺, 1 ión O²⁻"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "H₂O: 2 átomos de hidrógeno + 1 átomo de oxígeno unidos covalentemente.",
+                    tips: "Geometría angular, polar, esencial para la vida."
+                }
+            ],
+
+            // BLOQUE 2.4: Estructura de Lewis
+            "2.4": [
+                {
+                    id: "CQ241",
+                    question: "Estructura de Lewis muestra:",
+                    options: [
+                        "Protones del núcleo",
+                        "Electrones de valencia",
+                        "Número de neutrones",
+                        "Masa atómica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Muestra electrones de valencia (electrones externos) como puntos alrededor del símbolo.",
+                    tips: "Electrones de valencia: participan en enlaces químicos."
+                },
+                {
+                    id: "CQ242",
+                    question: "Regla del octeto establece:",
+                    options: [
+                        "Átomos ganan 8 protones",
+                        "Átomos buscan 8 electrones de valencia",
+                        "Solo 8 electrones por átomo",
+                        "8 es número máximo de enlaces"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Átomos tienden a ganar, perder o compartir electrones para tener 8 e⁻ en capa de valencia.",
+                    tips: "Excepciones: H (2 e⁻), Be (4 e⁻), B (6 e⁻), elementos periodo 3+ pueden expandir octeto."
+                },
+                {
+                    id: "CQ243",
+                    question: "Electrones apareados en Lewis:",
+                    options: [
+                        "Electrones solitarios",
+                        "Pares de electrones",
+                        "Electrones desapareados",
+                        "Electrones internos"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Pares de electrones (2 e⁻) se representan juntos. Pares solitarios: no compartidos.",
+                    tips: "Pares enlazantes: compartidos entre átomos. Pares solitarios: pertenecen a un átomo."
+                },
+                {
+                    id: "CQ244",
+                    question: "Para dibujar estructura de Lewis:",
+                    options: [
+                        "Contar protones totales",
+                        "Contar electrones de valencia",
+                        "Contar neutrones",
+                        "Calcular masa atómica"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "1) Contar e⁻ valencia totales. 2) Esqueleto molecular. 3) Distribuir e⁻. 4) Verificar octetos.",
+                    tips: "Para iones, añadir o quitar electrones según carga."
+                },
+                {
+                    id: "CQ245",
+                    question: "Estructura de H₂:",
+                    options: [
+                        "H:H",
+                        "H::H",
+                        "H-H",
+                        "H≡H"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "H₂: cada H aporta 1 e⁻, comparten par electrónico (enlace simple). H:H o H-H.",
+                    tips: "Hidrógeno sigue regla del dueto (2 e⁻), no octeto."
+                },
+                {
+                    id: "CQ246",
+                    question: "O₂ tiene enlace:",
+                    options: [
+                        "Simple",
+                        "Doble",
+                        "Triple",
+                        "Iónico"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "O₂: O=O (enlace doble). Cada O tiene 6 e⁻ valencia, comparten 2 pares para completar octeto.",
+                    tips: "Estructura real de O₂ muestra molécula paramagnética con electrones desapareados."
+                },
+                {
+                    id: "CQ247",
+                    question: "N₂ tiene enlace:",
+                    options: [
+                        "Simple",
+                        "Doble",
+                        "Triple",
+                        "Iónico"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "N₂: N≡N (enlace triple). Cada N tiene 5 e⁻ valencia, comparten 3 pares.",
+                    tips: "Enlace triple muy fuerte, explica baja reactividad del N₂ atmosférico."
+                },
+                {
+                    id: "CQ248",
+                    question: "Enlace covalente coordinado:",
+                    options: [
+                        "Ambos átomos aportan e⁻",
+                        "Un átomo aporta ambos e⁻",
+                        "Transferencia de e⁻",
+                        "Sin compartir e⁻"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Enlace dativo: un átomo aporta par electrónico, otro lo acepta.",
+                    tips: "Ejemplo: H₃O⁺ (ión hidronio), NH₄⁺ (ión amonio)."
+                },
+                {
+                    id: "CQ249",
+                    question: "Resonancia ocurre cuando:",
+                    options: [
+                        "Una estructura es suficiente",
+                        "Múltiples estructuras posibles",
+                        "No hay electrones de valencia",
+                        "Átomo central no sigue octeto"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Resonancia: múltiples estructuras de Lewis igualmente válidas. Molécula real es híbrido.",
+                    tips: "Ejemplo: O₃ (ozono), NO₃⁻ (nitrato), benceno."
+                },
+                {
+                    id: "CQ250",
+                    question: "Carga formal ayuda a:",
+                    options: [
+                        "Determinar masa atómica",
+                        "Identificar estructura más estable",
+                        "Contar protones",
+                        "Calcular densidad"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Carga formal = e⁻ valencia - (e⁻ solitarios + ½ e⁻ enlazantes). Estructura con CF más cercanas a cero es más estable.",
+                    tips: "CF ≠ carga real, es herramienta teórica para evaluar estructuras."
+                }
+            ],
+
+            // BLOQUE 2.5: Tabla periódica
+            "2.5": [
+                {
+                    id: "CQ251",
+                    question: "Elementos en mismo grupo tienen:",
+                    options: [
+                        "Mismo número atómico",
+                        "Propiedades químicas similares",
+                        "Misma masa atómica",
+                        "Mismo número de neutrones"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Mismo grupo = misma configuración electrónica externa = propiedades químicas similares.",
+                    tips: "Ejemplo: Grupo 1 (alcalinos) todos muy reactivos, un electrón de valencia."
+                },
+                {
+                    id: "CQ252",
+                    question: "Períodos en tabla periódica son:",
+                    options: [
+                        "Columnas verticales",
+                        "Filas horizontales",
+                        "Grupos de metales",
+                        "Bloques s, p, d, f"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Períodos: filas horizontales. Indican nivel de energía principal de electrones de valencia.",
+                    tips: "7 períodos. Período = número cuántico principal n."
+                },
+                {
+                    id: "CQ253",
+                    question: "Metales se caracterizan por:",
+                    options: [
+                        "Ganar electrones fácilmente",
+                        "Ser malos conductores",
+                        "Perder electrones fácilmente",
+                        "Ser gases a temperatura ambiente"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Metales: baja energía de ionización, tienden a perder electrones formando cationes.",
+                    tips: "Propiedades: brillo metálico, conductores, maleables, dúctiles."
+                },
+                {
+                    id: "CQ254",
+                    question: "No metales tienden a:",
+                    options: [
+                        "Perder electrones",
+                        "Ganar electrones",
+                        "Ser conductores",
+                        "Ser maleables"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "No metales: alta electronegatividad, tienden a ganar electrones formando aniones.",
+                    tips: "Propiedades: malos conductores, frágiles, diversos estados físicos."
+                },
+                {
+                    id: "CQ255",
+                    question: "Metales de transición están en:",
+                    options: [
+                        "Grupos 1-2",
+                        "Grupos 13-18",
+                        "Grupos 3-12",
+                        "Periodos 6-7"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Metales de transición: grupos 3-12. Tienen subnivel d parcialmente lleno.",
+                    tips: "Propiedades: múltiples estados de oxidación, compuestos coloreados, catalizadores."
+                },
+                {
+                    id: "CQ256",
+                    question: "Gases nobles son:",
+                    options: [
+                        "Muy reactivos",
+                        "Poco reactivos",
+                        "Metales",
+                        "Líquidos"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Gases nobles (Grupo 18): configuración electrónica estable (octeto completo), muy baja reactividad.",
+                    tips: "Helio (He), Neón (Ne), Argón (Ar), Kriptón (Kr), Xenón (Xe), Radón (Rn)."
+                },
+                {
+                    id: "CQ257",
+                    question: "Electronegatividad aumenta:",
+                    options: [
+                        "De derecha a izquierda en período",
+                        "De abajo hacia arriba en grupo",
+                        "De arriba hacia abajo en grupo",
+                        "En metales alcalinos"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Electronegatividad aumenta hacia arriba y hacia la derecha en tabla periódica.",
+                    tips: "Flúor (F) es el más electronegativo (4.0). Francio (Fr) es el menos electronegativo."
+                },
+                {
+                    id: "CQ258",
+                    question: "Radio atómico aumenta:",
+                    options: [
+                        "Hacia la derecha en período",
+                        "Hacia abajo en grupo",
+                        "Hacia arriba en grupo",
+                        "En no metales"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Radio atómico aumenta hacia abajo en grupo (más niveles) y hacia la izquierda en período.",
+                    tips: "Átomos más grandes: esquina inferior izquierda. Más pequeños: esquina superior derecha."
+                },
+                {
+                    id: "CQ259",
+                    question: "Energía de ionización:",
+                    options: [
+                        "Aumenta al perder electrones",
+                        "Disminuye hacia arriba en grupo",
+                        "Aumenta hacia la derecha en período",
+                        "Es menor en no metales"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Energía de ionización aumenta hacia arriba y hacia la derecha (más difícil quitar e⁻).",
+                    tips: "Helio (He) tiene mayor EI. Cesio (Cs) tiene menor EI."
+                },
+                {
+                    id: "CQ260",
+                    question: "Propiedad periódica:",
+                    options: [
+                        "Masa atómica",
+                        "Número atómico",
+                        "Radio atómico",
+                        "Abundancia natural"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Propiedades periódicas: varían sistemáticamente en tabla periódica (radio, EI, electronegatividad, etc.).",
+                    tips: "Moseley ordenó tabla por número atómico, no por masa atómica."
+                }
+            ],
+
+            // BLOQUE 2.6: Enlace químico
+            "2.6": [
+                {
+                    id: "CQ261",
+                    question: "Enlace iónico se forma entre:",
+                    options: [
+                        "Dos metales",
+                        "Dos no metales",
+                        "Metal y no metal",
+                        "Gases nobles"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Enlace iónico: transferencia de electrones de metal (baja EI) a no metal (alta electronegatividad).",
+                    tips: "Ejemplo: NaCl (Na pierde e⁻ → Na⁺, Cl gana e⁻ → Cl⁻)."
+                },
+                {
+                    id: "CQ262",
+                    question: "Enlace covalente implica:",
+                    options: [
+                        "Transferencia de e⁻",
+                        "Compartición de e⁻",
+                        "Mar de e⁻ móviles",
+                        "Fuerzas débiles"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Enlace covalente: compartición de pares de electrones entre átomos.",
+                    tips: "Ocurre entre no metales con electronegatividades similares."
+                },
+                {
+                    id: "CQ263",
+                    question: "Enlace metálico se caracteriza por:",
+                    options: [
+                        "Transferencia de e⁻",
+                        "Compartición localizada",
+                        "Mar de electrones deslocalizados",
+                        "Fuerzas dipolo-dipolo"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Enlace metálico: cationes metálicos inmersos en 'mar' de electrones deslocalizados.",
+                    tips: "Explica propiedades metálicas: conductividad, maleabilidad, ductilidad."
+                },
+                {
+                    id: "CQ264",
+                    question: "Enlace covalente polar ocurre cuando:",
+                    options: [
+                        "Átomos iguales",
+                        "Diferente electronegatividad",
+                        "Misma electronegatividad",
+                        "Uno es metal"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Enlace covalente polar: diferencia de electronegatividad (0.5 a 1.7). Los e⁻ se comparten desigualmente.",
+                    tips: "Ejemplo: H-Cl (Cl más electronegativo atrae más los e⁻)."
+                },
+                {
+                    id: "CQ265",
+                    question: "Enlace covalente no polar:",
+                    options: [
+                        "H-Cl",
+                        "H₂O",
+                        "O₂",
+                        "NaCl"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Enlace covalente no polar: átomos iguales (diferencia electronegatividad = 0).",
+                    tips: "Ejemplos: H₂, N₂, O₂, Cl₂, moléculas diatómicas del mismo elemento."
+                },
+                {
+                    id: "CQ266",
+                    question: "Compuesto iónico:",
+                    options: [
+                        "CO₂",
+                        "H₂O",
+                        "NaCl",
+                        "CH₄"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "NaCl: metal (Na) + no metal (Cl) → enlace iónico.",
+                    tips: "Propiedades: altos puntos de fusión/ebullición, sólidos cristalinos, conductores en estado fundido o disuelto."
+                },
+                {
+                    id: "CQ267",
+                    question: "Geometría molecular de H₂O:",
+                    options: [
+                        "Lineal",
+                        "Angular",
+                        "Tetraédrica",
+                        "Trigonal plana"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "H₂O: 2 pares enlazantes + 2 pares solitarios en O → geometría angular (~104.5°).",
+                    tips: "Teoría RPECV: pares de e⁻ se repelen para maximizar distancia."
+                },
+                {
+                    id: "CQ268",
+                    question: "Molécula polar:",
+                    options: [
+                        "CO₂ (lineal)",
+                        "BF₃ (trigonal plana)",
+                        "CH₄ (tetraédrica)",
+                        "H₂O (angular)"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "H₂O es polar: geometría angular + diferencia electronegatividad O-H → momento dipolar neto.",
+                    tips: "Para ser apolar: momento dipolar neto = 0 (geometría simétrica o átomos iguales)."
+                },
+                {
+                    id: "CQ269",
+                    question: "Fuerzas intermoleculares más fuertes:",
+                    options: [
+                        "London",
+                        "Dipolo-dipolo",
+                        "Enlace de hidrógeno",
+                        "Ión-dipolo"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Enlace de hidrógeno: interacción especial fuerte entre H unido a N, O o F y N, O o F de otra molécula.",
+                    tips: "Responsable de propiedades únicas del agua: alto punto ebullición, tensión superficial."
+                },
+                {
+                    id: "CQ270",
+                    question: "Fuerzas de London:",
+                    options: [
+                        "Solo en moléculas polares",
+                        "Solo en iones",
+                        "En todas las moléculas",
+                        "Solo en metales"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Fuerzas de dispersión de London: presentes en todas las moléculas, por dipolos temporales.",
+                    tips: "Únicas fuerzas en moléculas no polares. Aumentan con tamaño molecular."
+                }
+            ],
+
+            // BLOQUE 3.1: El cambio químico
+            "3.1": [
+                {
+                    id: "CQ311",
+                    question: "Evidencia de cambio químico:",
+                    options: [
+                        "Cambio de estado",
+                        "Formación de precipitado",
+                        "Mezcla de colores",
+                        "Cambio de tamaño"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Formación de precipitado (sólido insoluble) indica nueva sustancia (cambio químico).",
+                    tips: "Otras evidencias: cambio de color, formación de gas, cambio de temperatura, olor característico."
+                },
+                {
+                    id: "CQ312",
+                    question: "Reactivos son:",
+                    options: [
+                        "Sustancias que se forman",
+                        "Sustancias iniciales",
+                        "Catalizadores",
+                        "Productos secundarios"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Reactivos: sustancias iniciales que reaccionan. Van a la izquierda de la flecha (→).",
+                    tips: "En ecuación: Reactivos → Productos."
+                },
+                {
+                    id: "CQ313",
+                    question: "Productos son:",
+                    options: [
+                        "Sustancias iniciales",
+                        "Sustancias que se forman",
+                        "Catalizadores",
+                        "Reactivos consumidos"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Productos: nuevas sustancias formadas. Van a la derecha de la flecha (→).",
+                    tips: "En reacción completa, reactivos se transforman totalmente en productos."
+                },
+                {
+                    id: "CQ314",
+                    question: "Reacción exotérmica:",
+                    options: [
+                        "Absorbe calor",
+                        "Libera calor",
+                        "Mantiene temperatura",
+                        "Requiere catalizador"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Reacción exotérmica: libera energía al entorno (generalmente como calor). ΔH < 0.",
+                    tips: "Ejemplos: combustión, neutralización ácido-base, muchas oxidaciones."
+                },
+                {
+                    id: "CQ315",
+                    question: "Reacción endotérmica:",
+                    options: [
+                        "Libera calor",
+                        "Absorbe calor",
+                        "Es neutra térmicamente",
+                        "Ocurre espontáneamente"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Reacción endotérmica: absorbe energía del entorno. ΔH > 0.",
+                    tips: "Ejemplos: fotosíntesis, descomposición térmica, evaporación."
+                },
+                {
+                    id: "CQ316",
+                    question: "Catalizador:",
+                    options: [
+                        "Se consume en reacción",
+                        "Acelera reacción sin consumirse",
+                        "Siempre es sólido",
+                        "Cambia productos finales"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Catalizador: sustancia que acelera reacción bajando energía de activación, sin consumirse.",
+                    tips: "Puede recuperarse al final. Enzimas son catalizadores biológicos."
+                },
+                {
+                    id: "CQ317",
+                    question: "Velocidad de reacción NO depende de:",
+                    options: [
+                        "Temperatura",
+                        "Concentración",
+                        "Catalizador",
+                        "Color de reactivos"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "Velocidad depende: temperatura (↑T = ↑velocidad), concentración (↑[ ] = ↑velocidad), catalizador, superficie de contacto.",
+                    tips: "Regla general: ↑10°C duplica velocidad aproximadamente."
+                },
+                {
+                    id: "CQ318",
+                    question: "Reacción de combustión requiere:",
+                    options: [
+                        "Solo combustible",
+                        "Combustible + oxígeno",
+                        "Solo oxígeno",
+                        "Agua como reactivo"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Combustión: combustible + O₂ → CO₂ + H₂O + energía (exotérmica).",
+                    tips: "Combustibles comunes: gasolina, gas natural, madera, carbón."
+                },
+                {
+                    id: "CQ319",
+                    question: "Reacción de neutralización:",
+                    options: [
+                        "Ácido + base → sal + agua",
+                        "Metal + oxígeno → óxido",
+                        "Combustible + O₂ → CO₂ + H₂O",
+                        "Descomposición de compuesto"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Neutralización: ácido + base → sal + agua. Ejemplo: HCl + NaOH → NaCl + H₂O.",
+                    tips: "Generalmente exotérmica. Usada en tratamiento de aguas, antiácidos."
+                },
+                {
+                    id: "CQ320",
+                    question: "Reacción de desplazamiento:",
+                    options: [
+                        "AB → A + B",
+                        "A + BC → AC + B",
+                        "AB + CD → AD + CB",
+                        "A + B → AB"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Desplazamiento: elemento más activo desplaza a otro menos activo de su compuesto.",
+                    tips: "Ejemplo: Zn + CuSO₄ → ZnSO₄ + Cu (Zn más activo que Cu)."
+                }
+            ],
+
+            // BLOQUE 3.2: Ecuación química
+            "3.2": [
+                {
+                    id: "CQ321",
+                    question: "Coeficientes en ecuación indican:",
+                    options: [
+                        "Número de átomos",
+                        "Número de moléculas/moles",
+                        "Estado de la materia",
+                        "Velocidad de reacción"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Coeficientes estequiométricos: número relativo de moléculas o moles que participan.",
+                    tips: "Ejemplo: 2H₂ + O₂ → 2H₂O significa 2 moléculas H₂ + 1 molécula O₂ → 2 moléculas H₂O."
+                },
+                {
+                    id: "CQ322",
+                    question: "Balancear ecuación asegura:",
+                    options: [
+                        "Masa se conserva",
+                        "Energía se conserva",
+                        "Velocidad constante",
+                        "Productos son estables"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Balanceo: mismo número de átomos de cada elemento en reactivos y productos (ley conservación masa).",
+                    tips: "Métodos: tanteo, algebraico, redox."
+                },
+                {
+                    id: "CQ323",
+                    question: "Símbolo (s) indica:",
+                    options: [
+                        "Estado sólido",
+                        "Estado líquido",
+                        "Estado gaseoso",
+                        "Disolución acuosa"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Símbolos de estado: (s) sólido, (l) líquido, (g) gas, (ac) acuoso (disuelto en agua).",
+                    tips: "Importante para reacciones iónicas en solución."
+                },
+                {
+                    id: "CQ324",
+                    question: "Flecha (→) significa:",
+                    options: [
+                        "Equilibrio",
+                        "Produce o forma",
+                        "Reversible",
+                        "Catalizador presente"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Flecha simple (→): reacción procede en dirección indicada. Doble (⇌): reacción reversible.",
+                    tips: "Δ sobre flecha: calentamiento. luz sobre flecha: necesita luz."
+                },
+                {
+                    id: "CQ325",
+                    question: "Balancea: H₂ + O₂ → H₂O",
+                    options: [
+                        "H₂ + O₂ → H₂O",
+                        "2H₂ + O₂ → 2H₂O",
+                        "H₂ + 2O₂ → H₂O",
+                        "2H₂ + 2O₂ → 2H₂O"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "2H₂ + O₂ → 2H₂O. H: 4 átomos cada lado. O: 2 átomos cada lado.",
+                    tips: "Siempre verificar balanceo contando átomos de cada elemento."
+                },
+                {
+                    id: "CQ326",
+                    question: "Balancea: CH₄ + O₂ → CO₂ + H₂O",
+                    options: [
+                        "CH₄ + O₂ → CO₂ + H₂O",
+                        "CH₄ + 2O₂ → CO₂ + 2H₂O",
+                        "2CH₄ + O₂ → 2CO₂ + H₂O",
+                        "CH₄ + 3O₂ → CO₂ + 2H₂O"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "CH₄ + 2O₂ → CO₂ + 2H₂O. C:1, H:4, O:4 en cada lado.",
+                    tips: "Para hidrocarburos, balancear C→H→O en ese orden."
+                },
+                {
+                    id: "CQ327",
+                    question: "Ecuación iónica neta muestra:",
+                    options: [
+                        "Todos los iones",
+                        "Solo iones espectadores",
+                        "Solo iones que reaccionan",
+                        "Moléculas completas"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Ecuación iónica neta: solo iones que participan en reacción. Elimina iones espectadores.",
+                    tips: "Ejemplo: Ag⁺(ac) + Cl⁻(ac) → AgCl(s). Na⁺ y NO₃⁻ son espectadores."
+                },
+                {
+                    id: "CQ328",
+                    question: "Iones espectadores:",
+                    options: [
+                        "Participan en reacción",
+                        "No cambian en reacción",
+                        "Forman precipitado",
+                        "Son productos"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Iones espectadores: presentes pero no participan en reacción neta. Mismos en reactivos y productos.",
+                    tips: "Al escribir ecuación iónica neta, se cancelan iones espectadores."
+                },
+                {
+                    id: "CQ329",
+                    question: "Balance por redox se usa cuando:",
+                    options: [
+                        "Hay cambio en estados de oxidación",
+                        "Solo hay compuestos covalentes",
+                        "No hay transferencia de electrones",
+                        "Todos elementos tienen EO=0"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Balance redox: cuando hay transferencia de electrones (cambios en estados de oxidación).",
+                    tips: "Método del cambio en número de oxidación o método del ión-electrón."
+                },
+                {
+                    id: "CQ330",
+                    question: "Estado de oxidación del O en óxidos es generalmente:",
+                    options: ["+1", "+2", "-1", "-2"],
+                    correctAnswer: 3,
+                    explanation: "Oxígeno: EO = -2 en la mayoría de compuestos. Excepciones: peróxidos (H₂O₂, EO=-1) y OF₂ (EO=+2).",
+                    tips: "Reglas EO: elementos libres=0, iones monoatómicos=carga, H=+1 (excepto hidruros)."
+                }
+            ],
+
+            // BLOQUE 3.3: El mol como unidad
+            "3.3": [
+                {
+                    id: "CQ331",
+                    question: "Un mol contiene:",
+                    options: [
+                        "6.02 × 10²³ átomos",
+                        "Número de Avogadro de partículas",
+                        "Masa atómica en gramos",
+                        "Todas las anteriores"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "1 mol = 6.022 × 10²³ partículas (número de Avogadro) = masa atómica/molecular en gramos (masa molar).",
+                    tips: "Número de Avogadro: como una docena (12), pero mucho más grande (6.02×10²³)."
+                },
+                {
+                    id: "CQ332",
+                    question: "Masa molar del H₂O es:",
+                    options: ["18 g", "18 uma", "18 kg", "18 mg"],
+                    correctAnswer: 0,
+                    explanation: "H₂O: H=1×2=2, O=16 → Masa molecular=18 uma. Masa molar=18 g/mol.",
+                    tips: "Masa molar en g/mol numéricamente igual a masa molecular en uma."
+                },
+                {
+                    id: "CQ333",
+                    question: "36 g de H₂O son:",
+                    options: ["1 mol", "2 moles", "18 moles", "36 moles"],
+                    correctAnswer: 1,
+                    explanation: "Masa molar H₂O=18 g/mol. 36 g ÷ 18 g/mol = 2 moles.",
+                    tips: "n (moles) = masa (g) ÷ masa molar (g/mol)."
+                },
+                {
+                    id: "CQ334",
+                    question: "Número de moléculas en 2 moles de CO₂:",
+                    options: [
+                        "6.02×10²³",
+                        "1.204×10²⁴",
+                        "3.01×10²³",
+                        "12.04×10²³"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "1 mol = 6.02×10²³ moléculas. 2 moles = 2 × 6.02×10²³ = 1.204×10²⁴ moléculas.",
+                    tips: "N° partículas = n × Nₐ (Nₐ = número de Avogadro)."
+                },
+                {
+                    id: "CQ335",
+                    question: "Volumen molar de gas en CNPT:",
+                    options: ["22.4 L", "24.5 L", "1 L", "10 L"],
+                    correctAnswer: 0,
+                    explanation: "CNPT (0°C, 1 atm): 1 mol de cualquier gas ocupa 22.4 L.",
+                    tips: "Condiciones normales: 0°C (273 K) y 1 atm. Condiciones estándar: 25°C (298 K) y 1 atm."
+                },
+                {
+                    id: "CQ336",
+                    question: "11.2 L de O₂ en CNPT son:",
+                    options: ["0.5 moles", "1 mol", "2 moles", "22.4 moles"],
+                    correctAnswer: 0,
+                    explanation: "22.4 L/mol (CNPT). 11.2 L ÷ 22.4 L/mol = 0.5 moles.",
+                    tips: "Para gases: n = V (L) ÷ 22.4 L/mol (en CNPT)."
+                },
+                {
+                    id: "CQ337",
+                    question: "Composición porcentual del H en H₂O:",
+                    options: ["11.1%", "22.2%", "88.9%", "50%"],
+                    correctAnswer: 0,
+                    explanation: "H₂O: masa molar=18 g/mol. H: 2 g/mol. %H = (2/18)×100 = 11.1%.",
+                    tips: "% elemento = (n×masa atómica / masa molar)×100."
+                },
+                {
+                    id: "CQ338",
+                    question: "Fórmula empírica muestra:",
+                    options: [
+                        "Número real de átomos",
+                        "Relación mínima de átomos",
+                        "Estructura tridimensional",
+                        "Masa exacta"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Fórmula empírica: relación mínima de números enteros de átomos. Fórmula molecular: números reales.",
+                    tips: "Ejemplo: CH₂O (empírica) vs C₆H₁₂O₆ (molecular de glucosa)."
+                },
+                {
+                    id: "CQ339",
+                    question: "Para 2H₂ + O₂ → 2H₂O, 4g H₂ reaccionan con:",
+                    options: ["16g O₂", "32g O₂", "8g O₂", "64g O₂"],
+                    correctAnswer: 1,
+                    explanation: "2H₂ + O₂ → 2H₂O. 4g H₂ = 2 moles H₂. Relación: 2 moles H₂ : 1 mol O₂. 1 mol O₂ = 32g.",
+                    tips: "Estequiometría: usar relaciones molares de ecuación balanceada."
+                },
+                {
+                    id: "CQ340",
+                    question: "Reactivo limitante:",
+                    options: [
+                        "Sobra después de reacción",
+                        "Se consume primero",
+                        "No reacciona",
+                        "Acelera reacción"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Reactivo limitante: se consume primero, limita cantidad de producto. Reactivo en exceso: sobra.",
+                    tips: "Para identificar: calcular moles, usar relaciones estequiométricas, ver cuál se acaba primero."
+                }
+            ],
+
+            // BLOQUE 3.4: Ácidos y bases
+            "3.4": [
+                {
+                    id: "CQ341",
+                    question: "Ácido Arrhenius produce:",
+                    options: [
+                        "OH⁻ en agua",
+                        "H⁺ en agua",
+                        "Ambos iones",
+                        "Ningún ion"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ácido Arrhenius: sustancia que en agua produce iones H⁺ (protones).",
+                    tips: "Ejemplos: HCl → H⁺ + Cl⁻, H₂SO₄ → 2H⁺ + SO₄²⁻."
+                },
+                {
+                    id: "CQ342",
+                    question: "Base Arrhenius produce:",
+                    options: [
+                        "H⁺ en agua",
+                        "OH⁻ en agua",
+                        "H₃O⁺",
+                        "Sales"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Base Arrhenius: sustancia que en agua produce iones OH⁻ (hidroxilos).",
+                    tips: "Ejemplos: NaOH → Na⁺ + OH⁻, Ca(OH)₂ → Ca²⁺ + 2OH⁻."
+                },
+                {
+                    id: "CQ343",
+                    question: "Ácido Bronsted-Lowry:",
+                    options: [
+                        "Donador de H⁺",
+                        "Aceptor de H⁺",
+                        "Donador de OH⁻",
+                        "Aceptor de OH⁻"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Ácido Bronsted-Lowry: dona protón (H⁺). Base: acepta protón.",
+                    tips: "Más general que Arrhenius. Incluye reacciones sin agua."
+                },
+                {
+                    id: "CQ344",
+                    question: "Par conjugado ácido-base:",
+                    options: [
+                        "Difieren en un H⁺",
+                        "Son iguales",
+                        "Difieren en un electrón",
+                        "No relacionadas"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Par conjugado: ácido/base que difieren en un protón. Ejemplo: HCl/Cl⁻, H₂O/OH⁻.",
+                    tips: "Ácido → pierde H⁺ → base conjugada. Base → gana H⁺ → ácido conjugado."
+                },
+                {
+                    id: "CQ345",
+                    question: "pH mide:",
+                    options: [
+                        "Concentración de H⁺",
+                        "Concentración de OH⁻",
+                        "Fuerza del ácido",
+                        "Volumen"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "pH = -log[H⁺]. Mide acidez. pH < 7 ácido, pH = 7 neutro, pH > 7 básico.",
+                    tips: "Cada unidad de pH representa cambio de 10× en [H⁺]. pH + pOH = 14."
+                },
+                {
+                    id: "CQ346",
+                    question: "Ácido fuerte:",
+                    options: [
+                        "Se ioniza parcialmente",
+                        "Se ioniza completamente",
+                        "Tiene pH cercano a 7",
+                        "Es diluido"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ácido fuerte: se ioniza completamente en agua. Ejemplos: HCl, H₂SO₄, HNO₃, HClO₄.",
+                    tips: "Base fuerte: se disocia completamente. Ejemplos: NaOH, KOH, Ca(OH)₂."
+                },
+                {
+                    id: "CQ347",
+                    question: "Indicador ácido-base:",
+                    options: [
+                        "Mide temperatura",
+                        "Cambia color con pH",
+                        "Neutraliza ácidos",
+                        "Cataliza reacciones"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Indicador: sustancia que cambia color según pH. Ejemplos: fenolftaleína, tornasol, naranja de metilo.",
+                    tips: "Fenolftaleína: incoloro en ácido, rosa en base."
+                },
+                {
+                    id: "CQ348",
+                    question: "Neutralización produce:",
+                    options: [
+                        "Ácido + base",
+                        "Sal + agua",
+                        "Gas + agua",
+                        "Precipitado"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Neutralización: ácido + base → sal + agua. Ejemplo: HCl + NaOH → NaCl + H₂O.",
+                    tips: "Reacción generalmente exotérmica. pH resultante depende de fuerzas relativas."
+                },
+                {
+                    id: "CQ349",
+                    question: "Lluvia ácida tiene pH:",
+                    options: [
+                        "> 7",
+                        "= 7",
+                        "< 5.6",
+                        "> 8"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Lluvia normal: pH ~5.6 (por CO₂). Lluvia ácida: pH < 5.6 (por SO₂, NOₓ).",
+                    tips: "Consecuencias: daña ecosistemas, corroe edificios, monumentos."
+                },
+                {
+                    id: "CQ350",
+                    question: "Antiácido común:",
+                    options: [
+                        "HCl",
+                        "H₂SO₄",
+                        "NaHCO₃",
+                        "NaOH"
+                    ],
+                    correctAnswer: 2,
+                    correctAnswer: 2,
+                    explanation: "Antiácidos: bases débiles que neutralizan exceso de ácido estomacal. Ejemplos: NaHCO₃ (bicarbonato), CaCO₃, Mg(OH)₂.",
+                    tips: "Reacción: NaHCO₃ + HCl → NaCl + H₂O + CO₂ (por eso hay eructos)."
+                }
+            ],
+
+            // BLOQUE 3.5: Reacciones redox
+            "3.5": [
+                {
+                    id: "CQ351",
+                    question: "Oxidación es:",
+                    options: [
+                        "Ganancia de electrones",
+                        "Pérdida de electrones",
+                        "Ganancia de protones",
+                        "Pérdida de neutrones"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Oxidación: pérdida de electrones (aumenta estado de oxidación). Reducción: ganancia de electrones (disminuye EO).",
+                    tips: "Regla mnemotécnica: OIL RIG (Oxidation Is Loss, Reduction Is Gain)."
+                },
+                {
+                    id: "CQ352",
+                    question: "Agente oxidante:",
+                    options: [
+                        "Se oxida",
+                        "Se reduce",
+                        "No cambia",
+                        "Es catalizador"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Agente oxidante: causa oxidación en otro, él mismo se reduce (gana e⁻).",
+                    tips: "Agente reductor: causa reducción en otro, él mismo se oxida (pierde e⁻)."
+                },
+                {
+                    id: "CQ353",
+                    question: "En Zn + Cu²⁺ → Zn²⁺ + Cu:",
+                    options: [
+                        "Zn se oxida",
+                        "Zn se reduce",
+                        "Cu²⁺ se oxida",
+                        "Ambos se reducen"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Zn → Zn²⁺ + 2e⁻ (oxidación, pierde e⁻). Cu²⁺ + 2e⁻ → Cu (reducción, gana e⁻).",
+                    tips: "Zn es agente reductor (se oxida). Cu²⁺ es agente oxidante (se reduce)."
+                },
+                {
+                    id: "CQ354",
+                    question: "Estado oxidación O en H₂O₂:",
+                    options: ["-2", "-1", "+1", "0"],
+                    correctAnswer: 1,
+                    explanation: "En peróxidos como H₂O₂, oxígeno tiene EO = -1 (no -2 como en óxidos).",
+                    tips: "H en H₂O₂: +1 (regla: H generalmente +1). Ecuación: 2(+1) + 2x = 0 → x = -1."
+                },
+                {
+                    id: "CQ355",
+                    question: "Balance redox en medio ácido usa:",
+                    options: [
+                        "OH⁻ para balancear O",
+                        "H⁺ y H₂O para balancear",
+                        "Solo electrones",
+                        "No necesita balance especial"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Medio ácido: balancear O añadiendo H₂O, balancear H añadiendo H⁺. Luego balancear carga con e⁻.",
+                    tips: "Medio básico: balancear O con H₂O, H con OH⁻ y H₂O."
+                },
+                {
+                    id: "CQ356",
+                    question: "Pila electroquímica convierte:",
+                    options: [
+                        "Energía química → eléctrica",
+                        "Energía eléctrica → química",
+                        "Calor → electricidad",
+                        "Luz → electricidad"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Pila (celda galvánica): energía química → eléctrica espontáneamente. Electrólisis: eléctrica → química (no espontánea).",
+                    tips: "Ánodo: oxidación (-). Cátodo: reducción (+)."
+                },
+                {
+                    id: "CQ357",
+                    question: "Corrosión del hierro es:",
+                    options: [
+                        "Reducción",
+                        "Oxidación",
+                        "Neutralización",
+                        "Precipitación"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Corrosión: oxidación del metal. Hierro: Fe → Fe²⁺ + 2e⁻ (luego Fe²⁺ → Fe₂O₃·nH₂O óxido).",
+                    tips: "Requiere O₂ y H₂O. Se acelera con electrolitos (sal)."
+                },
+                {
+                    id: "CQ358",
+                    question: "Agente reductor fuerte:",
+                    options: [
+                        "Tendencia a oxidarse",
+                        "Tendencia a reducirse",
+                        "No reacciona",
+                        "Es metal noble"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Agente reductor fuerte: se oxida fácilmente (pierde e⁻ fácil). Ejemplos: Li, Na, Mg, Al.",
+                    tips: "Metales alcalinos y alcalinotérreos son reductores fuertes."
+                },
+                {
+                    id: "CQ359",
+                    question: "Agente oxidante fuerte:",
+                    options: [
+                        "F₂",
+                        "Na",
+                        "Mg",
+                        "Al"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Agentes oxidantes fuertes: aceptan e⁻ fácilmente. F₂ es el oxidante más fuerte.",
+                    tips: "Halógenos, MnO₄⁻, Cr₂O₇²⁻, O₂ son oxidantes comunes."
+                },
+                {
+                    id: "CQ360",
+                    question: "Reacción de desproporción:",
+                    options: [
+                        "Mismo elemento se oxida y reduce",
+                        "Dos elementos se oxidan",
+                        "Dos elementos se reducen",
+                        "No hay transferencia e⁻"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Desproporción: mismo elemento en un compuesto se oxida y se reduce simultáneamente.",
+                    tips: "Ejemplo: 2H₂O₂ → 2H₂O + O₂. O en H₂O₂ (-1) → H₂O (-2, reducción) y O₂ (0, oxidación)."
+                }
+            ]
+        };
+
+        // ===================== VARIABLES GLOBALES =====================
+        let currentBlock = null;
+        let currentSubindice = null;
+        let userAnswers = {};
+        let userNotes = {};
+        let sessionStartTime = null;
+        let timerInterval = null;
+        let totalTimeSeconds = 0;
+
+        // ===================== FUNCIONES PRINCIPALES =====================
+        function initializeApp() {
+            sessionStartTime = new Date();
+            startTimer();
+            loadBlocks();
+            loadProgressFromStorage();
+            updateProgressPanel();
+            attachEventListeners();
+            
+            showNotification("¡Bienvenido a la Guía Completa de Química Ciencias III 2026!", "success");
+        }
+
+        function loadBlocks() {
+            const blocksContainer = document.getElementById('blocks-tabs');
+            blocksContainer.innerHTML = '';
+            
+            chemistryGuide.blocks.forEach(block => {
+                const blockTab = document.createElement('div');
+                blockTab.className = 'block-tab';
+                blockTab.dataset.blockId = block.id;
+                blockTab.innerHTML = `
+                    <span>${block.name}</span>
+                    <small>${block.subindices.length} subíndices • ${getBlockQuestionCount(block)} preguntas</small>
+                `;
+                blockTab.addEventListener('click', () => selectBlock(block.id));
+                blocksContainer.appendChild(blockTab);
+            });
+            
+            selectBlock(1);
+        }
+
+        function getBlockQuestionCount(block) {
+            return block.subindices.reduce((total, sub) => total + sub.questions, 0);
+        }
+
+        function selectBlock(blockId) {
+            currentBlock = chemistryGuide.blocks.find(b => b.id === blockId);
+            
+            document.querySelectorAll('.block-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.blockId == blockId);
+            });
+            
+            loadSubindices(blockId);
+            document.getElementById('subindice-panel').classList.remove('active');
+        }
+
+        function loadSubindices(blockId) {
+            const subindicesContainer = document.getElementById('subindices-grid');
+            subindicesContainer.innerHTML = '';
+            
+            const block = chemistryGuide.blocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            block.subindices.forEach(subindice => {
+                const progress = calculateSubindiceProgress(subindice.id);
+                
+                const subindiceCard = document.createElement('div');
+                subindiceCard.className = 'subindice-card';
+                subindiceCard.dataset.subindiceId = subindice.id;
+                
+                subindiceCard.innerHTML = `
+                    <div class="subindice-header">
+                        <span class="subindice-code">${subindice.code}</span>
+                        <span class="subindice-status">${progress.completed}/${subindice.questions}</span>
+                    </div>
+                    <div class="subindice-name">${subindice.name}</div>
+                    <div class="subindice-count">
+                        <span>📚 ${subindice.questions} preguntas</span>
+                        <span>•</span>
+                        <span class="difficulty-${subindice.difficulty}">${getDifficultyText(subindice.difficulty)}</span>
+                    </div>
+                `;
+                
+                subindiceCard.addEventListener('click', () => selectSubindice(subindice.id));
+                subindicesContainer.appendChild(subindiceCard);
+            });
+        }
+
+        function getDifficultyText(difficulty) {
+            const map = { 'facil': 'Fácil', 'medio': 'Medio', 'dificil': 'Difícil' };
+            return map[difficulty] || difficulty;
+        }
+
+        function calculateSubindiceProgress(subindiceId) {
+            const questions = questionsDatabase[subindiceId] || [];
+            let completed = 0;
+            let correct = 0;
+            
+            questions.forEach((question, index) => {
+                const questionKey = `${subindiceId}-${index}`;
+                if (userAnswers[questionKey] !== undefined) {
+                    completed++;
+                    if (userAnswers[questionKey] === question.correctAnswer) {
+                        correct++;
+                    }
+                }
+            });
+            
+            return { completed, correct, total: questions.length };
+        }
+
+        function selectSubindice(subindiceId) {
+            currentSubindice = subindiceId;
+            
+            document.querySelectorAll('.subindice-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.subindiceId === subindiceId);
+            });
+            
+            loadSubindicePanel(subindiceId);
+            document.getElementById('subindice-panel').classList.add('active');
+            loadQuestions(subindiceId);
+        }
+
+        function loadSubindicePanel(subindiceId) {
+            const block = chemistryGuide.blocks.find(b => b.subindices.some(s => s.id === subindiceId));
+            if (!block) return;
+            
+            const subindice = block.subindices.find(s => s.id === subindiceId);
+            if (!subindice) return;
+            
+            const progress = calculateSubindiceProgress(subindiceId);
+            const accuracy = progress.completed > 0 ? Math.round((progress.correct / progress.completed) * 100) : 0;
+            
+            document.getElementById('panel-title').textContent = subindice.name;
+            document.getElementById('panel-code').textContent = subindice.code;
+            document.getElementById('panel-description').textContent = getDescription(subindice.id);
+            
+            document.getElementById('panel-total-questions').textContent = subindice.questions;
+            document.getElementById('panel-correct-answers').textContent = progress.correct;
+            document.getElementById('panel-accuracy').textContent = `${accuracy}%`;
+            
+            const estimatedTime = calculateEstimatedTime(subindice);
+            document.getElementById('panel-time').textContent = `${estimatedTime}m`;
+        }
+
+        function getDescription(subindiceId) {
+            const descriptions = {
+                "1.1": "Estudio del método científico aplicado a la química: observación, hipótesis, experimentación y teoría.",
+                "1.2": "Propiedades intensivas y extensivas de los materiales, físicas y químicas.",
+                "1.3": "Diferencias entre cambios físicos y químicos, evidencias y ejemplos.",
+                "1.4": "Propiedades características para identificar sustancias puras.",
+                "1.5": "Ley de conservación de la masa en transformaciones de la materia.",
+                "1.6": "Métodos de separación de mezclas: filtración, decantación, destilación, etc.",
+                "2.1": "Partículas subatómicas: protones, neutrones, electrones.",
+                "2.2": "Número atómico, número de masa, isótopos.",
+                "2.3": "Formación de iones, moléculas y su diferencia con átomos.",
+                "2.4": "Estructuras de Lewis y regla del octeto.",
+                "2.5": "Organización y propiedades periódicas de los elementos.",
+                "2.6": "Tipos de enlace químico: iónico, covalente, metálico.",
+                "3.1": "Evidencias y características de los cambios químicos.",
+                "3.2": "Balanceo e interpretación de ecuaciones químicas.",
+                "3.3": "El mol como unidad de cantidad de sustancia.",
+                "3.4": "Propiedades de ácidos y bases, escala de pH.",
+                "3.5": "Reacciones de oxidación-reducción (redox)."
+            };
+            return descriptions[subindiceId] || "Tema de Ciencias III - Química para ECOEMS 2026.";
+        }
+
+        function calculateEstimatedTime(subindice) {
+            const times = { 'facil': 1, 'medio': 2, 'dificil': 3 };
+            return subindice.questions * (times[subindice.difficulty] || 2);
+        }
+
+        function loadQuestions(subindiceId) {
+            const questionsContainer = document.getElementById('questions-grid');
+            questionsContainer.innerHTML = '';
+            
+            const questions = questionsDatabase[subindiceId] || [];
+            
+            questions.forEach((question, index) => {
+                const questionCard = createQuestionCard(question, subindiceId, index);
+                questionsContainer.appendChild(questionCard);
+            });
+            
+            updateQuestionCounter();
+        }
+
+        function createQuestionCard(question, subindiceId, index) {
+            const questionCard = document.createElement('div');
+            questionCard.className = 'question-card';
+            questionCard.dataset.questionId = `${subindiceId}-${index}`;
+            
+            const questionKey = `${subindiceId}-${index}`;
+            const userAnswer = userAnswers[questionKey];
+            const isAnswered = userAnswer !== undefined;
+            const isCorrect = isAnswered ? userAnswer === question.correctAnswer : null;
+            
+            questionCard.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">
+                        <span>Pregunta ${index + 1}</span>
+                        <span>•</span>
+                        <span>ID: ${question.id}</span>
+                        ${isAnswered ? 
+                            `<span class="answer-badge ${isCorrect ? 'badge-correct' : 'badge-incorrect'}">
+                                ${isCorrect ? '✓ Correcta' : '✗ Incorrecta'}
+                            </span>` : ''
+                        }
+                    </div>
+                    <div class="question-difficulty difficulty-${question.difficulty || 'medio'}">
+                        ${getDifficultyText(question.difficulty || 'medio')}
+                    </div>
+                </div>
+                <div class="question-text">${question.question}</div>
+                <div class="options-container" id="options-${questionKey}">
+                    ${question.options.map((option, optIndex) => `
+                        <label class="option-label ${userAnswer === optIndex ? 'selected' : ''} 
+                                       ${isAnswered && optIndex === question.correctAnswer ? 'correct' : ''}
+                                       ${isAnswered && userAnswer === optIndex && userAnswer !== question.correctAnswer ? 'incorrect' : ''}"
+                               data-option="${optIndex}">
+                            <span class="option-letter ${isAnswered && optIndex === question.correctAnswer ? 'correct' : ''}
+                                                    ${isAnswered && userAnswer === optIndex && userAnswer !== question.correctAnswer ? 'incorrect' : ''}">
+                                ${String.fromCharCode(65 + optIndex)}
+                            </span>
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+                
+                ${isAnswered ? createFeedbackHTML(question, userAnswer) : ''}
+                
+                <div class="user-notes">
+                    <div class="notes-title">
+                        <span>📝</span>
+                        MIS NOTAS
+                    </div>
+                    <textarea class="notes-textarea" 
+                              placeholder="Escribe aquí tus apuntes..."
+                              data-question-id="${questionKey}">${userNotes[questionKey] || ''}</textarea>
+                </div>
+            `;
+            
+            if (!isAnswered) {
+                const optionLabels = questionCard.querySelectorAll('.option-label');
+                optionLabels.forEach(label => {
+                    label.addEventListener('click', function() {
+                        handleAnswerSelection(questionKey, parseInt(this.dataset.option), question, subindiceId, index);
+                    });
+                });
+            }
+            
+            const textarea = questionCard.querySelector('.notes-textarea');
+            textarea.addEventListener('input', function() {
+                saveUserNotes(this.dataset.questionId, this.value);
+            });
+            
+            return questionCard;
+        }
+
+        function createFeedbackHTML(question, userAnswer) {
+            const isCorrect = userAnswer === question.correctAnswer;
+            
+            return `
+                <div class="feedback-container show">
+                    <div class="feedback-title">
+                        <span>📚</span>
+                        EXPLICACIÓN DETALLADA
+                    </div>
+                    <div class="feedback-content">
+                        <p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + userAnswer)}. ${question.options[userAnswer]}</p>
+                        <p><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + question.correctAnswer)}. ${question.options[question.correctAnswer]}</p>
+                        <p><strong>Explicación:</strong> ${question.explanation}</p>
+                        ${question.tips ? `
+                            <div class="feedback-tips">
+                                <div class="tips-title">
+                                    <span>💡</span>
+                                    CONSEJOS DE ESTUDIO
+                                </div>
+                                <p>${question.tips}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleAnswerSelection(questionKey, selectedOption, question, subindiceId, index) {
+            userAnswers[questionKey] = selectedOption;
+            saveProgressToStorage();
+            
+            // Mostrar retroalimentación inmediata
+            const questionCard = document.querySelector(`[data-question-id="${questionKey}"]`);
+            if (questionCard) {
+                const feedbackHTML = createFeedbackHTML(question, selectedOption);
+                const notesSection = questionCard.querySelector('.user-notes');
+                notesSection.insertAdjacentHTML('beforebegin', feedbackHTML);
+                
+                // Actualizar estilos de opciones
+                const optionLabels = questionCard.querySelectorAll('.option-label');
+                optionLabels.forEach((label, optIndex) => {
+                    if (optIndex === question.correctAnswer) {
+                        label.classList.add('correct');
+                        label.querySelector('.option-letter').classList.add('correct');
+                    }
+                    if (optIndex === selectedOption && optIndex !== question.correctAnswer) {
+                        label.classList.add('incorrect');
+                        label.querySelector('.option-letter').classList.add('incorrect');
+                    }
+                    label.style.pointerEvents = 'none';
+                });
+            }
+            
+            updateProgressPanel();
+            
+            const isCorrect = selectedOption === question.correctAnswer;
+            showNotification(
+                isCorrect ? `¡Correcto! Pregunta ${index + 1} del tema ${subindiceId}` : `Incorrecto. Revisa la explicación para aprender`,
+                isCorrect ? "success" : "error"
+            );
+        }
+
+        function saveUserNotes(questionId, notes) {
+            userNotes[questionId] = notes;
+            saveProgressToStorage();
+        }
+
+        function updateProgressPanel() {
+            let answeredQuestions = 0;
+            let correctAnswers = 0;
+            let totalQuestions = 0;
+            
+            const blockProgress = {};
+            chemistryGuide.blocks.forEach(block => {
+                blockProgress[block.id] = { answered: 0, correct: 0, total: 0 };
+                
+                block.subindices.forEach(subindice => {
+                    const questions = questionsDatabase[subindice.id] || [];
+                    blockProgress[block.id].total += questions.length;
+                    totalQuestions += questions.length;
+                    
+                    questions.forEach((question, index) => {
+                        const questionKey = `${subindice.id}-${index}`;
+                        if (userAnswers[questionKey] !== undefined) {
+                            answeredQuestions++;
+                            blockProgress[block.id].answered++;
+                            
+                            if (userAnswers[questionKey] === question.correctAnswer) {
+                                correctAnswers++;
+                                blockProgress[block.id].correct++;
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Actualizar estadísticas
+            document.getElementById('total-questions').textContent = `${answeredQuestions}/${totalQuestions}`;
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('accuracy-rate').textContent = 
+                answeredQuestions > 0 ? `${Math.round((correctAnswers / answeredQuestions) * 100)}%` : '0%';
+            
+            const hours = Math.floor(totalTimeSeconds / 3600);
+            const minutes = Math.floor((totalTimeSeconds % 3600) / 60);
+            document.getElementById('time-spent').textContent = 
+                hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+            
+            // Actualizar barras de progreso
+            chemistryGuide.blocks.forEach(block => {
+                const progress = blockProgress[block.id];
+                const percentage = progress.total > 0 ? 
+                    Math.round((progress.answered / progress.total) * 100) : 0;
+                
+                document.getElementById(`block${block.id}-progress`).textContent = `${percentage}%`;
+                document.getElementById(`block${block.id}-bar`).style.width = `${percentage}%`;
+            });
+            
+            updateQuestionCounter();
+        }
+
+        function updateQuestionCounter() {
+            let answeredQuestions = 0;
+            Object.keys(userAnswers).forEach(key => {
+                if (userAnswers[key] !== undefined) answeredQuestions++;
+            });
+            document.getElementById('question-counter').textContent = 
+                `${answeredQuestions}/${chemistryGuide.totalQuestions}`;
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                totalTimeSeconds++;
+                const hours = Math.floor(totalTimeSeconds / 3600);
+                const minutes = Math.floor((totalTimeSeconds % 3600) / 60);
+                const seconds = totalTimeSeconds % 60;
+                document.getElementById('timer').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function saveProgressToStorage() {
+            const progress = {
+                userAnswers,
+                userNotes,
+                totalTimeSeconds,
+                lastUpdated: new Date().toISOString()
+            };
+            localStorage.setItem('chemistryCienciasIIIProgress', JSON.stringify(progress));
+        }
+
+        function loadProgressFromStorage() {
+            const saved = localStorage.getItem('chemistryCienciasIIIProgress');
+            if (saved) {
+                try {
+                    const progress = JSON.parse(saved);
+                    userAnswers = progress.userAnswers || {};
+                    userNotes = progress.userNotes || {};
+                    totalTimeSeconds = progress.totalTimeSeconds || 0;
+                } catch (e) {
+                    console.error('Error cargando progreso:', e);
+                }
+            }
+        }
+
+        function checkAllAnswers() {
+            let correct = 0, incorrect = 0, unanswered = 0;
+            
+            chemistryGuide.blocks.forEach(block => {
+                block.subindices.forEach(subindice => {
+                    const questions = questionsDatabase[subindice.id] || [];
+                    questions.forEach((question, index) => {
+                        const questionKey = `${subindice.id}-${index}`;
+                        const userAnswer = userAnswers[questionKey];
+                        if (userAnswer === undefined) {
+                            unanswered++;
+                        } else if (userAnswer === question.correctAnswer) {
+                            correct++;
+                        } else {
+                            incorrect++;
+                        }
+                    });
+                });
+            });
+            
+            showResults(correct, incorrect, unanswered);
+            showNotification(`Verificación completada: ${correct} correctas de ${correct + incorrect + unanswered}`, "success");
+        }
+
+        function showResults(correct, incorrect, unanswered) {
+            const total = correct + incorrect + unanswered;
+            const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+            
+            document.getElementById('final-score').textContent = `${correct}/${total}`;
+            document.getElementById('result-correct').textContent = correct;
+            document.getElementById('result-incorrect').textContent = incorrect;
+            document.getElementById('result-skipped').textContent = unanswered;
+            document.getElementById('result-percentage').textContent = `${percentage}%`;
+            document.getElementById('result-time').textContent = formatTime(totalTimeSeconds);
+            
+            const answeredQuestions = correct + incorrect;
+            const avgTime = answeredQuestions > 0 ? Math.round(totalTimeSeconds / answeredQuestions) : 0;
+            document.getElementById('result-avg-time').textContent = `${avgTime}s`;
+            
+            document.getElementById('results-panel').classList.add('active');
+            document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return hours > 0 ? 
+                `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}` :
+                `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function showIncorrectAnswers() {
+            const incorrect = [];
+            chemistryGuide.blocks.forEach(block => {
+                block.subindices.forEach(subindice => {
+                    const questions = questionsDatabase[subindice.id] || [];
+                    questions.forEach((question, index) => {
+                        const questionKey = `${subindice.id}-${index}`;
+                        const userAnswer = userAnswers[questionKey];
+                        if (userAnswer !== undefined && userAnswer !== question.correctAnswer) {
+                            incorrect.push({ subindice, index, question });
+                        }
+                    });
+                });
+            });
+            
+            if (incorrect.length === 0) {
+                showNotification("¡Excelente! No tienes respuestas incorrectas.", "success");
+                return;
+            }
+            
+            const first = incorrect[0];
+            selectSubindice(first.subindice.id);
+            
+            setTimeout(() => {
+                const questionCard = document.querySelector(`[data-question-id="${first.subindice.id}-${first.index}"]`);
+                if (questionCard) {
+                    questionCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 500);
+            
+            showNotification(`Tienes ${incorrect.length} preguntas incorrectas para revisar`, "warning");
+        }
+
+        function showNotification(message, type = "info") {
+            const notification = document.getElementById('notification');
+            const colors = {
+                success: 'var(--chem-green)',
+                error: 'var(--chem-red)',
+                warning: 'var(--chem-yellow)',
+                info: 'var(--chem-blue)'
+            };
+            
+            notification.style.borderLeftColor = colors[type] || colors.info;
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                    notification.classList.remove('hide');
+                }, 300);
+            }, 3000);
+        }
+
+        function downloadReport() {
+            let reportContent = `REPORTE COMPLETO - CIENCIAS III QUÍMICA ECOEMS 2026\n`;
+            reportContent += `Fecha: ${new Date().toLocaleDateString()}\n`;
+            reportContent += `Hora: ${new Date().toLocaleTimeString()}\n`;
+            reportContent += `Tiempo total: ${formatTime(totalTimeSeconds)}\n`;
+            reportContent += `========================================\n\n`;
+            
+            let totalQuestions = 0, answered = 0, correct = 0;
+            
+            chemistryGuide.blocks.forEach(block => {
+                reportContent += `${block.name}\n${'='.repeat(block.name.length)}\n`;
+                
+                block.subindices.forEach(subindice => {
+                    const questions = questionsDatabase[subindice.id] || [];
+                    totalQuestions += questions.length;
+                    
+                    reportContent += `\n${subindice.code} - ${subindice.name}\n`;
+                    reportContent += `-`.repeat(subindice.name.length + 6) + `\n`;
+                    
+                    questions.forEach((question, index) => {
+                        const questionKey = `${subindice.id}-${index}`;
+                        const userAnswer = userAnswers[questionKey];
+                        
+                        if (userAnswer !== undefined) {
+                            answered++;
+                            const isCorrect = userAnswer === question.correctAnswer;
+                            if (isCorrect) correct++;
+                            
+                            reportContent += `  Pregunta ${index + 1} (${question.id}): ${isCorrect ? '✓ CORRECTA' : '✗ INCORRECTA'}\n`;
+                            reportContent += `  Tu respuesta: ${String.fromCharCode(65 + userAnswer)}. ${question.options[userAnswer]}\n`;
+                            if (!isCorrect) {
+                                reportContent += `  Correcta: ${String.fromCharCode(65 + question.correctAnswer)}. ${question.options[question.correctAnswer]}\n`;
+                            }
+                            reportContent += `  Explicación: ${question.explanation}\n`;
+                            if (question.tips) {
+                                reportContent += `  Consejo: ${question.tips}\n`;
+                            }
+                        } else {
+                            reportContent += `  Pregunta ${index + 1} (${question.id}): SIN RESPONDER\n`;
+                        }
+                        reportContent += `  ---\n`;
+                    });
+                });
+                
+                reportContent += '\n';
+            });
+            
+            reportContent += `\nRESUMEN GENERAL\n`;
+            reportContent += `===============\n`;
+            reportContent += `Total de preguntas: ${totalQuestions}\n`;
+            reportContent += `Respondidas: ${answered} (${Math.round((answered/totalQuestions)*100)}%)\n`;
+            reportContent += `Correctas: ${correct} (${answered > 0 ? Math.round((correct/answered)*100) : 0}% de acierto)\n`;
+            reportContent += `Incorrectas: ${answered - correct}\n`;
+            reportContent += `Sin responder: ${totalQuestions - answered}\n`;
+            reportContent += `Tiempo promedio por pregunta: ${answered > 0 ? Math.round(totalTimeSeconds/answered) : 0} segundos\n`;
+            
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Reporte_Quimica_CienciasIII_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Reporte descargado exitosamente', 'success');
+        }
+
+        function resetSession() {
+            if (confirm('¿Estás seguro de reiniciar toda la sesión? Se perderán todas las respuestas y notas.')) {
+                userAnswers = {};
+                userNotes = {};
+                totalTimeSeconds = 0;
+                sessionStartTime = new Date();
+                localStorage.removeItem('chemistryCienciasIIIProgress');
+                loadBlocks();
+                updateProgressPanel();
+                showNotification('Sesión reiniciada exitosamente', 'success');
+            }
+        }
+
+        function attachEventListeners() {
+            document.getElementById('check-answers').addEventListener('click', checkAllAnswers);
+            document.getElementById('show-incorrect').addEventListener('click', showIncorrectAnswers);
+            document.getElementById('show-results').addEventListener('click', checkAllAnswers);
+            document.getElementById('reset-session').addEventListener('click', resetSession);
+            document.getElementById('download-report').addEventListener('click', downloadReport);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    saveProgressToStorage();
+                    showNotification('Progreso guardado (Ctrl+S)', 'success');
+                }
+            });
+        }
+
+        // ===================== INICIALIZAR =====================
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
