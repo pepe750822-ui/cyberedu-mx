@@ -137,10 +137,15 @@ const NewsECOEMS = () => {
                             +1,500 aspirantes están revisando la convocatoria hoy
                         </p>
                     </div>
-                    <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-white transition-colors group/final">
-                        ¿TIENES LISTA TU CURP? COMIENZA AQUÍ
+                    <a
+                        href="https://www.gob.mx/curp/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-white transition-colors group/final"
+                    >
+                        ¿TIENES LISTA TU CURP? CONSÚLTALA AQUÍ
                         <ArrowRight className="h-4 w-4 group-hover/final:translate-x-2 transition-transform" />
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
