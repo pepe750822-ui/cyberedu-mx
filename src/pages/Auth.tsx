@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isRecovering, setIsRecovering] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,8 +25,21 @@ const Auth = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) navigate("/", { replace: true });
-  }, [user, navigate]);
+    // Detect password recovery mode from URL hash/supabase session
+    const checkRecovery = async () => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+        if (event === "PASSWORD_RECOVERY") {
+          setIsResettingPassword(true);
+          setIsLogin(false);
+          setIsRecovering(false);
+        }
+      });
+      return () => subscription.unsubscribe();
+    };
+    checkRecovery();
+
+    if (user && !isResettingPassword) navigate("/", { replace: true });
+  }, [user, navigate, isResettingPassword]);
 
   const passwordsMatch = isLogin || isRecovering || password === confirmPassword;
 
@@ -54,9 +68,32 @@ const Auth = () => {
     }
   };
 
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast({ title: "Error", description: "Las contraseñas no coinciden", variant: "destructive" });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      toast({ title: "Contraseña actualizada", description: "Ya puedes iniciar sesión con tu nueva clave." });
+      setIsResettingPassword(false);
+      setIsLogin(true);
+      navigate("/auth");
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isResettingPassword) return handleUpdatePassword(e);
     if (isRecovering) return handlePasswordReset(e);
 
     if (!isLogin && password !== confirmPassword) {
@@ -151,18 +188,20 @@ const Auth = () => {
           <div className="relative z-10 space-y-6">
             <div className="space-y-2 text-center">
               <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
-                {isRecovering ? "Recuperar Acceso" : isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
+                {isResettingPassword ? "Nueva Contraseña" : isRecovering ? "Recuperar Acceso" : isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
               </h2>
               <p className="text-slate-400 text-sm">
-                {isRecovering
-                  ? "Ingresa tu email para recibir un enlace de restauración."
-                  : isLogin
-                    ? "Accede a tu arsenal de estudio y simuladores."
-                    : "Únete a la nueva generación de estudiantes."}
+                {isResettingPassword
+                  ? "Crea una nueva clave segura para tu cuenta."
+                  : isRecovering
+                    ? "Ingresa tu email para recibir un enlace de restauración."
+                    : isLogin
+                      ? "Accede a tu arsenal de estudio y simuladores."
+                      : "Únete a la nueva generación de estudiantes."}
               </p>
             </div>
 
-            {!isRecovering && (
+            {!isRecovering && !isResettingPassword && (
               <>
                 <Button
                   variant="outline"
@@ -185,7 +224,7 @@ const Auth = () => {
             )}
 
             <form onSubmit={handleEmailAuth} className="space-y-4">
-              {!isLogin && !isRecovering && (
+              {!isLogin && !isRecovering && !isResettingPassword && (
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Nombre Completo</Label>
                   <div className="relative">
@@ -203,27 +242,29 @@ const Auth = () => {
                 </div>
               )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Terminal de Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="aspirante@cyberedu.mx"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
-                    required
-                  />
+              {!isResettingPassword && (
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Terminal de Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="aspirante@cyberedu.mx"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-12 pl-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {!isRecovering && (
+              {(!isRecovering || isResettingPassword) && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between ml-1">
-                    <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400">Clave de Acceso</Label>
-                    {isLogin && (
+                    <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400">{isResettingPassword ? "Nueva Clave" : "Clave de Acceso"}</Label>
+                    {isLogin && !isResettingPassword && (
                       <button
                         type="button"
                         onClick={() => setIsRecovering(true)}
@@ -256,9 +297,9 @@ const Auth = () => {
                 </div>
               )}
 
-              {!isLogin && !isRecovering && (
+              {(!isLogin || isResettingPassword) && !isRecovering && (
                 <div className="space-y-2 animate-in slide-in-from-top-2 duration-300">
-                  <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Confirmar Clave</Label>
+                  <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Confirmar Nueva Clave</Label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                     <Input
@@ -283,9 +324,9 @@ const Auth = () => {
 
               <Button
                 type="submit"
-                className={`w-full h-12 rounded-xl font-black uppercase tracking-widest text-xs group transition-all ${!passwordsMatch && !isLogin ? "bg-slate-700 cursor-not-allowed" : "bg-primary hover:bg-primary/80 text-white"
+                className={`w-full h-12 rounded-xl font-black uppercase tracking-widest text-xs group transition-all ${(!passwordsMatch && !isLogin) || (!passwordsMatch && isResettingPassword) ? "bg-slate-700 cursor-not-allowed" : "bg-primary hover:bg-primary/80 text-white"
                   }`}
-                disabled={loading || (!passwordsMatch && !isLogin)}
+                disabled={loading || (!passwordsMatch && !isLogin) || (!passwordsMatch && isResettingPassword)}
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -294,7 +335,7 @@ const Auth = () => {
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
-                    {isRecovering ? "Enviar Enlace de Restauración" : isLogin ? "Desbloquear Dashboard" : "Inicializar Cuenta"}
+                    {isResettingPassword ? "Actualizar Contraseña" : isRecovering ? "Enviar Enlace de Restauración" : isLogin ? "Desbloquear Dashboard" : "Inicializar Cuenta"}
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 )}
@@ -302,10 +343,10 @@ const Auth = () => {
             </form>
 
             <div className="pt-2 text-center">
-              {isRecovering ? (
+              {isRecovering || isResettingPassword ? (
                 <button
                   type="button"
-                  onClick={() => setIsRecovering(false)}
+                  onClick={() => { setIsRecovering(false); setIsResettingPassword(false); setIsLogin(true); }}
                   className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 mx-auto"
                 >
                   <span className="text-primary hover:underline underline-offset-4 font-black">
