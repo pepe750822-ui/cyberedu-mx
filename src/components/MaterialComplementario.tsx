@@ -184,12 +184,14 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasInfografia = !!material.infografia?.url;
   const hasPdf = !!material.pdf?.url;
   const hasQuiz = !!material.quiz?.url;
-  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz;
+  const hasAI = !!aiContent[videoId];
 
-  if (!hasAny && !aiContent[videoId]) return null; // Also check for AI content
+  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI;
+
+  if (!hasAny) return null;
 
   // REORDERED LOGIC: QUIZ -> AI Tutor -> Infografia -> PDF -> Podcast
-  const defaultTab = hasQuiz ? "quiz" : "ai-tutor";
+  const defaultTab = hasQuiz ? "quiz" : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf"));
 
   const [activeTab, setActiveTab] = useState(defaultTab);
 
@@ -213,10 +215,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 📝 QUIZ Inteligente
               </TabsTrigger>
             )}
-            <TabsTrigger value="ai-tutor" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter">
-              <Brain className="h-4 w-4 text-primary" />
-              🧠 Asistencia AI
-            </TabsTrigger>
+            {hasAI && (
+              <TabsTrigger value="ai-tutor" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter">
+                <Brain className="h-4 w-4 text-primary" />
+                🧠 Asistencia AI
+              </TabsTrigger>
+            )}
             {hasInfografia && (
               <TabsTrigger value="infografia" className="gap-1.5 text-xs sm:text-sm">
                 <Image className="h-4 w-4" />
