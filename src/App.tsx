@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import SimuladorPro from "./pages/SimuladorPro";
 import AITutor from "./components/AITutor";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/area/:areaId" element={<AreaDetail />} />
+            <Route path="/simulador-pro" element={<SimuladorPro />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/~oauth/*" element={<OAuthPassthrough />} />
             <Route path="*" element={<NotFound />} />

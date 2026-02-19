@@ -1,6 +1,18 @@
 import { useMemo, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { GraduationCap, BookOpen, Video, CheckCircle, ArrowUpDown } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  GraduationCap,
+  BookOpen,
+  Video,
+  CheckCircle,
+  ArrowUpDown,
+  Trophy,
+  Zap,
+  Target,
+  Clock,
+  BarChart3,
+  ChevronRight
+} from "lucide-react";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
@@ -19,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
 const Index = () => {
+  const navigate = useNavigate();
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
   const {
     isViewed,
@@ -117,6 +130,49 @@ const Index = () => {
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
         <PlanEstudioDiario />
         <UltimoVideoCard />
+
+        {/* Simuladores Premium Section */}
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary via-indigo-500 to-purple-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+          <div className="relative bg-slate-900 border border-white/10 rounded-[2.5rem] p-8 md:p-12 overflow-hidden">
+            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+              <Trophy className="h-48 w-48 text-white -rotate-12" />
+            </div>
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="space-y-4 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary">
+                  <Zap className="h-4 w-4 animate-bounce" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">NUEVO: Acceso Total</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">
+                  Simulador <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400 italic">Premium ECOEMS</span>
+                </h2>
+                <p className="text-slate-400 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                  Pon a prueba tus conocimientos con una réplica exacta del examen real. Cronómetro oficial, resultados con predicción AI y explicaciones paso a paso.
+                </p>
+                <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <Target className="h-3 w-3 text-emerald-500" /> 128 Reactivos
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <Clock className="h-3 w-3 text-indigo-500" /> 3 Horas
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <BarChart3 className="h-3 w-3 text-amber-500" /> Predicción AI
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={() => navigate("/simulador-pro")}
+                className="h-20 px-10 rounded-3xl bg-primary hover:bg-primary/90 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(var(--primary),0.3)] transition-all hover:scale-105 active:scale-95 group"
+              >
+                ENTRAR AHORA
+                <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <CountdownExam />
         <NewsECOEMS />
         <BadgeSystem />
