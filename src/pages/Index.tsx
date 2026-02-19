@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import ProgresoDashboard from "@/components/ProgresoDashboard";
 import RecommendedVideos from "@/components/RecommendedVideos";
 import UltimoVideoCard from "@/components/UltimoVideoCard";
+import BadgeSystem from "@/components/BadgeSystem";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
@@ -111,6 +112,7 @@ const Index = () => {
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
         <UltimoVideoCard />
+        <BadgeSystem />
         <ProgresoDashboard />
         <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
       </section>
