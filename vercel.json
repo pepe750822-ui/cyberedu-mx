@@ -1,18 +1,7 @@
 {
-  "headers": [
-    {
-      "source": "/~oauth/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    }
-  ],
   "rewrites": [
     {
-      "source": "/((?!~oauth|api).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
