@@ -19,8 +19,19 @@ if (!isset($_SESSION['estadisticas_usuario_poli'])) {
 
 // ===================== CONTROL DE ACCESO (DE PAGO) =====================
 $userId = $_GET['u'] ?? $_SESSION['tracking_user_id'] ?? null;
-$tiene_acceso = true; // ACCESO GRATUITO ACTIVADO
+$tiene_acceso = true; // ACCESO GRATUITO PARA TODOS 🚀
 $nombre_usuario = "";
+
+// Lógica de retorno inteligente
+$referer = $_SERVER['HTTP_REFERER'] ?? '';
+$returnUrl = "https://cyberedumx.com/";
+
+if (strpos($referer, 'lovable.app') !== false || strpos($referer, 'vercel.app') !== false) {
+    $returnUrl = $referer;
+    $_SESSION['smart_return_url'] = $returnUrl;
+} elseif (isset($_SESSION['smart_return_url'])) {
+    $returnUrl = $_SESSION['smart_return_url'];
+}
 
 if ($userId) {
     try {
@@ -137,7 +148,7 @@ if (!$tiene_acceso): ?>
                 padding-top: 0 !important;
             }
         </style>
-        <a href="https://cyberedumx.com/" class="back-to-dashboard">
+        <a href="<?= $returnUrl ?>" class="back-to-dashboard">
             🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
         </a>
         <div class="access-card">
@@ -161,14 +172,28 @@ if (!$tiene_acceso): ?>
             </a>
 
             <div class="mt-4">
-                <a href="https://cyberedumx.com/" style="color: #bdc3c7; text-decoration: none; font-size: 0.9rem;">
+                <a href="<?= $returnUrl ?>" class="smart-back-link"
+                    style="color: #bdc3c7; text-decoration: none; font-size: 0.9rem;">
                     <i class="fas fa-arrow-left"></i> Volver al Dashboard Principal
                 </a>
             </div>
         </div>
 
         <script>
-            // Intentar recuperar ID de localStorage si no está en la URL
+            // Persistencia del Dashboard de origen
+            const currentReferer = document.referrer;
+            if (currentReferer && (currentReferer.includes('lovable.app') || currentReferer.includes('vercel.app'))) {
+                localStorage.setItem('original_dashboard_url', currentReferer);
+            }
+
+            const savedDashboard = localStorage.getItem('original_dashboard_url');
+            if (savedDashboard) {
+                document.querySelectorAll('.smart-back-link, .btn-volver, .back-to-dashboard').forEach(link => {
+                    link.href = savedDashboard;
+                });
+            }
+
+            // Gestión de sesión tracking
             const storedId = localStorage.getItem('tracking_user_id');
             const urlParams = new URLSearchParams(window.location.search);
             if (storedId && !urlParams.has('u')) {

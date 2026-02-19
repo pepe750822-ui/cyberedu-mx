@@ -19,8 +19,19 @@ if (!isset($_SESSION['estadisticas_usuario'])) {
 
 // ===================== CONTROL DE ACCESO (DE PAGO) =====================
 $userId = $_GET['u'] ?? $_SESSION['tracking_user_id'] ?? null;
-$tiene_acceso = true; // ACCESO GRATUITO ACTIVADO
+$tiene_acceso = true; // ACCESO GRATUITO PARA TODOS 🚀
 $nombre_usuario = "";
+
+// Lógica de retorno inteligente
+$referer = $_SERVER['HTTP_REFERER'] ?? '';
+$returnUrl = "https://cyberedumx.com/";
+
+if (strpos($referer, 'lovable.app') !== false || strpos($referer, 'vercel.app') !== false) {
+    $returnUrl = $referer;
+    $_SESSION['smart_return_url'] = $returnUrl;
+} elseif (isset($_SESSION['smart_return_url'])) {
+    $returnUrl = $_SESSION['smart_return_url'];
+}
 
 if ($userId) {
     try {
@@ -144,7 +155,7 @@ if (!$tiene_acceso): ?>
     <body class="with-beta-banner">
         <!-- BETA HEADER BANNER -->
         <div id="beta-banner">
-            <a href="https://cyberedumx.com/">
+            <a href="<?= $returnUrl ?>" class="smart-back-link">
                 🚀 VOLVER AL DASHBOARD PRINCIPAL (PLATAFORMA 2026)
             </a>
         </div>
@@ -169,24 +180,38 @@ if (!$tiene_acceso): ?>
             </a>
 
             <div class="mt-4">
-                <a href="https://cyberedumx.com/" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">
+                <a href="<?= $returnUrl ?>" class="smart-back-link"
+                    style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">
                     <i class="fas fa-arrow-left"></i> Volver al Dashboard Principal
                 </a>
             </div>
         </div>
 
         <script>
-                // Intentar recuperar ID de localStorage si no está en la URL
-              const storedId = localStorage.getItem('tracking_user_id');
-                const urlParams = new URLSearchParams(window.location.search);
-                if (storedId && !urlParams.has('u')) {
-                    window.location.href = window.location.pathname + '?u=' + storedId;
-                }
-            </script>
-        </body>
+            // Persistencia del Dashboard de origen
+            const currentReferer = document.referrer;
+            if (currentReferer && (currentReferer.includes('lovable.app') || currentReferer.includes('vercel.app'))) {
+                localStorage.setItem('original_dashboard_url', currentReferer);
+            }
 
-        </html>
-        <?php die(); endif; // ======================================================== ?>
+            const savedDashboard = localStorage.getItem('original_dashboard_url');
+            if (savedDashboard) {
+                document.querySelectorAll('.smart-back-link, .btn-volver, .back-to-dashboard').forEach(link => {
+                    link.href = savedDashboard;
+                });
+            }
+
+            // Gestión de sesión tracking
+            const storedId = localStorage.getItem('tracking_user_id');
+            const urlParams = new URLSearchParams(window.location.search);
+            if (storedId && !urlParams.has('u')) {
+                window.location.href = window.location.pathname + '?u=' + storedId;
+            }
+        </script>
+    </body>
+
+    </html>
+    <?php die(); endif; // ======================================================== ?>
 <?php // REAPERTURA DE PHP PARA EL RESTO DEL CÓDIGO 
 
 // Obtener todas las guías disponibles
@@ -2096,49 +2121,49 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
 
         <!-- TIMER -->
         <?php if (!empty($preguntas) && ($modo == 'examen' || $tipo_simulacion == 'completa_ecoems')): ?>
-                <div class="timer-container" id="timer-container">
-                    <div class="timer" id="timer">
-                        <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                                03:00:00
-                        <?php else: ?>
-                                <?= floor($tiempo_examen_minutos) ?>:00
-                        <?php endif; ?>
-                    </div>
-                    <div class="timer-info">
-                        <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                                ⏰ <strong>Batalla Épica:</strong> 128 preguntas en 3 horas (180 minutos)
-                        <?php else: ?>
-                                ⏰ Tiempo asignado: <?= $tiempo_examen_minutos ?> minutos para <?= count($preguntas) ?> preguntas
-                        <?php endif; ?>
-                    </div>
+            <div class="timer-container" id="timer-container">
+                <div class="timer" id="timer">
+                    <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                        03:00:00
+                    <?php else: ?>
+                        <?= floor($tiempo_examen_minutos) ?>:00
+                    <?php endif; ?>
                 </div>
+                <div class="timer-info">
+                    <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                        ⏰ <strong>Batalla Épica:</strong> 128 preguntas en 3 horas (180 minutos)
+                    <?php else: ?>
+                        ⏰ Tiempo asignado: <?= $tiempo_examen_minutos ?> minutos para <?= count($preguntas) ?> preguntas
+                    <?php endif; ?>
+                </div>
+            </div>
         <?php endif; ?>
 
         <!-- ESTADÍSTICAS EN TIEMPO REAL -->
         <?php if (!empty($preguntas) && $modo == 'estudio' && $tipo_simulacion == 'personalizada'): ?>
-                <div class="estadisticas-vivo">
-                    <h3>📈 Tu Progreso en la Batalla</h3>
-                    <div class="stats-vivo-grid">
-                        <div class="stat-vivo-card">
-                            <div class="stat-vivo-number stat-correcta" id="contador-correctas">0</div>
-                            <div class="stat-vivo-label">✅ Aciertos</div>
+            <div class="estadisticas-vivo">
+                <h3>📈 Tu Progreso en la Batalla</h3>
+                <div class="stats-vivo-grid">
+                    <div class="stat-vivo-card">
+                        <div class="stat-vivo-number stat-correcta" id="contador-correctas">0</div>
+                        <div class="stat-vivo-label">✅ Aciertos</div>
+                    </div>
+                    <div class="stat-vivo-card">
+                        <div class="stat-vivo-number stat-incorrecta" id="contador-incorrectas">0</div>
+                        <div class="stat-vivo-label">❌ Errores</div>
+                    </div>
+                    <div class="stat-vivo-card">
+                        <div class="stat-vivo-number stat-sin-responder" id="contador-pendientes">
+                            <?= count($preguntas) ?>
                         </div>
-                        <div class="stat-vivo-card">
-                            <div class="stat-vivo-number stat-incorrecta" id="contador-incorrectas">0</div>
-                            <div class="stat-vivo-label">❌ Errores</div>
-                        </div>
-                        <div class="stat-vivo-card">
-                            <div class="stat-vivo-number stat-sin-responder" id="contador-pendientes">
-                                <?= count($preguntas) ?>
-                            </div>
-                            <div class="stat-vivo-label">⏳ Pendientes</div>
-                        </div>
-                        <div class="stat-vivo-card">
-                            <div class="stat-vivo-number stat-porcentaje" id="porcentaje-acierto">0%</div>
-                            <div class="stat-vivo-label">🎯 Precisión</div>
-                        </div>
+                        <div class="stat-vivo-label">⏳ Pendientes</div>
+                    </div>
+                    <div class="stat-vivo-card">
+                        <div class="stat-vivo-number stat-porcentaje" id="porcentaje-acierto">0%</div>
+                        <div class="stat-vivo-label">🎯 Precisión</div>
                     </div>
                 </div>
+            </div>
         <?php endif; ?>
 
         <!-- SELECTOR DE GUÍA Y MATERIAS -->
@@ -2158,11 +2183,11 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
                         <select name="guia_busqueda" id="guia_busqueda" required>
                             <option value="">-- Elige una guía --</option>
                             <?php foreach ($guias as $guia): ?>
-                                    <?php if ($guia['activa']): ?>
-                                            <option value="<?= $guia['year'] ?>" <?= $guia_busqueda == $guia['year'] ? 'selected' : '' ?>>
-                                                <?= $guia['year'] ?> - <?= $guia['nombre'] ?>
-                                            </option>
-                                    <?php endif; ?>
+                                <?php if ($guia['activa']): ?>
+                                    <option value="<?= $guia['year'] ?>" <?= $guia_busqueda == $guia['year'] ? 'selected' : '' ?>>
+                                        <?= $guia['year'] ?> - <?= $guia['nombre'] ?>
+                                    </option>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -2197,23 +2222,23 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
                     <label for="guia_years">📅 Selecciona las Guías:</label>
                     <div class="guias-checkbox-group">
                         <?php foreach ($guias as $guia): ?>
-                                <div class="guia-checkbox-item">
-                                    <input type="checkbox" name="guia_years[]" value="<?= $guia['year'] ?>"
-                                        id="guia_<?= $guia['year'] ?>" <?= in_array($guia['year'], $guia_years) ? 'checked' : '' ?>         <?= !$guia['activa'] ? 'disabled' : '' ?>>
-                                    <label for="guia_<?= $guia['year'] ?>" class="guia-checkbox-label">
-                                        <div>
-                                            <span class="guia-year"><?= $guia['year'] ?></span>
-                                            <span class="guia-name"> - <?= $guia['nombre'] ?></span>
-                                        </div>
-                                        <?php if ($guia['es_proxima']): ?>
-                                                <span class="guia-option guia-proxima">PRÓXIMO</span>
-                                        <?php elseif (!$guia['activa']): ?>
-                                                <span class="guia-option guia-inactiva">EN PREPARACIÓN</span>
-                                        <?php else: ?>
-                                                <span class="guia-option guia-disponible">DISPONIBLE</span>
-                                        <?php endif; ?>
-                                    </label>
-                                </div>
+                            <div class="guia-checkbox-item">
+                                <input type="checkbox" name="guia_years[]" value="<?= $guia['year'] ?>"
+                                    id="guia_<?= $guia['year'] ?>" <?= in_array($guia['year'], $guia_years) ? 'checked' : '' ?>     <?= !$guia['activa'] ? 'disabled' : '' ?>>
+                                <label for="guia_<?= $guia['year'] ?>" class="guia-checkbox-label">
+                                    <div>
+                                        <span class="guia-year"><?= $guia['year'] ?></span>
+                                        <span class="guia-name"> - <?= $guia['nombre'] ?></span>
+                                    </div>
+                                    <?php if ($guia['es_proxima']): ?>
+                                        <span class="guia-option guia-proxima">PRÓXIMO</span>
+                                    <?php elseif (!$guia['activa']): ?>
+                                        <span class="guia-option guia-inactiva">EN PREPARACIÓN</span>
+                                    <?php else: ?>
+                                        <span class="guia-option guia-disponible">DISPONIBLE</span>
+                                    <?php endif; ?>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
                         <div class="checkbox-actions">
                             <button type="button" class="btn-seleccionar-todo" onclick="seleccionarTodasGuias(true)">
@@ -2230,33 +2255,33 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
                     <label for="materias">📖 Selecciona las Materias:</label>
                     <div class="materias-checkbox-group">
                         <?php foreach ($todas_materias as $materia): ?>
-                                <div class="materia-checkbox-item">
-                                    <input type="checkbox" name="materias[]" value="<?= htmlspecialchars($materia) ?>"
-                                        id="materia_<?= preg_replace('/[^a-z0-9]/i', '_', strtolower($materia)) ?>"
-                                        <?= in_array($materia, $materias_seleccionadas) ? 'checked' : '' ?>>
-                                    <label for="materia_<?= preg_replace('/[^a-z0-9]/i', '_', strtolower($materia)) ?>"
-                                        class="materia-checkbox-label">
-                                        <div>
-                                            <span class="materia-name">
-                                                <?php
-                                                $iconos_materias = [
-                                                    'Habilidad Matemática' => '🧮',
-                                                    'Ciencias I (Biología)' => '🔬',
-                                                    'Español' => '📚',
-                                                    'Ciencias III (Química)' => '⚗️',
-                                                    'Historia' => '📜',
-                                                    'Matemáticas' => '➗',
-                                                    'Habilidad verbal' => '💬',
-                                                    'Geografía' => '🌍',
-                                                    'Ciencias II (Física)' => '⚡',
-                                                    'Formación cívica y ética' => '⚖️'
-                                                ];
-                                                echo ($iconos_materias[$materia] ?? '📖') . ' ' . htmlspecialchars($materia);
-                                                ?>
-                                            </span>
-                                        </div>
-                                    </label>
-                                </div>
+                            <div class="materia-checkbox-item">
+                                <input type="checkbox" name="materias[]" value="<?= htmlspecialchars($materia) ?>"
+                                    id="materia_<?= preg_replace('/[^a-z0-9]/i', '_', strtolower($materia)) ?>"
+                                    <?= in_array($materia, $materias_seleccionadas) ? 'checked' : '' ?>>
+                                <label for="materia_<?= preg_replace('/[^a-z0-9]/i', '_', strtolower($materia)) ?>"
+                                    class="materia-checkbox-label">
+                                    <div>
+                                        <span class="materia-name">
+                                            <?php
+                                            $iconos_materias = [
+                                                'Habilidad Matemática' => '🧮',
+                                                'Ciencias I (Biología)' => '🔬',
+                                                'Español' => '📚',
+                                                'Ciencias III (Química)' => '⚗️',
+                                                'Historia' => '📜',
+                                                'Matemáticas' => '➗',
+                                                'Habilidad verbal' => '💬',
+                                                'Geografía' => '🌍',
+                                                'Ciencias II (Física)' => '⚡',
+                                                'Formación cívica y ética' => '⚖️'
+                                            ];
+                                            echo ($iconos_materias[$materia] ?? '📖') . ' ' . htmlspecialchars($materia);
+                                            ?>
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
                         <div class="checkbox-actions">
                             <button type="button" class="btn-seleccionar-todo" onclick="seleccionarTodasMaterias(true)">
@@ -2295,193 +2320,193 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
 
         <!-- CONTENIDO DE PREGUNTAS -->
         <?php if (!empty($preguntas)): ?>
-                <div class="estadisticas-sesion">
-                    <h3>
-                        <?php if (!empty($busqueda_especifica)): ?>
-                                🔍 Resultados de Búsqueda: Preguntas <?= $busqueda_especifica ?> de Guía <?= $guia_busqueda ?>
-                        <?php elseif ($tipo_simulacion == 'completa_ecoems'): ?>
-                                ⚔️ Batalla Épica: Examen Completo Ecoems
-                        <?php else: ?>
-                                📖 <?= $modo == 'estudio' ? 'Dojo de Estudio' : 'Batalla de Conocimientos' ?>
-                        <?php endif; ?>
-                    </h3>
-
-                    <p>
-                        <?php if (!empty($busqueda_especifica)): ?>
-                                Mostrando <strong><?= count($preguntas) ?></strong> preguntas específicas de la guía
-                                <strong><?= $guia_busqueda ?></strong>
-                        <?php else: ?>
-                                Mostrando <strong><?= count($preguntas) ?></strong> preguntas
-                                <?= (!empty($materias_seleccionadas) && count($materias_seleccionadas) < count($todas_materias)) ?
-                                    'de ' . count($materias_seleccionadas) . ' materias seleccionadas' :
-                                    'de todas las materias' ?>
-                        <?php endif; ?>
-                    </p>
-
-                    <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                            <div class="simulacion-info">
-                                🏆 <strong>¡Desafío Épico Activado!</strong> Esta es una réplica exacta del examen real Ecoems UNAM.
-                                128 preguntas en 3 horas. ¡Demuestra tu valía!
-                            </div>
+            <div class="estadisticas-sesion">
+                <h3>
+                    <?php if (!empty($busqueda_especifica)): ?>
+                        🔍 Resultados de Búsqueda: Preguntas <?= $busqueda_especifica ?> de Guía <?= $guia_busqueda ?>
+                    <?php elseif ($tipo_simulacion == 'completa_ecoems'): ?>
+                        ⚔️ Batalla Épica: Examen Completo Ecoems
+                    <?php else: ?>
+                        📖 <?= $modo == 'estudio' ? 'Dojo de Estudio' : 'Batalla de Conocimientos' ?>
                     <?php endif; ?>
+                </h3>
 
-                    <?php if (empty($busqueda_especifica)): ?>
-                            <div class="guias-seleccionadas">
-                                📚 <strong>Guías seleccionadas:</strong>
-                                <?= implode(', ', array_map(function ($year) use ($guias) {
-                                    $guia = array_filter($guias, function ($g) use ($year) {
-                                        return $g['year'] == $year;
-                                    });
-                                    $guia = reset($guia);
-                                    return $guia ? $year . ' (' . $guia['nombre'] . ')' : $year;
-                                }, $guia_years)) ?>
-                            </div>
+                <p>
+                    <?php if (!empty($busqueda_especifica)): ?>
+                        Mostrando <strong><?= count($preguntas) ?></strong> preguntas específicas de la guía
+                        <strong><?= $guia_busqueda ?></strong>
+                    <?php else: ?>
+                        Mostrando <strong><?= count($preguntas) ?></strong> preguntas
+                        <?= (!empty($materias_seleccionadas) && count($materias_seleccionadas) < count($todas_materias)) ?
+                            'de ' . count($materias_seleccionadas) . ' materias seleccionadas' :
+                            'de todas las materias' ?>
                     <?php endif; ?>
-                </div>
+                </p>
 
-                <?php foreach ($preguntas as $index => $pregunta): ?>
-                        <div class="pregunta" id="pregunta-<?= $pregunta['id'] ?>" data-pregunta-id="<?= $pregunta['id'] ?>"
-                            data-materia="<?= htmlspecialchars($pregunta['materia_nombre']) ?>" data-opciones='<?= json_encode([
-                                  'A' => $pregunta['opcion_a'],
-                                  'B' => $pregunta['opcion_b'],
-                                  'C' => $pregunta['opcion_c'],
-                                  'D' => $pregunta['opcion_d']
-                              ]) ?>'>
-                            <div class="pregunta-header">
-                                <div>
-                                    <h3>
-                                        <?php if (!empty($busqueda_especifica)): ?>
-                                                🔍 Pregunta <?= $pregunta['numero_pregunta'] ?>
-                                        <?php else: ?>
-                                                📝 Pregunta <?= $index + 1 ?>
-                                        <?php endif; ?>
-                                        <span class="guia-badge">Guía <?= $pregunta['guia_year'] ?></span>
-                                    </h3>
-                                    <p style="color: #666; font-size: 0.9em; margin-top: 8px;">
-                                        <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                                                ⚔️ Batalla Épica: <?= $index + 1 ?> de <?= count($preguntas) ?>
-                                        <?php elseif (!empty($busqueda_especifica)): ?>
-                                                🔍 Búsqueda específica
-                                        <?php else: ?>
-                                                <?= $modo == 'estudio' ? '📖 Dojo de Estudio' : '⚔️ Batalla' ?>: <?= $index + 1 ?> de
-                                                <?= count($preguntas) ?>
-                                        <?php endif; ?>
-                                    </p>
-                                </div>
-                                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                                    <span class="materia-tag">📖 <?= htmlspecialchars($pregunta['materia_nombre']) ?></span>
-                                    <?php if (!empty($pregunta['tema'])): ?>
-                                            <span class="tema-tag">🏷️ <?= htmlspecialchars($pregunta['tema']) ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-
-                            <!-- TEXTO DE PREGUNTA LIMPIO (SIN EMOJI QUE CUBRE) -->
-                            <div class="pregunta-texto">
-                                <?= nl2br(htmlspecialchars($pregunta['pregunta_texto'])) ?>
-                            </div>
-
-                            <div class="opciones-grid">
-                                <?php foreach (['A', 'B', 'C', 'D'] as $letra): ?>
-                                        <div class="opcion"
-                                            onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, '<?= $letra ?>', '<?= htmlspecialchars($pregunta['materia_nombre']) ?>')"
-                                            data-opcion="<?= $letra ?>">
-                                            <strong><?= $letra ?>)</strong>
-                                            <?= htmlspecialchars($pregunta['opcion_' . strtolower($letra)]) ?>
-                                        </div>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <!-- Explicación REAL -->
-                            <?php if ($modo == 'estudio' && $tipo_simulacion == 'personalizada'): ?>
-                                    <div class="explicacion" id="explicacion-<?= $pregunta['id'] ?>">
-                                        <h4>💡 Explicación del Maestro</h4>
-                                        <div id="contenido-explicacion-<?= $pregunta['id'] ?>">
-                                            <!-- El contenido se llenará con JavaScript -->
-                                        </div>
-                                    </div>
-                            <?php endif; ?>
-
-                            <div id="resultado-<?= $pregunta['id'] ?>" class="resultado"></div>
-                        </div>
-                <?php endforeach; ?>
-
-                <!-- Botón para enviar examen -->
-                <?php if ($modo == 'examen' || $tipo_simulacion == 'completa_ecoems'): ?>
-                        <button class="btn-enviar-examen" id="btn-enviar-examen" onclick="finalizarExamen()">
-                            <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                                    🏁 ¡Finalizar Batalla y Ver Resultados!
-                            <?php else: ?>
-                                    🏁 ¡Terminar Examen y Ver Puntuación!
-                            <?php endif; ?>
-                        </button>
+                <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                    <div class="simulacion-info">
+                        🏆 <strong>¡Desafío Épico Activado!</strong> Esta es una réplica exacta del examen real Ecoems UNAM.
+                        128 preguntas en 3 horas. ¡Demuestra tu valía!
+                    </div>
                 <?php endif; ?>
 
-                <!-- Resultados finales -->
-                <div class="resultados-finales" id="resultados-finales">
-                    <h2>🏆 Resultados de tu Batalla</h2>
-                    <div class="puntuacion-final" id="puntuacion-final">0%</div>
+                <?php if (empty($busqueda_especifica)): ?>
+                    <div class="guias-seleccionadas">
+                        📚 <strong>Guías seleccionadas:</strong>
+                        <?= implode(', ', array_map(function ($year) use ($guias) {
+                            $guia = array_filter($guias, function ($g) use ($year) {
+                                return $g['year'] == $year;
+                            });
+                            $guia = reset($guia);
+                            return $guia ? $year . ' (' . $guia['nombre'] . ')' : $year;
+                        }, $guia_years)) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-                    <div class="detalles-resultado">
-                        <h4>📊 Detalles de tu Desempeño</h4>
-                        <div id="detalles-resultado">
-                            <!-- Se llenará con JavaScript -->
+            <?php foreach ($preguntas as $index => $pregunta): ?>
+                <div class="pregunta" id="pregunta-<?= $pregunta['id'] ?>" data-pregunta-id="<?= $pregunta['id'] ?>"
+                    data-materia="<?= htmlspecialchars($pregunta['materia_nombre']) ?>" data-opciones='<?= json_encode([
+                          'A' => $pregunta['opcion_a'],
+                          'B' => $pregunta['opcion_b'],
+                          'C' => $pregunta['opcion_c'],
+                          'D' => $pregunta['opcion_d']
+                      ]) ?>'>
+                    <div class="pregunta-header">
+                        <div>
+                            <h3>
+                                <?php if (!empty($busqueda_especifica)): ?>
+                                    🔍 Pregunta <?= $pregunta['numero_pregunta'] ?>
+                                <?php else: ?>
+                                    📝 Pregunta <?= $index + 1 ?>
+                                <?php endif; ?>
+                                <span class="guia-badge">Guía <?= $pregunta['guia_year'] ?></span>
+                            </h3>
+                            <p style="color: #666; font-size: 0.9em; margin-top: 8px;">
+                                <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                                    ⚔️ Batalla Épica: <?= $index + 1 ?> de <?= count($preguntas) ?>
+                                <?php elseif (!empty($busqueda_especifica)): ?>
+                                    🔍 Búsqueda específica
+                                <?php else: ?>
+                                    <?= $modo == 'estudio' ? '📖 Dojo de Estudio' : '⚔️ Batalla' ?>: <?= $index + 1 ?> de
+                                    <?= count($preguntas) ?>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <span class="materia-tag">📖 <?= htmlspecialchars($pregunta['materia_nombre']) ?></span>
+                            <?php if (!empty($pregunta['tema'])): ?>
+                                <span class="tema-tag">🏷️ <?= htmlspecialchars($pregunta['tema']) ?></span>
+                            <?php endif; ?>
                         </div>
                     </div>
 
-                    <div class="resumen-preguntas" id="resumen-preguntas">
-                        <h4>📝 Resumen de Preguntas</h4>
+                    <!-- TEXTO DE PREGUNTA LIMPIO (SIN EMOJI QUE CUBRE) -->
+                    <div class="pregunta-texto">
+                        <?= nl2br(htmlspecialchars($pregunta['pregunta_texto'])) ?>
+                    </div>
+
+                    <div class="opciones-grid">
+                        <?php foreach (['A', 'B', 'C', 'D'] as $letra): ?>
+                            <div class="opcion"
+                                onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, '<?= $letra ?>', '<?= htmlspecialchars($pregunta['materia_nombre']) ?>')"
+                                data-opcion="<?= $letra ?>">
+                                <strong><?= $letra ?>)</strong>
+                                <?= htmlspecialchars($pregunta['opcion_' . strtolower($letra)]) ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <!-- Explicación REAL -->
+                    <?php if ($modo == 'estudio' && $tipo_simulacion == 'personalizada'): ?>
+                        <div class="explicacion" id="explicacion-<?= $pregunta['id'] ?>">
+                            <h4>💡 Explicación del Maestro</h4>
+                            <div id="contenido-explicacion-<?= $pregunta['id'] ?>">
+                                <!-- El contenido se llenará con JavaScript -->
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div id="resultado-<?= $pregunta['id'] ?>" class="resultado"></div>
+                </div>
+            <?php endforeach; ?>
+
+            <!-- Botón para enviar examen -->
+            <?php if ($modo == 'examen' || $tipo_simulacion == 'completa_ecoems'): ?>
+                <button class="btn-enviar-examen" id="btn-enviar-examen" onclick="finalizarExamen()">
+                    <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                        🏁 ¡Finalizar Batalla y Ver Resultados!
+                    <?php else: ?>
+                        🏁 ¡Terminar Examen y Ver Puntuación!
+                    <?php endif; ?>
+                </button>
+            <?php endif; ?>
+
+            <!-- Resultados finales -->
+            <div class="resultados-finales" id="resultados-finales">
+                <h2>🏆 Resultados de tu Batalla</h2>
+                <div class="puntuacion-final" id="puntuacion-final">0%</div>
+
+                <div class="detalles-resultado">
+                    <h4>📊 Detalles de tu Desempeño</h4>
+                    <div id="detalles-resultado">
                         <!-- Se llenará con JavaScript -->
                     </div>
-
-                    <div style="margin: 25px 0;">
-                        <p id="mensaje-resultado"></p>
-                    </div>
-
-                    <div style="display: flex; gap: 15px; justify-content: center;">
-                        <button class="btn-descarga" onclick="location.reload()" style="margin-top: 15px;">
-                            🔄 ¡Otra Batalla!
-                        </button>
-                        <button class="btn-descarga" onclick="window.scrollTo(0, 0)"
-                            style="background: linear-gradient(135deg, #ff6b6b, #ffa726); margin-top: 15px;">
-                            ⬆️ Volver Arriba
-                        </button>
-                    </div>
                 </div>
+
+                <div class="resumen-preguntas" id="resumen-preguntas">
+                    <h4>📝 Resumen de Preguntas</h4>
+                    <!-- Se llenará con JavaScript -->
+                </div>
+
+                <div style="margin: 25px 0;">
+                    <p id="mensaje-resultado"></p>
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn-descarga" onclick="location.reload()" style="margin-top: 15px;">
+                        🔄 ¡Otra Batalla!
+                    </button>
+                    <button class="btn-descarga" onclick="window.scrollTo(0, 0)"
+                        style="background: linear-gradient(135deg, #ff6b6b, #ffa726); margin-top: 15px;">
+                        ⬆️ Volver Arriba
+                    </button>
+                </div>
+            </div>
 
         <?php elseif (!empty($error_message)): ?>
-                <div class="estadisticas-sesion">
-                    <h3>❌ Error en la búsqueda</h3>
-                    <div class="resultado resultado-incorrecta" style="margin: 20px 0; padding: 20px;">
-                        <p><?= htmlspecialchars($error_message) ?></p>
-                        <button onclick="location.reload()" class="btn-descarga" style="margin-top: 15px;">
-                            🔄 Intentar de Nuevo
-                        </button>
-                    </div>
+            <div class="estadisticas-sesion">
+                <h3>❌ Error en la búsqueda</h3>
+                <div class="resultado resultado-incorrecta" style="margin: 20px 0; padding: 20px;">
+                    <p><?= htmlspecialchars($error_message) ?></p>
+                    <button onclick="location.reload()" class="btn-descarga" style="margin-top: 15px;">
+                        🔄 Intentar de Nuevo
+                    </button>
                 </div>
+            </div>
         <?php else: ?>
-                <div class="estadisticas-sesion">
-                    <h3>🎯 Configura tu Entrenamiento</h3>
-                    <p style="font-size: 1.1em;">
-                        <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
-                                Para iniciar la <strong>Batalla Épica Ecoems</strong> (128 preguntas en 3 horas), simplemente haz
-                                clic
-                                en "¡Comenzar Entrenamiento!".
-                        <?php elseif (!empty($busqueda_especifica)): ?>
-                                Usa el formulario de búsqueda específica para encontrar preguntas exactas por número y guía.
-                        <?php else: ?>
-                                Selecciona al menos una guía y una materia, luego haz clic en "¡Comenzar Entrenamiento!" para
-                                empezar tu
-                                viaje de aprendizaje.
-                        <?php endif; ?>
-                    </p>
-                    <div class="simulacion-info" style="margin-top: 20px;">
-                        💡 <strong>Consejo del Maestro:</strong> Comienza con sesiones cortas de 10 preguntas y ve
-                        aumentando la
-                        dificultad gradualmente.
-                        ¡La práctica constante es la clave del éxito!
-                    </div>
+            <div class="estadisticas-sesion">
+                <h3>🎯 Configura tu Entrenamiento</h3>
+                <p style="font-size: 1.1em;">
+                    <?php if ($tipo_simulacion == 'completa_ecoems'): ?>
+                        Para iniciar la <strong>Batalla Épica Ecoems</strong> (128 preguntas en 3 horas), simplemente haz
+                        clic
+                        en "¡Comenzar Entrenamiento!".
+                    <?php elseif (!empty($busqueda_especifica)): ?>
+                        Usa el formulario de búsqueda específica para encontrar preguntas exactas por número y guía.
+                    <?php else: ?>
+                        Selecciona al menos una guía y una materia, luego haz clic en "¡Comenzar Entrenamiento!" para
+                        empezar tu
+                        viaje de aprendizaje.
+                    <?php endif; ?>
+                </p>
+                <div class="simulacion-info" style="margin-top: 20px;">
+                    💡 <strong>Consejo del Maestro:</strong> Comienza con sesiones cortas de 10 preguntas y ve
+                    aumentando la
+                    dificultad gradualmente.
+                    ¡La práctica constante es la clave del éxito!
                 </div>
+            </div>
         <?php endif; ?>
 
         <!-- SECCIÓN DESCARGAS -->
@@ -2489,24 +2514,24 @@ Tiempo limitado, preguntas aleatorias. Evalúa tu preparación real para el exam
             <h3>📥 Descarga tus Guías de Estudio</h3>
             <div class="guias-grid">
                 <?php foreach ($guias_descarga as $guia): ?>
-                        <div class="guia-descarga-card" data-personaje="<?= $guia['personaje'] ?>">
-                            <div>
-                                <div class="guia-descarga-year"><?= $guia['year'] ?></div>
-                                <div class="guia-descarga-name"><?= $guia['nombre'] ?></div>
-                            </div>
-                            <div>
-                                <?php if ($guia['disponible']): ?>
-                                        <a href="guias/<?= $guia['archivo'] ?>" class="btn-descarga" download>
-                                            📄 Descargar PDF
-                                        </a>
-                                <?php else: ?>
-                                        <div class="proximamente-badge">¡Próximamente!</div>
-                                        <button class="btn-descarga" disabled>
-                                            ⏳ En Preparación
-                                        </button>
-                                <?php endif; ?>
-                            </div>
+                    <div class="guia-descarga-card" data-personaje="<?= $guia['personaje'] ?>">
+                        <div>
+                            <div class="guia-descarga-year"><?= $guia['year'] ?></div>
+                            <div class="guia-descarga-name"><?= $guia['nombre'] ?></div>
                         </div>
+                        <div>
+                            <?php if ($guia['disponible']): ?>
+                                <a href="guias/<?= $guia['archivo'] ?>" class="btn-descarga" download>
+                                    📄 Descargar PDF
+                                </a>
+                            <?php else: ?>
+                                <div class="proximamente-badge">¡Próximamente!</div>
+                                <button class="btn-descarga" disabled>
+                                    ⏳ En Preparación
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
