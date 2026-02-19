@@ -178,7 +178,7 @@ const Index = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => navigate("/simulador-externo?type=master")}
+                  onClick={() => window.location.href = "https://cyberedumx.com/studio/nguia.html"}
                   className="h-14 rounded-2xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-400 group transition-all"
                 >
                   CONSOLA STUDIO (PRO)
@@ -190,7 +190,7 @@ const Index = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => navigate("/simulador-externo?type=completo")}
+                    onClick={() => window.location.href = "https://cyberedumx.com/simulador-ecoems-completo"}
                     className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-indigo-300 hover:text-indigo-200"
                   >
                     Simulador ECOEMS (Completo)
@@ -198,7 +198,7 @@ const Index = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => navigate("/simulador-externo?type=politecnico")}
+                    onClick={() => window.location.href = "https://cyberedumx.com/ecoems2026/simuladores/simulador_politecnico.php"}
                     className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-rose-400 hover:text-rose-300"
                   >
                     Simulador POLI (IPN)
