@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isRecovering, setIsRecovering] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,10 +27,37 @@ const Auth = () => {
     if (user) navigate("/", { replace: true });
   }, [user, navigate]);
 
-  const passwordsMatch = isLogin || password === confirmPassword;
+  const passwordsMatch = isLogin || isRecovering || password === confirmPassword;
+
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (error) throw error;
+      toast({
+        title: "Correo enviado",
+        description: "Revisa tu bandeja de entrada para restablecer tu contraseña.",
+      });
+      setIsRecovering(false);
+    } catch (error: any) {
+      toast({
+        title: "Error de recuperación",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isRecovering) return handlePasswordReset(e);
 
     if (!isLogin && password !== confirmPassword) {
       toast({
@@ -123,35 +151,41 @@ const Auth = () => {
           <div className="relative z-10 space-y-6">
             <div className="space-y-2 text-center">
               <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
-                {isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
+                {isRecovering ? "Recuperar Acceso" : isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
               </h2>
               <p className="text-slate-400 text-sm">
-                {isLogin
-                  ? "Accede a tu arsenal de estudio y simuladores."
-                  : "Únete a la nueva generación de estudiantes."}
+                {isRecovering
+                  ? "Ingresa tu email para recibir un enlace de restauración."
+                  : isLogin
+                    ? "Accede a tu arsenal de estudio y simuladores."
+                    : "Únete a la nueva generación de estudiantes."}
               </p>
             </div>
 
-            <Button
-              variant="outline"
-              className="w-full h-12 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all font-bold text-slate-200"
-              onClick={handleGoogleLogin}
-              disabled={loading}
-            >
-              <Chrome className="h-5 w-5 mr-3 text-red-500" />
-              Continuar con Google
-            </Button>
+            {!isRecovering && (
+              <>
+                <Button
+                  variant="outline"
+                  className="w-full h-12 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all font-bold text-slate-200"
+                  onClick={handleGoogleLogin}
+                  disabled={loading}
+                >
+                  <Chrome className="h-5 w-5 mr-3 text-red-500" />
+                  Continuar con Google
+                </Button>
 
-            <div className="relative flex items-center py-2">
-              <div className="flex-grow border-t border-white/10"></div>
-              <span className="flex-shrink mx-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                o vía protocolo email
-              </span>
-              <div className="flex-grow border-t border-white/10"></div>
-            </div>
+                <div className="relative flex items-center py-2">
+                  <div className="flex-grow border-t border-white/10"></div>
+                  <span className="flex-shrink mx-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    o vía protocolo email
+                  </span>
+                  <div className="flex-grow border-t border-white/10"></div>
+                </div>
+              </>
+            )}
 
             <form onSubmit={handleEmailAuth} className="space-y-4">
-              {!isLogin && (
+              {!isLogin && !isRecovering && (
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Nombre Completo</Label>
                   <div className="relative">
@@ -185,31 +219,44 @@ const Auth = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Clave de Acceso</Label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 pl-12 pr-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
-                    required
-                    minLength={6}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
+              {!isRecovering && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between ml-1">
+                    <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-400">Clave de Acceso</Label>
+                    {isLogin && (
+                      <button
+                        type="button"
+                        onClick={() => setIsRecovering(true)}
+                        className="text-[10px] font-bold uppercase tracking-tight text-primary hover:underline underline-offset-2"
+                      >
+                        ¿Olvidaste tu clave?
+                      </button>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="h-12 pl-12 pr-12 rounded-xl bg-black/40 border-white/10 focus:border-primary/50 focus:ring-primary/20 transition-all text-white placeholder:text-slate-600"
+                      required
+                      minLength={6}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {!isLogin && (
+              {!isLogin && !isRecovering && (
                 <div className="space-y-2 animate-in slide-in-from-top-2 duration-300">
                   <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Confirmar Clave</Label>
                   <div className="relative">
@@ -247,7 +294,7 @@ const Auth = () => {
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
-                    {isLogin ? "Desbloquear Dashboard" : "Inicializar Cuenta"}
+                    {isRecovering ? "Enviar Enlace de Restauración" : isLogin ? "Desbloquear Dashboard" : "Inicializar Cuenta"}
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 )}
@@ -255,16 +302,28 @@ const Auth = () => {
             </form>
 
             <div className="pt-2 text-center">
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 mx-auto"
-              >
-                {isLogin ? "¿Nuevo aspirante?" : "¿Ya tienes credenciales?"}
-                <span className="text-primary hover:underline underline-offset-4">
-                  {isLogin ? "Acceso al Registro" : "Ir al Login"}
-                </span>
-              </button>
+              {isRecovering ? (
+                <button
+                  type="button"
+                  onClick={() => setIsRecovering(false)}
+                  className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 mx-auto"
+                >
+                  <span className="text-primary hover:underline underline-offset-4 font-black">
+                    Volver al Inicio de Sesión
+                  </span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 mx-auto"
+                >
+                  {isLogin ? "¿Nuevo aspirante?" : "¿Ya tienes credenciales?"}
+                  <span className="text-primary hover:underline underline-offset-4">
+                    {isLogin ? "Acceso al Registro" : "Ir al Login"}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </div>
