@@ -8,6 +8,7 @@ import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProgresoDashboard from "@/components/ProgresoDashboard";
+import RecommendedVideos from "@/components/RecommendedVideos";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-education.jpg";
 
@@ -99,8 +100,9 @@ const Index = () => {
       </section>
 
       {/* Dashboard de Progreso Personalizado */}
-      <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16">
+      <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
         <ProgresoDashboard />
+        <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
       </section>
 
       {/* Areas Section */}

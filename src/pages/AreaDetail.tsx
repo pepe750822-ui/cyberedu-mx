@@ -6,6 +6,7 @@ import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
 import VideoCard from "@/components/VideoCard";
 import MaterialComplementario from "@/components/MaterialComplementario";
+import RecommendedVideos from "@/components/RecommendedVideos";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -135,6 +136,14 @@ const AreaDetail = () => {
 
               {/* Material Complementario */}
               <MaterialComplementario videoId={activeVideo.id} />
+
+              {/* Sugerencias Personalizadas */}
+              <div className="p-6 border-t border-border/50">
+                <RecommendedVideos
+                  currentVideoId={activeVideo.id}
+                  currentAreaId={areaId}
+                />
+              </div>
             </div>
           </div>
 
