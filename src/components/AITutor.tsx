@@ -9,7 +9,8 @@ import {
     Sparkles,
     Brain,
     Search,
-    BookOpen
+    BookOpen,
+    ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -66,10 +67,12 @@ const AITutor = () => {
                 botResponse = "La Biología en ECOEMS enfoca gran parte de su reactivo en genética y metabolismo celular. Asegúrate de distinguir con precisión los organelos de la célula animal y vegetal. El material complementario del video 11 contiene una infografía comparativa que te será de gran ayuda.";
             } else if (query.includes("consejo") || query.includes("ayuda") || query.includes("estudiar")) {
                 botResponse = "Nuestra plataforma está diseñada bajo un modelo de aprendizaje progresivo. Mi recomendación estratégica es seguir tu 'Plan de Estudio Diario' y no dejar pasar más de 48 horas sin resolver un quiz para cimentar la retención a largo plazo. ¿Qué tema te parece más complejo de abordar hoy?";
+            } else if (query.includes("google") || query.includes("buscar") || query.includes("investigar")) {
+                botResponse = "He activado mi módulo de consulta externa. He preparado una búsqueda especializada en Google para profundizar en tu duda. Puedes acceder a los resultados en tiempo real aquí: [Ver resultados en Google](https://www.google.com/search?q=" + encodeURIComponent(input) + ")";
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
                 botResponse = "Hola. Soy el Consultor Digital de CyberEdu Mx. Mi objetivo es optimizar tu rendimiento académico para asegurar tu lugar en tu primera opción de bachillerato. ¿Tienes alguna duda sobre el calendario oficial o algún tema del temario?";
             } else {
-                botResponse = "Esa es una consulta interesante sobre '" + input + "'. Como consultor especializado, te sugiero integrar este tema dentro de tu cronograma semanal. Puedes encontrar una explicación extendida en nuestra sección de 'Asistencia AI' dentro de la lección correspondiente. ¿Deseas que te guíe a los materiales complementarios?";
+                botResponse = "He analizado tu consulta sobre '" + input + "'. Para darte la información más actualizada del 2026, he generado una búsqueda asistida que complementa mi base de datos. Haz clic aquí para ver detalles externos: [Consultar en Google](https://www.google.com/search?q=" + encodeURIComponent(input + " ecoems 2026") + "). ¿Te gustaría que también busque ejercicios prácticos de este tema?";
             }
 
             setMessages(prev => [...prev, {
@@ -150,7 +153,24 @@ const AITutor = () => {
                                     ? "bg-primary rounded-2xl rounded-tr-none text-white shadow-lg"
                                     : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
                             )}>
-                                {msg.text}
+                                {msg.text.split(/(\[.*?\]\(.*?\))/g).map((part, i) => {
+                                    const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                                    if (match) {
+                                        return (
+                                            <a
+                                                key={i}
+                                                href={match[2]}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-primary hover:underline font-black inline-flex items-center gap-1 mx-1"
+                                            >
+                                                {match[1]}
+                                                <ExternalLink className="h-3 w-3" />
+                                            </a>
+                                        );
+                                    }
+                                    return <span key={i}>{part}</span>;
+                                })}
                             </div>
                         </div>
                     ))}
