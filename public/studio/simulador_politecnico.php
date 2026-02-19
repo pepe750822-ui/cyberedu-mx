@@ -29,13 +29,15 @@ if ($userId) {
         $user_db = $stmt->fetch();
         if ($user_db) {
             $nombre_usuario = $user_db['nombre'];
-            $tiene_acceso = (bool) ($user_db['acceso_poli'] ?? 0);
             $_SESSION['tracking_user_id'] = $userId;
         }
     } catch (Exception $e) {
         // Silencioso o log error
     }
 }
+
+$tiene_acceso = true; // ACCESO GRATUITO PARA TODOS 🚀
+
 
 if (!$tiene_acceso): ?>
     <!DOCTYPE html>
@@ -177,56 +179,57 @@ if (!$tiene_acceso): ?>
 
     </html>
     <?php die(); endif; // ======================================================== ?>
+<?php // REAPERTURA DE PHP PARA EL RESTO DEL CÓDIGO
 
 // Configurar solo las guías 2025 y 2026 del Politécnico
 $guias = [
-['id' => 1, 'year' => 2024, 'nombre' => 'Guía IPN 2024', 'activa' => 0, 'es_proxima' => 0],
-['id' => 2, 'year' => 2025, 'nombre' => 'Guía IPN 2025', 'activa' => 1, 'es_proxima' => 0],
-['id' => 3, 'year' => 20252, 'nombre' => 'Examen Simulador 2025', 'activa' => 1, 'es_proxima' => 0],
-['id' => 4, 'year' => 2026, 'nombre' => 'Guía IPN 2026', 'activa' => 0, 'es_proxima' => 1],
+    ['id' => 1, 'year' => 2024, 'nombre' => 'Guía IPN 2024', 'activa' => 0, 'es_proxima' => 0],
+    ['id' => 2, 'year' => 2025, 'nombre' => 'Guía IPN 2025', 'activa' => 1, 'es_proxima' => 0],
+    ['id' => 3, 'year' => 20252, 'nombre' => 'Examen Simulador 2025', 'activa' => 1, 'es_proxima' => 0],
+    ['id' => 4, 'year' => 2026, 'nombre' => 'Guía IPN 2026', 'activa' => 0, 'es_proxima' => 1],
 ];
 
 // Las 10 materias del Politécnico basadas en tu descripción
 $todas_materias = [
-'Español', // Lenguajes, comprensión lectora, redacción y análisis textual
-'Matemáticas', // Álgebra, geometría, aritmética, conceptos básicos de cálculo
-'Física', // Mecánica, energía, movimiento, fuerzas, fenómenos físicos
-'Química', // Elementos, compuestos, reacciones químicas, propiedades materia
-'Biología', // Células, organismos, ecosistemas, genética, procesos vitales
-'Historia', // Periodos históricos México/mundo, eventos clave, impacto social
-'Geografía', // Espacios territoriales, recursos naturales, climas, dinámicas
-'Formación Cívica y Ética', // Valores, derechos humanos, ciudadanía, ética, convivencia
-'Habilidad Verbal', // Razonamiento lógico-lingüístico, vocabulario, inferencias
-'Habilidad Matemática' // Resolución problemas numéricos, patrones, razonamiento
+    'Español', // Lenguajes, comprensión lectora, redacción y análisis textual
+    'Matemáticas', // Álgebra, geometría, aritmética, conceptos básicos de cálculo
+    'Física', // Mecánica, energía, movimiento, fuerzas, fenómenos físicos
+    'Química', // Elementos, compuestos, reacciones químicas, propiedades materia
+    'Biología', // Células, organismos, ecosistemas, genética, procesos vitales
+    'Historia', // Periodos históricos México/mundo, eventos clave, impacto social
+    'Geografía', // Espacios territoriales, recursos naturales, climas, dinámicas
+    'Formación Cívica y Ética', // Valores, derechos humanos, ciudadanía, ética, convivencia
+    'Habilidad Verbal', // Razonamiento lógico-lingüístico, vocabulario, inferencias
+    'Habilidad Matemática' // Resolución problemas numéricos, patrones, razonamiento
 ];
 
 // Sistema de niveles anime
 $niveles_anime = [
-1 => ['nombre' => 'Novato 🌱', 'exp' => 100, 'color' => '#8B4513'],
-2 => ['nombre' => 'Aprendiz 📚', 'exp' => 300, 'color' => '#2E8B57'],
-3 => ['nombre' => 'Estudiante 🎓', 'exp' => 600, 'color' => '#1E90FF'],
-4 => ['nombre' => 'Sabio 🧠', 'exp' => 1000, 'color' => '#9370DB'],
-5 => ['nombre' => 'Maestro 👑', 'exp' => 1500, 'color' => '#FFD700'],
-6 => ['nombre' => 'Leyenda ⚡', 'exp' => 2100, 'color' => '#FF4500']
+    1 => ['nombre' => 'Novato 🌱', 'exp' => 100, 'color' => '#8B4513'],
+    2 => ['nombre' => 'Aprendiz 📚', 'exp' => 300, 'color' => '#2E8B57'],
+    3 => ['nombre' => 'Estudiante 🎓', 'exp' => 600, 'color' => '#1E90FF'],
+    4 => ['nombre' => 'Sabio 🧠', 'exp' => 1000, 'color' => '#9370DB'],
+    5 => ['nombre' => 'Maestro 👑', 'exp' => 1500, 'color' => '#FFD700'],
+    6 => ['nombre' => 'Leyenda ⚡', 'exp' => 2100, 'color' => '#FF4500']
 ];
 
 // Verificar y obtener valores con valores por defecto
 $nivel_actual = isset($_SESSION['estadisticas_usuario_poli']['nivel_estudiante'])
-? $_SESSION['estadisticas_usuario_poli']['nivel_estudiante']
-: 'Novato 🌱';
+    ? $_SESSION['estadisticas_usuario_poli']['nivel_estudiante']
+    : 'Novato 🌱';
 
 $exp_actual = isset($_SESSION['estadisticas_usuario_poli']['exp_actual'])
-? $_SESSION['estadisticas_usuario_poli']['exp_actual']
-: 0;
+    ? $_SESSION['estadisticas_usuario_poli']['exp_actual']
+    : 0;
 
 $exp_requerida = isset($_SESSION['estadisticas_usuario_poli']['exp_requerida'])
-? $_SESSION['estadisticas_usuario_poli']['exp_requerida']
-: 100;
+    ? $_SESSION['estadisticas_usuario_poli']['exp_requerida']
+    : 100;
 
 // Evitar división por cero
 $porcentaje_nivel = ($exp_requerida > 0)
-? min(100, ($exp_actual / $exp_requerida) * 100)
-: 0;
+    ? min(100, ($exp_actual / $exp_requerida) * 100)
+    : 0;
 
 // Parámetros con valores por defecto
 $materias_seleccionadas = $_GET['materias'] ?? $todas_materias;
@@ -240,32 +243,32 @@ $orden = $_GET['orden'] ?? 'aleatorio'; // Nuevo: 'aleatorio' o 'secuencial'
 
 // Convertir a array si es un solo valor
 if (!is_array($guia_years)) {
-$guia_years = [$guia_years];
+    $guia_years = [$guia_years];
 }
 
 // Convertir materias a array si viene como string
 if (!is_array($materias_seleccionadas)) {
-$materias_seleccionadas = explode(',', $materias_seleccionadas);
+    $materias_seleccionadas = explode(',', $materias_seleccionadas);
 }
 
 // Si no hay materias seleccionadas (primera carga), seleccionar todas
 if (empty($materias_seleccionadas) || (count($materias_seleccionadas) === 1 && $materias_seleccionadas[0] === '')) {
-$materias_seleccionadas = $todas_materias;
+    $materias_seleccionadas = $todas_materias;
 }
 
 // Si es simulación completa (80 preguntas), ajustar límite
 if ($tipo_simulacion == 'completa_poli') {
-$limit = 80;
-$modo = 'examen';
+    $limit = 80;
+    $modo = 'examen';
 }
 
 // Obtener estadísticas del banco de preguntas del Politécnico
 try {
-$stats_sql = "SELECT COUNT(*) as total_preguntas FROM preguntas_politecnico";
-$stats_stmt = $pdo->query($stats_sql);
-$estadisticas = $stats_stmt->fetch();
+    $stats_sql = "SELECT COUNT(*) as total_preguntas FROM preguntas_politecnico";
+    $stats_stmt = $pdo->query($stats_sql);
+    $estadisticas = $stats_stmt->fetch();
 } catch (PDOException $e) {
-$estadisticas = ['total_preguntas' => '900+'];
+    $estadisticas = ['total_preguntas' => '900+'];
 }
 
 // Obtener preguntas según los parámetros
@@ -273,21 +276,21 @@ $preguntas = [];
 $error_message = '';
 
 if (!empty($guia_years) && !empty($materias_seleccionadas)) {
-try {
-if (!empty($busqueda_especifica) && !empty($guia_busqueda)) {
-// Búsqueda específica por número de pregunta y guía
-$numeros_busqueda = [];
+    try {
+        if (!empty($busqueda_especifica) && !empty($guia_busqueda)) {
+            // Búsqueda específica por número de pregunta y guía
+            $numeros_busqueda = [];
 
-if (strpos($busqueda_especifica, '-') !== false) {
-list($inicio, $fin) = explode('-', $busqueda_especifica);
-$numeros_busqueda = range(intval($inicio), intval($fin));
-} elseif (strpos($busqueda_especifica, ',') !== false) {
-$numeros_busqueda = array_map('intval', explode(',', $busqueda_especifica));
-} else {
-$numeros_busqueda = [intval($busqueda_especifica)];
-}
+            if (strpos($busqueda_especifica, '-') !== false) {
+                list($inicio, $fin) = explode('-', $busqueda_especifica);
+                $numeros_busqueda = range(intval($inicio), intval($fin));
+            } elseif (strpos($busqueda_especifica, ',') !== false) {
+                $numeros_busqueda = array_map('intval', explode(',', $busqueda_especifica));
+            } else {
+                $numeros_busqueda = [intval($busqueda_especifica)];
+            }
 
-$sql = "SELECT p.*, m.nombre as materia_nombre, p.guia_year as guia_year,
+            $sql = "SELECT p.*, m.nombre as materia_nombre, p.guia_year as guia_year,
 p.explicacion as explicacion
 FROM preguntas_politecnico p
 JOIN materias_politecnico m ON p.materia_id = m.id
@@ -295,69 +298,75 @@ WHERE p.guia_year = ?
 AND p.numero_pregunta IN (" . implode(',', array_fill(0, count($numeros_busqueda), '?')) . ")
 ORDER BY p.numero_pregunta ASC";
 
-$params = [$guia_busqueda];
-$params = array_merge($params, $numeros_busqueda);
+            $params = [$guia_busqueda];
+            $params = array_merge($params, $numeros_busqueda);
 
-} else {
-// Consulta normal aleatoria
-$sql = "SELECT p.*, m.nombre as materia_nombre, p.guia_year as guia_year,
+        } else {
+            // Consulta normal aleatoria
+            $sql = "SELECT p.*, m.nombre as materia_nombre, p.guia_year as guia_year,
 p.explicacion as explicacion
 FROM preguntas_politecnico p
 JOIN materias_politecnico m ON p.materia_id = m.id
 WHERE p.guia_year IN (" . implode(',', array_fill(0, count($guia_years), '?')) . ")";
 
-$params = $guia_years;
+            $params = $guia_years;
 
-if (!empty($materias_seleccionadas)) {
-$materias_conditions = [];
-foreach ($materias_seleccionadas as $materia) {
-if ($materia == 'Historia') {
-$materias_conditions[] = "(m.nombre LIKE 'Historia%' OR m.nombre = 'Historia')";
-} else {
-$materias_conditions[] = "m.nombre = ?";
-$params[] = $materia;
-}
-}
+            if (!empty($materias_seleccionadas)) {
+                $materias_conditions = [];
+                foreach ($materias_seleccionadas as $materia) {
+                    if ($materia == 'Historia') {
+                        $materias_conditions[] = "(m.nombre LIKE 'Historia%' OR m.nombre = 'Historia')";
+                    } else {
+                        $materias_conditions[] = "m.nombre = ?";
+                        $params[] = $materia;
+                    }
+                }
 
-if (!empty($materias_conditions)) {
-$sql .= " AND (" . implode(' OR ', $materias_conditions) . ")";
-}
-}
+                if (!empty($materias_conditions)) {
+                    $sql .= " AND (" . implode(' OR ', $materias_conditions) . ")";
+                }
+            }
 
-// Aplicar orden según parámetro
-if ($orden == 'secuencial') {
-$sql .= " ORDER BY p.numero_pregunta ASC, p.id ASC LIMIT ?";
-} else {
-$sql .= " ORDER BY RAND() LIMIT ?";
-}
-$params[] = (int) $limit;
-}
+            // Aplicar orden según parámetro
+            if ($orden == 'secuencial') {
+                $sql .= " ORDER BY p.numero_pregunta ASC, p.id ASC LIMIT ?";
+            } else {
+                $sql .= " ORDER BY RAND() LIMIT ?";
+            }
+            $params[] = (int) $limit;
+        }
 
-$stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-foreach ($params as $key => $value) {
-if ($key === count($params) - 1 && !empty($busqueda_especifica)) {
-$stmt->bindValue($key + 1, $value, PDO::PARAM_INT);
-} elseif ($key === count($params) - 1) {
-$stmt->bindValue($key + 1, $value, PDO::PARAM_INT);
-} else {
-$stmt->bindValue($key + 1, $value);
-}
-}
+        foreach ($params as $key => $value) {
+            if ($key === count($params) - 1 && !empty($busqueda_especifica)) {
+                $stmt->bindValue($key + 1, $value, PDO::PARAM_INT);
+            } elseif ($key === count($params) - 1) {
+                $stmt->bindValue($key + 1, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key + 1, $value);
+            }
+        }
 
-$stmt->execute();
-$preguntas = $stmt->fetchAll();
+        $stmt->execute();
+        $preguntas = $stmt->fetchAll();
 
-} catch (PDOException $e) {
-$error_message = "Error en la consulta: " . $e->getMessage();
-}
+    } catch (PDOException $e) {
+        $error_message = "Error en la consulta: " . $e->getMessage();
+    }
 }
 
 // Array de guías disponibles para descarga
 $guias_descarga = [
-['year' => 2025, 'nombre' => 'Guía IPN 2025 (Con Imágenes)', 'archivo' =>
-'https://cyberedumx.com/guiaspolitecnico/materialapoyo2025ipnmediasuperior.pdf', 'disponible' => true, 'personaje' =>
-'👨‍🔬'],
+    [
+        'year' => 2025,
+        'nombre' => 'Guía IPN 2025 (Con Imágenes)',
+        'archivo' =>
+            'https://cyberedumx.com/guiaspolitecnico/materialapoyo2025ipnmediasuperior.pdf',
+        'disponible' => true,
+        'personaje' =>
+            '👨‍🔬'
+    ],
 ];
 
 // Calcular tiempo para modo examen (80 preguntas en 2.5 horas)
