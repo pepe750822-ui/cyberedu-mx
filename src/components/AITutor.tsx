@@ -27,7 +27,7 @@ const AITutor = () => {
     const [messages, setMessages] = useState<Message[]>([
         {
             role: "bot",
-            text: "¡Hola! Soy tu Tutor AI de CyberEdu Mx. ¿En qué tema tienes dudas hoy? Puedo explicarte conceptos de Matemáticas, Física, Biología o ayudarte con tu plan de estudio.",
+            text: "Bienvenido al Centro de Soporte Académico de CyberEdu Mx. Soy tu Consultor de Estrategia Educativa. ¿En qué área específica de tu preparación para el ingreso 2026 puedo asistirte hoy?",
             id: "initial"
         }
     ]);
@@ -48,24 +48,28 @@ const AITutor = () => {
         setInput("");
         setIsTyping(true);
 
-        // Simulate AI thinking
+        // AI thinking simulation
         setTimeout(() => {
             let botResponse = "";
             const query = input.toLowerCase();
 
-            // Simple Knowledge Base Matching (Mock AI)
-            if (query.includes("examen") || query.includes("consejo")) {
-                botResponse = "Para el examen ECOEMS, mi mejor consejo es dominar la Habilidad Verbal y Matemática primero, ya que representan el 40% del puntaje. ¿Te gustaría que te recomiende videos de esas áreas?";
-            } else if (query.includes("mate") || query.includes("matematicas")) {
-                botResponse = "En Matemáticas, lo más importante es entender el álgebra básica. Te recomiendo revisar los videos de 'Ecuaciones de Primer Grado' en el área de Matemáticas. ¿Quieres que te explique algún tema específico como fracciones o ecuaciones?";
-            } else if (query.includes("fisica") || query.includes("newton")) {
-                botResponse = "Las Leyes de Newton son fundamentales. La 2da Ley (F=ma) es la que más se pregunta. Recuerda que la fuerza es proporcional a la aceleración. ¿Te gustaría un resumen de la Termodinámica?";
-            } else if (query.includes("biologia") || query.includes("celula")) {
-                botResponse = "La célula es la unidad básica de la vida. No olvides repasar la diferencia entre Eucariotas y Procariotas para el examen. ¿Deseas saber más sobre el metabolismo?";
-            } else if (query.includes("hola") || query.includes("buenos")) {
-                botResponse = "¡Hola! Estoy listo para ayudarte a asegurar tu lugar en la escuela de tus sueños. ¿Qué materia estudiaremos hoy?";
+            // Professional Knowledge Base Matching
+            if (query.includes("examen") || query.includes("convocatoria") || query.includes("ecoems")) {
+                botResponse = "Es fundamental entender que el proceso ECOEMS 2026 sustituye formalmente al COMIPEMS. El registro oficial inicia el 17 de marzo en el portal miderechomilugar.gob.mx. ¿Deseas que revisemos el calendario de fechas clave o los requisitos específicos para la UNAM?";
+            } else if (query.includes("curp")) {
+                botResponse = "Tu CURP es el documento de identidad principal para el registro en marzo. Te recomiendo tenerlo validado previamente en el portal de RENAPO. He dejado un enlace directo en nuestra sección de noticias para facilitarte el trámite.";
+            } else if (query.includes("mate") || query.includes("matematicas") || query.includes("ecuacion")) {
+                botResponse = "El dominio del Razonamiento Matemático es el pilar de un alto puntaje. Para el examen digital, las ecuaciones de primer grado y sistemas 2x2 son temas recurrentes. Te sugiero completar el QUIZ de la lección 34 para medir tu nivel actual.";
+            } else if (query.includes("fisica") || query.includes("newton") || query.includes("fuerza")) {
+                botResponse = "En el área de Física, el análisis de las Leyes de Newton es imperativo. No olvides que la unificación de exámenes para IPN requiere un dominio claro de vectores y cinemática. ¿Te gustaría que analicemos la Segunda Ley de Newton con un ejemplo práctico?";
+            } else if (query.includes("biologia") || query.includes("celula") || query.includes("adn")) {
+                botResponse = "La Biología en ECOEMS enfoca gran parte de su reactivo en genética y metabolismo celular. Asegúrate de distinguir con precisión los organelos de la célula animal y vegetal. El material complementario del video 11 contiene una infografía comparativa que te será de gran ayuda.";
+            } else if (query.includes("consejo") || query.includes("ayuda") || query.includes("estudiar")) {
+                botResponse = "Nuestra plataforma está diseñada bajo un modelo de aprendizaje progresivo. Mi recomendación estratégica es seguir tu 'Plan de Estudio Diario' y no dejar pasar más de 48 horas sin resolver un quiz para cimentar la retención a largo plazo. ¿Qué tema te parece más complejo de abordar hoy?";
+            } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
+                botResponse = "Hola. Soy el Consultor Digital de CyberEdu Mx. Mi objetivo es optimizar tu rendimiento académico para asegurar tu lugar en tu primera opción de bachillerato. ¿Tienes alguna duda sobre el calendario oficial o algún tema del temario?";
             } else {
-                botResponse = "Entiendo perfectamente tu duda sobre '" + input + "'. Como tu tutor AI, te sugiero revisar el material complementario del video relacionado, o si prefieres, puedo darte una explicación simplificada ahora mismo. ¿Qué prefieres?";
+                botResponse = "Esa es una consulta interesante sobre '" + input + "'. Como consultor especializado, te sugiero integrar este tema dentro de tu cronograma semanal. Puedes encontrar una explicación extendida en nuestra sección de 'Asistencia AI' dentro de la lección correspondiente. ¿Deseas que te guíe a los materiales complementarios?";
             }
 
             setMessages(prev => [...prev, {
