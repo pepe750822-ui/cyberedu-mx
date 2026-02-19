@@ -39,7 +39,7 @@ const PodcastPlayer = ({ url, duracion }: { url: string; duracion?: string }) =>
       {duracion && <p className="text-xs sm:text-sm text-muted-foreground mt-1">Duración: {duracion}</p>}
     </div>
     <audio controls className="w-full max-w-md mt-2" preload="none">
-      <source src={url} type="audio/mpeg" />
+      <source src={url} />
       Tu navegador no soporta el reproductor de audio.
     </audio>
   </div>
