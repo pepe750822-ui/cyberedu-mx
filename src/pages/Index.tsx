@@ -178,11 +178,7 @@ const Index = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => setActiveSimulator({
-                    url: "/studio/nguia.html",
-                    title: "Consola Maestro Studio",
-                    description: "Centro de mando con 630+ reactivos y estadísticas"
-                  })}
+                  onClick={() => navigate("/simulador-externo?type=master")}
                   className="h-14 rounded-2xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-400 group transition-all"
                 >
                   CONSOLA STUDIO (PRO)
@@ -191,24 +187,22 @@ const Index = () => {
 
                 {/* Nuevos Simuladores PHP */}
                 <div className="flex gap-2">
-                  {fullSimulators.map((sim, idx) => (
-                    <Button
-                      key={idx}
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setActiveSimulator({
-                        url: sim.path,
-                        title: sim.name,
-                        description: sim.description
-                      })}
-                      className={cn(
-                        "flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all",
-                        sim.name.includes("Politécnico") ? "text-rose-400 hover:text-rose-300" : "text-indigo-300 hover:text-indigo-200"
-                      )}
-                    >
-                      {sim.name}
-                    </Button>
-                  ))}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate("/simulador-externo?type=completo")}
+                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-indigo-300 hover:text-indigo-200"
+                  >
+                    Simulador ECOEMS (Completo)
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate("/simulador-externo?type=politecnico")}
+                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-rose-400 hover:text-rose-300"
+                  >
+                    Simulador POLI (IPN)
+                  </Button>
                 </div>
               </div>
             </div>
