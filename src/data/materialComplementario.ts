@@ -77,12 +77,14 @@ export const materiales: Record<string, MaterialVideo> = {
   },
   "hm-2": {
     videoId: "hm-2",
+    quiz: { url: "/quiz/video-07-quiz.html" },
     infografia: { url: "/videos/video7/infografia.png", descripcion: "Series Espaciales" },
     pdf: { url: "/videos/video7/presentacion.pdf", titulo: "Guía: Series Espaciales" },
     podcast: { url: "/videos/video7/podcast.m4a", duracion: "3:00" }
   },
   "hm-3": {
     videoId: "hm-3",
+    quiz: { url: "/quiz/video-08-quiz.html" },
     infografia: { url: "/videos/video8/infografia.png", descripcion: "Imaginación Espacial" },
     pdf: { url: "/videos/video8/presentacion.pdf", titulo: "Guía: Imaginación Espacial" },
     podcast: { url: "/videos/video8/podcast.m4a", duracion: "3:00" }

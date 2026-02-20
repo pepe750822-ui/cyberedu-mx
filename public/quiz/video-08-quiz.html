@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habilidad Matemática - ECOEMS 2026 | Imaginación Espacial 3D</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #0ea5e9;
+            /* Azul cielo para Imaginación 3D */
+            --primary-hover: #0284c7;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --hint-bg: #f1f5f9;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --border: #334155;
+            --hint-bg: #2d3748;
+            --glass: rgba(30, 41, 59, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tools {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .timer-box {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .main-container {
+            max-width: 900px;
+            width: 95%;
+            margin: 1.5rem 0;
+            flex-grow: 1;
+        }
+
+        .subindex-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+
+        .subindex-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab.completed {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .tab.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #e5e7eb;
+        }
+
+        .quiz-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            min-height: 550px;
+            position: relative;
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .module-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .progress-bar-wrap {
+            height: 6px;
+            background: var(--bg);
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.4s;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-btn.correct {
+            border-color: var(--secondary);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .letter {
+            width: 28px;
+            height: 28px;
+            background: var(--border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .correct .letter {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .incorrect .letter {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-danger-outline {
+            background: none;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-ghost {
+            background: none;
+            color: var(--text-muted);
+            border: none;
+        }
+
+        .info-box {
+            margin-top: 1rem;
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--primary);
+            line-height: 1.5;
+        }
+
+        .hint-box {
+            background: var(--hint-bg);
+            border-color: var(--warning);
+            font-style: italic;
+            color: var(--text-main);
+        }
+
+        .explanation-box {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        /* Representación de figuras 3D - CyberEdu */
+        .cube-net {
+            display: inline-grid;
+            grid-template-columns: repeat(3, 25px);
+            grid-template-rows: repeat(3, 25px);
+            gap: 2px;
+            margin: 0 10px;
+        }
+
+        .net-square {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #0ea5e9;
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .net-square.filled {
+            background: #0ea5e9;
+        }
+
+        .geometric-figure {
+            display: inline-block;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+
+        .circle {
+            width: 25px;
+            height: 25px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid #3b82f6;
+        }
+
+        /* Cono */
+        .cone {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid #f97316;
+            position: relative;
+        }
+
+        /* Cilindro */
+        .cylinder {
+            width: 30px;
+            height: 35px;
+            background: #10b981;
+            border-radius: 10px 10px 2px 2px;
+        }
+
+        .stats-panel {
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .stat-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            border: 8px solid var(--border);
+        }
+
+        .stat-circle.high {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .stat-circle.low {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .review-list {
+            text-align: left;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .review-item {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--card);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-item:hover {
+            background: var(--bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        th {
+            background: var(--bg);
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+            .quiz-card {
+                padding: 1.25rem;
+                min-height: 650px;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .module-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <nav class="navbar">
+        <div class="logo"><i data-lucide="award"></i> ECOEMS 2026 | Imaginación Espacial 3D - Video 8</div>
+        <div class="nav-tools">
+            <div class="timer-container" title="Tiempo del módulo actual">
+                <div class="timer-box"><i data-lucide="clock" size="16"></i> <span id="time-string">00:00</span></div>
+                <button class="btn-ghost" id="timer-ctrl" onclick="togglePause()"><i data-lucide="pause"
+                        size="16"></i></button>
+            </div>
+            <button class="btn-outline" onclick="toggleTheme()" title="Cambiar Tema"><i data-lucide="moon"
+                    id="theme-icon"></i></button>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="subindex-nav" id="subindex-nav"></div>
+        <div id="quiz-app">
+            <div class="quiz-card fade-in" id="current-card"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Desarrollado por <strong>CyberEdu MX</strong> © 2026 - Todos los derechos reservados
+    </div>
+
+    <script>
+        // --- CONSTANTES ---
+        const SUBINDICES = ["Fundamentos 3D", "Vistas y Rotación Mental", "Ensambles y Visualización"];
+
+        // --- DATABASE PARA VIDEO 8 - IMAGINACIÓN ESPACIAL 3D ---
+        const modulos = [
+            {
+                id: 0,
+                titulo: "Fundamentos 3D",
+                preguntas: [
+                    { q: "¿Qué define CyberEdu como 'Imaginación Espacial'?", o: ["La habilidad de dibujar en papel cuadriculado", "La capacidad de visualizar y rotar mentalmente objetos en 3 dimensiones", "Saber los nombres de todos los planetas", "Calcular el volumen con fórmulas matemáticas"], c: 1, e: "Es la habilidad mental de proyectar, manipular y entender estructuras tridimensionales sin tenerlas físicamente.", h: "Visualización mental en tres dimensiones." },
+                    { q: "Un 'Desarrollo Plano' es una herramienta que sirve para:", o: ["Aplanar figuras en el examen", "Pasar una figura de 2D a un cuerpo 3D (como armar una caja)", "Hacer mapas geográficos", "Medir áreas de triángulos"], c: 1, e: "Muestra cómo las caras de un objeto 3D se despliegan sobre una superficie plana 2D.", h: "Armar una caja de cartón." },
+                    { q: "En la rotación mental, ¿cuántos ejes principales de movimiento se consideran?", o: ["Solo 1 (Izquierda-Derecha)", "2 ejes (X e Y)", "3 ejes (X, Y, Z)", "Infinitos ejes"], c: 2, e: "Un objeto 3D puede rotar horizontalmente (X), verticalmente (Y) o en profundidad (Z).", h: "Ancho, alto y profundidad." },
+                    { q: "Al estudiar 'Perspectivas múltiples', las tres vistas fundamentales de un objeto son:", o: ["Frente, lado y arriba", "Adentro, afuera y alrededor", "Norte, Sur y Este", "Diagonal, recta y curva"], c: 0, e: "Se conoce en dibujo técnico como vista frontal, vista lateral (perfil) y vista superior (planta).", h: "De cara, de perfil y desde el cielo." },
+                    { q: "¿Para qué sirve específicamente la técnica de 'Proyección' en este tema?", o: ["Para adivinar la respuesta", "Para iluminar la hoja del examen", "Para visualizar mentalmente las partes ocultas de una figura", "Para hacer la figura más grande"], c: 2, e: "Te permite 'ver a través' del objeto o deducir qué hay en las caras que el dibujo no muestra.", h: "Ver lo que no se ve." },
+                    { q: "Si tienes un cubo armado (dado) en la mesa, ¿cuántas caras puedes ver como MÁXIMO desde un solo ángulo perspectivo?", o: ["1 cara", "2 caras", "3 caras", "4 caras"], c: 2, e: "Por la geometría del cubo, solo puedes ver hasta 3 caras a la vez (por ejemplo: frontal, superior y lateral derecha).", h: "Cuenta las caras visibles en una esquina." },
+                    { q: "El desarrollo plano clásico de un cubo está compuesto por:", o: ["4 rectángulos y 2 cuadrados", "6 cuadrados idénticos", "8 triángulos", "6 hexágonos"], c: 1, e: "Un cubo perfecto se forma plegando 6 cuadrados iguales.", h: "Las caras de un dado." },
+                    { q: "En un cubo, las caras que NUNCA comparten una arista (borde) ni se tocan se conocen como:", o: ["Caras adyacentes", "Caras paralelas u opuestas", "Caras perpendiculares", "Caras contiguas"], c: 1, e: "Son las caras que están 'frente a frente', como el suelo y el techo de una habitación.", h: "Frente a frente." },
+                    { q: "Según la academia, la imaginación espacial es considerada el ________ pilar de la Habilidad Matemática.", o: ["Primer", "Segundo", "Tercer", "Cuarto"], c: 2, e: "Viene después de las sucesiones numéricas y las series espaciales (2D).", h: "Es el nivel 3." },
+                    { q: "El objetivo final de desarrollar esta habilidad para el examen ECOEMS 2026 es:", o: ["Aprobar el examen de arte", "Dominar la geometría y el razonamiento avanzado", "Aprender a usar software 3D", "Evitar hacer operaciones matemáticas"], c: 1, e: "Esta habilidad mental es fundamental para resolver problemas abstractos y de geometría espacial.", h: "Razonamiento estructural avanzado." }
+                ]
+            },
+            {
+                id: 1,
+                titulo: "Vistas y Rotación Mental",
+                preguntas: [
+                    { q: "El Paso 1 para resolver problemas de 'Desarrollos Planos' (Ejercicio 9) es:", o: ["Recortar el papel del examen", "Orientar la estructura y establecer ejes de referencia", "Buscar el color más oscuro", "Contar todas las caras rápidamente"], c: 1, e: "Antes de armar mentalmente, debes saber cuál será tu 'base' o 'frente' como punto de partida.", h: "Encuentra tu base de inicio." },
+                    { q: "Al proyectar la 'Vista Superior' de un objeto, debes imaginar que lo estás observando desde:", o: ["Un ángulo de 45 grados", "Abajo hacia arriba", "Directamente desde arriba (verticalmente)", "El lado izquierdo"], c: 2, e: "La vista superior o de 'planta' aplana la profundidad, mostrando solo el ancho y el largo del objeto.", h: "Vista de pájaro/dron." },
+                    { q: "En la técnica de Rotación Mental (Ejercicio 10), girar un objeto 90° en sentido 'horario' equivale a:", o: ["Dar media vuelta exacta", "Moverlo un cuarto de vuelta hacia la derecha", "Moverlo un cuarto de vuelta hacia la izquierda", "No moverlo"], c: 1, e: "Horario sigue las manecillas del reloj; 90° es exactamente un cuarto de círculo.", h: "Un cuarto de giro como el reloj." },
+                    { q: "Para no perderse al rotar figuras complejas, la técnica CyberEdu recomienda usar:", o: ["Un transportador", "El 'Punto fijo mental'", "Calculadora científica", "Los dedos de la mano"], c: 1, e: "Consiste en elegir un punto o vértice de referencia que actúe como 'ancla' durante el giro.", h: "Un ancla mental." },
+                    { q: "¿En qué consiste la técnica del 'Punto fijo mental'?", o: ["Mirar fijamente el centro de la hoja", "Elegir un punto de referencia (base) y visualizar cómo los elementos móviles rotan alrededor de él", "Dejar la figura completamente inmóvil", "Adivinar fijándose en una sola opción"], c: 1, e: "Al anclar una parte de la figura, es más fácil calcular la trayectoria del resto de los elementos (brazos, extensiones).", h: "Anclar y girar el resto." },
+                    { q: "Al analizar una rotación compleja, CyberEdu sugiere distinguir entre dos tipos de componentes en la figura:", o: ["Elementos grandes y pequeños", "Elementos fijos y elementos móviles", "Elementos oscuros y claros", "Líneas rectas y curvas"], c: 1, e: "Comprender qué parte sirve de eje (fija) y qué parte gira (móvil) facilita la visualización.", h: "Lo que se queda vs lo que se mueve." },
+                    { q: "El Paso 3 al resolver perspectivas es 'Comparar opciones'. ¿Qué acción crítica se realiza aquí?", o: ["Elegir la primera que se parezca", "Eliminar vistas imposibles y verificar proporciones", "Contar los puntos de la figura", "Sumar los ángulos"], c: 1, e: "Por descarte de opciones ilógicas (elementos del lado equivocado) llegas más rápido a la respuesta correcta.", h: "Descarte y verificación." },
+                    { q: "Si imaginas una letra 'L' mayúscula y la rotas 180° sobre sí misma, su resultado visual será equivalente a:", o: ["Una imagen idéntica a la original", "Una imagen invertida vertical y horizontalmente", "Una letra 'V'", "Una línea recta"], c: 1, e: "Una rotación de 180° da la vuelta completa a la figura, dejándola de cabeza y apuntando al lado contrario.", h: "De cabeza y al revés." },
+                    { q: "Para verificar mentalmente la 'vista de perfil' (lateral) de un objeto, debes:", o: ["Imaginar que caminas 90 grados alrededor del objeto", "Imaginar que vuelas sobre él", "Cerrar un ojo", "Voltear tu examen de cabeza"], c: 0, e: "Debes trasladar tu perspectiva mental desde el frente hacia un costado lateral.", h: "Dar un paso hacia el lado." },
+                    { q: "Si tienes un dado y rotas todo el bloque mentalmente 90° 'hacia adelante' (hacia ti), la cara que originalmente estaba 'Arriba' pasará a estar:", o: ["Abajo", "Atrás", "Al frente (mirándote)", "A la derecha"], c: 2, e: "El movimiento hace que la cara superior 'caiga' hacia tu punto de vista frontal.", h: "Se voltea hacia tu cara." }
+                ]
+            },
+            {
+                id: 2,
+                titulo: "Práctica de Examen - 3D",
+                preguntas: [
+                    { q: "¿Cuántas caras nuevas verías si giras un cubo 90° para mostrar una cara diferente?", o: ["1 cara nueva", "2 caras nuevas", "3 caras nuevas", "Todas las caras nuevas"], c: 1, e: "Desde una vista en perspectiva (3 caras), al girar 90° dos caras cambian por completo.", h: "Visualiza la cara frontal moviéndose al lateral." },
+                    { q: "En el desarrollo de un cubo, ¿cuántas caras son adyacentes a la cara central?", s: "<div class='cube-net'><div class='net-square'></div><div class='net-square filled'></div><div class='net-square'></div><div class='net-square filled'></div><div class='net-square filled'></div><div class='net-square'></div><div class='net-square'></div><div class='net-square filled'></div><div class='net-square'></div></div>", o: ["2", "3", "4", "5"], c: 2, e: "En una red de cruz, el cuadrado central toca 4 cuadros que se convertirán en sus paredes.", h: "Cuenta los vecinos directos." },
+                    { q: "Un cubo de 3x3x3 se corta en 27 cubitos. ¿Cuántos tienen exactamente 2 caras pintadas?", o: ["6", "8", "12", "24"], c: 2, e: "Son los cubitos en las aristas (excluyendo esquinas). Hay 12 aristas y 1 cubito central en cada una.", h: "Piensa en los cubitos que NO son esquinas ni centros." },
+                    { q: "Si el desarrollo plano tiene 2 triángulos y 3 rectángulos, ¿qué sólido forma?", o: ["Prisma triangular", "Pirámide cuadrangular", "Cubo", "Tetraedro"], c: 0, e: "Los rectángulos forman los lados y los triángulos las bases de un prisma triangular.", h: "Dos bases iguales y tres lados rectos." },
+                    { q: "¿Desde qué ángulo de visión un cilindro se ve como un círculo perfecto?", s: "<div class='cylinder'></div>", o: ["Vista frontal", "Vista lateral", "Vista superior (planta)", "Vista en perspectiva"], c: 2, e: "La base circular del cilindro solo es visible como círculo desde arriba o abajo.", h: "Míralo desde el cielo." },
+                    { q: "¿Qué sucede al rotar un triángulo equilátero 120° alrededor de su centro?", o: ["Queda idéntico", "Se invierte", "Se hace más grande", "Cambia de forma"], c: 0, e: "Tiene simetría rotacional de orden 3 (360/3 = 120). Cada giro de 120° lo deja igual.", h: "Divide un círculo en 3 partes." },
+                    { q: "¿Cuál es la vista frontal de un conjunto de 3 cubos en forma de 'L' invertida?", o: ["Cuadrado 4x4", "Rectángulo 20x40", "Rectángulo 40x20", "Línea de 60px"], c: 2, e: "Dos cubos de ancho (40px) y uno de alto visible desde el frente resulta en un rectángulo 40x20.", h: "Proyecta los cubos hacia adelante." },
+                    { q: "¿Cuántos vértices tiene una pirámide con base pentagonal?", o: ["5", "6", "10", "12"], c: 1, e: "5 vértices de la base + 1 ápice (vértice superior) = 6 vértices.", h: "Base (5) + Punta (1)." },
+                    { q: "Al seccionar un cono con un plano paralelo a la base, se obtiene un:", s: "<div class='cone'></div>", o: ["Círculo", "Elipse", "Parábola", "Hipérbola"], c: 0, e: "Cualquier corte paralelo a la base de un cono generará un círculo de menor radio.", h: "Corte recto horizontal." },
+                    { q: "¿Qué propiedades definen a un tetraedro regular?", o: ["4 caras triangulares", "6 aristas y 4 vértices", "Ambas anteriores", "6 caras cuadradas"], c: 2, e: "Es la pirámide más simple: 4 caras de triángulo equilátero, 6 aristas y 4 vértices.", h: "Es un sólido platónico de 4 caras." }
+                ]
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+
+        let state = {
+            moduloActual: 0,
+            preguntaActual: 0,
+            respuestas: Array(3).fill().map(() => Array(10).fill(null)),
+            tiempos: Array(3).fill(0),
+            completado: Array(3).fill(false),
+            isPaused: false,
+            isDark: false,
+            showHint: false,
+            started: false
+        };
+
+        let ticker = null;
+
+        // --- FUNCIONES CORE ---
+
+        function init() {
+            lucide.createIcons();
+            load();
+            renderTabs();
+            renderCurrent();
+            startTicker();
+        }
+
+        function load() {
+            const saved = localStorage.getItem('ecoems_2026_imaginacion_3d');
+            if (saved) {
+                state = { ...state, ...JSON.parse(saved) };
+                if (state.isDark) document.documentElement.setAttribute('data-theme', 'dark');
+                updateThemeIcon();
+            }
+        }
+
+        function save() {
+            localStorage.setItem('ecoems_2026_imaginacion_3d', JSON.stringify(state));
+        }
+
+        function toggleTheme() {
+            state.isDark = !state.isDark;
+            document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
+            updateThemeIcon();
+            save();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.setAttribute('data-lucide', state.isDark ? 'sun' : 'moon');
+                lucide.createIcons();
+            }
+        }
+
+        function startTicker() {
+            if (ticker) clearInterval(ticker);
+            ticker = setInterval(() => {
+                if (!state.isPaused && state.started && isUnlocked(state.moduloActual) && !state.completado[state.moduloActual]) {
+                    state.tiempos[state.moduloActual]++;
+                    updateTimerDisplay();
+                    if (state.tiempos[state.moduloActual] % 5 === 0) save();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const t = state.tiempos[state.moduloActual];
+            const m = Math.floor(t / 60);
+            const s = t % 60;
+            const display = document.getElementById('time-string');
+            if (display) {
+                display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function togglePause() {
+            state.isPaused = !state.isPaused;
+            const btn = document.getElementById('timer-ctrl');
+            if (btn) {
+                btn.innerHTML = `<i data-lucide="${state.isPaused ? 'play' : 'pause'}" size="16"></i>`;
+                lucide.createIcons();
+            }
+        }
+
+        function isUnlocked(idx) {
+            if (idx === 0) return true;
+            return state.completado[idx - 1];
+        }
+
+        function renderTabs() {
+            const nav = document.getElementById('subindex-nav');
+            if (!nav) return;
+            nav.innerHTML = SUBINDICES.map((name, i) => {
+                const unlocked = isUnlocked(i);
+                let cls = `tab ${i === state.moduloActual ? 'active' : ''} ${state.completado[i] ? 'completed' : ''}`;
+                if (!unlocked) cls += ' locked';
+                const icon = unlocked ? (state.completado[i] ? 'check-circle' : 'circle') : 'lock';
+                return `<button class="${cls}" onclick="changeModule(${i})"><i data-lucide="${icon}" size="14"></i> ${i + 1}. ${name}</button>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function changeModule(i) {
+            if (!isUnlocked(i)) return;
+            state.moduloActual = i;
+            state.preguntaActual = 0;
+            state.showHint = false;
+            state.isPaused = false;
+            renderTabs();
+            renderCurrent();
+            updateTimerDisplay();
+            save();
+        }
+
+        function resetModule(auto = false) {
+            if (!auto && !confirm("¿Seguro que quieres reiniciar este módulo? Perderás tus respuestas y el tiempo de esta sección.")) return;
+
+            state.respuestas[state.moduloActual] = Array(10).fill(null);
+            state.tiempos[state.moduloActual] = 0;
+            state.completado[state.moduloActual] = false;
+            state.preguntaActual = 0;
+            state.showHint = false;
+            state.isPaused = false;
+
+            for (let j = state.moduloActual + 1; j < 3; j++) {
+                state.completado[j] = false;
+                state.respuestas[j] = Array(10).fill(null);
+                state.tiempos[j] = 0;
+            }
+
+            renderTabs();
+            renderCurrent();
+            updateTimerDisplay();
+            save();
+        }
+
+        function renderCurrent() {
+            const container = document.getElementById('current-card');
+            if (!container) return;
+
+            container.classList.remove('fade-in');
+            void container.offsetWidth;
+            container.classList.add('fade-in');
+
+            const mIdx = state.moduloActual;
+
+            if (!state.started) {
+                renderInstructions(container);
+            } else if (state.completado.every(c => c)) {
+                renderFinalStats(container);
+            } else if (state.completado[mIdx]) {
+                renderModuleStats(container);
+            } else {
+                renderQuiz(container);
+            }
+            save();
+        }
+
+        function renderInstructions(container) {
+            container.innerHTML = `
+            <div class="stats-panel">
+                <i data-lucide="box" size="64" style="color:var(--primary); margin-bottom:1rem"></i>
+                <h1>Entrenamiento de Imaginación Espacial 3D</h1>
+                <p style="font-size:1.1rem; color:var(--text-muted); margin-bottom:2rem">Domina la visualización, rotación y ensamblaje de objetos tridimensionales</p>
+                
+                <div class="info-box" style="text-align:left; border-color:var(--warning); margin-bottom:1.5rem">
+                    <h3 style="margin-top:0">Reglas del entrenamiento:</h3>
+                    <ul style="padding-left:1.5rem">
+                        <li><strong>Requisito:</strong> Necesitas <strong>9/10 aciertos</strong> para avanzar al siguiente nivel.</li>
+                        <li><strong>Progresión:</strong> Los niveles se desbloquean secuencialmente (Fundamentos → Vistas y Rotación → Ensambles Complejos).</li>
+                        <li><strong>Reinicio automático:</strong> Si obtienes 8 o menos, el módulo se reinicia para que sigas practicando.</li>
+                        <li><strong>Tiempo:</strong> Cada nivel tiene su propio cronómetro.</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary" style="width:100%; height:50px; font-size:1.1rem" onclick="state.started=true; renderCurrent()">
+                    Activar Visualización 3D
+                </button>
+            </div>
+        `;
+            lucide.createIcons();
+        }
+
+        function renderQuiz(container) {
+            const qData = modulos[state.moduloActual].preguntas[state.preguntaActual];
+            const userAns = state.respuestas[state.moduloActual][state.preguntaActual];
+            const prog = ((state.preguntaActual + 1) / 10) * 100;
+
+            container.innerHTML = `
+            <div class="module-header">
+                <div class="module-title">${state.moduloActual + 1}. ${SUBINDICES[state.moduloActual]}</div>
+                <button class="btn btn-outline" onclick="resetModule()" style="padding: 6px 12px; font-size: 0.8rem; height: auto;">
+                    <i data-lucide="rotate-ccw" size="14"></i> Reiniciar
+                </button>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+            
+            <div class="question-text">${qData.q}</div>
+            
+            <div class="options-grid">
+                ${qData.o.map((opt, i) => {
+                let cls = 'option-btn';
+                if (userAns !== null) {
+                    if (i === qData.c) cls += ' correct';
+                    else if (i === userAns) cls += ' incorrect';
+                }
+                return `<button class="${cls}" onclick="selectOption(${i})" ${userAns !== null ? 'disabled' : ''}>
+                        <div class="letter">${String.fromCharCode(65 + i)}</div><span>${opt}</span>
+                    </button>`;
+            }).join('')}
+            </div>
+            ${state.showHint && userAns === null ? `<div class="info-box hint-box fade-in"><strong>💡 Perspectiva:</strong> ${qData.h}</div>` : ''}
+            ${userAns !== null ? `<div class="info-box explanation-box fade-in"><strong>📘 Matriz Analítica:</strong> ${qData.e}</div>` : ''}
+            <div class="actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                <button class="btn btn-outline" onclick="prevQ()" ${state.preguntaActual === 0 ? 'disabled' : ''}><i data-lucide="chevron-left"></i> Anterior</button>
+                ${userAns === null ? `<button class="btn btn-outline" onclick="toggleHint()"><i data-lucide="lightbulb"></i> Pista</button>` : '<span></span>'}
+                <button class="btn btn-primary" onclick="nextQ()" ${userAns === null ? 'disabled' : ''}>
+                    ${state.preguntaActual === 9 ? 'Finalizar Módulo' : 'Siguiente'} <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+        `;
+            lucide.createIcons();
+        }
+
+        function toggleHint() {
+            state.showHint = !state.showHint;
+            renderCurrent();
+        }
+
+        function selectOption(i) {
+            state.respuestas[state.moduloActual][state.preguntaActual] = i;
+            renderCurrent();
+        }
+
+        function nextQ() {
+            if (state.preguntaActual < 9) {
+                state.preguntaActual++;
+                state.showHint = false;
+                renderCurrent();
+            } else {
+                const moduleAns = state.respuestas[state.moduloActual];
+                const moduleQuestions = modulos[state.moduloActual].preguntas;
+                const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+                const perc = score * 10;
+
+                if (perc > 80) {
+                    state.completado[state.moduloActual] = true;
+                    renderTabs();
+                    renderCurrent();
+                } else {
+                    alert(`❌ PROYECCIÓN 3D INSUFICIENTE: ${score}/10 (${perc}%).\n\nNecesitas mínimo 9 aciertos para avanzar. El módulo se reiniciará.`);
+                    resetModule(true);
+                }
+            }
+        }
+
+        function prevQ() {
+            if (state.preguntaActual > 0) {
+                state.preguntaActual--;
+                state.showHint = false;
+                renderCurrent();
+            }
+        }
+
+        function renderModuleStats(container) {
+            const moduleAns = state.respuestas[state.moduloActual];
+            const moduleQuestions = modulos[state.moduloActual].preguntas;
+            const score = moduleAns.filter((a, i) => a === moduleQuestions[i].c).length;
+            const time = state.tiempos[state.moduloActual];
+            const perc = score * 10;
+
+            container.innerHTML = `
+            <div class="stats-panel">
+                <h2>✅ ¡Modelado Mental Exitoso!</h2>
+                <p>Has dominado: <strong>${SUBINDICES[state.moduloActual]}</strong></p>
+                <div class="stat-circle high"><div>${score}/10</div><small>${perc}%</small></div>
+                <p>Tiempo: <strong>${Math.floor(time / 60)}m ${time % 60}s</strong></p>
+                
+                <div class="review-list">
+                    ${moduleQuestions.map((q, i) => `
+                        <div class="review-item" onclick="toggleRev(${i})">
+                            <span style="font-weight:600">Pregunta ${i + 1}</span>
+                            <span>${moduleAns[i] === q.c ? '<b style="color:var(--secondary)">Correcta ✅</b>' : '<b style="color:var(--danger)">Incorrecta ❌</b>'} <i data-lucide="chevron-down" size="14"></i></span>
+                        </div>
+                        <div id="rev-${i}" class="info-box explanation-box" style="display:none; text-align:left; margin:5px 10px 15px 10px;">
+                            <strong>Respuesta Correcta:</strong> ${q.o[q.c]}<br>
+                            <strong>Matriz Analítica:</strong> ${q.e}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="info-box" style="text-align:left; border-color:var(--secondary)">
+                    <strong>🎯 Siguiente paso:</strong> Continúa al siguiente nivel de complejidad 3D.
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 2rem;">
+                    <button class="btn btn-outline" onclick="resetModule()"><i data-lucide="rotate-ccw"></i> Reintentar</button>
+                    ${state.moduloActual < 2 ?
+                    `<button class="btn btn-primary" onclick="changeModule(${state.moduloActual + 1})">Siguiente Nivel <i data-lucide="chevron-right"></i></button>` :
+                    `<button class="btn btn-primary" onclick="renderCurrent()">Ver Reporte Global <i data-lucide="award"></i></button>`
+                }
+                </div>
+            </div>
+        `;
+            lucide.createIcons();
+        }
+
+        function toggleRev(i) {
+            const el = document.getElementById(`rev-${i}`);
+            if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function renderFinalStats(container) {
+            const scores = state.respuestas.map((ans, si) => ans.filter((a, qi) => a === modulos[si].preguntas[qi].c).length);
+            const totalScore = scores.reduce((a, b) => a + b, 0);
+            const totalTime = state.tiempos.reduce((a, b) => a + b, 0);
+
+            if (totalScore >= 27) triggerConfetti();
+
+            container.innerHTML = `
+            <div class="stats-panel">
+                <h1>🏆 REPORTE FINAL - IMAGINACIÓN ESPACIAL 3D</h1>
+                <div class="stat-circle high" style="width:140px; height:140px; font-size:2rem">
+                    ${totalScore}/30<small>${Math.round(totalScore * 100 / 30)}%</small>
+                </div>
+                <p>Tiempo total: <strong>${Math.floor(totalTime / 60)} min ${totalTime % 60} seg</strong></p>
+                
+                <table>
+                    <thead><tr><th style="text-align:left">Nivel</th><th>Aciertos</th><th>Tiempo</th><th>%</th></tr></thead>
+                    <tbody>
+                        ${SUBINDICES.map((n, i) => `
+                            <tr>
+                                <td style="text-align:left">${n}</td>
+                                <td>${scores[i]}/10</td>
+                                <td>${Math.floor(state.tiempos[i] / 60)}:${(state.tiempos[i] % 60).toString().padStart(2, '0')}</td>
+                                <td>${scores[i] * 10}%</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 2rem; display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-danger-outline" onclick="clearAll()"><i data-lucide="refresh-cw"></i> Reiniciar Entrenamiento</button>
+                    <button class="btn btn-primary" onclick="window.print()"><i data-lucide="printer"></i> Imprimir Resultados</button>
+                </div>
+
+                <div class="info-box" style="margin-top:2rem; border-color:var(--warning)">
+                    <strong>🎓 ¡Felicidades!</strong> Has completado el entrenamiento de Imaginación Espacial 3D. 
+                    Ahora dominas el Tercer Pilar de la Habilidad Matemática.
+                </div>
+            </div>
+        `;
+            lucide.createIcons();
+        }
+
+        function clearAll() {
+            if (confirm("¿Seguro que quieres borrar todo el progreso del entrenamiento?")) {
+                localStorage.removeItem('ecoems_2026_imaginacion_3d');
+                location.reload();
+            }
+        }
+
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = Array(200).fill().map(() => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 4,
+                c: `hsl(${Math.random() * 360}, 80%, 60%)`,
+                v: Math.random() * 4 + 2
+            }));
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.beginPath(); ctx.fillStyle = p.c; ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
+                    p.y += p.v; if (p.y > canvas.height) p.y = -20;
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        window.onload = init;
+        window.resetModule = resetModule;
+        window.togglePause = togglePause;
+        window.toggleTheme = toggleTheme;
+        window.changeModule = changeModule;
+        window.selectOption = selectOption;
+        window.nextQ = nextQ;
+        window.prevQ = prevQ;
+        window.toggleHint = toggleHint;
+        window.toggleRev = toggleRev;
+        window.clearAll = clearAll;
+    </script>
+</body>
+
+</html>
