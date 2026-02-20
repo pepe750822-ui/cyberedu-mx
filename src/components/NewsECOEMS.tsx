@@ -15,7 +15,8 @@ import {
     ChevronDown,
     ChevronUp,
     School,
-    Target
+    Target,
+    Key
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -153,6 +154,52 @@ const NewsECOEMS = () => {
                                 El nuevo proceso **ECOEMS** sustituye definitivamente al COMIPEMS. Ahora el registro y seguimiento se centraliza en la plataforma **"Mi Derecho Mi Lugar"**.
                                 Es vital que actualices tus datos y descargues la nueva guía oficial.
                             </p>
+                        </div>
+
+                        {/* Nueva sección Llave MX */}
+                        <div className="p-6 rounded-3xl bg-amber-500/10 border border-amber-500/20 space-y-4 relative overflow-hidden group/llave">
+                            <div className="absolute -right-4 -top-4 opacity-10 group-hover/llave:opacity-20 transition-all group-hover/llave:scale-110 group-hover/llave:rotate-12">
+                                <Key className="h-24 w-24 text-amber-500" />
+                            </div>
+
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="p-2 bg-amber-500/20 rounded-xl text-amber-500">
+                                        <Key className="h-5 w-5" />
+                                    </div>
+                                    <h3 className="text-lg font-black uppercase tracking-tight text-white">Llave MX: Requisito Obligatorio</h3>
+                                </div>
+                                <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                                    Identidad digital única para validar tu identidad y completar tu registro en la plataforma **Mi Derecho Mi Lugar**. Es fundamental tenerla activa antes del pre-registro.
+                                </p>
+
+                                <div className="space-y-2.5">
+                                    {[
+                                        "Ingresa al portal oficial llave.gob.mx",
+                                        "Valida tus datos (CURP, domicilio, tel y correo)",
+                                        "Verifica tu cuenta mediante el código enviado"
+                                    ].map((step, i) => (
+                                        <div key={i} className="flex items-center gap-3 text-[11px] text-slate-400 group/step">
+                                            <span className="h-6 w-6 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-[10px] font-black text-amber-500 shrink-0 group-hover/step:bg-amber-500 group-hover/step:text-slate-900 transition-colors">
+                                                {i + 1}
+                                            </span>
+                                            <span className="group-hover/step:text-slate-200 transition-colors">{step}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-5 flex items-center gap-4">
+                                    <a
+                                        href="https://llave.gob.mx"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 bg-amber-500 text-slate-900 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-amber-400 transition-colors"
+                                    >
+                                        Crear mi Llave MX
+                                        <ExternalLink className="h-3.5 w-3.5" />
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
