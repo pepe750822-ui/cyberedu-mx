@@ -223,15 +223,15 @@ const Index = () => {
             {
               title: "Persistencia",
               desc: "Completa 5 días seguidos de estudio",
-              progress: 60,
+              progress: Math.min(Math.round((parseInt(localStorage.getItem('study_streak_count') || '0') / 5) * 100), 100),
               color: "text-blue-400",
               bg: "bg-blue-500/10",
               icon: Zap
             },
             {
               title: "Maestro de Área",
-              desc: "Llega al 100% en Pensamiento Matemático",
-              progress: 45,
+              desc: "Llega al 100% en al menos un área",
+              progress: Math.min(Math.round((completedAreas / 1) * 100), 100),
               color: "text-purple-400",
               bg: "bg-purple-500/10",
               icon: Brain
@@ -239,7 +239,7 @@ const Index = () => {
             {
               title: "Simulacro",
               desc: "Realiza tu primer simulador integral",
-              progress: 100,
+              progress: parseInt(localStorage.getItem('completed_simulators') || '0') > 0 ? 100 : 0,
               color: "text-emerald-400",
               bg: "bg-emerald-500/10",
               icon: Trophy

@@ -7,7 +7,18 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Cell
+  Cell,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+  CartesianGrid
 } from "recharts";
 import {
   Flame,
@@ -17,7 +28,16 @@ import {
   Trophy,
   Calendar,
   Hourglass,
-  Sparkles
+  Sparkles,
+  Download,
+  Share2,
+  FileJson,
+  TrendingUp,
+  Users,
+  Zap,
+  Brain,
+  ChevronRight,
+  ShieldCheck
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -25,7 +45,10 @@ import { Button } from "@/components/ui/button";
 import { areas } from "@/data/areas";
 import { getAreaNotebookKeys, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
+import { usePerformanceStats } from "@/hooks/usePerformanceStats";
+import { useAchievements } from "@/hooks/useAchievements";
 import { cn } from "@/lib/utils";
+import NextAchievementCard from "./NextAchievementCard";
 
 const ProgresoDashboard = () => {
   const { isViewed } = useVideoProgress();
@@ -136,8 +159,12 @@ const ProgresoDashboard = () => {
     }
   }, []);
 
+  const { weeklyData, comparisonData, predictedCompletion, recommendations } = usePerformanceStats();
+  const { achievements } = useAchievements();
+
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-top-4 duration-1000">
+    <div className="space-y-12 animate-in fade-in slide-in-from-top-4 duration-1000">
+      {/* 1. Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Streak Card */}
         <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-orange-600 via-red-600 to-orange-700 text-white animate-float">
@@ -164,7 +191,7 @@ const ProgresoDashboard = () => {
         </Card>
 
         {/* Time Card */}
-        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white hover:scale-[1.02] transition-transform duration-500">
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white">
           <CardContent className="p-6 relative">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -180,193 +207,209 @@ const ProgresoDashboard = () => {
                 <span>Total: {timeStats.total}</span>
                 <span>{Math.round(timeStats.percentage)}%</span>
               </div>
-              <div className="relative h-2 w-full bg-blue-900/40 rounded-full overflow-hidden border border-white/10">
-                <div
-                  className="absolute top-0 left-0 h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-1000 ease-out"
-                  style={{ width: `${timeStats.percentage}%` }}
-                />
-              </div>
+              <Progress value={timeStats.percentage} className="h-1.5 bg-blue-900/40" />
             </div>
           </CardContent>
         </Card>
 
-        {/* Heatmap Card */}
-        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/50 backdrop-blur-xl cyber-grid relative">
-          <CardHeader className="pb-2 pt-5 px-6 flex flex-row items-center justify-between space-y-0 text-foreground">
-            <CardTitle className="text-sm font-black flex items-center gap-2 uppercase tracking-tighter">
-              <Grid3X3 className="h-4 w-4 text-emerald-500" />
-              Mapa de Dominio
-            </CardTitle>
-            <div className="flex items-center gap-1.5 ring-1 ring-border p-1 px-2 rounded-full bg-background/50">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] text-muted-foreground uppercase font-black">Online</span>
-            </div>
-          </CardHeader>
-          <CardContent className="px-5 pb-5 pt-2">
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-2 mb-6">
-              {areaData.map((area) => (
-                <div
-                  key={area.id}
-                  className={cn(
-                    "aspect-square rounded-md relative group transition-all duration-500 hover:scale-125 cursor-help border",
-                    getHeatmapColor(area.percentage)
-                  )}
-                >
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-[#0a0a0c] text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-[100] shadow-[0_0_30px_rgba(0,0,0,0.8)] border border-white/20 backdrop-blur-md scale-90 group-hover:scale-100 pointer-events-none">
-                    <p className="font-black text-xs mb-1 text-white">{area.name}</p>
-                    <p className="text-emerald-400 font-black">{area.percentage}% completado</p>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#0a0a0c]" />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center justify-between border-t border-border/50 pt-4">
-              <div className="flex items-center gap-3">
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Leyenda:</span>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 rounded-sm bg-slate-800/50 border border-white/5" />
-                    <span className="text-[9px] font-bold text-muted-foreground">0%</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 rounded-sm bg-emerald-500/20 border border-emerald-500/30" />
-                    <span className="text-[9px] font-bold text-muted-foreground">1-50%</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 rounded-sm bg-emerald-500/70 border border-emerald-500/80" />
-                    <span className="text-[9px] font-bold text-muted-foreground">75%</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 rounded-sm bg-emerald-400 border border-white/40" />
-                    <span className="text-[9px] font-bold text-muted-foreground">100%</span>
-                  </div>
-                </div>
+        {/* Completion Card */}
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 text-white">
+          <CardContent className="p-6 relative">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="text-emerald-100/80 text-xs font-bold uppercase tracking-widest mb-1">Fecha Estimada</p>
+                <h3 className="text-3xl font-black mt-1">{predictedCompletion}</h3>
               </div>
-              <p className="text-[10px] text-muted-foreground font-medium italic">
-                * Dominio acumulado por área
-              </p>
+              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md border border-white/20">
+                <Calendar className="h-6 w-6" />
+              </div>
+            </div>
+            <p className="text-[10px] font-medium text-emerald-100/80 uppercase tracking-widest">
+              Basado en tu ritmo actual de {streak > 0 ? Math.round(timeStats.percentage / streak) : 0}% diario
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Achievements Summary */}
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white border border-white/5">
+          <CardContent className="p-6 relative">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Insignias Elite</p>
+                <h3 className="text-3xl font-black mt-1">{achievements.filter(a => a.isUnlocked).length} / {achievements.length}</h3>
+              </div>
+              <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                <Trophy className="h-6 w-6 text-amber-500" />
+              </div>
+            </div>
+            <div className="flex gap-1.5 overflow-hidden">
+              {achievements.map((a, i) => (
+                <div key={i} className={cn(
+                  "w-full h-1.5 rounded-full transition-all",
+                  a.isUnlocked ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" : "bg-white/10"
+                )} />
+              ))}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Bar Chart Section */}
-        <Card className="lg:col-span-2 shadow-xl border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden group">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between">
-            <CardTitle className="text-lg font-black flex items-center gap-2 uppercase tracking-tighter">
-              <BarChart3 className="h-5 w-5 text-primary" />
-              Análisis de Avance Profesional
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[320px] p-6 pt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={areaData} layout="vertical" margin={{ left: 0, right: 40, top: 0, bottom: 0 }}>
-                <XAxis type="number" hide domain={[0, 100]} />
-                <YAxis
-                  dataKey="shortName"
-                  type="category"
-                  width={90}
-                  fontSize={9}
-                  tickLine={false}
-                  axisLine={false}
-                  className="font-bold uppercase text-muted-foreground pl-2"
-                />
-                <Tooltip
-                  cursor={{ fill: 'rgba(255,255,255,0.03)' }}
-                  content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      const data = payload[0].payload;
-                      return (
-                        <div className="bg-black/90 border border-white/10 p-3 shadow-2xl rounded-xl backdrop-blur-xl">
-                          <p className="font-black text-white text-sm uppercase tracking-tighter mb-1">{data.name}</p>
-                          <div className="flex items-center gap-2">
-                            <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
-                            <p className="text-primary font-bold text-xs">{payload[0].value}% Progreso</p>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <Bar
-                  dataKey="percentage"
-                  radius={[0, 10, 10, 0]}
-                  barSize={12}
-                >
-                  {areaData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.percentage === 100 ? '#10b981' : '#6366f1'}
-                      className="transition-all duration-1000 opacity-80 hover:opacity-100"
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Success / Next Steps Card */}
-        <Card className="shadow-2xl border-primary/20 bg-gradient-to-b from-card to-background relative overflow-hidden">
-          <div className="absolute -top-24 -right-24 h-48 w-48 bg-primary/10 rounded-full blur-[80px]" />
-          <div className="absolute -bottom-24 -left-24 h-48 w-48 bg-secondary/10 rounded-full blur-[80px]" />
-
-          <CardHeader>
-            <CardTitle className="text-xl font-black flex items-center gap-2 uppercase tracking-tighter">
-              <Trophy className="h-6 w-6 text-yellow-500" />
-              Objetivos Elite
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6 relative z-10">
-            <div className="p-5 bg-card/80 border border-border/50 rounded-2xl shadow-lg group/item hover:border-primary/50 transition-colors">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-blue-500/10 rounded-lg">
-                  <Calendar className="h-4 w-4 text-blue-500" />
-                </div>
-                <div className="flex-1">
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest block">Siguiente Meta</span>
-                  <span className="text-[10px] font-bold text-primary">{globalProgress}% del total</span>
-                </div>
+      {/* 2. Visual Analytics Section */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        {/* Weekly Evolution Chart */}
+        <Card className="xl:col-span-2 shadow-xl border-white/5 bg-slate-900/50 backdrop-blur-sm overflow-hidden p-6">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-indigo-500/10 rounded-xl">
+                <TrendingUp className="h-5 w-5 text-indigo-400" />
               </div>
-              <p className="text-base font-black text-foreground mb-1 group-hover/item:text-primary transition-colors uppercase tracking-tight font-heading">Ecomems 2026 Core</p>
-              <Progress value={globalProgress} className="h-1 bg-muted mt-2 [&>div]:bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
+              <h3 className="font-black uppercase tracking-tighter text-white">Evolución de Estudio</h3>
             </div>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" className="bg-white/5 text-[10px] font-bold uppercase h-8 px-4 rounded-full">Semana</Button>
+              <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase h-8 px-4 rounded-full text-slate-500">Mes</Button>
+            </div>
+          </div>
 
-            {milestoneArea && (
-              <div
-                onClick={() => navigate(`/area/${milestoneArea.id}`)}
-                className="p-5 bg-card/80 border border-border/50 rounded-2xl shadow-lg group/item transition-all hover:border-purple-500/50 cursor-pointer hover:scale-[1.02]"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 bg-purple-500/10 rounded-lg">
-                    <Hourglass className="h-4 w-4 text-purple-500" />
-                  </div>
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Hito de área</span>
-                </div>
-                <p className="text-base font-black text-foreground mb-1 uppercase tracking-tight font-heading">
-                  {milestoneArea.name}
-                </p>
-                <p className="text-xs text-muted-foreground font-medium">
-                  ¡Estás al {milestoneArea.percentage}%! Solo falta un poco.
-                </p>
-              </div>
-            )}
-
-            <Button
-              onClick={() => document.getElementById('areas')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-sm shadow-[0_8px_30px_rgb(99,102,241,0.4)] hover:shadow-[0_8px_40px_rgb(99,102,241,0.6)] border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all group overflow-hidden relative"
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Maximizar Estudio
-                <Trophy className="h-5 w-5 group-hover:rotate-12 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-            </Button>
-          </CardContent>
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={weeklyData}>
+                <defs>
+                  <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11, fontWeight: 700 }} dy={10} />
+                <YAxis hide domain={[0, 4]} />
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#020617', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  itemStyle={{ color: '#fff' }}
+                />
+                <Area type="monotone" dataKey="hours" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" />
+                <Line type="monotone" dataKey="avg" stroke="rgba(255,255,255,0.2)" strokeDasharray="5 5" strokeWidth={1} dot={false} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex gap-6 mt-6 pt-6 border-t border-white/5">
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-6 bg-indigo-500 rounded-full" />
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tú tiempo (h)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-6 bg-white/20 rounded-full border border-dashed border-white/30" />
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Promedio Comunidad</span>
+            </div>
+          </div>
         </Card>
+
+        {/* Peer Comparison (Radar Chart) */}
+        <Card className="shadow-xl border-white/5 bg-slate-900/50 backdrop-blur-sm p-6 flex flex-col items-center">
+          <div className="w-full flex items-center gap-3 mb-8">
+            <div className="p-2 bg-amber-500/10 rounded-xl">
+              <Users className="h-5 w-5 text-amber-400" />
+            </div>
+            <h3 className="font-black uppercase tracking-tighter text-white">Perfil Comparativo</h3>
+          </div>
+
+          <div className="h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={comparisonData}>
+                <PolarGrid stroke="rgba(255,255,255,0.1)" />
+                <PolarAngleAxis dataKey="category" tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
+                <Radar name="Tú" dataKey="user" stroke="#fbbf24" fill="#fbbf24" fillOpacity={0.6} />
+                <Radar name="Promedio" dataKey="avg" stroke="rgba(255,255,255,0.3)" fill="rgba(255,255,255,0.1)" fillOpacity={0.4} />
+                <Legend wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase', fontWeight: 900, paddingTop: '20px' }} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="mt-4 p-4 bg-amber-500/5 border border-amber-500/10 rounded-2xl w-full">
+            <p className="text-[10px] text-amber-500/80 font-black leading-relaxed">
+              * El algoritmo indica que eres superior al <span className="text-white">72% de los aspirantes</span> en Razonamiento.
+            </p>
+          </div>
+        </Card>
+      </div>
+
+      {/* 3. Achievements & Recommendations */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <NextAchievementCard />
+
+        {/* Recommendations Section */}
+        <div className="lg:col-span-2 space-y-4">
+          {recommendations.map((rec, i) => (
+            <div
+              key={i}
+              onClick={() => navigate(`/area/${rec.areaId}`)}
+              className="group flex items-center justify-between p-5 bg-card/40 border border-white/5 rounded-3xl hover:bg-white/5 hover:border-indigo-500/30 transition-all cursor-pointer"
+            >
+              <div className="flex items-center gap-5">
+                <div className="h-12 w-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 group-hover:scale-110 transition-transform">
+                  <Zap className="h-6 w-6 text-indigo-400" />
+                </div>
+                <div>
+                  <h4 className="font-black uppercase tracking-tight text-sm text-white">{rec.title}</h4>
+                  <p className="text-xs text-slate-500 font-medium">{rec.desc}</p>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-slate-700 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Action Bar (Export/Share) */}
+      <div className="flex flex-wrap items-center justify-between gap-6 p-8 bg-indigo-600 rounded-[2.5rem] shadow-[0_20px_50px_rgba(79,70,229,0.3)] border-t border-white/20">
+        <div className="flex items-center gap-4">
+          <div className="h-12 w-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+            <ShieldCheck className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h3 className="font-black text-white uppercase tracking-tighter text-xl">Reporte Ejecutivo</h3>
+            <p className="text-indigo-100 text-xs font-semibold uppercase tracking-widest opacity-80">Genera tu expediente de estudio oficial</p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10">
+            <Download className="mr-2 h-4 w-4" /> PDF
+          </Button>
+          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10">
+            <FileJson className="mr-2 h-4 w-4" /> CSV
+          </Button>
+          <Button className="bg-white text-indigo-600 hover:bg-indigo-50 rounded-2xl h-12 px-8 font-black uppercase tracking-[0.1em] text-[10px] shadow-xl">
+            <Share2 className="mr-2 h-4 w-4" /> Compartir Reto
+          </Button>
+        </div>
+      </div>
+
+      {/* Heatmap Section */}
+      <div className="pt-8">
+        <h3 className="text-2xl font-black uppercase tracking-tighter text-white mb-8 flex items-center gap-3">
+          <Grid3X3 className="h-6 w-6 text-emerald-500" />
+          Mapa Crítico de <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Dominio</span>
+        </h3>
+        <div className="bg-slate-900 shadow-2xl rounded-[3rem] p-8 md:p-12 border border-white/5">
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-3">
+            {areaData.map((area) => (
+              <div
+                key={area.id}
+                className={cn(
+                  "aspect-square rounded-2xl relative group transition-all duration-500 hover:scale-[1.15] cursor-help border-2",
+                  getHeatmapColor(area.percentage)
+                )}
+              >
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-4 py-3 bg-black/95 text-white text-[10px] rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-[100] shadow-2xl border border-white/10 backdrop-blur-xl scale-90 group-hover:scale-100 pointer-events-none">
+                  <p className="font-black text-sm mb-1 uppercase tracking-tight">{area.name}</p>
+                  <p className="text-emerald-400 font-bold text-xs">{area.percentage}% completado</p>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-black/95" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -208,6 +208,16 @@ const SimuladorPro = () => {
     const handleFinishExam = () => {
         setIsExamActive(false);
         setShowResults(true);
+
+        // Save results for the achievement system
+        const finalScore = calculateScore();
+        localStorage.setItem('quiz_score_simulador_pro', finalScore.toString());
+        localStorage.setItem('last_sim_time_left', timeLeft.toString());
+
+        // Mark as completed for stats
+        const completedSims = parseInt(localStorage.getItem('completed_simulators') || '0');
+        localStorage.setItem('completed_simulators', (completedSims + 1).toString());
+
         localStorage.removeItem('simulador_estado');
         localStorage.removeItem('simulador_revision');
     };

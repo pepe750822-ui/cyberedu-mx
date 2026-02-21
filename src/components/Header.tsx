@@ -3,6 +3,8 @@ import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, S
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ProfileDialog } from "./ProfileDialog";
+import { Settings } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import GlobalSearch from "@/components/GlobalSearch";
 import { useTheme } from "@/hooks/useTheme";
@@ -111,18 +113,20 @@ const Header = () => {
 
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
-              <Avatar className="h-8 w-8">
-                {profile?.avatar_url ? (
-                  <AvatarImage src={profile.avatar_url} alt={profile.name || "Avatar"} />
-                ) : null}
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                  {(profile?.name || user.email || "U").charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
-                {profile?.name || user.email}
-              </span>
-              <Button variant="ghost" size="icon" onClick={signOut} title="Cerrar sesión">
+              <ProfileDialog>
+                <button className="flex items-center gap-3 hover:opacity-80 transition-opacity outline-none">
+                  <Avatar className="h-8 w-8 border border-primary/20">
+                    <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
+                    <AvatarFallback className="text-xs bg-primary/10 text-primary uppercase">
+                      {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-black text-foreground max-w-[120px] truncate uppercase tracking-tighter">
+                    {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
+                  </span>
+                </button>
+              </ProfileDialog>
+              <Button variant="ghost" size="icon" onClick={signOut} title="Cerrar sesión" className="text-muted-foreground hover:text-destructive">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
@@ -231,18 +235,31 @@ const Header = () => {
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Sesión</p>
                   {user ? (
                     <>
-                      <div className="flex items-center gap-3 px-3 py-3 bg-muted/30 rounded-lg mb-2">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-primary/20 text-primary">
-                            {(profile?.name || user.email || "U").charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold truncate">{profile?.name || user.email}</p>
-                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      <div className="p-4 bg-muted/30 rounded-3xl mb-4 border border-white/5">
+                        <div className="flex items-center gap-4 mb-4">
+                          <Avatar className="h-12 w-12 border-2 border-primary/20">
+                            <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
+                            <AvatarFallback className="bg-primary/20 text-primary">
+                              {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0">
+                            <p className="text-base font-black truncate uppercase tracking-tighter">
+                              {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
+                            </p>
+                            <p className="text-[10px] text-muted-foreground truncate font-bold uppercase tracking-widest">{user.email}</p>
+                          </div>
                         </div>
+
+                        <ProfileDialog>
+                          <Button variant="outline" className="w-full h-12 rounded-2xl gap-2 font-black uppercase tracking-widest text-[10px] bg-white/5 border-white/10">
+                            <Settings className="h-4 w-4" />
+                            Personalizar Perfil
+                          </Button>
+                        </ProfileDialog>
                       </div>
-                      <Button variant="ghost" className="w-full justify-start gap-3 hover:bg-destructive/10 hover:text-destructive h-12" onClick={() => { signOut(); setIsMenuOpen(false); }}>
+
+                      <Button variant="ghost" className="w-full justify-start gap-4 hover:bg-destructive/10 hover:text-destructive h-14 rounded-2xl font-black uppercase tracking-widest text-xs px-6" onClick={() => { signOut(); setIsMenuOpen(false); }}>
                         <LogOut className="h-5 w-5" />
                         Cerrar Sesión
                       </Button>

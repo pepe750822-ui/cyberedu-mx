@@ -23,23 +23,27 @@ interface Message {
 }
 
 const AITutor = () => {
+    const scrollRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState("");
-    const [messages, setMessages] = useState<Message[]>([
-        {
+
+    // Load messages from sessionStorage for memory within the session
+    const [messages, setMessages] = useState<Message[]>(() => {
+        const saved = sessionStorage.getItem("ai_tutor_messages");
+        return saved ? JSON.parse(saved) : [{
             role: "bot",
             text: "Bienvenido al Centro de Soporte Académico de CyberEdu Mx. Soy tu Consultor de Estrategia Educativa. ¿En qué área específica de tu preparación para el ingreso 2026 puedo asistirte hoy?",
             id: "initial"
-        }
-    ]);
+        }];
+    });
     const [isTyping, setIsTyping] = useState(false);
-    const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        sessionStorage.setItem("ai_tutor_messages", JSON.stringify(messages));
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
-    }, [messages, isTyping]);
+    }, [messages]);
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -56,25 +60,23 @@ const AITutor = () => {
 
             // Professional Knowledge Base Matching
             if (query.includes("examen") || query.includes("convocatoria") || query.includes("ecoems")) {
-                botResponse = "Es fundamental entender que el proceso ECOEMS 2026 sustituye formalmente al COMIPEMS. El registro oficial inicia el 17 de marzo en el portal miderechomilugar.gob.mx. ¿Deseas que revisemos el calendario de fechas clave o los requisitos específicos para la UNAM?";
-            } else if (query.includes("curp")) {
-                botResponse = "Tu CURP es el documento de identidad principal para el registro en marzo. Te recomiendo tenerlo validado previamente en el portal de RENAPO. He dejado un enlace directo en nuestra sección de noticias para facilitarte el trámite.";
+                botResponse = "Es fundamental entender que el proceso ECOEMS 2026 sustituye formalmente al COMIPEMS. El registro oficial inicia el 24 de marzo en el portal miderechomilugar.gob.mx. ¿Te gustaría que analicemos juntos el cronograma de fechas críticas o los requisitos específicos para la UNAM?";
+            } else if (query.includes("ayuda") || query.includes("error") || query.includes("urgente")) {
+                botResponse = "¡Entendido! He activado el **Modo de Soporte Prioritario**. ¿Tienes dudas técnicas con la plataforma o necesitas ayuda pedagógica con un tema específico del simulador? Estoy aquí para asegurar que nada detenga tu estudio.";
             } else if (query.includes("mate") || query.includes("matematicas") || query.includes("ecuacion")) {
-                botResponse = "El dominio del Razonamiento Matemático es el pilar de un alto puntaje. Para el examen digital, las ecuaciones de primer grado y sistemas 2x2 son temas recurrentes. Te sugiero completar el QUIZ de la lección 34 para medir tu nivel actual.";
+                botResponse = "El Razonamiento Matemático es el pilar de un alto puntaje (aprox. 32 reactivos). Para el examen digital, las ecuaciones de primer grado y sistemas 2x2 son temas recurrentes. He visto que muchos aspirantes fallan en los despejes. ¿Quieres que realicemos un ejercicio guiado paso a paso?";
             } else if (query.includes("fisica") || query.includes("newton") || query.includes("fuerza")) {
-                botResponse = "En el área de Física, el análisis de las Leyes de Newton es imperativo. No olvides que la unificación de exámenes para IPN requiere un dominio claro de vectores y cinemática. ¿Te gustaría que analicemos la Segunda Ley de Newton con un ejemplo práctico?";
+                botResponse = "En Física, el análisis de las Leyes de Newton es imperativo. Recuerda que F=ma es la base. ¿Te gustaría que revisemos cómo se aplica esto en un plano inclinado, que es una pregunta clásica del examen IPN?";
             } else if (query.includes("biologia") || query.includes("celula") || query.includes("adn")) {
-                botResponse = "La Biología en ECOEMS enfoca gran parte de su reactivo en genética y metabolismo celular. Asegúrate de distinguir con precisión los organelos de la célula animal y vegetal. El material complementario del video 11 contiene una infografía comparativa que te será de gran ayuda.";
-            } else if (query.includes("consejo") || query.includes("ayuda") || query.includes("estudiar")) {
-                botResponse = "Nuestra plataforma está diseñada bajo un modelo de aprendizaje progresivo. Mi recomendación estratégica es seguir tu 'Plan de Estudio Diario' y no dejar pasar más de 48 horas sin resolver un quiz para cimentar la retención a largo plazo. ¿Qué tema te parece más complejo de abordar hoy?";
+                botResponse = "La Biología en ECOEMS enfoca gran parte de su reactivo en genética y metabolismo celular. Asegúrate de distinguir con precisión los organelos. ¿Sabías que el transporte a través de la membrana es una pregunta recurrente? ¿Te explico la diferencia entre activo y pasivo?";
             } else if (query.includes("simulador") || query.includes("examen") || query.includes("prueba")) {
-                botResponse = "¡Excelente iniciativa! He activado el acceso a nuestro **Simulador Premium ECOEMS 2026**. Es una réplica exacta de 128 reactivos con cronómetro oficial de 3 horas. Te recomiendo realizarlo en un ambiente sin distracciones para obtener una predicción real de tu puntaje. ¿Quieres que te explique cómo funciona la predicción por IA o prefieres [ir directo al simulador](/simulador-pro)?";
+                botResponse = "¡Tu iniciativa es excelente! He optimizado tu acceso al **[Simulador Pro](/simulador-pro)**. Recuerda que terminarlo con éxito desbloquea el logro 'Velocista'. ¿Quieres consejos sobre cómo gestionar los 3 minutos por reactivo o prefieres empezar ya?";
             } else if (query.includes("google") || query.includes("buscar") || query.includes("investigar")) {
-                botResponse = "He activado mi módulo de consulta externa. He preparado una búsqueda especializada en Google para profundizar en tu duda. Puedes acceder a los resultados en tiempo real aquí: [Ver resultados en Google](https://www.google.com/search?q=" + encodeURIComponent(input) + ")";
+                botResponse = "Módulo de consulta externa activado. He preparado una búsqueda especializada en Google para profundizar. Resultados aquí: [Consultar en tiempo real](https://www.google.com/search?q=" + encodeURIComponent(input + " guia oficial ecoems 2026") + ")";
             } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                botResponse = "Hola. Soy el Consultor Digital de CyberEdu Mx. Mi objetivo es optimizar tu rendimiento académico para asegurar tu lugar en tu primera opción de bachillerato. ¿Tienes alguna duda sobre el calendario oficial o algún tema del temario?";
+                botResponse = "Hola. Soy tu Consultor Estratégico de CyberEdu Mx. Mi misión es que obtengas más de 100 aciertos para asegurar tu primera opción. ¿Qué tema del temario oficial te gustaría dominar hoy?";
             } else {
-                botResponse = "He analizado tu consulta sobre '" + input + "'. Para darte la información más actualizada del 2026, he generado una búsqueda asistida que complementa mi base de datos. Haz clic aquí para ver detalles externos: [Consultar en Google](https://www.google.com/search?q=" + encodeURIComponent(input + " ecoems 2026") + "). ¿Te gustaría que también busque ejercicios prácticos de este tema?";
+                botResponse = "He analizado tu consulta sobre '" + input + "'. Para darte la información más precisa del 2026, he generado una búsqueda asistida. [Ver detalles externos](https://www.google.com/search?q=" + encodeURIComponent(input + " ecoems 2026") + "). ¿Deseas que profundice en algún subtema específico de esta área?";
             }
 
             setMessages(prev => [...prev, {

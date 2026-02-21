@@ -19,6 +19,7 @@ import PWAStatusBar from "./components/PWAStatusBar";
 import { useNotifications } from "./hooks/useNotifications";
 import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
+import { AchievementObserver } from "./components/AchievementObserver";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
@@ -99,6 +100,7 @@ const App = () => (
         <Sonner />
         <AITutor />
         <StreakAutoSync />
+        <AchievementObserver />
         <PWAInstallBanner />
         <PWAStatusBar />
         <BrowserRouter>
