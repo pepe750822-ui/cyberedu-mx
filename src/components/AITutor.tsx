@@ -21,7 +21,9 @@ import {
     Zap,
     ChevronRight,
     PlayCircle,
-    GraduationCap
+    GraduationCap,
+    ListChecks,
+    Bookmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -215,14 +217,30 @@ const AITutor = () => {
                     botResponse.type = "explanation";
                     botResponse.steps = isSimplifying ? [explanation.steps[0], "En resumen: solo fíjate en la relación directa."] : explanation.steps;
                     botResponse.extra = {
+                        summary: explanation.summary,
                         trick: explanation.trick,
                         example: explanation.example,
+                        keyPoints: explanation.keyPoints,
+                        relatedItems: explanation.relatedItems,
                         canSimplify: !isSimplifying,
                         canExample: !isExample,
                         item: searchRes[0]
                     };
                 } else {
                     botResponse.text = "Para explicarte paso a paso, necesito que me indiques el tema o la pregunta específica. Por ejemplo: 'Explícame las sucesiones numéricas'.";
+                }
+            }
+            // 8. ACCIÓN DE BÚSQUEDA TEMÁTICA
+            else if (specificAction === "SEARCH") {
+                const searchRes = searchKnowledgeBase(query);
+                if (searchRes.length > 0) {
+                    botResponse.text = `He encontrado información relevante sobre **${query}**. ¿Te gustaría profundizar en algún video o reactivo?`;
+                    botResponse.type = "suggestion";
+                    botResponse.extra = {
+                        recommendation: `Te recomiendo empezar con: "${searchRes[0].title || searchRes[0].text.slice(0, 30)}..."`
+                    };
+                } else {
+                    botResponse.text = `No encontré resultados exactos para "${query}", pero puedo investigar más a fondo en mis bases de datos externas.`;
                 }
             }
             // Repeated Query Detection
@@ -381,19 +399,63 @@ const AITutor = () => {
 
                                     {/* Explanation rendering */}
                                     {msg.steps && (
-                                        <div className="mt-4 space-y-3 pt-4 border-t border-white/10">
-                                            {msg.steps.map((step, i) => (
-                                                <div key={i} className="flex gap-3">
-                                                    <span className="h-5 w-5 rounded-full bg-primary/20 text-primary text-[10px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
-                                                    <p className="text-[11px] text-slate-300">{step}</p>
+                                        <div className="mt-4 space-y-4 pt-4 border-t border-white/10">
+                                            {msg.extra?.summary && (
+                                                <p className="text-[11px] text-primary font-bold italic leading-relaxed mb-3">
+                                                    "{msg.extra.summary}"
+                                                </p>
+                                            )}
+
+                                            <div className="space-y-3">
+                                                {msg.steps.map((step, i) => (
+                                                    <div key={i} className="flex gap-3 animate-in slide-in-from-left-2" style={{ animationDelay: `${i * 150}ms` }}>
+                                                        <span className="h-5 w-5 rounded-full bg-primary/20 text-primary text-[10px] font-black flex items-center justify-center shrink-0 border border-primary/10">{i + 1}</span>
+                                                        <p className="text-[11px] text-slate-300 leading-snug">{step}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {msg.extra?.keyPoints && (
+                                                <div className="grid grid-cols-1 gap-2 mt-4">
+                                                    <p className="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+                                                        <ListChecks className="h-3 w-3" /> Puntos Clave
+                                                    </p>
+                                                    {msg.extra.keyPoints.map((point: string, idx: number) => (
+                                                        <div key={idx} className="p-2 bg-white/5 border border-white/5 rounded-xl text-[10px] text-slate-400">
+                                                            • {point}
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
+                                            )}
+
                                             {msg.extra?.trick && (
-                                                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mt-4">
+                                                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mt-4 relative overflow-hidden group">
+                                                    <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
+                                                        <Zap className="h-4 w-4 text-amber-500" />
+                                                    </div>
                                                     <p className="text-[11px] text-amber-500 font-black uppercase mb-1 flex items-center gap-2">
-                                                        <Zap className="h-3 w-3" /> Truco Pro
+                                                        <Zap className="h-3 w-3" /> Truco Pro de Examen
                                                     </p>
                                                     <p className="text-[11px] italic text-slate-400">{msg.extra.trick}</p>
+                                                </div>
+                                            )}
+
+                                            {msg.extra?.relatedItems && (
+                                                <div className="mt-4">
+                                                    <p className="text-[9px] font-black text-slate-500 uppercase mb-2 flex items-center gap-1">
+                                                        <Bookmark className="h-3 w-3" /> Temas Relacionados
+                                                    </p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {msg.extra.relatedItems.map((item: string, idx: number) => (
+                                                            <button
+                                                                key={idx}
+                                                                onClick={() => handleAction("SEARCH", item)}
+                                                                className="px-2 py-1 bg-white/5 hover:bg-white/10 rounded-full text-[9px] text-slate-500 hover:text-white transition-colors border border-white/5"
+                                                            >
+                                                                {item}
+                                                            </button>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             )}
                                         </div>

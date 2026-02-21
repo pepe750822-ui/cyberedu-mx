@@ -59,32 +59,51 @@ export const useAITutorSkills = () => {
         };
     };
 
-    // Skill 3: Generador de explicaciones
+    // Skill 3: Generador de explicaciones enriquecidas
     const generateExplanation = (questionOrConcept: string | Question, level: "básico" | "intermedio" | "avanzado" = "intermedio") => {
         if (typeof questionOrConcept === 'string') {
-            // Generic concept explanation logic
+            const q = questionOrConcept.toLowerCase();
+            // Try to find if it corresponds to an area
+            const matchingArea = areas.find(a => q.includes(a.name.toLowerCase()));
+
             return {
-                concept: questionOrConcept,
+                concept: matchingArea ? matchingArea.name : questionOrConcept,
+                summary: matchingArea
+                    ? `Este es un pilar fundamental del ECOEMS. Comprender ${matchingArea.name} te garantiza éxito en gran parte del examen.`
+                    : `Analizando el concepto de ${questionOrConcept} bajo la óptica del temario oficial.`,
                 steps: [
-                    "Identifica los elementos clave mencionados.",
-                    "Relaciona con el temario oficial de ECOEMS.",
-                    "Aplica la regla o principio correspondiente."
+                    "Identifica los elementos clave y su jerarquía.",
+                    "Relaciona con casos prácticos del simulador.",
+                    "Aplica la regla de oro: descarta lo obvio antes de calcular."
                 ],
-                example: `Si te preguntan sobre ${questionOrConcept}, recuerda que se aplica en casos donde...`,
-                trick: "Usa mnemotecnias para los términos clave."
+                keyPoints: [
+                    "Contexto histórico y teórico.",
+                    "Fórmulas o estructuras principales.",
+                    "Errores comunes detectados en el simulador."
+                ],
+                example: `En un reactivo típico de nivel ${level}, se te pediría aplicar esto para resolver un problema de...`,
+                trick: "Busca siempre la palabra clave que define la acción en el enunciado.",
+                relatedItems: matchingArea ? matchingArea.videos.slice(0, 2).map(v => v.title) : ["Conceptos base", "Aplicaciones avanzadas"]
             };
         } else {
             // Specific Question explanation
             return {
-                concept: questionOrConcept.text,
+                concept: `Resolución: ${questionOrConcept.area}`,
+                summary: `Este reactivo evalúa tu capacidad de ${questionOrConcept.area === 'Matemática' ? 'razonamiento lógico-numérico' : 'análisis y comprensión'} bajo presión.`,
                 steps: [
-                    "Lee cuidadosamente la premisa.",
-                    "Analiza las opciones y descarta las obviamente incorrectas.",
-                    `En este caso, la respuesta es la opción ${questionOrConcept.correctIndex + 1} (${questionOrConcept.options[questionOrConcept.correctIndex]}).`,
-                    questionOrConcept.explanation
+                    "Análisis de Premisa: ¿Qué nos están pidiendo realmente?",
+                    "Evaluación de Opciones: Contraste directo entre los datos y las respuestas.",
+                    `Ejecución: La lógica dicta que la respuesta es la opción ${questionOrConcept.correctIndex + 1} (${questionOrConcept.options[questionOrConcept.correctIndex]}).`,
+                    `Justificación Técnica: ${questionOrConcept.explanation}`
                 ],
-                example: "Un reactivo similar podría cambiar los valores pero mantiene la misma lógica de resolución.",
-                trick: "Para este tipo de preguntas, fíjate siempre en las palabras clave del enunciado."
+                keyPoints: [
+                    "No confundir términos similares.",
+                    "Prestar atención a los conectores lógicos.",
+                    "Optimización de tiempo: Este reactivo debe tomarte < 45 segundos."
+                ],
+                example: "Si cambiamos el sujeto o las cifras, el método de descarte sigue siendo el mismo.",
+                trick: "La mayoría de las veces, la respuesta correcta es la que mejor sintetiza la idea principal sin adornos innecesarios.",
+                relatedItems: [`Más preguntas de ${questionOrConcept.area}`, `Video: Introducción a ${questionOrConcept.area}`]
             };
         }
     };
