@@ -58,9 +58,16 @@ const MarketingManager = () => {
 
         setIsBlasting(true);
         try {
-            const { data, error } = await supabase.functions.invoke("send-marketing-email", {
-                body: {
-                    to: user.email,
+            // Envío directo a la API de Resend para saltar problemas de despliegue en Supabase
+            const res = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer re_AKjBcgh5_NUpA5VASD41sdv2dRazRz1w2`,
+                },
+                body: JSON.stringify({
+                    from: "CyberEdu MX <onboarding@resend.dev>",
+                    to: [user.email],
                     subject: "⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026",
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; border-radius: 32px; overflow: hidden; border: 1px solid #f59e0b33;">
@@ -79,30 +86,24 @@ const MarketingManager = () => {
                                     </ol>
                                 </div>
                                 <a href="https://llave.gob.mx" style="display: block; background-color: #f59e0b; color: #020617; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Acceder a Llave MX</a>
-                                <p style="text-align: center; margin-top: 24px;">
-                                    <a href="https://cyberedumx.com" style="color: #6366f1; font-size: 11px; text-decoration: underline;">Volver a PrepáraTE</a>
-                                </p>
-                            </div>
-                            <div style="background-color: #020617; padding: 24px; text-align: center; border-top: 1px solid #ffffff0d;">
-                                <p style="margin: 0; font-size: 9px; color: #475569; text-transform: uppercase; letter-spacing: 1px;">CyberEdu MX • 2026</p>
                             </div>
                         </div>
                     `
-                },
+                }),
             });
 
-            if (error) {
-                console.error("Detalle del error de la Edge Function:", error);
-                throw new Error(`Error de la función: ${error.message || JSON.stringify(error)}`);
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || "Error al conectar con Resend");
             }
 
             toast.success("Campaña enviada con éxito", {
                 description: `Se ha enviado un correo de prueba a ${user.email}`,
             });
         } catch (err: any) {
-            console.error("Error completo atrapado:", err);
+            console.error("Error en el envío directo:", err);
             toast.error("Fallo de envío", {
-                description: err.message || "La Edge Function no respondió correctamente. ¿Está desplegada?",
+                description: err.message || "Acceso denegado. Verifica tu API Key de Resend.",
             });
         } finally {
             setIsBlasting(false);
