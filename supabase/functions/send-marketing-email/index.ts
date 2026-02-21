@@ -1,17 +1,12 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const resend = new Resend("re_AKjBcgh5_NUpA5VASD41sdv2dRazRz1w2");
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-
-interface EmailRequest {
-    to: string;
-    subject: string;
-    html: string;
-}
 
 serve(async (req) => {
     if (req.method === "OPTIONS") {
@@ -19,42 +14,28 @@ serve(async (req) => {
     }
 
     try {
-        const { to, subject, html }: EmailRequest = await req.json();
+        const { to, subject, html } = await req.json();
 
-        if (!RESEND_API_KEY) {
-            throw new Error("RESEND_API_KEY is not set");
-        }
-
-        const res = await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${RESEND_API_KEY}`,
-            },
-            body: JSON.stringify({
-                from: "Acme <onboarding@resend.dev>",
-                to: [to],
-                subject: subject,
-                html: html,
-            }),
+        const { data, error } = await resend.emails.send({
+            from: "CyberEdu MX <onboarding@resend.dev>",
+            to: [to || "pepe750822@gmail.com"],
+            subject: subject || "Prueba desde CyberEdu MX",
+            html: html || "<h1>Hola!</h1><p>Esta es una prueba real.</p>",
         });
 
-        const responseData = await res.json();
-        console.log("Resend API Response:", responseData);
-
-        if (!res.ok) {
-            return new Response(JSON.stringify({ error: responseData.message || "Email service error" }), {
-                status: res.status,
+        if (error) {
+            return new Response(JSON.stringify({ error }), {
+                status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        return new Response(JSON.stringify(responseData), {
+        return new Response(JSON.stringify(data), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
+    } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
