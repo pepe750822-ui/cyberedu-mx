@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useLocation, Link } from "react-router-dom";
 import {
     MessageSquare,
     X,
@@ -10,82 +11,257 @@ import {
     Brain,
     Search,
     BookOpen,
-    ExternalLink
+    ExternalLink,
+    ThumbsUp,
+    ThumbsDown,
+    RefreshCw,
+    HelpCircle,
+    Target,
+    Clock,
+    Zap,
+    ChevronRight,
+    PlayCircle,
+    GraduationCap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { areas } from "@/data/areas";
+import { useAITutorSkills } from "@/hooks/useAITutorSkills";
+import { simuladoECOEMS } from "@/data/simuladorData";
+import { toast } from "sonner";
 
 interface Message {
     role: "bot" | "user";
     text: string;
     id: string;
+    type?: "standard" | "explanation" | "suggestion" | "hint" | "video_ref";
+    steps?: string[];
+    extra?: any;
+    feedback?: "up" | "down";
 }
+
+const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const AITutor = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const location = useLocation();
+    const { searchKnowledgeBase, analyzeUserProgress, generateExplanation } = useAITutorSkills();
+
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
+    const [historyLoaded, setHistoryLoaded] = useState(false);
+    const [lastQueries, setLastQueries] = useState<string[]>([]);
 
-    // Load messages from sessionStorage for memory within the session
+    // 1. MEMORIA CONTEXTUAL AVANZADA (Local Storage with TTL)
     const [messages, setMessages] = useState<Message[]>(() => {
-        const saved = sessionStorage.getItem("ai_tutor_messages");
-        return saved ? JSON.parse(saved) : [{
+        const saved = localStorage.getItem("ai_tutor_history_v2");
+        if (saved) {
+            const { data, timestamp } = JSON.parse(saved);
+            if (Date.now() - timestamp < MEMORY_TTL) {
+                return data;
+            }
+        }
+        return [{
             role: "bot",
-            text: "Bienvenido al Centro de Soporte Académico de CyberEdu Mx. Soy tu Consultor de Estrategia Educativa. ¿En qué área específica de tu preparación para el ingreso 2026 puedo asistirte hoy?",
-            id: "initial"
+            text: "¡Hola! Bienvenido de nuevo a CyberEdu. Soy tu consultor académico. He analizado el temario 2026 y estoy listo para ayudarte a dominar cualquier área. ¿Qué te gustaría repasar hoy?",
+            id: "initial",
+            role_type: "standard"
         }];
     });
-    const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
-        sessionStorage.setItem("ai_tutor_messages", JSON.stringify(messages));
+        localStorage.setItem("ai_tutor_history_v2", JSON.stringify({
+            data: messages,
+            timestamp: Date.now()
+        }));
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages]);
 
-    const handleSend = async () => {
-        if (!input.trim()) return;
+    useEffect(() => {
+        if (isOpen && !historyLoaded && messages.length > 1) {
+            toast.info("Recuperando tu conversación anterior...", { duration: 2000 });
+            setHistoryLoaded(true);
+        }
+    }, [isOpen]);
 
-        const userMsg: Message = { role: "user", text: input, id: Date.now().toString() };
+    // 2. SUGERENCIAS CONTEXTUALES SEGÚN LA PÁGINA
+    const contextualSuggestions = useMemo(() => {
+        const path = location.pathname;
+        if (path === "/simulador-pro") {
+            return [
+                { text: "¿En qué pregunta vas?", action: "CHECK_SIM" },
+                { text: "¿Necesitas una pista?", action: "HINT" },
+                { text: "Ver trucos para el examen", action: "TRICKS" }
+            ];
+        }
+        if (path.includes("/area/")) {
+            return [
+                { text: "Resumen de esta área", action: "SUMMARIZE" },
+                { text: "Ver material clave", action: "MATERIAL" },
+                { text: "Dame un quiz rápido", action: "FAST_QUIZ" }
+            ];
+        }
+        if (path === "/") {
+            return [
+                { text: "¿Cómo voy en mi progreso?", action: "ANALYZE" },
+                { text: "Recomiéndame qué estudiar", action: "RECOMMEND" },
+                { text: "¿Cuándo es el examen?", action: "DATE" }
+            ];
+        }
+        return [
+            { text: "¿Qué es ECOEMS?", action: "ECOEMS_INFO" },
+            { text: "Ver simuladores", action: "SIMS" }
+        ];
+    }, [location.pathname]);
+
+    // Preference tracking for "Area Favorita"
+    useEffect(() => {
+        if (location.pathname.includes('/area/')) {
+            const areaName = location.pathname.split('/').pop();
+            localStorage.setItem('ai_tutor_pref_area', areaName || '');
+        }
+    }, [location.pathname]);
+
+    const handleAction = (action: string, text: string) => {
+        setInput(text);
+        processQuery(text, action);
+    };
+
+    const processQuery = async (query: string, specificAction?: string) => {
+        if (!query.trim() && !specificAction) return;
+
+        const userMsg: Message = { role: "user", text: query || specificAction || "", id: Date.now().toString() };
         setMessages(prev => [...prev, userMsg]);
         setInput("");
         setIsTyping(true);
 
-        // AI thinking simulation
-        setTimeout(() => {
-            let botResponse = "";
-            const query = input.toLowerCase();
+        // Track last queries for context recall
+        setLastQueries(prev => [query, ...prev].slice(0, 3));
 
-            // Professional Knowledge Base Matching
-            if (query.includes("examen") || query.includes("convocatoria") || query.includes("ecoems")) {
-                botResponse = "Es fundamental entender que el proceso ECOEMS 2026 sustituye formalmente al COMIPEMS. El registro oficial inicia el 24 de marzo en el portal miderechomilugar.gob.mx. ¿Te gustaría que analicemos juntos el cronograma de fechas críticas o los requisitos específicos para la UNAM?";
-            } else if (query.includes("ayuda") || query.includes("error") || query.includes("urgente")) {
-                botResponse = "¡Entendido! He activado el **Modo de Soporte Prioritario**. ¿Tienes dudas técnicas con la plataforma o necesitas ayuda pedagógica con un tema específico del simulador? Estoy aquí para asegurar que nada detenga tu estudio.";
-            } else if (query.includes("mate") || query.includes("matematicas") || query.includes("ecuacion")) {
-                botResponse = "El Razonamiento Matemático es el pilar de un alto puntaje (aprox. 32 reactivos). Para el examen digital, las ecuaciones de primer grado y sistemas 2x2 son temas recurrentes. He visto que muchos aspirantes fallan en los despejes. ¿Quieres que realicemos un ejercicio guiado paso a paso?";
-            } else if (query.includes("fisica") || query.includes("newton") || query.includes("fuerza")) {
-                botResponse = "En Física, el análisis de las Leyes de Newton es imperativo. Recuerda que F=ma es la base. ¿Te gustaría que revisemos cómo se aplica esto en un plano inclinado, que es una pregunta clásica del examen IPN?";
-            } else if (query.includes("biologia") || query.includes("celula") || query.includes("adn")) {
-                botResponse = "La Biología en ECOEMS enfoca gran parte de su reactivo en genética y metabolismo celular. Asegúrate de distinguir con precisión los organelos. ¿Sabías que el transporte a través de la membrana es una pregunta recurrente? ¿Te explico la diferencia entre activo y pasivo?";
-            } else if (query.includes("simulador") || query.includes("examen") || query.includes("prueba")) {
-                botResponse = "¡Tu iniciativa es excelente! He optimizado tu acceso al **[Simulador Pro](/simulador-pro)**. Recuerda que terminarlo con éxito desbloquea el logro 'Velocista'. ¿Quieres consejos sobre cómo gestionar los 3 minutos por reactivo o prefieres empezar ya?";
-            } else if (query.includes("google") || query.includes("buscar") || query.includes("investigar")) {
-                botResponse = "Módulo de consulta externa activado. He preparado una búsqueda especializada en Google para profundizar. Resultados aquí: [Consultar en tiempo real](https://www.google.com/search?q=" + encodeURIComponent(input + " guia oficial ecoems 2026") + ")";
-            } else if (query.includes("hola") || query.includes("buenos") || query.includes("quien eres")) {
-                botResponse = "Hola. Soy tu Consultor Estratégico de CyberEdu Mx. Mi misión es que obtengas más de 100 aciertos para asegurar tu primera opción. ¿Qué tema del temario oficial te gustaría dominar hoy?";
-            } else {
-                botResponse = "He analizado tu consulta sobre '" + input + "'. Para darte la información más precisa del 2026, he generado una búsqueda asistida. [Ver detalles externos](https://www.google.com/search?q=" + encodeURIComponent(input + " ecoems 2026") + "). ¿Deseas que profundice en algún subtema específico de esta área?";
+        // 5. DETECCIÓN DE EMOCIONES
+        const frustrationKeywords = ["no entiendo", "difícil", "ayuda", "perdido", "imposible", "error"];
+        const enthusiasmKeywords = ["entendido", "genial", "fácil", "sorprendente", "bien", "listo"];
+
+        const isFrustrated = frustrationKeywords.some(k => query.toLowerCase().includes(k));
+        const isEnthusiastic = enthusiasmKeywords.some(k => query.toLowerCase().includes(k));
+
+        setTimeout(() => {
+            let botResponse: Partial<Message> = { role: "bot", id: (Date.now() + 1).toString(), type: "standard" };
+            const q = query.toLowerCase();
+
+            // 7. MODO TUTOR DE EXAMEN (Especial para Simulador)
+            if (location.pathname === "/simulador-pro" || specificAction === "HINT") {
+                const simState = JSON.parse(localStorage.getItem('simulador_estado') || '{}');
+                const currentIndex = simState.currentQuestionIndex || 0;
+                const currentQuestion = simuladoECOEMS[currentIndex];
+
+                if (q.includes("ayuda") || q.includes("pista") || specificAction === "HINT") {
+                    botResponse.text = "¡Claro! En el modo simulador no puedo darte la respuesta directa, pero aquí tienes una guía estratégica:";
+                    botResponse.type = "hint";
+                    botResponse.extra = {
+                        hints: [
+                            `Pista 1: El tema central es **${currentQuestion.area}**.`,
+                            `Pista 2: Enfócate en: "${currentQuestion.text.slice(0, 40)}..."`,
+                            "¿Quieres que analicemos la lógica del reactivo sin revelarte la opción?"
+                        ],
+                        questionId: currentQuestion.id
+                    };
+                    setMessages(prev => [...prev, botResponse as Message]);
+                    setIsTyping(false);
+                    return;
+                }
             }
 
-            setMessages(prev => [...prev, {
-                role: "bot",
-                text: botResponse,
-                id: (Date.now() + 1).toString()
-            }]);
+            // 4. MODO EXPLICACIÓN PASO A PASO
+            if (q.includes("explica") || q.includes("paso a paso") || q.includes("como se hace") || specificAction === "SIMPLIFY" || specificAction === "EXAMPLE") {
+                const searchRes = searchKnowledgeBase(q);
+                const isSimplifying = specificAction === "SIMPLIFY";
+                const isExample = specificAction === "EXAMPLE";
+
+                if (searchRes.length > 0 && searchRes[0].type === 'simulador') {
+                    const explanation = generateExplanation(searchRes[0]);
+                    botResponse.text = isSimplifying
+                        ? `¡Claro! Vamos a hacerlo más simple aún. Imagina que este concepto es como...`
+                        : isExample
+                            ? `Aquí tienes otro escenario para aplicar este concepto de **${searchRes[0].area}**:`
+                            : `Excelente pregunta. Vamos a desglosar este concepto de **${searchRes[0].area}** paso a paso:`;
+                    botResponse.type = "explanation";
+                    botResponse.steps = isSimplifying ? [explanation.steps[0], "En resumen: solo fíjate en la relación directa."] : explanation.steps;
+                    botResponse.extra = {
+                        trick: explanation.trick,
+                        example: explanation.example,
+                        canSimplify: !isSimplifying,
+                        canExample: !isExample,
+                        item: searchRes[0]
+                    };
+                } else {
+                    botResponse.text = "Para explicarte paso a paso, necesito que me indiques el tema o la pregunta específica. Por ejemplo: 'Explícame las sucesiones numéricas'.";
+                }
+            }
+            // Repeated Query Detection
+            else if (lastQueries.includes(q) && messages.length > 3) {
+                botResponse.text = `Veo que sigues interesado en este tema. ¿Hay alguna parte específica que te esté costando más trabajo o te gustaría ver un ejemplo práctico diferente?`;
+            }
+            // 3. ANALIZADOR DE PROGRESO
+            else if (q.includes("progreso") || q.includes("como voy") || specificAction === "ANALYZE") {
+                const analysis = analyzeUserProgress();
+                botResponse.text = `He analizado tu trayectoria académica. Tu progreso global es del **${analysis.totalProgress}%**.`;
+                botResponse.extra = {
+                    analysis,
+                    recommendation: analysis.weakAreas.length > 0
+                        ? `Te sugiero reforzar **${analysis.weakAreas[0].name}**, donde tienes el menor nivel.`
+                        : "¡Vas excelente! Sigue manteniendo tu racha de estudio."
+                };
+                botResponse.type = "suggestion";
+            }
+            // 6. REFERENCIAS VISUALES / VIDEOS
+            else if (q.includes("video") || q.includes("clase")) {
+                const searchRes = searchKnowledgeBase(q, undefined, "video");
+                if (searchRes.length > 0) {
+                    botResponse.text = `He encontrado una clase en video ideal para este tema de **${searchRes[0].area}**:`;
+                    botResponse.type = "video_ref";
+                    botResponse.extra = {
+                        videoTitle: searchRes[0].title,
+                        videoPath: `/area/${searchRes[0].area.toLowerCase()}`, // Simplified path logic
+                        area: searchRes[0].area
+                    };
+                } else {
+                    botResponse.text = "No encontré un video específico con ese nombre, pero puedes explorar las áreas de estudio para encontrar el material completo.";
+                }
+            }
+            // Emotional Adaptation
+            else if (isFrustrated) {
+                botResponse.text = "Entiendo que este tema puede ser un reto, pero no te preocupes. Vamos a simplificarlo. ¿Te gustaría que te dé una explicación mucho más básica o prefieres ver un video introductorio?";
+            }
+            else if (isEnthusiastic) {
+                botResponse.text = "¡Ese es el espíritu! El éxito en el ECOEMS depende de esa actitud. ¿Quieres intentar un reto de nivel avanzado para poner a prueba tu dominio?";
+            }
+            // Default intelligence
+            else {
+                const searchRes = searchKnowledgeBase(q);
+                if (searchRes.length > 0) {
+                    const item = searchRes[0];
+                    if (item.type === 'video') {
+                        botResponse.text = `Te recomiendo revisar la clase: **${item.title}**. ¿Deseas que busque el resumen de este tema?`;
+                    } else {
+                        botResponse.text = `Encontré un reactivo similar: "${item.text.slice(0, 60)}...". ¿Te gustaría ver la explicación de por qué esa es la respuesta correcta?`;
+                    }
+                } else {
+                    botResponse.text = `He analizado tu consulta sobre '${query}'. He activado mi módulo de investigación externa para darte la respuesta más precisa: [Ver en Google Académico](https://www.google.com/search?q=${encodeURIComponent(query + " guia ecoems 2026")})`;
+                }
+            }
+
+            setMessages(prev => [...prev, botResponse as Message]);
             setIsTyping(false);
-        }, 1500);
+        }, 1200);
+    };
+
+    const handleFeedback = (id: string, type: "up" | "down") => {
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, feedback: type } : m));
+        toast.success(type === "up" ? "¡Gracias por tu feedback!" : "Lamento que no fuera útil. Aprenderé de esto.");
     };
 
     return (
@@ -94,119 +270,242 @@ const AITutor = () => {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center group",
+                    "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center group",
                     isOpen
                         ? "bg-slate-900 border border-white/10 rotate-90"
-                        : "bg-primary hover:scale-110 animate-bounce active:scale-90"
+                        : "bg-primary hover:scale-110 active:scale-95 shadow-[0_0_30px_rgba(99,102,241,0.5)]"
                 )}
             >
                 {isOpen ? (
                     <X className="h-6 w-6 text-white" />
                 ) : (
                     <div className="relative">
-                        <Bot className="h-6 w-6 text-white" />
-                        <div className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full border-2 border-primary animate-ping" />
+                        <GraduationCap className="h-8 w-8 text-white animate-pulse" />
+                        <div className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full border-2 border-primary" />
                     </div>
                 )}
             </button>
 
-            {/* Chat Window */}
+            {/* Chat Window with Glassmorphism */}
             <div className={cn(
-                "fixed bottom-24 right-6 w-[90vw] md:w-[400px] h-[500px] bg-slate-950/95 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.8)] z-[100] flex flex-col overflow-hidden transition-all duration-500 origin-bottom-right",
-                isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-20 pointer-events-none"
+                "fixed bottom-24 right-6 w-[95vw] sm:w-[420px] h-[600px] bg-slate-950/80 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)] z-[100] flex flex-col overflow-hidden transition-all duration-500 origin-bottom-right",
+                isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none"
             )}>
-                {/* Header */}
-                <div className="p-5 border-b border-white/10 bg-gradient-to-r from-primary/10 to-indigo-500/10 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center relative">
-                            <Bot className="h-6 w-6 text-primary" />
-                            <div className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-emerald-500 rounded-full border-2 border-slate-950" />
+                {/* Header with CyberEdu style */}
+                <div className="p-6 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-indigo-500/20">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="h-12 w-12 rounded-2xl hero-gradient border border-white/20 flex items-center justify-center relative shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                                <GraduationCap className="h-7 w-7 text-white animate-bounce-slow" />
+                                <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-2xl pointer-events-none" />
+                                <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-emerald-500 rounded-full border-4 border-slate-950 shadow-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-black text-white uppercase tracking-[0.2em]">Consultor AI</h4>
+                                <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
+                                    <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                                    Motor 2026 Optimizado
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="text-sm font-black text-white uppercase tracking-widest">Tutor AI</h4>
-                            <p className="text-[10px] text-emerald-400 font-bold uppercase">Online Now</p>
+                        <div className="hidden sm:flex items-center gap-2">
+                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">En Línea</span>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Sparkles className="h-4 w-4 text-amber-500 animate-pulse" />
                     </div>
                 </div>
 
                 {/* Messages area */}
                 <div
                     ref={scrollRef}
-                    className="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar"
+                    className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar"
                 >
                     {messages.map((msg) => (
                         <div
                             key={msg.id}
                             className={cn(
-                                "flex items-end gap-2 max-w-[85%] animate-in fade-in slide-in-from-bottom-2 duration-300",
-                                msg.role === "user" ? "ml-auto flex-row-reverse" : "flex-row"
+                                "flex flex-col gap-2 max-w-[90%] animate-in fade-in slide-in-from-bottom-4 duration-500",
+                                msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
                             )}
                         >
                             <div className={cn(
-                                "h-7 w-7 rounded-sm flex items-center justify-center shrink-0",
-                                msg.role === "user" ? "bg-white/5" : "bg-primary/20"
+                                "flex items-end gap-2",
+                                msg.role === "user" ? "flex-row-reverse" : "flex-row"
                             )}>
-                                {msg.role === "user" ? <User className="h-4 w-4 text-white/40" /> : <Bot className="h-4 w-4 text-primary" />}
-                            </div>
-                            <div className={cn(
-                                "px-4 py-2.5 text-xs font-medium leading-relaxed",
-                                msg.role === "user"
-                                    ? "bg-primary rounded-2xl rounded-tr-none text-white shadow-lg"
-                                    : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
-                            )}>
-                                {msg.text.split(/(\[.*?\]\(.*?\))/g).map((part, i) => {
-                                    const match = part.match(/\[(.*?)\]\((.*?)\)/);
-                                    if (match) {
-                                        return (
-                                            <a
-                                                key={i}
-                                                href={match[2]}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-primary hover:underline font-black inline-flex items-center gap-1 mx-1"
+                                <div className={cn(
+                                    "h-8 w-8 rounded-xl flex items-center justify-center shrink-0 border",
+                                    msg.role === "user" ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
+                                )}>
+                                    {msg.role === "user" ? <User className="h-4 w-4 text-slate-400" /> : <Bot className="h-4 w-4 text-primary" />}
+                                </div>
+
+                                <div className={cn(
+                                    "px-4 py-3 text-[13px] font-medium leading-relaxed group relative",
+                                    msg.role === "user"
+                                        ? "bg-primary rounded-2xl rounded-tr-none text-white shadow-xl shadow-primary/10"
+                                        : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
+                                )}>
+                                    {msg.text}
+
+                                    {/* Explanation rendering */}
+                                    {msg.steps && (
+                                        <div className="mt-4 space-y-3 pt-4 border-t border-white/10">
+                                            {msg.steps.map((step, i) => (
+                                                <div key={i} className="flex gap-3">
+                                                    <span className="h-5 w-5 rounded-full bg-primary/20 text-primary text-[10px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
+                                                    <p className="text-[11px] text-slate-300">{step}</p>
+                                                </div>
+                                            ))}
+                                            {msg.extra?.trick && (
+                                                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mt-4">
+                                                    <p className="text-[11px] text-amber-500 font-black uppercase mb-1 flex items-center gap-2">
+                                                        <Zap className="h-3 w-3" /> Truco Pro
+                                                    </p>
+                                                    <p className="text-[11px] italic text-slate-400">{msg.extra.trick}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Hint rendering */}
+                                    {msg.type === "hint" && msg.extra?.hints && (
+                                        <div className="mt-3 space-y-2">
+                                            {msg.extra.hints.slice(0, 2).map((hint: string, i: number) => (
+                                                <div key={i} className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg flex items-center gap-2">
+                                                    <HelpCircle className="h-3 w-3 text-indigo-400" />
+                                                    <span className="text-[11px] text-slate-400">{hint}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Video reference rendering */}
+                                    {msg.type === "video_ref" && msg.extra && (
+                                        <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-2xl group/video">
+                                            <div className="relative h-24 w-full bg-slate-900 rounded-xl overflow-hidden mb-3">
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover/video:opacity-100 transition-opacity">
+                                                    <PlayCircle className="h-10 w-10 text-white" />
+                                                </div>
+                                                <div className="absolute bottom-2 right-2 bg-primary/80 px-2 py-0.5 rounded text-[8px] font-black">VIDEO HD</div>
+                                            </div>
+                                            <h5 className="text-[11px] font-black uppercase tracking-tight mb-1">{msg.extra.videoTitle}</h5>
+                                            <Link
+                                                to={msg.extra.videoPath}
+                                                className="text-[10px] font-black text-primary uppercase flex items-center gap-1 hover:underline"
                                             >
-                                                {match[1]}
-                                                <ExternalLink className="h-3 w-3" />
-                                            </a>
-                                        );
-                                    }
-                                    return <span key={i}>{part}</span>;
-                                })}
+                                                Ver Clase Completa <ExternalLink className="h-3 w-3" />
+                                            </Link>
+                                        </div>
+                                    )}
+
+                                    {/* Action buttons for explanations */}
+                                    {msg.type === "explanation" && msg.extra && (
+                                        <div className="flex gap-2 mt-4">
+                                            {msg.extra.canSimplify && (
+                                                <button
+                                                    onClick={() => handleAction("SIMPLIFY", "Simplifica más")}
+                                                    className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-[10px] font-black uppercase transition-colors"
+                                                >
+                                                    Simplifica más
+                                                </button>
+                                            )}
+                                            {msg.extra.canExample && (
+                                                <button
+                                                    onClick={() => handleAction("EXAMPLE", "Dame otro ejemplo")}
+                                                    className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-[10px] font-black uppercase transition-colors"
+                                                >
+                                                    Otro ejemplo
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                    {/* Analysis rendering */}
+                                    {msg.extra?.analysis && (
+                                        <div className="mt-4 grid grid-cols-2 gap-2">
+                                            <div className="p-3 bg-white/5 rounded-xl border border-white/5">
+                                                <p className="text-[9px] font-black uppercase text-slate-500 mb-1">Tu Nivel</p>
+                                                <p className="text-lg font-black text-primary">{msg.extra.analysis.totalProgress}%</p>
+                                            </div>
+                                            <div className="p-3 bg-white/5 rounded-xl border border-white/5">
+                                                <p className="text-[9px] font-black uppercase text-slate-500 mb-1">Racha</p>
+                                                <p className="text-lg font-black text-amber-500">{msg.extra.analysis.streak} DÍAS</p>
+                                            </div>
+                                            <div className="col-span-2 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                                                <p className="text-[10px] text-slate-300 font-medium">{msg.extra.recommendation}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+
+                            {/* Feedback buttons */}
+                            {msg.role === "bot" && (
+                                <div className="flex items-center gap-3 px-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button
+                                        onClick={() => handleFeedback(msg.id, "up")}
+                                        className={cn("p-1.5 rounded-lg transition-colors", msg.feedback === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
+                                    >
+                                        <ThumbsUp className="h-3 w-3" />
+                                    </button>
+                                    <button
+                                        onClick={() => handleFeedback(msg.id, "down")}
+                                        className={cn("p-1.5 rounded-lg transition-colors", msg.feedback === "down" ? "text-rose-500 bg-rose-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
+                                    >
+                                        <ThumbsDown className="h-3 w-3" />
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ))}
                     {isTyping && (
-                        <div className="flex items-center gap-2 bg-white/5 border border-white/5 rounded-2xl p-3 w-fit">
-                            <Loader2 className="h-3 w-3 text-primary animate-spin" />
-                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Tutor pensando...</span>
+                        <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
+                            <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                            <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">IA Procesando...</span>
                         </div>
                     )}
                 </div>
 
-                {/* Input Area */}
-                <div className="p-4 bg-slate-900/50 border-t border-white/10">
-                    <div className="relative flex items-center gap-2">
-                        <input
-                            type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                            placeholder="Escribe tu duda escolar aquí..."
-                            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
-                        />
+                {/* Suggestions Section */}
+                {!isTyping && contextualSuggestions.length > 0 && (
+                    <div className="px-6 py-2 flex flex-wrap gap-2 animate-in fade-in duration-700">
+                        {contextualSuggestions.map((s, i) => (
+                            <button
+                                key={i}
+                                onClick={() => handleAction(s.action, s.text)}
+                                className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-[10px] font-black text-slate-400 hover:text-white transition-all"
+                            >
+                                {s.text}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {/* Input Area with Glassmorphism */}
+                <div className="p-6 bg-slate-900/50 border-t border-white/5">
+                    <div className="relative flex items-center gap-3">
+                        <div className="flex-1 relative group">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={(e) => e.key === "Enter" && processQuery(input)}
+                                placeholder="Escribe tu consulta académica..."
+                                className="w-full bg-slate-800/80 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-4 ring-primary/5"
+                            />
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-600 uppercase tracking-tighter opacity-0 group-focus-within:opacity-100 transition-opacity">Enter</div>
+                        </div>
                         <button
-                            onClick={handleSend}
-                            className="h-10 w-10 bg-primary hover:bg-primary/90 text-white rounded-lg flex items-center justify-center transition-all active:scale-95"
+                            onClick={() => processQuery(input)}
+                            disabled={!input.trim()}
+                            className="h-14 w-14 bg-primary hover:bg-primary/90 text-white rounded-2xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:grayscale"
                         >
-                            <Send className="h-4 w-4" />
+                            <Send className="h-6 w-6" />
                         </button>
                     </div>
-                    <p className="text-[8px] text-center text-slate-600 mt-3 font-bold uppercase tracking-widest">
-                        Alimentado por la base de conocimientos de CyberEdu Mx
-                    </p>
+                    <div className="flex items-center justify-center gap-4 mt-4">
+                        <p className="text-[9px] text-slate-600 font-black uppercase tracking-[0.2em] flex items-center gap-1">
+                            <Brain className="h-3 w-3" /> CyberEdu Engine v4.0
+                        </p>
+                    </div>
                 </div>
             </div>
         </>
