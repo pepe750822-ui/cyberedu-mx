@@ -108,7 +108,7 @@ const AITutor = () => {
             return [
                 { text: "¿Cómo voy en mi progreso?", action: "ANALYZE" },
                 { text: "Recomiéndame qué estudiar", action: "RECOMMEND" },
-                { text: "¿Cuándo es el examen?", action: "DATE" }
+                { text: "Ver retos de hoy", action: "CHALLENGE" }
             ];
         }
         return [
@@ -116,6 +116,30 @@ const AITutor = () => {
             { text: "Ver simuladores", action: "SIMS" }
         ];
     }, [location.pathname]);
+
+    // Effect to show transition when page changes
+    useEffect(() => {
+        if (isOpen) {
+            const pageName = location.pathname === "/" ? "Dashboard" :
+                location.pathname === "/simulador-pro" ? "Simulador" : "Contenido";
+
+            toast.success(`Analizando contexto de ${pageName}...`, {
+                icon: <Brain className="h-4 w-4 text-primary" />,
+                duration: 1500
+            });
+        }
+    }, [location.pathname, isOpen]);
+
+    const clearHistory = () => {
+        localStorage.removeItem("ai_tutor_history_v2");
+        setMessages([{
+            role: "bot",
+            text: "¡Historial reiniciado! Estoy listo para empezar de cero con el temario 2026. ¿Qué quieres aprender?",
+            id: Date.now().toString(),
+            type: "standard"
+        }]);
+        toast.info("Conversación reiniciada");
+    };
 
     // Preference tracking for "Area Favorita"
     useEffect(() => {
@@ -308,8 +332,17 @@ const AITutor = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="hidden sm:flex items-center gap-2">
-                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">En Línea</span>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={clearHistory}
+                                title="Reiniciar chat"
+                                className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+                            >
+                                <RefreshCw className="h-4 w-4" />
+                            </button>
+                            <div className="hidden sm:flex items-center gap-2">
+                                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">En Línea</span>
+                            </div>
                         </div>
                     </div>
                 </div>
