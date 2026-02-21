@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -93,6 +93,15 @@ const Header = () => {
             <TooltipContent>Cambiar tema</TooltipContent>
           </Tooltip>
 
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={() => navigate("/marketing")} className="transition-colors duration-300">
+                <Mail className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Marketing y Notificaciones</TooltipContent>
+          </Tooltip>
+
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
               <Avatar className="h-8 w-8">
@@ -182,6 +191,14 @@ const Header = () => {
                     <BookOpen className="h-5 w-5 text-amber-500" />
                     Manual Digital ECOEMS
                   </a>
+                  <Link
+                    to="/marketing"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Mail className="h-5 w-5 text-indigo-400" />
+                    Notificaciones y Marketing
+                  </Link>
                   <a
                     href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
                     target="_blank"

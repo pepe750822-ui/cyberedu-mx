@@ -8,6 +8,10 @@ interface UserProfile {
   name: string | null;
   avatar_url: string | null;
   provider: string | null;
+  marketing_opt_in?: boolean;
+  weekly_reminders?: boolean;
+  newsletter_opt_in?: boolean;
+  area_of_interest?: string[];
 }
 
 interface AuthContextValue {
@@ -23,7 +27,7 @@ const AuthContext = createContext<AuthContextValue>({
   profile: null,
   session: null,
   isLoading: true,
-  signOut: async () => {},
+  signOut: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
