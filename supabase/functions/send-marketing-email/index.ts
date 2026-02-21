@@ -16,34 +16,53 @@ serve(async (req) => {
         const resendApiKey = Deno.env.get("RESEND_API_KEY") || "re_AKjBcgh5_NUpA5VASD41sdv2dRazRz1w2";
         const resend = new Resend(resendApiKey);
 
-        const { to, subject, html } = await req.json();
-
-        console.log(`Intentando enviar email a: ${to}`);
-
-        const { data, error } = await resend.emails.send({
-            from: "CyberEdu MX <onboarding@resend.dev>",
-            to: [to || "pepe750822@gmail.com"],
-            subject: subject || "Prueba desde CyberEdu MX",
-            html: html || "<h1>Hola!</h1><p>Esta es una prueba real.</p>",
-        });
-
-        if (error) {
-            console.error("Error de Resend:", error);
-            return new Response(JSON.stringify({ error: error.message || error }), {
+        // Intentar parsear el body con manejo de errores
+        let body;
+        try {
+            body = await req.json();
+        } catch (e) {
+            console.error("Error al parsear el body:", e);
+            return new Response(JSON.stringify({ error: "No se recibió un JSON válido en el body" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        console.log("Email enviado con éxito:", data);
+        const { to, subject, html } = body;
+        console.log(`Petición recibida para: ${to}`);
+
+        // Validación mínima
+        if (!to) {
+            return new Response(JSON.stringify({ error: "Falta el destinatario (to)" }), {
+                status: 400,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
+
+        const { data, error } = await resend.emails.send({
+            from: "CyberEdu MX <onboarding@resend.dev>",
+            to: to,
+            subject: subject || "Prueba desde CyberEdu MX",
+            html: html || "<h1>Hola!</h1><p>Esta es una prueba real.</p>",
+        });
+
+        if (error) {
+            console.error("Error de la API de Resend:", error);
+            return new Response(JSON.stringify({ error: "Resend API Error: " + (error.message || JSON.stringify(error)) }), {
+                status: 400,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
+
+        console.log("Email enviado exitosamente:", data);
 
         return new Response(JSON.stringify(data), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
     } catch (err: any) {
-        console.error("Error inesperado en la función:", err.message);
-        return new Response(JSON.stringify({ error: err.message }), {
+        console.error("Error crítico en la Edge Function:", err.message);
+        return new Response(JSON.stringify({ error: "Error interno: " + err.message }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });

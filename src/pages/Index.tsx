@@ -16,7 +16,11 @@ import {
   ExternalLink,
   ShoppingCart,
   Star,
-  Brain
+  Brain,
+  Award,
+  ShieldCheck,
+  Download,
+  Share2
 } from "lucide-react";
 import { areas } from "@/data/areas";
 import { studioMapping, fullSimulators } from "@/data/studioMap";
@@ -208,6 +212,54 @@ const Index = () => {
                     Simulador POLI (IPN)
                   </Button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 🏆 Digital Certifications Section */}
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+          <div className="relative bg-[#020617] border border-amber-500/20 rounded-[2.5rem] p-8 md:p-12 overflow-hidden">
+            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+              <Award className="h-48 w-48 text-amber-400 rotate-12" />
+            </div>
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+              <div className="space-y-6 text-center lg:text-left flex-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500">
+                  <Star className="h-3.5 w-3.5 animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Recompensa Académica</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">
+                  Obtén tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 italic">Certificación Digital</span>
+                </h2>
+                <p className="text-slate-400 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                  Al completar tus simuladores con éxito, desbloquearás diplomas premium que avalan tu nivel de preparación. Descárgalos en PDF y compártelos en tus redes profesionales.
+                </p>
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                  {[
+                    { label: "Válido p/ ECOEMS", icon: ShieldCheck },
+                    { label: "PDF Alta Calidad", icon: Download },
+                    { label: "Compartible", icon: Share2 }
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      <item.icon className="h-3.5 w-3.5 text-amber-500" />
+                      {item.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-full lg:w-auto">
+                <Button
+                  onClick={() => navigate("/certificaciones")}
+                  className="h-20 w-full lg:w-72 rounded-3xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xl font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 group"
+                >
+                  <Award className="mr-3 h-6 w-6" />
+                  MIS LOGROS
+                  <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                </Button>
               </div>
             </div>
           </div>

@@ -86,15 +86,26 @@ const MarketingManager = () => {
                 }
             });
 
-            if (error) throw error;
+            if (error) {
+                console.error("Error devuelto por la función:", error);
+                throw new Error(error.message || "La función de Supabase devolvió un error.");
+            }
+
+            console.log("Respuesta de la función:", data);
 
             toast.success("Campaña enviada con éxito", {
                 description: `Se ha enviado un correo de prueba a ${user.email}`,
             });
         } catch (err: any) {
-            console.error("Error en el envío:", err);
+            console.error("Error detallado en el envío:", err);
+
+            // Extraer mensaje de error más útil
+            let errorMessage = "No se pudo conectar con el servicio de correo.";
+            if (err.message) errorMessage = err.message;
+            if (err.context?.errorMessage) errorMessage = err.context.errorMessage;
+
             toast.error("Fallo de envío", {
-                description: err.message || "No se pudo conectar con el servicio de correo.",
+                description: errorMessage,
             });
         } finally {
             setIsBlasting(false);
