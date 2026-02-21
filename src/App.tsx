@@ -98,12 +98,12 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AITutor />
-        <StreakAutoSync />
-        <AchievementObserver />
-        <PWAInstallBanner />
-        <PWAStatusBar />
         <BrowserRouter>
+          <AITutor />
+          <StreakAutoSync />
+          <AchievementObserver />
+          <PWAInstallBanner />
+          <PWAStatusBar />
           <Routes>
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
             <Route path="/area/:areaId" element={<ProtectedRoute><AreaDetail /></ProtectedRoute>} />

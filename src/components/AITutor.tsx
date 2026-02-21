@@ -66,7 +66,7 @@ const AITutor = () => {
             role: "bot",
             text: "¡Hola! Bienvenido de nuevo a CyberEdu. Soy tu consultor académico. He analizado el temario 2026 y estoy listo para ayudarte a dominar cualquier área. ¿Qué te gustaría repasar hoy?",
             id: "initial",
-            role_type: "standard"
+            type: "standard"
         }];
     });
 
