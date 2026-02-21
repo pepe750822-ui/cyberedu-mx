@@ -408,7 +408,10 @@ const AITutor = () => {
                     botResponse.text = `Encontré un reactivo similar: "${item.text.slice(0, 60)}...". ¿Te gustaría ver la explicación de por qué esa es la respuesta correcta?`;
                 }
             } else {
-                botResponse.text = `He analizado tu consulta sobre '${query}'. He activado mi módulo de investigación externa para darte la respuesta más precisa: [Ver en Google Académico](https://www.google.com/search?q=${encodeURIComponent(query + " guia ecoems 2026")})`;
+                botResponse.text = `No encontré coincidencias exactas en mi base de datos para "${query}". Sin embargo, he preparado una búsqueda externa especializada en el temario ECOEMS 2026 para ti:`;
+                botResponse.extra = {
+                    externalLink: `https://www.google.com/search?q=${encodeURIComponent(query + " guia oficial ecoems 2026")}`
+                };
             }
 
             setMessages(prev => [...prev, botResponse as Message]);
@@ -510,7 +513,24 @@ const AITutor = () => {
                                         ? "bg-primary rounded-2xl rounded-tr-none text-white shadow-xl shadow-primary/10"
                                         : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
                                 )}>
-                                    {msg.text}
+                                    {msg.text.split('**').map((part, i) =>
+                                        i % 2 === 1 ? <strong key={i} className="text-white font-black">{part}</strong> : part
+                                    )}
+
+                                    {msg.extra?.externalLink && (
+                                        <a
+                                            href={msg.extra.externalLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="mt-3 flex items-center justify-between gap-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 transition-all group/link"
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <Search className="h-4 w-4 text-primary" />
+                                                <span className="text-[11px] font-bold text-indigo-400">Ver en Google Académico</span>
+                                            </div>
+                                            <ExternalLink className="h-3 w-3 text-slate-500 group-hover/link:text-white transition-colors" />
+                                        </a>
+                                    )}
 
                                     {/* Explanation rendering */}
                                     {msg.steps && (
