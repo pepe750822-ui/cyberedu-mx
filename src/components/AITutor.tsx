@@ -176,30 +176,41 @@ const AITutor = () => {
 
         setTimeout(() => {
             let botResponse: Partial<Message> = { role: "bot", id: (Date.now() + 1).toString(), type: "standard" };
-            const q = query.toLowerCase();
+            const q = query.toLowerCase().trim();
 
             // 0. INTERACCIONES SOCIALES Y SALUDOS
-            const greetings = ["hola", "buenos días", "buenas tardes", "hey", "saludos", "que tal"];
-            const identity = ["quien eres", "que eres", "tu nombre", "presentate"];
-            const thanks = ["gracias", "excelente", "perfecto", "muy bien", "gracias bot"];
+            const greetings = ["hola", "buen", "hey", "saludos", "que tal", "qué tal", "hi", "hello"];
+            const identity = ["quien eres", "quién eres", "que eres", "qué eres", "tu nombre", "presentate", "preséntate"];
+            const thanks = ["gracias", "excelente", "perfecto", "muy bien", "genial", "ok", "vale"];
 
-            if (greetings.some(k => q === k || q.startsWith(k + " "))) {
+            if (greetings.some(k => q.includes(k))) {
                 const userName = localStorage.getItem('user_display_name') || "estudiante";
                 botResponse.text = `¡Hola, ${userName}! Qué gusto saludarte. Soy tu Consultor AI de CyberEdu. ¿En qué área del temario 2026 nos enfocaremos hoy?`;
                 botResponse.type = "suggestion";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
-            else if (identity.some(k => q.includes(k))) {
+
+            if (identity.some(k => q.includes(k))) {
                 botResponse.text = "Soy el Consultor AI de CyberEdu MX 4.0. Mi propósito es ayudarte a dominar el temario ECOEMS 2026 mediante análisis de tu progreso, pistas en simuladores y explicaciones paso a paso.";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
-            else if (thanks.some(k => q.includes(k))) {
+
+            if (thanks.some(k => q.includes(k))) {
                 botResponse.text = "¡De nada! Es un placer ayudarte en tu camino al éxito académico. Recuerda que la constancia es la clave del puntaje perfecto. ¿Necesitas ayuda con algo más?";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
-            // 7. MODO TUTOR DE EXAMEN (Solo si pide ayuda o es acción de pista)
-            else if ((location.pathname === "/simulador-pro" && (q.includes("ayuda") || q.includes("pista"))) || specificAction === "HINT") {
+
+            // 7. MODO TUTOR DE EXAMEN
+            if ((location.pathname === "/simulador-pro" && (q.includes("ayuda") || q.includes("pista"))) || specificAction === "HINT") {
                 const simState = JSON.parse(localStorage.getItem('simulador_estado') || '{}');
                 const currentIndex = simState.currentQuestionIndex || 0;
                 const currentQuestion = simuladoECOEMS[currentIndex];
-
                 botResponse.text = "¡Claro! En el modo simulador no puedo darte la respuesta directa, pero aquí tienes una guía estratégica:";
                 botResponse.type = "hint";
                 botResponse.extra = {
@@ -216,11 +227,10 @@ const AITutor = () => {
             }
 
             // 4. MODO EXPLICACIÓN PASO A PASO
-            else if (q.includes("explica") || q.includes("paso a paso") || q.includes("como se hace") || specificAction === "SIMPLIFY" || specificAction === "EXAMPLE") {
+            if (q.includes("explica") || q.includes("paso a paso") || q.includes("como se hace") || specificAction === "SIMPLIFY" || specificAction === "EXAMPLE") {
                 const searchRes = searchKnowledgeBase(q);
                 const isSimplifying = specificAction === "SIMPLIFY";
                 const isExample = specificAction === "EXAMPLE";
-
                 if (searchRes.length > 0 && searchRes[0].type === 'simulador') {
                     const explanation = generateExplanation(searchRes[0]);
                     botResponse.text = isSimplifying
@@ -240,12 +250,18 @@ const AITutor = () => {
                         canExample: !isExample,
                         item: searchRes[0]
                     };
+                    setMessages(prev => [...prev, botResponse as Message]);
+                    setIsTyping(false);
+                    return;
                 } else {
                     botResponse.text = "Para explicarte paso a paso, necesito que me indiques el tema o la pregunta específica. Por ejemplo: 'Explícame las sucesiones numéricas'.";
+                    setMessages(prev => [...prev, botResponse as Message]);
+                    setIsTyping(false);
+                    return;
                 }
             }
             // 8. ACCIÓN DE BÚSQUEDA TEMÁTICA
-            else if (specificAction === "SEARCH") {
+            if (specificAction === "SEARCH") {
                 const searchRes = searchKnowledgeBase(query);
                 if (searchRes.length > 0) {
                     botResponse.text = `He encontrado información relevante sobre **${query}**. ¿Te gustaría profundizar en algún video o reactivo?`;
@@ -256,13 +272,19 @@ const AITutor = () => {
                 } else {
                     botResponse.text = `No encontré resultados exactos para "${query}", pero puedo investigar más a fondo en mis bases de datos externas.`;
                 }
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
             // Repeated Query Detection
-            else if (lastQueries.includes(q) && messages.length > 3) {
+            if (lastQueries.includes(q) && messages.length > 3) {
                 botResponse.text = `Veo que sigues interesado en este tema. ¿Hay alguna parte específica que te esté costando más trabajo o te gustaría ver un ejemplo práctico diferente?`;
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
             // 3. ANALIZADOR DE PROGRESO
-            else if (q.includes("progreso") || q.includes("como voy") || specificAction === "ANALYZE") {
+            if (q.includes("progreso") || q.includes("como voy") || specificAction === "ANALYZE") {
                 const analysis = analyzeUserProgress();
                 botResponse.text = `He analizado tu trayectoria académica. Tu progreso global es del **${analysis.totalProgress}%**.`;
                 botResponse.extra = {
@@ -272,9 +294,12 @@ const AITutor = () => {
                         : "¡Vas excelente! Sigue manteniendo tu racha de estudio."
                 };
                 botResponse.type = "suggestion";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
             // 6. REFERENCIAS VISUALES / VIDEOS
-            else if (q.includes("video") || q.includes("clase")) {
+            if (q.includes("video") || q.includes("clase")) {
                 const searchRes = searchKnowledgeBase(q, undefined, "video");
                 if (searchRes.length > 0) {
                     botResponse.text = `He encontrado una clase en video ideal para este tema de **${searchRes[0].area}**:`;
@@ -287,27 +312,34 @@ const AITutor = () => {
                 } else {
                     botResponse.text = "No encontré un video específico con ese nombre, pero puedes explorar las áreas de estudio para encontrar el material completo.";
                 }
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
             // Emotional Adaptation
-            else if (isFrustrated) {
+            if (isFrustrated) {
                 botResponse.text = "Entiendo que este tema puede ser un reto, pero no te preocupes. Vamos a simplificarlo. ¿Te gustaría que te dé una explicación mucho más básica o prefieres ver un video introductorio?";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
-            else if (isEnthusiastic) {
+            if (isEnthusiastic) {
                 botResponse.text = "¡Ese es el espíritu! El éxito en el ECOEMS depende de esa actitud. ¿Quieres intentar un reto de nivel avanzado para poner a prueba tu dominio?";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
             // Default intelligence
-            else {
-                const searchRes = searchKnowledgeBase(q);
-                if (searchRes.length > 0) {
-                    const item = searchRes[0];
-                    if (item.type === 'video') {
-                        botResponse.text = `Te recomiendo revisar la clase: **${item.title}**. ¿Deseas que busque el resumen de este tema?`;
-                    } else {
-                        botResponse.text = `Encontré un reactivo similar: "${item.text.slice(0, 60)}...". ¿Te gustaría ver la explicación de por qué esa es la respuesta correcta?`;
-                    }
+            const searchRes = searchKnowledgeBase(q);
+            if (searchRes.length > 0) {
+                const item = searchRes[0];
+                if (item.type === 'video') {
+                    botResponse.text = `Te recomiendo revisar la clase: **${item.title}**. ¿Deseas que busque el resumen de este tema?`;
                 } else {
-                    botResponse.text = `He analizado tu consulta sobre '${query}'. He activado mi módulo de investigación externa para darte la respuesta más precisa: [Ver en Google Académico](https://www.google.com/search?q=${encodeURIComponent(query + " guia ecoems 2026")})`;
+                    botResponse.text = `Encontré un reactivo similar: "${item.text.slice(0, 60)}...". ¿Te gustaría ver la explicación de por qué esa es la respuesta correcta?`;
                 }
+            } else {
+                botResponse.text = `He analizado tu consulta sobre '${query}'. He activado mi módulo de investigación externa para darte la respuesta más precisa: [Ver en Google Académico](https://www.google.com/search?q=${encodeURIComponent(query + " guia ecoems 2026")})`;
             }
 
             setMessages(prev => [...prev, botResponse as Message]);
