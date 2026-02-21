@@ -217,6 +217,61 @@ const Index = () => {
           </div>
         </div>
 
+        {/* 🎯 Metas del Mes Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Persistencia",
+              desc: "Completa 5 días seguidos de estudio",
+              progress: 60,
+              color: "text-blue-400",
+              bg: "bg-blue-500/10",
+              icon: Zap
+            },
+            {
+              title: "Maestro de Área",
+              desc: "Llega al 100% en Pensamiento Matemático",
+              progress: 45,
+              color: "text-purple-400",
+              bg: "bg-purple-500/10",
+              icon: Brain
+            },
+            {
+              title: "Simulacro",
+              desc: "Realiza tu primer simulador integral",
+              progress: 100,
+              color: "text-emerald-400",
+              bg: "bg-emerald-500/10",
+              icon: Trophy
+            }
+          ].map((goal, i) => (
+            <div key={i} className="bg-slate-900/80 border border-white/5 p-6 rounded-3xl backdrop-blur-sm group hover:border-white/10 transition-all">
+              <div className="flex items-center gap-4 mb-4">
+                <div className={cn("p-3 rounded-2xl", goal.bg, goal.color)}>
+                  <goal.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="font-black uppercase tracking-tighter text-sm text-white">{goal.title}</h4>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Meta Mensual</p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-400 mb-4 line-clamp-1">{goal.desc}</p>
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+                  <span>Progreso</span>
+                  <span className={goal.color}>{goal.progress}%</span>
+                </div>
+                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className={cn("h-full transition-all duration-1000", goal.progress === 100 ? "bg-emerald-500" : "bg-primary")}
+                    style={{ width: `${goal.progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* 🏆 Digital Certifications Section */}
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>

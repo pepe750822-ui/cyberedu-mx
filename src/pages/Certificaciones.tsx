@@ -43,12 +43,39 @@ const Certificaciones = () => {
             locked: false
         },
         {
+            id: "CERT-2026-S7",
+            courseName: "Racha de Estudio: 7 Días",
+            score: 7,
+            totalQuestions: 7,
+            date: "19 FEB 2026",
+            type: "platinum",
+            locked: false
+        },
+        {
             id: "CERT-2026-L2",
             courseName: "Módulo: Lenguaje y Comunicación",
             score: 0,
             totalQuestions: 30,
             date: "PENDIENTE",
             type: "blue",
+            locked: true
+        },
+        {
+            id: "CERT-2026-P100",
+            courseName: "Puntaje Perfecto (Módulo Biología)",
+            score: 20,
+            totalQuestions: 20,
+            date: "10 FEB 2026",
+            type: "gold",
+            locked: false
+        },
+        {
+            id: "CERT-2026-MASTER",
+            courseName: "Maestro del Simulador Pro",
+            score: 0,
+            totalQuestions: 128,
+            date: "BLOQUEADO",
+            type: "platinum",
             locked: true
         }
     ];
@@ -100,7 +127,9 @@ const Certificaciones = () => {
                                     <Award className="h-8 w-8 text-black" />
                                 </div>
                                 <div>
-                                    <p className="text-2xl font-black italic">2 / 3</p>
+                                    <p className="text-2xl font-black italic">
+                                        {availableCerts.filter(c => !c.locked).length} / {availableCerts.length}
+                                    </p>
                                     <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Certificados Obtenidos</p>
                                 </div>
                             </div>
