@@ -58,16 +58,10 @@ const MarketingManager = () => {
 
         setIsBlasting(true);
         try {
-            // Envío directo a la API de Resend para saltar problemas de despliegue en Supabase
-            const res = await fetch("https://api.resend.com/emails", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer re_AKjBcgh5_NUpA5VASD41sdv2dRazRz1w2`,
-                },
-                body: JSON.stringify({
-                    from: "CyberEdu MX <onboarding@resend.dev>",
-                    to: [user.email],
+            // Llamada a la Edge Function de Supabase en lugar de envío directo (evita errores de CORS y exposición de Key)
+            const { data, error } = await supabase.functions.invoke("send-marketing-email", {
+                body: {
+                    to: user.email,
                     subject: "⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026",
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; border-radius: 32px; overflow: hidden; border: 1px solid #f59e0b33;">
@@ -89,21 +83,18 @@ const MarketingManager = () => {
                             </div>
                         </div>
                     `
-                }),
+                }
             });
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || "Error al conectar con Resend");
-            }
+            if (error) throw error;
 
             toast.success("Campaña enviada con éxito", {
                 description: `Se ha enviado un correo de prueba a ${user.email}`,
             });
         } catch (err: any) {
-            console.error("Error en el envío directo:", err);
+            console.error("Error en el envío:", err);
             toast.error("Fallo de envío", {
-                description: err.message || "Acceso denegado. Verifica tu API Key de Resend.",
+                description: err.message || "No se pudo conectar con el servicio de correo.",
             });
         } finally {
             setIsBlasting(false);
