@@ -292,3 +292,17 @@
     transform: translateY(-4px) scale(1.01);
   }
 }
+@media print {
+  .no-print, button, nav, aside, [role=" complementary\], .sidebar-trigger {
+ display: none !important;
+ }
+ body { background: white !important; color: black !important; }
+ .bg-slate-900, .bg-card, .bg-slate-900/50 {
+ background: white !important;
+ border: 1px solid #e2e8f0 !important;
+ color: black !important;
+ }
+ .text-white { color: black !important; }
+ .shadow-2xl, .shadow-xl { box-shadow: none !important; }
+ main { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+}

@@ -49,6 +49,7 @@ import { usePerformanceStats } from "@/hooks/usePerformanceStats";
 import { useAchievements } from "@/hooks/useAchievements";
 import { cn } from "@/lib/utils";
 import NextAchievementCard from "./NextAchievementCard";
+import { useToast } from "@/hooks/use-toast";
 
 const ProgresoDashboard = () => {
   const { isViewed } = useVideoProgress();
@@ -161,6 +162,73 @@ const ProgresoDashboard = () => {
 
   const { weeklyData, comparisonData, predictedCompletion, recommendations } = usePerformanceStats();
   const { achievements } = useAchievements();
+  const { toast } = useToast();
+
+  const handleDownloadPDF = () => {
+    toast({
+      title: "Generando Reporte",
+      description: "Preparando vista de impresión para PDF..."
+    });
+    setTimeout(() => {
+      window.print();
+    }, 500);
+  };
+
+  const handleDownloadCSV = () => {
+    try {
+      const headers = ["Area", "Progreso (%)"];
+      const rows = areaData.map(area => [area.name, `${area.percentage}%`]);
+      const csvContent = "data:text/csv;charset=utf-8,\uFEFF"
+        + headers.join(",") + "\n"
+        + rows.map(e => e.join(",")).join("\n");
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `reporte_ejecutivo_ecoems_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast({
+        title: "CSV Exportado",
+        description: "El reporte se ha descargado correctamente."
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No se pudo generar el CSV."
+      });
+    }
+  };
+
+  const handleShare = async () => {
+    const text = `¡Acabo de alcanzar un ${globalProgress}% de progreso en CyberEdu MX! Mi racha es de ${streak} días. 🚀 #CyberEdu #ECOEMS2026`;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Mi Progreso en CyberEdu MX',
+          text: text,
+          url: window.location.origin,
+        });
+      } else {
+        await navigator.clipboard.writeText(text);
+        toast({
+          title: "¡Copiado!",
+          description: "Resumen de progreso copiado al portapapeles."
+        });
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        toast({
+          variant: "destructive",
+          title: "Error al compartir",
+          description: "Inténtalo de nuevo más tarde."
+        });
+      }
+    }
+  };
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-top-4 duration-1000">
@@ -373,13 +441,24 @@ const ProgresoDashboard = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10">
+          <Button
+            onClick={handleDownloadPDF}
+            variant="ghost"
+            className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10"
+          >
             <Download className="mr-2 h-4 w-4" /> PDF
           </Button>
-          <Button variant="ghost" className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10">
+          <Button
+            onClick={handleDownloadCSV}
+            variant="ghost"
+            className="bg-white/10 hover:bg-white/20 text-white rounded-2xl h-12 px-6 font-black uppercase tracking-[0.1em] text-[10px] border border-white/10"
+          >
             <FileJson className="mr-2 h-4 w-4" /> CSV
           </Button>
-          <Button className="bg-white text-indigo-600 hover:bg-indigo-50 rounded-2xl h-12 px-8 font-black uppercase tracking-[0.1em] text-[10px] shadow-xl">
+          <Button
+            onClick={handleShare}
+            className="bg-white text-indigo-600 hover:bg-indigo-50 rounded-2xl h-12 px-8 font-black uppercase tracking-[0.1em] text-[10px] shadow-xl"
+          >
             <Share2 className="mr-2 h-4 w-4" /> Compartir Reto
           </Button>
         </div>
