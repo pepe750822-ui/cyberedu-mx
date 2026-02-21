@@ -178,8 +178,24 @@ const AITutor = () => {
             let botResponse: Partial<Message> = { role: "bot", id: (Date.now() + 1).toString(), type: "standard" };
             const q = query.toLowerCase();
 
+            // 0. INTERACCIONES SOCIALES Y SALUDOS
+            const greetings = ["hola", "buenos días", "buenas tardes", "hey", "saludos", "que tal"];
+            const identity = ["quien eres", "que eres", "tu nombre", "presentate"];
+            const thanks = ["gracias", "excelente", "perfecto", "muy bien", "gracias bot"];
+
+            if (greetings.some(k => q === k || q.startsWith(k + " "))) {
+                const userName = localStorage.getItem('user_display_name') || "estudiante";
+                botResponse.text = `¡Hola, ${userName}! Qué gusto saludarte. Soy tu Consultor AI de CyberEdu. ¿En qué área del temario 2026 nos enfocaremos hoy?`;
+                botResponse.type = "suggestion";
+            }
+            else if (identity.some(k => q.includes(k))) {
+                botResponse.text = "Soy el Consultor AI de CyberEdu MX 4.0. Mi propósito es ayudarte a dominar el temario ECOEMS 2026 mediante análisis de tu progreso, pistas en simuladores y explicaciones paso a paso.";
+            }
+            else if (thanks.some(k => q.includes(k))) {
+                botResponse.text = "¡De nada! Es un placer ayudarte en tu camino al éxito académico. Recuerda que la constancia es la clave del puntaje perfecto. ¿Necesitas ayuda con algo más?";
+            }
             // 7. MODO TUTOR DE EXAMEN (Especial para Simulador)
-            if (location.pathname === "/simulador-pro" || specificAction === "HINT") {
+            else if (location.pathname === "/simulador-pro" || specificAction === "HINT") {
                 const simState = JSON.parse(localStorage.getItem('simulador_estado') || '{}');
                 const currentIndex = simState.currentQuestionIndex || 0;
                 const currentQuestion = simuladoECOEMS[currentIndex];
