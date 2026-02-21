@@ -194,31 +194,29 @@ const AITutor = () => {
             else if (thanks.some(k => q.includes(k))) {
                 botResponse.text = "¡De nada! Es un placer ayudarte en tu camino al éxito académico. Recuerda que la constancia es la clave del puntaje perfecto. ¿Necesitas ayuda con algo más?";
             }
-            // 7. MODO TUTOR DE EXAMEN (Especial para Simulador)
-            else if (location.pathname === "/simulador-pro" || specificAction === "HINT") {
+            // 7. MODO TUTOR DE EXAMEN (Solo si pide ayuda o es acción de pista)
+            else if ((location.pathname === "/simulador-pro" && (q.includes("ayuda") || q.includes("pista"))) || specificAction === "HINT") {
                 const simState = JSON.parse(localStorage.getItem('simulador_estado') || '{}');
                 const currentIndex = simState.currentQuestionIndex || 0;
                 const currentQuestion = simuladoECOEMS[currentIndex];
 
-                if (q.includes("ayuda") || q.includes("pista") || specificAction === "HINT") {
-                    botResponse.text = "¡Claro! En el modo simulador no puedo darte la respuesta directa, pero aquí tienes una guía estratégica:";
-                    botResponse.type = "hint";
-                    botResponse.extra = {
-                        hints: [
-                            `Pista 1: El tema central es **${currentQuestion.area}**.`,
-                            `Pista 2: Enfócate en: "${currentQuestion.text.slice(0, 40)}..."`,
-                            "¿Quieres que analicemos la lógica del reactivo sin revelarte la opción?"
-                        ],
-                        questionId: currentQuestion.id
-                    };
-                    setMessages(prev => [...prev, botResponse as Message]);
-                    setIsTyping(false);
-                    return;
-                }
+                botResponse.text = "¡Claro! En el modo simulador no puedo darte la respuesta directa, pero aquí tienes una guía estratégica:";
+                botResponse.type = "hint";
+                botResponse.extra = {
+                    hints: [
+                        `Pista 1: El tema central es **${currentQuestion.area}**.`,
+                        `Pista 2: Enfócate en: "${currentQuestion.text.slice(0, 40)}..."`,
+                        "¿Quieres que analicemos la lógica del reactivo sin revelarte la opción?"
+                    ],
+                    questionId: currentQuestion.id
+                };
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
             }
 
             // 4. MODO EXPLICACIÓN PASO A PASO
-            if (q.includes("explica") || q.includes("paso a paso") || q.includes("como se hace") || specificAction === "SIMPLIFY" || specificAction === "EXAMPLE") {
+            else if (q.includes("explica") || q.includes("paso a paso") || q.includes("como se hace") || specificAction === "SIMPLIFY" || specificAction === "EXAMPLE") {
                 const searchRes = searchKnowledgeBase(q);
                 const isSimplifying = specificAction === "SIMPLIFY";
                 const isExample = specificAction === "EXAMPLE";
