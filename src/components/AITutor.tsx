@@ -329,6 +329,75 @@ const AITutor = () => {
                 setIsTyping(false);
                 return;
             }
+            // 9. ATAJOS DE SUGERENCIAS CONTEXTUALES (Garantizar respuesta directa)
+            if (specificAction === "TRICKS") {
+                botResponse.text = "Para el ECOEMS 2026, mi mejor truco es: **Lee primero las respuestas**. En reactivos de razonamiento, las opciones suelen darte la clave de la escala del resultado. ¿Quieres un truco específico para Matemáticas o Español?";
+                botResponse.type = "suggestion";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "CHALLENGE") {
+                botResponse.text = "El reto de hoy es: **Sucesiones Alfanuméricas**. Resuelve al menos 3 reactivos sin fallar para ganar la insignia 'Mente Ágil'. ¿Te gustaría empezar ahora?";
+                botResponse.type = "suggestion";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "SUMMARIZE" || specificAction === "MATERIAL") {
+                const areaId = location.pathname.split('/').pop();
+                const currentArea = areas.find(a => a.id === areaId);
+                if (currentArea) {
+                    botResponse.text = specificAction === "SUMMARIZE"
+                        ? `El área de **${currentArea.name}** se centra en los pilares de ${currentArea.videos.slice(0, 3).map(v => v.title).join(', ')}. Es vital dominar estos fundamentos.`
+                        : `Para **${currentArea.name}**, te recomiendo priorizar el video: "${currentArea.videos[0].title}" y el PDF complementario disponible en la pestaña de Materiales.`;
+                } else {
+                    botResponse.text = "Para resumir el área, necesito estar dentro de una de las secciones de estudio. ¿A cuál te gustaría ir?";
+                }
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "CHECK_SIM") {
+                const simState = JSON.parse(localStorage.getItem('simulador_estado') || '{}');
+                const currentIndex = (simState.currentQuestionIndex || 0) + 1;
+                botResponse.text = `Vas en la pregunta **${currentIndex} de 128**. Recuerda que puedes pausar el simulador en cualquier momento y retomarlo después. ¡Mantén el ritmo!`;
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "ECOEMS_INFO" || specificAction === "SIMS") {
+                botResponse.text = specificAction === "ECOEMS_INFO"
+                    ? "ECOEMS es la evaluación oficial para el ingreso al bachillerato y nivel superior. Mi base de datos incluye el temario 2026 actualizado para IPN, UNAM y otras instituciones clave."
+                    : "Contamos con simuladores Premium diseñados para replicar la experiencia real del examen. Puedes encontrarlos en la sección 'Simulador Pro' del menu principal.";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "RECOMMEND") {
+                const analysis = analyzeUserProgress();
+                if (analysis.weakAreas.length > 0) {
+                    botResponse.text = `Basado en tu desempeño, te recomiendo dedicar 20 minutos hoy a **${analysis.weakAreas[0].name}**. He visto que es tu área con mayor oportunidad de mejora.`;
+                } else {
+                    botResponse.text = "¡Estás cubriendo todo el temario a gran ritmo! Te recomiendo un repaso general de 'Razonamiento Lógico' para mantener la agilidad mental.";
+                }
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
+            if (specificAction === "FAST_QUIZ") {
+                botResponse.text = "¡Perfecto! Vamos con un mini-quiz de 3 preguntas de esta área. ¿Estás listo para empezar? Di 'Sí' para generar la primera pregunta.";
+                setMessages(prev => [...prev, botResponse as Message]);
+                setIsTyping(false);
+                return;
+            }
+
             // Default intelligence
             const searchRes = searchKnowledgeBase(q);
             if (searchRes.length > 0) {
