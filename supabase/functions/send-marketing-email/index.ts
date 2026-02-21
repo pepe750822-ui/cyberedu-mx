@@ -32,7 +32,7 @@ serve(async (req) => {
                 Authorization: `Bearer ${RESEND_API_KEY}`,
             },
             body: JSON.stringify({
-                from: "CyberEdu MX <onboarding@resend.dev>", // Nota: Cambiar a dominio verificado luego
+                from: "Acme <onboarding@resend.dev>",
                 to: [to],
                 subject: subject,
                 html: html,
@@ -40,6 +40,14 @@ serve(async (req) => {
         });
 
         const responseData = await res.json();
+        console.log("Resend API Response:", responseData);
+
+        if (!res.ok) {
+            return new Response(JSON.stringify({ error: responseData.message || "Email service error" }), {
+                status: res.status,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
 
         return new Response(JSON.stringify(responseData), {
             status: 200,
