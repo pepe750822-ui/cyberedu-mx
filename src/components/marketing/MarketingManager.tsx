@@ -91,15 +91,18 @@ const MarketingManager = () => {
                 },
             });
 
-            if (error) throw error;
+            if (error) {
+                console.error("Detalle del error de la Edge Function:", error);
+                throw new Error(`Error de la función: ${error.message || JSON.stringify(error)}`);
+            }
 
             toast.success("Campaña enviada con éxito", {
                 description: `Se ha enviado un correo de prueba a ${user.email}`,
             });
         } catch (err: any) {
-            console.error("Error al enviar email:", err);
-            toast.error("Error al enviar", {
-                description: err.message || "No se pudo procesar el envío de la campaña.",
+            console.error("Error completo atrapado:", err);
+            toast.error("Fallo de envío", {
+                description: err.message || "La Edge Function no respondió correctamente. ¿Está desplegada?",
             });
         } finally {
             setIsBlasting(false);
