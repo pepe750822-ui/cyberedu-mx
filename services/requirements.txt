@@ -1,0 +1,4 @@
+
+supabase==2.3.7
+notebooklm-mcp-cli==0.1.10
+python-dotenv==1.0.1

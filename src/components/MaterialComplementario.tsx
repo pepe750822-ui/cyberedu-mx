@@ -17,7 +17,9 @@ import {
   Brain,
   Lightbulb,
   BookCopy,
-  ExternalLink
+  ExternalLink,
+  Layers,
+  GraduationCap
 } from "lucide-react";
 import { materiales } from "@/data/materialComplementario";
 import { aiContent } from "@/data/aiContent";
@@ -27,6 +29,9 @@ import StudioModal from "@/components/StudioModal";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { useNotebookLMContent } from "@/hooks/useNotebookLMContent";
+import { FlashcardViewer } from "@/components/FlashcardViewer";
+import { AITutorQuiz } from "@/components/AITutorQuiz";
 
 interface MaterialComplementarioProps {
   videoId: string;
@@ -169,6 +174,7 @@ const AISupport = ({ videoId }: { videoId: string }) => {
 
 const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const material = materiales[videoId];
+  const { flashcards, quiz: aiQuiz, loading: loadingAI } = useNotebookLMContent(videoId);
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -188,17 +194,25 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasPdf = !!material.pdf?.url;
   const hasQuiz = !!material.quiz?.url;
   const hasAI = !!aiContent[videoId];
+  const hasFlashcards = flashcards.length > 0;
+  const hasAIQuiz = !!aiQuiz;
 
   const areaId = areas.find(a => a.videos.some(v => v.id === videoId))?.id;
   const studioSims = areaId ? studioMapping[areaId] : [];
   const hasStudio = studioSims && studioSims.length > 0;
 
-  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI || hasStudio;
+  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI || hasStudio || hasFlashcards || hasAIQuiz;
 
   if (!hasAny) return null;
 
-  // REORDERED LOGIC: QUIZ -> AI Tutor -> Infografia -> PDF -> Podcast
-  const defaultTab = hasQuiz ? "quiz" : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf"));
+  // REORDERED LOGIC: AI Quiz -> Flashcards -> Normal Quiz -> AI Tutor -> Infografia -> PDF -> Podcast
+  const defaultTab = hasAIQuiz
+    ? "ai-quiz"
+    : (hasFlashcards
+      ? "flashcards"
+      : (hasQuiz
+        ? "quiz"
+        : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf"))));
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
@@ -217,10 +231,22 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
         </h3>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1 mb-6">
+            {hasAIQuiz && (
+              <TabsTrigger value="ai-quiz" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
+                <GraduationCap className="h-4 w-4" />
+                🎯 Desafío IA
+              </TabsTrigger>
+            )}
+            {hasFlashcards && (
+              <TabsTrigger value="flashcards" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter">
+                <Layers className="h-4 w-4 text-amber-500" />
+                🎴 Flashcards
+              </TabsTrigger>
+            )}
             {hasQuiz && (
               <TabsTrigger value="quiz" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter">
                 <PenLine className="h-4 w-4 text-secondary" />
-                📝 QUIZ Inteligente
+                📝 QUIZ Original
               </TabsTrigger>
             )}
             {hasAI && (
@@ -254,6 +280,14 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
               </TabsTrigger>
             )}
           </TabsList>
+
+          <TabsContent value="ai-quiz" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            {aiQuiz && <AITutorQuiz quiz={aiQuiz} />}
+          </TabsContent>
+
+          <TabsContent value="flashcards" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <FlashcardViewer flashcards={flashcards} />
+          </TabsContent>
 
           <TabsContent value="ai-tutor" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
             <AISupport videoId={videoId} />

@@ -1,0 +1,37 @@
+
+name: NotebookLM Sync
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Cada 6 horas
+  workflow_dispatch: # Permite ejecución manual
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r services/requirements.txt
+
+      - name: Login to NotebookLM
+        run: |
+          # Nota: La herramienta nlm requiere cookies del navegador para el login inicial
+          # En un entorno de CI, puedes usar nlm login con una cookie guardada en secrets
+          # O configurar el archivo de settings.json directamente
+          mkdir -p ~/.config/notebooklm-mcp/
+          echo '${{ secrets.NOTEBOOKLM_SETTINGS_JSON }}' > ~/.config/notebooklm-mcp/settings.json
+
+      - name: Run Sync Script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          python services/notebooklm_service.py
