@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
 import Certificaciones from "./pages/Certificaciones";
+import Blog from "./pages/Blog";
 import AITutor from "./components/AITutor";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -110,6 +111,7 @@ const App = () => (
             <Route path="/simulador-pro" element={<ProtectedRoute><SimuladorPro /></ProtectedRoute>} />
             <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
             <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/~oauth/*" element={<OAuthPassthrough />} />
             <Route path="*" element={<NotFound />} />

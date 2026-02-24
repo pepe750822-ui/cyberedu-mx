@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -78,6 +78,13 @@ const Header = () => {
             >
               <Award className="h-3.5 w-3.5" />
               Certificados
+            </Link>
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <Newspaper className="h-3.5 w-3.5" />
+              Blog
             </Link>
             <a
               href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
@@ -209,6 +216,14 @@ const Header = () => {
                   >
                     <Award className="h-5 w-5 text-amber-500" />
                     Mis Certificaciones
+                  </Link>
+                  <Link
+                    to="/blog"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Newspaper className="h-5 w-5 text-amber-500" />
+                    Blog de Noticias
                   </Link>
                   <Link
                     to="/marketing"
