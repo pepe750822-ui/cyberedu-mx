@@ -59,3 +59,16 @@ Las siguientes preguntas están diseñadas para fomentar una reflexión más pro
 | \*\*Información Explícita\*\* | Datos, hechos o ideas que están declarados de manera directa y literal en el texto. Su identificación no requiere interpretación, solo localización precisa. |
 | \*\*Inferir\*\* | Deducir o concluir información que no está directamente afirmada en el texto, basándose en las pistas, sugerencias y el contexto proporcionado por el autor. |
 | \*\*Preparación Total\*\* | Concepto que describe el alcance de la serie de 82 videos, prometiendo una cobertura exhaustiva y completa de todo el temario requerido para el examen ECOEMS 2025. |
+61: 
+62: ---
+63: 
+64: ## Glosario Especializado: Tipos de Preguntas de Examen
+65: 
+66: Identificar el tipo de pregunta es la mitad de la respuesta. Aquí tienes las categorías clave que aparecen en el examen basándose en este video.
+67: 
+68: | Tipo de Pregunta | ¿Qué busca evaluar? | Clave para responder |
+69: | :--- | :--- | :--- |
+70: | **De Información Explícita** | Datos literales que están en el texto. | Localización directa. No supongas nada fuera del texto. |
+71: | **De Inferencia** | Lo que el autor no dijo pero dejó implícito. | Busca pistas de contexto y conclusiones lógicas. |
+72: | **De Idea Principal** | La síntesis o mensaje central del párrafo o texto. | Pregúntate: "¿De qué trata principalmente esto?". |
+73: | **De Vocabulario** | El significado de una palabra según su entorno. | Reemplaza la palabra por sinonimos para ver cuál encaja mejor. |

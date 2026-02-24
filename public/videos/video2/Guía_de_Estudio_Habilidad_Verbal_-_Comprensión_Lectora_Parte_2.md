@@ -95,3 +95,18 @@ Reflexione sobre los siguientes temas y elabore una respuesta estructurada en fo
 | Idea principal | La información central o el "tronco" de un texto, de la cual se desprende el resto de la información. Representa la tesis o el punto más importante. |
 | Ideas secundarias | Información que complementa, explica o desarrolla la idea principal. Se asemejan a las "ramas" que surgen del tronco principal en la jerarquía de un texto. |
 | Significado por contexto | La habilidad de descifrar el significado de palabras desconocidas utilizando las pistas que ofrece el texto circundante, sin necesidad de recurrir a una fuente externa. |
+97: 
+98: \--------------------------------------------------------------------------------
+99: 
+100: ## Glosario Especializado: Clasificación de Conectores
+101: 
+102: Los conectores son las "señales" que te indican qué tipo de relación lógica hay entre dos ideas. Dominar estos términos es vital para el subíndice 1.1.7.
+103: 
+104: | Tipo de Conexión | Conectores Comunes | Ejemplo de su uso |
+105: | --- | --- | --- |
+106: | **Causa** | Porque, debido a que, ya que, puesto que. | "Llegó tarde *porque* perdió el tren." |
+107: | **Consecuencia** | Por lo tanto, así que, por consiguiente, en consecuencia. | "Estudió mucho, *por lo tanto* aprobó." |
+108: | **Oposición** | Sin embargo, pero, no obstante, por el contrario. | "Es inteligente, *sin embargo* es distraído." |
+109: | **Adición** | Además, también, asimismo, de igual manera. | "Es músico *y además* pinta cuadros." |
+110: | **Secuencia tempore** | Primero, luego, después, finalmente, anteriormente. | "*Primero* lee el texto, *luego* responde." |
+111: | **Ejemplificación** | Por ejemplo, tal como, como es el caso de. | "Hay varios gases, *por ejemplo* el oxígeno." |
