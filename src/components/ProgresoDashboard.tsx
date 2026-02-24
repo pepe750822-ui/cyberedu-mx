@@ -165,9 +165,10 @@ const ProgresoDashboard = () => {
   const { toast } = useToast();
 
   const handleDownloadPDF = () => {
+    console.log("Iniciando generación PDF...");
     toast({
       title: "Generando Reporte",
-      description: "Preparando vista de impresión para PDF..."
+      description: "Preparando vista de impresión..."
     });
     setTimeout(() => {
       window.print();
@@ -175,30 +176,33 @@ const ProgresoDashboard = () => {
   };
 
   const handleDownloadCSV = () => {
+    console.log("Iniciando descarga CSV...");
     try {
       const headers = ["Area", "Progreso (%)"];
       const rows = areaData.map(area => [area.name, `${area.percentage}%`]);
-      const csvContent = "data:text/csv;charset=utf-8,\uFEFF"
-        + headers.join(",") + "\n"
-        + rows.map(e => e.join(",")).join("\n");
+      const csvString = headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
 
-      const encodedUri = encodeURI(csvContent);
+      const blob = new Blob(["\uFEFF" + csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
       const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
+      link.href = url;
       link.setAttribute("download", `reporte_ejecutivo_ecoems_${new Date().toISOString().split('T')[0]}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      URL.revokeObjectURL(url);
 
       toast({
-        title: "CSV Exportado",
-        description: "El reporte se ha descargado correctamente."
+        title: "¡Éxito!",
+        description: "El reporte CSV se ha generado y descargado."
       });
     } catch (error) {
+      console.error("Error al generar CSV:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "No se pudo generar el CSV."
+        description: "No se pudo generar el archivo CSV."
       });
     }
   };

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -13,7 +14,40 @@ serve(async (req) => {
     }
 
     try {
-        const resendApiKey = Deno.env.get("RESEND_API_KEY") || "re_AKjBcgh5_NUpA5VASD41sdv2dRazRz1w2";
+        // Validation: Resend API Key
+        const resendApiKey = Deno.env.get("RESEND_API_KEY");
+        if (!resendApiKey) {
+            console.error("RESEND_API_KEY no está configurada");
+            return new Response(JSON.stringify({ error: "Configuración incompleta: RESEND_API_KEY falta" }), {
+                status: 500,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
+
+        // Validation: Authentication
+        const supabaseClient = createClient(
+            Deno.env.get("SUPABASE_URL") ?? "",
+            Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+            {
+                global: {
+                    headers: { Authorization: req.headers.get("Authorization")! },
+                },
+            }
+        );
+
+        const {
+            data: { user },
+            error: authError,
+        } = await supabaseClient.auth.getUser();
+
+        if (authError || !user) {
+            console.error("Error de autenticación:", authError);
+            return new Response(JSON.stringify({ error: "No autorizado" }), {
+                status: 401,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
+
         const resend = new Resend(resendApiKey);
 
         // Intentar parsear el body con manejo de errores
@@ -29,7 +63,7 @@ serve(async (req) => {
         }
 
         const { to, subject, html } = body;
-        console.log(`Petición recibida para: ${to}`);
+        console.log(`Petición recibida de ${user.email} para: ${to}`);
 
         // Validación mínima
         if (!to) {
