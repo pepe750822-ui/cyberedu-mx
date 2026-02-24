@@ -32,6 +32,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNotebookLMContent } from "@/hooks/useNotebookLMContent";
 import { FlashcardViewer } from "@/components/FlashcardViewer";
 import { AITutorQuiz } from "@/components/AITutorQuiz";
+import { MarkdownViewer } from "@/components/MarkdownViewer";
 
 interface MaterialComplementarioProps {
   videoId: string;
@@ -206,13 +207,13 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
 
   if (!hasAny) return null;
 
-  // REORDERED LOGIC: AI Quiz -> Flashcards -> Normal Quiz -> AI Tutor -> Infografia -> PDF -> Podcast
-  const defaultTab = hasAIQuiz
-    ? "ai-quiz"
-    : (hasFlashcards
-      ? "flashcards"
-      : (hasGuia
-        ? "guia"
+  // REORDERED LOGIC: Guia -> AI Quiz -> Flashcards -> Normal Quiz -> AI Tutor -> Infografia -> PDF -> Podcast
+  const defaultTab = hasGuia
+    ? "guia"
+    : (hasAIQuiz
+      ? "ai-quiz"
+      : (hasFlashcards
+        ? "flashcards"
         : (hasQuiz
           ? "quiz"
           : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf")))));
@@ -234,6 +235,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
         </h3>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1 mb-6">
+            {hasGuia && (
+              <TabsTrigger value="guia" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-primary/10 text-primary border border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-white transition-all">
+                <BookCopy className="h-4 w-4" />
+                📘 Guía de Estudio
+              </TabsTrigger>
+            )}
             {hasAIQuiz && (
               <TabsTrigger value="ai-quiz" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
                 <GraduationCap className="h-4 w-4" />
@@ -276,12 +283,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 Podcast de Repaso
               </TabsTrigger>
             )}
-            {hasGuia && (
-              <TabsTrigger value="guia" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-amber-500/10 text-amber-500 border border-amber-500/20 data-[state=active]:bg-amber-600 data-[state=active]:text-white">
-                <Brain className="h-4 w-4" />
-                📘 Guía Estratégica
-              </TabsTrigger>
-            )}
+
             {hasStudio && (
               <TabsTrigger value="studio" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 data-[state=active]:bg-indigo-600 data-[state=active]:text-white transition-all">
                 <Sparkles className="h-4 w-4" />
@@ -337,27 +339,30 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
 
           {hasGuia && (
             <TabsContent value="guia" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="border border-border rounded-lg p-6 bg-muted/5">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-bold text-foreground flex items-center gap-2">
-                    <BookCopy className="h-5 w-5 text-primary" />
-                    {material.guia!.titulo}
-                  </h4>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <BookCopy className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-foreground text-sm sm:text-base leading-none">
+                        {material.guia!.titulo}
+                      </h4>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+                        Contenido interactivo generado con asistencia de IA
+                      </p>
+                    </div>
+                  </div>
                   <a href={material.guia!.url} download>
-                    <Button size="sm" variant="outline">
-                      <Download className="h-4 w-4 mr-1" />
-                      Descargar Guía (.md)
+                    <Button size="sm" variant="outline" className="h-8 text-xs">
+                      <Download className="h-3 w-3 mr-1" />
+                      Descargar .md
                     </Button>
                   </a>
                 </div>
-                <div className="bg-card border border-border rounded-md p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
-                  <p className="text-sm text-muted-foreground italic mb-4">
-                    Esta guía contiene estrategias específicas, cuestionarios y glosario optimizado por Inteligencia Artificial.
-                  </p>
-                  <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <p className="text-slate-400">El contenido completo está disponible para descarga. Para una mejor experiencia, utiliza un lector de Markdown o ábrelo con cualquier editor de texto.</p>
-                  </div>
-                </div>
+
+                <MarkdownViewer url={material.guia!.url} />
               </div>
             </TabsContent>
           )}
