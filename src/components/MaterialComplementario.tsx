@@ -207,16 +207,14 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
 
   if (!hasAny) return null;
 
-  // REORDERED LOGIC: Guia -> AI Quiz -> Flashcards -> Normal Quiz -> AI Tutor -> Infografia -> PDF -> Podcast
-  const defaultTab = hasGuia
-    ? "guia"
-    : (hasAIQuiz
-      ? "ai-quiz"
-      : (hasFlashcards
-        ? "flashcards"
-        : (hasQuiz
-          ? "quiz"
-          : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf")))));
+  // REORDERED LOGIC: AI Quiz -> Flashcards -> Normal Quiz -> AI Tutor -> Infografia -> PDF -> Podcast -> Guia
+  const defaultTab = hasAIQuiz
+    ? "ai-quiz"
+    : (hasFlashcards
+      ? "flashcards"
+      : (hasQuiz
+        ? "quiz"
+        : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : (hasPdf ? "pdf" : (hasPodcast ? "podcast" : "guia"))))));
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
@@ -235,12 +233,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
         </h3>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1 mb-6">
-            {hasGuia && (
-              <TabsTrigger value="guia" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-primary/10 text-primary border border-primary/20 data-[state=active]:bg-primary data-[state=active]:text-white transition-all">
-                <BookCopy className="h-4 w-4" />
-                📘 Guía de Estudio
-              </TabsTrigger>
-            )}
+
             {hasAIQuiz && (
               <TabsTrigger value="ai-quiz" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
                 <GraduationCap className="h-4 w-4" />
@@ -281,6 +274,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
               <TabsTrigger value="podcast" className="gap-1.5 text-xs sm:text-sm">
                 <Headphones className="h-4 w-4" />
                 Podcast de Repaso
+              </TabsTrigger>
+            )}
+            {hasGuia && (
+              <TabsTrigger value="guia" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-amber-500/10 text-amber-500 border border-amber-500/20 data-[state=active]:bg-amber-600 data-[state=active]:text-white transition-all">
+                <BookCopy className="h-4 w-4" />
+                📘 Guía de Estudio
               </TabsTrigger>
             )}
 
