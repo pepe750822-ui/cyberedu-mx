@@ -56,6 +56,66 @@ export type Database = {
         }
         Relationships: []
       }
+      flashcards: {
+        Row: {
+          id: string
+          video_id: string
+          front: string
+          back: string
+          tags: string[] | null
+          difficulty: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          video_id: string
+          front: string
+          back: string
+          tags?: string[] | null
+          difficulty?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          video_id?: string
+          front?: string
+          back?: string
+          tags?: string[] | null
+          difficulty?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quizzes: {
+        Row: {
+          id: string
+          video_id: string
+          title: string | null
+          questions: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          video_id: string
+          title?: string | null
+          questions: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          video_id?: string
+          title?: string | null
+          questions?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -31,6 +31,10 @@ export const useNotebookLMContent = (videoId: string) => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
+            // Reset states at the start of fetching new video content
+            setFlashcards([]);
+            setQuiz(null);
+
             try {
                 // Fetch Flashcards
                 const { data: fcData, error: fcError } = await supabase
@@ -38,25 +42,45 @@ export const useNotebookLMContent = (videoId: string) => {
                     .select('*')
                     .eq('video_id', videoId);
 
-                if (!fcError) setFlashcards(fcData || []);
+                if (!fcError) {
+                    setFlashcards((fcData as any) || []);
+                } else {
+                    setFlashcards([]);
+                }
 
                 // Fetch Quiz
                 const { data: quizData, error: qError } = await supabase
                     .from('quizzes')
                     .select('*')
                     .eq('video_id', videoId)
-                    .single();
+                    .maybeSingle();
 
-                if (!qError) setQuiz(quizData);
+                if (!qError && quizData) {
+                    setQuiz({
+                        video_id: quizData.video_id,
+                        title: quizData.title || '',
+                        questions: quizData.questions as any as QuizQuestion[]
+                    });
+                } else {
+                    setQuiz(null);
+                }
 
             } catch (err) {
                 console.error("Error fetching NotebookLM content:", err);
+                setFlashcards([]);
+                setQuiz(null);
             } finally {
                 setLoading(false);
             }
         };
 
-        if (videoId) fetchData();
+        if (videoId) {
+            fetchData();
+        } else {
+            setFlashcards([]);
+            setQuiz(null);
+            setLoading(false);
+        }
     }, [videoId]);
 
     return { flashcards, quiz, loading };
