@@ -97,6 +97,86 @@ const AreaDetail = () => {
     return 0;
   })();
 
+  // SEO: Dynamic Metadata & Schema Markup
+  useEffect(() => {
+    if (activeVideo && area) {
+      // 1. Update Title & Meta Description
+      const pageTitle = `${activeVideo.title} | ${area.name} - CyberEdu MX`;
+      const pageDesc = `Aprende sobre ${activeVideo.title} en el curso de ${area.name}. ${activeVideo.description}. 100% gratuito para ECOEMS 2026.`;
+
+      document.title = pageTitle;
+
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute("content", pageDesc);
+      } else {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute("name", "description");
+        metaDesc.setAttribute("content", pageDesc);
+        document.head.appendChild(metaDesc);
+      }
+
+      // 2. Inject JSON-LD Schema (Course & VideoObject)
+      const schemaId = `schema-course-${activeVideo.id}`;
+      let script = document.getElementById(schemaId) as HTMLScriptElement;
+
+      if (!script) {
+        script = document.createElement('script');
+        script.id = schemaId;
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+
+      const courseSchema = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": activeVideo.title,
+        "description": activeVideo.description,
+        "provider": {
+          "@type": "Organization",
+          "name": "CyberEdu MX",
+          "sameAs": "https://cyberedumx.com"
+        },
+        "courseCode": activeVideo.id,
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "Online",
+          "instructor": {
+            "@type": "Organization",
+            "name": "CyberEdu MX"
+          }
+        }
+      };
+
+      const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": activeVideo.title,
+        "description": activeVideo.description,
+        "thumbnailUrl": [
+          `https://img.youtube.com/vi/${activeVideo.videoUrl.split('/').pop()}/maxresdefault.jpg`
+        ],
+        "uploadDate": "2025-01-01T08:00:00+08:00", // Placeholder
+        "duration": "PT5M",
+        "contentUrl": activeVideo.videoUrl,
+        "embedUrl": activeVideo.videoUrl,
+        "interactionStatistic": {
+          "@type": "InteractionCounter",
+          "interactionType": { "@type": "WatchAction" },
+          "userInteractionCount": 1234
+        }
+      };
+
+      script.text = JSON.stringify([courseSchema, videoSchema]);
+
+      return () => {
+        // Cleanup script on unmount or video change
+        const oldScript = document.getElementById(schemaId);
+        if (oldScript) oldScript.remove();
+      };
+    }
+  }, [activeVideo, area]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
