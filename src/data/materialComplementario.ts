@@ -79,7 +79,11 @@ export const materiales: Record<string, MaterialVideo> = {
     quiz: { url: "/quiz/video-05-quiz.html" },
     infografia: { url: "/videos/video5/infografia.png", descripcion: "Integración Habilidad Verbal" },
     pdf: { url: "/videos/video5/presentacion.pdf", titulo: "Guía: Integración HV" },
-    podcast: { url: "/videos/video5/podcast.m4a", duracion: "3:00" }
+    podcast: { url: "/videos/video5/podcast.m4a", duracion: "3:00" },
+    guia: {
+      url: "/videos/video5/Guía_de_Estudio_Dominio_Total_de_Habilidad_Verbal_-_Integración_Master.md",
+      titulo: "Guía de Estudio: Integración Master (NotebookLM)"
+    }
   },
 
   // ============================================
