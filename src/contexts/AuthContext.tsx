@@ -11,7 +11,7 @@ interface UserProfile {
   marketing_opt_in?: boolean;
   weekly_reminders?: boolean;
   newsletter_opt_in?: boolean;
-  area_of_interest?: string[];
+  area_of_interest?: string[] | null;
 }
 
 interface AuthContextValue {

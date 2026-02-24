@@ -26,7 +26,7 @@ export type Database = {
           marketing_opt_in: boolean | null
           weekly_reminders: boolean | null
           newsletter_opt_in: boolean | null
-          area_of_interest: string | null
+          area_of_interest: string[] | null
         }
         Insert: {
           avatar_url?: string | null
@@ -39,7 +39,7 @@ export type Database = {
           marketing_opt_in?: boolean | null
           weekly_reminders?: boolean | null
           newsletter_opt_in?: boolean | null
-          area_of_interest?: string | null
+          area_of_interest?: string[] | null
         }
         Update: {
           avatar_url?: string | null
@@ -52,7 +52,7 @@ export type Database = {
           marketing_opt_in?: boolean | null
           weekly_reminders?: boolean | null
           newsletter_opt_in?: boolean | null
-          area_of_interest?: string | null
+          area_of_interest?: string[] | null
         }
         Relationships: []
       }

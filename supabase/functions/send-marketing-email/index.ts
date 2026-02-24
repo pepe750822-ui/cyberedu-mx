@@ -8,98 +8,113 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-    // Manejo de CORS preflight
+    // Handle CORS preflight
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
     }
 
     try {
-        // Validation: Resend API Key
+        // 1. Get Resend API Key from Environment
+        // No hardcoded keys or fallbacks allowed for security
         const resendApiKey = Deno.env.get("RESEND_API_KEY");
         if (!resendApiKey) {
-            console.error("RESEND_API_KEY no está configurada");
-            return new Response(JSON.stringify({ error: "Configuración incompleta: RESEND_API_KEY falta" }), {
+            console.error("Critical: RESEND_API_KEY is not configured in the environment.");
+            return new Response(JSON.stringify({ error: "Server configuration error" }), {
                 status: 500,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        // Validation: Authentication
-        const supabaseClient = createClient(
-            Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-            {
-                global: {
-                    headers: { Authorization: req.headers.get("Authorization")! },
-                },
-            }
-        );
-
-        const {
-            data: { user },
-            error: authError,
-        } = await supabaseClient.auth.getUser();
-
-        if (authError || !user) {
-            console.error("Error de autenticación:", authError);
-            return new Response(JSON.stringify({ error: "No autorizado" }), {
+        // 2. Validate Authentication
+        // Robust check for Authorization header
+        const authHeader = req.headers.get("Authorization");
+        if (!authHeader) {
+            return new Response(JSON.stringify({ error: "Missing Authorization header" }), {
                 status: 401,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
+        const supabaseClient = createClient(
+            Deno.env.get("SUPABASE_URL") ?? "",
+            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "", // Use service role for internal checks if needed, but validate user
+            {
+                auth: {
+                    autoRefreshToken: false,
+                    persistSession: false,
+                },
+            }
+        );
+
+        // Verify the user's JWT
+        const { data: { user }, error: authError } = await createClient(
+            Deno.env.get("SUPABASE_URL") ?? "",
+            Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+            { global: { headers: { Authorization: authHeader } } }
+        ).auth.getUser();
+
+        if (authError || !user) {
+            console.error("Unauthorized attempt to call edge function:", authError);
+            return new Response(JSON.stringify({ error: "Unauthorized" }), {
+                status: 401,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
+
+        // 3. Optional: Add additional authorization (e.g., check if user is admin)
+        // For now, only authenticated users can send. 
+        // In a real scenario, you'd check a database column like 'is_admin'.
+
         const resend = new Resend(resendApiKey);
 
-        // Intentar parsear el body con manejo de errores
+        // 4. Parse and Validate Request Body
         let body;
         try {
             body = await req.json();
         } catch (e) {
-            console.error("Error al parsear el body:", e);
-            return new Response(JSON.stringify({ error: "No se recibió un JSON válido en el body" }), {
+            return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
         const { to, subject, html } = body;
-        console.log(`Petición recibida de ${user.email} para: ${to}`);
 
-        // Validación mínima
-        if (!to) {
-            return new Response(JSON.stringify({ error: "Falta el destinatario (to)" }), {
+        if (!to || !subject || !html) {
+            return new Response(JSON.stringify({ error: "Missing required fields (to, subject, html)" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
+
+        // 5. Send Email
+        console.log(`Sending email from ${user.email} to ${to}`);
 
         const { data, error } = await resend.emails.send({
             from: "CyberEdu MX <onboarding@resend.dev>",
             to: to,
-            subject: subject || "Prueba desde CyberEdu MX",
-            html: html || "<h1>Hola!</h1><p>Esta es una prueba real.</p>",
+            subject: subject,
+            html: html,
         });
 
         if (error) {
-            console.error("Error de la API de Resend:", error);
-            return new Response(JSON.stringify({ error: "Resend API Error: " + (error.message || JSON.stringify(error)) }), {
+            console.error("Resend API error:", error);
+            return new Response(JSON.stringify({ error: "Failed to send email" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        console.log("Email enviado exitosamente:", data);
-
-        return new Response(JSON.stringify(data), {
+        return new Response(JSON.stringify({ success: true, data }), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
+
     } catch (err: any) {
-        console.error("Error crítico en la Edge Function:", err.message);
-        return new Response(JSON.stringify({ error: "Error interno: " + err.message }), {
+        console.error("Unexpected error in Edge Function:", err.message);
+        return new Response(JSON.stringify({ error: "Internal server error" }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
     }
 });
-
