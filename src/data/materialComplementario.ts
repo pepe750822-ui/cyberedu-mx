@@ -68,7 +68,11 @@ export const materiales: Record<string, MaterialVideo> = {
     quiz: { url: "/quiz/video-04-quiz.html" },
     infografia: { url: "/videos/video4/infografia.png", descripcion: "Vocabulario Parte 2" },
     pdf: { url: "/videos/video4/presentacion.pdf", titulo: "Guía: Vocabulario 2" },
-    podcast: { url: "/videos/video4/podcast.m4a", duracion: "3:00" }
+    podcast: { url: "/videos/video4/podcast.m4a", duracion: "3:00" },
+    guia: {
+      url: "/videos/video4/Guía_de_Estudio_Habilidad_Verbal_-_Vocabulario_Avanzado.md",
+      titulo: "Guía de Estudio Intensiva Parte 4 (NotebookLM)"
+    }
   },
   "hv-5": {
     videoId: "hv-5",
