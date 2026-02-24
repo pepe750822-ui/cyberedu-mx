@@ -4,6 +4,7 @@ export interface MaterialVideo {
   infografia?: { url: string; descripcion: string };
   pdf?: { url: string; titulo: string };
   podcast?: { url: string; duracion?: string };
+  guia?: { url: string; titulo: string };
 }
 
 export const materiales: Record<string, MaterialVideo> = {
@@ -32,23 +33,35 @@ export const materiales: Record<string, MaterialVideo> = {
   "hv-1": {
     videoId: "hv-1",
     quiz: { url: "/quiz/video-01-quiz.html" },
-    infografia: { url: "/videos/video1/infografia.png", descripcion: "Comprensión Lectora Parte 1" },
-    pdf: { url: "/videos/video1/presentacion.pdf", titulo: "Guía: Comprensión Lectora 1" },
-    podcast: { url: "/videos/video1/podcast.m4a", duracion: "3:00" }
+    infografia: { url: "/videos/video1/infografia.png", descripcion: "Comprensión Lectora: Estrategias #77-#80 (NotebookLM)" },
+    pdf: { url: "/videos/video1/presentacion.pdf", titulo: "Guía Técnica: Comprensión Lectora 1" },
+    podcast: { url: "/videos/video1/podcast.m4a", duracion: "3:15" },
+    guia: {
+      url: "/videos/video1/Guía de Estudio_ Habilidad Verbal - Comprensión Lectora (ECOEMS 2025).md",
+      titulo: "Guía de Estudio Intensiva (NotebookLM)"
+    }
   },
   "hv-2": {
     videoId: "hv-2",
     quiz: { url: "/quiz/video-02-quiz.html" },
-    infografia: { url: "/videos/video2/infografia.png", descripcion: "Comprensión Lectora Parte 2" },
-    pdf: { url: "/videos/video2/presentacion.pdf", titulo: "Guía: Comprensión Lectora 2" },
-    podcast: { url: "/videos/video2/podcast.m4a", duracion: "3:00" }
+    infografia: { url: "/videos/video2/infografia.png", descripcion: "Comprensión Lectora: Subíndices 1.1.6-1.1.10 (NotebookLM)" },
+    pdf: { url: "/videos/video2/presentacion.pdf", titulo: "Guía Técnica: Análisis Textual (ECOEMS)" },
+    podcast: { url: "/videos/video2/podcast.m4a", duracion: "3:40" },
+    guia: {
+      url: "/videos/video2/Guía_de_Estudio_Habilidad_Verbal_-_Comprensión_Lectora_Parte_2.md",
+      titulo: "Guía de Estudio Intensiva Parte 2 (NotebookLM)"
+    }
   },
   "hv-3": {
     videoId: "hv-3",
     quiz: { url: "/quiz/video-03-quiz.html" },
     infografia: { url: "/videos/video3/infografia.png", descripcion: "Vocabulario Parte 1" },
     pdf: { url: "/videos/video3/presentacion.pdf", titulo: "Guía: Vocabulario 1" },
-    podcast: { url: "/videos/video3/podcast.m4a", duracion: "3:00" }
+    podcast: { url: "/videos/video3/podcast.m4a", duracion: "3:00" },
+    guia: {
+      url: "/videos/video3/Guía_de_Estudio_Manejo_de_Vocabulario_(Video_3).md",
+      titulo: "Guía de Estudio Intensiva Parte 3 (NotebookLM)"
+    }
   },
   "hv-4": {
     videoId: "hv-4",

@@ -192,6 +192,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const hasPodcast = !!material.podcast?.url;
   const hasInfografia = !!material.infografia?.url;
   const hasPdf = !!material.pdf?.url;
+  const hasGuia = !!material.guia?.url;
   const hasQuiz = !!material.quiz?.url;
   const hasAI = !!aiContent[videoId];
   const hasFlashcards = flashcards.length > 0;
@@ -201,7 +202,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const studioSims = areaId ? studioMapping[areaId] : [];
   const hasStudio = studioSims && studioSims.length > 0;
 
-  const hasAny = hasPodcast || hasInfografia || hasPdf || hasQuiz || hasAI || hasStudio || hasFlashcards || hasAIQuiz;
+  const hasAny = hasPodcast || hasInfografia || hasPdf || hasGuia || hasQuiz || hasAI || hasStudio || hasFlashcards || hasAIQuiz;
 
   if (!hasAny) return null;
 
@@ -210,9 +211,11 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
     ? "ai-quiz"
     : (hasFlashcards
       ? "flashcards"
-      : (hasQuiz
-        ? "quiz"
-        : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf"))));
+      : (hasGuia
+        ? "guia"
+        : (hasQuiz
+          ? "quiz"
+          : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : "pdf")))));
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
@@ -273,6 +276,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                 Podcast de Repaso
               </TabsTrigger>
             )}
+            {hasGuia && (
+              <TabsTrigger value="guia" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-amber-500/10 text-amber-500 border border-amber-500/20 data-[state=active]:bg-amber-600 data-[state=active]:text-white">
+                <Brain className="h-4 w-4" />
+                📘 Guía Estratégica
+              </TabsTrigger>
+            )}
             {hasStudio && (
               <TabsTrigger value="studio" className="gap-1.5 text-xs sm:text-sm font-black uppercase tracking-tighter bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 data-[state=active]:bg-indigo-600 data-[state=active]:text-white transition-all">
                 <Sparkles className="h-4 w-4" />
@@ -323,6 +332,33 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           {hasPodcast && (
             <TabsContent value="podcast" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
               <PodcastPlayer url={material.podcast!.url} duracion={material.podcast!.duracion} />
+            </TabsContent>
+          )}
+
+          {hasGuia && (
+            <TabsContent value="guia" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="border border-border rounded-lg p-6 bg-muted/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-bold text-foreground flex items-center gap-2">
+                    <BookCopy className="h-5 w-5 text-primary" />
+                    {material.guia!.titulo}
+                  </h4>
+                  <a href={material.guia!.url} download>
+                    <Button size="sm" variant="outline">
+                      <Download className="h-4 w-4 mr-1" />
+                      Descargar Guía (.md)
+                    </Button>
+                  </a>
+                </div>
+                <div className="bg-card border border-border rounded-md p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                  <p className="text-sm text-muted-foreground italic mb-4">
+                    Esta guía contiene estrategias específicas, cuestionarios y glosario optimizado por Inteligencia Artificial.
+                  </p>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <p className="text-slate-400">El contenido completo está disponible para descarga. Para una mejor experiencia, utiliza un lector de Markdown o ábrelo con cualquier editor de texto.</p>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
           )}
 
