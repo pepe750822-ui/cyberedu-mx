@@ -52,9 +52,19 @@
     gtag('config', 'G-88JWPSS4QL');
   </script>
 
-  <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
   <meta name="google-site-verification" content="googlea2a310e1d404c0e6" />
   <meta name="google-site-verification" content="a2a310e1d404c0e6" />
+
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
 </head>
 
 <body>

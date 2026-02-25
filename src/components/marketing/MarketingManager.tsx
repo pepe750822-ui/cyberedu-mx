@@ -171,20 +171,20 @@ const MarketingManager = () => {
                         <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Sistema de Comunicación</span>
                     </div>
-                    <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white">
-                        Canales de <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 italic">Marketing</span>
+                    <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground">
+                        Canales de <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 dark:from-indigo-400 dark:to-purple-400 italic">Marketing</span>
                     </h2>
-                    <p className="text-slate-400 text-sm max-w-lg">
+                    <p className="text-muted-foreground text-sm max-w-lg">
                         Gestiona cómo quieres recibir las actualizaciones, retos semanales y noticias oficiales de ECOEMS 2026.
                     </p>
                 </div>
                 <div className="p-4 bg-primary/10 rounded-3xl border border-primary/20 backdrop-blur-xl flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)]">
-                        <ShieldCheck className="h-6 w-6 text-white" />
+                    <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)] text-primary-foreground">
+                        <ShieldCheck className="h-6 w-6" />
                     </div>
                     <div>
-                        <p className="text-xs font-black text-white uppercase tracking-widest">Estado GDPR</p>
-                        <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-tight">Cumplimiento Verificado</p>
+                        <p className="text-xs font-black text-foreground uppercase tracking-widest">Estado GDPR</p>
+                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-tight">Cumplimiento Verificado</p>
                     </div>
                 </div>
             </div>
@@ -197,9 +197,9 @@ const MarketingManager = () => {
                             <div className="p-2 bg-indigo-500/20 rounded-xl text-indigo-400">
                                 <Mail className="h-5 w-5" />
                             </div>
-                            <CardTitle className="text-xl font-black uppercase tracking-tighter group-hover:text-indigo-400 transition-colors">Suscripciones</CardTitle>
+                            <CardTitle className="text-xl font-black uppercase tracking-tighter group-hover:text-primary transition-colors">Suscripciones</CardTitle>
                         </div>
-                        <CardDescription className="text-[11px] font-medium text-slate-500 uppercase tracking-widest">Gestiona tus notificaciones por correo</CardDescription>
+                        <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest">Gestiona tus notificaciones por correo</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         {[
@@ -238,15 +238,15 @@ const MarketingManager = () => {
                         ].map((item) => (
                             <div key={item.id} className="flex items-start justify-between gap-4 p-4 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 group/item">
                                 <div className="flex gap-4">
-                                    <div className={`mt-1 p-2 rounded-lg bg-slate-900 border border-white/5 ${item.color}`}>
+                                    <div className={`mt-1 p-2 rounded-lg bg-muted border border-border ${item.color}`}>
                                         <item.icon className="h-4 w-4" />
                                     </div>
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <Label htmlFor={item.id} className="text-sm font-black text-white cursor-pointer">{item.label}</Label>
+                                            <Label htmlFor={item.id} className="text-sm font-black text-foreground cursor-pointer">{item.label}</Label>
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <button className="p-1 text-slate-500 hover:text-white transition-colors">
+                                                    <button className="p-1 text-muted-foreground hover:text-foreground transition-colors">
                                                         <Eye className="h-3 w-3" />
                                                     </button>
                                                 </DialogTrigger>
@@ -284,11 +284,11 @@ const MarketingManager = () => {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center gap-4 mb-4">
-                            <div className="h-10 w-10 shrink-0 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                            <div className="h-10 w-10 shrink-0 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                                 <Sparkles className="h-5 w-5" />
                             </div>
-                            <p className="text-[11px] text-slate-300 leading-relaxed">
-                                <span className="font-black text-white uppercase tracking-tighter">Estudio Inteligente:</span> Al seleccionar tus áreas críticas, nuestro motor de campañas te avisará primero cuando se agreguen noticias o recursos de esos temas.
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                <span className="font-black text-foreground uppercase tracking-tighter">Estudio Inteligente:</span> Al seleccionar tus áreas críticas, nuestro motor de campañas te avisará primero cuando se agreguen noticias o recursos de esos temas.
                             </p>
                         </div>
 

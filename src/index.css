@@ -6,6 +6,69 @@
 
 @layer base {
   :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 270 90% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 270 90% 60%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* CyberEdu Custom Tokens - Light Adaptations */
+    --cyber-neon-purple: 270 90% 60%;
+    --cyber-neon-blue: 190 90% 50%;
+    --cyber-neon-pink: 320 90% 60%;
+    --cyber-glass-bg: rgba(255, 255, 255, 0.7);
+    --cyber-glass-border: rgba(0, 0, 0, 0.05);
+
+    --hero-gradient: linear-gradient(135deg, hsl(270 90% 95%) 0%, hsl(210 40% 98%) 100%);
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    --card-hover-shadow: 0 10px 30px -5px rgba(139, 92, 246, 0.1);
+
+    --area-gradient-1: linear-gradient(135deg, hsl(270 90% 65%) 0%, hsl(270 90% 55%) 100%);
+    --area-gradient-2: linear-gradient(135deg, hsl(190 90% 55%) 0%, hsl(190 90% 45%) 100%);
+    --area-gradient-3: linear-gradient(135deg, hsl(320 90% 65%) 0%, hsl(320 90% 55%) 100%);
+    --area-gradient-4: linear-gradient(135deg, hsl(150 90% 55%) 0%, hsl(150 90% 45%) 100%);
+    --area-gradient-5: linear-gradient(135deg, hsl(25 90% 65%) 0%, hsl(25 90% 55%) 100%);
+    --area-gradient-6: linear-gradient(135deg, hsl(210 90% 55%) 0%, hsl(210 90% 45%) 100%);
+    --area-gradient-7: linear-gradient(135deg, hsl(45 90% 65%) 0%, hsl(45 90% 55%) 100%);
+    --area-gradient-8: linear-gradient(135deg, hsl(10 90% 65%) 0%, hsl(10 90% 55%) 100%);
+    --area-gradient-9: linear-gradient(135deg, hsl(290 80% 60%) 0%, hsl(290 80% 50%) 100%);
+    --area-gradient-10: linear-gradient(135deg, hsl(180 80% 50%) 0%, hsl(180 80% 40%) 100%);
+  }
+
+  .dark {
     --background: 240 25% 4%;
     --foreground: 210 30% 95%;
 
@@ -34,8 +97,6 @@
     --input: 240 15% 15%;
     --ring: 270 90% 60%;
 
-    --radius: 1rem;
-
     --sidebar-background: 240 25% 4%;
     --sidebar-foreground: 210 30% 90%;
     --sidebar-primary: 270 90% 60%;
@@ -45,49 +106,13 @@
     --sidebar-border: 240 15% 15%;
     --sidebar-ring: 270 90% 60%;
 
-    /* CyberEdu Custom Tokens */
-    --cyber-neon-purple: 270 90% 60%;
-    --cyber-neon-blue: 190 90% 50%;
-    --cyber-neon-pink: 320 90% 60%;
+    /* CyberEdu Custom Tokens - Dark Mode */
     --cyber-glass-bg: rgba(20, 20, 35, 0.6);
     --cyber-glass-border: rgba(255, 255, 255, 0.1);
 
-    --hero-gradient: linear-gradient(135deg, hsl(270 90% 40%) 0%, hsl(240 80% 10%) 50%, hsl(320 80% 30%) 100%);
+    --hero-gradient: linear-gradient(135deg, hsl(270 90% 30%) 0%, hsl(240 80% 5%) 50%, hsl(320 80% 20%) 100%);
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-    --card-hover-shadow: 0 12px 48px 0 rgba(140, 37, 244, 0.3);
-
-    --area-gradient-1: linear-gradient(135deg, hsl(270 90% 60%) 0%, hsl(270 90% 40%) 100%);
-    --area-gradient-2: linear-gradient(135deg, hsl(190 90% 50%) 0%, hsl(190 90% 30%) 100%);
-    --area-gradient-3: linear-gradient(135deg, hsl(320 90% 60%) 0%, hsl(320 90% 40%) 100%);
-    --area-gradient-4: linear-gradient(135deg, hsl(150 90% 50%) 0%, hsl(150 90% 30%) 100%);
-    --area-gradient-5: linear-gradient(135deg, hsl(25 90% 60%) 0%, hsl(25 90% 40%) 100%);
-    --area-gradient-6: linear-gradient(135deg, hsl(210 90% 50%) 0%, hsl(210 90% 30%) 100%);
-    --area-gradient-7: linear-gradient(135deg, hsl(45 90% 60%) 0%, hsl(45 90% 40%) 100%);
-    --area-gradient-8: linear-gradient(135deg, hsl(10 90% 60%) 0%, hsl(10 90% 40%) 100%);
-    --area-gradient-9: linear-gradient(135deg, hsl(290 80% 55%) 0%, hsl(290 80% 35%) 100%);
-    --area-gradient-10: linear-gradient(135deg, hsl(180 80% 45%) 0%, hsl(180 80% 25%) 100%);
-  }
-
-  .dark {
-    --background: 215 50% 8%;
-    --foreground: 210 30% 95%;
-    --card: 215 45% 12%;
-    --card-foreground: 210 30% 95%;
-    --popover: 215 45% 12%;
-    --popover-foreground: 210 30% 95%;
-    --primary: 215 75% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 160 45% 42%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 215 30% 18%;
-    --muted-foreground: 215 15% 60%;
-    --accent: 35 85% 52%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 215 25% 22%;
-    --input: 215 25% 22%;
-    --ring: 215 75% 55%;
+    --card-hover-shadow: 0 12px 48px 0 rgba(140, 37, 244, 0.2);
   }
 }
 
