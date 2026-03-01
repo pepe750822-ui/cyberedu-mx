@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { logger } from "@/lib/logger";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2, AlertCircle } from "lucide-react";
 
@@ -24,7 +25,7 @@ export const MarkdownViewer = ({ url }: MarkdownViewerProps) => {
                 const cleanedText = text.replace(/^---[\s\S]*?---/, "");
                 setContent(cleanedText);
             } catch (err) {
-                console.error("Error fetching markdown:", err);
+                logger.error("Error fetching markdown:", err);
                 setError("Error al cargar el contenido de la guía.");
             } finally {
                 setLoading(false);

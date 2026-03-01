@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { logger } from "@/lib/logger";
 import {
     Calendar,
     Clock,
@@ -47,7 +48,7 @@ const PlanEstudioDiario = () => {
                 const remainingVideos = parsedPlan.filter((p: { video: Video; area: Area }) => !isViewed(p.video.id));
                 if (remainingVideos.length > 0) return remainingVideos;
             } catch (e) {
-                console.error("Error parsing saved plan", e);
+                logger.error("Error parsing saved plan", e);
             }
         }
 

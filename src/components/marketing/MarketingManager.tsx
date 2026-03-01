@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { logger } from "@/lib/logger";
 import {
     Mail,
     Bell,
@@ -87,17 +88,17 @@ const MarketingManager = () => {
             });
 
             if (error) {
-                console.error("Error devuelto por la función:", error);
+                logger.error("Error devuelto por la función:", error);
                 throw new Error(error.message || "La función de Supabase devolvió un error.");
             }
 
-            console.log("Respuesta de la función:", data);
+            logger.log("Respuesta de la función:", data);
 
             toast.success("Campaña enviada con éxito", {
                 description: `Se ha enviado un correo de prueba a ${user.email}`,
             });
         } catch (err: any) {
-            console.error("Error detallado en el envío:", err);
+            logger.error("Error detallado en el envío:", err);
 
             // Extraer mensaje de error más útil
             let errorMessage = "No se pudo conectar con el servicio de correo.";
@@ -154,7 +155,7 @@ const MarketingManager = () => {
                 description: "Tus ajustes de comunicación han sido actualizados en la base de datos.",
             });
         } catch (err: any) {
-            console.error("Error al guardar preferencias:", err);
+            logger.error("Error al guardar preferencias:", err);
             toast.error("Error al guardar", {
                 description: "No se pudieron guardar los cambios. Asegúrate de que las columnas existan en Supabase.",
             });

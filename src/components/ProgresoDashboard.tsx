@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
+import { logger } from "@/lib/logger";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -165,7 +166,7 @@ const ProgresoDashboard = () => {
   const { toast } = useToast();
 
   const handleDownloadPDF = () => {
-    console.log("Iniciando generación PDF...");
+    logger.log("Iniciando generación PDF...");
     toast({
       title: "Generando Reporte",
       description: "Preparando vista de impresión..."
@@ -176,7 +177,7 @@ const ProgresoDashboard = () => {
   };
 
   const handleDownloadCSV = () => {
-    console.log("Iniciando descarga CSV...");
+    logger.log("Iniciando descarga CSV...");
     try {
       const headers = ["Area", "Progreso (%)"];
       const rows = areaData.map(area => [area.name, `${area.percentage}%`]);
@@ -198,7 +199,7 @@ const ProgresoDashboard = () => {
         description: "El reporte CSV se ha generado y descargado."
       });
     } catch (error) {
-      console.error("Error al generar CSV:", error);
+      logger.error("Error al generar CSV:", error);
       toast({
         variant: "destructive",
         title: "Error",

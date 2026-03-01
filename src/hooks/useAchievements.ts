@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 import { ACHIEVEMENTS_DATA, Achievement } from '@/types/achievements';
@@ -22,7 +23,7 @@ export const useAchievements = () => {
                 });
                 setAchievements(merged);
             } catch (e) {
-                console.error('Error parsing achievements', e);
+                logger.error('Error parsing achievements', e);
             }
         }
     }, []);
@@ -38,7 +39,7 @@ export const useAchievements = () => {
             audio.volume = 0.4;
             audio.play();
         } catch (e) {
-            console.warn('Could not play unlock sound', e);
+            logger.warn('Could not play unlock sound', e);
         }
     };
 

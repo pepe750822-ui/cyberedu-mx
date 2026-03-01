@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface Flashcard {
     id: string;
@@ -66,7 +67,7 @@ export const useNotebookLMContent = (videoId: string) => {
                 }
 
             } catch (err) {
-                console.error("Error fetching NotebookLM content:", err);
+                logger.error("Error fetching NotebookLM content:", err);
                 setFlashcards([]);
                 setQuiz(null);
             } finally {
