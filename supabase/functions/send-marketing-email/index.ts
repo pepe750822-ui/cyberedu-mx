@@ -61,9 +61,17 @@ serve(async (req) => {
             });
         }
 
-        // 3. Optional: Add additional authorization (e.g., check if user is admin)
-        // For now, only authenticated users can send. 
-        // In a real scenario, you'd check a database column like 'is_admin'.
+        // 3. Role-based authorization: only admins can send marketing emails
+        const { data: roleCheck, error: roleError } = await supabaseClient
+            .rpc('has_role', { _user_id: user.id, _role: 'admin' });
+
+        if (roleError || !roleCheck) {
+            console.warn("Unauthorized email send attempt by user:", user.id);
+            return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
+                status: 403,
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+        }
 
         const resend = new Resend(resendApiKey);
 
