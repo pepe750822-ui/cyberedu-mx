@@ -49,8 +49,8 @@ const MarketingManager = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
-    const handleEmailBlast = async () => {
-        if (!user?.email) {
+    const handleEmailBlast = async (bulkMode: boolean = false) => {
+        if (!bulkMode && !user?.email) {
             toast.error("Error de sesión", {
                 description: "No se encontró un correo electrónico asociado a tu cuenta.",
             });
@@ -59,48 +59,61 @@ const MarketingManager = () => {
 
         setIsBlasting(true);
         try {
-            // Llamada a la Edge Function de Supabase en lugar de envío directo (evita errores de CORS y exposición de Key)
-            const { data, error } = await supabase.functions.invoke("send-marketing-email", {
-                body: {
-                    to: user.email,
-                    subject: "⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026",
-                    html: `
-                        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; border-radius: 32px; overflow: hidden; border: 1px solid #f59e0b33;">
-                            <div style="background-color: #f59e0b; padding: 40px; text-align: center;">
-                                <h1 style="margin: 0; color: #020617; text-transform: uppercase; font-weight: 900; font-size: 24px;">Requisito Obligatorio</h1>
-                            </div>
-                            <div style="padding: 40px;">
-                                <h2 style="color: #fff; font-size: 20px;">Hola, Aspirante 👋</h2>
-                                <p style="color: #cbd5e1; line-height: 1.6;">La <b>Llave MX</b> es indispensable para tu registro ECOEMS 2026. Sin ella, no podrás participar en el proceso de asignación.</p>
-                                <div style="background-color: #ffffff0d; border: 1px solid #ffffff1a; border-radius: 16px; padding: 20px; margin: 24px 0;">
-                                    <p style="margin: 0 0 12px 0; font-size: 14px; color: #e2e8f0;">Sigue estos pasos:</p>
-                                    <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px;">
-                                        <li style="margin-bottom: 8px;">Crea tu cuenta en <b>llave.gob.mx</b></li>
-                                        <li style="margin-bottom: 8px;">Valida tu CURP y datos personales</li>
-                                        <li>Activa tu cuenta con el código recibido</li>
-                                    </ol>
-                                </div>
-                                <a href="https://llave.gob.mx" style="display: block; background-color: #f59e0b; color: #020617; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Acceder a Llave MX</a>
-                            </div>
+            const emailHtml = `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; border-radius: 32px; overflow: hidden; border: 1px solid #f59e0b33;">
+                    <div style="background-color: #f59e0b; padding: 40px; text-align: center;">
+                        <h1 style="margin: 0; color: #020617; text-transform: uppercase; font-weight: 900; font-size: 24px;">Requisito Obligatorio</h1>
+                    </div>
+                    <div style="padding: 40px;">
+                        <h2 style="color: #fff; font-size: 20px;">Hola, Aspirante 👋</h2>
+                        <p style="color: #cbd5e1; line-height: 1.6;">La <b>Llave MX</b> es indispensable para tu registro ECOEMS 2026. Sin ella, no podrás participar en el proceso de asignación.</p>
+                        <div style="background-color: #ffffff0d; border: 1px solid #ffffff1a; border-radius: 16px; padding: 20px; margin: 24px 0;">
+                            <p style="margin: 0 0 12px 0; font-size: 14px; color: #e2e8f0;">Sigue estos pasos:</p>
+                            <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px;">
+                                <li style="margin-bottom: 8px;">Crea tu cuenta en <b>llave.gob.mx</b></li>
+                                <li style="margin-bottom: 8px;">Valida tu CURP y datos personales</li>
+                                <li>Activa tu cuenta con el código recibido</li>
+                            </ol>
                         </div>
-                    `
-                }
+                        <a href="https://llave.gob.mx" style="display: block; background-color: #f59e0b; color: #020617; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Acceder a Llave MX</a>
+                    </div>
+                </div>
+            `;
+
+            const payload: Record<string, unknown> = {
+                subject: "⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026",
+                html: emailHtml,
+            };
+
+            if (bulkMode) {
+                payload.bulk = true;
+            } else {
+                payload.to = user!.email;
+            }
+
+            const { data, error } = await supabase.functions.invoke("send-marketing-email", {
+                body: payload,
             });
 
             if (error) {
                 logger.error("Error devuelto por la función:", error);
-                throw new Error(error.message || "La función de Supabase devolvió un error.");
+                throw new Error(error.message || "La función devolvió un error.");
             }
 
             logger.log("Respuesta de la función:", data);
 
-            toast.success("Campaña enviada con éxito", {
-                description: `Se ha enviado un correo de prueba a ${user.email}`,
-            });
+            if (bulkMode) {
+                toast.success("Campaña masiva enviada", {
+                    description: `Enviados: ${data.sent} · Fallidos: ${data.failed} · Total: ${data.total}`,
+                });
+            } else {
+                toast.success("Campaña enviada con éxito", {
+                    description: `Se ha enviado un correo de prueba a ${user!.email}`,
+                });
+            }
         } catch (err: any) {
             logger.error("Error detallado en el envío:", err);
 
-            // Extraer mensaje de error más útil
             let errorMessage = "No se pudo conectar con el servicio de correo.";
             if (err.message) errorMessage = err.message;
             if (err.context?.errorMessage) errorMessage = err.context.errorMessage;
@@ -420,9 +433,9 @@ const MarketingManager = () => {
                             </div>
                         </div>
 
-                        <div className="shrink-0 w-full md:w-auto">
+                        <div className="shrink-0 w-full md:w-auto flex flex-col gap-3">
                             <Button
-                                onClick={handleEmailBlast}
+                                onClick={() => handleEmailBlast(true)}
                                 disabled={isBlasting}
                                 className={cn(
                                     "h-24 w-full md:w-56 rounded-3xl font-black uppercase tracking-[0.2em] text-lg transition-all shadow-2xl",
@@ -438,10 +451,19 @@ const MarketingManager = () => {
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
-                                        <Send className="h-6 w-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                        <span>ENVIAR BLAST</span>
+                                        <Send className="h-6 w-6" />
+                                        <span>ENVIAR A TODOS</span>
                                     </div>
                                 )}
+                            </Button>
+                            <Button
+                                onClick={() => handleEmailBlast(false)}
+                                disabled={isBlasting}
+                                variant="outline"
+                                className="h-10 w-full md:w-56 rounded-xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest"
+                            >
+                                <Mail className="mr-2 h-3.5 w-3.5" />
+                                Prueba a mi correo
                             </Button>
                         </div>
                     </div>
