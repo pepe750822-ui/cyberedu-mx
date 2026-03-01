@@ -86,34 +86,91 @@ serve(async (req) => {
             });
         }
 
-        const { to, subject, html } = body;
+        const { to, subject, html, bulk } = body;
 
-        if (!to || !subject || !html) {
-            return new Response(JSON.stringify({ error: "Missing required fields (to, subject, html)" }), {
+        if (!subject || !html) {
+            return new Response(JSON.stringify({ error: "Missing required fields (subject, html)" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        // 5. Send Email
-        console.log(`Sending email from ${user.email} to ${to}`);
+        // 5. Determine recipients
+        let recipients: string[] = [];
 
-        const { data, error } = await resend.emails.send({
-            from: "CyberEdu MX <noreply@cyberedumx.com>",
-            to: to,
-            subject: subject,
-            html: html,
-        });
+        if (bulk) {
+            // Fetch all users with marketing_opt_in enabled
+            const { data: optedInUsers, error: fetchError } = await supabaseClient
+                .from("profiles")
+                .select("email")
+                .eq("marketing_opt_in", true)
+                .not("email", "is", null);
 
-        if (error) {
-            console.error("Resend API error:", error);
-            return new Response(JSON.stringify({ error: "Failed to send email" }), {
-                status: 400,
-                headers: { ...corsHeaders, "Content-Type": "application/json" },
-            });
+            if (fetchError) {
+                console.error("Error fetching opted-in users:", fetchError);
+                return new Response(JSON.stringify({ error: "Failed to fetch recipients" }), {
+                    status: 500,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                });
+            }
+
+            recipients = (optedInUsers || [])
+                .map((u: { email: string | null }) => u.email)
+                .filter((e): e is string => !!e);
+
+            if (recipients.length === 0) {
+                return new Response(JSON.stringify({ error: "No recipients with marketing opt-in found" }), {
+                    status: 400,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                });
+            }
+
+            console.log(`Bulk send: ${recipients.length} recipients found`);
+        } else {
+            if (!to) {
+                return new Response(JSON.stringify({ error: "Missing required field: to" }), {
+                    status: 400,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                });
+            }
+            recipients = Array.isArray(to) ? to : [to];
         }
 
-        return new Response(JSON.stringify({ success: true, data }), {
+        // 6. Send emails
+        const results = { sent: 0, failed: 0, errors: [] as string[] };
+
+        for (const recipient of recipients) {
+            try {
+                const { error } = await resend.emails.send({
+                    from: "CyberEdu MX <noreply@cyberedumx.com>",
+                    to: recipient,
+                    subject: subject,
+                    html: html,
+                });
+
+                if (error) {
+                    console.error(`Failed to send to ${recipient}:`, error);
+                    results.failed++;
+                    results.errors.push(recipient);
+                } else {
+                    results.sent++;
+                }
+            } catch (sendErr: any) {
+                console.error(`Exception sending to ${recipient}:`, sendErr.message);
+                results.failed++;
+                results.errors.push(recipient);
+            }
+        }
+
+        console.log(`Send complete: ${results.sent} sent, ${results.failed} failed`);
+
+        return new Response(JSON.stringify({
+            success: true,
+            total: recipients.length,
+            sent: results.sent,
+            failed: results.failed,
+            ...(results.errors.length > 0 && { failed_recipients: results.errors }),
+        }), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
