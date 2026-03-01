@@ -1,5 +1,7 @@
 import { useParams, Link } from "react-router-dom";
+import { useMemo } from "react";
 import { ArrowLeft, Calendar, User, Tag, Share2, Facebook, Twitter, Link as LinkIcon, ChevronRight } from "lucide-react";
+import DOMPurify from "dompurify";
 import { blogPosts } from "@/data/blogData";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -93,7 +95,10 @@ const BlogPostDetail = () => {
                 prose-strong:text-foreground prose-strong:font-black
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
               "
-                            dangerouslySetInnerHTML={{ __html: post.content }}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, {
+                                ALLOWED_TAGS: ['h2', 'h3', 'h4', 'p', 'ul', 'ol', 'li', 'a', 'strong', 'em', 'b', 'br', 'div', 'span'],
+                                ALLOWED_ATTR: ['href', 'target', 'rel', 'class']
+                            }) }}
                         />
 
                         <Separator className="my-16" />
