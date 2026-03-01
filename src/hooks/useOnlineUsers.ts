@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 export const useOnlineUsers = () => {
     const [onlineCount, setOnlineCount] = useState(1);
@@ -15,10 +16,10 @@ export const useOnlineUsers = () => {
                 setOnlineCount(Math.max(1, count));
             })
             .on("presence", { event: "join" }, ({ newPresences }) => {
-                console.log("New users joined: ", newPresences);
+                logger.log("New users joined: ", newPresences);
             })
             .on("presence", { event: "leave" }, ({ leftPresences }) => {
-                console.log("Users left: ", leftPresences);
+                logger.log("Users left: ", leftPresences);
             })
             .subscribe(async (status) => {
                 if (status === "SUBSCRIBED") {

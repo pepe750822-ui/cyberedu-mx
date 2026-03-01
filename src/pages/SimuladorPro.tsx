@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { logger } from "@/lib/logger";
 import { useNavigate } from "react-router-dom";
 import {
     Timer,
@@ -63,7 +64,7 @@ const SimuladorPro = () => {
                     setShowRestoreModal(true);
                 }
             } catch (e) {
-                console.error("Error parsing saved state", e);
+                logger.error("Error parsing saved state", e);
             }
         }
     }, []);
