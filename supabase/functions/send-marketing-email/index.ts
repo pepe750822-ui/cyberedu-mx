@@ -99,7 +99,7 @@ serve(async (req) => {
         console.log(`Sending email from ${user.email} to ${to}`);
 
         const { data, error } = await resend.emails.send({
-            from: "CyberEdu MX <onboarding@resend.dev>",
+            from: "CyberEdu MX <noreply@cyberedumx.com>",
             to: to,
             subject: subject,
             html: html,
