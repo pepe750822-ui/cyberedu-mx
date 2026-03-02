@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
-  ThumbsUp, ThumbsDown, AlertTriangle, Play
+  ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
+  BookOpen, Target, History
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,8 @@ interface Message {
   content: string;
   id: string;
   plan?: Plan | null;
+  reasoning?: Reasoning | null;
+  decisions?: Decision[];
   feedback?: "up" | "down";
 }
 
@@ -36,42 +39,112 @@ interface Plan {
   status: "pending" | "approved" | "rejected" | "executing";
 }
 
+interface Reasoning {
+  question_type: string;
+  key_concepts: string[];
+  approach: string;
+  alternatives_considered: string[];
+  confidence: number;
+  references_to_past: string;
+}
+
+interface Decision {
+  question: string;
+  chosen: string;
+  reasoning: string;
+  impact: string;
+}
+
+interface AgentMemory {
+  decisions: Decision[];
+  topics: string[];
+  insights: string[];
+  lastUpdated: number;
+}
+
 // ─── Constants ───
 const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-chat`;
+const MEMORY_KEY = "cyberagent_memory_v2";
+const HISTORY_KEY = "ai_agent_history_v2";
 
-// ─── Plan Parser ───
+// ─── Memory Manager ───
+function loadMemory(): AgentMemory {
+  try {
+    const raw = localStorage.getItem(MEMORY_KEY);
+    if (raw) {
+      const mem = JSON.parse(raw);
+      if (Date.now() - mem.lastUpdated < MEMORY_TTL) return mem;
+    }
+  } catch { /* ignore */ }
+  return { decisions: [], topics: [], insights: [], lastUpdated: Date.now() };
+}
+
+function saveMemory(memory: AgentMemory) {
+  localStorage.setItem(MEMORY_KEY, JSON.stringify({ ...memory, lastUpdated: Date.now() }));
+}
+
+// ─── Content Parsers ───
+function parseReasoningFromContent(content: string): { reasoning: Reasoning | null; cleanContent: string } {
+  const match = content.match(/<reasoning>([\s\S]*?)<\/reasoning>/);
+  if (!match) return { reasoning: null, cleanContent: content };
+  try {
+    const parsed = JSON.parse(match[1]);
+    return { reasoning: parsed, cleanContent: content.replace(/<reasoning>[\s\S]*?<\/reasoning>/, "").trim() };
+  } catch {
+    return { reasoning: null, cleanContent: content };
+  }
+}
+
+function parseDecisionsFromContent(content: string): { decisions: Decision[]; cleanContent: string } {
+  const decisions: Decision[] = [];
+  let cleaned = content;
+  const regex = /<decision>([\s\S]*?)<\/decision>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    try {
+      decisions.push(JSON.parse(m[1]));
+    } catch { /* skip */ }
+  }
+  cleaned = content.replace(/<decision>[\s\S]*?<\/decision>/g, "").trim();
+  return { decisions, cleanContent: cleaned };
+}
+
 function parsePlanFromContent(content: string): { plan: Plan | null; cleanContent: string } {
   const planMatch = content.match(/<plan>([\s\S]*?)<\/plan>/);
   if (!planMatch) return { plan: null, cleanContent: content };
-
   try {
     const parsed = JSON.parse(planMatch[1]);
     const plan: Plan = {
       title: parsed.title || "Plan de estudio",
       description: parsed.description || "",
-      steps: (parsed.steps || []).map((s: any) => ({
-        ...s,
-        status: "pending" as const,
-      })),
+      steps: (parsed.steps || []).map((s: any) => ({ ...s, status: "pending" as const })),
       status: "pending",
     };
-    const cleanContent = content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim();
-    return { plan, cleanContent };
+    return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
   } catch {
     return { plan: null, cleanContent: content };
   }
+}
+
+function parseAllBlocks(content: string) {
+  const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
+  const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
+  const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
+  return { reasoning, decisions, plan, cleanContent: c3 || "He analizado tu solicitud:" };
 }
 
 // ─── Streaming helper ───
 async function streamChat({
   messages,
   context,
+  memory,
   onDelta,
   onDone,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
+  memory?: AgentMemory;
   onDelta: (text: string) => void;
   onDone: () => void;
 }) {
@@ -81,7 +154,7 @@ async function streamChat({
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
-    body: JSON.stringify({ messages, context }),
+    body: JSON.stringify({ messages, context, memory }),
   });
 
   if (!resp.ok || !resp.body) {
@@ -98,7 +171,6 @@ async function streamChat({
     const { done, value } = await reader.read();
     if (done) break;
     textBuffer += decoder.decode(value, { stream: true });
-
     let newlineIndex: number;
     while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
       let line = textBuffer.slice(0, newlineIndex);
@@ -119,7 +191,6 @@ async function streamChat({
     }
   }
 
-  // Flush remaining
   if (textBuffer.trim()) {
     for (let raw of textBuffer.split("\n")) {
       if (!raw) continue;
@@ -138,11 +209,98 @@ async function streamChat({
   onDone();
 }
 
+// ─── Reasoning Card ───
+const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
+  const [open, setOpen] = useState(false);
+  const confidenceColor = reasoning.confidence >= 80 ? "text-emerald-400" : reasoning.confidence >= 50 ? "text-amber-400" : "text-red-400";
+
+  return (
+    <div className="mb-3 border border-amber-500/20 bg-amber-500/5 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-2 p-3 text-left hover:bg-amber-500/10 transition-colors"
+      >
+        <Lightbulb className="h-4 w-4 text-amber-400 shrink-0" />
+        <span className="text-[11px] font-black text-amber-300 uppercase tracking-wider flex-1">
+          Razonamiento del agente
+        </span>
+        <span className={cn("text-[10px] font-bold", confidenceColor)}>
+          {reasoning.confidence}% confianza
+        </span>
+        <ChevronDown className={cn("h-3.5 w-3.5 text-amber-400 transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open && (
+        <div className="px-3 pb-3 space-y-2 text-[11px] animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center gap-2">
+            <Target className="h-3 w-3 text-slate-500" />
+            <span className="text-slate-400">Tipo:</span>
+            <span className="px-1.5 py-0.5 bg-primary/20 text-primary rounded text-[9px] font-bold uppercase">
+              {reasoning.question_type}
+            </span>
+          </div>
+
+          <div>
+            <p className="text-slate-500 font-bold mb-1">Enfoque:</p>
+            <p className="text-slate-300">{reasoning.approach}</p>
+          </div>
+
+          {reasoning.key_concepts.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {reasoning.key_concepts.map((c, i) => (
+                <span key={i} className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-[9px] text-slate-400">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {reasoning.alternatives_considered.length > 0 && (
+            <div>
+              <p className="text-slate-500 font-bold mb-1">Alternativas consideradas:</p>
+              <ul className="space-y-0.5">
+                {reasoning.alternatives_considered.map((a, i) => (
+                  <li key={i} className="text-slate-400 flex items-start gap-1.5">
+                    <ChevronRight className="h-3 w-3 text-slate-600 mt-0.5 shrink-0" />
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {reasoning.references_to_past && (
+            <div className="flex items-start gap-1.5 p-2 bg-primary/5 border border-primary/10 rounded-lg">
+              <History className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+              <p className="text-slate-400">{reasoning.references_to_past}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ─── Decision Card ───
+const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
+  <div className="my-2 border border-blue-500/20 bg-blue-500/5 rounded-xl p-3 space-y-1.5">
+    <div className="flex items-center gap-2">
+      <BookOpen className="h-4 w-4 text-blue-400" />
+      <span className="text-[11px] font-black text-blue-300 uppercase tracking-wider">Decisión registrada</span>
+    </div>
+    <p className="text-[12px] font-semibold text-slate-200">{decision.question}</p>
+    <p className="text-[11px] text-emerald-400">→ {decision.chosen}</p>
+    <p className="text-[10px] text-slate-500">{decision.reasoning}</p>
+    {decision.impact && (
+      <p className="text-[10px] text-amber-400/80 flex items-start gap-1">
+        <Zap className="h-3 w-3 shrink-0 mt-0.5" /> {decision.impact}
+      </p>
+    )}
+  </div>
+);
+
 // ─── Plan Step Component ───
-const PlanStepItem: React.FC<{
-  step: PlanStep;
-  onToggle: (id: number) => void;
-}> = ({ step, onToggle }) => {
+const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }> = ({ step, onToggle }) => {
   const priorityColor = {
     alta: "text-red-400 bg-red-500/10 border-red-500/20",
     media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
@@ -154,20 +312,14 @@ const PlanStepItem: React.FC<{
       onClick={() => onToggle(step.id)}
       className={cn(
         "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left",
-        step.status === "approved"
-          ? "bg-emerald-500/10 border-emerald-500/20"
-          : step.status === "rejected"
-          ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
+        step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
+          : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
           : "bg-white/5 border-white/10 hover:bg-white/10"
       )}
     >
-      {step.status === "approved" ? (
-        <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-      ) : step.status === "rejected" ? (
-        <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
-      ) : (
-        <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />
-      )}
+      {step.status === "approved" ? <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+        : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+        : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
       <div className="flex-1 min-w-0">
         <p className="text-[12px] font-semibold text-slate-200 leading-snug">{step.text}</p>
         <div className="flex items-center gap-2 mt-1.5">
@@ -178,9 +330,7 @@ const PlanStepItem: React.FC<{
             <Clock className="h-3 w-3" /> {step.estimatedTime}
           </span>
           {step.dependsOn.length > 0 && (
-            <span className="text-[10px] text-slate-600">
-              → Depende de: {step.dependsOn.join(", ")}
-            </span>
+            <span className="text-[10px] text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
           )}
         </div>
       </div>
@@ -200,51 +350,34 @@ const PlanCard: React.FC<{
 
   return (
     <div className="mt-3 border border-primary/20 bg-primary/5 rounded-2xl overflow-hidden">
-      {/* Plan header */}
       <div className="p-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-1">
           <ListChecks className="h-4 w-4 text-primary" />
           <h4 className="text-[13px] font-black text-white uppercase tracking-tight">{plan.title}</h4>
         </div>
         <p className="text-[11px] text-slate-400">{plan.description}</p>
-        {/* Progress bar */}
         <div className="mt-3 h-1.5 bg-white/5 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
         <p className="text-[9px] text-slate-500 mt-1">{approvedCount}/{plan.steps.length} pasos seleccionados</p>
       </div>
 
-      {/* Steps */}
       <div className="p-3 space-y-2">
         {plan.steps.map(step => (
           <PlanStepItem key={step.id} step={step} onToggle={onToggleStep} />
         ))}
       </div>
 
-      {/* Actions */}
       {plan.status === "pending" && (
         <div className="p-3 border-t border-white/5 flex gap-2">
-          <Button
-            onClick={onApprove}
-            size="sm"
-            className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase"
-          >
+          <Button onClick={onApprove} size="sm" className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase">
             <Play className="h-3 w-3" /> Aprobar Plan
           </Button>
-          <Button
-            onClick={onReject}
-            size="sm"
-            variant="ghost"
-            className="text-[11px] font-black uppercase text-slate-500 hover:text-red-400"
-          >
+          <Button onClick={onReject} size="sm" variant="ghost" className="text-[11px] font-black uppercase text-slate-500 hover:text-red-400">
             Rechazar
           </Button>
         </div>
       )}
-
       {plan.status === "approved" && (
         <div className="p-3 border-t border-emerald-500/20 bg-emerald-500/5 text-center">
           <p className="text-[11px] font-black text-emerald-400 uppercase flex items-center justify-center gap-1.5">
@@ -252,7 +385,6 @@ const PlanCard: React.FC<{
           </p>
         </div>
       )}
-
       {plan.status === "rejected" && (
         <div className="p-3 border-t border-red-500/20 bg-red-500/5 text-center">
           <p className="text-[11px] font-black text-red-400 uppercase flex items-center justify-center gap-1.5">
@@ -261,6 +393,18 @@ const PlanCard: React.FC<{
         </div>
       )}
     </div>
+  );
+};
+
+// ─── Memory Badge ───
+const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
+  const total = memory.decisions.length + memory.topics.length + memory.insights.length;
+  if (total === 0) return null;
+
+  return (
+    <span className="px-1.5 py-0.5 bg-primary/10 border border-primary/20 rounded text-[8px] font-bold text-primary uppercase">
+      {total} memorias
+    </span>
   );
 };
 
@@ -273,10 +417,11 @@ const AITutor = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const [memory, setMemory] = useState<AgentMemory>(loadMemory);
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem("ai_agent_history_v1");
+    const saved = localStorage.getItem(HISTORY_KEY);
     if (saved) {
       try {
         const { data, timestamp } = JSON.parse(saved);
@@ -285,27 +430,23 @@ const AITutor = () => {
     }
     return [{
       role: "assistant" as const,
-      content: "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente. Puedo analizar tu progreso, crear planes de estudio personalizados y explicarte cualquier tema del ECOEMS 2026. ¿En qué te ayudo hoy?",
+      content: "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento multi-paso. Puedo analizar tu progreso, crear planes personalizados, recordar tus decisiones y explicarte cualquier tema del ECOEMS 2026.\n\n¿En qué te ayudo hoy?",
       id: "initial",
     }];
   });
 
-  // Persist messages
+  // Persist messages & memory
   useEffect(() => {
-    localStorage.setItem("ai_agent_history_v1", JSON.stringify({
-      data: messages,
-      timestamp: Date.now(),
-    }));
+    localStorage.setItem(HISTORY_KEY, JSON.stringify({ data: messages, timestamp: Date.now() }));
   }, [messages]);
+
+  useEffect(() => { saveMemory(memory); }, [memory]);
 
   // Auto-scroll
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, isStreaming]);
 
-  // Build context for the AI
   const buildContext = useCallback(() => {
     try {
       const analysis = analyzeUserProgress();
@@ -320,30 +461,33 @@ const AITutor = () => {
     }
   }, [location.pathname, analyzeUserProgress]);
 
-  // Contextual suggestions
   const contextualSuggestions = useMemo(() => {
     const path = location.pathname;
-    if (path === "/simulador-pro") {
-      return ["Dame una pista para esta pregunta", "Explica la estrategia del simulador"];
-    }
-    if (path.includes("/area/")) {
-      return ["Crea un plan de estudio para esta área", "Resumen rápido de los temas clave"];
-    }
+    if (path === "/simulador-pro") return ["Dame una pista para esta pregunta", "Explica la estrategia del simulador"];
+    if (path.includes("/area/")) return ["Crea un plan de estudio para esta área", "Resumen rápido de los temas clave"];
     return ["¿Cómo voy en mi progreso?", "Crea un plan de estudio personalizado", "Explícame razonamiento lógico"];
   }, [location.pathname]);
 
   const clearHistory = () => {
-    localStorage.removeItem("ai_agent_history_v1");
+    localStorage.removeItem(HISTORY_KEY);
+    localStorage.removeItem(MEMORY_KEY);
+    setMemory({ decisions: [], topics: [], insights: [], lastUpdated: Date.now() });
     setMessages([{
       role: "assistant",
-      content: "¡Historial reiniciado! Estoy listo para una nueva sesión. ¿Qué te gustaría trabajar?",
+      content: "¡Historial y memoria reiniciados! Empezamos desde cero. ¿Qué te gustaría trabajar?",
       id: Date.now().toString(),
     }]);
-    toast.info("Conversación reiniciada");
+    toast.info("Conversación y memoria reiniciadas");
   };
 
   const handleFeedback = (id: string, type: "up" | "down") => {
     setMessages(prev => prev.map(m => m.id === id ? { ...m, feedback: type } : m));
+    if (type === "down") {
+      setMemory(prev => ({
+        ...prev,
+        insights: [...prev.insights.slice(-9), "El usuario indicó insatisfacción con una respuesta reciente"],
+      }));
+    }
     toast.success(type === "up" ? "¡Gracias por tu feedback!" : "Tomaré nota para mejorar.");
   };
 
@@ -352,7 +496,18 @@ const AITutor = () => {
       if (m.id !== messageId || !m.plan) return m;
       return { ...m, plan: { ...m.plan, status: action === "approve" ? "approved" : "rejected" } };
     }));
-    toast.success(action === "approve" ? "¡Plan aprobado! Sigue los pasos para avanzar." : "Plan rechazado. Pídeme otro enfoque.");
+    if (action === "approve") {
+      setMemory(prev => ({
+        ...prev,
+        decisions: [...prev.decisions.slice(-9), {
+          question: "Plan de estudio aprobado",
+          chosen: messages.find(m => m.id === messageId)?.plan?.title || "Plan",
+          reasoning: "Aprobado por el usuario",
+          impact: "Se seguirán los pasos del plan",
+        }],
+      }));
+    }
+    toast.success(action === "approve" ? "¡Plan aprobado!" : "Plan rechazado.");
   };
 
   const handleToggleStep = (messageId: string, stepId: number) => {
@@ -375,6 +530,17 @@ const AITutor = () => {
     setInput("");
     setIsStreaming(true);
 
+    // Extract topics from user message
+    const words = text.toLowerCase().split(/\s+/);
+    const topicKeywords = ["matemática", "verbal", "lectura", "ciencias", "historia", "lógico", "simulador", "examen"];
+    const foundTopics = topicKeywords.filter(t => words.some(w => w.includes(t)));
+    if (foundTopics.length > 0) {
+      setMemory(prev => ({
+        ...prev,
+        topics: [...new Set([...prev.topics, ...foundTopics])].slice(-15),
+      }));
+    }
+
     let assistantContent = "";
     const assistantId = (Date.now() + 1).toString();
 
@@ -392,21 +558,30 @@ const AITutor = () => {
     try {
       const history = [...messages, userMsg]
         .filter(m => m.id !== "initial")
-        .slice(-10)
+        .slice(-12)
         .map(m => ({ role: m.role, content: m.content }));
 
       await streamChat({
         messages: history,
         context: buildContext(),
+        memory,
         onDelta: upsertAssistant,
         onDone: () => {
-          // Parse plan from final content
-          const { plan, cleanContent } = parsePlanFromContent(assistantContent);
-          if (plan) {
-            setMessages(prev => prev.map(m =>
-              m.id === assistantId ? { ...m, content: cleanContent || "He creado un plan para ti:", plan } : m
-            ));
+          const { reasoning, decisions, plan, cleanContent } = parseAllBlocks(assistantContent);
+
+          // Save decisions to memory
+          if (decisions.length > 0) {
+            setMemory(prev => ({
+              ...prev,
+              decisions: [...prev.decisions, ...decisions].slice(-20),
+            }));
           }
+
+          setMessages(prev => prev.map(m =>
+            m.id === assistantId
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan }
+              : m
+          ));
           setIsStreaming(false);
         },
       });
@@ -414,10 +589,11 @@ const AITutor = () => {
       console.error("Agent chat error:", err);
       setMessages(prev => {
         const last = prev[prev.length - 1];
+        const errContent = `⚠️ ${err.message || "Error de conexión. Intenta de nuevo."}`;
         if (last?.role === "assistant" && last.id === assistantId) {
-          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: `⚠️ ${err.message || "Error de conexión. Intenta de nuevo."}` } : m);
+          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: errContent } : m);
         }
-        return [...prev, { role: "assistant", content: `⚠️ ${err.message || "Error de conexión. Intenta de nuevo."}`, id: assistantId }];
+        return [...prev, { role: "assistant", content: errContent, id: assistantId }];
       });
       setIsStreaming(false);
     }
@@ -460,15 +636,18 @@ const AITutor = () => {
               </div>
               <div>
                 <h4 className="text-sm font-black text-white uppercase tracking-[0.15em]">CyberAgent</h4>
-                <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                  Agente Inteligente v5.0
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                    Razonamiento v6.0
+                  </p>
+                  <MemoryBadge memory={memory} />
+                </div>
               </div>
             </div>
             <button
               onClick={clearHistory}
-              title="Reiniciar chat"
+              title="Reiniciar chat y memoria"
               className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
             >
               <RefreshCw className="h-4 w-4" />
@@ -486,10 +665,7 @@ const AITutor = () => {
                 msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
               )}
             >
-              <div className={cn(
-                "flex items-end gap-2",
-                msg.role === "user" ? "flex-row-reverse" : "flex-row"
-              )}>
+              <div className={cn("flex items-end gap-2", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
                 <div className={cn(
                   "h-7 w-7 rounded-lg flex items-center justify-center shrink-0 border",
                   msg.role === "user" ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
@@ -503,6 +679,13 @@ const AITutor = () => {
                     ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl"
                     : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
                 )}>
+                  {/* Reasoning block */}
+                  {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
+
+                  {/* Decisions */}
+                  {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
+
+                  {/* Content */}
                   {msg.role === "assistant" ? (
                     <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -511,7 +694,7 @@ const AITutor = () => {
                     <span>{msg.content}</span>
                   )}
 
-                  {/* Plan rendering */}
+                  {/* Plan */}
                   {msg.plan && (
                     <PlanCard
                       plan={msg.plan}
@@ -546,7 +729,7 @@ const AITutor = () => {
           {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
             <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
               <Loader2 className="h-4 w-4 text-primary animate-spin" />
-              <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Pensando...</span>
+              <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
             </div>
           )}
         </div>
@@ -587,7 +770,7 @@ const AITutor = () => {
             </button>
           </div>
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
-            <Zap className="h-3 w-3" /> CyberAgent Engine v5.0 — Powered by AI
+            <Zap className="h-3 w-3" /> CyberAgent v6.0 — Razonamiento Multi-Paso
           </p>
         </div>
       </div>
