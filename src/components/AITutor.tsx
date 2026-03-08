@@ -505,6 +505,7 @@ const AITutor = () => {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
+  const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
