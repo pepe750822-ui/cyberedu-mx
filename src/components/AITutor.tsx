@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAITutorSkills } from "@/hooks/useAITutorSkills";
+import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
