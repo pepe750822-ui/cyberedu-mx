@@ -625,6 +625,24 @@ const AITutor = () => {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
 
+    // Handle /tarea command: /tarea [alta|media|baja] <prompt>
+    const tareaMatch = text.trim().match(/^\/tarea\s+(?:(alta|media|baja)\s+)?(.+)/i);
+    if (tareaMatch) {
+      const priority = (tareaMatch[1]?.toLowerCase() as TaskPriority) || "media";
+      const prompt = tareaMatch[2];
+      addTask(prompt, priority);
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `✅ Tarea encolada con prioridad **${priority}**. Puedes ver su progreso en la pestaña **Cola de Tareas**.\n\n> _"${prompt}"_`,
+        id: (Date.now() + 1).toString(),
+      }]);
+      setActiveTab("queue");
+      return;
+    }
+
     const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
