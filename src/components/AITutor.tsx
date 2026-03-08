@@ -773,98 +773,126 @@ const AITutor = () => {
           </div>
         </div>
 
-        {/* Messages */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={cn(
-                "flex flex-col gap-1.5 max-w-[92%] animate-in fade-in slide-in-from-bottom-3 duration-400",
-                msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
-              )}
-            >
-              <div className={cn("flex items-end gap-2", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
-                <div className={cn(
-                  "h-7 w-7 rounded-lg flex items-center justify-center shrink-0 border",
-                  msg.role === "user" ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
-                )}>
-                  {msg.role === "user" ? <User className="h-3.5 w-3.5 text-slate-400" /> : <Bot className="h-3.5 w-3.5 text-primary" />}
-                </div>
-
-                <div className={cn(
-                  "px-4 py-3 text-[13px] leading-relaxed",
-                  msg.role === "user"
-                    ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl"
-                    : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
-                )}>
-                  {/* Reasoning block */}
-                  {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
-
-                  {/* Decisions */}
-                  {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
-
-                  {/* Content */}
-                  {msg.role === "assistant" ? (
-                    <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
-                    </div>
-                  ) : (
-                    <span>{msg.content}</span>
-                  )}
-
-                  {/* Plan */}
-                  {msg.plan && (
-                    <PlanCard
-                      plan={msg.plan}
-                      onApprove={() => handlePlanAction(msg.id, "approve")}
-                      onReject={() => handlePlanAction(msg.id, "reject")}
-                      onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {/* Feedback */}
-              {msg.role === "assistant" && msg.id !== "initial" && !isStreaming && (
-                <div className="flex items-center gap-2 px-9">
-                  <button
-                    onClick={() => handleFeedback(msg.id, "up")}
-                    className={cn("p-1 rounded-lg transition-colors", msg.feedback === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
-                  >
-                    <ThumbsUp className="h-3 w-3" />
-                  </button>
-                  <button
-                    onClick={() => handleFeedback(msg.id, "down")}
-                    className={cn("p-1 rounded-lg transition-colors", msg.feedback === "down" ? "text-red-500 bg-red-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
-                  >
-                    <ThumbsDown className="h-3 w-3" />
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-
-          {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
-            <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
-              <Loader2 className="h-4 w-4 text-primary animate-spin" />
-              <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
-            </div>
-          )}
+        {/* Tab Bar */}
+        <div className="flex border-b border-white/5">
+          <button
+            onClick={() => setActiveTab("chat")}
+            className={cn(
+              "flex-1 py-2.5 text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors",
+              activeTab === "chat" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
+            )}
+          >
+            <Bot className="h-3.5 w-3.5" /> Chat
+          </button>
+          <button
+            onClick={() => setActiveTab("queue")}
+            className={cn(
+              "flex-1 py-2.5 text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors relative",
+              activeTab === "queue" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
+            )}
+          >
+            <Layers className="h-3.5 w-3.5" /> Cola
+            {tasks.filter(t => t.status === "queued" || t.status === "running").length > 0 && (
+              <span className="absolute top-1.5 right-[calc(50%-30px)] h-2 w-2 bg-primary rounded-full animate-pulse" />
+            )}
+          </button>
         </div>
 
-        {/* Suggestions */}
-        {!isStreaming && (
-          <div className="px-5 py-2 flex flex-wrap gap-1.5">
-            {contextualSuggestions.map((s, i) => (
-              <button
-                key={i}
-                onClick={() => sendMessage(s)}
-                className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-[10px] font-bold text-slate-400 hover:text-white transition-all"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+        {activeTab === "chat" ? (
+          <>
+            {/* Messages */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={cn(
+                    "flex flex-col gap-1.5 max-w-[92%] animate-in fade-in slide-in-from-bottom-3 duration-400",
+                    msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
+                  )}
+                >
+                  <div className={cn("flex items-end gap-2", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
+                    <div className={cn(
+                      "h-7 w-7 rounded-lg flex items-center justify-center shrink-0 border",
+                      msg.role === "user" ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
+                    )}>
+                      {msg.role === "user" ? <User className="h-3.5 w-3.5 text-slate-400" /> : <Bot className="h-3.5 w-3.5 text-primary" />}
+                    </div>
+
+                    <div className={cn(
+                      "px-4 py-3 text-[13px] leading-relaxed",
+                      msg.role === "user"
+                        ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl"
+                        : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
+                    )}>
+                      {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
+                      {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
+                      {msg.role === "assistant" ? (
+                        <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        </div>
+                      ) : (
+                        <span>{msg.content}</span>
+                      )}
+                      {msg.plan && (
+                        <PlanCard
+                          plan={msg.plan}
+                          onApprove={() => handlePlanAction(msg.id, "approve")}
+                          onReject={() => handlePlanAction(msg.id, "reject")}
+                          onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {msg.role === "assistant" && msg.id !== "initial" && !isStreaming && (
+                    <div className="flex items-center gap-2 px-9">
+                      <button
+                        onClick={() => handleFeedback(msg.id, "up")}
+                        className={cn("p-1 rounded-lg transition-colors", msg.feedback === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
+                      >
+                        <ThumbsUp className="h-3 w-3" />
+                      </button>
+                      <button
+                        onClick={() => handleFeedback(msg.id, "down")}
+                        className={cn("p-1 rounded-lg transition-colors", msg.feedback === "down" ? "text-red-500 bg-red-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
+                      >
+                        <ThumbsDown className="h-3 w-3" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
+                <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
+                  <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                  <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
+                </div>
+              )}
+            </div>
+
+            {/* Suggestions */}
+            {!isStreaming && (
+              <div className="px-5 py-2 flex flex-wrap gap-1.5">
+                {contextualSuggestions.map((s, i) => (
+                  <button
+                    key={i}
+                    onClick={() => sendMessage(s)}
+                    className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-[10px] font-bold text-slate-400 hover:text-white transition-all"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <TaskQueuePanel
+            tasks={tasks}
+            onRemove={removeTask}
+            onClearCompleted={clearCompleted}
+            onViewResult={handleViewTaskResult}
+          />
         )}
 
         {/* Input */}
@@ -875,7 +903,7 @@ const AITutor = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-              placeholder="Pregunta algo o pide un plan de estudio..."
+              placeholder={activeTab === "queue" ? '/tarea alta Explícame álgebra...' : 'Pregunta algo o usa /tarea para encolar...'}
               disabled={isStreaming}
               className="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50"
             />
@@ -888,7 +916,7 @@ const AITutor = () => {
             </button>
           </div>
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
-            <Zap className="h-3 w-3" /> CyberAgent v6.0 — Razonamiento Multi-Paso
+            <Zap className="h-3 w-3" /> CyberAgent v7.0 — Cola de Tareas
           </p>
         </div>
       </div>
