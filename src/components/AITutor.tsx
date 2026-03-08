@@ -4,7 +4,7 @@ import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
-  BookOpen, Target, History
+  BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
