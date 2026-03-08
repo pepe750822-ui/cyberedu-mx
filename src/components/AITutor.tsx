@@ -397,6 +397,92 @@ const PlanCard: React.FC<{
   );
 };
 
+// ─── Task Queue Panel ───
+const TaskQueuePanel: React.FC<{
+  tasks: AgentTask[];
+  onRemove: (id: string) => void;
+  onClearCompleted: () => void;
+  onViewResult: (task: AgentTask) => void;
+}> = ({ tasks, onRemove, onClearCompleted, onViewResult }) => {
+  if (tasks.length === 0) return (
+    <div className="p-4 text-center">
+      <Layers className="h-8 w-8 text-slate-600 mx-auto mb-2" />
+      <p className="text-[11px] text-slate-500 font-bold">No hay tareas en la cola</p>
+      <p className="text-[9px] text-slate-600 mt-1">Usa "/tarea" para encolar prompts en segundo plano</p>
+    </div>
+  );
+
+  const statusIcon = (t: AgentTask) => {
+    if (t.status === "running") return <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />;
+    if (t.status === "done") return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
+    if (t.status === "error") return <XCircle className="h-3.5 w-3.5 text-red-400 shrink-0" />;
+    return <Clock className="h-3.5 w-3.5 text-slate-500 shrink-0" />;
+  };
+
+  const priorityBadge = (p: TaskPriority) => {
+    const colors = {
+      alta: "text-red-400 bg-red-500/10 border-red-500/20",
+      media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+      baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    };
+    return <span className={cn("px-1 py-0.5 text-[8px] font-black uppercase rounded border", colors[p])}>{p}</span>;
+  };
+
+  const doneCount = tasks.filter(t => t.status === "done" || t.status === "error").length;
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+          {tasks.filter(t => t.status === "queued").length} en cola · {tasks.filter(t => t.status === "running").length} procesando
+        </span>
+        {doneCount > 0 && (
+          <button onClick={onClearCompleted} className="text-[9px] text-slate-500 hover:text-white transition-colors">
+            Limpiar completadas
+          </button>
+        )}
+      </div>
+      <div className="flex-1 overflow-y-auto p-2 space-y-1.5 custom-scrollbar">
+        {tasks.map(t => (
+          <div key={t.id} className={cn(
+            "flex items-start gap-2 p-2.5 rounded-xl border transition-all",
+            t.status === "running" ? "bg-primary/5 border-primary/20" :
+            t.status === "done" ? "bg-emerald-500/5 border-emerald-500/10" :
+            t.status === "error" ? "bg-red-500/5 border-red-500/10" :
+            "bg-white/5 border-white/5"
+          )}>
+            {statusIcon(t)}
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] text-slate-200 font-medium truncate">{t.prompt}</p>
+              <div className="flex items-center gap-2 mt-1">
+                {priorityBadge(t.priority)}
+                {t.completedAt && t.startedAt && (
+                  <span className="text-[9px] text-slate-600">{((t.completedAt - t.startedAt) / 1000).toFixed(1)}s</span>
+                )}
+              </div>
+              {t.status === "error" && t.error && (
+                <p className="text-[9px] text-red-400 mt-1 truncate">{t.error}</p>
+              )}
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              {t.status === "done" && (
+                <button onClick={() => onViewResult(t)} className="p-1 hover:bg-white/10 rounded text-slate-500 hover:text-white transition-colors">
+                  <Eye className="h-3 w-3" />
+                </button>
+              )}
+              {(t.status === "done" || t.status === "error" || t.status === "queued") && (
+                <button onClick={() => onRemove(t.id)} className="p-1 hover:bg-red-500/10 rounded text-slate-600 hover:text-red-400 transition-colors">
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // ─── Memory Badge ───
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
