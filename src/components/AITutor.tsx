@@ -549,6 +549,18 @@ const AITutor = () => {
     }
   }, [location.pathname, analyzeUserProgress]);
 
+  const { tasks, addTask, removeTask, clearCompleted } = useTaskQueue(memory, buildContext());
+
+  const handleViewTaskResult = useCallback((task: AgentTask) => {
+    const resultMsg: Message = {
+      role: "assistant",
+      content: `📋 **Resultado de tarea en cola:**\n\n> _"${task.prompt}"_\n\n---\n\n${task.result || "Sin resultado"}`,
+      id: `task-${task.id}`,
+    };
+    setMessages(prev => [...prev, resultMsg]);
+    setActiveTab("chat");
+  }, []);
+
   const contextualSuggestions = useMemo(() => {
     const path = location.pathname;
     if (path === "/simulador-pro") return ["Dame una pista para esta pregunta", "Explica la estrategia del simulador"];
