@@ -759,6 +759,118 @@ const AITutor = () => {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
 
+    // Handle skill commands
+    const trimmed = text.trim().toLowerCase();
+
+    // /analisis - Deep progress analysis
+    if (trimmed === '/analisis' || trimmed === '/análisis') {
+      const analysis = analyzeUserProgress();
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `📊 Aquí tienes tu análisis completo de progreso:`,
+        id: (Date.now() + 1).toString(),
+        analysis,
+      }]);
+      return;
+    }
+
+    // /quiz [area] - Personalized quiz
+    const quizMatch = text.trim().match(/^\/quiz\s*(.*)/i);
+    if (quizMatch) {
+      const areaName = quizMatch[1]?.trim() || undefined;
+      const quiz = generatePersonalizedQuiz(areaName, 5);
+      setInput("");
+      if (!quiz) {
+        setMessages(prev => [...prev, {
+          role: "user" as const, content: text.trim(), id: Date.now().toString()
+        }, {
+          role: "assistant" as const,
+          content: '⚠️ No pude generar un quiz. Intenta con `/quiz matemática` o `/quiz verbal`.',
+          id: (Date.now() + 1).toString(),
+        }]);
+        return;
+      }
+      setQuizAnswers({});
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `🎯 Quiz personalizado generado. ¡Demuestra lo que sabes!`,
+        id: (Date.now() + 1).toString(),
+        quiz,
+      }]);
+      return;
+    }
+
+    // /recomienda - Content recommendations
+    if (trimmed === '/recomienda' || trimmed === '/recomendaciones') {
+      const recs = getRecommendations();
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
+        id: (Date.now() + 1).toString(),
+        recommendations: recs.length > 0 ? recs : undefined,
+      }]);
+      return;
+    }
+
+    // /explica <tema> - Enhanced explanation via AI with context
+    const explicaMatch = text.trim().match(/^\/explica\s+(.+)/i);
+    if (explicaMatch) {
+      const topic = explicaMatch[1];
+      const explanationContext = getExplanationContext(topic);
+      // Inject context into the prompt and let AI handle it
+      const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen ECOEMS.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
+      // Fall through to normal AI processing with enriched prompt
+      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      setMessages(prev => [...prev, userMsg]);
+      setInput("");
+      setIsStreaming(true);
+
+      let assistantContent = "";
+      const assistantId = (Date.now() + 1).toString();
+      const upsertAssistant = (chunk: string) => {
+        assistantContent += chunk;
+        setMessages(prev => {
+          const last = prev[prev.length - 1];
+          if (last?.role === "assistant" && last.id === assistantId) {
+            return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantContent } : m);
+          }
+          return [...prev, { role: "assistant", content: assistantContent, id: assistantId }];
+        });
+      };
+
+      try {
+        await streamChat({
+          messages: [{ role: "user", content: enrichedPrompt }],
+          context: buildContext(),
+          memory,
+          onDelta: upsertAssistant,
+          onDone: () => {
+            const { reasoning, decisions, plan, cleanContent } = parseAllBlocks(assistantContent);
+            if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan } : m));
+            setIsStreaming(false);
+          },
+        });
+      } catch (err: any) {
+        setMessages(prev => {
+          const errContent = `⚠️ ${err.message || "Error de conexión."}`;
+          const last = prev[prev.length - 1];
+          if (last?.role === "assistant" && last.id === assistantId) return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: errContent } : m);
+          return [...prev, { role: "assistant", content: errContent, id: assistantId }];
+        });
+        setIsStreaming(false);
+      }
+      return;
+    }
+
     // Handle /tarea command: /tarea [alta|media|baja] <prompt>
     const tareaMatch = text.trim().match(/^\/tarea\s+(?:(alta|media|baja)\s+)?(.+)/i);
     if (tareaMatch) {
