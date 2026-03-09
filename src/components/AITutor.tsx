@@ -484,6 +484,135 @@ const TaskQueuePanel: React.FC<{
   );
 };
 
+// ─── Analysis Card ───
+const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => (
+  <div className="my-3 border border-primary/20 bg-primary/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5">
+      <div className="flex items-center gap-2 mb-2">
+        <BarChart3 className="h-4 w-4 text-primary" />
+        <span className="text-[12px] font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2 mt-3">
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-primary">{analysis.totalProgress}%</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Progreso</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-emerald-400">{analysis.streak}</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Racha</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-amber-400">{analysis.estimatedReadiness}%</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Preparación</p>
+        </div>
+      </div>
+    </div>
+
+    {analysis.weakAreas.length > 0 && (
+      <div className="px-4 py-3 border-b border-white/5">
+        <p className="text-[10px] font-black text-red-400 uppercase mb-2">⚠️ Áreas débiles</p>
+        {analysis.weakAreas.map((a, i) => (
+          <div key={i} className="flex items-center gap-2 mb-1.5">
+            <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+              <div className="h-full bg-red-500/60 rounded-full" style={{ width: `${a.percent}%` }} />
+            </div>
+            <span className="text-[10px] text-slate-400 w-24 truncate">{a.name}</span>
+            <span className="text-[10px] text-red-400 font-bold w-8 text-right">{a.percent}%</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {analysis.recommendations.length > 0 && (
+      <div className="p-4">
+        <p className="text-[10px] font-black text-emerald-400 uppercase mb-2">💡 Recomendaciones</p>
+        <ul className="space-y-1.5">
+          {analysis.recommendations.map((r, i) => (
+            <li key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
+              <ArrowRight className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+
+// ─── Quiz Card ───
+const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => (
+  <div className="my-3 border border-amber-500/20 bg-amber-500/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-4 w-4 text-amber-400" />
+        <span className="text-[12px] font-black text-white uppercase tracking-wider">{quiz.title}</span>
+      </div>
+      <p className="text-[10px] text-slate-500 mt-1">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+    </div>
+    <div className="p-3 space-y-3">
+      {quiz.questions.map((q, qi) => {
+        const answered = answers[q.id] !== undefined;
+        const isCorrect = answered && answers[q.id] === q.correctIndex;
+        return (
+          <div key={q.id} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
+            <p className="text-[11px] text-slate-200 font-medium mb-2">{qi + 1}. {q.text}</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {q.options.map((opt, oi) => (
+                <button
+                  key={oi}
+                  onClick={() => !answered && onAnswer(q.id, oi)}
+                  disabled={answered}
+                  className={cn(
+                    "text-[10px] text-left px-2.5 py-1.5 rounded-lg border transition-all",
+                    answered && oi === q.correctIndex ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" :
+                    answered && oi === answers[q.id] ? "border-red-500/30 bg-red-500/10 text-red-300" :
+                    "border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+            {answered && (
+              <p className="text-[9px] text-slate-500 mt-1.5 italic">{q.explanation}</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// ─── Recommendations Card ───
+const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => (
+  <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5 flex items-center gap-2">
+      <TrendingUp className="h-4 w-4 text-emerald-400" />
+      <span className="text-[12px] font-black text-white uppercase tracking-wider">Recomendaciones</span>
+    </div>
+    <div className="p-3 space-y-2">
+      {recs.map((r, i) => {
+        const icons = { video: <Play className="h-3.5 w-3.5" />, area: <BookOpen className="h-3.5 w-3.5" />, simulador: <Target className="h-3.5 w-3.5" /> };
+        const prioColors = { alta: "text-red-400 bg-red-500/10 border-red-500/20", media: "text-amber-400 bg-amber-500/10 border-amber-500/20", baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
+        return (
+          <div key={i} className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
+            <div className="h-7 w-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+              {icons[r.type]}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-semibold text-slate-200 truncate">{r.title}</p>
+              <p className="text-[9px] text-slate-500 mt-0.5">{r.reason}</p>
+            </div>
+            <span className={cn("px-1.5 py-0.5 text-[8px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
+              {r.priority}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
 // ─── Memory Badge ───
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
