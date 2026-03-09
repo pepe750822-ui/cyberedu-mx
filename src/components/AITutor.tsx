@@ -629,13 +629,14 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const { analyzeUserProgress } = useAITutorSkills();
+  const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
