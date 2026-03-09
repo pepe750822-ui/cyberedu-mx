@@ -23,6 +23,9 @@ interface Message {
   reasoning?: Reasoning | null;
   decisions?: Decision[];
   feedback?: "up" | "down";
+  analysis?: ProgressAnalysis;
+  quiz?: PersonalizedQuiz;
+  recommendations?: ContentRecommendation[];
 }
 
 interface PlanStep {
