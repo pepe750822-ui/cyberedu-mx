@@ -4,11 +4,12 @@ import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
-  BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle
+  BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
+  BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useAITutorSkills } from "@/hooks/useAITutorSkills";
+import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommendation } from "@/hooks/useAITutorSkills";
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
@@ -22,6 +23,9 @@ interface Message {
   reasoning?: Reasoning | null;
   decisions?: Decision[];
   feedback?: "up" | "down";
+  analysis?: ProgressAnalysis;
+  quiz?: PersonalizedQuiz;
+  recommendations?: ContentRecommendation[];
 }
 
 interface PlanStep {
@@ -483,6 +487,135 @@ const TaskQueuePanel: React.FC<{
   );
 };
 
+// ─── Analysis Card ───
+const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => (
+  <div className="my-3 border border-primary/20 bg-primary/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5">
+      <div className="flex items-center gap-2 mb-2">
+        <BarChart3 className="h-4 w-4 text-primary" />
+        <span className="text-[12px] font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2 mt-3">
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-primary">{analysis.totalProgress}%</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Progreso</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-emerald-400">{analysis.streak}</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Racha</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-black text-amber-400">{analysis.estimatedReadiness}%</p>
+          <p className="text-[9px] text-slate-500 font-bold uppercase">Preparación</p>
+        </div>
+      </div>
+    </div>
+
+    {analysis.weakAreas.length > 0 && (
+      <div className="px-4 py-3 border-b border-white/5">
+        <p className="text-[10px] font-black text-red-400 uppercase mb-2">⚠️ Áreas débiles</p>
+        {analysis.weakAreas.map((a, i) => (
+          <div key={i} className="flex items-center gap-2 mb-1.5">
+            <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
+              <div className="h-full bg-red-500/60 rounded-full" style={{ width: `${a.percent}%` }} />
+            </div>
+            <span className="text-[10px] text-slate-400 w-24 truncate">{a.name}</span>
+            <span className="text-[10px] text-red-400 font-bold w-8 text-right">{a.percent}%</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {analysis.recommendations.length > 0 && (
+      <div className="p-4">
+        <p className="text-[10px] font-black text-emerald-400 uppercase mb-2">💡 Recomendaciones</p>
+        <ul className="space-y-1.5">
+          {analysis.recommendations.map((r, i) => (
+            <li key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
+              <ArrowRight className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+
+// ─── Quiz Card ───
+const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => (
+  <div className="my-3 border border-amber-500/20 bg-amber-500/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-4 w-4 text-amber-400" />
+        <span className="text-[12px] font-black text-white uppercase tracking-wider">{quiz.title}</span>
+      </div>
+      <p className="text-[10px] text-slate-500 mt-1">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+    </div>
+    <div className="p-3 space-y-3">
+      {quiz.questions.map((q, qi) => {
+        const answered = answers[q.id] !== undefined;
+        const isCorrect = answered && answers[q.id] === q.correctIndex;
+        return (
+          <div key={q.id} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
+            <p className="text-[11px] text-slate-200 font-medium mb-2">{qi + 1}. {q.text}</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {q.options.map((opt, oi) => (
+                <button
+                  key={oi}
+                  onClick={() => !answered && onAnswer(q.id, oi)}
+                  disabled={answered}
+                  className={cn(
+                    "text-[10px] text-left px-2.5 py-1.5 rounded-lg border transition-all",
+                    answered && oi === q.correctIndex ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" :
+                    answered && oi === answers[q.id] ? "border-red-500/30 bg-red-500/10 text-red-300" :
+                    "border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+            {answered && (
+              <p className="text-[9px] text-slate-500 mt-1.5 italic">{q.explanation}</p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// ─── Recommendations Card ───
+const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => (
+  <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5 flex items-center gap-2">
+      <TrendingUp className="h-4 w-4 text-emerald-400" />
+      <span className="text-[12px] font-black text-white uppercase tracking-wider">Recomendaciones</span>
+    </div>
+    <div className="p-3 space-y-2">
+      {recs.map((r, i) => {
+        const icons = { video: <Play className="h-3.5 w-3.5" />, area: <BookOpen className="h-3.5 w-3.5" />, simulador: <Target className="h-3.5 w-3.5" /> };
+        const prioColors = { alta: "text-red-400 bg-red-500/10 border-red-500/20", media: "text-amber-400 bg-amber-500/10 border-amber-500/20", baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
+        return (
+          <div key={i} className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
+            <div className="h-7 w-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+              {icons[r.type]}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-semibold text-slate-200 truncate">{r.title}</p>
+              <p className="text-[9px] text-slate-500 mt-0.5">{r.reason}</p>
+            </div>
+            <span className={cn("px-1.5 py-0.5 text-[8px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
+              {r.priority}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
 // ─── Memory Badge ───
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
@@ -499,13 +632,14 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const { analyzeUserProgress } = useAITutorSkills();
+  const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -624,6 +758,118 @@ const AITutor = () => {
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
+
+    // Handle skill commands
+    const trimmed = text.trim().toLowerCase();
+
+    // /analisis - Deep progress analysis
+    if (trimmed === '/analisis' || trimmed === '/análisis') {
+      const analysis = analyzeUserProgress();
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `📊 Aquí tienes tu análisis completo de progreso:`,
+        id: (Date.now() + 1).toString(),
+        analysis,
+      }]);
+      return;
+    }
+
+    // /quiz [area] - Personalized quiz
+    const quizMatch = text.trim().match(/^\/quiz\s*(.*)/i);
+    if (quizMatch) {
+      const areaName = quizMatch[1]?.trim() || undefined;
+      const quiz = generatePersonalizedQuiz(areaName, 5);
+      setInput("");
+      if (!quiz) {
+        setMessages(prev => [...prev, {
+          role: "user" as const, content: text.trim(), id: Date.now().toString()
+        }, {
+          role: "assistant" as const,
+          content: '⚠️ No pude generar un quiz. Intenta con `/quiz matemática` o `/quiz verbal`.',
+          id: (Date.now() + 1).toString(),
+        }]);
+        return;
+      }
+      setQuizAnswers({});
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `🎯 Quiz personalizado generado. ¡Demuestra lo que sabes!`,
+        id: (Date.now() + 1).toString(),
+        quiz,
+      }]);
+      return;
+    }
+
+    // /recomienda - Content recommendations
+    if (trimmed === '/recomienda' || trimmed === '/recomendaciones') {
+      const recs = getRecommendations();
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
+        id: (Date.now() + 1).toString(),
+        recommendations: recs.length > 0 ? recs : undefined,
+      }]);
+      return;
+    }
+
+    // /explica <tema> - Enhanced explanation via AI with context
+    const explicaMatch = text.trim().match(/^\/explica\s+(.+)/i);
+    if (explicaMatch) {
+      const topic = explicaMatch[1];
+      const explanationContext = getExplanationContext(topic);
+      // Inject context into the prompt and let AI handle it
+      const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen ECOEMS.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
+      // Fall through to normal AI processing with enriched prompt
+      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      setMessages(prev => [...prev, userMsg]);
+      setInput("");
+      setIsStreaming(true);
+
+      let assistantContent = "";
+      const assistantId = (Date.now() + 1).toString();
+      const upsertAssistant = (chunk: string) => {
+        assistantContent += chunk;
+        setMessages(prev => {
+          const last = prev[prev.length - 1];
+          if (last?.role === "assistant" && last.id === assistantId) {
+            return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantContent } : m);
+          }
+          return [...prev, { role: "assistant", content: assistantContent, id: assistantId }];
+        });
+      };
+
+      try {
+        await streamChat({
+          messages: [{ role: "user", content: enrichedPrompt }],
+          context: buildContext(),
+          memory,
+          onDelta: upsertAssistant,
+          onDone: () => {
+            const { reasoning, decisions, plan, cleanContent } = parseAllBlocks(assistantContent);
+            if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan } : m));
+            setIsStreaming(false);
+          },
+        });
+      } catch (err: any) {
+        setMessages(prev => {
+          const errContent = `⚠️ ${err.message || "Error de conexión."}`;
+          const last = prev[prev.length - 1];
+          if (last?.role === "assistant" && last.id === assistantId) return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: errContent } : m);
+          return [...prev, { role: "assistant", content: errContent, id: assistantId }];
+        });
+        setIsStreaming(false);
+      }
+      return;
+    }
 
     // Handle /tarea command: /tarea [alta|media|baja] <prompt>
     const tareaMatch = text.trim().match(/^\/tarea\s+(?:(alta|media|baja)\s+)?(.+)/i);
@@ -826,6 +1072,9 @@ const AITutor = () => {
                     )}>
                       {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
                       {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
+                      {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
+                      {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
+                      {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -916,8 +1165,9 @@ const AITutor = () => {
             </button>
           </div>
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
-            <Zap className="h-3 w-3" /> CyberAgent v7.0 — Cola de Tareas
+            <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
           </p>
+          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea</p>
         </div>
       </div>
     </>
