@@ -1072,6 +1072,9 @@ const AITutor = () => {
                     )}>
                       {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
                       {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
+                      {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
+                      {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
+                      {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
