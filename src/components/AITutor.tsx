@@ -619,6 +619,94 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
   </div>
 );
 
+// ─── Diagnostics Card ───
+const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: string) => void; fixingId: string | null }> = ({ result, onFix, fixingId }) => {
+  const statusIcon = (s: DiagnosticCheck["status"]) => {
+    if (s === "ok") return <ShieldCheck className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
+    if (s === "warning") return <ShieldAlert className="h-3.5 w-3.5 text-amber-400 shrink-0" />;
+    if (s === "error") return <XCircle className="h-3.5 w-3.5 text-red-400 shrink-0" />;
+    return <Loader2 className="h-3.5 w-3.5 text-slate-500 animate-spin shrink-0" />;
+  };
+
+  const overallColor = result.overallStatus === "ok" ? "border-emerald-500/20 bg-emerald-500/5"
+    : result.overallStatus === "warning" ? "border-amber-500/20 bg-amber-500/5"
+    : "border-red-500/20 bg-red-500/5";
+
+  const overallIcon = result.overallStatus === "ok" ? <ShieldCheck className="h-4 w-4 text-emerald-400" />
+    : result.overallStatus === "warning" ? <ShieldAlert className="h-4 w-4 text-amber-400" />
+    : <XCircle className="h-4 w-4 text-red-400" />;
+
+  const overallLabel = result.overallStatus === "ok" ? "Todo funcionando correctamente"
+    : result.overallStatus === "warning" ? "Algunos problemas detectados"
+    : "Se encontraron errores";
+
+  const categories: { key: DiagnosticCheck["category"]; label: string }[] = [
+    { key: "connectivity", label: "Conectividad" },
+    { key: "session", label: "Sesión" },
+    { key: "storage", label: "Almacenamiento" },
+    { key: "data", label: "Datos" },
+  ];
+
+  return (
+    <div className={cn("my-3 border rounded-2xl overflow-hidden", overallColor)}>
+      <div className="p-4 border-b border-white/5">
+        <div className="flex items-center gap-2 mb-1">
+          <Shield className="h-4 w-4 text-primary" />
+          <span className="text-[12px] font-black text-white uppercase tracking-wider">Diagnóstico del Sistema</span>
+        </div>
+        <div className="flex items-center gap-2 mt-2 p-2 rounded-xl bg-white/5">
+          {overallIcon}
+          <span className="text-[11px] text-slate-300 font-medium">{overallLabel}</span>
+        </div>
+      </div>
+
+      <div className="p-3 space-y-3">
+        {categories.map(cat => {
+          const catChecks = result.checks.filter(c => c.category === cat.key);
+          if (catChecks.length === 0) return null;
+          return (
+            <div key={cat.key}>
+              <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">{cat.label}</p>
+              <div className="space-y-1">
+                {catChecks.map(check => (
+                  <div key={check.id} className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5">
+                    {statusIcon(check.status)}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] text-slate-200 font-medium">{check.label}</p>
+                      <p className="text-[9px] text-slate-500 truncate">{check.detail}</p>
+                    </div>
+                    {check.fix && check.fixLabel && (
+                      <button
+                        onClick={() => onFix(check.id)}
+                        disabled={fixingId === check.id}
+                        className="px-2 py-1 text-[9px] font-bold text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-50 shrink-0 flex items-center gap-1"
+                      >
+                        {fixingId === check.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Wrench className="h-3 w-3" />}
+                        {check.fixLabel}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {result.jsErrors.length > 0 && (
+        <div className="px-3 pb-3">
+          <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">Últimos errores JS</p>
+          <div className="max-h-24 overflow-y-auto space-y-0.5 custom-scrollbar">
+            {result.jsErrors.slice(-5).map((e, i) => (
+              <p key={i} className="text-[9px] text-red-400/80 font-mono truncate">{e.message}</p>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ─── Memory Badge ───
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
