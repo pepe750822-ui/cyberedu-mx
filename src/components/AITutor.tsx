@@ -856,6 +856,32 @@ const AITutor = () => {
     // Handle skill commands
     const trimmed = text.trim().toLowerCase();
 
+    // /diagnostico - System diagnostics
+    if (trimmed === '/diagnostico' || trimmed === '/diagnóstico') {
+      setInput("");
+      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      const loadingId = (Date.now() + 1).toString();
+      setMessages(prev => [...prev, userMsg, {
+        role: "assistant" as const,
+        content: "🔍 Ejecutando diagnóstico del sistema...",
+        id: loadingId,
+      }]);
+      const result = await runDiagnostics();
+      setLatestDiagnostics(result);
+      setMessages(prev => prev.map(m =>
+        m.id === loadingId ? {
+          ...m,
+          content: result.overallStatus === "ok"
+            ? "✅ Diagnóstico completo — Todo funciona correctamente:"
+            : result.overallStatus === "warning"
+            ? "⚠️ Diagnóstico completo — Se encontraron algunos problemas:"
+            : "❌ Diagnóstico completo — Se detectaron errores:",
+          diagnostics: result,
+        } : m
+      ));
+      return;
+    }
+
     // /analisis - Deep progress analysis
     if (trimmed === '/analisis' || trimmed === '/análisis') {
       const analysis = analyzeUserProgress();
