@@ -732,6 +732,8 @@ const AITutor = () => {
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
+  const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
