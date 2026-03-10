@@ -1169,6 +1169,22 @@ const AITutor = () => {
                       {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
+                      {msg.diagnostics && <DiagnosticsCard result={msg.diagnostics} fixingId={fixingCheckId} onFix={async (checkId) => {
+                        const check = msg.diagnostics!.checks.find(c => c.id === checkId);
+                        if (!check?.fix) return;
+                        setFixingCheckId(checkId);
+                        try {
+                          const fixResult = await check.fix();
+                          toast.success(`Auto-corrección: ${fixResult}`);
+                          // Re-run diagnostics
+                          const newResult = await runDiagnostics();
+                          setLatestDiagnostics(newResult);
+                          setMessages(prev => prev.map(m =>
+                            m.id === msg.id ? { ...m, diagnostics: newResult } : m
+                          ));
+                        } catch { toast.error("Error al aplicar corrección"); }
+                        setFixingCheckId(null);
+                      }} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
