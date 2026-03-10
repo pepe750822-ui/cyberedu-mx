@@ -28,6 +28,7 @@ interface Message {
   analysis?: ProgressAnalysis;
   quiz?: PersonalizedQuiz;
   recommendations?: ContentRecommendation[];
+  diagnostics?: DiagnosticsResult;
 }
 
 interface PlanStep {
