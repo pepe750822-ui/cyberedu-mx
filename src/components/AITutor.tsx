@@ -724,6 +724,7 @@ const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
+  const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
