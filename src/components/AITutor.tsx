@@ -5,11 +5,13 @@ import {
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
-  BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight
+  BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
+  Shield, ShieldCheck, ShieldAlert, Wrench, Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommendation } from "@/hooks/useAITutorSkills";
+import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/useAppDiagnostics";
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
@@ -26,6 +28,7 @@ interface Message {
   analysis?: ProgressAnalysis;
   quiz?: PersonalizedQuiz;
   recommendations?: ContentRecommendation[];
+  diagnostics?: DiagnosticsResult;
 }
 
 interface PlanStep {
@@ -616,6 +619,94 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
   </div>
 );
 
+// ─── Diagnostics Card ───
+const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: string) => void; fixingId: string | null }> = ({ result, onFix, fixingId }) => {
+  const statusIcon = (s: DiagnosticCheck["status"]) => {
+    if (s === "ok") return <ShieldCheck className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
+    if (s === "warning") return <ShieldAlert className="h-3.5 w-3.5 text-amber-400 shrink-0" />;
+    if (s === "error") return <XCircle className="h-3.5 w-3.5 text-red-400 shrink-0" />;
+    return <Loader2 className="h-3.5 w-3.5 text-slate-500 animate-spin shrink-0" />;
+  };
+
+  const overallColor = result.overallStatus === "ok" ? "border-emerald-500/20 bg-emerald-500/5"
+    : result.overallStatus === "warning" ? "border-amber-500/20 bg-amber-500/5"
+    : "border-red-500/20 bg-red-500/5";
+
+  const overallIcon = result.overallStatus === "ok" ? <ShieldCheck className="h-4 w-4 text-emerald-400" />
+    : result.overallStatus === "warning" ? <ShieldAlert className="h-4 w-4 text-amber-400" />
+    : <XCircle className="h-4 w-4 text-red-400" />;
+
+  const overallLabel = result.overallStatus === "ok" ? "Todo funcionando correctamente"
+    : result.overallStatus === "warning" ? "Algunos problemas detectados"
+    : "Se encontraron errores";
+
+  const categories: { key: DiagnosticCheck["category"]; label: string }[] = [
+    { key: "connectivity", label: "Conectividad" },
+    { key: "session", label: "Sesión" },
+    { key: "storage", label: "Almacenamiento" },
+    { key: "data", label: "Datos" },
+  ];
+
+  return (
+    <div className={cn("my-3 border rounded-2xl overflow-hidden", overallColor)}>
+      <div className="p-4 border-b border-white/5">
+        <div className="flex items-center gap-2 mb-1">
+          <Shield className="h-4 w-4 text-primary" />
+          <span className="text-[12px] font-black text-white uppercase tracking-wider">Diagnóstico del Sistema</span>
+        </div>
+        <div className="flex items-center gap-2 mt-2 p-2 rounded-xl bg-white/5">
+          {overallIcon}
+          <span className="text-[11px] text-slate-300 font-medium">{overallLabel}</span>
+        </div>
+      </div>
+
+      <div className="p-3 space-y-3">
+        {categories.map(cat => {
+          const catChecks = result.checks.filter(c => c.category === cat.key);
+          if (catChecks.length === 0) return null;
+          return (
+            <div key={cat.key}>
+              <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">{cat.label}</p>
+              <div className="space-y-1">
+                {catChecks.map(check => (
+                  <div key={check.id} className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5">
+                    {statusIcon(check.status)}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] text-slate-200 font-medium">{check.label}</p>
+                      <p className="text-[9px] text-slate-500 truncate">{check.detail}</p>
+                    </div>
+                    {check.fix && check.fixLabel && (
+                      <button
+                        onClick={() => onFix(check.id)}
+                        disabled={fixingId === check.id}
+                        className="px-2 py-1 text-[9px] font-bold text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-50 shrink-0 flex items-center gap-1"
+                      >
+                        {fixingId === check.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Wrench className="h-3 w-3" />}
+                        {check.fixLabel}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {result.jsErrors.length > 0 && (
+        <div className="px-3 pb-3">
+          <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">Últimos errores JS</p>
+          <div className="max-h-24 overflow-y-auto space-y-0.5 custom-scrollbar">
+            {result.jsErrors.slice(-5).map((e, i) => (
+              <p key={i} className="text-[9px] text-red-400/80 font-mono truncate">{e.message}</p>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ─── Memory Badge ───
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
@@ -633,6 +724,7 @@ const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
+  const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -640,6 +732,8 @@ const AITutor = () => {
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
+  const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -761,6 +855,32 @@ const AITutor = () => {
 
     // Handle skill commands
     const trimmed = text.trim().toLowerCase();
+
+    // /diagnostico - System diagnostics
+    if (trimmed === '/diagnostico' || trimmed === '/diagnóstico') {
+      setInput("");
+      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      const loadingId = (Date.now() + 1).toString();
+      setMessages(prev => [...prev, userMsg, {
+        role: "assistant" as const,
+        content: "🔍 Ejecutando diagnóstico del sistema...",
+        id: loadingId,
+      }]);
+      const result = await runDiagnostics();
+      setLatestDiagnostics(result);
+      setMessages(prev => prev.map(m =>
+        m.id === loadingId ? {
+          ...m,
+          content: result.overallStatus === "ok"
+            ? "✅ Diagnóstico completo — Todo funciona correctamente:"
+            : result.overallStatus === "warning"
+            ? "⚠️ Diagnóstico completo — Se encontraron algunos problemas:"
+            : "❌ Diagnóstico completo — Se detectaron errores:",
+          diagnostics: result,
+        } : m
+      ));
+      return;
+    }
 
     // /analisis - Deep progress analysis
     if (trimmed === '/analisis' || trimmed === '/análisis') {
@@ -980,7 +1100,13 @@ const AITutor = () => {
         ) : (
           <div className="relative">
             <GraduationCap className="h-8 w-8 text-primary-foreground animate-pulse" />
-            <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full border-2 border-primary" />
+            {errorCount >= 3 ? (
+              <div className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full border-2 border-primary flex items-center justify-center">
+                <Activity className="h-2.5 w-2.5 text-white" />
+              </div>
+            ) : (
+              <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full border-2 border-primary" />
+            )}
           </div>
         )}
       </button>
@@ -1075,6 +1201,22 @@ const AITutor = () => {
                       {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
+                      {msg.diagnostics && <DiagnosticsCard result={msg.diagnostics} fixingId={fixingCheckId} onFix={async (checkId) => {
+                        const check = msg.diagnostics!.checks.find(c => c.id === checkId);
+                        if (!check?.fix) return;
+                        setFixingCheckId(checkId);
+                        try {
+                          const fixResult = await check.fix();
+                          toast.success(`Auto-corrección: ${fixResult}`);
+                          // Re-run diagnostics
+                          const newResult = await runDiagnostics();
+                          setLatestDiagnostics(newResult);
+                          setMessages(prev => prev.map(m =>
+                            m.id === msg.id ? { ...m, diagnostics: newResult } : m
+                          ));
+                        } catch { toast.error("Error al aplicar corrección"); }
+                        setFixingCheckId(null);
+                      }} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -1167,7 +1309,7 @@ const AITutor = () => {
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
             <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
           </p>
-          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea</p>
+          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /diagnostico</p>
         </div>
       </div>
     </>
