@@ -1074,7 +1074,13 @@ const AITutor = () => {
         ) : (
           <div className="relative">
             <GraduationCap className="h-8 w-8 text-primary-foreground animate-pulse" />
-            <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full border-2 border-primary" />
+            {errorCount >= 3 ? (
+              <div className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full border-2 border-primary flex items-center justify-center">
+                <Activity className="h-2.5 w-2.5 text-white" />
+              </div>
+            ) : (
+              <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full border-2 border-primary" />
+            )}
           </div>
         )}
       </button>
