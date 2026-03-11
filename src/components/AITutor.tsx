@@ -727,6 +727,7 @@ const AITutor = () => {
   const location = useLocation();
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
+  const { plans: studyPlans, addPlan, togglePaso, deletePlan, getActivePlans, getCompletedPlans } = useStudyPlans();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
