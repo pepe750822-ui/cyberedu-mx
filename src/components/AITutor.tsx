@@ -30,6 +30,7 @@ interface Message {
   quiz?: PersonalizedQuiz;
   recommendations?: ContentRecommendation[];
   diagnostics?: DiagnosticsResult;
+  studyPlans?: PlanEstudio[];
 }
 
 interface PlanStep {
