@@ -709,7 +709,56 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
   );
 };
 
-// ─── Memory Badge ───
+// ─── Study Plan Card ───
+const StudyPlanCards: React.FC<{
+  plans: PlanEstudio[];
+  onToggle: (planId: string, pasoId: string) => void;
+  onDelete: (planId: string) => void;
+}> = ({ plans, onToggle, onDelete }) => (
+  <div className="space-y-3 my-3">
+    {plans.map(plan => {
+      const done = plan.pasos.filter(p => p.completado).length;
+      const total = plan.pasos.length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      return (
+        <div key={plan.id} className={cn("rounded-xl border p-3 text-[11px]", plan.completado ? "bg-emerald-500/10 border-emerald-500/30" : "bg-slate-800/50 border-white/10")}>
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <p className="font-bold text-white text-xs">{plan.titulo}</p>
+              <p className="text-slate-400 text-[9px]">{plan.area} · {new Date(plan.fecha).toLocaleDateString('es-MX')}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={cn("text-[10px] font-bold", plan.completado ? "text-emerald-400" : "text-primary")}>{pct}%</span>
+              <button onClick={() => onDelete(plan.id)} className="p-1 hover:bg-white/10 rounded text-slate-500 hover:text-red-400 transition-colors">
+                <Trash2 className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
+          <div className="w-full h-1.5 bg-slate-700 rounded-full mb-2 overflow-hidden">
+            <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${pct}%` }} />
+          </div>
+          <div className="space-y-1">
+            {plan.pasos.map(paso => (
+              <button
+                key={paso.id}
+                onClick={() => onToggle(plan.id, paso.id)}
+                className={cn("w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-left transition-colors",
+                  paso.completado ? "bg-emerald-500/10 text-emerald-300" : "hover:bg-white/5 text-slate-300"
+                )}
+              >
+                {paso.completado ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" /> : <Circle className="h-3.5 w-3.5 text-slate-500 shrink-0" />}
+                <span className={cn("text-[10px]", paso.completado && "line-through opacity-70")}>{paso.titulo}</span>
+                <span className="ml-auto text-[8px] text-slate-500 uppercase">{paso.tipo}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);
+
+
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
   if (total === 0) return null;
