@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommendation } from "@/hooks/useAITutorSkills";
 import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/useAppDiagnostics";
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
+import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
