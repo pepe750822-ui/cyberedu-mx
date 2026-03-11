@@ -92,14 +92,31 @@ export function useAppDiagnostics() {
       label: "Edge Function (agent-chat)",
     };
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
       const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-chat`, {
-        method: "OPTIONS",
-        headers: { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ messages: [{ role: "user", content: "ping" }] }),
+        signal: controller.signal,
       });
-      if (resp.ok || resp.status === 204) return { ...base, status: "ok", detail: `Disponible (${resp.status})` };
+      clearTimeout(timeout);
+      // Any response (even 4xx) means the function is deployed and reachable
+      if (resp.ok || resp.status === 200 || resp.status === 204) {
+        // Consume the stream body to avoid leaks
+        try { await resp.text().catch(() => {}); } catch {}
+        return { ...base, status: "ok", detail: `Disponible (${resp.status})` };
+      }
+      if (resp.status === 429) return { ...base, status: "warning", detail: "Disponible pero con rate-limit activo" };
+      if (resp.status === 402) return { ...base, status: "warning", detail: "Disponible pero sin créditos AI" };
+      try { await resp.text().catch(() => {}); } catch {}
       return { ...base, status: "warning", detail: `Respondió con status ${resp.status}` };
-    } catch {
-      return { ...base, status: "error", detail: "Edge function no disponible" };
+    } catch (e: any) {
+      if (e?.name === "AbortError") return { ...base, status: "warning", detail: "Timeout (>8s) — puede estar lenta" };
+      return { ...base, status: "error", detail: "Edge function no disponible", fixLabel: "Reintentar", fix: async () => { return "Reintentando..."; } };
     }
   }, []);
 
