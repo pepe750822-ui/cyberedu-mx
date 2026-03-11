@@ -1305,6 +1305,7 @@ const AITutor = () => {
                         } catch { toast.error("Error al aplicar corrección"); }
                         setFixingCheckId(null);
                       }} />}
+                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
