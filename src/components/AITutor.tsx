@@ -928,17 +928,53 @@ const AITutor = () => {
       return;
     }
 
-    // /recomienda - Content recommendations
+    // /recomienda - Content recommendations + auto-save plan
     if (trimmed === '/recomienda' || trimmed === '/recomendaciones') {
       const recs = getRecommendations();
       setInput("");
+
+      // Auto-save as study plan if there are recommendations
+      if (recs.length > 0) {
+        const topArea = recs[0].areaId || 'general';
+        const areaName = recs[0].reason?.match(/:\s*(.+?)\s*\(/)?.[1] || 'Estudio personalizado';
+        addPlan({
+          area: areaName,
+          titulo: `Plan recomendado — ${new Date().toLocaleDateString('es-MX')}`,
+          pasos: recs.map(r => ({
+            tipo: r.type === 'simulador' ? 'simulador' as const : r.type === 'area' ? 'video' as const : 'video' as const,
+            id: r.videoId || r.areaId || r.title,
+            titulo: r.title,
+            completado: false,
+          })),
+        });
+        toast.success('📋 Plan de estudio guardado automáticamente');
+      }
+
       setMessages(prev => [...prev, {
         role: "user" as const, content: text.trim(), id: Date.now().toString()
       }, {
         role: "assistant" as const,
-        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
+        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:\n\n📋 *Plan guardado automáticamente.* Escribe `/planes` para verlo.' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
         id: (Date.now() + 1).toString(),
         recommendations: recs.length > 0 ? recs : undefined,
+      }]);
+      return;
+    }
+
+    // /planes - View saved study plans
+    if (trimmed === '/planes' || trimmed === '/plan') {
+      setInput("");
+      const active = getActivePlans();
+      const completed = getCompletedPlans();
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: studyPlans.length > 0
+          ? `📚 Tienes **${active.length}** plan(es) activo(s) y **${completed.length}** completado(s):`
+          : '📭 No tienes planes guardados aún. Usa `/recomienda` para generar uno.',
+        id: (Date.now() + 1).toString(),
+        studyPlans: studyPlans.length > 0 ? studyPlans : undefined,
       }]);
       return;
     }
