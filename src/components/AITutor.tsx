@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommendation } from "@/hooks/useAITutorSkills";
 import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/useAppDiagnostics";
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
+import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
@@ -29,6 +30,7 @@ interface Message {
   quiz?: PersonalizedQuiz;
   recommendations?: ContentRecommendation[];
   diagnostics?: DiagnosticsResult;
+  studyPlans?: PlanEstudio[];
 }
 
 interface PlanStep {
@@ -707,7 +709,56 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
   );
 };
 
-// ─── Memory Badge ───
+// ─── Study Plan Card ───
+const StudyPlanCards: React.FC<{
+  plans: PlanEstudio[];
+  onToggle: (planId: string, pasoId: string) => void;
+  onDelete: (planId: string) => void;
+}> = ({ plans, onToggle, onDelete }) => (
+  <div className="space-y-3 my-3">
+    {plans.map(plan => {
+      const done = plan.pasos.filter(p => p.completado).length;
+      const total = plan.pasos.length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      return (
+        <div key={plan.id} className={cn("rounded-xl border p-3 text-[11px]", plan.completado ? "bg-emerald-500/10 border-emerald-500/30" : "bg-slate-800/50 border-white/10")}>
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <p className="font-bold text-white text-xs">{plan.titulo}</p>
+              <p className="text-slate-400 text-[9px]">{plan.area} · {new Date(plan.fecha).toLocaleDateString('es-MX')}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={cn("text-[10px] font-bold", plan.completado ? "text-emerald-400" : "text-primary")}>{pct}%</span>
+              <button onClick={() => onDelete(plan.id)} className="p-1 hover:bg-white/10 rounded text-slate-500 hover:text-red-400 transition-colors">
+                <Trash2 className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
+          <div className="w-full h-1.5 bg-slate-700 rounded-full mb-2 overflow-hidden">
+            <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${pct}%` }} />
+          </div>
+          <div className="space-y-1">
+            {plan.pasos.map(paso => (
+              <button
+                key={paso.id}
+                onClick={() => onToggle(plan.id, paso.id)}
+                className={cn("w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-left transition-colors",
+                  paso.completado ? "bg-emerald-500/10 text-emerald-300" : "hover:bg-white/5 text-slate-300"
+                )}
+              >
+                {paso.completado ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" /> : <Circle className="h-3.5 w-3.5 text-slate-500 shrink-0" />}
+                <span className={cn("text-[10px]", paso.completado && "line-through opacity-70")}>{paso.titulo}</span>
+                <span className="ml-auto text-[8px] text-slate-500 uppercase">{paso.tipo}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);
+
+
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   const total = memory.decisions.length + memory.topics.length + memory.insights.length;
   if (total === 0) return null;
@@ -725,6 +776,7 @@ const AITutor = () => {
   const location = useLocation();
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
+  const { plans: studyPlans, addPlan, togglePaso, deletePlan, getActivePlans, getCompletedPlans } = useStudyPlans();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -925,17 +977,53 @@ const AITutor = () => {
       return;
     }
 
-    // /recomienda - Content recommendations
+    // /recomienda - Content recommendations + auto-save plan
     if (trimmed === '/recomienda' || trimmed === '/recomendaciones') {
       const recs = getRecommendations();
       setInput("");
+
+      // Auto-save as study plan if there are recommendations
+      if (recs.length > 0) {
+        const topArea = recs[0].areaId || 'general';
+        const areaName = recs[0].reason?.match(/:\s*(.+?)\s*\(/)?.[1] || 'Estudio personalizado';
+        addPlan({
+          area: areaName,
+          titulo: `Plan recomendado — ${new Date().toLocaleDateString('es-MX')}`,
+          pasos: recs.map(r => ({
+            tipo: r.type === 'simulador' ? 'simulador' as const : r.type === 'area' ? 'video' as const : 'video' as const,
+            id: r.videoId || r.areaId || r.title,
+            titulo: r.title,
+            completado: false,
+          })),
+        });
+        toast.success('📋 Plan de estudio guardado automáticamente');
+      }
+
       setMessages(prev => [...prev, {
         role: "user" as const, content: text.trim(), id: Date.now().toString()
       }, {
         role: "assistant" as const,
-        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
+        content: recs.length > 0 ? '🚀 Aquí tienes recomendaciones personalizadas basadas en tu progreso:\n\n📋 *Plan guardado automáticamente.* Escribe `/planes` para verlo.' : '✅ ¡No hay recomendaciones pendientes! Estás al día.',
         id: (Date.now() + 1).toString(),
         recommendations: recs.length > 0 ? recs : undefined,
+      }]);
+      return;
+    }
+
+    // /planes - View saved study plans
+    if (trimmed === '/planes' || trimmed === '/plan') {
+      setInput("");
+      const active = getActivePlans();
+      const completed = getCompletedPlans();
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: studyPlans.length > 0
+          ? `📚 Tienes **${active.length}** plan(es) activo(s) y **${completed.length}** completado(s):`
+          : '📭 No tienes planes guardados aún. Usa `/recomienda` para generar uno.',
+        id: (Date.now() + 1).toString(),
+        studyPlans: studyPlans.length > 0 ? studyPlans : undefined,
       }]);
       return;
     }
@@ -1217,6 +1305,7 @@ const AITutor = () => {
                         } catch { toast.error("Error al aplicar corrección"); }
                         setFixingCheckId(null);
                       }} />}
+                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -1309,7 +1398,7 @@ const AITutor = () => {
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
             <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
           </p>
-          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /diagnostico</p>
+          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
         </div>
       </div>
     </>
