@@ -1398,7 +1398,7 @@ const AITutor = () => {
           <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
             <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
           </p>
-          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /diagnostico</p>
+          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
         </div>
       </div>
     </>
