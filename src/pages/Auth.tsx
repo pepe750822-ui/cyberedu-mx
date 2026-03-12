@@ -9,6 +9,7 @@ import { GraduationCap, Mail, Lock, User, Chrome, ArrowRight, Sparkles, ShieldCh
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
+import { trackLogin, trackRegister } from "@/hooks/useAnalytics";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
