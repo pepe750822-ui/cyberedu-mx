@@ -5,6 +5,7 @@ import { areas } from "@/data/areas";
 import { studioMapping } from "@/data/studioMap";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
+import { trackVideoStart, trackVideoComplete } from "@/hooks/useAnalytics";
 import VideoCard from "@/components/VideoCard";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import MaterialComplementario from "@/components/MaterialComplementario";
