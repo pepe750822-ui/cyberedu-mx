@@ -87,14 +87,14 @@ const AreaDetail = () => {
   const handleOpenNotebook = () => {
     if (notebookKey) {
       markAsViewed(notebookKey);
-      trackVideoComplete(activeVideo.id, activeVideo.title, area.title);
+      trackVideoComplete(activeVideo.id, activeVideo.title, area.name);
     }
   };
 
   // Track video start when active video changes
   useEffect(() => {
     if (activeVideo && area) {
-      trackVideoStart(activeVideo.id, activeVideo.title, area.title);
+      trackVideoStart(activeVideo.id, activeVideo.title, area.name);
     }
   }, [activeVideo?.id]);
 
