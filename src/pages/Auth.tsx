@@ -112,6 +112,7 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        trackLogin('email');
         navigate("/");
         toast({ title: "¡Bienvenido de nuevo!", description: "Sesión iniciada correctamente." });
       } else {
