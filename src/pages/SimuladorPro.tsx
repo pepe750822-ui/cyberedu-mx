@@ -23,6 +23,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { simuladoECOEMS, Question } from "@/data/simuladorData";
+import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60; // 3 hours
 
