@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
 import Certificaciones from "./pages/Certificaciones";
+import Reportes from "./pages/Reportes";
 import Blog from "./pages/Blog";
 import BlogPostDetail from "./pages/BlogPostDetail";
 import AITutor from "./components/AITutor";
