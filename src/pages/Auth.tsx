@@ -150,6 +150,7 @@ const Auth = () => {
         redirect_uri: window.location.origin,
       });
       if (error) throw error;
+      trackLogin('google');
     } catch (error: any) {
       toast({
         title: "Error con Google",
