@@ -95,6 +95,12 @@ const StreakAutoSync = () => {
 
 const queryClient = new QueryClient();
 
+/** Tracks page views on every route change */
+const PageViewTracker = () => {
+  usePageView();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -102,6 +108,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PageViewTracker />
           <AITutor />
           <StreakAutoSync />
           <AchievementObserver />
