@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
+import { trackLogout } from "@/hooks/useAnalytics";
 
 interface UserProfile {
   id: string;
@@ -74,6 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
+    trackLogout();
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);

@@ -5,6 +5,7 @@ import { areas } from "@/data/areas";
 import { studioMapping } from "@/data/studioMap";
 import { getNotebookUrl, getNotebookKey } from "@/data/notebookMap";
 import { useVideoProgress } from "@/hooks/useVideoProgress";
+import { trackVideoStart, trackVideoComplete } from "@/hooks/useAnalytics";
 import VideoCard from "@/components/VideoCard";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import MaterialComplementario from "@/components/MaterialComplementario";
@@ -67,6 +68,13 @@ const AreaDetail = () => {
 
   const stats = getEstadisticas();
 
+  // Track video start when active video changes
+  useEffect(() => {
+    if (activeVideo && area) {
+      trackVideoStart(activeVideo.id, activeVideo.title, area.name);
+    }
+  }, [activeVideo?.id]);
+
   if (!activeVideo || !area) {
     return (
       <div className="min-h-screen bg-background">
@@ -84,7 +92,10 @@ const AreaDetail = () => {
   const notebookKey = getNotebookKey(activeVideo.id);
 
   const handleOpenNotebook = () => {
-    if (notebookKey) markAsViewed(notebookKey);
+    if (notebookKey) {
+      markAsViewed(notebookKey);
+      trackVideoComplete(activeVideo.id, activeVideo.title, area.name);
+    }
   };
 
   const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;

@@ -22,6 +22,7 @@ import { useNotifications } from "./hooks/useNotifications";
 import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
+import { usePageView } from "./hooks/useAnalytics";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
@@ -94,6 +95,12 @@ const StreakAutoSync = () => {
 
 const queryClient = new QueryClient();
 
+/** Tracks page views on every route change */
+const PageViewTracker = () => {
+  usePageView();
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -101,6 +108,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PageViewTracker />
           <AITutor />
           <StreakAutoSync />
           <AchievementObserver />

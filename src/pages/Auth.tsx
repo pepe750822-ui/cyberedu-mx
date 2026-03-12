@@ -9,6 +9,7 @@ import { GraduationCap, Mail, Lock, User, Chrome, ArrowRight, Sparkles, ShieldCh
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
+import { trackLogin, trackRegister } from "@/hooks/useAnalytics";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -111,6 +112,7 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        trackLogin('email');
         navigate("/");
         toast({ title: "¡Bienvenido de nuevo!", description: "Sesión iniciada correctamente." });
       } else {
@@ -123,6 +125,7 @@ const Auth = () => {
           },
         });
         if (error) throw error;
+        trackRegister('email');
         toast({
           title: "¡Registro exitoso!",
           description: "Revisa tu correo para confirmar tu cuenta y empezar a estudiar.",
@@ -147,6 +150,7 @@ const Auth = () => {
         redirect_uri: window.location.origin,
       });
       if (error) throw error;
+      trackLogin('google');
     } catch (error: any) {
       toast({
         title: "Error con Google",

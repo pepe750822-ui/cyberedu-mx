@@ -23,6 +23,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { simuladoECOEMS, Question } from "@/data/simuladorData";
+import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60; // 3 hours
 
@@ -123,6 +124,7 @@ const SimuladorPro = () => {
 
     const handlePause = () => {
         setIsPaused(true);
+        trackSimuladorPause();
         saveStateToLocalStorage({ pausado: true });
         toast({
             title: "Simulador Pausado",
@@ -132,6 +134,7 @@ const SimuladorPro = () => {
 
     const handleResume = () => {
         setIsPaused(false);
+        trackSimuladorResume();
         saveStateToLocalStorage({ pausado: false });
     };
 
@@ -177,6 +180,7 @@ const SimuladorPro = () => {
     const currentQuestion = simuladoECOEMS[currentQuestionIndex];
 
     const handleStartExam = () => {
+        trackSimuladorStart();
         setIsExamActive(true);
         setStartTime(Date.now());
         setUserAnswers({});
@@ -212,6 +216,11 @@ const SimuladorPro = () => {
 
         // Save results for the achievement system
         const finalScore = calculateScore();
+        const totalTime = EXAM_TIME_SECONDS - timeLeft;
+        const pct = Math.round((finalScore / simuladoECOEMS.length) * 100);
+        const prediccion = pct >= 70 ? 'aprobado' : 'reprobado';
+        trackSimuladorComplete(finalScore, totalTime, prediccion);
+
         localStorage.setItem('quiz_score_simulador_pro', finalScore.toString());
         localStorage.setItem('last_sim_time_left', timeLeft.toString());
 
