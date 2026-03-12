@@ -124,6 +124,7 @@ const SimuladorPro = () => {
 
     const handlePause = () => {
         setIsPaused(true);
+        trackSimuladorPause();
         saveStateToLocalStorage({ pausado: true });
         toast({
             title: "Simulador Pausado",
