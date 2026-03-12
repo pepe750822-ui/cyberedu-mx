@@ -216,6 +216,11 @@ const SimuladorPro = () => {
 
         // Save results for the achievement system
         const finalScore = calculateScore();
+        const totalTime = EXAM_TIME_SECONDS - timeLeft;
+        const pct = Math.round((finalScore / simuladoECOEMS.length) * 100);
+        const prediccion = pct >= 70 ? 'aprobado' : 'reprobado';
+        trackSimuladorComplete(finalScore, totalTime, prediccion);
+
         localStorage.setItem('quiz_score_simulador_pro', finalScore.toString());
         localStorage.setItem('last_sim_time_left', timeLeft.toString());
 
