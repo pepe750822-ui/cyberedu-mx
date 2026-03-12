@@ -22,6 +22,7 @@ import { useNotifications } from "./hooks/useNotifications";
 import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
+import { usePageView } from "./hooks/useAnalytics";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
