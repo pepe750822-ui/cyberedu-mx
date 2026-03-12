@@ -68,6 +68,13 @@ const AreaDetail = () => {
 
   const stats = getEstadisticas();
 
+  // Track video start when active video changes
+  useEffect(() => {
+    if (activeVideo && area) {
+      trackVideoStart(activeVideo.id, activeVideo.title, area.name);
+    }
+  }, [activeVideo?.id]);
+
   if (!activeVideo || !area) {
     return (
       <div className="min-h-screen bg-background">
@@ -90,13 +97,6 @@ const AreaDetail = () => {
       trackVideoComplete(activeVideo.id, activeVideo.title, area.name);
     }
   };
-
-  // Track video start when active video changes
-  useEffect(() => {
-    if (activeVideo && area) {
-      trackVideoStart(activeVideo.id, activeVideo.title, area.name);
-    }
-  }, [activeVideo?.id]);
 
   const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;
 
