@@ -134,6 +134,7 @@ const SimuladorPro = () => {
 
     const handleResume = () => {
         setIsPaused(false);
+        trackSimuladorResume();
         saveStateToLocalStorage({ pausado: false });
     };
 
