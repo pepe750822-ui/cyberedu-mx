@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
 import Certificaciones from "./pages/Certificaciones";
+import Reportes from "./pages/Reportes";
 import Blog from "./pages/Blog";
 import BlogPostDetail from "./pages/BlogPostDetail";
 import AITutor from "./components/AITutor";
@@ -120,6 +121,7 @@ const App = () => (
             <Route path="/simulador-pro" element={<ProtectedRoute><SimuladorPro /></ProtectedRoute>} />
             <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
             <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
+            <Route path="/reportes" element={<ProtectedRoute><Reportes /></ProtectedRoute>} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/auth" element={<Auth />} />
