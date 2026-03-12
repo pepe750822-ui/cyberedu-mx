@@ -178,6 +178,7 @@ const SimuladorPro = () => {
     const currentQuestion = simuladoECOEMS[currentQuestionIndex];
 
     const handleStartExam = () => {
+        trackSimuladorStart();
         setIsExamActive(true);
         setStartTime(Date.now());
         setUserAnswers({});
