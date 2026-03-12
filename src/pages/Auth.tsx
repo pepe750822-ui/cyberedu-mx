@@ -125,6 +125,7 @@ const Auth = () => {
           },
         });
         if (error) throw error;
+        trackRegister('email');
         toast({
           title: "¡Registro exitoso!",
           description: "Revisa tu correo para confirmar tu cuenta y empezar a estudiar.",
