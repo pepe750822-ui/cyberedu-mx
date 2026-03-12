@@ -85,8 +85,18 @@ const AreaDetail = () => {
   const notebookKey = getNotebookKey(activeVideo.id);
 
   const handleOpenNotebook = () => {
-    if (notebookKey) markAsViewed(notebookKey);
+    if (notebookKey) {
+      markAsViewed(notebookKey);
+      trackVideoComplete(activeVideo.id, activeVideo.title, area.title);
+    }
   };
+
+  // Track video start when active video changes
+  useEffect(() => {
+    if (activeVideo && area) {
+      trackVideoStart(activeVideo.id, activeVideo.title, area.title);
+    }
+  }, [activeVideo?.id]);
 
   const progressPercent = totalVideos > 0 ? (viewedCount / totalVideos) * 100 : 0;
 
