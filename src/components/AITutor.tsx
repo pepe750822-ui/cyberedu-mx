@@ -882,6 +882,24 @@ const AITutor = () => {
   const handlePlanAction = (messageId: string, action: "approve" | "reject") => {
     setMessages(prev => prev.map(m => {
       if (m.id !== messageId || !m.plan) return m;
+
+      // Auto-save the plan if approved
+      if (action === "approve") {
+        const approvedSteps = m.plan.steps.filter(s => s.status === "approved" || s.status === "pending");
+        if (approvedSteps.length > 0) {
+           addPlan({
+             area: "Plan Personalizado por IA",
+             titulo: m.plan.title || "Plan de Acción",
+             pasos: approvedSteps.map(s => ({
+               id: s.id.toString(),
+               titulo: s.text,
+               tipo: "video",
+               completado: false
+             }))
+           });
+        }
+      }
+
       return { ...m, plan: { ...m.plan, status: action === "approve" ? "approved" : "rejected" } };
     }));
     if (action === "approve") {
@@ -891,11 +909,13 @@ const AITutor = () => {
           question: "Plan de estudio aprobado",
           chosen: messages.find(m => m.id === messageId)?.plan?.title || "Plan",
           reasoning: "Aprobado por el usuario",
-          impact: "Se seguirán los pasos del plan",
+          impact: "Se seguirán los pasos del plan guardado",
         }],
       }));
+      toast.success("¡Plan aprobado y guardado! Escribe /planes para verlo en detalle.");
+    } else {
+      toast.error("Plan rechazado.");
     }
-    toast.success(action === "approve" ? "¡Plan aprobado!" : "Plan rechazado.");
   };
 
   const handleToggleStep = (messageId: string, stepId: number) => {
