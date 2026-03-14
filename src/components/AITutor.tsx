@@ -806,7 +806,7 @@ const AITutor = () => {
     }
     return [{
       role: "assistant" as const,
-      content: "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento multi-paso. Puedo analizar tu progreso, crear planes personalizados, recordar tus decisiones y explicarte cualquier tema del ECOEMS 2026.\n\n¿En qué te ayudo hoy?",
+      content: "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento autónomo.\n\n**¿Cómo puedes usarme?**\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?",
       id: "initial",
     }];
   });
@@ -862,7 +862,7 @@ const AITutor = () => {
     setMemory({ decisions: [], topics: [], insights: [], lastUpdated: Date.now() });
     setMessages([{
       role: "assistant",
-      content: "¡Historial y memoria reiniciados! Empezamos desde cero. ¿Qué te gustaría trabajar?",
+      content: "¡Historial de memoria y chat reiniciados! Empecemos de nuevo. \n\n**¿Cómo puedes usarme?**\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?",
       id: Date.now().toString(),
     }]);
     toast.info("Conversación y memoria reiniciadas");
