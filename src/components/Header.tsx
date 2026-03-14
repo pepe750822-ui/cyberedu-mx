@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -85,6 +85,13 @@ const Header = () => {
             >
               <Newspaper className="h-3.5 w-3.5" />
               Blog
+            </Link>
+            <Link
+              to="/reportes"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+              Reportes
             </Link>
             <a
               href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
@@ -224,6 +231,14 @@ const Header = () => {
                   >
                     <Newspaper className="h-5 w-5 text-amber-500" />
                     Blog de Noticias
+                  </Link>
+                  <Link
+                    to="/reportes"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <BarChart3 className="h-5 w-5 text-primary" />
+                    Dashboard de Reportes
                   </Link>
                   <Link
                     to="/marketing"

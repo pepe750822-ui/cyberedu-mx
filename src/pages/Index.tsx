@@ -135,6 +135,15 @@ const Index = () => {
                 <CheckCircle className="h-5 w-5 text-green-500" />
                 <span className="text-sm font-medium">{stats.completos} Completados</span>
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/reportes")}
+                className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/10 px-4 py-2 rounded-lg transition-all font-bold"
+              >
+                <BarChart3 className="h-5 w-5" />
+                <span>Ver Analíticos</span>
+              </Button>
             </div>
           </div>
         </div>

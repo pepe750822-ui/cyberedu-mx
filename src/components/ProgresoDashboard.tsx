@@ -315,7 +315,7 @@ const ProgresoDashboard = () => {
                 <Trophy className="h-6 w-6 text-amber-500" />
               </div>
             </div>
-            <div className="flex gap-1.5 overflow-hidden">
+            <div className="flex gap-1.5 overflow-hidden mb-4">
               {achievements.map((a, i) => (
                 <div key={i} className={cn(
                   "w-full h-1.5 rounded-full transition-all",
@@ -323,6 +323,15 @@ const ProgresoDashboard = () => {
                 )} />
               ))}
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/reportes")}
+              className="w-full bg-white/5 border-white/10 text-[10px] font-black uppercase tracking-widest h-8"
+            >
+              <BarChart3 className="h-3 w-3 mr-2 text-primary" />
+              Ver Reporte Detallado
+            </Button>
           </CardContent>
         </Card>
       </div>
