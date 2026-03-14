@@ -164,6 +164,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
           Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ taskId: data.id }),
