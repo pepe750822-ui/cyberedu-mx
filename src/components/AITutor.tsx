@@ -142,7 +142,7 @@ function parseAllBlocks(content: string) {
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
-  return { reasoning, decisions, plan, cleanContent: c3 || "He analizado tu solicitud:" };
+  return { reasoning, decisions, plan, cleanContent: c3 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -1337,6 +1337,7 @@ const AITutor = () => {
                         } catch { toast.error("Error al aplicar corrección"); }
                         setFixingCheckId(null);
                       }} />}
+                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
