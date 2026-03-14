@@ -33,6 +33,7 @@ import { useNotebookLMContent } from "@/hooks/useNotebookLMContent";
 import { FlashcardViewer } from "@/components/FlashcardViewer";
 import { AITutorQuiz } from "@/components/AITutorQuiz";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
+import { trackQuizStart, trackQuizComplete } from "@/hooks/useAnalytics";
 
 interface MaterialComplementarioProps {
   videoId: string;
@@ -182,6 +183,9 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
       if (e.data?.type === 'quiz-aprobado' && e.data?.videoId === videoId) {
         localStorage.setItem(`quiz_aprobado_${videoId}`, 'true');
         localStorage.setItem(`quiz_update_${videoId}`, Date.now().toString());
+        
+        // Track original quiz completion
+        trackQuizComplete(`original_${videoId}`, 100, 100, true);
       }
     };
     window.addEventListener('message', handleMessage);
@@ -222,6 +226,12 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   // Reset tab to default whenever a new video is selected
   useEffect(() => {
     setActiveTab(defaultTab);
+    // Track if the default tab is already a quiz
+    if (defaultTab === "quiz") {
+      trackQuizStart(`original_${videoId}`, videoId);
+    } else if (defaultTab === "ai-quiz") {
+      trackQuizStart(`ai_${videoId}`, videoId);
+    }
   }, [videoId, defaultTab]);
 
   return (
@@ -231,7 +241,17 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           <Sparkles className="h-5 w-5 text-primary animate-pulse" />
           Centro de Aprendizaje Avanzado
         </h3>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs 
+          value={activeTab} 
+          onValueChange={(value) => {
+            setActiveTab(value);
+            if (value === "quiz") {
+              trackQuizStart(`original_${videoId}`, videoId);
+            } else if (value === "ai-quiz") {
+              trackQuizStart(`ai_${videoId}`, videoId);
+            }
+          }}
+        >
           <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-muted/50 p-1 mb-6">
 
             {hasAIQuiz && (
@@ -292,7 +312,7 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           </TabsList>
 
           <TabsContent value="ai-quiz" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-            {aiQuiz && <AITutorQuiz quiz={aiQuiz} />}
+            {aiQuiz && <AITutorQuiz quiz={aiQuiz} videoId={videoId} />}
           </TabsContent>
 
           <TabsContent value="flashcards" className="animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -381,11 +401,14 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
                     {studioSims.map((sim, sIdx) => (
                       <Button
                         key={sIdx}
-                        onClick={() => setActiveSimulator({
-                          url: sim.path,
-                          title: sim.name,
-                          description: sim.description
-                        })}
+                        onClick={() => {
+                          setActiveSimulator({
+                            url: sim.path,
+                            title: sim.name,
+                            description: sim.description
+                          });
+                          trackQuizStart(`studio_${sim.name}`, videoId);
+                        }}
                         className="h-14 bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-widest rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-95"
                       >
                         <ExternalLink className="mr-2 h-4 w-4" />

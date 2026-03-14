@@ -5,13 +5,15 @@ import { CheckCircle2, XCircle, ChevronRight, Trophy, AlertCircle } from 'lucide
 import { Button } from '@/components/ui/button';
 import { Quiz, QuizQuestion } from '@/hooks/useNotebookLMContent';
 import { cn } from '@/lib/utils';
+import { trackQuizComplete } from '@/hooks/useAnalytics';
 
 interface Props {
     quiz: Quiz;
+    videoId: string;
     onComplete?: (score: number) => void;
 }
 
-export const AITutorQuiz: React.FC<Props> = ({ quiz, onComplete }) => {
+export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);
@@ -36,6 +38,8 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, onComplete }) => {
             setIsAnswered(false);
         } else {
             setIsFinished(true);
+            const passed = score >= (quiz.questions.length * 0.7); // 70% to pass
+            trackQuizComplete(`ai_${videoId}`, score, quiz.questions.length, passed);
             if (onComplete) onComplete(score);
         }
     };
