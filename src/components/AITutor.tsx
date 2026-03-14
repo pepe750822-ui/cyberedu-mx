@@ -95,15 +95,19 @@ function saveMemory(memory: AgentMemory) {
 }
 
 // ─── Content Parsers ───
+function safeParseJSON(str: string): any {
+  try {
+    const cleaned = str.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    return JSON.parse(cleaned);
+  } catch {
+    return null;
+  }
+}
+
 function parseReasoningFromContent(content: string): { reasoning: Reasoning | null; cleanContent: string } {
   const match = content.match(/<reasoning>([\s\S]*?)<\/reasoning>/);
   if (!match) return { reasoning: null, cleanContent: content };
-  try {
-    const parsed = JSON.parse(match[1]);
-    return { reasoning: parsed, cleanContent: content.replace(/<reasoning>[\s\S]*?<\/reasoning>/, "").trim() };
-  } catch {
-    return { reasoning: null, cleanContent: content };
-  }
+  return { reasoning: safeParseJSON(match[1]), cleanContent: content.replace(/<reasoning>[\s\S]*?<\/reasoning>/, "").trim() };
 }
 
 function parseDecisionsFromContent(content: string): { decisions: Decision[]; cleanContent: string } {
@@ -112,9 +116,8 @@ function parseDecisionsFromContent(content: string): { decisions: Decision[]; cl
   const regex = /<decision>([\s\S]*?)<\/decision>/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    try {
-      decisions.push(JSON.parse(m[1]));
-    } catch { /* skip */ }
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) decisions.push(parsed);
   }
   cleaned = content.replace(/<decision>[\s\S]*?<\/decision>/g, "").trim();
   return { decisions, cleanContent: cleaned };
@@ -123,18 +126,16 @@ function parseDecisionsFromContent(content: string): { decisions: Decision[]; cl
 function parsePlanFromContent(content: string): { plan: Plan | null; cleanContent: string } {
   const planMatch = content.match(/<plan>([\s\S]*?)<\/plan>/);
   if (!planMatch) return { plan: null, cleanContent: content };
-  try {
-    const parsed = JSON.parse(planMatch[1]);
-    const plan: Plan = {
-      title: parsed.title || "Plan de estudio",
-      description: parsed.description || "",
-      steps: (parsed.steps || []).map((s: any) => ({ ...s, status: "pending" as const })),
-      status: "pending",
-    };
-    return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
-  } catch {
-    return { plan: null, cleanContent: content };
-  }
+  const parsed = safeParseJSON(planMatch[1]);
+  if (!parsed) return { plan: null, cleanContent: content };
+  
+  const plan: Plan = {
+    title: parsed.title || "Plan de estudio",
+    description: parsed.description || "",
+    steps: (parsed.steps || []).map((s: any) => ({ ...s, status: "pending" as const })),
+    status: "pending",
+  };
+  return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
 }
 
 function parseAllBlocks(content: string) {
@@ -142,6 +143,13 @@ function parseAllBlocks(content: string) {
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
   return { reasoning, decisions, plan, cleanContent: c3 || "He analizado tu solicitud:" };
+}
+
+function stripStreamingBlocks(content: string): string {
+  // Oculta temporalmente los bloques XML crudos mientras el LLM los está escribiendo en el stream.
+  return content
+    .replace(/<(reasoning|decision|plan)>[\s\S]*?(<\/\1>|$)/g, "")
+    .trim();
 }
 
 // ─── Streaming helper ───
@@ -1047,10 +1055,12 @@ const AITutor = () => {
         assistantContent += chunk;
         setMessages(prev => {
           const last = prev[prev.length - 1];
+          const displayContent = stripStreamingBlocks(assistantContent);
+          
           if (last?.role === "assistant" && last.id === assistantId) {
-            return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantContent } : m);
+            return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: displayContent } : m);
           }
-          return [...prev, { role: "assistant", content: assistantContent, id: assistantId }];
+          return [...prev, { role: "assistant", content: displayContent, id: assistantId }];
         });
       };
 
@@ -1120,10 +1130,12 @@ const AITutor = () => {
       assistantContent += chunk;
       setMessages(prev => {
         const last = prev[prev.length - 1];
+        const displayContent = stripStreamingBlocks(assistantContent);
+
         if (last?.role === "assistant" && last.id === assistantId) {
-          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantContent } : m);
+          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: displayContent } : m);
         }
-        return [...prev, { role: "assistant", content: assistantContent, id: assistantId }];
+        return [...prev, { role: "assistant", content: displayContent, id: assistantId }];
       });
     };
 
