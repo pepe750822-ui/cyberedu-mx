@@ -630,7 +630,13 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
 );
 
 // ─── Diagnostics Card ───
-const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: string) => void; fixingId: string | null }> = ({ result, onFix, fixingId }) => {
+const DiagnosticsCard: React.FC<{ 
+  result: DiagnosticsResult; 
+  onFix: (checkId: string) => void; 
+  onFixAll: () => void;
+  fixingId: string | null;
+  isFixingAll?: boolean;
+}> = ({ result, onFix, onFixAll, fixingId, isFixingAll }) => {
   const statusIcon = (s: DiagnosticCheck["status"]) => {
     if (s === "ok") return <ShieldCheck className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
     if (s === "warning") return <ShieldAlert className="h-3.5 w-3.5 text-amber-400 shrink-0" />;
@@ -664,9 +670,22 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
           <Shield className="h-4 w-4 text-primary" />
           <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Diagnóstico del Sistema</span>
         </div>
-        <div className="flex items-center gap-2 mt-2 p-2 rounded-xl bg-white/5">
-          {overallIcon}
-          <span className="text-sm text-slate-300 font-medium">{overallLabel}</span>
+        <div className="flex items-center justify-between gap-4 mt-2">
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-white/5 flex-1">
+            {overallIcon}
+            <span className="text-sm text-slate-300 font-medium">{overallLabel}</span>
+          </div>
+          {result.checks.some(c => (c.status === "error" || c.status === "warning") && c.fix) && (
+            <Button
+              onClick={onFixAll}
+              disabled={!!fixingId || isFixingAll}
+              size="sm"
+              className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 font-black uppercase tracking-tighter text-[10px] h-9"
+            >
+              {isFixingAll ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <Wrench className="h-3 w-3 mr-1" />}
+              Autocorregir Todo
+            </Button>
+          )}
         </div>
       </div>
 
@@ -1321,22 +1340,52 @@ const AITutor = () => {
                       {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
-                      {msg.diagnostics && <DiagnosticsCard result={msg.diagnostics} fixingId={fixingCheckId} onFix={async (checkId) => {
-                        const check = msg.diagnostics!.checks.find(c => c.id === checkId);
-                        if (!check?.fix) return;
-                        setFixingCheckId(checkId);
-                        try {
-                          const fixResult = await check.fix();
-                          toast.success(`Auto-corrección: ${fixResult}`);
+                      {msg.diagnostics && <DiagnosticsCard 
+                        result={msg.diagnostics} 
+                        fixingId={fixingCheckId} 
+                        isFixingAll={fixingCheckId === 'all'}
+                        onFixAll={async () => {
+                          const fixable = msg.diagnostics!.checks.filter(c => (c.status === "error" || c.status === "warning") && c.fix);
+                          if (fixable.length === 0) return;
+                          
+                          setFixingCheckId('all');
+                          let successCount = 0;
+                          for (const check of fixable) {
+                            try {
+                              await check.fix!();
+                              successCount++;
+                            } catch (e) {
+                              console.error(`Error fixing ${check.id}:`, e);
+                            }
+                          }
+                          
+                          toast.success(`Corrección masiva completa: ${successCount} problemas resueltos`);
+                          
                           // Re-run diagnostics
                           const newResult = await runDiagnostics();
                           setLatestDiagnostics(newResult);
                           setMessages(prev => prev.map(m =>
                             m.id === msg.id ? { ...m, diagnostics: newResult } : m
                           ));
-                        } catch { toast.error("Error al aplicar corrección"); }
-                        setFixingCheckId(null);
-                      }} />}
+                          setFixingCheckId(null);
+                        }}
+                        onFix={async (checkId) => {
+                          const check = msg.diagnostics!.checks.find(c => c.id === checkId);
+                          if (!check?.fix) return;
+                          setFixingCheckId(checkId);
+                          try {
+                            const fixResult = await check.fix();
+                            toast.success(`Auto-corrección: ${fixResult}`);
+                            // Re-run diagnostics
+                            const newResult = await runDiagnostics();
+                            setLatestDiagnostics(newResult);
+                            setMessages(prev => prev.map(m =>
+                              m.id === msg.id ? { ...m, diagnostics: newResult } : m
+                            ));
+                          } catch { toast.error("Error al aplicar corrección"); }
+                          setFixingCheckId(null);
+                        }} 
+                      />}
                       {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.role === "assistant" ? (
