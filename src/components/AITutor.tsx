@@ -239,21 +239,21 @@ const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
         className="w-full flex items-center gap-2 p-3 text-left hover:bg-amber-500/10 transition-colors"
       >
         <Lightbulb className="h-4 w-4 text-amber-400 shrink-0" />
-        <span className="text-[11px] font-black text-amber-300 uppercase tracking-wider flex-1">
+        <span className="text-sm font-black text-amber-300 uppercase tracking-wider flex-1">
           Razonamiento del agente
         </span>
-        <span className={cn("text-[10px] font-bold", confidenceColor)}>
+        <span className={cn("text-xs font-bold", confidenceColor)}>
           {reasoning.confidence}% confianza
         </span>
         <ChevronDown className={cn("h-3.5 w-3.5 text-amber-400 transition-transform", open && "rotate-180")} />
       </button>
 
       {open && (
-        <div className="px-3 pb-3 space-y-2 text-[11px] animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="px-3 pb-3 space-y-2 text-sm animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex items-center gap-2">
             <Target className="h-3 w-3 text-slate-500" />
             <span className="text-slate-400">Tipo:</span>
-            <span className="px-1.5 py-0.5 bg-primary/20 text-primary rounded text-[9px] font-bold uppercase">
+            <span className="px-1.5 py-0.5 bg-primary/20 text-primary rounded text-sm font-bold uppercase">
               {reasoning.question_type}
             </span>
           </div>
@@ -266,7 +266,7 @@ const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
           {reasoning.key_concepts.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {reasoning.key_concepts.map((c, i) => (
-                <span key={i} className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-[9px] text-slate-400">
+                <span key={i} className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-sm text-slate-400">
                   {c}
                 </span>
               ))}
@@ -304,13 +304,13 @@ const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
   <div className="my-2 border border-blue-500/20 bg-blue-500/5 rounded-xl p-3 space-y-1.5">
     <div className="flex items-center gap-2">
       <BookOpen className="h-4 w-4 text-blue-400" />
-      <span className="text-[11px] font-black text-blue-300 uppercase tracking-wider">Decisión registrada</span>
+      <span className="text-sm font-black text-blue-300 uppercase tracking-wider">Decisión registrada</span>
     </div>
-    <p className="text-[12px] font-semibold text-slate-200">{decision.question}</p>
-    <p className="text-[11px] text-emerald-400">→ {decision.chosen}</p>
-    <p className="text-[10px] text-slate-500">{decision.reasoning}</p>
+    <p className="text-sm font-semibold font-semibold text-slate-200">{decision.question}</p>
+    <p className="text-sm text-emerald-400">→ {decision.chosen}</p>
+    <p className="text-xs text-slate-500">{decision.reasoning}</p>
     {decision.impact && (
-      <p className="text-[10px] text-amber-400/80 flex items-start gap-1">
+      <p className="text-xs text-amber-400/80 flex items-start gap-1">
         <Zap className="h-3 w-3 shrink-0 mt-0.5" /> {decision.impact}
       </p>
     )}
@@ -339,16 +339,16 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
         : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
         : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
       <div className="flex-1 min-w-0">
-        <p className="text-[12px] font-semibold text-slate-200 leading-snug">{step.text}</p>
+        <p className="text-sm font-semibold font-semibold text-slate-200 leading-snug">{step.text}</p>
         <div className="flex items-center gap-2 mt-1.5">
-          <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border", priorityColor[step.priority])}>
+          <span className={cn("px-1.5 py-0.5 text-sm font-black uppercase rounded border", priorityColor[step.priority])}>
             {step.priority}
           </span>
-          <span className="text-[10px] text-slate-500 flex items-center gap-1">
+          <span className="text-xs text-slate-500 flex items-center gap-1">
             <Clock className="h-3 w-3" /> {step.estimatedTime}
           </span>
           {step.dependsOn.length > 0 && (
-            <span className="text-[10px] text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
+            <span className="text-xs text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
           )}
         </div>
       </div>
@@ -371,13 +371,13 @@ const PlanCard: React.FC<{
       <div className="p-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-1">
           <ListChecks className="h-4 w-4 text-primary" />
-          <h4 className="text-[13px] font-black text-white uppercase tracking-tight">{plan.title}</h4>
+          <h4 className="text-base font-semibold font-black text-white uppercase tracking-tight">{plan.title}</h4>
         </div>
-        <p className="text-[11px] text-slate-400">{plan.description}</p>
+        <p className="text-sm text-slate-400">{plan.description}</p>
         <div className="mt-3 h-1.5 bg-white/5 rounded-full overflow-hidden">
           <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
-        <p className="text-[9px] text-slate-500 mt-1">{approvedCount}/{plan.steps.length} pasos seleccionados</p>
+        <p className="text-sm text-slate-500 mt-1">{approvedCount}/{plan.steps.length} pasos seleccionados</p>
       </div>
 
       <div className="p-3 space-y-2">
@@ -388,24 +388,24 @@ const PlanCard: React.FC<{
 
       {plan.status === "pending" && (
         <div className="p-3 border-t border-white/5 flex gap-2">
-          <Button onClick={onApprove} size="sm" className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase">
+          <Button onClick={onApprove} size="sm" className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-black uppercase">
             <Play className="h-3 w-3" /> Aprobar Plan
           </Button>
-          <Button onClick={onReject} size="sm" variant="ghost" className="text-[11px] font-black uppercase text-slate-500 hover:text-red-400">
+          <Button onClick={onReject} size="sm" variant="ghost" className="text-sm font-black uppercase text-slate-500 hover:text-red-400">
             Rechazar
           </Button>
         </div>
       )}
       {plan.status === "approved" && (
         <div className="p-3 border-t border-emerald-500/20 bg-emerald-500/5 text-center">
-          <p className="text-[11px] font-black text-emerald-400 uppercase flex items-center justify-center gap-1.5">
+          <p className="text-sm font-black text-emerald-400 uppercase flex items-center justify-center gap-1.5">
             <CheckCircle2 className="h-4 w-4" /> Plan aprobado — ¡Manos a la obra!
           </p>
         </div>
       )}
       {plan.status === "rejected" && (
         <div className="p-3 border-t border-red-500/20 bg-red-500/5 text-center">
-          <p className="text-[11px] font-black text-red-400 uppercase flex items-center justify-center gap-1.5">
+          <p className="text-sm font-black text-red-400 uppercase flex items-center justify-center gap-1.5">
             <AlertTriangle className="h-4 w-4" /> Plan rechazado
           </p>
         </div>
@@ -424,8 +424,8 @@ const TaskQueuePanel: React.FC<{
   if (tasks.length === 0) return (
     <div className="p-4 text-center">
       <Layers className="h-8 w-8 text-slate-600 mx-auto mb-2" />
-      <p className="text-[11px] text-slate-500 font-bold">No hay tareas en la cola</p>
-      <p className="text-[9px] text-slate-600 mt-1">Usa "/tarea" para encolar prompts en segundo plano</p>
+      <p className="text-sm text-slate-500 font-bold">No hay tareas en la cola</p>
+      <p className="text-sm text-slate-600 mt-1">Usa "/tarea" para encolar prompts en segundo plano</p>
     </div>
   );
 
@@ -442,7 +442,7 @@ const TaskQueuePanel: React.FC<{
       media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
       baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     };
-    return <span className={cn("px-1 py-0.5 text-[8px] font-black uppercase rounded border", colors[p])}>{p}</span>;
+    return <span className={cn("px-1 py-0.5 text-xs font-black uppercase rounded border", colors[p])}>{p}</span>;
   };
 
   const doneCount = tasks.filter(t => t.status === "done" || t.status === "error").length;
@@ -450,11 +450,11 @@ const TaskQueuePanel: React.FC<{
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
           {tasks.filter(t => t.status === "queued").length} en cola · {tasks.filter(t => t.status === "running").length} procesando
         </span>
         {doneCount > 0 && (
-          <button onClick={onClearCompleted} className="text-[9px] text-slate-500 hover:text-white transition-colors">
+          <button onClick={onClearCompleted} className="text-sm text-slate-500 hover:text-white transition-colors">
             Limpiar completadas
           </button>
         )}
@@ -470,15 +470,15 @@ const TaskQueuePanel: React.FC<{
           )}>
             {statusIcon(t)}
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] text-slate-200 font-medium truncate">{t.prompt}</p>
+              <p className="text-sm text-slate-200 font-medium truncate">{t.prompt}</p>
               <div className="flex items-center gap-2 mt-1">
                 {priorityBadge(t.priority)}
                 {t.completedAt && t.startedAt && (
-                  <span className="text-[9px] text-slate-600">{((t.completedAt - t.startedAt) / 1000).toFixed(1)}s</span>
+                  <span className="text-sm text-slate-600">{((t.completedAt - t.startedAt) / 1000).toFixed(1)}s</span>
                 )}
               </div>
               {t.status === "error" && t.error && (
-                <p className="text-[9px] text-red-400 mt-1 truncate">{t.error}</p>
+                <p className="text-sm text-red-400 mt-1 truncate">{t.error}</p>
               )}
             </div>
             <div className="flex items-center gap-1 shrink-0">
@@ -506,34 +506,34 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
     <div className="p-4 border-b border-white/5">
       <div className="flex items-center gap-2 mb-2">
         <BarChart3 className="h-4 w-4 text-primary" />
-        <span className="text-[12px] font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
+        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
       </div>
       <div className="grid grid-cols-3 gap-2 mt-3">
         <div className="bg-white/5 rounded-xl p-2.5 text-center">
           <p className="text-lg font-black text-primary">{analysis.totalProgress}%</p>
-          <p className="text-[9px] text-slate-500 font-bold uppercase">Progreso</p>
+          <p className="text-sm text-slate-500 font-bold uppercase">Progreso</p>
         </div>
         <div className="bg-white/5 rounded-xl p-2.5 text-center">
           <p className="text-lg font-black text-emerald-400">{analysis.streak}</p>
-          <p className="text-[9px] text-slate-500 font-bold uppercase">Racha</p>
+          <p className="text-sm text-slate-500 font-bold uppercase">Racha</p>
         </div>
         <div className="bg-white/5 rounded-xl p-2.5 text-center">
           <p className="text-lg font-black text-amber-400">{analysis.estimatedReadiness}%</p>
-          <p className="text-[9px] text-slate-500 font-bold uppercase">Preparación</p>
+          <p className="text-sm text-slate-500 font-bold uppercase">Preparación</p>
         </div>
       </div>
     </div>
 
     {analysis.weakAreas.length > 0 && (
       <div className="px-4 py-3 border-b border-white/5">
-        <p className="text-[10px] font-black text-red-400 uppercase mb-2">⚠️ Áreas débiles</p>
+        <p className="text-xs font-black text-red-400 uppercase mb-2">⚠️ Áreas débiles</p>
         {analysis.weakAreas.map((a, i) => (
           <div key={i} className="flex items-center gap-2 mb-1.5">
             <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
               <div className="h-full bg-red-500/60 rounded-full" style={{ width: `${a.percent}%` }} />
             </div>
-            <span className="text-[10px] text-slate-400 w-24 truncate">{a.name}</span>
-            <span className="text-[10px] text-red-400 font-bold w-8 text-right">{a.percent}%</span>
+            <span className="text-xs text-slate-400 w-24 truncate">{a.name}</span>
+            <span className="text-xs text-red-400 font-bold w-8 text-right">{a.percent}%</span>
           </div>
         ))}
       </div>
@@ -541,10 +541,10 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
 
     {analysis.recommendations.length > 0 && (
       <div className="p-4">
-        <p className="text-[10px] font-black text-emerald-400 uppercase mb-2">💡 Recomendaciones</p>
+        <p className="text-xs font-black text-emerald-400 uppercase mb-2">💡 Recomendaciones</p>
         <ul className="space-y-1.5">
           {analysis.recommendations.map((r, i) => (
-            <li key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
+            <li key={i} className="text-sm text-slate-300 flex items-start gap-1.5">
               <ArrowRight className="h-3 w-3 text-primary mt-0.5 shrink-0" />
               {r}
             </li>
@@ -561,9 +561,9 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
     <div className="p-4 border-b border-white/5">
       <div className="flex items-center gap-2">
         <Sparkles className="h-4 w-4 text-amber-400" />
-        <span className="text-[12px] font-black text-white uppercase tracking-wider">{quiz.title}</span>
+        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">{quiz.title}</span>
       </div>
-      <p className="text-[10px] text-slate-500 mt-1">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+      <p className="text-xs text-slate-500 mt-1">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
     </div>
     <div className="p-3 space-y-3">
       {quiz.questions.map((q, qi) => {
@@ -571,7 +571,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
         const isCorrect = answered && answers[q.id] === q.correctIndex;
         return (
           <div key={q.id} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
-            <p className="text-[11px] text-slate-200 font-medium mb-2">{qi + 1}. {q.text}</p>
+            <p className="text-sm text-slate-200 font-medium mb-2">{qi + 1}. {q.text}</p>
             <div className="grid grid-cols-2 gap-1.5">
               {q.options.map((opt, oi) => (
                 <button
@@ -579,7 +579,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
                   onClick={() => !answered && onAnswer(q.id, oi)}
                   disabled={answered}
                   className={cn(
-                    "text-[10px] text-left px-2.5 py-1.5 rounded-lg border transition-all",
+                    "text-xs text-left px-2.5 py-1.5 rounded-lg border transition-all",
                     answered && oi === q.correctIndex ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" :
                     answered && oi === answers[q.id] ? "border-red-500/30 bg-red-500/10 text-red-300" :
                     "border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
@@ -590,7 +590,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
               ))}
             </div>
             {answered && (
-              <p className="text-[9px] text-slate-500 mt-1.5 italic">{q.explanation}</p>
+              <p className="text-sm text-slate-500 mt-1.5 italic">{q.explanation}</p>
             )}
           </div>
         );
@@ -604,7 +604,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
   <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden">
     <div className="p-4 border-b border-white/5 flex items-center gap-2">
       <TrendingUp className="h-4 w-4 text-emerald-400" />
-      <span className="text-[12px] font-black text-white uppercase tracking-wider">Recomendaciones</span>
+      <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Recomendaciones</span>
     </div>
     <div className="p-3 space-y-2">
       {recs.map((r, i) => {
@@ -616,10 +616,10 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
               {icons[r.type]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-semibold text-slate-200 truncate">{r.title}</p>
-              <p className="text-[9px] text-slate-500 mt-0.5">{r.reason}</p>
+              <p className="text-sm font-semibold text-slate-200 truncate">{r.title}</p>
+              <p className="text-sm text-slate-500 mt-0.5">{r.reason}</p>
             </div>
-            <span className={cn("px-1.5 py-0.5 text-[8px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
+            <span className={cn("px-1.5 py-0.5 text-xs font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
               {r.priority}
             </span>
           </div>
@@ -662,11 +662,11 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
       <div className="p-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-1">
           <Shield className="h-4 w-4 text-primary" />
-          <span className="text-[12px] font-black text-white uppercase tracking-wider">Diagnóstico del Sistema</span>
+          <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Diagnóstico del Sistema</span>
         </div>
         <div className="flex items-center gap-2 mt-2 p-2 rounded-xl bg-white/5">
           {overallIcon}
-          <span className="text-[11px] text-slate-300 font-medium">{overallLabel}</span>
+          <span className="text-sm text-slate-300 font-medium">{overallLabel}</span>
         </div>
       </div>
 
@@ -676,20 +676,20 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
           if (catChecks.length === 0) return null;
           return (
             <div key={cat.key}>
-              <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">{cat.label}</p>
+              <p className="text-sm font-black text-slate-500 uppercase tracking-wider mb-1.5">{cat.label}</p>
               <div className="space-y-1">
                 {catChecks.map(check => (
                   <div key={check.id} className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5">
                     {statusIcon(check.status)}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] text-slate-200 font-medium">{check.label}</p>
-                      <p className="text-[9px] text-slate-500 truncate">{check.detail}</p>
+                      <p className="text-sm text-slate-200 font-medium">{check.label}</p>
+                      <p className="text-sm text-slate-500 truncate">{check.detail}</p>
                     </div>
                     {check.fix && check.fixLabel && (
                       <button
                         onClick={() => onFix(check.id)}
                         disabled={fixingId === check.id}
-                        className="px-2 py-1 text-[9px] font-bold text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-50 shrink-0 flex items-center gap-1"
+                        className="px-2 py-1 text-sm font-bold text-primary bg-primary/10 border border-primary/20 rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-50 shrink-0 flex items-center gap-1"
                       >
                         {fixingId === check.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Wrench className="h-3 w-3" />}
                         {check.fixLabel}
@@ -705,10 +705,10 @@ const DiagnosticsCard: React.FC<{ result: DiagnosticsResult; onFix: (checkId: st
 
       {result.jsErrors.length > 0 && (
         <div className="px-3 pb-3">
-          <p className="text-[9px] font-black text-slate-500 uppercase tracking-wider mb-1.5">Últimos errores JS</p>
+          <p className="text-sm font-black text-slate-500 uppercase tracking-wider mb-1.5">Últimos errores JS</p>
           <div className="max-h-24 overflow-y-auto space-y-0.5 custom-scrollbar">
             {result.jsErrors.slice(-5).map((e, i) => (
-              <p key={i} className="text-[9px] text-red-400/80 font-mono truncate">{e.message}</p>
+              <p key={i} className="text-sm text-red-400/80 font-mono truncate">{e.message}</p>
             ))}
           </div>
         </div>
@@ -729,14 +729,14 @@ const StudyPlanCards: React.FC<{
       const total = plan.pasos.length;
       const pct = total > 0 ? Math.round((done / total) * 100) : 0;
       return (
-        <div key={plan.id} className={cn("rounded-xl border p-3 text-[11px]", plan.completado ? "bg-emerald-500/10 border-emerald-500/30" : "bg-slate-800/50 border-white/10")}>
+        <div key={plan.id} className={cn("rounded-xl border p-3 text-sm", plan.completado ? "bg-emerald-500/10 border-emerald-500/30" : "bg-slate-800/50 border-white/10")}>
           <div className="flex items-center justify-between mb-2">
             <div>
               <p className="font-bold text-white text-xs">{plan.titulo}</p>
-              <p className="text-slate-400 text-[9px]">{plan.area} · {new Date(plan.fecha).toLocaleDateString('es-MX')}</p>
+              <p className="text-slate-400 text-sm">{plan.area} · {new Date(plan.fecha).toLocaleDateString('es-MX')}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className={cn("text-[10px] font-bold", plan.completado ? "text-emerald-400" : "text-primary")}>{pct}%</span>
+              <span className={cn("text-xs font-bold", plan.completado ? "text-emerald-400" : "text-primary")}>{pct}%</span>
               <button onClick={() => onDelete(plan.id)} className="p-1 hover:bg-white/10 rounded text-slate-500 hover:text-red-400 transition-colors">
                 <Trash2 className="h-3 w-3" />
               </button>
@@ -755,8 +755,8 @@ const StudyPlanCards: React.FC<{
                 )}
               >
                 {paso.completado ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" /> : <Circle className="h-3.5 w-3.5 text-slate-500 shrink-0" />}
-                <span className={cn("text-[10px]", paso.completado && "line-through opacity-70")}>{paso.titulo}</span>
-                <span className="ml-auto text-[8px] text-slate-500 uppercase">{paso.tipo}</span>
+                <span className={cn("text-xs", paso.completado && "line-through opacity-70")}>{paso.titulo}</span>
+                <span className="ml-auto text-xs text-slate-500 uppercase">{paso.tipo}</span>
               </button>
             ))}
           </div>
@@ -772,7 +772,7 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   if (total === 0) return null;
 
   return (
-    <span className="px-1.5 py-0.5 bg-primary/10 border border-primary/20 rounded text-[8px] font-bold text-primary uppercase">
+    <span className="px-1.5 py-0.5 bg-primary/10 border border-primary/20 rounded text-xs font-bold text-primary uppercase">
       {total} memorias
     </span>
   );
@@ -1247,7 +1247,7 @@ const AITutor = () => {
               <div>
                 <h4 className="text-sm font-black text-white uppercase tracking-[0.15em]">CyberAgent</h4>
                 <div className="flex items-center gap-2">
-                  <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
                     <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
                     Razonamiento v6.0
                   </p>
@@ -1270,7 +1270,7 @@ const AITutor = () => {
           <button
             onClick={() => setActiveTab("chat")}
             className={cn(
-              "flex-1 py-2.5 text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors",
+              "flex-1 py-2.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors",
               activeTab === "chat" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
             )}
           >
@@ -1279,7 +1279,7 @@ const AITutor = () => {
           <button
             onClick={() => setActiveTab("queue")}
             className={cn(
-              "flex-1 py-2.5 text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors relative",
+              "flex-1 py-2.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors relative",
               activeTab === "queue" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
             )}
           >
@@ -1311,7 +1311,7 @@ const AITutor = () => {
                     </div>
 
                     <div className={cn(
-                      "px-4 py-3 text-[13px] leading-relaxed",
+                      "px-4 py-3 text-base font-semibold leading-relaxed",
                       msg.role === "user"
                         ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl"
                         : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
@@ -1379,7 +1379,7 @@ const AITutor = () => {
               {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
                 <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
                   <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                  <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
+                  <span className="text-sm font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
                 </div>
               )}
             </div>
@@ -1391,7 +1391,7 @@ const AITutor = () => {
                   <button
                     key={i}
                     onClick={() => sendMessage(s)}
-                    className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-[10px] font-bold text-slate-400 hover:text-white transition-all"
+                    className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all"
                   >
                     {s}
                   </button>
@@ -1428,10 +1428,10 @@ const AITutor = () => {
               {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
             </button>
           </div>
-          <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
+          <p className="text-sm text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
             <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
           </p>
-          <p className="text-[8px] text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
+          <p className="text-xs text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
         </div>
       </div>
     </>
