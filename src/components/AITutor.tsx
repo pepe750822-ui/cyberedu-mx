@@ -1410,6 +1410,35 @@ const AITutor = () => {
 
         {/* Input */}
         <div className="p-5 bg-slate-900/50 border-t border-white/5">
+          {/* Quick Actions */}
+          <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
+            {[
+              { label: "📊 Análisis", cmd: "/analisis" },
+              { label: "✨ Planes IA", cmd: "/recomienda" },
+              { label: "📚 Mis Planes", cmd: "/planes" },
+              { label: "🧠 Explica...", cmd: "/explica " },
+              { label: "🧩 Quiz...", cmd: "/quiz " },
+              { label: "⚡ Tarea Tensión...", cmd: "/tarea alta " },
+              { label: "🔧 Sistema", cmd: "/diagnostico" }
+            ].map((btn, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  if (btn.cmd.endsWith(" ")) {
+                    setInput(btn.cmd);
+                    // Optionally set focus to input, but React doesn't make it easy without a ref. Doing just setInput is fine.
+                  } else {
+                    sendMessage(btn.cmd);
+                  }
+                }}
+                disabled={isStreaming}
+                className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:bg-primary/20 hover:text-white transition-all active:scale-95 disabled:opacity-50"
+              >
+                {btn.label}
+              </button>
+            ))}
+          </div>
+
           <div className="flex items-center gap-2">
             <input
               type="text"
