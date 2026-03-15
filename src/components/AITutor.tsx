@@ -18,6 +18,32 @@ import { useAnalisisRendimiento } from "@/hooks/useAnalisisRendimiento";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
+// ─── Navigation Helper ───
+function getUrlForPaso(type: string, id: string): string {
+  if (type === 'simulador') return '/simulador-pro';
+  
+  const prefix = id.split('-')[0];
+  const areaMap: Record<string, string> = {
+    'hv': 'habilidades',
+    'hm': id.startsWith('hm-mx') ? 'historia-mexico' : 'habilidades',
+    'bio': 'biologia',
+    'fis': 'fisica',
+    'qui': 'quimica',
+    'mat': 'matematicas',
+    'hu': 'historia-universal',
+    'esp': 'espanol',
+    'fce': 'formacion-civica',
+    'geo': 'geografia',
+    'rep': 'repaso-final'
+  };
+  
+  const areaId = areaMap[prefix] || 'habilidades';
+  
+  if (type === 'quiz') return `/area/${areaId}?tab=quiz&v=${id}`;
+  if (type === 'infografia') return `/area/${areaId}?tab=recursos&v=${id}`;
+  return `/area/${areaId}?v=${id}`;
+}
+
 // ─── Types ───
 interface Message {
   role: "user" | "assistant";
@@ -350,11 +376,29 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
           <span className="text-xs text-slate-500 flex items-center gap-1">
             <Clock className="h-3 w-3" /> {step.estimatedTime}
           </span>
-          {step.dependsOn.length > 0 && (
+           {step.dependsOn.length > 0 && (
             <span className="text-xs text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
           )}
         </div>
       </div>
+      {(step.text.toLowerCase().includes("video") || step.text.toLowerCase().includes("tema")) && (
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            // Since we don't have the explicit ID in simplified PlanStep from AI, 
+            // we try to infer it or just go to suggested areas. 
+            // For now, consistent with PredictiveFeedback:
+            const trigger = step.text.toLowerCase();
+            if (trigger.includes("habilidad")) window.location.href = "/area/habilidades";
+            else if (trigger.includes("matématicas")) window.location.href = "/area/matematicas";
+            else if (trigger.includes("español")) window.location.href = "/area/espanol";
+            else window.location.href = "/#areas";
+          }}
+          className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500/20 transition-all border border-indigo-500/10"
+        >
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+      )}
     </button>
   );
 };
@@ -843,7 +887,19 @@ const StudyPlanCards: React.FC<{
               >
                 {paso.completado ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" /> : <Circle className="h-3.5 w-3.5 text-slate-500 shrink-0" />}
                 <span className={cn("text-xs", paso.completado && "line-through opacity-70")}>{paso.titulo}</span>
-                <span className="ml-auto text-xs text-slate-500 uppercase">{paso.tipo}</span>
+                <div className="ml-auto flex items-center gap-2">
+                  <span className="text-[9px] text-slate-500 uppercase font-black tracking-tight">{paso.tipo}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = getUrlForPaso(paso.tipo, paso.id);
+                    }}
+                    className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
+                    title="Ver contenido"
+                  >
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                </div>
               </button>
             ))}
           </div>
