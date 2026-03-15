@@ -38,6 +38,7 @@ import PlanEstudioDiario from "@/components/PlanEstudioDiario";
 import NewsECOEMS from "@/components/NewsECOEMS";
 import CountdownExam from "@/components/CountdownExam";
 import StudioModal from "@/components/StudioModal";
+import { PredictiveFeedback } from "@/components/PredictiveFeedback";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
@@ -151,6 +152,7 @@ const Index = () => {
 
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
+        <PredictiveFeedback />
         <PlanEstudioDiario />
         <UltimoVideoCard />
 

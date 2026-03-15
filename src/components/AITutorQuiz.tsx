@@ -6,11 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Quiz, QuizQuestion } from '@/hooks/useNotebookLMContent';
 import { cn } from '@/lib/utils';
 import { trackQuizComplete } from '@/hooks/useAnalytics';
+import { useAnalisisRendimiento } from '@/hooks/useAnalisisRendimiento';
+import { toast } from 'sonner';
+import { Brain as BrainIcon } from 'lucide-react';
 
 interface Props {
     quiz: Quiz;
     videoId: string;
     onComplete?: (score: number) => void;
+    onAskHelp?: (question: string) => void;
 }
 
 export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
@@ -19,6 +23,8 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
     const [isAnswered, setIsAnswered] = useState(false);
     const [score, setScore] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
+    const [incorrectQuestions, setIncorrectQuestions] = useState<string[]>([]);
+    const { trackQuizResult } = useAnalisisRendimiento();
 
     const currentQuestion = quiz.questions[currentIndex];
 
@@ -28,6 +34,8 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
         setIsAnswered(true);
         if (index === currentQuestion.correct_index) {
             setScore(prev => prev + 1);
+        } else {
+            setIncorrectQuestions(prev => [...prev, currentQuestion.question]);
         }
     };
 
@@ -40,6 +48,16 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
             setIsFinished(true);
             const passed = score >= (quiz.questions.length * 0.7); // 70% to pass
             trackQuizComplete(`ai_${videoId}`, score, quiz.questions.length, passed);
+            
+            // Track in performance system
+            trackQuizResult({
+                quizId: `ai_${videoId}`,
+                videoId,
+                score,
+                total: quiz.questions.length,
+                incorrectQuestions
+            });
+
             if (onComplete) onComplete(score);
         }
     };
@@ -86,9 +104,22 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
                         <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{quiz.title}</h3>
                         <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Pregunta {currentIndex + 1} de {quiz.questions.length}</p>
                     </div>
-                    <div className="text-right">
-                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
-                        <p className="text-xl font-black text-emerald-500">{score}</p>
+                    <div className="text-right flex items-center gap-4">
+                        <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                                toast.info("CyberAgent está listo. Abre el tutor y pregunta sobre este tema.");
+                            }}
+                            className="h-9 px-4 rounded-xl border border-indigo-500/20 text-indigo-400 hover:bg-indigo-500/5 text-[10px] font-black uppercase tracking-widest"
+                        >
+                            <BrainIcon className="h-3 w-3 mr-2" />
+                            Ayuda IA
+                        </Button>
+                        <div>
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
+                            <p className="text-xl font-black text-emerald-500">{score}</p>
+                        </div>
                     </div>
                 </div>
                 <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">

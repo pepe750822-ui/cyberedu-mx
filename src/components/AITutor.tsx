@@ -6,7 +6,7 @@ import {
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
-  Shield, ShieldCheck, ShieldAlert, Wrench, Activity
+  Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommenda
 import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/useAppDiagnostics";
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
+import { useAnalisisRendimiento } from "@/hooks/useAnalisisRendimiento";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
@@ -31,6 +32,8 @@ interface Message {
   recommendations?: ContentRecommendation[];
   diagnostics?: DiagnosticsResult;
   studyPlans?: PlanEstudio[];
+  report?: any;
+  alerts?: any[];
 }
 
 interface PlanStep {
@@ -599,6 +602,60 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
   </div>
 );
 
+// ─── Report Card ───
+const ReportCard: React.FC<{ report: any }> = ({ report }) => (
+  <div className="my-3 border border-indigo-500/20 bg-indigo-500/5 rounded-2xl overflow-hidden">
+    <div className="p-4 border-b border-white/5">
+      <div className="flex items-center gap-2">
+        <TrendingUp className="h-4 w-4 text-indigo-400" />
+        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Reporte Semanal</span>
+      </div>
+    </div>
+    <div className="p-4 space-y-4">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-white/5 rounded-xl p-3">
+          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Quizzes</p>
+          <p className="text-xl font-black text-white">{report.quizzesAprobados} / {report.totalQuizzes}</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-3">
+          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Precisión</p>
+          <p className="text-xl font-black text-indigo-400">{Math.round(report.precision)}%</p>
+        </div>
+      </div>
+      <div className="bg-white/5 rounded-xl p-3 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Área Dominante</p>
+          <p className="text-sm font-black text-emerald-400">{report.areaMasEstudiada}</p>
+        </div>
+        <Award className="h-8 w-8 text-emerald-500/50" />
+      </div>
+      <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3">
+        <p className="text-[10px] font-black text-indigo-300 uppercase mb-1 flex items-center gap-1">
+          <Target className="h-3 w-3" /> Meta Semanal
+        </p>
+        <p className="text-sm text-slate-200 font-bold">{report.metaSemanal}</p>
+      </div>
+    </div>
+  </div>
+);
+
+// ─── Alert Card ───
+const AlertCard: React.FC<{ alert: any }> = ({ alert }) => (
+  <div className="my-2 border border-rose-500/20 bg-rose-500/5 rounded-xl p-3 flex gap-3 animate-in fade-in slide-in-from-left-2 transition-all">
+    <AlertCircle className="h-5 w-5 text-rose-400 shrink-0 mt-0.5" />
+    <div className="min-w-0">
+      <p className="text-xs font-black text-rose-400 uppercase tracking-tight">Alerta de Riesgo Crítico</p>
+      <p className="text-xs text-slate-300 font-medium leading-relaxed mt-1">{alert.message}</p>
+      <div className="flex items-center gap-2 mt-1.5">
+        <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-full bg-rose-500" style={{ width: `${alert.score}%` }} />
+        </div>
+        <span className="text-[10px] text-rose-500 font-black">{Math.round(alert.score)}%</span>
+      </div>
+    </div>
+  </div>
+);
+
 // ─── Recommendations Card ───
 const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => (
   <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden">
@@ -803,7 +860,8 @@ const AITutor = () => {
   const location = useLocation();
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
-  const { plans: studyPlans, addPlan, togglePaso, deletePlan, getActivePlans, getCompletedPlans } = useStudyPlans();
+  const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
+  const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -823,10 +881,28 @@ const AITutor = () => {
         if (Date.now() - timestamp < MEMORY_TTL) return data;
       } catch { /* ignore */ }
     }
+
+    const report = getWeeklyReport();
+    const performanceRecs = getRecomendacionesDiarias();
+    const alerts = getAlertasRiesgo();
+
+    let welcomeText = "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento autónomo.\n\n";
+    
+    if (performanceRecs.length > 0) {
+      welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
+    }
+    if (alerts.length > 0) {
+      welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
+    }
+
+    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+
     return [{
       role: "assistant" as const,
-      content: "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento autónomo.\n\n**¿Cómo puedes usarme?**\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?",
+      content: welcomeText,
       id: "initial",
+      report: report.totalQuizzes > 0 ? report : undefined,
+      alerts: alerts.length > 0 ? alerts : undefined
     }];
   });
 
@@ -879,10 +955,27 @@ const AITutor = () => {
     localStorage.removeItem(HISTORY_KEY);
     localStorage.removeItem(MEMORY_KEY);
     setMemory({ decisions: [], topics: [], insights: [], lastUpdated: Date.now() });
+    const report = getWeeklyReport();
+    const performanceRecs = getRecomendacionesDiarias();
+    const alerts = getAlertasRiesgo();
+
+    let welcomeText = "¡Historial de memoria y chat reiniciados! Empecemos de nuevo. \n\n";
+    
+    if (performanceRecs.length > 0) {
+      welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
+    }
+    if (alerts.length > 0) {
+      welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
+    }
+
+    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+
     setMessages([{
       role: "assistant",
-      content: "¡Historial de memoria y chat reiniciados! Empecemos de nuevo. \n\n**¿Cómo puedes usarme?**\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?",
+      content: welcomeText,
       id: Date.now().toString(),
+      report: report.totalQuizzes > 0 ? report : undefined,
+      alerts: alerts.length > 0 ? alerts : undefined
     }]);
     toast.info("Conversación y memoria reiniciadas");
   };
@@ -978,6 +1071,23 @@ const AITutor = () => {
           diagnostics: result,
         } : m
       ));
+      return;
+    }
+
+    // /reporte - Performance report
+    if (trimmed === '/reporte') {
+      const report = getWeeklyReport();
+      setInput("");
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: report.totalQuizzes > 0 
+          ? `📈 Aquí tienes tu resumen de rendimiento de esta semana. ¡Sigue así!` 
+          : "📭 Aún no tienes suficiente actividad esta semana para generar un reporte detallado. ¡Completa algunos quizzes!",
+        id: (Date.now() + 1).toString(),
+        report: report.totalQuizzes > 0 ? report : undefined,
+      }]);
       return;
     }
 
@@ -1338,6 +1448,8 @@ const AITutor = () => {
                       {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
                       {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
                       {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
+                      {msg.report && <ReportCard report={msg.report} />}
+                      {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
                       {msg.diagnostics && <DiagnosticsCard 
@@ -1462,6 +1574,7 @@ const AITutor = () => {
           {/* Quick Actions */}
           <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
             {[
+              { label: "📈 Reporte", cmd: "/reporte" },
               { label: "📊 Análisis", cmd: "/analisis" },
               { label: "✨ Planes IA", cmd: "/recomienda" },
               { label: "📚 Mis Planes", cmd: "/planes" },
@@ -1507,9 +1620,9 @@ const AITutor = () => {
             </button>
           </div>
           <p className="text-sm text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
-            <Zap className="h-3 w-3" /> CyberAgent v8.0 — Skills Especializados
+            <Zap className="h-3 w-3" /> CyberAgent v8.2 — Predictive Intelligence
           </p>
-          <p className="text-xs text-slate-700 text-center mt-0.5">/analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
+          <p className="text-xs text-slate-700 text-center mt-0.5">/reporte · /analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
         </div>
       </div>
     </>
