@@ -7,7 +7,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2, Mic, MicOff
+  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -981,6 +981,7 @@ const AITutor = () => {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState<string | null>(null);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   const recognitionRef = useRef<any>(null);
   
@@ -1051,6 +1052,39 @@ const AITutor = () => {
         console.error(e);
       }
     }
+  };
+
+  const speakMessage = (text: string, messageId: string) => {
+    if (!('speechSynthesis' in window)) {
+      toast.error("Tu navegador no soporta salida de voz");
+      return;
+    }
+
+    if (isSpeaking === messageId) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    
+    // Clean markdown and XML tags for better speech
+    const cleanText = text
+      .replace(/<reasoning>[\s\S]*?<\/reasoning>/g, "")
+      .replace(/<plan>[\s\S]*?<\/plan>/g, "")
+      .replace(/<decision>[\s\S]*?<\/decision>/g, "")
+      .replace(/[\*\#\_]/g, "")
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = "es-MX";
+    utterance.rate = 1;
+    
+    utterance.onend = () => setIsSpeaking(null);
+    utterance.onerror = () => setIsSpeaking(null);
+
+    setIsSpeaking(messageId);
+    window.speechSynthesis.speak(utterance);
   };
 
   // Load messages from localStorage
@@ -1734,6 +1768,13 @@ const AITutor = () => {
 
                   {msg.role === "assistant" && msg.id !== "initial" && !isStreaming && (
                     <div className="flex items-center gap-2 px-9">
+                      <button
+                        onClick={() => speakMessage(msg.content, msg.id)}
+                        className={cn("p-1 rounded-lg transition-colors", isSpeaking === msg.id ? "text-primary bg-primary/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
+                        title={isSpeaking === msg.id ? "Detener voz" : "Escuchar respuesta"}
+                      >
+                        {isSpeaking === msg.id ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
+                      </button>
                       <button
                         onClick={() => handleFeedback(msg.id, "up")}
                         className={cn("p-1 rounded-lg transition-colors", msg.feedback === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
