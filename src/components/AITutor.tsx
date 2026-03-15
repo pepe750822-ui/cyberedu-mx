@@ -19,7 +19,8 @@ import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
 // ─── Navigation Helper ───
-function getUrlForPaso(type: string, id: string): string {
+
+function getUrlForPaso(type: string, id: string, title?: string): string {
   if (type === 'simulador') return '/simulador-pro';
   
   const prefix = id.split('-')[0];
@@ -37,11 +38,28 @@ function getUrlForPaso(type: string, id: string): string {
     'rep': 'repaso-final'
   };
   
-  const areaId = areaMap[prefix] || 'habilidades';
+  let areaId = areaMap[prefix];
+
+  // If no prefix match, try finding area by title
+  if (!areaId && title) {
+    const t = title.toLowerCase();
+    if (t.includes("habilidad")) areaId = "habilidades";
+    else if (t.includes("matemática")) areaId = "matematicas";
+    else if (t.includes("biología")) areaId = "biologia";
+    else if (t.includes("física")) areaId = "fisica";
+    else if (t.includes("química")) areaId = "quimica";
+    else if (t.includes("geografía")) areaId = "geografia";
+    else if (t.includes("español")) areaId = "espanol";
+    else if (t.includes("historia de méxico")) areaId = "historia-mexico";
+    else if (t.includes("historia universal")) areaId = "historia-universal";
+    else if (t.includes("cívica")) areaId = "formacion-civica";
+  }
+
+  areaId = areaId || 'habilidades';
   
-  if (type === 'quiz') return `/area/${areaId}?tab=quiz&v=${id}`;
-  if (type === 'infografia') return `/area/${areaId}?tab=recursos&v=${id}`;
-  return `/area/${areaId}?v=${id}`;
+  if (type === 'quiz') return `/area/${areaId}?tab=quiz&video=${id}`;
+  if (type === 'infografia') return `/area/${areaId}?tab=recursos&video=${id}`;
+  return `/area/${areaId}?video=${id}`;
 }
 
 // ─── Types ───
@@ -390,8 +408,15 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
             // For now, consistent with PredictiveFeedback:
             const trigger = step.text.toLowerCase();
             if (trigger.includes("habilidad")) window.location.href = "/area/habilidades";
-            else if (trigger.includes("matématicas")) window.location.href = "/area/matematicas";
+            else if (trigger.includes("matemática")) window.location.href = "/area/matematicas";
             else if (trigger.includes("español")) window.location.href = "/area/espanol";
+            else if (trigger.includes("biología")) window.location.href = "/area/biologia";
+            else if (trigger.includes("física")) window.location.href = "/area/fisica";
+            else if (trigger.includes("química")) window.location.href = "/area/quimica";
+            else if (trigger.includes("geografía")) window.location.href = "/area/geografia";
+            else if (trigger.includes("historia de méxico")) window.location.href = "/area/historia-mexico";
+            else if (trigger.includes("historia universal")) window.location.href = "/area/historia-universal";
+            else if (trigger.includes("cívica")) window.location.href = "/area/formacion-civica";
             else window.location.href = "/#areas";
           }}
           className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500/20 transition-all border border-indigo-500/10"
@@ -892,7 +917,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.location.href = getUrlForPaso(paso.tipo, paso.id);
+                      window.location.href = getUrlForPaso(paso.tipo, paso.id, paso.titulo);
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
