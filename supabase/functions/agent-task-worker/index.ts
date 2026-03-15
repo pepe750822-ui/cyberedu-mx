@@ -113,10 +113,23 @@ serve(async (req) => {
         }
     };
 
-    // Deno Deploy generic background execution
-    processBackgroundTask().catch(console.error);
+    // Deno Deploy / Supabase background execution
+    const promise = processBackgroundTask();
+    
+    // @ts-ignore - EdgeRuntime is available in some environments to keep the process alive
+    if (typeof EdgeRuntime !== 'undefined') {
+        // @ts-ignore
+        EdgeRuntime.waitUntil(promise);
+    } else {
+        // Fallback for standard Deno
+        promise.catch(console.error);
+    }
 
-    return new Response(JSON.stringify({ success: true, message: "Tarea encolada y ejecutando en segundo plano" }), {
+    return new Response(JSON.stringify({ 
+        success: true, 
+        message: "Tarea recibida y ejecutando en segundo plano",
+        taskId 
+    }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" }
     });
 

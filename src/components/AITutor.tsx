@@ -13,9 +13,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAITutorSkills, ProgressAnalysis, PersonalizedQuiz, ContentRecommendation } from "@/hooks/useAITutorSkills";
 import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/useAppDiagnostics";
-import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
 import { useAnalisisRendimiento } from "@/hooks/useAnalisisRendimiento";
+import { useTaskQueue, AgentTask } from "@/hooks/useTaskQueue";
 import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
@@ -499,91 +499,6 @@ const PlanCard: React.FC<{
   );
 };
 
-// ─── Task Queue Panel ───
-const TaskQueuePanel: React.FC<{
-  tasks: AgentTask[];
-  onRemove: (id: string) => void;
-  onClearCompleted: () => void;
-  onViewResult: (task: AgentTask) => void;
-}> = ({ tasks, onRemove, onClearCompleted, onViewResult }) => {
-  if (tasks.length === 0) return (
-    <div className="p-4 text-center">
-      <Layers className="h-8 w-8 text-slate-600 mx-auto mb-2" />
-      <p className="text-sm text-slate-500 font-bold">No hay tareas en la cola</p>
-      <p className="text-sm text-slate-600 mt-1">Usa "/tarea" para encolar prompts en segundo plano</p>
-    </div>
-  );
-
-  const statusIcon = (t: AgentTask) => {
-    if (t.status === "running") return <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />;
-    if (t.status === "done") return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />;
-    if (t.status === "error") return <XCircle className="h-3.5 w-3.5 text-red-400 shrink-0" />;
-    return <Clock className="h-3.5 w-3.5 text-slate-500 shrink-0" />;
-  };
-
-  const priorityBadge = (p: TaskPriority) => {
-    const colors = {
-      alta: "text-red-400 bg-red-500/10 border-red-500/20",
-      media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-      baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-    };
-    return <span className={cn("px-1 py-0.5 text-xs font-black uppercase rounded border", colors[p])}>{p}</span>;
-  };
-
-  const doneCount = tasks.filter(t => t.status === "done" || t.status === "error").length;
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          {tasks.filter(t => t.status === "queued").length} en cola · {tasks.filter(t => t.status === "running").length} procesando
-        </span>
-        {doneCount > 0 && (
-          <button onClick={onClearCompleted} className="text-sm text-slate-500 hover:text-white transition-colors">
-            Limpiar completadas
-          </button>
-        )}
-      </div>
-      <div className="flex-1 overflow-y-auto p-2 space-y-1.5 custom-scrollbar">
-        {tasks.map(t => (
-          <div key={t.id} className={cn(
-            "flex items-start gap-2 p-2.5 rounded-xl border transition-all",
-            t.status === "running" ? "bg-primary/5 border-primary/20" :
-            t.status === "done" ? "bg-emerald-500/5 border-emerald-500/10" :
-            t.status === "error" ? "bg-red-500/5 border-red-500/10" :
-            "bg-white/5 border-white/5"
-          )}>
-            {statusIcon(t)}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-slate-200 font-medium truncate">{t.prompt}</p>
-              <div className="flex items-center gap-2 mt-1">
-                {priorityBadge(t.priority)}
-                {t.completedAt && t.startedAt && (
-                  <span className="text-sm text-slate-600">{((t.completedAt - t.startedAt) / 1000).toFixed(1)}s</span>
-                )}
-              </div>
-              {t.status === "error" && t.error && (
-                <p className="text-sm text-red-400 mt-1 truncate">{t.error}</p>
-              )}
-            </div>
-            <div className="flex items-center gap-1 shrink-0">
-              {t.status === "done" && (
-                <button onClick={() => onViewResult(t)} className="p-1 hover:bg-white/10 rounded text-slate-500 hover:text-white transition-colors">
-                  <Eye className="h-3 w-3" />
-                </button>
-              )}
-              {(t.status === "done" || t.status === "error" || t.status === "queued") && (
-                <button onClick={() => onRemove(t.id)} className="p-1 hover:bg-red-500/10 rounded text-slate-600 hover:text-red-400 transition-colors">
-                  <Trash2 className="h-3 w-3" />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 // ─── Analysis Card ───
 const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => (
@@ -886,6 +801,98 @@ const DiagnosticsCard: React.FC<{
   );
 };
 
+// ─── Task Queue Components ───
+const TaskItem: React.FC<{ task: AgentTask; onRemove: (id: string) => void; onRetry: (id: string) => void }> = ({ task, onRemove, onRetry }) => {
+  const statusConfig = {
+    queued: { color: "text-slate-400", icon: <Clock className="h-3 w-3 animate-pulse" />, label: "En cola" },
+    running: { color: "text-primary", icon: <Loader2 className="h-3 w-3 animate-spin" />, label: "Procesando" },
+    done: { color: "text-emerald-400", icon: <CheckCircle2 className="h-3 w-3" />, label: "Terminado" },
+    error: { color: "text-red-400", icon: <AlertCircle className="h-3 w-3" />, label: "Error" },
+  };
+
+  const config = statusConfig[task.status];
+
+  return (
+    <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5 group hover:border-white/10 transition-all">
+      <div className={cn("mt-1 p-1 rounded bg-black/20", config.color)}>
+        {config.icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <span className={cn("text-[10px] font-black uppercase tracking-widest", config.color)}>
+            {config.label}
+          </span>
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            {task.status === "error" && (
+                <button onClick={() => onRetry(task.id)} className="p-1 hover:bg-white/10 rounded-lg text-primary transition-colors">
+                    <RefreshCw className="h-3 w-3" />
+                </button>
+            )}
+            <button onClick={() => onRemove(task.id)} className="p-1 hover:bg-white/10 rounded-lg text-slate-500 hover:text-red-400 transition-colors">
+                <Trash2 className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
+        <p className="text-sm font-semibold text-slate-200 truncate mt-0.5">{task.prompt}</p>
+        {(task.status === "done" || task.status === "error") && (
+            <p className="text-xs text-slate-500 mt-1 line-clamp-2 italic">
+                {task.status === "done" ? task.result : task.error}
+            </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const TaskCenter: React.FC<{ 
+    tasks: AgentTask[]; 
+    onRemove: (id: string) => void; 
+    onRetry: (id: string) => void;
+    onClear: () => void;
+    onClose: () => void;
+}> = ({ tasks, onRemove, onRetry, onClear, onClose }) => {
+  const activeCount = tasks.filter(t => t.status === "queued" || t.status === "running").length;
+
+  return (
+    <div className="absolute inset-0 bg-slate-950/95 backdrop-blur-xl z-50 flex flex-col p-6 animate-in fade-in zoom-in-95 duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
+            <Layers className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-black text-white uppercase tracking-tighter">Centro de Tareas</h2>
+            <p className="text-xs text-slate-500 uppercase font-black tracking-widest">
+                {activeCount} en curso · {tasks.length} totales
+            </p>
+          </div>
+        </div>
+        <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl text-slate-400 hover:text-white transition-colors">
+          <Minimize2 className="h-6 w-6" />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-1">
+        {tasks.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center opacity-30 select-none">
+            <Bot className="h-16 w-16 mb-4" />
+            <p className="text-sm font-bold uppercase tracking-widest">No hay tareas pendientes</p>
+            <p className="text-xs">Las tareas complejas que envíes aparecerán aquí</p>
+          </div>
+        ) : (
+          tasks.map(task => <TaskItem key={task.id} task={task} onRemove={onRemove} onRetry={onRetry} />)
+        )}
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-white/5 flex gap-3">
+        <Button onClick={onClear} variant="ghost" className="flex-1 text-slate-400 hover:text-white text-xs font-black uppercase" disabled={tasks.length === 0}>
+            Limpiar Completados
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 // ─── Study Plan Card ───
 const StudyPlanCards: React.FC<{
   plans: PlanEstudio[];
@@ -970,10 +977,14 @@ const AITutor = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
-  const [activeTab, setActiveTab] = useState<"chat" | "queue">("chat");
+  
+  const ctxForQueue = useMemo(() => buildContext(), [buildContext]);
+  const { tasks, addTask, removeTask, clearCompleted, retryTask } = useTaskQueue(memory, ctxForQueue);
+
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
   const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
@@ -1001,7 +1012,7 @@ const AITutor = () => {
       welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
     }
 
-    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
 
     return [{
       role: "assistant" as const,
@@ -1069,17 +1080,6 @@ const AITutor = () => {
     }
   }, [location.pathname, analyzeUserProgress]);
 
-  const { tasks, addTask, removeTask, clearCompleted } = useTaskQueue(memory, buildContext());
-
-  const handleViewTaskResult = useCallback((task: AgentTask) => {
-    const resultMsg: Message = {
-      role: "assistant",
-      content: `📋 **Resultado de tarea en cola:**\n\n> _"${task.prompt}"_\n\n---\n\n${task.result || "Sin resultado"}`,
-      id: `task-${task.id}`,
-    };
-    setMessages(prev => [...prev, resultMsg]);
-    setActiveTab("chat");
-  }, []);
 
   const contextualSuggestions = useMemo(() => {
     const path = location.pathname;
@@ -1105,7 +1105,7 @@ const AITutor = () => {
       welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
     }
 
-    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/tarea alta [prompt pesado]` para encargarme investigaciones enormes en la nube mientras tú sigues estudiando.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
 
     setMessages([{
       role: "assistant",
@@ -1304,6 +1304,36 @@ const AITutor = () => {
       return;
     }
 
+    // /cola - View agent tasks
+    if (trimmed === '/cola' || trimmed === '/tareas') {
+      setInput("");
+      setShowTasks(true);
+      setMessages(prev => [...prev, {
+        role: "user" as const, content: text.trim(), id: Date.now().toString()
+      }, {
+        role: "assistant" as const,
+        content: `📋 He abierto el **Centro de Tareas**. Aquí puedes ver los procesos que estoy ejecutando en segundo plano para ti.`,
+        id: (Date.now() + 1).toString(),
+      }]);
+      return;
+    }
+
+    // /background - Send current thought to background
+    const bgMatch = text.trim().match(/^\/(bg|background|cola)\s+(.+)/i);
+    if (bgMatch) {
+        const prompt = bgMatch[2];
+        await addTask(prompt, "media");
+        setInput("");
+        setMessages(prev => [...prev, {
+            role: "user" as const, content: text.trim(), id: Date.now().toString()
+          }, {
+            role: "assistant" as const,
+            content: `⚙️ Entendido. He movido la tarea "**${prompt}**" a la cola de procesamiento en segundo plano. Te avisaré por aquí cuando termine.`,
+            id: (Date.now() + 1).toString(),
+        }]);
+        return;
+    }
+
     // /planes - View saved study plans
     if (trimmed === '/planes' || trimmed === '/plan') {
       setInput("");
@@ -1375,23 +1405,6 @@ const AITutor = () => {
       return;
     }
 
-    // Handle /tarea command: /tarea [alta|media|baja] <prompt>
-    const tareaMatch = text.trim().match(/^\/tarea\s+(?:(alta|media|baja)\s+)?(.+)/i);
-    if (tareaMatch) {
-      const priority = (tareaMatch[1]?.toLowerCase() as TaskPriority) || "media";
-      const prompt = tareaMatch[2];
-      addTask(prompt, priority);
-      setInput("");
-      setMessages(prev => [...prev, {
-        role: "user" as const, content: text.trim(), id: Date.now().toString()
-      }, {
-        role: "assistant" as const,
-        content: `✅ Tarea encolada con prioridad **${priority}**. Puedes ver su progreso en la pestaña **Cola de Tareas**.\n\n> _"${prompt}"_`,
-        id: (Date.now() + 1).toString(),
-      }]);
-      setActiveTab("queue");
-      return;
-    }
 
     const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
     setMessages(prev => [...prev, userMsg]);
@@ -1526,6 +1539,16 @@ const AITutor = () => {
             </div>
             <div className="flex items-center gap-1">
               <button
+                onClick={() => setShowTasks(!showTasks)}
+                title="Centro de tareas secundarias"
+                className={cn("p-2 rounded-xl transition-all relative", showTasks ? "bg-primary text-white" : "hover:bg-white/10 text-slate-500 hover:text-white")}
+              >
+                <Layers className="h-4 w-4" />
+                {tasks.filter(t => t.status === "queued" || t.status === "running").length > 0 && (
+                    <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
+                )}
+              </button>
+              <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 title={isExpanded ? "Contraer chat" : "Expandir chat"}
                 className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
@@ -1543,35 +1566,17 @@ const AITutor = () => {
           </div>
         </div>
 
-        {/* Tab Bar */}
-        <div className="flex border-b border-white/5">
-          <button
-            onClick={() => setActiveTab("chat")}
-            className={cn(
-              "flex-1 py-2.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors",
-              activeTab === "chat" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
-            )}
-          >
-            <Bot className="h-3.5 w-3.5" /> Chat
-          </button>
-          <button
-            onClick={() => setActiveTab("queue")}
-            className={cn(
-              "flex-1 py-2.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors relative",
-              activeTab === "queue" ? "text-primary border-b-2 border-primary bg-primary/5" : "text-slate-500 hover:text-white"
-            )}
-          >
-            <Layers className="h-3.5 w-3.5" /> Cola
-            {tasks.filter(t => t.status === "queued" || t.status === "running").length > 0 && (
-              <span className="absolute top-1.5 right-[calc(50%-30px)] h-2 w-2 bg-primary rounded-full animate-pulse" />
-            )}
-          </button>
-        </div>
-
-        {activeTab === "chat" ? (
-          <>
-            {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar">
+        {/* Messages */}
+        <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar relative">
+              {showTasks && (
+                  <TaskCenter 
+                    tasks={tasks} 
+                    onRemove={removeTask} 
+                    onRetry={retryTask} 
+                    onClear={clearCompleted} 
+                    onClose={() => setShowTasks(false)} 
+                  />
+              )}
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -1708,15 +1713,6 @@ const AITutor = () => {
                 ))}
               </div>
             )}
-          </>
-        ) : (
-          <TaskQueuePanel
-            tasks={tasks}
-            onRemove={removeTask}
-            onClearCompleted={clearCompleted}
-            onViewResult={handleViewTaskResult}
-          />
-        )}
 
         {/* Input */}
         <div className="p-5 bg-slate-900/50 border-t border-white/5">
@@ -1728,8 +1724,7 @@ const AITutor = () => {
               { label: "✨ Planes IA", cmd: "/recomienda" },
               { label: "📚 Mis Planes", cmd: "/planes" },
               { label: "🧠 Explica...", cmd: "/explica " },
-              { label: "🧩 Quiz...", cmd: "/quiz " },
-              { label: "⚡ Tarea Tensión...", cmd: "/tarea alta " },
+               { label: "🧩 Quiz...", cmd: "/quiz " },
               { label: "🔧 Sistema", cmd: "/diagnostico" }
             ].map((btn, i) => (
               <button
@@ -1756,7 +1751,7 @@ const AITutor = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-              placeholder={activeTab === "queue" ? '/tarea alta Explícame álgebra...' : 'Pregunta algo o usa /tarea para encolar...'}
+               placeholder="Pregunta algo o usa un comando como /reporte..."
               disabled={isStreaming}
               className="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50"
             />
@@ -1771,7 +1766,7 @@ const AITutor = () => {
           <p className="text-sm text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
             <Zap className="h-3 w-3" /> CyberAgent v8.2 — Predictive Intelligence
           </p>
-          <p className="text-xs text-slate-700 text-center mt-0.5">/reporte · /analisis · /quiz · /recomienda · /explica · /tarea · /planes · /diagnostico</p>
+           <p className="text-xs text-slate-700 text-center mt-0.5">/reporte · /analisis · /quiz · /recomienda · /explica · /planes · /diagnostico</p>
         </div>
       </div>
     </>

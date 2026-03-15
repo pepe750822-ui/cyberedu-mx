@@ -175,6 +175,36 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     [userId, context, memory]
   );
 
+  const retryTask = useCallback(async (id: string) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, status: "queued", error: undefined } : t));
+
+    const { error } = await (supabase as any)
+      .from("ai_agent_tasks")
+      .update({ status: "queued", error_msg: null, started_at: null, completed_at: null })
+      .eq("id", id);
+
+    if (error) {
+      toast.error("No se pudo re-encolar la tarea.");
+      return;
+    }
+
+    // Manual trigger as fallback if DB trigger isn't set up or fails
+    fetch(WORKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ taskId: id }),
+    }).catch(console.error);
+
+    toast.info("Tarea re-enviada");
+  }, [tasks]);
+
   const removeTask = useCallback(async (id: string) => {
     // Delete local first
     setTasks((prev) => prev.filter((t) => t.id !== id));
@@ -197,5 +227,5 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     }
   }, [tasks]);
 
-  return { tasks, addTask, removeTask, clearCompleted };
+  return { tasks, addTask, removeTask, clearCompleted, retryTask };
 }
