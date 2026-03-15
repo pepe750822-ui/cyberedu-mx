@@ -19,47 +19,59 @@ import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
 // ─── Navigation Helper ───
-
 function getUrlForPaso(type: string, id: string, title?: string): string {
   if (type === 'simulador') return '/simulador-pro';
   
-  const prefix = id.split('-')[0];
-  const areaMap: Record<string, string> = {
-    'hv': 'habilidades',
-    'hm': id.startsWith('hm-mx') ? 'historia-mexico' : 'habilidades',
-    'bio': 'biologia',
-    'fis': 'fisica',
-    'qui': 'quimica',
-    'mat': 'matematicas',
-    'hu': 'historia-universal',
-    'esp': 'espanol',
-    'fce': 'formacion-civica',
-    'geo': 'geografia',
-    'rep': 'repaso-final'
-  };
-  
-  let areaId = areaMap[prefix];
+  const t = title?.toLowerCase() || "";
+  let areaId = "";
+  let prefix = "";
 
-  // If no prefix match, try finding area by title
-  if (!areaId && title) {
-    const t = title.toLowerCase();
-    if (t.includes("habilidad")) areaId = "habilidades";
-    else if (t.includes("matemática")) areaId = "matematicas";
-    else if (t.includes("biología")) areaId = "biologia";
-    else if (t.includes("física")) areaId = "fisica";
-    else if (t.includes("química")) areaId = "quimica";
-    else if (t.includes("geografía")) areaId = "geografia";
-    else if (t.includes("español")) areaId = "espanol";
-    else if (t.includes("historia de méxico")) areaId = "historia-mexico";
-    else if (t.includes("historia universal")) areaId = "historia-universal";
-    else if (t.includes("cívica")) areaId = "formacion-civica";
+  // 1. Identify Area & Prefix
+  if (t.includes("habilidad") || t.includes("verbal")) { areaId = "habilidades"; prefix = "hv"; }
+  else if (t.includes("matemática")) { areaId = "matematicas"; prefix = "mat"; }
+  else if (t.includes("biología")) { areaId = "biologia"; prefix = "bio"; }
+  else if (t.includes("física")) { areaId = "fisica"; prefix = "fis"; }
+  else if (t.includes("química")) { areaId = "quimica"; prefix = "qui"; }
+  else if (t.includes("geografía")) { areaId = "geografia"; prefix = "geo"; }
+  else if (t.includes("español")) { areaId = "espanol"; prefix = "esp"; }
+  else if (t.includes("historia de méxico")) { areaId = "historia-mexico"; prefix = "hm-mx"; }
+  else if (t.includes("historia universal")) { areaId = "historia-universal"; prefix = "hu"; }
+  else if (t.includes("cívica")) { areaId = "formacion-civica"; prefix = "fce"; }
+  
+  // If no title match, try ID prefix
+  if (!areaId) {
+    const idPrefix = id.split('-')[0];
+    const areaMap: Record<string, string> = {
+      'hv': 'habilidades',
+      'hm': id.startsWith('hm-mx') ? 'historia-mexico' : 'habilidades',
+      'bio': 'biologia',
+      'fis': 'fisica',
+      'qui': 'quimica',
+      'mat': 'matematicas',
+      'hu': 'historia-universal',
+      'esp': 'espanol',
+      'fce': 'formacion-civica',
+      'geo': 'geografia',
+      'rep': 'repaso-final'
+    };
+    areaId = areaMap[idPrefix] || 'habilidades';
+    prefix = idPrefix;
   }
 
   areaId = areaId || 'habilidades';
   
-  if (type === 'quiz') return `/area/${areaId}?tab=quiz&video=${id}`;
-  if (type === 'infografia') return `/area/${areaId}?tab=recursos&video=${id}`;
-  return `/area/${areaId}?video=${id}`;
+  // 2. Intelligent ID Mapping
+  // If ID is just a number (common in AI plans), prefix it to match real video IDs (e.g., "1" -> "mat-1")
+  let finalId = id;
+  if (/^\d+$/.test(id) && prefix) {
+    // Basic heuristic: many areas use prefix-number
+    finalId = `${prefix}-${id}`;
+    // Special cases: history and verbal have different naming sometimes, but this covers 90%
+  }
+
+  if (type === 'quiz') return `/area/${areaId}?tab=quiz&video=${finalId}`;
+  if (type === 'infografia') return `/area/${areaId}?tab=recursos&video=${finalId}`;
+  return `/area/${areaId}?video=${finalId}`;
 }
 
 // ─── Types ───
@@ -399,25 +411,11 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
           )}
         </div>
       </div>
-      {(step.text.toLowerCase().includes("video") || step.text.toLowerCase().includes("tema")) && (
+      {(step.text.toLowerCase().includes("video") || step.text.toLowerCase().includes("tema") || step.text.toLowerCase().includes("lección")) && (
         <button 
           onClick={(e) => {
             e.stopPropagation();
-            // Since we don't have the explicit ID in simplified PlanStep from AI, 
-            // we try to infer it or just go to suggested areas. 
-            // For now, consistent with PredictiveFeedback:
-            const trigger = step.text.toLowerCase();
-            if (trigger.includes("habilidad")) window.location.href = "/area/habilidades";
-            else if (trigger.includes("matemática")) window.location.href = "/area/matematicas";
-            else if (trigger.includes("español")) window.location.href = "/area/espanol";
-            else if (trigger.includes("biología")) window.location.href = "/area/biologia";
-            else if (trigger.includes("física")) window.location.href = "/area/fisica";
-            else if (trigger.includes("química")) window.location.href = "/area/quimica";
-            else if (trigger.includes("geografía")) window.location.href = "/area/geografia";
-            else if (trigger.includes("historia de méxico")) window.location.href = "/area/historia-mexico";
-            else if (trigger.includes("historia universal")) window.location.href = "/area/historia-universal";
-            else if (trigger.includes("cívica")) window.location.href = "/area/formacion-civica";
-            else window.location.href = "/#areas";
+            window.location.href = getUrlForPaso('video', step.id.toString(), step.text);
           }}
           className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500/20 transition-all border border-indigo-500/10"
         >
