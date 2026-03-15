@@ -505,54 +505,58 @@ const TaskQueuePanel: React.FC<{
 
 // ─── Analysis Card ───
 const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => (
-  <div className="my-3 border border-primary/20 bg-primary/5 rounded-2xl overflow-hidden">
-    <div className="p-4 border-b border-white/5">
-      <div className="flex items-center gap-2 mb-2">
+  <div className="my-4 border border-primary/30 bg-primary/10 rounded-[1.5rem] overflow-hidden shadow-xl">
+    <div className="p-4 border-b border-white/10 bg-primary/5">
+      <div className="flex items-center gap-2">
         <BarChart3 className="h-4 w-4 text-primary" />
-        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
+        <span className="text-sm font-black text-white uppercase tracking-wider">Análisis de Progreso</span>
       </div>
-      <div className="grid grid-cols-3 gap-2 mt-3">
-        <div className="bg-white/5 rounded-xl p-2.5 text-center">
-          <p className="text-lg font-black text-primary">{analysis.totalProgress}%</p>
-          <p className="text-sm text-slate-500 font-bold uppercase">Progreso</p>
+    </div>
+    <div className="p-5">
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-slate-900/50 rounded-2xl p-3 text-center border border-white/5">
+          <p className="text-xl font-black text-primary leading-none mb-1">{analysis.totalProgress}%</p>
+          <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest">Global</p>
         </div>
-        <div className="bg-white/5 rounded-xl p-2.5 text-center">
-          <p className="text-lg font-black text-emerald-400">{analysis.streak}</p>
-          <p className="text-sm text-slate-500 font-bold uppercase">Racha</p>
+        <div className="bg-slate-900/50 rounded-2xl p-3 text-center border border-white/5">
+          <p className="text-xl font-black text-emerald-400 leading-none mb-1">{analysis.streak}</p>
+          <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest">Racha</p>
         </div>
-        <div className="bg-white/5 rounded-xl p-2.5 text-center">
-          <p className="text-lg font-black text-amber-400">{analysis.estimatedReadiness}%</p>
-          <p className="text-sm text-slate-500 font-bold uppercase">Preparación</p>
+        <div className="bg-slate-900/50 rounded-2xl p-3 text-center border border-white/5">
+          <p className="text-xl font-black text-amber-500 leading-none mb-1">{analysis.estimatedReadiness}%</p>
+          <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest">Nivel</p>
         </div>
       </div>
     </div>
 
     {analysis.weakAreas.length > 0 && (
-      <div className="px-4 py-3 border-b border-white/5">
-        <p className="text-xs font-black text-red-400 uppercase mb-2">⚠️ Áreas débiles</p>
+      <div className="px-5 pb-4 space-y-3">
+        <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">⚠️ Temas Críticos</p>
         {analysis.weakAreas.map((a, i) => (
-          <div key={i} className="flex items-center gap-2 mb-1.5">
-            <div className="flex-1 bg-white/5 rounded-full h-2 overflow-hidden">
-              <div className="h-full bg-red-500/60 rounded-full" style={{ width: `${a.percent}%` }} />
+          <div key={i} className="space-y-1.5">
+            <div className="flex justify-between items-center text-[10px] font-bold">
+              <span className="text-slate-300 truncate max-w-[150px]">{a.name}</span>
+              <span className="text-rose-400 font-black">{a.percent}%</span>
             </div>
-            <span className="text-xs text-slate-400 w-24 truncate">{a.name}</span>
-            <span className="text-xs text-red-400 font-bold w-8 text-right">{a.percent}%</span>
+            <div className="h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5">
+              <div className="h-full bg-rose-500/80 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.3)] transition-all duration-1000" style={{ width: `${a.percent}%` }} />
+            </div>
           </div>
         ))}
       </div>
     )}
 
     {analysis.recommendations.length > 0 && (
-      <div className="p-4">
-        <p className="text-xs font-black text-emerald-400 uppercase mb-2">💡 Recomendaciones</p>
-        <ul className="space-y-1.5">
+      <div className="p-5 pt-4 bg-emerald-500/5 border-t border-white/5">
+        <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3">💡 Plan de Mejora</p>
+        <div className="space-y-2">
           {analysis.recommendations.map((r, i) => (
-            <li key={i} className="text-sm text-slate-300 flex items-start gap-1.5">
+            <div key={i} className="text-xs text-slate-300 flex items-start gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
               <ArrowRight className="h-3 w-3 text-primary mt-0.5 shrink-0" />
-              {r}
-            </li>
+              <span className="leading-relaxed font-medium">{r}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     )}
   </div>
@@ -604,36 +608,38 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
 
 // ─── Report Card ───
 const ReportCard: React.FC<{ report: any }> = ({ report }) => (
-  <div className="my-3 border border-indigo-500/20 bg-indigo-500/5 rounded-2xl overflow-hidden">
-    <div className="p-4 border-b border-white/5">
+  <div className="my-4 border border-indigo-500/30 bg-indigo-500/10 rounded-[1.5rem] overflow-hidden shadow-lg mb-4">
+    <div className="p-4 border-b border-white/10 bg-indigo-500/5">
       <div className="flex items-center gap-2">
         <TrendingUp className="h-4 w-4 text-indigo-400" />
-        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Reporte Semanal</span>
+        <span className="text-sm font-black text-white uppercase tracking-wider">Rendimiento Semanal</span>
       </div>
     </div>
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white/5 rounded-xl p-3">
-          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Quizzes</p>
-          <p className="text-xl font-black text-white">{report.quizzesAprobados} / {report.totalQuizzes}</p>
+        <div className="bg-white/10 rounded-2xl p-4 border border-white/5">
+          <p className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Aprobados</p>
+          <p className="text-2xl font-black text-white leading-none">{report.quizzesAprobados} <span className="text-sm text-slate-500">/ {report.totalQuizzes}</span></p>
         </div>
-        <div className="bg-white/5 rounded-xl p-3">
-          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Precisión</p>
-          <p className="text-xl font-black text-indigo-400">{Math.round(report.precision)}%</p>
+        <div className="bg-white/10 rounded-2xl p-4 border border-white/5">
+          <p className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Precisión</p>
+          <p className="text-2xl font-black text-indigo-400 leading-none">{Math.round(report.precision)}%</p>
         </div>
       </div>
-      <div className="bg-white/5 rounded-xl p-3 flex items-center justify-between">
-        <div>
-          <p className="text-xs font-bold text-slate-500 uppercase mb-1">Área Dominante</p>
-          <p className="text-sm font-black text-emerald-400">{report.areaMasEstudiada}</p>
+      <div className="bg-indigo-500/10 rounded-2xl p-4 border border-indigo-500/20 flex items-center justify-between">
+        <div className="min-w-0">
+          <p className="text-[10px] font-black text-indigo-300/70 uppercase mb-1 tracking-widest">Fortaleza</p>
+          <p className="text-sm font-black text-emerald-400 uppercase truncate">{report.areaMasEstudiada}</p>
         </div>
-        <Award className="h-8 w-8 text-emerald-500/50" />
+        <div className="h-10 w-10 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+          <Award className="h-6 w-6 text-emerald-400" />
+        </div>
       </div>
-      <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3">
-        <p className="text-[10px] font-black text-indigo-300 uppercase mb-1 flex items-center gap-1">
-          <Target className="h-3 w-3" /> Meta Semanal
+      <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-4">
+        <p className="text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest flex items-center gap-1">
+          <Target className="h-3 w-3" /> Meta de la Semana
         </p>
-        <p className="text-sm text-slate-200 font-bold">{report.metaSemanal}</p>
+        <p className="text-sm text-slate-200 font-bold leading-relaxed">{report.metaSemanal}</p>
       </div>
     </div>
   </div>
@@ -641,16 +647,21 @@ const ReportCard: React.FC<{ report: any }> = ({ report }) => (
 
 // ─── Alert Card ───
 const AlertCard: React.FC<{ alert: any }> = ({ alert }) => (
-  <div className="my-2 border border-rose-500/20 bg-rose-500/5 rounded-xl p-3 flex gap-3 animate-in fade-in slide-in-from-left-2 transition-all">
-    <AlertCircle className="h-5 w-5 text-rose-400 shrink-0 mt-0.5" />
-    <div className="min-w-0">
-      <p className="text-xs font-black text-rose-400 uppercase tracking-tight">Alerta de Riesgo Crítico</p>
-      <p className="text-xs text-slate-300 font-medium leading-relaxed mt-1">{alert.message}</p>
-      <div className="flex items-center gap-2 mt-1.5">
-        <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-          <div className="h-full bg-rose-500" style={{ width: `${alert.score}%` }} />
+  <div className="my-3 border border-rose-500/30 bg-rose-500/10 rounded-2xl p-4 flex gap-4 animate-in fade-in slide-in-from-left-2 transition-all shadow-md">
+    <div className="h-10 w-10 rounded-xl bg-rose-500/20 flex items-center justify-center shrink-0 ring-1 ring-rose-500/30">
+      <AlertCircle className="h-5 w-5 text-rose-400" />
+    </div>
+    <div className="min-w-0 flex-1">
+      <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">Alerta de Riesgo</p>
+      <p className="text-sm text-white font-bold leading-snug mb-3">{alert.message}</p>
+      <div className="space-y-1.5">
+        <div className="flex justify-between items-center text-[9px] font-black uppercase text-slate-500">
+          <span>Dominio actual</span>
+          <span className="text-rose-500">{Math.round(alert.score)}%</span>
         </div>
-        <span className="text-[10px] text-rose-500 font-black">{Math.round(alert.score)}%</span>
+        <div className="h-1.5 bg-black/30 rounded-full overflow-hidden border border-white/5">
+          <div className="h-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)] transition-all duration-1000" style={{ width: `${alert.score}%` }} />
+        </div>
       </div>
     </div>
   </div>
@@ -912,6 +923,37 @@ const AITutor = () => {
   }, [messages]);
 
   useEffect(() => { saveMemory(memory); }, [memory]);
+ 
+  // Update initial message once performance data is loaded from hook
+  useEffect(() => {
+    const report = getWeeklyReport();
+    const alerts = getAlertasRiesgo();
+    const performanceRecs = getRecomendacionesDiarias();
+
+    if (report.totalQuizzes > 0 || performanceRecs.length > 0 || alerts.length > 0) {
+      setMessages(prev => prev.map(m => {
+        if (m.id !== 'initial' || m.report) return m;
+
+        let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento reciente.\n\n";
+        
+        if (performanceRecs.length > 0) {
+          welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
+        }
+        if (alerts.length > 0) {
+          welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado temas que requieren tu atención inmediata.\n\n`;
+        }
+
+        welcomeText += "**¿Qué te gustaría hacer?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción**.\n- O simplemente platica conmigo.";
+
+        return { 
+          ...m, 
+          content: welcomeText,
+          report: report.totalQuizzes > 0 ? report : undefined,
+          alerts: alerts.length > 0 ? alerts : undefined
+        };
+      }));
+    }
+  }, [getWeeklyReport, getAlertasRiesgo, getRecomendacionesDiarias]);
 
   // Auto-scroll
   useEffect(() => {
@@ -954,7 +996,7 @@ const AITutor = () => {
   const clearHistory = () => {
     localStorage.removeItem(HISTORY_KEY);
     localStorage.removeItem(MEMORY_KEY);
-    setMemory({ decisions: [], topics: [], insights: [], lastUpdated: Date.now() });
+    setMemory(prev => ({ ...prev, decisions: [], topics: [], insights: [], lastUpdated: Date.now() }));
     const report = getWeeklyReport();
     const performanceRecs = getRecomendacionesDiarias();
     const alerts = getAlertasRiesgo();
@@ -1440,10 +1482,10 @@ const AITutor = () => {
                     </div>
 
                     <div className={cn(
-                      "px-4 py-3 text-base font-semibold leading-relaxed",
+                      "px-4 py-3 text-sm md:text-base font-medium leading-relaxed",
                       msg.role === "user"
-                        ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl"
-                        : "bg-white/5 border border-white/5 rounded-2xl rounded-tl-none text-slate-200"
+                        ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
+                        : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
                     )}>
                       {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
                       {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
