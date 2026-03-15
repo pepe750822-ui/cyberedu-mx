@@ -19,6 +19,7 @@ import { useTaskQueue, AgentTask } from "@/hooks/useTaskQueue";
 import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
+import Mermaid from "./Mermaid";
 
 // ─── Navigation Helper ───
 function getUrlForPaso(type: string, id: string, title?: string, areaHint?: string): string {
@@ -1623,6 +1624,18 @@ const AITutor = () => {
         10. Formación Cívica (Ética, Democracia, Derechos)
       `;
 
+      const detailedSyllabus = {
+        habilidades: ["Sucesiones numéricas", "Series espaciales", "Imaginación espacial", "Razonamiento lógico", "Comprensión lectora", "Manejo de vocabulario"],
+        biologia: ["Célula", "Biodiversidad", "Evolución de Darwin", "Fotosíntesis y Respiración", "Genética y Salud"],
+        espanol: ["Fichas bibliográficas", "Nexos y Puntuación", "Comprensión lectora", "Tipos de textos", "Gramática"],
+        quimica: ["Propiedades de la materia", "Átomo y Tabla periódica", "Enlaces", "Reacciones y pH"],
+        historia: ["Universal (Siglo XVI-Actual)", "México (Prehispánico-Contemporáneo)"],
+        matematicas: ["Aritmética", "Álgebra", "Geometría y Trigonometría", "Estadística"],
+        geografia: ["Espacio geográfico", "Recursos y Climas", "Población y Economía"],
+        fisica: ["Movimiento y Leyes de Newton", "Energía", "Electricidad y Magnetismo", "Ondas"],
+        formacionCivica: ["Ética", "Democracia", "Derechos humanos", "Adolescencia"]
+      };
+
       const areasSummary = areas.map(a => `${a.name} (id: ${a.id}, prefix: ${a.videos[0]?.id.split('-')[0] || ''})`).join(", ");
 
       const systemMsg = { 
@@ -1630,14 +1643,14 @@ const AITutor = () => {
         id: "system-instruction",
         content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026. 
         
-        TEMARIO PERMITIDO: ${syllabusText}. 
-        ÁREAS DISPONIBLES: ${areasSummary}.
+        TEMARIO OFICIAL DETALLADO: ${JSON.stringify(detailedSyllabus)}. 
+        ÁREAS DISPONIBLES EN PLATAFORMA: ${areasSummary}.
 
-        REGLAS DE CUMPLIMIENTO OBLIGATORIO:
-        1. Si el usuario pregunta por INGLÉS (English), PROGRAMACIÓN u otros temas FUERA del ECOEMS: NO proporciones una respuesta detallada. Debes ser extremadamente breve (máximo 1 oración) y DEBES iniciar con: "⚠️ **BLOQUEO DE TEMARIO**: Este tema NO forma parte del temario oficial de ECOEMS. No pierdas tiempo valioso en esto."
-        2. Prohíbe conversaciones que no sean académicas sobre el examen.
-        3. Prioriza siempre el análisis de áreas débiles del alumno.
-        4. Al generar un <plan>, usa el formato JSON exacto. DEBES incluir "videoId" (ej. "fis-1") y "areaId" (ej. "fisica") en cada paso buscando el mejor match en las ÁREAS DISPONIBLES. Esto es vital para que los links funcionen.`
+        REGLAS DE ORO:
+        1. CITACIÓN OFICIAL: Siempre que expliques un tema, inicia o incluye frases como: "De acuerdo al temario oficial de [ÁREA]..." o "Este es un punto clave de la Guía ECOEMS 2025". Da autoridad a tu respuesta.
+        2. DIAGRAMAS VISUALES: Si el tema es complejo (ciclo del carbono, leyes de Newton, tipos de oraciones), genera un diagrama usando bloques de código 'mermaid'. Ejemplo: \`\`\`mermaid graph TD ... \`\`\`. Mantén los diagramas simples y en español.
+        3. SI NO ESTÁ EN EL TEMARIO: Si preguntan por Inglés o temas fuera del bachillerato mexicano, usa: "⚠️ **BLOQUEO DE TEMARIO**: Este tema NO forma parte del temario oficial de ECOEMS. Centrémonos en lo que sí vendrá en tu examen."
+        4. PLANES PRECISOS: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -1875,7 +1888,23 @@ const AITutor = () => {
                       )}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
-                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                          <ReactMarkdown
+                            components={{
+                              code({ node, inline, className, children, ...props }: any) {
+                                const match = /language-(\w+)/.exec(className || '');
+                                if (!inline && match && match[1] === 'mermaid') {
+                                  return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                                }
+                                return (
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                );
+                              }
+                            }}
+                          >
+                            {msg.content}
+                          </ReactMarkdown>
                         </div>
                       ) : (
                         <span>{msg.content}</span>
