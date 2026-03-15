@@ -160,15 +160,22 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
       setTasks((prev) => prev.map((t) => (t.id === localId ? { ...t, id: data.id } : t)));
 
       // 2. Ejecutar la función en segundo plano asíncronamente
-      fetch(WORKER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({ taskId: data.id }),
-      }).catch(console.error);
+      const getAuthToken = async () => {
+        const { data: sessionData } = await supabase.auth.getSession();
+        return sessionData.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      }
+
+      getAuthToken().then(token => {
+        fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ taskId: data.id }),
+        }).catch(console.error);
+      });
 
       return data.id;
     },
@@ -192,15 +199,22 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     }
 
     // Manual trigger as fallback if DB trigger isn't set up or fails
-    fetch(WORKER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({ taskId: id }),
-    }).catch(console.error);
+    const getAuthToken = async () => {
+        const { data: sessionData } = await supabase.auth.getSession();
+        return sessionData.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    }
+
+    getAuthToken().then(token => {
+        fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ taskId: id }),
+        }).catch(console.error);
+    });
 
     toast.info("Tarea re-enviada");
   }, [tasks]);

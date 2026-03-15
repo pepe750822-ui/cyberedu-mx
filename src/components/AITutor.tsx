@@ -982,12 +982,26 @@ const AITutor = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
   
-  const ctxForQueue = useMemo(() => buildContext(), [buildContext]);
-  const { tasks, addTask, removeTask, clearCompleted, retryTask } = useTaskQueue(memory, ctxForQueue);
-
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
   const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
+
+  const buildContext = useCallback(() => {
+    try {
+      const analysis = analyzeUserProgress();
+      return {
+        currentPage: location.pathname,
+        progress: analysis.totalProgress,
+        weakAreas: analysis.weakAreas.map((a: any) => a.name),
+        streak: analysis.streak,
+      };
+    } catch {
+      return { currentPage: location.pathname };
+    }
+  }, [location.pathname, analyzeUserProgress]);
+
+  const ctxForQueue = useMemo(() => buildContext(), [buildContext]);
+  const { tasks, addTask, removeTask, clearCompleted, retryTask } = useTaskQueue(memory, ctxForQueue);
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -1065,21 +1079,6 @@ const AITutor = () => {
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, isStreaming]);
-
-  const buildContext = useCallback(() => {
-    try {
-      const analysis = analyzeUserProgress();
-      return {
-        currentPage: location.pathname,
-        progress: analysis.totalProgress,
-        weakAreas: analysis.weakAreas.map((a: any) => a.name),
-        streak: analysis.streak,
-      };
-    } catch {
-      return { currentPage: location.pathname };
-    }
-  }, [location.pathname, analyzeUserProgress]);
-
 
   const contextualSuggestions = useMemo(() => {
     const path = location.pathname;
@@ -1652,7 +1651,6 @@ const AITutor = () => {
                           setFixingCheckId(null);
                         }} 
                       />}
-                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
