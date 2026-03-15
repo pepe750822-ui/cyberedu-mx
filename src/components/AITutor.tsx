@@ -1603,18 +1603,27 @@ const AITutor = () => {
       const systemMsg = { 
         role: "system", 
         id: "system-instruction",
-        content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. 
-        Tu misión es dominar este temario: ${syllabusText}. 
-        REGLAS CRÍTICAS:
-        1. Si el usuario pregunta por INGLÉS, PROGRAMACIÓN u otros temas NO mencionados arriba: Responde brevemente si sabes, pero DEBES iniciar o terminar con este mensaje exacto: "⚠️ **Nota**: Este tema NO forma parte del temario oficial de ECOEMS. No desperdicies tiempo de estudio en esto."
-        2. Tus explicaciones deben estar orientadas a resolver reactivos de opción múltiple tipo examen.
-        3. Siempre que puedas, relaciona el tema con alguna de las 10 áreas oficiales.`
+        content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026. 
+        
+        TEMARIO PERMITIDO: ${syllabusText}. 
+
+        REGLAS DE CUMPLIMIENTO OBLIGATORIO:
+        1. Si el usuario pregunta por INGLÉS (English), PROGRAMACIÓN u otros temas FUERA del ECOEMS: NO proporciones una respuesta detallada. Debes ser extremadamente breve (máximo 1 oración) y DEBES iniciar con: "⚠️ **BLOQUEO DE TEMARIO**: Este tema NO forma parte del temario oficial de ECOEMS. No pierdas tiempo valioso en esto."
+        2. Prohíbe conversaciones que no sean académicas sobre el examen.
+        3. Prioriza siempre el análisis de áreas débiles del alumno.`
       };
 
-      const history = [systemMsg, ...messages, userMsg]
+      // Always include the system message at the start, then the last N messages
+      const conversationHistory = messages
         .filter(m => m.id !== "initial")
-        .slice(-13)
+        .slice(-12)
         .map(m => ({ role: m.role, content: m.content }));
+
+      const history = [
+        { role: systemMsg.role, content: systemMsg.content },
+        ...conversationHistory,
+        { role: userMsg.role, content: userMsg.content }
+      ];
 
       await streamChat({
         messages: history,
