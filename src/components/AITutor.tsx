@@ -399,45 +399,62 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
     baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
   };
 
+  const isLinkable = step.text.toLowerCase().includes("video") || 
+                     step.text.toLowerCase().includes("tema") || 
+                     step.text.toLowerCase().includes("lección") ||
+                     step.text.toLowerCase().includes("quiz") ||
+                     step.text.toLowerCase().includes("simulador");
+
+  const getStepType = () => {
+    const text = step.text.toLowerCase();
+    if (text.includes("quiz")) return "quiz";
+    if (text.includes("simulador")) return "simulador";
+    return "video";
+  };
+
   return (
-    <button
-      onClick={() => onToggle(step.id)}
-      className={cn(
-        "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left",
-        step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
-          : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
-          : "bg-white/5 border-white/10 hover:bg-white/10"
-      )}
-    >
-      {step.status === "approved" ? <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-        : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
-        : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold font-semibold text-slate-200 leading-snug">{step.text}</p>
-        <div className="flex items-center gap-2 mt-1.5">
-          <span className={cn("px-1.5 py-0.5 text-sm font-black uppercase rounded border", priorityColor[step.priority])}>
-            {step.priority}
-          </span>
-          <span className="text-xs text-slate-500 flex items-center gap-1">
-            <Clock className="h-3 w-3" /> {step.estimatedTime}
-          </span>
-           {step.dependsOn.length > 0 && (
-            <span className="text-xs text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
-          )}
+    <div className="group relative">
+      <button
+        onClick={() => onToggle(step.id)}
+        className={cn(
+          "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left",
+          step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
+            : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
+            : "bg-white/5 border-white/10 hover:bg-white/10 pr-12"
+        )}
+      >
+        {step.status === "approved" ? <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+          : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+          : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold font-semibold text-slate-200 leading-snug">{step.text}</p>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className={cn("px-1.5 py-0.5 text-xs font-black uppercase rounded border", priorityColor[step.priority])}>
+              {step.priority}
+            </span>
+            <span className="text-xs text-slate-500 flex items-center gap-1">
+              <Clock className="h-3 w-3" /> {step.estimatedTime}
+            </span>
+             {step.dependsOn.length > 0 && (
+              <span className="text-xs text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
+            )}
+          </div>
         </div>
-      </div>
-      {(step.text.toLowerCase().includes("video") || step.text.toLowerCase().includes("tema") || step.text.toLowerCase().includes("lección")) && (
+      </button>
+
+      {isLinkable && (
         <button 
           onClick={(e) => {
             e.stopPropagation();
-            window.location.href = getUrlForPaso('video', step.id.toString(), step.text);
+            window.location.href = getUrlForPaso(getStepType(), step.id.toString(), step.text);
           }}
-          className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500/20 transition-all border border-indigo-500/10"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20 z-10"
+          title="Ver contenido"
         >
           <ArrowRight className="h-3.5 w-3.5" />
         </button>
       )}
-    </button>
+    </div>
   );
 };
 
@@ -528,18 +545,24 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
 
     {analysis.weakAreas.length > 0 && (
       <div className="px-5 pb-4 space-y-3">
-        <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">⚠️ Temas Críticos</p>
-        {analysis.weakAreas.map((a, i) => (
-          <div key={i} className="space-y-1.5">
-            <div className="flex justify-between items-center text-[10px] font-bold">
-              <span className="text-slate-300 truncate max-w-[150px]">{a.name}</span>
-              <span className="text-rose-400 font-black">{a.percent}%</span>
-            </div>
-            <div className="h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5">
-              <div className="h-full bg-rose-500/80 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.3)] transition-all duration-1000" style={{ width: `${a.percent}%` }} />
-            </div>
-          </div>
-        ))}
+        <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">⚠️ Temas Críticos (Click para estudiar)</p>
+        <div className="space-y-2">
+          {analysis.weakAreas.map((a, i) => (
+            <button 
+              key={i} 
+              onClick={() => window.location.href = getUrlForPaso('video', a.id, a.name)}
+              className="w-full space-y-1.5 group text-left hover:bg-white/5 p-1 rounded-lg transition-colors"
+            >
+              <div className="flex justify-between items-center text-[10px] font-bold">
+                <span className="text-slate-300 truncate max-w-[150px] group-hover:text-primary transition-colors">{a.name}</span>
+                <span className="text-rose-400 font-black">{a.percent}%</span>
+              </div>
+              <div className="h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5">
+                <div className="h-full bg-rose-500/80 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.3)] transition-all duration-1000" style={{ width: `${a.percent}%` }} />
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     )}
 
@@ -547,12 +570,29 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
       <div className="p-5 pt-4 bg-emerald-500/5 border-t border-white/5">
         <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3">💡 Plan de Mejora</p>
         <div className="space-y-2">
-          {analysis.recommendations.map((r, i) => (
-            <div key={i} className="text-xs text-slate-300 flex items-start gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-              <ArrowRight className="h-3 w-3 text-primary mt-0.5 shrink-0" />
-              <span className="leading-relaxed font-medium">{r}</span>
-            </div>
-          ))}
+          {analysis.recommendations.map((r, i) => {
+            const isTopic = r.includes("Enfócate en");
+            const topicName = isTopic ? r.split("Enfócate en ")[1].split(" (")[0] : "";
+            
+            return (
+              <div 
+                key={i} 
+                onClick={() => {
+                  if (isTopic) {
+                     const area = areas.find(a => a.name === topicName || a.id === topicName.toLowerCase());
+                     if (area) window.location.href = getUrlForPaso('video', area.id, area.name);
+                  }
+                }}
+                className={cn(
+                  "text-xs text-slate-300 flex items-start gap-2 bg-white/5 p-2 rounded-xl border border-white/5 transition-all",
+                  isTopic && "hover:bg-primary/20 cursor-pointer border-primary/20"
+                )}
+              >
+                <ArrowRight className={cn("h-3 w-3 mt-0.5 shrink-0 transition-colors", isTopic ? "text-primary" : "text-slate-600")} />
+                <span className="leading-relaxed font-medium">{r}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     )}
@@ -666,28 +706,37 @@ const AlertCard: React.FC<{ alert: any }> = ({ alert }) => (
 
 // ─── Recommendations Card ───
 const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => (
-  <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden">
-    <div className="p-4 border-b border-white/5 flex items-center gap-2">
+  <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden shadow-lg shadow-emerald-500/5">
+    <div className="p-4 border-b border-white/5 flex items-center gap-2 bg-emerald-500/10">
       <TrendingUp className="h-4 w-4 text-emerald-400" />
-      <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Recomendaciones</span>
+      <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Plan de Acción Recomendado</span>
     </div>
     <div className="p-3 space-y-2">
       {recs.map((r, i) => {
         const icons = { video: <Play className="h-3.5 w-3.5" />, area: <BookOpen className="h-3.5 w-3.5" />, simulador: <Target className="h-3.5 w-3.5" /> };
         const prioColors = { alta: "text-red-400 bg-red-500/10 border-red-500/20", media: "text-amber-400 bg-amber-500/10 border-amber-500/20", baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
         return (
-          <div key={i} className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/5">
-            <div className="h-7 w-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+          <button
+            key={i}
+            onClick={() => {
+              window.location.href = getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title);
+            }}
+            className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group"
+          >
+            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               {icons[r.type]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-200 truncate">{r.title}</p>
-              <p className="text-sm text-slate-500 mt-0.5">{r.reason}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-black text-slate-200 truncate uppercase tracking-tight">{r.title}</p>
+                <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
+                  {r.priority}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5 line-clamp-1 group-hover:text-slate-300 transition-colors">{r.reason}</p>
             </div>
-            <span className={cn("px-1.5 py-0.5 text-xs font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
-              {r.priority}
-            </span>
-          </div>
+            <ArrowRight className="h-4 w-4 text-slate-600 group-hover:text-primary transition-all group-hover:translate-x-1" />
+          </button>
         );
       })}
     </div>
