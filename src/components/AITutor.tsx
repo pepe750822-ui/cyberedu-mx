@@ -60,10 +60,16 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
   if (!targetAreaId) {
     const context = (cleanTitle + " " + (areaHint || "")).toLowerCase();
     const areaMap: Record<string, string> = {
-      'habilidad': 'habilidades', 'verbal': 'habilidades', 'matemática': 'matematicas',
-      'biología': 'biologia', 'física': 'fisica', 'química': 'quimica',
-      'geografía': 'geografia', 'español': 'espanol', 'historia de méxico': 'historia-mexico',
-      'historia universal': 'historia-universal', 'cívica': 'formacion-civica', 'ética': 'formacion-civica'
+      'habilidad': 'habilidades', 'verbal': 'habilidades', 'razonamiento': 'habilidades',
+      'matemática': 'matematicas', 'número': 'matematicas', 'álgebra': 'matematicas', 'geometría': 'matematicas',
+      'biología': 'biologia', 'célula': 'biologia', 'seres vivos': 'biologia', 'genética': 'biologia',
+      'física': 'fisica', 'movimiento': 'fisica', 'fuerza': 'fisica', 'energía': 'fisica', 'cinemática': 'fisica',
+      'química': 'quimica', 'átomo': 'quimica', 'reacción': 'quimica', 'materia': 'quimica',
+      'geografía': 'geografia', 'mapa': 'geografia', 'población': 'geografia',
+      'español': 'espanol', 'lectura': 'espanol', 'gramática': 'espanol', 'puntuación': 'espanol',
+      'historia de méxico': 'historia-mexico', 'méxico': 'historia-mexico',
+      'historia universal': 'historia-universal', 'siglo': 'historia-universal',
+      'cívica': 'formacion-civica', 'ética': 'formacion-civica', 'democracia': 'formacion-civica'
     };
     
     for (const [key, val] of Object.entries(areaMap)) {
@@ -73,13 +79,21 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
         if (/^\d+$/.test(id)) {
           const area = areas.find(a => a.id === val);
           if (area) {
-             const prefix = area.videos[0]?.id.split('-')[0] || '';
-             targetVideoId = `${prefix}-${id}`;
+             const firstVideoId = area.videos[0]?.id || '';
+             const prefix = firstVideoId.split('-')[0] || '';
+             // If prefix is "hv" or "hm" (habilidades), we need to be careful
+             targetVideoId = prefix ? `${prefix}-${id}` : id;
           }
         }
         break;
       }
     }
+  }
+
+  // If still no area, try to find ANY match in keywords from areas names
+  if (!targetAreaId) {
+    const foundArea = areas.find(a => cleanTitle.includes(a.id) || a.name.toLowerCase().includes(cleanTitle));
+    if (foundArea) targetAreaId = foundArea.id;
   }
 
   targetAreaId = targetAreaId || 'habilidades';
@@ -114,6 +128,8 @@ interface PlanStep {
   estimatedTime: string;
   dependsOn: number[];
   status?: "pending" | "approved" | "rejected";
+  videoId?: string;
+  areaId?: string;
 }
 
 interface Plan {
@@ -206,7 +222,12 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
   const plan: Plan = {
     title: parsed.title || "Plan de estudio",
     description: parsed.description || "",
-    steps: (parsed.steps || []).map((s: any) => ({ ...s, status: "pending" as const })),
+    steps: (parsed.steps || []).map((s: any) => ({ 
+      ...s, 
+      status: "pending" as const,
+      videoId: s.videoId || s.video_id,
+      areaId: s.areaId || s.area_id
+    })),
     status: "pending",
   };
   return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
@@ -392,18 +413,15 @@ const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
 );
 
 // ─── Plan Step Component ───
-const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }> = ({ step, onToggle }) => {
+const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id: number) => void }> = ({ step, planTitle, onToggle }) => {
   const priorityColor = {
     alta: "text-red-400 bg-red-500/10 border-red-500/20",
     media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
     baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
   };
 
-  const isLinkable = step.text.toLowerCase().includes("video") || 
-                     step.text.toLowerCase().includes("tema") || 
-                     step.text.toLowerCase().includes("lección") ||
-                     step.text.toLowerCase().includes("quiz") ||
-                     step.text.toLowerCase().includes("simulador");
+  // In a plan, almost everything should be linkable if we can find a context
+  const isLinkable = true; 
 
   const getStepType = () => {
     const text = step.text.toLowerCase();
@@ -446,7 +464,12 @@ const PlanStepItem: React.FC<{ step: PlanStep; onToggle: (id: number) => void }>
         <button 
           onClick={(e) => {
             e.stopPropagation();
-            window.location.href = getUrlForPaso(getStepType(), step.id.toString(), step.text);
+            window.location.href = getUrlForPaso(
+              getStepType(), 
+              step.videoId || step.id.toString(), 
+              step.text,
+              step.areaId || planTitle
+            );
           }}
           className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20 z-10"
           title="Ver contenido"
@@ -484,7 +507,7 @@ const PlanCard: React.FC<{
 
       <div className="p-3 space-y-2">
         {plan.steps.map(step => (
-          <PlanStepItem key={step.id} step={step} onToggle={onToggleStep} />
+          <PlanStepItem key={step.id} step={step} planTitle={plan.title} onToggle={onToggleStep} />
         ))}
       </div>
 
@@ -1600,17 +1623,21 @@ const AITutor = () => {
         10. Formación Cívica (Ética, Democracia, Derechos)
       `;
 
+      const areasSummary = areas.map(a => `${a.name} (id: ${a.id}, prefix: ${a.videos[0]?.id.split('-')[0] || ''})`).join(", ");
+
       const systemMsg = { 
         role: "system", 
         id: "system-instruction",
         content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026. 
         
         TEMARIO PERMITIDO: ${syllabusText}. 
+        ÁREAS DISPONIBLES: ${areasSummary}.
 
         REGLAS DE CUMPLIMIENTO OBLIGATORIO:
         1. Si el usuario pregunta por INGLÉS (English), PROGRAMACIÓN u otros temas FUERA del ECOEMS: NO proporciones una respuesta detallada. Debes ser extremadamente breve (máximo 1 oración) y DEBES iniciar con: "⚠️ **BLOQUEO DE TEMARIO**: Este tema NO forma parte del temario oficial de ECOEMS. No pierdas tiempo valioso en esto."
         2. Prohíbe conversaciones que no sean académicas sobre el examen.
-        3. Prioriza siempre el análisis de áreas débiles del alumno.`
+        3. Prioriza siempre el análisis de áreas débiles del alumno.
+        4. Al generar un <plan>, usa el formato JSON exacto. DEBES incluir "videoId" (ej. "fis-1") y "areaId" (ej. "fisica") en cada paso buscando el mejor match en las ÁREAS DISPONIBLES. Esto es vital para que los links funcionen.`
       };
 
       // Always include the system message at the start, then the last N messages
