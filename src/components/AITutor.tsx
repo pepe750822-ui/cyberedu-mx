@@ -7,7 +7,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2
+  Maximize2, Minimize2, Mic, MicOff
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -980,7 +980,9 @@ const AITutor = () => {
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
+  const recognitionRef = useRef<any>(null);
   
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
@@ -1002,6 +1004,54 @@ const AITutor = () => {
 
   const ctxForQueue = useMemo(() => buildContext(), [buildContext]);
   const { tasks, addTask, removeTask, clearCompleted, retryTask } = useTaskQueue(memory, ctxForQueue);
+
+  // Initialize Speech Recognition
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = "es-MX";
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(prev => prev + (prev ? " " : "") + transcript);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error("Speech recognition error", event.error);
+        setIsListening(false);
+        if (event.error === 'not-allowed') {
+          toast.error("Permiso de micrófono denegado");
+        }
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      toast.error("Tu navegador no soporta dictado por voz");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+        toast.info("Escuchando...");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
 
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -1751,15 +1801,31 @@ const AITutor = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-                      placeholder="Pregunta algo o usa un comando como /reporte..."
-                      disabled={isStreaming}
-                      className="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50"
-                    />
+                    <div className="relative flex-1">
+                      <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+                        placeholder={isListening ? "Escuchando..." : "Pregunta algo o usa un comando..."}
+                        disabled={isStreaming}
+                        className={cn(
+                          "w-full bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50",
+                          isListening && "border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]"
+                        )}
+                      />
+                      <button
+                        onClick={toggleListening}
+                        disabled={isStreaming}
+                        className={cn(
+                          "absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-all",
+                          isListening ? "text-primary animate-pulse" : "text-slate-500 hover:text-white hover:bg-white/5"
+                        )}
+                        title="Dictado por voz"
+                      >
+                        {isListening ? <Mic className="h-5 w-5" /> : <Mic className="h-5 w-5 opacity-50" />}
+                      </button>
+                    </div>
                     <button
                       onClick={() => sendMessage(input)}
                       disabled={!input.trim() || isStreaming}
