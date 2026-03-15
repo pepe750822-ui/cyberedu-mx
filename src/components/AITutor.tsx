@@ -6,7 +6,8 @@ import {
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
-  Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle
+  Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
+  Maximize2, Minimize2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -968,6 +969,7 @@ const AITutor = () => {
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
@@ -1152,7 +1154,7 @@ const AITutor = () => {
     if (action === "approve") {
       setMemory(prev => ({
         ...prev,
-        decisions: [...prev.decisions.slice(-9), {
+        decisions: [...prev.decisions.slice(-20), {
           question: "Plan de estudio aprobado",
           chosen: messages.find(m => m.id === messageId)?.plan?.title || "Plan",
           reasoning: "Aprobado por el usuario",
@@ -1497,8 +1499,11 @@ const AITutor = () => {
 
       {/* Chat Window */}
       <div className={cn(
-        "fixed bottom-24 right-6 w-[95vw] sm:w-[440px] h-[650px] bg-slate-950/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)] z-[100] flex flex-col overflow-hidden transition-all duration-500 origin-bottom-right",
-        isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none"
+        "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
+        isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
+        isExpanded 
+          ? "bottom-0 right-0 w-full h-[100vh] sm:rounded-none border-none z-[1000]" 
+          : "bottom-24 right-6 w-[95vw] sm:w-[440px] h-[650px]"
       )}>
         {/* Header */}
         <div className="p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
@@ -1519,13 +1524,22 @@ const AITutor = () => {
                 </div>
               </div>
             </div>
-            <button
-              onClick={clearHistory}
-              title="Reiniciar chat y memoria"
-              className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
-            >
-              <RefreshCw className="h-4 w-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                title={isExpanded ? "Contraer chat" : "Expandir chat"}
+                className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+              >
+                {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </button>
+              <button
+                onClick={clearHistory}
+                title="Reiniciar chat y memoria"
+                className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
 
