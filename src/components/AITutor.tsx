@@ -1046,9 +1046,15 @@ const AITutor = () => {
         progress: analysis.totalProgress,
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
         streak: analysis.streak,
+        syllabus: areas.map(a => a.name),
+        system_instructions: `Eres CyberAgent, el tutor especializado en ECOEMS 2026. Tu prioridad es el temario oficial: ${areas.map(a => a.name).join(", ")}. Si el usuario pregunta algo ajeno a estos temas (ej. Inglés, otros exámenes), responde si sabes, pero advierte claramente que no vendrá en el examen ECOEMS.`
       };
     } catch {
-      return { currentPage: location.pathname };
+      return { 
+        currentPage: location.pathname,
+        syllabus: areas.map(a => a.name),
+        system_instructions: "Tutor experto en ECOEMS. Limítate al temario oficial de bachillerato mexicano."
+      };
     }
   }, [location.pathname, analyzeUserProgress]);
 
@@ -1150,16 +1156,15 @@ const AITutor = () => {
     const performanceRecs = getRecomendacionesDiarias();
     const alerts = getAlertasRiesgo();
 
-    let welcomeText = "¡Hola! Soy **CyberAgent**, tu consultor académico inteligente con razonamiento autónomo.\n\n";
+    let welcomeText = "¡Hola! Soy **CyberAgent**, tu tutor experto especializado exclusivamente en el **Temario ECOEMS 2026**.\n\n";
     
     if (performanceRecs.length > 0) {
-      welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
+      welcomeText += `🔍 **Análisis Predictivo:** He detectado áreas del temario que podemos reforzar.\n\n`;
     }
-    if (alerts.length > 0) {
-      welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
-    }
+    
+    welcomeText += "Mi conocimiento está optimizado para las áreas de **Habilidades, Ciencias, Matemáticas, Historia, Español, Cívica y Geografía**. Si preguntas sobre otros temas (como Inglés), te ayudaré pero te recordaré que no forman parte del examen oficial.\n\n";
 
-    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+    welcomeText += "**¿En qué área del temario nos enfocamos hoy?**\n- Escribe `/reporte` para ver tu rendimiento.\n- Escribe `/analisis` para ver tus temas críticos.\n- Escribe `/recomienda` para un plan de acción ECOEMS.\n- Escribe `/explica [tema]` para conceptos del examen.\n- O simplemente hazme una consulta académica.";
 
     return [{
       role: "assistant" as const,
@@ -1187,16 +1192,16 @@ const AITutor = () => {
       setMessages(prev => prev.map(m => {
         if (m.id !== 'initial' || m.report) return m;
 
-        let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento reciente.\n\n";
+        let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento en el temario ECOEMS.\n\n";
         
         if (performanceRecs.length > 0) {
-          welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
+          welcomeText += `🔍 **Análisis Predictivo:** Tenemos temas pendientes en las áreas oficiales.\n\n`;
         }
         if (alerts.length > 0) {
-          welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado temas que requieren tu atención inmediata.\n\n`;
+          welcomeText += `🚨 **Alertas de Temario:** Hay temas de ECOEMS que requieren tu atención inmediata.\n\n`;
         }
 
-        welcomeText += "**¿Qué te gustaría hacer?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción**.\n- O simplemente platica conmigo.";
+        welcomeText += "**¿Qué te gustaría estudiar hoy?**\n- Escribe `/reporte` para ver tu rendimiento.\n- Escribe `/analisis` para ver tus áreas débiles.\n- Escribe `/recomienda` para un **Plan de Acción ECOEMS**.\n- O simplemente hazme una consulta sobre los temas del examen.";
 
         return { 
           ...m, 
@@ -1571,9 +1576,15 @@ const AITutor = () => {
     };
 
     try {
-      const history = [...messages, userMsg]
+      const systemMsg = { 
+        role: "system", 
+        id: "system-instruction",
+        content: `Eres CyberAgent, tutor experto en el examen ECOEMS 2026. Te limitas estrictamente al temario oficial de bachillerato mexicano: ${areas.map(a => a.name).join(", ")}. Si el usuario pregunta por temas fuera de este temario (como Inglés, programación, etc.), responde amablemente pero DEBES añadir una nota indicando: "⚠️ Nota: Este tema NO forma parte del temario oficial de ECOEMS."`
+      };
+
+      const history = [systemMsg, ...messages, userMsg]
         .filter(m => m.id !== "initial")
-        .slice(-12)
+        .slice(-13)
         .map(m => ({ role: m.role, content: m.content }));
 
       await streamChat({
