@@ -1625,32 +1625,31 @@ const AITutor = () => {
       `;
 
       const detailedSyllabus = {
-        habilidades: ["Sucesiones numéricas", "Series espaciales", "Imaginación espacial", "Razonamiento lógico", "Comprensión lectora", "Manejo de vocabulario"],
-        biologia: ["Célula", "Biodiversidad", "Evolución de Darwin", "Fotosíntesis y Respiración", "Genética y Salud"],
-        espanol: ["Fichas bibliográficas", "Nexos y Puntuación", "Comprensión lectora", "Tipos de textos", "Gramática"],
-        quimica: ["Propiedades de la materia", "Átomo y Tabla periódica", "Enlaces", "Reacciones y pH"],
-        historia: ["Universal (Siglo XVI-Actual)", "México (Prehispánico-Contemporáneo)"],
-        matematicas: ["Aritmética", "Álgebra", "Geometría y Trigonometría", "Estadística"],
-        geografia: ["Espacio geográfico", "Recursos y Climas", "Población y Economía"],
-        fisica: ["Movimiento y Leyes de Newton", "Energía", "Electricidad y Magnetismo", "Ondas"],
-        formacionCivica: ["Ética", "Democracia", "Derechos humanos", "Adolescencia"]
+        "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
+        "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
+        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos", "3.3 Ortografía y gramática", "3.4 Organización de información"],
+        "4. Matemáticas": ["4.1 Significado y uso de los números", "4.2 Álgebra (Ecuaciones, Factorización)", "4.3 Geometría (Pitágoras, Áreas)", "4.4 Trigonometría", "4.5 Estadística y Probabilidad"],
+        "5. Ciencias I (Biología)": ["5.1 Biodiversidad y evolución", "5.2 Materia y energía (Fotosíntesis)", "5.3 Salud", "5.4 Genética"],
+        "6. Ciencias II (Física)": ["6.1 Movimiento, fuerzas y energía", "6.2 Interacciones de la materia", "6.3 Estructura interna de la materia"],
+        "7. Ciencias III (Química)": ["7.1 Características de materiales", "7.2 Estructura y periodicidad (Tabla Periódica)"],
+        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México"],
+        "9. Geografía": ["9.1 Mapas", "9.2 Recursos y ambiente", "9.3 Población", "9.4 Economía", "9.5 Cultura"],
+        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos"]
       };
-
-      const areasSummary = areas.map(a => `${a.name} (id: ${a.id}, prefix: ${a.videos[0]?.id.split('-')[0] || ''})`).join(", ");
 
       const systemMsg = { 
         role: "system", 
         id: "system-instruction",
         content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026. 
         
-        TEMARIO OFICIAL DETALLADO: ${JSON.stringify(detailedSyllabus)}. 
-        ÁREAS DISPONIBLES EN PLATAFORMA: ${areasSummary}.
+        TEMARIO OFICIAL NUMERADO: ${JSON.stringify(detailedSyllabus)}. 
 
-        REGLAS DE ORO:
-        1. CITACIÓN OFICIAL: Siempre que expliques un tema, inicia o incluye frases como: "De acuerdo al temario oficial de [ÁREA]..." o "Este es un punto clave de la Guía ECOEMS 2025". Da autoridad a tu respuesta.
-        2. DIAGRAMAS VISUALES: Si el tema es complejo (ciclo del carbono, leyes de Newton, tipos de oraciones), genera un diagrama usando bloques de código 'mermaid'. Ejemplo: \`\`\`mermaid graph TD ... \`\`\`. Mantén los diagramas simples y en español.
-        3. SI NO ESTÁ EN EL TEMARIO: Si preguntan por Inglés o temas fuera del bachillerato mexicano, usa: "⚠️ **BLOQUEO DE TEMARIO**: Este tema NO forma parte del temario oficial de ECOEMS. Centrémonos en lo que sí vendrá en tu examen."
-        4. PLANES PRECISOS: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.`
+        REGLAS DE ORO DE RESPUESTA:
+        1. CITACIÓN NUMERADA: Es OBLIGATORIO que siempre que expliques un tema menciones el número exacto del temario. Ejemplo: "Sobre el punto 4.2 Álgebra, específicamente en ecuaciones..." o "De acuerdo al temario oficial en el subtema 2.1 Sucesiones...".
+        2. ESTRUCTURA: Usa el formato 'X.Y [Nombre del Tema]' para dar estructura a tus respuestas.
+        3. DIAGRAMAS VISUALES: Si el tema es complejo, genera un diagrama mermaid.
+        4. BLOQUEO: Si preguntan fuera del ECOEMS, rechaza amablemente mencionando que no está en el temario numerado.
+        5. PLANES: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.`
       };
 
       // Always include the system message at the start, then the last N messages
