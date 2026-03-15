@@ -1041,19 +1041,30 @@ const AITutor = () => {
   const buildContext = useCallback(() => {
     try {
       const analysis = analyzeUserProgress();
+      const detailedSyllabus = {
+        habilidades: ["Sucesiones numéricas", "Series espaciales", "Imaginación espacial", "Razonamiento lógico"],
+        biologia: ["Célula", "Biodiversidad", "Desarrollo sustentable", "Fotosíntesis", "Respiración", "Genética", "Salud sexual"],
+        espanol: ["Fichas bibliográficas", "Nexos", "Puntuación", "Comprensión lectora", "Tipos de textos", "Sinónimos y Antónimos"],
+        quimica: ["Estados de la materia", "Estructura atómica", "Tabla periódica", "Enlaces", "Balanceo", "Ácidos y bases"],
+        historia: ["Universal (Rev. Industrial, Guerras)", "México (Prehispánico, Independencia, Revolución)"],
+        matematicas: ["Aritmética", "Álgebra (Ecuaciones)", "Geometría (Pitágoras)", "Estadística y Probabilidad"],
+        geografia: ["Mapas y GPS", "Tectónica", "Climas", "Población", "Economía global", "Multiculturalidad"],
+        fisica: ["Movimiento y Rapidez", "Leyes de Newton", "Energía", "Electricidad", "Ondas"],
+        formacionCivica: ["Ética", "Derechos humanos", "Democracia", "Adolescencia"]
+      };
+      
       return {
         currentPage: location.pathname,
         progress: analysis.totalProgress,
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
         streak: analysis.streak,
-        syllabus: areas.map(a => a.name),
-        system_instructions: `Eres CyberAgent, el tutor especializado en ECOEMS 2026. Tu prioridad es el temario oficial: ${areas.map(a => a.name).join(", ")}. Si el usuario pregunta algo ajeno a estos temas (ej. Inglés, otros exámenes), responde si sabes, pero advierte claramente que no vendrá en el examen ECOEMS.`
+        detailedSyllabus,
+        system_instructions: "Eres CyberAgent, experto en la Guía ECOEMS 2025. Tu conocimiento se limita a Habilidades (Verbal/Mat), Biología, Química, Física, Matemáticas, Historia, Geografía, Español y Cívica. Ignora Inglés o temas fuera del bachillerato mexicano."
       };
     } catch {
       return { 
         currentPage: location.pathname,
-        syllabus: areas.map(a => a.name),
-        system_instructions: "Tutor experto en ECOEMS. Limítate al temario oficial de bachillerato mexicano."
+        system_instructions: "Tutor experto en ECOEMS 2025. Enfoque en el temario oficial de ingreso a bachillerato."
       };
     }
   }, [location.pathname, analyzeUserProgress]);
@@ -1576,10 +1587,28 @@ const AITutor = () => {
     };
 
     try {
+      const syllabusText = `
+        1. Habilidad Verbal (Comprensión, Nexos, Vocabulario)
+        2. Habilidad Matemática (Sucesiones, Series, Lógica)
+        3. Biología (Célula, Biodiversidad, Genética, Salud)
+        4. Español (Gramática, Puntuación, Tipos de texto)
+        5. Química (Materia, Átomo, Tabla Periódica, Reacciones)
+        6. Física (Movimiento, Leyes de Newton, Energía, Ondas)
+        7. Matemáticas (Aritmética, Álgebra, Geometría, Estadística)
+        8. Geografía (Espacio geográfico, Población, Economía)
+        9. Historia (Universal y de México desde el siglo XVI)
+        10. Formación Cívica (Ética, Democracia, Derechos)
+      `;
+
       const systemMsg = { 
         role: "system", 
         id: "system-instruction",
-        content: `Eres CyberAgent, tutor experto en el examen ECOEMS 2026. Te limitas estrictamente al temario oficial de bachillerato mexicano: ${areas.map(a => a.name).join(", ")}. Si el usuario pregunta por temas fuera de este temario (como Inglés, programación, etc.), responde amablemente pero DEBES añadir una nota indicando: "⚠️ Nota: Este tema NO forma parte del temario oficial de ECOEMS."`
+        content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. 
+        Tu misión es dominar este temario: ${syllabusText}. 
+        REGLAS CRÍTICAS:
+        1. Si el usuario pregunta por INGLÉS, PROGRAMACIÓN u otros temas NO mencionados arriba: Responde brevemente si sabes, pero DEBES iniciar o terminar con este mensaje exacto: "⚠️ **Nota**: Este tema NO forma parte del temario oficial de ECOEMS. No desperdicies tiempo de estudio en esto."
+        2. Tus explicaciones deben estar orientadas a resolver reactivos de opción múltiple tipo examen.
+        3. Siempre que puedas, relaciona el tema con alguna de las 10 áreas oficiales.`
       };
 
       const history = [systemMsg, ...messages, userMsg]
