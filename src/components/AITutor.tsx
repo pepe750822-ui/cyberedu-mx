@@ -1509,7 +1509,6 @@ const AITutor = () => {
         )}
       </button>
 
-      {/* Chat Window */}
       <div className={cn(
         "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
@@ -1565,17 +1564,22 @@ const AITutor = () => {
           </div>
         </div>
 
-        {/* Messages */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 custom-scrollbar relative">
-              {showTasks && (
-                  <TaskCenter 
-                    tasks={tasks} 
-                    onRemove={removeTask} 
-                    onRetry={retryTask} 
-                    onClear={clearCompleted} 
-                    onClose={() => setShowTasks(false)} 
-                  />
-              )}
+        {/* Main Content Area */}
+        <div className={cn("flex-1 flex overflow-hidden", isExpanded ? "flex-row" : "flex-col")}>
+          {/* Chat Column */}
+          <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
+            {/* Messages */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 custom-scrollbar relative">
+                <div className={cn("space-y-5", isExpanded && "max-w-3xl mx-auto")}>
+                  {showTasks && !isExpanded && (
+                      <TaskCenter 
+                        tasks={tasks} 
+                        onRemove={removeTask} 
+                        onRetry={retryTask} 
+                        onClear={clearCompleted} 
+                        onClose={() => setShowTasks(false)} 
+                      />
+                  )}
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -1649,9 +1653,17 @@ const AITutor = () => {
                             ));
                           } catch { toast.error("Error al aplicar corrección"); }
                           setFixingCheckId(null);
-                        }} 
+                        }}
                       />}
                       {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
+                      {msg.plan && (
+                        <PlanCard
+                          plan={msg.plan}
+                          onApprove={() => handlePlanAction(msg.id, "approve")}
+                          onReject={() => handlePlanAction(msg.id, "reject")}
+                          onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
+                        />
+                      )}
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -1695,11 +1707,12 @@ const AITutor = () => {
                   <span className="text-sm font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
                 </div>
               )}
+              </div>
             </div>
 
             {/* Suggestions */}
             {!isStreaming && (
-              <div className="px-5 py-2 flex flex-wrap gap-1.5">
+              <div className={cn("px-5 py-2 flex flex-wrap gap-1.5", isExpanded && "max-w-3xl mx-auto w-full")}>
                 {contextualSuggestions.map((s, i) => (
                   <button
                     key={i}
@@ -1712,59 +1725,122 @@ const AITutor = () => {
               </div>
             )}
 
-        {/* Input */}
-        <div className="p-5 bg-slate-900/50 border-t border-white/5">
-          {/* Quick Actions */}
-          <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
-            {[
-              { label: "📈 Reporte", cmd: "/reporte" },
-              { label: "📊 Análisis", cmd: "/analisis" },
-              { label: "✨ Planes IA", cmd: "/recomienda" },
-              { label: "📚 Mis Planes", cmd: "/planes" },
-              { label: "🧠 Explica...", cmd: "/explica " },
-               { label: "🧩 Quiz...", cmd: "/quiz " },
-              { label: "🔧 Sistema", cmd: "/diagnostico" }
-            ].map((btn, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  if (btn.cmd.endsWith(" ")) {
-                    setInput(btn.cmd);
-                    // Optionally set focus to input, but React doesn't make it easy without a ref. Doing just setInput is fine.
-                  } else {
-                    sendMessage(btn.cmd);
-                  }
-                }}
-                disabled={isStreaming}
-                className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:bg-primary/20 hover:text-white transition-all active:scale-95 disabled:opacity-50"
-              >
-                {btn.label}
-              </button>
-            ))}
-          </div>
+            {/* Input Overlay for chat */}
+            <div className="p-5 bg-slate-900/50 border-t border-white/5">
+              <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
+                  {/* Quick Actions */}
+                  <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
+                    {[
+                      { label: "📈 Reporte", cmd: "/reporte" },
+                      { label: "📊 Análisis", cmd: "/analisis" },
+                      { label: "✨ Planes IA", cmd: "/recomienda" },
+                      { label: "📚 Mis Planes", cmd: "/planes" },
+                      { label: "🧠 Explica...", cmd: "/explica " },
+                      { label: "🧩 Quiz...", cmd: "/quiz " },
+                      { label: "🔧 Sistema", cmd: "/diagnostico" }
+                    ].map((btn, i) => (
+                      <button
+                        key={i}
+                        onClick={() => btn.cmd.endsWith(" ") ? setInput(btn.cmd) : sendMessage(btn.cmd)}
+                        disabled={isStreaming}
+                        className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:bg-primary/20 hover:text-white transition-all active:scale-95 disabled:opacity-50"
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-               placeholder="Pregunta algo o usa un comando como /reporte..."
-              disabled={isStreaming}
-              className="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50"
-            />
-            <button
-              onClick={() => sendMessage(input)}
-              disabled={!input.trim() || isStreaming}
-              className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
-            >
-              {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-            </button>
-          </div>
-          <p className="text-sm text-slate-600 font-bold uppercase tracking-[0.15em] text-center mt-3 flex items-center justify-center gap-1">
-            <Zap className="h-3 w-3" /> CyberAgent v8.2 — Predictive Intelligence
-          </p>
-           <p className="text-xs text-slate-700 text-center mt-0.5">/reporte · /analisis · /quiz · /recomienda · /explica · /planes · /diagnostico</p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+                      placeholder="Pregunta algo o usa un comando como /reporte..."
+                      disabled={isStreaming}
+                      className="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50"
+                    />
+                    <button
+                      onClick={() => sendMessage(input)}
+                      disabled={!input.trim() || isStreaming}
+                      className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
+                    >
+                      {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.2em] text-center mt-3 opacity-50">
+                    Propulsado por CyberAgent IA v8.4
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          {/* Sidebar for Expanded Mode */}
+          {isExpanded && (
+            <div className="w-80 border-l border-white/5 bg-slate-900/30 flex flex-col p-6 space-y-8 overflow-y-auto hidden lg:flex">
+              <div>
+                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <History className="h-3 w-3" /> Memoria del Agente
+                </h3>
+                <div className="space-y-4">
+                  {memory.topics.length > 0 && (
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                        <p className="text-[10px] font-black text-primary uppercase mb-2">Temas Recientes</p>
+                        <div className="flex flex-wrap gap-1">
+                          {memory.topics.map((t, i) => (
+                            <span key={i} className="px-2 py-0.5 rounded bg-primary/10 text-[10px] text-primary-foreground font-bold">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                  )}
+                  {memory.decisions.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black text-slate-500 uppercase">Últimas Decisiones</p>
+                        {memory.decisions.slice(-3).map((d, i) => (
+                           <div key={i} className="p-2 rounded-lg bg-white/5 border border-white/5 text-[10px]">
+                              <p className="text-white font-bold truncate">{d.question}</p>
+                              <p className="text-slate-500 italic truncate">{d.chosen}</p>
+                           </div>
+                        ))}
+                      </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex-1">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <Layers className="h-3 w-3" /> Actividad en Cola
+                </h3>
+                <div className="space-y-2">
+                   {tasks.length === 0 ? (
+                       <p className="text-[10px] text-slate-600 italic">No hay procesos activos...</p>
+                   ) : (
+                       tasks.slice(0, 5).map(task => (
+                           <div key={task.id} className="p-3 rounded-xl bg-black/20 border border-white/5">
+                               <div className="flex items-center justify-between gap-2 mb-1">
+                                   <span className={cn("text-[9px] font-black uppercase", task.status === "running" ? "text-primary" : "text-slate-500")}>
+                                       {task.status === "running" ? "Procesando" : task.status}
+                                   </span>
+                                   {task.status === "running" && <Loader2 className="h-2.5 w-2.5 animate-spin text-primary" />}
+                               </div>
+                               <p className="text-[11px] font-bold text-slate-300 truncate">{task.prompt}</p>
+                           </div>
+                       ))
+                   )}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20">
+                    <p className="text-[10px] font-black text-white uppercase mb-1">Tu Nivel Actual</p>
+                    <div className="flex items-end gap-2">
+                        <span className="text-2xl font-black text-primary">84%</span>
+                        <span className="text-[10px] text-emerald-400 font-bold mb-1 tracking-tighter">↑ 12% este mes</span>
+                    </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
