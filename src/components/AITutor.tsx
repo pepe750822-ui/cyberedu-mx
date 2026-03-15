@@ -15,63 +15,77 @@ import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/u
 import { useTaskQueue, AgentTask, TaskPriority } from "@/hooks/useTaskQueue";
 import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
 import { useAnalisisRendimiento } from "@/hooks/useAnalisisRendimiento";
+import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 
 // ─── Navigation Helper ───
-function getUrlForPaso(type: string, id: string, title?: string): string {
+function getUrlForPaso(type: string, id: string, title?: string, areaHint?: string): string {
   if (type === 'simulador') return '/simulador-pro';
   
-  const t = title?.toLowerCase() || "";
-  let areaId = "";
-  let prefix = "";
+  const cleanTitle = (title || "").toLowerCase();
+  let targetAreaId = "";
+  let targetVideoId = id;
 
-  // 1. Identify Area & Prefix
-  if (t.includes("habilidad") || t.includes("verbal")) { areaId = "habilidades"; prefix = "hv"; }
-  else if (t.includes("matemática")) { areaId = "matematicas"; prefix = "mat"; }
-  else if (t.includes("biología")) { areaId = "biologia"; prefix = "bio"; }
-  else if (t.includes("física")) { areaId = "fisica"; prefix = "fis"; }
-  else if (t.includes("química")) { areaId = "quimica"; prefix = "qui"; }
-  else if (t.includes("geografía")) { areaId = "geografia"; prefix = "geo"; }
-  else if (t.includes("español")) { areaId = "espanol"; prefix = "esp"; }
-  else if (t.includes("historia de méxico")) { areaId = "historia-mexico"; prefix = "hm-mx"; }
-  else if (t.includes("historia universal")) { areaId = "historia-universal"; prefix = "hu"; }
-  else if (t.includes("cívica")) { areaId = "formacion-civica"; prefix = "fce"; }
-  
-  // If no title match, try ID prefix
-  if (!areaId) {
-    const idPrefix = id.split('-')[0];
+  // 1. Precise ID Check: If ID already has a prefix (e.g. "bio-1"), find its area
+  if (id.includes('-')) {
+    const prefix = id.split('-')[0];
+    const area = areas.find(a => 
+      a.id.startsWith(prefix) || 
+      a.videos.some(v => v.id === id)
+    );
+    if (area) {
+      targetAreaId = area.id;
+      targetVideoId = id;
+    }
+  }
+
+  // 2. Title Search: If no area found or ID is suspicious, search all videos
+  if (!targetAreaId) {
+    for (const area of areas) {
+      const match = area.videos.find(v => 
+        cleanTitle.includes(v.title.toLowerCase()) || 
+        v.title.toLowerCase().includes(cleanTitle)
+      );
+      if (match) {
+        targetAreaId = area.id;
+        targetVideoId = match.id;
+        break;
+      }
+    }
+  }
+
+  // 3. Heuristic / Area Hint Fallback
+  if (!targetAreaId) {
+    const context = (cleanTitle + " " + (areaHint || "")).toLowerCase();
     const areaMap: Record<string, string> = {
-      'hv': 'habilidades',
-      'hm': id.startsWith('hm-mx') ? 'historia-mexico' : 'habilidades',
-      'bio': 'biologia',
-      'fis': 'fisica',
-      'qui': 'quimica',
-      'mat': 'matematicas',
-      'hu': 'historia-universal',
-      'esp': 'espanol',
-      'fce': 'formacion-civica',
-      'geo': 'geografia',
-      'rep': 'repaso-final'
+      'habilidad': 'habilidades', 'verbal': 'habilidades', 'matemática': 'matematicas',
+      'biología': 'biologia', 'física': 'fisica', 'química': 'quimica',
+      'geografía': 'geografia', 'español': 'espanol', 'historia de méxico': 'historia-mexico',
+      'historia universal': 'historia-universal', 'cívica': 'formacion-civica', 'ética': 'formacion-civica'
     };
-    areaId = areaMap[idPrefix] || 'habilidades';
-    prefix = idPrefix;
+    
+    for (const [key, val] of Object.entries(areaMap)) {
+      if (context.includes(key)) {
+        targetAreaId = val;
+        // If it's a number like "1", try to match it with the area prefix
+        if (/^\d+$/.test(id)) {
+          const area = areas.find(a => a.id === val);
+          if (area) {
+             const prefix = area.videos[0]?.id.split('-')[0] || '';
+             targetVideoId = `${prefix}-${id}`;
+          }
+        }
+        break;
+      }
+    }
   }
 
-  areaId = areaId || 'habilidades';
+  targetAreaId = targetAreaId || 'habilidades';
   
-  // 2. Intelligent ID Mapping
-  // If ID is just a number (common in AI plans), prefix it to match real video IDs (e.g., "1" -> "mat-1")
-  let finalId = id;
-  if (/^\d+$/.test(id) && prefix) {
-    // Basic heuristic: many areas use prefix-number
-    finalId = `${prefix}-${id}`;
-    // Special cases: history and verbal have different naming sometimes, but this covers 90%
-  }
-
-  if (type === 'quiz') return `/area/${areaId}?tab=quiz&video=${finalId}`;
-  if (type === 'infografia') return `/area/${areaId}?tab=recursos&video=${finalId}`;
-  return `/area/${areaId}?video=${finalId}`;
+  if (type === 'quiz') return `/area/${targetAreaId}?tab=quiz&video=${targetVideoId}`;
+  if (type === 'infografia') return `/area/${targetAreaId}?tab=recursos&video=${targetVideoId}`;
+  return `/area/${targetAreaId}?video=${targetVideoId}`;
 }
 
 // ─── Types ───
@@ -915,7 +929,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.location.href = getUrlForPaso(paso.tipo, paso.id, paso.titulo);
+                      window.location.href = getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area);
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
