@@ -39,36 +39,53 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   const [isRendering, setIsRendering] = useState(false);
   const [showRaw, setShowRaw] = useState(false);
 
-  // Clean the chart input
+  // Clean and auto-fix common Mermaid syntax errors
   const cleanChart = useCallback((input: string) => {
     let cleaned = input.trim();
     
-    // 1. Basic Markdown Cleaning
-    if (cleaned.startsWith('```mermaid')) {
-      cleaned = cleaned.substring(10);
-    } else if (cleaned.startsWith('```')) {
-      cleaned = cleaned.substring(3);
-    }
-    
-    // 2. Remove trailing markers
-    if (cleaned.endsWith('```')) {
-      cleaned = cleaned.substring(0, cleaned.length - 3);
-    }
+    // 1. Strip Markdown and XML-like tags (AI often wraps things)
+    cleaned = cleaned
+      .replace(/^```mermaid\s+/i, '')
+      .replace(/^```\s+/i, '')
+      .replace(/```$/g, '')
+      .replace(/<mermaid>|<\/mermaid>/gi, '')
+      .trim();
 
-    // 3. Remove accidental 'mermaid' word at start (common AI mistake)
+    // 2. Remove leading 'mermaid' keyword if present
     cleaned = cleaned.replace(/^mermaid\s+/i, '');
     
-    // 4. Normalize quotes and special characters
-    // Sometimes AI leaves HTML entities
+    // 3. Normalize Diagram Type to Flowchart (v11 preference)
+    // graph TD -> flowchart TD
+    if (cleaned.startsWith('graph ')) {
+      cleaned = 'flowchart ' + cleaned.substring(6);
+    }
+
+    // 4. AUTO-FIX: Missing quotes in labels with special characters
+    // This looks for patterns like: id[Texto con espacios y acentos] 
+    // and converts them to: id["Texto con espacios y acentos"]
+    const lines = cleaned.split('\n');
+    const fixedLines = lines.map(line => {
+      // Regex to find labels containing spaces, accents, or common symbols that aren't already quoted
+      const specialChars = 'áéíóúÁÉÍÓÚñÑ\\s\\(\\)\\.\\,\\/\\&\\#\\-\\+0-9';
+      
+      // Handle [label]
+      let fixed = line.replace(new RegExp(`([a-zA-Z0-9_-]+)\\[([^"\\]\\n]*[${specialChars}][^"\\]\\n]*)\\]`, 'g'), '$1["$2"]');
+      // Handle (label)
+      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\(([^"\\)\\n]*[${specialChars}][^"\\)\\n]*)\\)`, 'g'), '$1("$2")');
+      // Handle ((label))
+      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\(\\(([^"\\)\\n]*[${specialChars}][^"\\)\\n]*)\\)\\)`, 'g'), '$1(("$2"))');
+      // Handle {label}
+      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\{([^"\\}\\n]*[${specialChars}][^"\\}\\n]*)\\}`, 'g'), '$1{"$2"}');
+      return fixed;
+    });
+    cleaned = fixedLines.join('\n');
+
+    // 5. Normalize HTML entities
     cleaned = cleaned
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&amp;/g, '&');
-
-    // 5. Fallback: if it starts with 'graph ', ensure it's handled, 
-    // but Mermaid v11 prefers 'flowchart'. We don't force it here 
-    // to avoid breaking specific diagram types, but we trim whitespace.
     
     return cleaned.trim();
   }, []);
