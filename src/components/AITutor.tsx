@@ -27,6 +27,8 @@ import Mermaid from "./Mermaid";
 import ChartRenderer, { ChartData } from "./ChartRenderer";
 import EduImageViewer from "./EduImageViewer";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
+import { materiales } from "@/data/materialComplementario";
+import { Image as ImageIcon } from "lucide-react";
 
 // ─── ECOEMS Citation Mapping ───
 const MATERIA_TO_AREA: Record<string, string> = {
@@ -581,23 +583,45 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
         </div>
       </button>
 
-      {isLinkable && (
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            onNavigate(getUrlForPaso(
-              getStepType(), 
-              step.videoId || step.id.toString(), 
-              step.text,
-              step.areaId || planTitle
-            ));
-          }}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20 z-10"
-          title="Ver contenido"
-        >
-          <ArrowRight className="h-3.5 w-3.5" />
-        </button>
-      )}
+      {isLinkable && (() => {
+        const generatedUrl = getUrlForPaso(
+          getStepType(), 
+          step.videoId || step.id.toString(), 
+          step.text,
+          step.areaId || planTitle
+        );
+        const vMatch = generatedUrl.match(/video=([^&]+)/);
+        const resolvedVideoId = vMatch ? vMatch[1] : null;
+        const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId) : '';
+        const hasInfo = resolvedVideoId ? !!materiales[resolvedVideoId]?.infografia : false;
+
+        return (
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10">
+            {hasInfo && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onNavigate(infoUrl);
+                }}
+                className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500/20 hover:scale-110 active:scale-95 transition-all border border-emerald-500/20"
+                title="Ver Infografía"
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+              </button>
+            )}
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate(generatedUrl);
+              }}
+              className="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20"
+              title="Ver contenido"
+            >
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 };
@@ -863,29 +887,60 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
       {recs.map((r, i) => {
         const icons = { video: <Play className="h-3.5 w-3.5" />, area: <BookOpen className="h-3.5 w-3.5" />, simulador: <Target className="h-3.5 w-3.5" /> };
         const prioColors = { alta: "text-red-400 bg-red-500/10 border-red-500/20", media: "text-amber-400 bg-amber-500/10 border-amber-500/20", baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
-        return (
-          <button
-            key={i}
-            onClick={() => {
-              onNavigate(getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title));
-            }}
-            className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group"
-          >
-            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              {icons[r.type]}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-black text-slate-200 truncate uppercase tracking-tight">{r.title}</p>
-                <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
-                  {r.priority}
-                </span>
+        return (() => {
+          const generatedUrl = getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title);
+          const vMatch = generatedUrl.match(/video=([^&]+)/);
+          const resolvedVideoId = vMatch ? vMatch[1] : null;
+          const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId) : '';
+          const hasInfo = resolvedVideoId ? !!materiales[resolvedVideoId]?.infografia : false;
+
+          return (
+            <div key={i} className="relative group/rec w-full">
+              <button
+                onClick={() => onNavigate(generatedUrl)}
+                className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group pr-20"
+              >
+                <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  {icons[r.type]}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-black text-slate-200 truncate uppercase tracking-tight">{r.title}</p>
+                    <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>
+                      {r.priority}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5 line-clamp-1 group-hover:text-slate-300 transition-colors">{r.reason}</p>
+                </div>
+              </button>
+              
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none group-hover/rec:pointer-events-auto">
+                {hasInfo && (
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate(infoUrl);
+                    }}
+                    className="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg opacity-0 group-hover/rec:opacity-100 hover:bg-emerald-500/20 hover:scale-110 active:scale-95 transition-all border border-emerald-500/20"
+                    title="Ver Infografía"
+                  >
+                    <ImageIcon className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate(generatedUrl);
+                  }}
+                  className="p-1.5 bg-primary/10 text-primary rounded-lg opacity-50 group-hover/rec:opacity-100 hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20"
+                  title="Ir al video"
+                >
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5 line-clamp-1 group-hover:text-slate-300 transition-colors">{r.reason}</p>
             </div>
-            <ArrowRight className="h-4 w-4 text-slate-600 group-hover:text-primary transition-all group-hover:translate-x-1" />
-          </button>
-        );
+          );
+        })();
       })}
     </div>
   </div>
