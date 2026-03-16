@@ -19,6 +19,7 @@ import { useTaskQueue, AgentTask } from "@/hooks/useTaskQueue";
 import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Mermaid from "./Mermaid";
 
 // ─── ECOEMS Citation Mapping ───
@@ -1942,6 +1943,7 @@ const AITutor = () => {
                       {msg.role === "assistant" ? (
                         <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary", isExpanded ? "prose-base" : "prose-sm")}>
                           <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
                             components={{
                               code({ node, inline, className, children, ...props }: any) {
                                 const match = /language-(\w+)/.exec(className || '');
@@ -2026,10 +2028,13 @@ const AITutor = () => {
                                 }
                             }}
                           >
-                            {msg.content.replace(
-                              /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
-                              (match, materia, code) => `[${match}](citation://${materia}/${code})`
-                            )}
+                            {msg.content
+                              .replace(
+                                /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
+                                (match, materia, code) => `[${match}](citation://${materia}/${code})`
+                              )
+                              .replace(/([^\n])\n\|/g, '$1\n\n|') // Ensure tables have leading newline
+                            }
                           </ReactMarkdown>
                         </div>
                       ) : (
