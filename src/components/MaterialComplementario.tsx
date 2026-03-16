@@ -42,8 +42,10 @@ interface MaterialComplementarioProps {
 
 // ─── Image Proxy Helper ───
 const getProxiedUrl = (url: string) => {
-  if (url.includes("wikimedia.org") || url.includes("wikipedia")) {
-    return `https://wsrv.nl/?url=${url.replace(/^https?:\/\//, '')}&w=800&output=webp`;
+  if (url.includes("upload.wikimedia.org/wikipedia/commons")) {
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    return `https://commons.wikimedia.org/w/thumb.php?f=${filename}&w=800`;
   }
   return url;
 };

@@ -20,10 +20,16 @@ const AREA_COLORS: Record<string, string> = {
 };
 
 // ─── Image Proxy Helper ───
+// Uses Wikimedia's official thumb.php API endpoint which:
+// 1. Renders SVGs → PNG server-side 
+// 2. Doesn't rate-limit browsers like /thumb/ URLs
+// 3. Is the most stable way to get Wikimedia images
 const getProxiedUrl = (url: string) => {
-  if (url.includes("wikimedia.org") || url.includes("wikipedia")) {
-    // wsrv.nl bypasses Wikimedia rate-limiting and compresses the image
-    return `https://wsrv.nl/?url=${url.replace(/^https?:\/\//, '')}&w=800&output=webp`;
+  if (url.includes("upload.wikimedia.org/wikipedia/commons")) {
+    // Extract filename from URL, e.g. ".../4/48/Animal_cell_structure_en.svg" → "Animal_cell_structure_en.svg"
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    return `https://commons.wikimedia.org/w/thumb.php?f=${filename}&w=800`;
   }
   return url;
 };
