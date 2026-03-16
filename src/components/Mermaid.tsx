@@ -133,46 +133,53 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
         isFullscreen ? "fixed inset-4 z-[1000] bg-slate-950/95 backdrop-blur-xl border-white/10" : "w-full"
       )}>
         {/* Toolbar */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-white/5 bg-white/5 backdrop-blur-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Diagrama Autogenerado</span>
-            {isRendering && <RefreshCw className="h-3 w-3 animate-spin text-primary" />}
-          </div>
-          
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between px-3 sm:px-6 py-3 border-b border-white/5 bg-white/5 backdrop-blur-sm">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button 
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg text-primary transition-colors border border-primary/30"
+              title={isFullscreen ? "Cerrar" : "Pantalla completa"}
+            >
+              {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+            </button>
+
             {!error && (
-              <>
+              <button 
+                onClick={handleFit}
+                className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors border border-white/5"
+                title="Ajustar ancho"
+              >
+                <div className="flex items-center justify-center border border-current rounded-sm h-3 w-4 px-0.5">
+                  <div className="w-full h-px bg-current" />
+                </div>
+              </button>
+            )}
+
+            <div className="w-px h-4 bg-white/10 mx-1" />
+
+            {!error && (
+              <div className="flex items-center gap-1 sm:gap-1.5 bg-white/5 rounded-lg border border-white/5 p-0.5">
                 <button 
                   onClick={() => setZoom(prev => Math.max(0.05, prev - 0.2))}
-                  className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                  className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-white transition-colors"
                   title="Alejar"
                 >
-                  <ZoomOut className="h-3.5 w-3.5" />
+                  <ZoomOut className="h-3 w-3" />
                 </button>
-                <span className="text-[10px] font-bold text-slate-600 w-8 text-center">{Math.round(zoom * 100)}%</span>
+                <span className="text-[9px] font-bold text-slate-500 w-7 text-center">{Math.round(zoom * 100)}%</span>
                 <button 
                   onClick={() => setZoom(prev => Math.min(8, prev + 0.2))}
-                  className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                  className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-white transition-colors"
                   title="Acercar"
                 >
-                  <ZoomIn className="h-3.5 w-3.5" />
+                  <ZoomIn className="h-3 w-3" />
                 </button>
-                <button 
-                  onClick={handleFit}
-                  className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
-                  title="Ajustar ancho"
-                >
-                  <div className="flex items-center justify-center border border-current rounded-sm h-3 w-4 px-0.5">
-                    <div className="w-full h-px bg-current" />
-                  </div>
-                </button>
-                <div className="w-px h-4 bg-white/10 mx-1" />
-              </>
+              </div>
             )}
             
             <button 
               onClick={handleRefresh}
-              className={cn("p-1.5 hover:bg-white/10 rounded-lg transition-colors", error ? "text-amber-400 bg-amber-400/10" : "text-slate-400 hover:text-white")}
+              className={cn("p-1.5 hover:bg-white/10 rounded-lg transition-colors border border-white/5", error ? "text-amber-400 bg-amber-400/10 border-amber-400/20" : "text-slate-400 hover:text-white")}
               title="Recargar diagrama"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isRendering && "animate-spin")} />
@@ -181,20 +188,17 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
             {!error && (
               <button 
                 onClick={handleDownload}
-                className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                className="hidden xs:flex p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors border border-white/5"
                 title="Descargar SVG"
               >
                 <Download className="h-3.5 w-3.5" />
               </button>
             )}
+          </div>
 
-            <button 
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="p-1.5 bg-primary/10 hover:bg-primary/20 rounded-lg text-primary transition-colors"
-              title={isFullscreen ? "Cerrar" : "Pantalla completa"}
-            >
-              {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-            </button>
+          <div className="flex items-center gap-2">
+            {isRendering && <RefreshCw className="h-3 w-3 animate-spin text-primary" />}
+            <span className="hidden sm:inline-block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Diagrama</span>
           </div>
         </div>
 
