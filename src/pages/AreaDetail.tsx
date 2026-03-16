@@ -68,15 +68,16 @@ const AreaDetail = () => {
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     if (tabParam) {
-      // Give it a small timeout to ensure render is complete
-      setTimeout(() => {
+      // Small timeout to allow MaterialComplementario to render the tab content
+      const timer = setTimeout(() => {
         const el = document.getElementById("material-complementario");
         if (el) {
-          const yOffset = -80; // Offset for header
+          const yOffset = -100; // Extra offset for visibility
           const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
-      }, 100);
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [searchParams]);
 

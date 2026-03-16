@@ -234,30 +234,42 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
   const validTabs = ["ai-quiz", "flashcards", "quiz", "ai-tutor", "infografia", "pdf", "podcast", "guia", "studio"];
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTab = searchParams.get("tab");
-  const initialTab = urlTab && validTabs.includes(urlTab) ? urlTab : defaultTab;
+  
+  // Helper to find the best default tab based on priority
+  const getBestDefaultTab = () => {
+    if (hasAIQuiz) return "ai-quiz";
+    if (hasFlashcards) return "flashcards";
+    if (hasQuiz) return "quiz";
+    if (hasAI) return "ai-tutor";
+    if (hasInfografia) return "infografia";
+    if (hasPdf) return "pdf";
+    if (hasPodcast) return "podcast";
+    return "guia";
+  };
 
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [activeTab, setActiveTab] = useState(() => {
+    if (urlTab && validTabs.includes(urlTab)) return urlTab;
+    return getBestDefaultTab();
+  });
+
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
-  // Sync with URL param if changed externally
+  // 1. Sync state with URL parameter if it changes (External navigation)
   useEffect(() => {
-    if (urlTab && validTabs.includes(urlTab)) {
+    if (urlTab && validTabs.includes(urlTab) && urlTab !== activeTab) {
       setActiveTab(urlTab);
     }
-  }, [urlTab]);
+  }, [urlTab, activeTab]);
 
-  // Reset tab to default whenever a new video is selected (and no tab is forced in the URL)
+  // 2. Sync state when video changes (Reset to default unless URL has a tab)
   useEffect(() => {
     if (!urlTab || !validTabs.includes(urlTab)) {
-      setActiveTab(defaultTab);
-      // Track if the default tab is already a quiz
-      if (defaultTab === "quiz") {
-        trackQuizStart(`original_${videoId}`, videoId);
-      } else if (defaultTab === "ai-quiz") {
-        trackQuizStart(`ai_${videoId}`, videoId);
+      const targetDefault = getBestDefaultTab();
+      if (activeTab !== targetDefault) {
+        setActiveTab(targetDefault);
       }
     }
-  }, [videoId, defaultTab, urlTab]);
+  }, [videoId, urlTab, hasAIQuiz, hasFlashcards, hasQuiz, hasAI, hasInfografia, hasPdf, hasPodcast, hasGuia]);
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
