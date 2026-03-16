@@ -1881,10 +1881,14 @@ const AITutor = () => {
            - Matemáticas (función cuadrática f(x)=x²): type="line", datos x=-3 a 3
            - Historia/Geografía (comparar datos): type="bar"
            - Biología (porcentajes): type="pie"
-        8. BANCO DE IMÁGENES EDUCATIVAS: Puedes agregar imágenes oficiales a tu explicación usando la sintaxis [IMG:clave].
-           Solo usa las siguientes claves disponibles:
-           ${availableImageKeys.join(', ')}
-           Ejemplo de uso: "La célula animal tiene varios organelos celulares. [IMG:celula-animal] Aquí podemos ver..."`
+         8. MATERIAL COMPLEMENTARIO (INFOGRAFÍAS, PDF, QUIZ):
+            Si el usuario pide ver una "infografía", "PDF", "Guía" o "Material" de un tema o video específico (ej: hv-1), DEBES responder con un bloque <plan> indicando el "videoId" y el "areaId" correctos. 
+            ESTO CREARÁ UN BOTÓN DE REDIRECCIÓN. Nunca uses [IMG:...] para referirte a material complementario descargable o navegable.
+         9. BANCO DE IMÁGENES EDUCATIVAS: 
+            Usa [IMG:clave] SOLO para ilustraciones esquemáticas que apoyen tu explicación visualmente dentro del chat.
+            Solo usa las siguientes claves disponibles:
+            ${availableImageKeys.join(', ')}
+            Ejemplo de uso: "La célula animal tiene varios organelos celulares. [IMG:celula-animal] Aquí podemos ver..."`
       };
 
       // Always include the system message at the start, then the last N messages
