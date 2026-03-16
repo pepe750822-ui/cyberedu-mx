@@ -66,27 +66,28 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
       let fixed = line;
       
       // Handle nodes: id[Label], id(Label), id((Label)), id{Label}, id[[Label]], id[(Label)], id{{Label}}
-      // We look for brackets/parens/braces and quote the content if it's not already quoted
+      // Improved ID regex to allow dots (common in syllabus numbering like 4.3)
+      const idPattern = '([a-zA-Z0-9_\\-\\.]+)';
       
       // [Label] or [[Label]] or [(Label)]
-      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\[+([^"\]\n]+)\]+/g, (match, id, label) => {
-        if (label.startsWith('"') && label.endsWith('"')) return match;
+      fixed = fixed.replace(new RegExp(`${idPattern}\\[+([^"\\]\\n]+)\\]+`, 'g'), (match, id, label) => {
+        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
         const brackets = match.includes('[[') ? '[[' : '[';
         const closeBrackets = match.includes(']]') ? ']]' : ']';
         return `${id}${brackets}"${label.trim()}"${closeBrackets}`;
       });
 
       // (Label) or ((Label))
-      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\(+([^"\)\n]+)\)+/g, (match, id, label) => {
-        if (label.startsWith('"') && label.endsWith('"')) return match;
+      fixed = fixed.replace(new RegExp(`${idPattern}\\(+([^"\\)\\n]+)\\)+`, 'g'), (match, id, label) => {
+        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
         const parens = match.includes('((') ? '((' : '(';
         const closeParens = match.includes('))') ? '))' : ')';
         return `${id}${parens}"${label.trim()}"${closeParens}`;
       });
 
       // {Label} or {{Label}}
-      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\{+([^"\}\n]+)\}+/g, (match, id, label) => {
-        if (label.startsWith('"') && label.endsWith('"')) return match;
+      fixed = fixed.replace(new RegExp(`${idPattern}\\{+([^"\\}\\n]+)\\}+`, 'g'), (match, id, label) => {
+        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
         const braces = match.includes('{{') ? '{{' : '{';
         const closeBraces = match.includes('}}') ? '}}' : '}';
         return `${id}${braces}"${label.trim()}"${closeBraces}`;
@@ -94,13 +95,17 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
 
       // Handle Arrow Labels: -->|Label| B
       fixed = fixed.replace(/\|([^"\|\n]+)\|/g, (match, label) => {
-        if (label.startsWith('"') && label.endsWith('"')) return match;
-        return `|"${label.trim()}"|`;
+        const trimmed = label.trim();
+        if (trimmed.startsWith('"') && trimmed.endsWith('"')) return match;
+        return `|"${trimmed}"|`;
       });
 
       // Handle Subgraph Titles: subgraph id [Title] or subgraph Title
-      fixed = fixed.replace(/subgraph\s+([a-zA-Z0-9_-]+)\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph $1 "$2"');
+      fixed = fixed.replace(/subgraph\s+([a-zA-Z0-9_\-\.]+)\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph $1 "$2"');
       fixed = fixed.replace(/subgraph\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph "$1"');
+
+      // 5. Fix common v11 breaking characters in unquoted places (like single quotes in ids)
+      // but this is risky if done globally. Let's stick to labels for now.
 
       return fixed;
     });
