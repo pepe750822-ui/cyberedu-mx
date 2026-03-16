@@ -19,6 +19,15 @@ const AREA_COLORS: Record<string, string> = {
   "Historia Universal": "text-orange-400 bg-orange-500/10 border-orange-500/30",
 };
 
+// ─── Image Proxy Helper ───
+const getProxiedUrl = (url: string) => {
+  if (url.includes("wikimedia.org") || url.includes("wikipedia")) {
+    // wsrv.nl bypasses Wikimedia rate-limiting and compresses the image
+    return `https://wsrv.nl/?url=${url.replace(/^https?:\/\//, '')}&w=800&output=webp`;
+  }
+  return url;
+};
+
 // ─── Lightbox Modal ───
 const Lightbox: React.FC<{
   image: EduImage;
@@ -93,7 +102,7 @@ const Lightbox: React.FC<{
             </button>
           )}
           <img
-            src={image.url}
+            src={getProxiedUrl(image.url)}
             alt={image.title}
             className="max-w-full max-h-[60vh] object-contain rounded-xl select-none"
             draggable={false}
@@ -148,7 +157,7 @@ const ImageCard: React.FC<{
       {/* Image */}
       {!error ? (
         <img
-          src={image.url}
+          src={getProxiedUrl(image.url)}
           alt={image.title}
           className={cn(
             "w-full object-cover transition-all duration-500 h-44",
