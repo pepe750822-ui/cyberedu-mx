@@ -168,7 +168,11 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
   }
 
   if (type === 'quiz') return `/area/${targetAreaId}?tab=quiz&video=${targetVideoId}`;
-  if (type === 'infografia') return `/area/${targetAreaId}?tab=recursos&video=${targetVideoId}`;
+  if (type === 'infografia') return `/area/${targetAreaId}?tab=infografia&video=${targetVideoId}`;
+  if (type === 'flashcards') return `/area/${targetAreaId}?tab=flashcards&video=${targetVideoId}`;
+  if (type === 'pdf') return `/area/${targetAreaId}?tab=pdf&video=${targetVideoId}`;
+  if (type === 'guia') return `/area/${targetAreaId}?tab=guia&video=${targetVideoId}`;
+  if (type === 'podcast') return `/area/${targetAreaId}?tab=podcast&video=${targetVideoId}`;
   return `/area/${targetAreaId}?video=${targetVideoId}`;
 }
 
@@ -550,6 +554,11 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
     const text = step.text.toLowerCase();
     if (text.includes("quiz")) return "quiz";
     if (text.includes("simulador")) return "simulador";
+    if (text.includes("infografía") || text.includes("infografia")) return "infografia";
+    if (text.includes("flashcard") || text.includes("tarjeta")) return "flashcards";
+    if (text.includes("pdf") || text.includes("documento")) return "pdf";
+    if (text.includes("guía") || text.includes("guia")) return "guia";
+    if (text.includes("podcast") || text.includes("audio")) return "podcast";
     return "video";
   };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   FileText,
   Headphones,
@@ -220,19 +221,33 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
         ? "quiz"
         : (hasAI ? "ai-tutor" : (hasInfografia ? "infografia" : (hasPdf ? "pdf" : (hasPodcast ? "podcast" : "guia"))))));
 
-  const [activeTab, setActiveTab] = useState(defaultTab);
+  const validTabs = ["ai-quiz", "flashcards", "quiz", "ai-tutor", "infografia", "pdf", "podcast", "guia", "studio"];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlTab = searchParams.get("tab");
+  const initialTab = urlTab && validTabs.includes(urlTab) ? urlTab : defaultTab;
+
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
-  // Reset tab to default whenever a new video is selected
+  // Sync with URL param if changed externally
   useEffect(() => {
-    setActiveTab(defaultTab);
-    // Track if the default tab is already a quiz
-    if (defaultTab === "quiz") {
-      trackQuizStart(`original_${videoId}`, videoId);
-    } else if (defaultTab === "ai-quiz") {
-      trackQuizStart(`ai_${videoId}`, videoId);
+    if (urlTab && validTabs.includes(urlTab)) {
+      setActiveTab(urlTab);
     }
-  }, [videoId, defaultTab]);
+  }, [urlTab]);
+
+  // Reset tab to default whenever a new video is selected (and no tab is forced in the URL)
+  useEffect(() => {
+    if (!urlTab || !validTabs.includes(urlTab)) {
+      setActiveTab(defaultTab);
+      // Track if the default tab is already a quiz
+      if (defaultTab === "quiz") {
+        trackQuizStart(`original_${videoId}`, videoId);
+      } else if (defaultTab === "ai-quiz") {
+        trackQuizStart(`ai_${videoId}`, videoId);
+      }
+    }
+  }, [videoId, defaultTab, urlTab]);
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden card-shadow">
@@ -245,6 +260,11 @@ const MaterialComplementario = ({ videoId }: MaterialComplementarioProps) => {
           value={activeTab} 
           onValueChange={(value) => {
             setActiveTab(value);
+            setSearchParams(prev => {
+              prev.set("tab", value);
+              return prev;
+            }, { replace: true });
+            
             if (value === "quiz") {
               trackQuizStart(`original_${videoId}`, videoId);
             } else if (value === "ai-quiz") {
