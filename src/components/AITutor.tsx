@@ -2034,6 +2034,7 @@ const AITutor = () => {
                                 (match, materia, code) => `[${match}](citation://${materia}/${code})`
                               )
                               .replace(/([^\n])\n\|/g, '$1\n\n|') // Ensure tables have leading newline
+                              .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|') // Fix broken tables with extra newlines between rows
                             }
                           </ReactMarkdown>
                         </div>
