@@ -428,6 +428,164 @@ export const educationalImages: EduImage[] = [
     area: "Geografía",
     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Atmosphere_layers-es.svg/600px-Atmosphere_layers-es.svg.png",
     source: "Wikimedia Commons"
+  },
+
+  // ─── AÚN MÁS MATEMÁTICAS ───
+  {
+    key: "angulos-tipos",
+    title: "Tipos de Ángulos",
+    description: "Agudo, recto, obtuso, llano, cóncavo y completo",
+    area: "Matemáticas",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Types_of_angles.svg/800px-Types_of_angles.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "cuerpos-geometricos",
+    title: "Cuerpos Geométricos",
+    description: "Prismas, pirámides, cilindros, conos y esferas con sus partes",
+    area: "Matemáticas",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Cuerpos_geom%C3%A9tricos.png/800px-Cuerpos_geom%C3%A9tricos.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "fracciones",
+    title: "Representación de Fracciones",
+    description: "Numerador y denominador representados gráficamente",
+    area: "Matemáticas",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Fraction_pieces.svg/800px-Fraction_pieces.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── AÚN MÁS BIOLOGÍA ───
+  {
+    key: "sistema-oseo",
+    title: "Sistema Óseo Humano",
+    description: "Esqueleto humano completo con principales huesos (cráneo, fémur, costillas)",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Human_skeleton_front_es.svg/600px-Human_skeleton_front_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "sistema-nervioso",
+    title: "Sistema Nervioso Central y Periférico",
+    description: "Encéfalo, médula espinal y nervios del cuerpo humano",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/TE-Nervous_system_diagram.svg/600px-TE-Nervous_system_diagram.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "sistema-muscular",
+    title: "Sistema Muscular",
+    description: "Principales grupos musculares del cuerpo humano",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Human_skeletal_muscle_front_and_back_es.svg/800px-Human_skeletal_muscle_front_and_back_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "ciclo-carbono",
+    title: "Ciclo del Carbono",
+    description: "Intercambio de carbono entre la biósfera, litósfera, hidrósfera y la atmósfera",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Carbon_cycle-es.svg/800px-Carbon_cycle-es.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── AÚN MÁS FÍSICA ───
+  {
+    key: "partes-onda",
+    title: "Partes de una Onda",
+    description: "Longitud de onda, cresta, valle y amplitud",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Wave_properties.svg/600px-Wave_properties.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "circuitos-serie-paralelo",
+    title: "Circuitos en Serie y Paralelo",
+    description: "Diferencia de configuración entre circuito en serie y circuito en paralelo",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Series_and_parallel_circuits.svg/600px-Series_and_parallel_circuits.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "espectro-visible",
+    title: "Espectro Visible / Dispersión de la Luz",
+    description: "Prisma separando la luz blanca en los colores del arcoíris",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Light_dispersion_conceptual_waves.gif/600px-Light_dispersion_conceptual_waves.gif",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── AÚN MÁS QUÍMICA ───
+  {
+    key: "modelos-atomicos",
+    title: "Modelos Atómicos Históricos",
+    description: "Evolución histórica de los modelos atómicos: Dalton, Thomson, Rutherford, Bohr",
+    area: "Química",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Atomic_models_timeline.svg/800px-Atomic_models_timeline.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "configuracion-electronica",
+    title: "Configuración Electrónica",
+    description: "Diagrama de Moeller o regla de las diagonales",
+    area: "Química",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Klechkovski_rule_es.svg/600px-Klechkovski_rule_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── AÚN MÁS HISTORIA DE MÉXICO ───
+  {
+    key: "areas-culturales-mexico",
+    title: "Áreas Culturales de México Antiguo",
+    description: "División geográfica de Mesoamérica, Aridoamérica y Oasisamérica",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Aridoamerica_Oasisamerica_y_Mesoamerica.svg/800px-Aridoamerica_Oasisamerica_y_Mesoamerica.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "castas-nueva-espana",
+    title: "Sistema de Castas (Virreinato)",
+    description: "Mestizaje en la Nueva España: españoles, indígenas, mestizos, criollos, etc.",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Mestizo.jpg/600px-Mestizo.jpg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "porfiriato",
+    title: "El Porfiriato",
+    description: "Porfirio Díaz (1876-1911): Desarrollo ferrocarrilero, industrialización y desigualdad social",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Porfirio_D%C3%ADaz_en_1904.jpg/400px-Porfirio_D%C3%ADaz_en_1904.jpg",
+    source: "Archivos Históricos"
+  },
+
+  // ─── AÚN MÁS GEOGRAFÍA ───
+  {
+    key: "mapamundi-oceanos",
+    title: "Océanos y Continentes",
+    description: "Ubicación de los continentes y los 5 océanos del mundo",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Oceans_world_map_es.svg/800px-Oceans_world_map_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "pangea",
+    title: "Pangea y Deriva Continental",
+    description: "El supercontinente originario de la Tierra y la fragmentación continental",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Pangaea_continents_es.png/600px-Pangaea_continents_es.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── LENGUA / ESPAÑOL EXTRA ───
+  {
+    key: "generos-literarios",
+    title: "Géneros Literarios Clásicos",
+    description: "Clasificación de la literatura en Épico, Lírico y Dramático",
+    area: "Español",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mapa_conceptual_de_los_g%C3%A9neros_literarios.jpg/800px-Mapa_conceptual_de_los_g%C3%A9neros_literarios.jpg",
+    source: "Wikimedia Commons"
   }
 ];
 
