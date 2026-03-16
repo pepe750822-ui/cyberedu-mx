@@ -60,22 +60,48 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
       cleaned = 'flowchart ' + cleaned.substring(6);
     }
 
-    // 4. AUTO-FIX: Missing quotes in labels with special characters
-    // This looks for patterns like: id[Texto con espacios y acentos] 
-    // and converts them to: id["Texto con espacios y acentos"]
+    // 4. AUTO-FIX: Aggressively quote all labels that aren't already quoted
     const lines = cleaned.split('\n');
     const fixedLines = lines.map(line => {
-      // Regex to find labels containing spaces, accents, or common symbols that aren't already quoted
-      const specialChars = 'áéíóúÁÉÍÓÚñÑ\\s\\(\\)\\.\\,\\/\\&\\#\\-\\+0-9';
+      let fixed = line;
       
-      // Handle [label]
-      let fixed = line.replace(new RegExp(`([a-zA-Z0-9_-]+)\\[([^"\\]\\n]*[${specialChars}][^"\\]\\n]*)\\]`, 'g'), '$1["$2"]');
-      // Handle (label)
-      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\(([^"\\)\\n]*[${specialChars}][^"\\)\\n]*)\\)`, 'g'), '$1("$2")');
-      // Handle ((label))
-      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\(\\(([^"\\)\\n]*[${specialChars}][^"\\)\\n]*)\\)\\)`, 'g'), '$1(("$2"))');
-      // Handle {label}
-      fixed = fixed.replace(new RegExp(`([a-zA-Z0-9_-]+)\\{([^"\\}\\n]*[${specialChars}][^"\\}\\n]*)\\}`, 'g'), '$1{"$2"}');
+      // Handle nodes: id[Label], id(Label), id((Label)), id{Label}, id[[Label]], id[(Label)], id{{Label}}
+      // We look for brackets/parens/braces and quote the content if it's not already quoted
+      
+      // [Label] or [[Label]] or [(Label)]
+      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\[+([^"\]\n]+)\]+/g, (match, id, label) => {
+        if (label.startsWith('"') && label.endsWith('"')) return match;
+        const brackets = match.includes('[[') ? '[[' : '[';
+        const closeBrackets = match.includes(']]') ? ']]' : ']';
+        return `${id}${brackets}"${label.trim()}"${closeBrackets}`;
+      });
+
+      // (Label) or ((Label))
+      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\(+([^"\)\n]+)\)+/g, (match, id, label) => {
+        if (label.startsWith('"') && label.endsWith('"')) return match;
+        const parens = match.includes('((') ? '((' : '(';
+        const closeParens = match.includes('))') ? '))' : ')';
+        return `${id}${parens}"${label.trim()}"${closeParens}`;
+      });
+
+      // {Label} or {{Label}}
+      fixed = fixed.replace(/([a-zA-Z0-9_-]+)\{+([^"\}\n]+)\}+/g, (match, id, label) => {
+        if (label.startsWith('"') && label.endsWith('"')) return match;
+        const braces = match.includes('{{') ? '{{' : '{';
+        const closeBraces = match.includes('}}') ? '}}' : '}';
+        return `${id}${braces}"${label.trim()}"${closeBraces}`;
+      });
+
+      // Handle Arrow Labels: -->|Label| B
+      fixed = fixed.replace(/\|([^"\|\n]+)\|/g, (match, label) => {
+        if (label.startsWith('"') && label.endsWith('"')) return match;
+        return `|"${label.trim()}"|`;
+      });
+
+      // Handle Subgraph Titles: subgraph id [Title] or subgraph Title
+      fixed = fixed.replace(/subgraph\s+([a-zA-Z0-9_-]+)\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph $1 "$2"');
+      fixed = fixed.replace(/subgraph\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph "$1"');
+
       return fixed;
     });
     cleaned = fixedLines.join('\n');
