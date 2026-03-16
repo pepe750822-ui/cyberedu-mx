@@ -20,6 +20,9 @@ import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import Mermaid from "./Mermaid";
 
 // ─── ECOEMS Citation Mapping ───
@@ -2017,7 +2020,8 @@ const AITutor = () => {
                       {msg.role === "assistant" ? (
                         <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary", isExpanded ? "prose-base" : "prose-sm")}>
                           <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
+                            remarkPlugins={[remarkGfm, remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
                             components={{
                               code({ node, inline, className, children, ...props }: any) {
                                 const match = /language-(\w+)/.exec(className || '');
