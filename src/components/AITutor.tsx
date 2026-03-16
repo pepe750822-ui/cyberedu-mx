@@ -1798,7 +1798,7 @@ const AITutor = () => {
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
         isExpanded 
           ? "bottom-0 right-0 w-full h-[100vh] sm:rounded-none border-none z-[1000]" 
-          : "bottom-24 right-6 w-[95vw] sm:w-[440px] h-[650px]"
+          : "bottom-24 right-6 w-[95vw] sm:w-[550px] h-[750px]"
       )}>
         {/* Header */}
         <div className="p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
@@ -1854,7 +1854,7 @@ const AITutor = () => {
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 custom-scrollbar relative">
-                <div className={cn("space-y-5", isExpanded && "max-w-3xl mx-auto")}>
+                <div className={cn("space-y-5", isExpanded && "max-w-5xl mx-auto")}>
                   {showTasks && !isExpanded && (
                       <TaskCenter 
                         tasks={tasks} 
@@ -1949,7 +1949,7 @@ const AITutor = () => {
                         />
                       )}
                       {msg.role === "assistant" ? (
-                        <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary">
+                        <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary", isExpanded ? "prose-base" : "prose-sm")}>
                           <ReactMarkdown
                             components={{
                               code({ node, inline, className, children, ...props }: any) {
@@ -1978,8 +1978,22 @@ const AITutor = () => {
                                     </button>
                                   );
                                 }
-                                return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
-                              }
+
+                                  return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
+                                },
+                                img({ src, alt }: any) {
+                                  return (
+                                    <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10" onClick={() => window.open(src, '_blank')}>
+                                      <img src={src} alt={alt} className="w-full h-auto transition-transform duration-500 group-hover:scale-105" />
+                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
+                                          <Maximize2 className="h-4 w-4 text-white" />
+                                          <span className="text-xs font-bold text-white uppercase tracking-widest">Abrir en grande</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                }
                             }}
                           >
                             {msg.content.replace(

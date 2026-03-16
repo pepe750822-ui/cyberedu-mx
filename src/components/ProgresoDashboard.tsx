@@ -353,7 +353,7 @@ const ProgresoDashboard = () => {
             </div>
           </div>
 
-          <div className="h-[300px] w-full">
+          <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={weeklyData}>
                 <defs>
@@ -395,7 +395,7 @@ const ProgresoDashboard = () => {
             <h3 className="font-black uppercase tracking-tighter text-white">Perfil Comparativo</h3>
           </div>
 
-          <div className="h-[250px] w-full">
+          <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={comparisonData}>
                 <PolarGrid stroke="rgba(255,255,255,0.1)" />
