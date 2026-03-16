@@ -61,7 +61,6 @@ const MATERIA_PREFIX: Record<string, string> = {
 
 // ─── Navigation Helper ───
 function getUrlForPaso(type: string, id: string, title?: string, areaHint?: string): string {
-  if (type === 'simulador') return '/simulador-pro';
   
   const cleanTitle = (title || "").toLowerCase();
   let targetAreaId = "";
@@ -173,6 +172,7 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
   if (type === 'pdf') return `/area/${targetAreaId}?tab=pdf&video=${targetVideoId}`;
   if (type === 'guia') return `/area/${targetAreaId}?tab=guia&video=${targetVideoId}`;
   if (type === 'podcast') return `/area/${targetAreaId}?tab=podcast&video=${targetVideoId}`;
+  if (type === 'simulador') return `/area/${targetAreaId}?tab=studio&video=${targetVideoId}`;
   return `/area/${targetAreaId}?video=${targetVideoId}`;
 }
 
@@ -1843,7 +1843,7 @@ const AITutor = () => {
         1. CITACIÓN NUMERADA: Menciona el número exacto del temario (Ej: 4.2 Álgebra).
         2. ESTRUCTURA: Usa 'X.Y [Nombre del Tema]'.
         3. ACCESO A MATERIALES (PRIORIDAD ALTA):
-           Si el usuario pide una "infografía", "PDF", "Guía" o "Material" de un tema o video (ej: hv-1), DEBES responder con un bloque <plan> indicando "videoId" y "areaId". 
+           Si el usuario pide una "infografía", "PDF", "Guía", "Simulador" o "Material" de un tema o video (ej: hv-1), DEBES responder con un bloque <plan> indicando "videoId" y "areaId". 
            ¡ESTO ES OBLIGATORIO para crear los botones de redirección! No generes diagramas Mermaid en este caso.
         4. DIAGRAMAS (Solo para explicaciones):
            Genera diagramas mermaid para temas complejos SOLO si no se ha pedido material oficial.
