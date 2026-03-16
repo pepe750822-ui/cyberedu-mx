@@ -1142,9 +1142,10 @@ const AITutor = () => {
   const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showAgentSidebar, setShowAgentSidebar] = useState(true);
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const [isOpen, setIsOpen] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(isMobile);
+  const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
@@ -1811,14 +1812,16 @@ const AITutor = () => {
 
   return (
     <>
-      {/* Floating Toggle */}
+      {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center",
-          isOpen
-            ? "bg-slate-900 border border-white/10 rotate-90"
-            : "bg-primary hover:scale-110 active:scale-95 shadow-[0_0_30px_hsl(var(--primary)/0.5)]"
+          isOpen && isExpanded
+            ? "scale-0 opacity-0 pointer-events-none"
+            : isOpen
+            ? "bg-slate-900 border border-white/10 rotate-90 scale-100 opacity-100"
+            : "bg-primary hover:scale-110 active:scale-95 shadow-[0_0_30px_hsl(var(--primary)/0.5)] scale-100 opacity-100"
         )}
       >
         {isOpen ? (
@@ -1861,7 +1864,6 @@ const AITutor = () => {
                     <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 bg-emerald-500 rounded-full animate-pulse shrink-0" />
                     v6.0
                   </p>
-                  <MemoryBadge memory={memory} />
                 </div>
               </div>
             </div>
@@ -1876,27 +1878,18 @@ const AITutor = () => {
                     <span className="absolute top-1 sm:top-1.5 right-1 sm:right-1.5 h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
                 )}
               </button>
-              {isExpanded && (
-                <button
-                  onClick={() => setShowAgentSidebar(!showAgentSidebar)}
-                  title={showAgentSidebar ? "Ocultar panel lateral" : "Mostrar panel lateral"}
-                  className={cn(
-                    "p-1.5 sm:p-2 rounded-xl transition-all flex items-center gap-2 border", 
-                    showAgentSidebar 
-                      ? "bg-primary text-white border-primary/50 shadow-lg shadow-primary/20" 
-                      : "bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  {showAgentSidebar ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
-                  <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest pl-1">
-                    {showAgentSidebar ? "Cerrar Panel" : "Memoria"}
-                  </span>
-                </button>
-              )}
+              <button
+                onClick={() => setShowAgentSidebar(!showAgentSidebar)}
+                title={showAgentSidebar ? "Ocultar memoria" : "Ver memoria del agente"}
+                className="hidden md:flex p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+              >
+                {showAgentSidebar ? <PanelRightClose className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <PanelRightOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+              </button>
+              {/* Expand/Collapse — solo visible en desktop */}
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 title={isExpanded ? "Contraer chat" : "Expandir chat"}
-                className="p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+                className="hidden sm:flex p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
               >
                 {isExpanded ? <Minimize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
               </button>
@@ -1906,6 +1899,14 @@ const AITutor = () => {
                 className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
               >
                 <RefreshCw className="h-4 w-4" />
+              </button>
+              {/* Botón cerrar visible solo en móvil — el botón flotante se oculta en fullscreen */}
+              <button
+                onClick={() => setIsOpen(false)}
+                title="Cerrar tutor"
+                className="flex sm:hidden p-1.5 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
+              >
+                <X className="h-4 w-4" />
               </button>
             </div>
           </div>
