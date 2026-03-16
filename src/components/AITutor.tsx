@@ -484,7 +484,7 @@ const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
       <BookOpen className="h-4 w-4 text-blue-400" />
       <span className="text-sm font-black text-blue-300 uppercase tracking-wider">Decisión registrada</span>
     </div>
-    <p className="text-sm font-semibold font-semibold text-slate-200">{decision.question}</p>
+    <p className="text-sm font-semibold text-slate-200">{decision.question}</p>
     <p className="text-sm text-emerald-400">→ {decision.chosen}</p>
     <p className="text-xs text-slate-500">{decision.reasoning}</p>
     {decision.impact && (
@@ -518,17 +518,17 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
       <button
         onClick={() => onToggle(step.id)}
         className={cn(
-          "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left",
+          "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left pr-12",
           step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
             : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
-            : "bg-white/5 border-white/10 hover:bg-white/10 pr-12"
+            : "bg-white/5 border-white/10 hover:bg-white/10"
         )}
       >
         {step.status === "approved" ? <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
           : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
           : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold font-semibold text-slate-200 leading-snug">{step.text}</p>
+          <p className="text-sm font-semibold text-slate-200 leading-snug">{step.text}</p>
           <div className="flex items-center gap-2 mt-1.5">
             <span className={cn("px-1.5 py-0.5 text-xs font-black uppercase rounded border", priorityColor[step.priority])}>
               {step.priority}
@@ -580,7 +580,7 @@ const PlanCard: React.FC<{
       <div className="p-4 border-b border-white/5">
         <div className="flex items-center gap-2 mb-1">
           <ListChecks className="h-4 w-4 text-primary" />
-          <h4 className="text-base font-semibold font-black text-white uppercase tracking-tight">{plan.title}</h4>
+          <h4 className="text-base font-black text-white uppercase tracking-tight">{plan.title}</h4>
         </div>
         <p className="text-sm text-slate-400">{plan.description}</p>
         <div className="mt-3 h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -635,7 +635,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
       </div>
     </div>
     <div className="p-5">
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <div className="bg-slate-900/50 rounded-2xl p-3 text-center border border-white/5">
           <p className="text-xl font-black text-primary leading-none mb-1">{analysis.totalProgress}%</p>
           <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest">Global</p>
@@ -819,7 +819,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
   <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden shadow-lg shadow-emerald-500/5">
     <div className="p-4 border-b border-white/5 flex items-center gap-2 bg-emerald-500/10">
       <TrendingUp className="h-4 w-4 text-emerald-400" />
-      <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">Plan de Acción Recomendado</span>
+      <span className="text-sm font-black text-white uppercase tracking-wider">Plan de Acción Recomendado</span>
     </div>
     <div className="p-3 space-y-2">
       {recs.map((r, i) => {
@@ -2236,11 +2236,16 @@ const AITutor = () => {
 
           {/* Sidebar for Expanded Mode */}
           {isExpanded && showAgentSidebar ? (
-            <div className="w-72 lg:w-80 border-l border-white/5 bg-slate-900/60 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto hidden md:flex animate-in slide-in-from-right duration-500 relative">
+            <div className={cn(
+               "border-l border-white/5 bg-slate-900/95 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto transition-all duration-500 z-[60]",
+               "fixed inset-y-0 right-0 w-[85%] sm:w-80 shadow-2xl", // Mobile: Absolute overlay
+               "md:relative md:w-72 lg:w-80 md:translate-x-0",       // Desktop: Side panel
+               showAgentSidebar ? "translate-x-0" : "translate-x-full"
+            )}>
               {/* Internal Close Button for better UX */}
               <button 
                 onClick={() => setShowAgentSidebar(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white lg:hidden transition-colors"
+                className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white md:hidden transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
