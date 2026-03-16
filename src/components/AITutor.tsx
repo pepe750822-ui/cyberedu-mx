@@ -24,6 +24,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Mermaid from "./Mermaid";
+import ChartRenderer, { ChartData } from "./ChartRenderer";
 
 // ─── ECOEMS Citation Mapping ───
 const MATERIA_TO_AREA: Record<string, string> = {
@@ -183,6 +184,7 @@ interface Message {
   studyPlans?: PlanEstudio[];
   report?: any;
   alerts?: any[];
+  charts?: ChartData[];
 }
 
 // ─── Shared Navigation Handler Wrapper ───
@@ -318,18 +320,32 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   };
 }
 
+function parseChartsFromContent(content: string): { charts: ChartData[]; cleanContent: string } {
+  const charts: ChartData[] = [];
+  let cleaned = content;
+  const regex = /<chart>([\s\S]*?)<\/chart>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) charts.push(parsed as ChartData);
+  }
+  cleaned = content.replace(/<chart>[\s\S]*?<\/chart>/g, "").trim();
+  return { charts, cleanContent: cleaned };
+}
+
 function parseAllBlocks(content: string) {
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
   const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
-  return { reasoning, decisions, plan, quiz, cleanContent: c4 };
+  const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
+  return { reasoning, decisions, plan, quiz, charts, cleanContent: c5 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta temporalmente los bloques XML crudos mientras el LLM los está escribiendo en el stream.
   return content
-    .replace(/<(reasoning|decision|plan|quiz)>[\s\S]*?(<\/\1>|$)/g, "")
+    .replace(/<(reasoning|decision|plan|quiz|chart)>[\s\S]*?(<\/\1>|$)/g, "")
     .trim();
 }
 
@@ -1659,9 +1675,9 @@ const AITutor = () => {
           memory,
           onDelta: upsertAssistant,
           onDone: () => {
-            const { reasoning, decisions, plan, quiz, cleanContent } = parseAllBlocks(assistantContent);
+            const { reasoning, decisions, plan, quiz, charts, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
-            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan } : m));
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined } : m));
             setIsStreaming(false);
           },
         });
@@ -1757,7 +1773,27 @@ const AITutor = () => {
              "difficulty": "básico|intermedio|avanzado",
              "questions": [{ "id": "q1", "text": "?", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "...", "area": "..." }]
            }
-           </quiz>`
+           </quiz>
+        7. GRÁFICAS INTERACTIVAS: Cuando el tema involucre datos numéricos, funciones o comparaciones (ej: Física cinemática, Matemáticas funciones, Geografía estadísticas), genera una gráfica usando el bloque <chart>:
+           <chart>
+           {
+             "type": "line|bar|area|pie",
+             "title": "Título de la gráfica",
+             "xLabel": "Etiqueta eje X",
+             "yLabel": "Etiqueta eje Y",
+             "legend": true,
+             "data": [
+               { "x": "valor o etiqueta", "y": número, "z": número_opcional }
+             ],
+             "keys": ["y", "z"]
+           }
+           </chart>
+           EJEMPLOS DE USO:
+           - Física (MRU): data con x=tiempo, y=posición, type="line"
+           - Física (MRUA): data con x=tiempo, y=velocidad, type="area"
+           - Matemáticas (función cuadrática f(x)=x²): type="line", datos x=-3 a 3
+           - Historia/Geografía (comparar datos): type="bar"
+           - Biología (porcentajes): type="pie"`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -1778,7 +1814,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, cleanContent } = parseAllBlocks(assistantContent);
 
           // Save decisions to memory
           if (decisions.length > 0) {
@@ -1790,7 +1826,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz }
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined }
               : m
           ));
           setIsStreaming(false);
@@ -1961,6 +1997,7 @@ const AITutor = () => {
                       {msg.report && <ReportCard report={msg.report} />}
                       {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
+                      {msg.charts?.map((chart, i) => <ChartRenderer key={i} chart={chart} />)}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
                       {msg.diagnostics && <DiagnosticsCard 
                         result={msg.diagnostics} 
