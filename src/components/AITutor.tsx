@@ -151,6 +151,15 @@ interface Message {
   alerts?: any[];
 }
 
+// ─── Shared Navigation Handler Wrapper ───
+const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
+  const navigate = useNavigate();
+  return (path: string) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+};
+
 interface PlanStep {
   id: number;
   text: string;
@@ -443,8 +452,7 @@ const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
 );
 
 // ─── Plan Step Component ───
-const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id: number) => void }> = ({ step, planTitle, onToggle }) => {
-  const navigate = useNavigate();
+const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id: number) => void; onNavigate: (path: string) => void }> = ({ step, planTitle, onToggle, onNavigate }) => {
   const priorityColor = {
     alta: "text-red-400 bg-red-500/10 border-red-500/20",
     media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
@@ -495,7 +503,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
         <button 
           onClick={(e) => {
             e.stopPropagation();
-            navigate(getUrlForPaso(
+            onNavigate(getUrlForPaso(
               getStepType(), 
               step.videoId || step.id.toString(), 
               step.text,
@@ -518,7 +526,8 @@ const PlanCard: React.FC<{
   onApprove: () => void;
   onReject: () => void;
   onToggleStep: (id: number) => void;
-}> = ({ plan, onApprove, onReject, onToggleStep }) => {
+  onNavigate: (path: string) => void;
+}> = ({ plan, onApprove, onReject, onToggleStep, onNavigate }) => {
   const approvedCount = plan.steps.filter(s => s.status === "approved").length;
   const progress = plan.steps.length > 0 ? (approvedCount / plan.steps.length) * 100 : 0;
 
@@ -538,7 +547,7 @@ const PlanCard: React.FC<{
 
       <div className="p-3 space-y-2">
         {plan.steps.map(step => (
-          <PlanStepItem key={step.id} step={step} planTitle={plan.title} onToggle={onToggleStep} />
+          <PlanStepItem key={step.id} step={step} planTitle={plan.title} onToggle={onToggleStep} onNavigate={onNavigate} />
         ))}
       </div>
 
@@ -572,8 +581,7 @@ const PlanCard: React.FC<{
 
 
 // ─── Analysis Card ───
-const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => {
-  const navigate = useNavigate();
+const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: string) => void }> = ({ analysis, onNavigate }) => {
   return (
   <div className="my-4 border border-primary/30 bg-primary/10 rounded-[1.5rem] overflow-hidden shadow-xl">
     <div className="p-4 border-b border-white/10 bg-primary/5">
@@ -606,7 +614,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
           {analysis.weakAreas.map((a, i) => (
             <button 
               key={i} 
-              onClick={() => navigate(getUrlForPaso('video', a.id, a.name))}
+              onClick={() => onNavigate(getUrlForPaso('video', a.id, a.name))}
               className="w-full space-y-1.5 group text-left hover:bg-white/5 p-1 rounded-lg transition-colors"
             >
               <div className="flex justify-between items-center text-[10px] font-bold">
@@ -636,7 +644,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
                 onClick={() => {
                   if (isTopic) {
                      const area = areas.find(a => a.name === topicName || a.id === topicName.toLowerCase());
-                     if (area) navigate(getUrlForPaso('video', area.id, area.name));
+                     if (area) onNavigate(getUrlForPaso('video', area.id, area.name));
                   }
                 }}
                 className={cn(
@@ -762,8 +770,7 @@ const AlertCard: React.FC<{ alert: any }> = ({ alert }) => (
 );
 
 // ─── Recommendations Card ───
-const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => {
-  const navigate = useNavigate();
+const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate: (path: string) => void }> = ({ recs, onNavigate }) => {
   return (
   <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden shadow-lg shadow-emerald-500/5">
     <div className="p-4 border-b border-white/5 flex items-center gap-2 bg-emerald-500/10">
@@ -778,7 +785,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
           <button
             key={i}
             onClick={() => {
-              navigate(getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title));
+              onNavigate(getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title));
             }}
             className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group"
           >
@@ -1002,13 +1009,12 @@ const TaskCenter: React.FC<{
   );
 };
 
-// ─── Study Plan Card ───
 const StudyPlanCards: React.FC<{
   plans: PlanEstudio[];
   onToggle: (planId: string, pasoId: string) => void;
   onDelete: (planId: string) => void;
-}> = ({ plans, onToggle, onDelete }) => {
-  const navigate = useNavigate();
+  onNavigate: (path: string) => void;
+}> = ({ plans, onToggle, onDelete, onNavigate }) => {
   return (
   <div className="space-y-3 my-3">
     {plans.map(plan => {
@@ -1048,7 +1054,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area));
+                      onNavigate(getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area));
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
@@ -1072,7 +1078,7 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   if (total === 0) return null;
 
   return (
-    <span className="px-1.5 py-0.5 bg-primary/10 border border-primary/20 rounded text-xs font-bold text-primary uppercase">
+    <span className="hidden xs:inline-block px-1.5 py-0.5 bg-primary/10 border border-primary/20 rounded text-[10px] sm:text-xs font-bold text-primary uppercase">
       {total} memorias
     </span>
   );
@@ -1091,6 +1097,7 @@ const AITutor = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showAgentSidebar, setShowAgentSidebar] = useState(true);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
@@ -1102,6 +1109,8 @@ const AITutor = () => {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
   const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
+
+  const agentNavigate = useAgentNavigation(setIsOpen);
 
   const buildContext = useCallback(() => {
     try {
@@ -1328,6 +1337,7 @@ const AITutor = () => {
       report: report.totalQuizzes > 0 ? report : undefined,
       alerts: alerts.length > 0 ? alerts : undefined
     }]);
+    setIsOpen(false);
     toast.info("Conversación y memoria reiniciadas");
   };
 
@@ -1731,40 +1741,6 @@ const AITutor = () => {
     }
   };
 
-  const handleCitationClick = (materia: string, code: string) => {
-    const areaId = MATERIA_TO_AREA[materia];
-    if (!areaId) {
-       toast.error(`Materia "${materia}" no reconocida en el sistema actual.`);
-       return;
-    }
-
-    const area = areas.find(a => a.id === areaId);
-    if (!area) {
-       toast.error(`Área temática "${areaId}" no encontrada.`);
-       return;
-    }
-
-    const chapter = code.split('.')[0];
-    const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
-    
-    // Attempt to find the specific video
-    const targetVideoId = `${prefix}-${chapter}`;
-    const videoExists = area.videos.some(v => v.id === targetVideoId);
-
-    if (videoExists) {
-        toast.success(`Cita [${materia} ${code}] verificada.`, {
-            description: `Navegando al tema: ${area.videos.find(v => v.id === targetVideoId)?.title}`,
-        });
-        navigate(`/area/${areaId}?video=${targetVideoId}`);
-    } else {
-        // Graceful handling for missing citations
-        toast.info(`Referencia [${materia} ${code}] detectada.`, {
-            description: `Te redirigimos al área global de ${area.name} mientras vinculamos el subíndice exacto.`,
-        });
-        navigate(`/area/${areaId}`);
-    }
-  };
-
   return (
     <>
       {/* Floating Toggle */}
@@ -1797,23 +1773,25 @@ const AITutor = () => {
         "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
         isExpanded 
-          ? "bottom-0 right-0 w-full h-[100vh] sm:rounded-none border-none z-[1000]" 
-          : "bottom-24 right-6 w-[95vw] sm:w-[550px] h-[750px]"
+          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[1000]" 
+          : "bottom-20 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-6 w-[95vw] sm:w-[550px] h-[650px] max-h-[75vh]"
       )}>
         {/* Header */}
-        <div className="p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
+        <div className="p-3 sm:p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-11 w-11 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center relative">
-                <Brain className="h-6 w-6 text-primary" />
-                <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 bg-emerald-500 rounded-full border-[3px] border-slate-950" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="h-9 w-9 sm:h-11 sm:w-11 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center relative shrink-0">
+                <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 bg-emerald-500 rounded-full border-[2px] sm:border-[3px] border-slate-950" />
               </div>
-              <div>
-                <h4 className="text-sm font-black text-white uppercase tracking-[0.15em]">CyberAgent</h4>
-                <div className="flex items-center gap-2">
-                  <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                    Razonamiento v6.0
+              <div className="min-w-0">
+                <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-[0.1em] sm:tracking-[0.15em] truncate">
+                  Cyber<span className="hidden xs:inline">Agent</span>
+                </h4>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <p className="text-[9px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-0.5 sm:gap-1">
+                    <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 bg-emerald-500 rounded-full animate-pulse shrink-0" />
+                    v6.0
                   </p>
                   <MemoryBadge memory={memory} />
                 </div>
@@ -1822,20 +1800,29 @@ const AITutor = () => {
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setShowTasks(!showTasks)}
-                title="Centro de tareas secundarias"
-                className={cn("p-2 rounded-xl transition-all relative", showTasks ? "bg-primary text-white" : "hover:bg-white/10 text-slate-500 hover:text-white")}
+                title="Tareas"
+                className={cn("p-1.5 sm:p-2 rounded-xl transition-all relative hidden xs:flex", showTasks ? "bg-primary text-white" : "hover:bg-white/10 text-slate-500 hover:text-white")}
               >
-                <Layers className="h-4 w-4" />
+                <Layers className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 {tasks.filter(t => t.status === "queued" || t.status === "running").length > 0 && (
-                    <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
+                    <span className="absolute top-1 sm:top-1.5 right-1 sm:right-1.5 h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
                 )}
               </button>
+              {isExpanded && (
+                <button
+                  onClick={() => setShowAgentSidebar(!showAgentSidebar)}
+                  title={showAgentSidebar ? "Ocultar panel lateral" : "Mostrar panel lateral"}
+                  className={cn("p-1.5 sm:p-2 rounded-xl transition-all hidden xs:flex", showAgentSidebar ? "bg-primary/20 text-primary" : "hover:bg-white/10 text-slate-500")}
+                >
+                  <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                </button>
+              )}
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 title={isExpanded ? "Contraer chat" : "Expandir chat"}
-                className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
               >
-                {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                {isExpanded ? <Minimize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
               </button>
               <button
                 onClick={clearHistory}
@@ -1854,7 +1841,7 @@ const AITutor = () => {
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 custom-scrollbar relative">
-                <div className={cn("space-y-5", isExpanded && "max-w-5xl mx-auto")}>
+                <div className={cn("space-y-5", isExpanded && "max-w-6xl mx-auto px-4 lg:px-12")}>
                   {showTasks && !isExpanded && (
                       <TaskCenter 
                         tasks={tasks} 
@@ -1888,11 +1875,11 @@ const AITutor = () => {
                     )}>
                       {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
                       {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
-                      {msg.analysis && <AnalysisCard analysis={msg.analysis} />}
+                      {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
                       {msg.report && <ReportCard report={msg.report} />}
                       {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
-                      {msg.recommendations && <RecommendationsCard recs={msg.recommendations} />}
+                      {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
                       {msg.diagnostics && <DiagnosticsCard 
                         result={msg.diagnostics} 
                         fixingId={fixingCheckId} 
@@ -1939,13 +1926,14 @@ const AITutor = () => {
                           setFixingCheckId(null);
                         }}
                       />}
-                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} />}
+                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
                       {msg.plan && (
                         <PlanCard
                           plan={msg.plan}
                           onApprove={() => handlePlanAction(msg.id, "approve")}
                           onReject={() => handlePlanAction(msg.id, "reject")}
                           onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
+                          onNavigate={agentNavigate}
                         />
                       )}
                       {msg.role === "assistant" ? (
@@ -1969,7 +1957,25 @@ const AITutor = () => {
                                   const [materia, code] = url.split('/');
                                   return (
                                     <button 
-                                      onClick={() => handleCitationClick(materia, code)}
+                                      onClick={() => {
+                                        const areaId = MATERIA_TO_AREA[materia];
+                                        if (!areaId) {
+                                           toast.error(`Materia "${materia}" no reconocida.`);
+                                           return;
+                                        }
+                                        const area = areas.find(a => a.id === areaId);
+                                        if (!area) return;
+                                        const chapter = code.split('.')[0];
+                                        const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
+                                        const targetVideoId = `${prefix}-${chapter}`;
+                                        const videoExists = area.videos.some(v => v.id === targetVideoId);
+                                        
+                                        if (videoExists) {
+                                            agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
+                                        } else {
+                                            agentNavigate(`/area/${areaId}`);
+                                        }
+                                      }}
                                       className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
                                       title={`Ref: ${materia} ${code} - Clic para ver temario`}
                                     >
@@ -2125,8 +2131,8 @@ const AITutor = () => {
             </div>
 
           {/* Sidebar for Expanded Mode */}
-          {isExpanded ? (
-            <div className="w-80 border-l border-white/5 bg-slate-900/30 flex flex-col p-6 space-y-8 overflow-y-auto hidden lg:flex">
+          {isExpanded && showAgentSidebar ? (
+            <div className="w-80 border-l border-white/5 bg-slate-900/30 flex flex-col p-6 space-y-8 overflow-y-auto hidden lg:flex animate-in slide-in-from-right duration-300">
               <div>
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <History className="h-3 w-3" /> Memoria del Agente
