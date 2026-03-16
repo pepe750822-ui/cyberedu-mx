@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
@@ -20,6 +20,35 @@ import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 import Mermaid from "./Mermaid";
+
+// ─── ECOEMS Citation Mapping ───
+const MATERIA_TO_AREA: Record<string, string> = {
+  "HV": "habilidades",
+  "HM": "habilidades",
+  "BIO": "biologia",
+  "QUI": "quimica",
+  "FIS": "fisica",
+  "MAT": "matematicas",
+  "ESP": "espanol",
+  "HIS-M": "historia-mexico",
+  "HIS-U": "historia-universal",
+  "GEO": "geografia",
+  "FCE": "formacion-civica"
+};
+
+const MATERIA_PREFIX: Record<string, string> = {
+  "HV": "hv",
+  "HM": "hm",
+  "BIO": "bio",
+  "QUI": "qui",
+  "FIS": "fis",
+  "MAT": "mat",
+  "ESP": "esp",
+  "HIS-M": "hm-mx",
+  "HIS-U": "hu",
+  "GEO": "geo",
+  "FCE": "fce"
+};
 
 // ─── Navigation Helper ───
 function getUrlForPaso(type: string, id: string, title?: string, areaHint?: string): string {
@@ -415,6 +444,7 @@ const DecisionCard: React.FC<{ decision: Decision }> = ({ decision }) => (
 
 // ─── Plan Step Component ───
 const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id: number) => void }> = ({ step, planTitle, onToggle }) => {
+  const navigate = useNavigate();
   const priorityColor = {
     alta: "text-red-400 bg-red-500/10 border-red-500/20",
     media: "text-amber-400 bg-amber-500/10 border-amber-500/20",
@@ -465,12 +495,12 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
         <button 
           onClick={(e) => {
             e.stopPropagation();
-            window.location.href = getUrlForPaso(
+            navigate(getUrlForPaso(
               getStepType(), 
               step.videoId || step.id.toString(), 
               step.text,
               step.areaId || planTitle
-            );
+            ));
           }}
           className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20 z-10"
           title="Ver contenido"
@@ -542,7 +572,9 @@ const PlanCard: React.FC<{
 
 
 // ─── Analysis Card ───
-const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => (
+const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) => {
+  const navigate = useNavigate();
+  return (
   <div className="my-4 border border-primary/30 bg-primary/10 rounded-[1.5rem] overflow-hidden shadow-xl">
     <div className="p-4 border-b border-white/10 bg-primary/5">
       <div className="flex items-center gap-2">
@@ -574,7 +606,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
           {analysis.weakAreas.map((a, i) => (
             <button 
               key={i} 
-              onClick={() => window.location.href = getUrlForPaso('video', a.id, a.name)}
+              onClick={() => navigate(getUrlForPaso('video', a.id, a.name))}
               className="w-full space-y-1.5 group text-left hover:bg-white/5 p-1 rounded-lg transition-colors"
             >
               <div className="flex justify-between items-center text-[10px] font-bold">
@@ -604,7 +636,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
                 onClick={() => {
                   if (isTopic) {
                      const area = areas.find(a => a.name === topicName || a.id === topicName.toLowerCase());
-                     if (area) window.location.href = getUrlForPaso('video', area.id, area.name);
+                     if (area) navigate(getUrlForPaso('video', area.id, area.name));
                   }
                 }}
                 className={cn(
@@ -621,7 +653,8 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis }> = ({ analysis }) =>
       </div>
     )}
   </div>
-);
+  );
+};
 
 // ─── Quiz Card ───
 const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => (
@@ -729,7 +762,9 @@ const AlertCard: React.FC<{ alert: any }> = ({ alert }) => (
 );
 
 // ─── Recommendations Card ───
-const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => (
+const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs }) => {
+  const navigate = useNavigate();
+  return (
   <div className="my-3 border border-emerald-500/20 bg-emerald-500/5 rounded-2xl overflow-hidden shadow-lg shadow-emerald-500/5">
     <div className="p-4 border-b border-white/5 flex items-center gap-2 bg-emerald-500/10">
       <TrendingUp className="h-4 w-4 text-emerald-400" />
@@ -743,7 +778,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
           <button
             key={i}
             onClick={() => {
-              window.location.href = getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title);
+              navigate(getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title));
             }}
             className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group"
           >
@@ -765,7 +800,8 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[] }> = ({ recs
       })}
     </div>
   </div>
-);
+  );
+};
 
 // ─── Diagnostics Card ───
 const DiagnosticsCard: React.FC<{ 
@@ -971,7 +1007,9 @@ const StudyPlanCards: React.FC<{
   plans: PlanEstudio[];
   onToggle: (planId: string, pasoId: string) => void;
   onDelete: (planId: string) => void;
-}> = ({ plans, onToggle, onDelete }) => (
+}> = ({ plans, onToggle, onDelete }) => {
+  const navigate = useNavigate();
+  return (
   <div className="space-y-3 my-3">
     {plans.map(plan => {
       const done = plan.pasos.filter(p => p.completado).length;
@@ -1010,7 +1048,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.location.href = getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area);
+                      navigate(getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area));
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
@@ -1025,7 +1063,8 @@ const StudyPlanCards: React.FC<{
       );
     })}
   </div>
-);
+  );
+};
 
 
 const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
@@ -1043,6 +1082,8 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
   const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
@@ -1066,15 +1107,16 @@ const AITutor = () => {
     try {
       const analysis = analyzeUserProgress();
       const detailedSyllabus = {
-        habilidades: ["Sucesiones numéricas", "Series espaciales", "Imaginación espacial", "Razonamiento lógico"],
-        biologia: ["Célula", "Biodiversidad", "Desarrollo sustentable", "Fotosíntesis", "Respiración", "Genética", "Salud sexual"],
-        espanol: ["Fichas bibliográficas", "Nexos", "Puntuación", "Comprensión lectora", "Tipos de textos", "Sinónimos y Antónimos"],
-        quimica: ["Estados de la materia", "Estructura atómica", "Tabla periódica", "Enlaces", "Balanceo", "Ácidos y bases"],
-        historia: ["Universal (Rev. Industrial, Guerras)", "México (Prehispánico, Independencia, Revolución)"],
-        matematicas: ["Aritmética", "Álgebra (Ecuaciones)", "Geometría (Pitágoras)", "Estadística y Probabilidad"],
-        geografia: ["Mapas y GPS", "Tectónica", "Climas", "Población", "Economía global", "Multiculturalidad"],
-        fisica: ["Movimiento y Rapidez", "Leyes de Newton", "Energía", "Electricidad", "Ondas"],
-        formacionCivica: ["Ética", "Derechos humanos", "Democracia", "Adolescencia"]
+        "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario"],
+        "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
+        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos", "3.3 Ortografía y gramática", "3.4 Organización de información"],
+        "4. Matemáticas": ["4.1 Significado y uso de los números", "4.2 Álgebra", "4.3 Geometría", "4.4 Trigonometría", "4.5 Estadística y Probabilidad"],
+        "5. Ciencias I (Biología)": ["5.1 Biodiversidad", "5.2 Materia y energía", "5.3 Salud", "5.4 Genética"],
+        "6. Ciencias II (Física)": ["6.1 Movimiento, fuerzas y energía", "6.2 Interacciones de la materia", "6.3 Estructura interna de la materia"],
+        "7. Ciencias III (Química)": ["7.1 Características de materiales", "7.2 Estructura y periodicidad"],
+        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México"],
+        "9. Geografía": ["9.1 Mapas", "9.2 Recursos y ambiente", "9.3 Población", "9.4 Economía", "9.5 Cultura"],
+        "10. Formación Cívica": ["10.1 Valores", "10.2 Democracia", "10.3 Ciudadanía", "10.4 Solución de conflictos"]
       };
       
       return {
@@ -1083,7 +1125,7 @@ const AITutor = () => {
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
         streak: analysis.streak,
         detailedSyllabus,
-        system_instructions: "Eres CyberAgent, experto en la Guía ECOEMS 2025. Tu conocimiento se limita a Habilidades (Verbal/Mat), Biología, Química, Física, Matemáticas, Historia, Geografía, Español y Cívica. Ignora Inglés o temas fuera del bachillerato mexicano."
+        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se limita estrictamente al temario numerado: ${JSON.stringify(detailedSyllabus)}. Si te preguntan sobre temas fuera de este temario (como Inglés), indica amablemente que no forman parte del examen oficial.`
       };
     } catch {
       return { 
@@ -1611,19 +1653,6 @@ const AITutor = () => {
     };
 
     try {
-      const syllabusText = `
-        1. Habilidad Verbal (Comprensión, Nexos, Vocabulario)
-        2. Habilidad Matemática (Sucesiones, Series, Lógica)
-        3. Biología (Célula, Biodiversidad, Genética, Salud)
-        4. Español (Gramática, Puntuación, Tipos de texto)
-        5. Química (Materia, Átomo, Tabla Periódica, Reacciones)
-        6. Física (Movimiento, Leyes de Newton, Energía, Ondas)
-        7. Matemáticas (Aritmética, Álgebra, Geometría, Estadística)
-        8. Geografía (Espacio geográfico, Población, Economía)
-        9. Historia (Universal y de México desde el siglo XVI)
-        10. Formación Cívica (Ética, Democracia, Derechos)
-      `;
-
       const detailedSyllabus = {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
         "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
@@ -1699,6 +1728,40 @@ const AITutor = () => {
         return [...prev, { role: "assistant", content: errContent, id: assistantId }];
       });
       setIsStreaming(false);
+    }
+  };
+
+  const handleCitationClick = (materia: string, code: string) => {
+    const areaId = MATERIA_TO_AREA[materia];
+    if (!areaId) {
+       toast.error(`Materia "${materia}" no reconocida en el sistema actual.`);
+       return;
+    }
+
+    const area = areas.find(a => a.id === areaId);
+    if (!area) {
+       toast.error(`Área temática "${areaId}" no encontrada.`);
+       return;
+    }
+
+    const chapter = code.split('.')[0];
+    const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
+    
+    // Attempt to find the specific video
+    const targetVideoId = `${prefix}-${chapter}`;
+    const videoExists = area.videos.some(v => v.id === targetVideoId);
+
+    if (videoExists) {
+        toast.success(`Cita [${materia} ${code}] verificada.`, {
+            description: `Navegando al tema: ${area.videos.find(v => v.id === targetVideoId)?.title}`,
+        });
+        navigate(`/area/${areaId}?video=${targetVideoId}`);
+    } else {
+        // Graceful handling for missing citations
+        toast.info(`Referencia [${materia} ${code}] detectada.`, {
+            description: `Te redirigimos al área global de ${area.name} mientras vinculamos el subíndice exacto.`,
+        });
+        navigate(`/area/${areaId}`);
     }
   };
 
@@ -1899,22 +1962,34 @@ const AITutor = () => {
                                     {children}
                                   </code>
                                 );
+                              },
+                              a({ href, children }: any) {
+                                if (href?.startsWith('citation://')) {
+                                  const url = href.replace('citation://', '');
+                                  const [materia, code] = url.split('/');
+                                  return (
+                                    <button 
+                                      onClick={() => handleCitationClick(materia, code)}
+                                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
+                                      title={`Ref: ${materia} ${code} - Clic para ver temario`}
+                                    >
+                                      <BookOpen className="h-2.5 w-2.5" />
+                                      {children}
+                                    </button>
+                                  );
+                                }
+                                return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
                               }
                             }}
                           >
-                            {msg.content}
+                            {msg.content.replace(
+                              /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
+                              (match, materia, code) => `[${match}](citation://${materia}/${code})`
+                            )}
                           </ReactMarkdown>
                         </div>
                       ) : (
                         <span>{msg.content}</span>
-                      )}
-                      {msg.plan && (
-                        <PlanCard
-                          plan={msg.plan}
-                          onApprove={() => handlePlanAction(msg.id, "approve")}
-                          onReject={() => handlePlanAction(msg.id, "reject")}
-                          onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
-                        />
                       )}
                     </div>
                   </div>
@@ -2036,7 +2111,7 @@ const AITutor = () => {
             </div>
 
           {/* Sidebar for Expanded Mode */}
-          {isExpanded && (
+          {isExpanded ? (
             <div className="w-80 border-l border-white/5 bg-slate-900/30 flex flex-col p-6 space-y-8 overflow-y-auto hidden lg:flex">
               <div>
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -2067,9 +2142,8 @@ const AITutor = () => {
                       </div>
                   )}
                 </div>
-              </div>
 
-              <div className="flex-1">
+                <div className="flex-1">
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <Layers className="h-3 w-3" /> Actividad en Cola
                 </h3>
@@ -2100,7 +2174,7 @@ const AITutor = () => {
                     </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </>
