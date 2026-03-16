@@ -273,17 +273,30 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
   return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
 }
 
+function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null; cleanContent: string } {
+  const quizMatch = content.match(/<quiz>([\s\S]*?)<\/quiz>/);
+  if (!quizMatch) return { quiz: null, cleanContent: content };
+  const parsed = safeParseJSON(quizMatch[1]);
+  if (!parsed) return { quiz: null, cleanContent: content };
+  
+  return { 
+    quiz: parsed as PersonalizedQuiz, 
+    cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "").trim() 
+  };
+}
+
 function parseAllBlocks(content: string) {
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
-  return { reasoning, decisions, plan, cleanContent: c3 };
+  const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
+  return { reasoning, decisions, plan, quiz, cleanContent: c4 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta temporalmente los bloques XML crudos mientras el LLM los está escribiendo en el stream.
   return content
-    .replace(/<(reasoning|decision|plan)>[\s\S]*?(<\/\1>|$)/g, "")
+    .replace(/<(reasoning|decision|plan|quiz)>[\s\S]*?(<\/\1>|$)/g, "")
     .trim();
 }
 
@@ -1689,7 +1702,26 @@ const AITutor = () => {
         2. ESTRUCTURA: Usa el formato 'X.Y [Nombre del Tema]' para dar estructura a tus respuestas.
         3. DIAGRAMAS VISUALES: Si el tema es complejo, genera un diagrama mermaid.
         4. BLOQUEO: Si preguntan fuera del ECOEMS, rechaza amablemente mencionando que no está en el temario numerado.
-        5. PLANES: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.`
+        5. PLANES: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.
+        6. QUIZ INTERACTIVO: Si el usuario pide un quiz o preguntas de repaso, genera SIEMPRE un bloque <quiz> con este formato JSON:
+           <quiz>
+           {
+             "title": "Título del Quiz",
+             "focusArea": "Área de estudio",
+             "difficulty": "básico|intermedio|avanzado",
+             "questions": [
+               {
+                 "id": "q1",
+                 "text": "¿Pregunta?",
+                 "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
+                 "correctIndex": 0,
+                 "explanation": "Explicación detallada con citas [BIO 1.1]",
+                 "area": "Nombre del Área"
+               }
+             ]
+           }
+           </quiz>
+           No mandes el quiz solo como texto plano, usa el bloque <quiz> para que sea interactivo.`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -1722,7 +1754,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan }
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz }
               : m
           ));
           setIsStreaming(false);
