@@ -1846,12 +1846,14 @@ const AITutor = () => {
                   onClick={() => setShowAgentSidebar(!showAgentSidebar)}
                   title={showAgentSidebar ? "Ocultar panel lateral" : "Mostrar panel lateral"}
                   className={cn(
-                    "p-1.5 sm:p-2 rounded-xl transition-all flex items-center gap-2", 
-                    showAgentSidebar ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-white/10 text-slate-500 hover:text-white"
+                    "p-1.5 sm:p-2 rounded-xl transition-all flex items-center gap-2 border", 
+                    showAgentSidebar 
+                      ? "bg-primary text-white border-primary/50 shadow-lg shadow-primary/20" 
+                      : "bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
                   )}
                 >
                   {showAgentSidebar ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
-                  <span className="hidden md:inline text-[10px] font-black uppercase tracking-widest pl-1">
+                  <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest pl-1">
                     {showAgentSidebar ? "Cerrar Panel" : "Memoria"}
                   </span>
                 </button>
@@ -1881,8 +1883,10 @@ const AITutor = () => {
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20">
                 <div className={cn(
-                  "space-y-6 transition-all duration-500", 
-                  isExpanded ? (showAgentSidebar ? "max-w-4xl mx-auto px-6 lg:px-12" : "max-w-5xl mx-auto px-6 lg:px-12") : "w-full"
+                  "space-y-6 transition-all duration-500 pb-20", 
+                  isExpanded 
+                    ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12") 
+                    : "w-full"
                 )}>
                   {showTasks && !isExpanded && (
                       <TaskCenter 
@@ -2200,7 +2204,14 @@ const AITutor = () => {
 
           {/* Sidebar for Expanded Mode */}
           {isExpanded && showAgentSidebar ? (
-            <div className="w-72 border-l border-white/5 bg-slate-900/40 backdrop-blur-md flex flex-col p-5 space-y-6 overflow-y-auto hidden lg:flex animate-in slide-in-from-right duration-500">
+            <div className="w-72 lg:w-80 border-l border-white/5 bg-slate-900/60 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto hidden md:flex animate-in slide-in-from-right duration-500 relative">
+              {/* Internal Close Button for better UX */}
+              <button 
+                onClick={() => setShowAgentSidebar(false)}
+                className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white lg:hidden transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
               <div>
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <History className="h-3 w-3" /> Memoria del Agente
