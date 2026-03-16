@@ -2142,8 +2142,9 @@ const AITutor = () => {
                       </div>
                   )}
                 </div>
+              </div>
 
-                <div className="flex-1">
+              <div className="flex-1">
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <Layers className="h-3 w-3" /> Actividad en Cola
                 </h3>
