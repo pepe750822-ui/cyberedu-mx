@@ -238,7 +238,7 @@ const AreaDetail = () => {
                   videoId={activeVideo.id}
                   videoUrl={activeVideo.videoUrl}
                   tiempoInicial={initialTime}
-                  autoPlay={true}
+                  autoPlay={!searchParams.get("tab")}
                 />
               </div>
               <div className="p-6">
