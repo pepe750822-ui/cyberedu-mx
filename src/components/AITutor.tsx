@@ -25,6 +25,8 @@ import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Mermaid from "./Mermaid";
 import ChartRenderer, { ChartData } from "./ChartRenderer";
+import EduImageViewer from "./EduImageViewer";
+import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 
 // ─── ECOEMS Citation Mapping ───
 const MATERIA_TO_AREA: Record<string, string> = {
@@ -185,6 +187,7 @@ interface Message {
   report?: any;
   alerts?: any[];
   charts?: ChartData[];
+  eduImages?: EduImage[];
 }
 
 // ─── Shared Navigation Handler Wrapper ───
@@ -333,13 +336,29 @@ function parseChartsFromContent(content: string): { charts: ChartData[]; cleanCo
   return { charts, cleanContent: cleaned };
 }
 
+function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
+  const found: EduImage[] = [];
+  // Busca patrones [IMG:clave] en el contenido
+  const regex = /\[IMG:([a-z0-9-]+)\]/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const key = m[1];
+    const img = imageByKey[key];
+    if (img && !found.find((f) => f.key === key)) found.push(img);
+  }
+  // Elimina los tokens del contenido visible
+  const cleanContent = content.replace(/\[IMG:[a-z0-9-]+\]/g, "").trim();
+  return { eduImages: found, cleanContent };
+}
+
 function parseAllBlocks(content: string) {
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
   const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
-  return { reasoning, decisions, plan, quiz, charts, cleanContent: c5 };
+  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c5);
+  return { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -1675,9 +1694,9 @@ const AITutor = () => {
           memory,
           onDelta: upsertAssistant,
           onDone: () => {
-            const { reasoning, decisions, plan, quiz, charts, cleanContent } = parseAllBlocks(assistantContent);
+            const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
-            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined } : m));
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined } : m));
             setIsStreaming(false);
           },
         });
@@ -1793,7 +1812,11 @@ const AITutor = () => {
            - Física (MRUA): data con x=tiempo, y=velocidad, type="area"
            - Matemáticas (función cuadrática f(x)=x²): type="line", datos x=-3 a 3
            - Historia/Geografía (comparar datos): type="bar"
-           - Biología (porcentajes): type="pie"`
+           - Biología (porcentajes): type="pie"
+        8. BANCO DE IMÁGENES EDUCATIVAS: Puedes agregar imágenes oficiales a tu explicación usando la sintaxis [IMG:clave].
+           Solo usa las siguientes claves disponibles:
+           ${availableImageKeys.join(', ')}
+           Ejemplo de uso: "La célula animal tiene varios organelos celulares. [IMG:celula-animal] Aquí podemos ver..."`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -1814,7 +1837,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
 
           // Save decisions to memory
           if (decisions.length > 0) {
@@ -1826,7 +1849,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined }
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined }
               : m
           ));
           setIsStreaming(false);
@@ -1998,6 +2021,7 @@ const AITutor = () => {
                       {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
                       {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
                       {msg.charts?.map((chart, i) => <ChartRenderer key={i} chart={chart} />)}
+                      {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
                       {msg.diagnostics && <DiagnosticsCard 
                         result={msg.diagnostics} 
