@@ -90,33 +90,40 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
   // 3. Heuristic / Area Hint Fallback
   if (!targetAreaId) {
     const context = (cleanTitle + " " + (areaHint || "")).toLowerCase();
-    const areaMap: Record<string, string> = {
-      'habilidad': 'habilidades', 'verbal': 'habilidades', 'razonamiento': 'habilidades',
-      'matemática': 'matematicas', 'número': 'matematicas', 'álgebra': 'matematicas', 'geometría': 'matematicas',
-      'biología': 'biologia', 'célula': 'biologia', 'seres vivos': 'biologia', 'genética': 'biologia',
-      'física': 'fisica', 'movimiento': 'fisica', 'fuerza': 'fisica', 'energía': 'fisica', 'cinemática': 'fisica',
-      'química': 'quimica', 'átomo': 'quimica', 'reacción': 'quimica', 'materia': 'quimica',
-      'geografía': 'geografia', 'mapa': 'geografia', 'población': 'geografia',
-      'español': 'espanol', 'lectura': 'espanol', 'gramática': 'espanol', 'puntuación': 'espanol',
-      'historia de méxico': 'historia-mexico', 'méxico': 'historia-mexico',
-      'historia universal': 'historia-universal', 'siglo': 'historia-universal',
-      'cívica': 'formacion-civica', 'ética': 'formacion-civica', 'democracia': 'formacion-civica'
-    };
     
-    for (const [key, val] of Object.entries(areaMap)) {
-      if (context.includes(key)) {
-        targetAreaId = val;
-        // If it's a number like "1", try to match it with the area prefix
-        if (/^\d+$/.test(id)) {
-          const area = areas.find(a => a.id === val);
-          if (area) {
-             const firstVideoId = area.videos[0]?.id || '';
-             const prefix = firstVideoId.split('-')[0] || '';
-             // If prefix is "hv" or "hm" (habilidades), we need to be careful
-             targetVideoId = prefix ? `${prefix}-${id}` : id;
-          }
+    // Quick Check: Is areaHint literally any of the area IDs?
+    const explicitArea = areas.find(a => areaHint && (a.id === areaHint.toLowerCase() || a.id.replace('-', '') === areaHint.toLowerCase().replace('-', '')));
+    if (explicitArea) targetAreaId = explicitArea.id;
+
+    if (!targetAreaId) {
+      const areaMap: Record<string, string> = {
+        'habilidad': 'habilidades', 'verbal': 'habilidades', 'razonamiento': 'habilidades',
+        'matemática': 'matematicas', 'número': 'matematicas', 'álgebra': 'matematicas', 'geometría': 'matematicas',
+        'biología': 'biologia', 'célula': 'biologia', 'seres vivos': 'biologia', 'genética': 'biologia', 'biologia': 'biologia',
+        'física': 'fisica', 'movimiento': 'fisica', 'fuerza': 'fisica', 'energía': 'fisica', 'cinemática': 'fisica', 'fisica': 'fisica',
+        'química': 'quimica', 'átomo': 'quimica', 'reacción': 'quimica', 'materia': 'quimica', 'quimica': 'quimica',
+        'geografía': 'geografia', 'mapa': 'geografia', 'población': 'geografia', 'geografia': 'geografia',
+        'español': 'espanol', 'lectura': 'espanol', 'gramática': 'espanol', 'puntuación': 'espanol', 'espanol': 'espanol',
+        'méxico': 'historia-mexico', 'mexico': 'historia-mexico', 'historia de méxico': 'historia-mexico', 'historia de mexico': 'historia-mexico',
+        'universal': 'historia-universal', 'siglo': 'historia-universal', 'historia universal': 'historia-universal',
+        'cívica': 'formacion-civica', 'civica': 'formacion-civica', 'ética': 'formacion-civica', 'etica': 'formacion-civica', 'democracia': 'formacion-civica'
+      };
+      
+      for (const [key, val] of Object.entries(areaMap)) {
+        if (context.includes(key)) {
+          targetAreaId = val;
+          break;
         }
-        break;
+      }
+    }
+
+    // If we found an area and ID is a number, try to resolve it to a real video ID
+    if (targetAreaId && /^\d+$/.test(id)) {
+      const area = areas.find(a => a.id === targetAreaId);
+      if (area) {
+        const firstVideoId = area.videos[0]?.id || '';
+        const prefix = firstVideoId.split('-')[0] || '';
+        targetVideoId = prefix ? `${prefix}-${id}` : id;
       }
     }
   }
@@ -129,6 +136,29 @@ function getUrlForPaso(type: string, id: string, title?: string, areaHint?: stri
 
   targetAreaId = targetAreaId || 'habilidades';
   
+  // 4. Final Validation: Ensure targetVideoId actually exists in the targetAreaId
+  const finalArea = areas.find(a => a.id === targetAreaId);
+  if (finalArea) {
+    const exists = finalArea.videos.some(v => v.id === targetVideoId);
+    if (!exists) {
+      // If the ID is a number and not found, try prefixes
+      const prefixes = ['hv', 'hm', 'bio', 'fis', 'qui', 'mat', 'esp', 'hu', 'hm-mx', 'geo', 'fce'];
+      let found = false;
+      for (const p of prefixes) {
+        const potentialId = `${p}-${targetVideoId}`;
+        if (finalArea.videos.some(v => v.id === potentialId)) {
+          targetVideoId = potentialId;
+          found = true;
+          break;
+        }
+      }
+      // If still not found, default to first video of area instead of "0"
+      if (!found) {
+        targetVideoId = finalArea.videos[0]?.id || targetVideoId;
+      }
+    }
+  }
+
   if (type === 'quiz') return `/area/${targetAreaId}?tab=quiz&video=${targetVideoId}`;
   if (type === 'infografia') return `/area/${targetAreaId}?tab=recursos&video=${targetVideoId}`;
   return `/area/${targetAreaId}?video=${targetVideoId}`;
@@ -1691,37 +1721,39 @@ const AITutor = () => {
       };
 
       const systemMsg = { 
-        role: "system", 
+        role: "system" as const, 
         id: "system-instruction",
         content: `Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026. 
         
         TEMARIO OFICIAL NUMERADO: ${JSON.stringify(detailedSyllabus)}. 
+        
+        CATÁLOGO DE ÁREAS E IDS (USA ESTOS PARA PLANES):
+        - Habilidades (hv-0 a hv-5, hm-1 a hm-5) -> areaId: "habilidades"
+        - Biología (bio-1 a bio-7) -> areaId: "biologia"
+        - Física (fis-1 a fis-7) -> areaId: "fisica"
+        - Química (qui-1 a qui-6) -> areaId: "quimica"
+        - Matemáticas (mat-1 a mat-7) -> areaId: "matematicas"
+        - Español (esp-1 a esp-7) -> areaId: "espanol"
+        - Historia de México (hm-mx-1 a hm-mx-7) -> areaId: "historia-mexico"
+        - Historia Universal (hu-1 a hu-7) -> areaId: "historia-universal"
+        - Geografía (geo-1 a geo-7) -> areaId: "geografia"
+        - Formación Cívica (fce-1 a fce-7) -> areaId: "formacion-civica"
 
         REGLAS DE ORO DE RESPUESTA:
-        1. CITACIÓN NUMERADA: Es OBLIGATORIO que siempre que expliques un tema menciones el número exacto del temario. Ejemplo: "Sobre el punto 4.2 Álgebra, específicamente en ecuaciones..." o "De acuerdo al temario oficial en el subtema 2.1 Sucesiones...".
-        2. ESTRUCTURA: Usa el formato 'X.Y [Nombre del Tema]' para dar estructura a tus respuestas.
-        3. DIAGRAMAS VISUALES: Si el tema es complejo, genera un diagrama mermaid.
-        4. BLOQUEO: Si preguntan fuera del ECOEMS, rechaza amablemente mencionando que no está en el temario numerado.
-        5. PLANES: Al dar un <plan>, incluye "videoId" y "areaId" para que los links funcionen.
-        6. QUIZ INTERACTIVO: Si el usuario pide un quiz o preguntas de repaso, genera SIEMPRE un bloque <quiz> con este formato JSON:
+        1. CITACIÓN NUMERADA: Menciona el número exacto del temario (Ej: 4.2 Álgebra).
+        2. ESTRUCTURA: Usa 'X.Y [Nombre del Tema]'.
+        3. DIAGRAMAS: Genera diagramas mermaid para temas complejos.
+        4. BLOQUEO: No respondas temas fuera del ECOEMS.
+        5. PLANES INTERACTIVOS: Al dar un <plan>, usa el CATÁLOGO DE ÁREAS para llenar "videoId" (ej: 'bio-3') y "areaId" (ej: 'biologia'). ¡NUNCA USES 0 COMO VIDEOID!
+        6. QUIZ INTERACTIVO: Genera siempre un bloque <quiz> JSON para repasos:
            <quiz>
            {
-             "title": "Título del Quiz",
-             "focusArea": "Área de estudio",
+             "title": "Título",
+             "focusArea": "Área",
              "difficulty": "básico|intermedio|avanzado",
-             "questions": [
-               {
-                 "id": "q1",
-                 "text": "¿Pregunta?",
-                 "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
-                 "correctIndex": 0,
-                 "explanation": "Explicación detallada con citas [BIO 1.1]",
-                 "area": "Nombre del Área"
-               }
-             ]
+             "questions": [{ "id": "q1", "text": "?", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "...", "area": "..." }]
            }
-           </quiz>
-           No mandes el quiz solo como texto plano, usa el bloque <quiz> para que sea interactivo.`
+           </quiz>`
       };
 
       // Always include the system message at the start, then the last N messages
