@@ -40,6 +40,14 @@ interface MaterialComplementarioProps {
   videoId: string;
 }
 
+// ─── Image Proxy Helper ───
+const getProxiedUrl = (url: string) => {
+  if (url.includes("wikimedia.org") || url.includes("wikipedia")) {
+    return `https://wsrv.nl/?url=${url.replace(/^https?:\/\//, '')}&w=800&output=webp`;
+  }
+  return url;
+};
+
 const PodcastPlayer = ({ url, duracion }: { url: string; duracion?: string }) => (
   <div className="border border-border rounded-lg p-5 sm:p-8 flex flex-col items-center gap-4 bg-muted/5">
     <div className="p-4 sm:p-5 bg-primary/10 rounded-full">
@@ -58,8 +66,8 @@ const PodcastPlayer = ({ url, duracion }: { url: string; duracion?: string }) =>
 
 const InfografiaViewer = ({ url, descripcion }: { url: string; descripcion: string }) => (
   <div className="border border-border rounded-lg p-6 bg-muted/5 flex flex-col items-center">
-    <div className="w-full max-h-[600px] overflow-y-auto custom-scrollbar rounded-md bg-black/20 flex justify-center">
-      <img src={url} alt={descripcion} className="max-w-full h-auto object-contain" loading="lazy" />
+    <div className="w-full max-h-[600px] overflow-y-auto custom-scrollbar rounded-md bg-black/20 flex justify-center p-2">
+      <img src={getProxiedUrl(url)} alt={descripcion} className="max-w-full h-auto object-contain bg-white p-2 rounded-xl" loading="lazy" />
     </div>
     <p className="text-sm font-medium text-foreground mt-4 text-center">{descripcion}</p>
     <div className="grid grid-cols-2 gap-3 w-full mt-4">
