@@ -1,8 +1,7 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import mermaid from 'mermaid';
-import { Maximize2, Minimize2, Download, ZoomIn, ZoomOut } from 'lucide-react';
-import { Button } from './ui/button';
+import { Maximize2, Minimize2, Download, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Get a clean ID for mermaid rendering
@@ -38,35 +37,35 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   const [zoom, setZoom] = useState(1);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    if (ref.current && chart) {
-      setError(false);
-      ref.current.removeAttribute('data-processed');
-      
-      const renderChart = async () => {
-        try {
-          const id = getMermaidId();
-          // We render with useMaxWidth: false to get natural size
-          const { svg } = await mermaid.render(id, chart);
-          if (ref.current) {
-            ref.current.innerHTML = svg;
-            // Target the SVG and make sure it has clean dimensions
-            const svgElement = ref.current.querySelector('svg');
-            if (svgElement) {
-              svgElement.style.maxWidth = 'none';
-              svgElement.style.height = 'auto';
-              // If not in fullscreen, we might want to cap it but here we let it be
-            }
-          }
-        } catch (error) {
-          console.error('Mermaid render error:', error);
-          setError(true);
+  const renderChart = useCallback(async () => {
+    if (!ref.current || !chart) return;
+    
+    setError(false);
+    ref.current.removeAttribute('data-processed');
+    ref.current.innerHTML = '';
+    
+    try {
+      const id = getMermaidId();
+      // We render with useMaxWidth: false to get natural size
+      const { svg } = await mermaid.render(id, chart);
+      if (ref.current) {
+        ref.current.innerHTML = svg;
+        // Target the SVG and make sure it has clean dimensions
+        const svgElement = ref.current.querySelector('svg');
+        if (svgElement) {
+          svgElement.style.maxWidth = 'none';
+          svgElement.style.height = 'auto';
         }
-      };
-      
-      renderChart();
+      }
+    } catch (err) {
+      console.error('Mermaid render error:', err);
+      setError(true);
     }
   }, [chart]);
+
+  useEffect(() => {
+    renderChart();
+  }, [renderChart]);
 
   const handleDownload = () => {
     if (!ref.current) return;
@@ -84,10 +83,28 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
     document.body.removeChild(downloadLink);
   };
 
+  const handleFit = () => {
+    if (!ref.current) return;
+    const containerWidth = ref.current.parentElement?.clientWidth || 800;
+    const svg = ref.current.querySelector('svg');
+    if (svg) {
+      const svgWidth = svg.viewBox.baseVal.width || svg.clientWidth || 800;
+      const newZoom = Math.min(1.5, (containerWidth - 40) / svgWidth);
+      setZoom(Math.max(0.2, newZoom));
+    }
+  };
+
+  const handleRefresh = () => {
+    renderChart();
+  };
+
   if (error) {
     return (
       <div className="text-red-400 p-4 border border-red-500/20 bg-red-500/5 rounded-xl text-xs flex items-center gap-2 my-4">
         <span>Error en renderizado de diagrama. Verifica la sintaxis.</span>
+        <button onClick={handleRefresh} className="p-1 hover:bg-white/10 rounded">
+            <RefreshCw className="h-3 w-3" />
+        </button>
       </div>
     );
   }
@@ -103,7 +120,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
           <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Diagrama Autogenerado</span>
           <div className="flex items-center gap-2">
             <button 
-              onClick={() => setZoom(prev => Math.max(0.5, prev - 0.2))}
+              onClick={() => setZoom(prev => Math.max(0.1, prev - 0.2))}
               className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
               title="Alejar"
             >
@@ -111,13 +128,29 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
             </button>
             <span className="text-[10px] font-bold text-slate-600 w-8 text-center">{Math.round(zoom * 100)}%</span>
             <button 
-              onClick={() => setZoom(prev => Math.min(3, prev + 0.2))}
+              onClick={() => setZoom(prev => Math.min(5, prev + 0.2))}
               className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
               title="Acercar"
             >
               <ZoomIn className="h-3.5 w-3.5" />
             </button>
+            <button 
+              onClick={handleFit}
+              className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+              title="Ajustar ancho"
+            >
+              <div className="flex items-center justify-center border border-current rounded-sm h-3 w-4 px-0.5">
+                <div className="w-full h-px bg-current" />
+              </div>
+            </button>
             <div className="w-px h-4 bg-white/10 mx-1" />
+            <button 
+              onClick={handleRefresh}
+              className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+              title="Recargar diagrama"
+            >
+              <RefreshCw className="h-3.5 w-3.5" />
+            </button>
             <button 
               onClick={handleDownload}
               className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
