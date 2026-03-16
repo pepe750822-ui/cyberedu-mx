@@ -247,6 +247,188 @@ export const educationalImages: EduImage[] = [
     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Prise_de_la_Bastille.jpg/800px-Prise_de_la_Bastille.jpg",
     source: "Wikimedia Commons"
   },
+  {
+    key: "primera-guerra-mundial",
+    title: "Primera Guerra Mundial",
+    description: "Alianzas y mapa europeo durante la Primera Guerra Mundial (1914-1918)",
+    area: "Historia Universal",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Map_Europe_alliances_1914-es.svg/800px-Map_Europe_alliances_1914-es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "guerra-fria",
+    title: "Guerra Fría",
+    description: "El mundo bipolar: Bloque Capitalista (OTAN) vs Bloque Comunista (Pacto de Varsovia)",
+    area: "Historia Universal",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cold_War_alliances_mid-1975.svg/800px-Cold_War_alliances_mid-1975.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "independencia-mexico",
+    title: "Independencia de México",
+    description: "Miguel Hidalgo y la ruta de la Independencia de México",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Miguel_Hidalgo_y_Costilla.jpg/400px-Miguel_Hidalgo_y_Costilla.jpg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "mesoamerica",
+    title: "Culturas de Mesoamérica",
+    description: "Mapa de las áreas culturales y principales civilizaciones mesoamericanas",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Mesoamerica_english.PNG/800px-Mesoamerica_english.PNG",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── ESPAÑOL ───
+  {
+    key: "ficha-bibliografica",
+    title: "Ficha Bibliográfica",
+    description: "Estructura y datos necesarios en una ficha bibliográfica: Autor, Título, Editorial, etc.",
+    area: "Español",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Index_card.svg/600px-Index_card.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "partes-oracion",
+    title: "Partes de la Oración",
+    description: "Sujeto, predicado, verbos, sustantivos, adjetivos y adverbios",
+    area: "Español",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Sintaxis_espa%C3%B1ola.svg/800px-Sintaxis_espa%C3%B1ola.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── FORMACIÓN CÍVICA Y ÉTICA ───
+  {
+    key: "division-poderes",
+    title: "División de Poderes en México",
+    description: "Poder Ejecutivo, Legislativo y Judicial: funciones y representantes",
+    area: "Formación Cívica",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Divisi%C3%B3n_de_Poderes_Gobierno_de_Mexico.jpg/800px-Divisi%C3%B3n_de_Poderes_Gobierno_de_Mexico.jpg",
+    source: "Constitución Mexicana / CC"
+  },
+  {
+    key: "derechos-humanos",
+    title: "Derechos Humanos",
+    description: "Principios de universalidad, interdependencia, indivisibilidad y progresividad",
+    area: "Formación Cívica",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/HumanRightsLogo.svg/600px-HumanRightsLogo.svg.png",
+    source: "Human Rights Logo / CC"
+  },
+
+  // ─── MÁS BIOLOGÍA ───
+  {
+    key: "aparato-digestivo",
+    title: "Aparato Digestivo",
+    description: "Órganos del sistema digestivo humano y el proceso de digestión",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Digestive_system_diagram_es.svg/600px-Digestive_system_diagram_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "sistema-respiratorio",
+    title: "Sistema Respiratorio",
+    description: "Vías nasales, tráquea, pulmones y alvéolos en el intercambio de gases",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Respiratory_system_complete_en.svg/600px-Respiratory_system_complete_en.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "sistema-circulatorio",
+    title: "Sistema Circulatorio",
+    description: "Corazón, venas, arterias y el recorrido de la sangre en el cuerpo humano",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Circulatory_System_en.svg/600px-Circulatory_System_en.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "neurona",
+    title: "La Neurona",
+    description: "Estructura de la neurona: dendritas, soma, axón y mielina",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Neuron_Hand-tuned.svg/800px-Neuron_Hand-tuned.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── MÁS FÍSICA ───
+  {
+    key: "palancas",
+    title: "Tipos de Palancas",
+    description: "Palancas de primer, segundo y tercer grado con fulcro, potencia y resistencia",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Palancas_123.svg/800px-Palancas_123.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "transferencia-calor",
+    title: "Transferencia de Calor",
+    description: "Mecanismos de conducción, convección y radiación térmica",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Heat_transfer_es.svg/800px-Heat_transfer_es.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── MÁS QUÍMICA ───
+  {
+    key: "escala-ph",
+    title: "Escala de pH",
+    description: "Escala de acidez y alcalinidad (0 al 14) con ejemplos comunes",
+    area: "Química",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/PH_Scale.svg/800px-PH_Scale.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "destilacion",
+    title: "Proceso de Destilación",
+    description: "Método de separación por puntos de ebullición",
+    area: "Química",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Simple_chem_distillation.svg/800px-Simple_chem_distillation.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "filtracion",
+    title: "Filtración",
+    description: "Separación de mezclas heterogéneas sólido-líquido",
+    area: "Química",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Filtration.svg/600px-Filtration.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── MÁS MATEMÁTICAS ───
+  {
+    key: "plano-cartesiano",
+    title: "Plano Cartesiano",
+    description: "Ejes X e Y, cuadrantes y localización de coordenadas",
+    area: "Matemáticas",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Cartesian-coordinate-system.svg/600px-Cartesian-coordinate-system.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "poligonos-regulares",
+    title: "Polígonos Regulares",
+    description: "Figuras geométricas según su número de lados (triángulo, cuadrado, pentágono, etc.)",
+    area: "Matemáticas",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Regular_polygons.svg/800px-Regular_polygons.svg.png",
+    source: "Wikimedia Commons"
+  },
+
+  // ─── MÁS GEOGRAFÍA ───
+  {
+    key: "placas-tectonicas",
+    title: "Placas Tectónicas",
+    description: "Mapa mundial de las principales placas tectónicas y sus límites",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Tectonic_plates_boundaries_detailed-es.svg/800px-Tectonic_plates_boundaries_detailed-es.svg.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "capas-atmosfera",
+    title: "Capas de la Atmósfera",
+    description: "Troposfera, estratosfera, mesosfera, termosfera y exosfera",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Atmosphere_layers-es.svg/600px-Atmosphere_layers-es.svg.png",
+    source: "Wikimedia Commons"
+  }
 ];
 
 // ─── Lookup rápido por clave ───
