@@ -1845,7 +1845,11 @@ const AITutor = () => {
         REGLAS DE ORO DE RESPUESTA:
         1. CITACIÓN NUMERADA: Menciona el número exacto del temario (Ej: 4.2 Álgebra).
         2. ESTRUCTURA: Usa 'X.Y [Nombre del Tema]'.
-        3. DIAGRAMAS: Genera diagramas mermaid para temas complejos.
+        3. DIAGRAMAS: Genera diagramas mermaid para temas complejos. 
+           REGLA CRÍTICA MERMAID v11: 
+           - USA SIEMPRE 'flowchart TD' o 'flowchart LR'.
+           - USA SIEMPRE COMILLAS DOBLES para etiquetas con acentos, paréntesis o caracteres especiales (Ej: A["Física (Mecánica)"]).
+           - NO incluyas la palabra 'mermaid' dentro del bloque de código.
         4. BLOQUEO: No respondas temas fuera del ECOEMS.
         5. PLANES INTERACTIVOS: Al dar un <plan>, usa el CATÁLOGO DE ÁREAS para llenar "videoId" (ej: 'bio-3') y "areaId" (ej: 'biologia'). ¡NUNCA USES 0 COMO VIDEOID!
         6. QUIZ INTERACTIVO: Genera siempre un bloque <quiz> JSON para repasos:

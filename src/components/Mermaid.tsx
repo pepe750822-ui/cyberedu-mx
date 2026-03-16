@@ -37,32 +37,40 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   const [zoom, setZoom] = useState(1);
   const [error, setError] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
+  const [showRaw, setShowRaw] = useState(false);
 
   // Clean the chart input
   const cleanChart = useCallback((input: string) => {
     let cleaned = input.trim();
     
-    // Remove starting markers
+    // 1. Basic Markdown Cleaning
     if (cleaned.startsWith('```mermaid')) {
       cleaned = cleaned.substring(10);
     } else if (cleaned.startsWith('```')) {
       cleaned = cleaned.substring(3);
     }
     
-    // Remove if it starts with the word 'mermaid' followed by newline
-    if (cleaned.startsWith('mermaid\n')) {
-      cleaned = cleaned.substring(8);
-    }
-    
-    // Remove ending markers
+    // 2. Remove trailing markers
     if (cleaned.endsWith('```')) {
       cleaned = cleaned.substring(0, cleaned.length - 3);
     }
+
+    // 3. Remove accidental 'mermaid' word at start (common AI mistake)
+    cleaned = cleaned.replace(/^mermaid\s+/i, '');
     
-    return cleaned
+    // 4. Normalize quotes and special characters
+    // Sometimes AI leaves HTML entities
+    cleaned = cleaned
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
-      .trim();
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&');
+
+    // 5. Fallback: if it starts with 'graph ', ensure it's handled, 
+    // but Mermaid v11 prefers 'flowchart'. We don't force it here 
+    // to avoid breaking specific diagram types, but we trim whitespace.
+    
+    return cleaned.trim();
   }, []);
 
   const renderChart = useCallback(async () => {
@@ -225,20 +233,41 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
           isFullscreen ? "items-center" : "items-start"
         )}>
           {error && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/50 backdrop-blur-sm z-10 p-6 text-center">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-md z-10 p-6 text-center">
               <div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center mb-4 border border-amber-500/20">
                 <AlertTriangle className="h-6 w-6 text-amber-500" />
               </div>
-              <p className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Error de Renderizado</p>
-              <p className="text-xs text-slate-400 max-w-xs mb-4">
-                No pudimos procesar la sintaxis de este diagrama. Intenta recargar o pedirle al asistente que lo simplifique.
+              <p className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Error de Sintaxis</p>
+              <p className="text-xs text-slate-400 max-w-xs mb-6">
+                El diagrama contiene caracteres que Mermaid v11 no puede procesar (probablemente acentos o paréntesis sin comillas).
               </p>
-              <button 
-                onClick={handleRefresh}
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-transform"
-              >
-                <RefreshCw className="h-3 w-3" /> Reintentar
-              </button>
+              
+              <div className="flex flex-wrap justify-center gap-3">
+                <button 
+                  onClick={handleRefresh}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-transform"
+                >
+                  <RefreshCw className="h-3 w-3" /> Reintentar
+                </button>
+                
+                <button 
+                  onClick={() => setShowRaw(!showRaw)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-white/20 transition-all border border-white/5"
+                >
+                  {showRaw ? "Ocultar Código" : "Ver Código"}
+                </button>
+              </div>
+
+              {showRaw && (
+                <div className="mt-6 w-full max-w-lg">
+                  <pre className="text-left text-[10px] p-4 bg-black/50 rounded-xl border border-white/10 text-amber-200/70 overflow-x-auto whitespace-pre-wrap font-mono">
+                    {cleanChart(chart)}
+                  </pre>
+                  <p className="mt-2 text-[9px] text-slate-500 italic">
+                    Tip: Pídele al chat "Corrige el diagrama Mermaid citando con comillas los textos con acentos".
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
