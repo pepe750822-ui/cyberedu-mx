@@ -64,6 +64,22 @@ const AreaDetail = () => {
     obtenerProgresoVideo
   } = useVideoProgress();
 
+  // Scroll to material section if a tab is specified in URL
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam) {
+      // Give it a small timeout to ensure render is complete
+      setTimeout(() => {
+        const el = document.getElementById("material-complementario");
+        if (el) {
+          const yOffset = -80; // Offset for header
+          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [searchParams]);
+
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
   const stats = getEstadisticas();
@@ -243,7 +259,9 @@ const AreaDetail = () => {
                 </div>
               </div>
 
-              <MaterialComplementario videoId={activeVideo.id} />
+              <div id="material-complementario">
+                <MaterialComplementario videoId={activeVideo.id} />
+              </div>
               <div className="p-6 border-t border-border/50 bg-muted/5">
                 <RecommendedVideos currentVideoId={activeVideo.id} currentAreaId={activeVideo.areaId} />
               </div>

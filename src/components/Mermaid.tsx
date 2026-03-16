@@ -314,4 +314,4 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   );
 };
 
-export default Mermaid;
+export default React.memo(Mermaid);

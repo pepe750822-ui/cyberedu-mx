@@ -563,74 +563,71 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
   };
 
   return (
-    <div className="group relative">
+    <div className={cn(
+      "group relative flex items-stretch gap-0 p-0 rounded-2xl border transition-all overflow-hidden",
+      step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
+        : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50"
+        : "bg-white/5 border-white/10 hover:bg-white/10"
+    )}>
+      {/* 1. SECCIÓN DE ESTADO (Checkmark) */}
       <button
-        onClick={() => onToggle(step.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle(step.id);
+        }}
         className={cn(
-          "w-full flex items-start gap-3 p-3 rounded-xl border transition-all text-left pr-12",
-          step.status === "approved" ? "bg-emerald-500/10 border-emerald-500/20"
-            : step.status === "rejected" ? "bg-red-500/5 border-red-500/10 opacity-50 line-through"
-            : "bg-white/5 border-white/10 hover:bg-white/10"
+          "w-12 flex items-center justify-center shrink-0 border-r transition-colors",
+          step.status === "approved" ? "bg-emerald-500/20 border-emerald-500/20 text-emerald-400"
+            : "bg-white/5 border-white/5 text-slate-500 hover:text-emerald-400 hover:bg-white/10"
         )}
+        title={step.status === "approved" ? "Marcado como completado" : "Marcar como completado"}
       >
-        {step.status === "approved" ? <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-          : step.status === "rejected" ? <X className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
-          : <Circle className="h-5 w-5 text-slate-500 shrink-0 mt-0.5" />}
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-slate-200 leading-snug">{step.text}</p>
-          <div className="flex items-center gap-2 mt-1.5">
-            <span className={cn("px-1.5 py-0.5 text-xs font-black uppercase rounded border", priorityColor[step.priority])}>
-              {step.priority}
-            </span>
-            <span className="text-xs text-slate-500 flex items-center gap-1">
-              <Clock className="h-3 w-3" /> {step.estimatedTime}
-            </span>
-             {step.dependsOn.length > 0 && (
-              <span className="text-xs text-slate-600">→ Depende de: {step.dependsOn.join(", ")}</span>
-            )}
-          </div>
+        {step.status === "approved" ? <CheckCircle2 className="h-5 w-5" />
+          : step.status === "rejected" ? <XCircle className="h-5 w-5 text-red-400" />
+          : <Circle className="h-5 w-5" />}
+      </button>
+
+      {/* 2. SECCIÓN DE CONTENIDO (Navegación al hacer clic) */}
+      <button
+        onClick={() => {
+          const generatedUrl = getUrlForPaso(
+            getStepType(), 
+            step.videoId || step.id.toString(), 
+            step.text,
+            step.areaId || planTitle
+          );
+          onNavigate(generatedUrl);
+        }}
+        className="flex-1 flex flex-col p-3 text-left min-w-0 pr-14 group/step"
+        title="Clic para ir al contenido"
+      >
+        <div className="flex items-center gap-2 mb-1">
+          <p className={cn(
+            "text-sm font-bold text-slate-100 leading-snug transition-colors group-hover/step:text-primary",
+            step.status === "approved" && "text-emerald-300",
+            step.status === "rejected" && "line-through opacity-50"
+          )}>
+            {step.text}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border tracking-widest", priorityColor[step.priority])}>
+            {step.priority}
+          </span>
+          <span className="text-[10px] text-slate-500 flex items-center gap-1 font-bold">
+            <Clock className="h-3 w-3" /> {step.estimatedTime}
+          </span>
+          {step.dependsOn.length > 0 && (
+            <span className="text-[9px] text-slate-600 font-bold">→ ID: {step.dependsOn.join(", ")}</span>
+          )}
         </div>
       </button>
 
-      {isLinkable && (() => {
-        const generatedUrl = getUrlForPaso(
-          getStepType(), 
-          step.videoId || step.id.toString(), 
-          step.text,
-          step.areaId || planTitle
-        );
-        const vMatch = generatedUrl.match(/video=([^&]+)/);
-        const resolvedVideoId = vMatch ? vMatch[1] : null;
-        const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId) : '';
-        const hasInfo = resolvedVideoId ? !!materiales[resolvedVideoId]?.infografia : false;
-
-        return (
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10">
-            {hasInfo && (
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onNavigate(infoUrl);
-                }}
-                className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500/20 hover:scale-110 active:scale-95 transition-all border border-emerald-500/20"
-                title="Ver Infografía"
-              >
-                <ImageIcon className="h-3.5 w-3.5" />
-              </button>
-            )}
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                onNavigate(generatedUrl);
-              }}
-              className="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20"
-              title="Ver contenido"
-            >
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        );
-      })()}
+      {/* 3. ACCIÓN RÁPIDA (Derecha) */}
+      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:scale-110 transition-transform">
+        <ArrowRight className="h-4 w-4 text-primary opacity-50 group-hover:opacity-100" />
+      </div>
     </div>
   );
 };
