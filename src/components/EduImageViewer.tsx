@@ -104,7 +104,7 @@ const Lightbox: React.FC<{
           <img
             src={getProxiedUrl(image.url)}
             alt={image.title}
-            className="max-w-full max-h-[60vh] object-contain rounded-xl select-none"
+            className="max-w-full max-h-[60vh] object-contain rounded-xl select-none bg-white p-2"
             draggable={false}
             onError={(e) => {
               (e.target as HTMLImageElement).src =
@@ -160,7 +160,7 @@ const ImageCard: React.FC<{
           src={getProxiedUrl(image.url)}
           alt={image.title}
           className={cn(
-            "w-full object-cover transition-all duration-500 h-44",
+            "w-full object-cover transition-all duration-500 h-44 bg-white",
             loaded ? "opacity-100 group-hover:scale-105" : "opacity-0"
           )}
           style={{ objectPosition: "top" }}
