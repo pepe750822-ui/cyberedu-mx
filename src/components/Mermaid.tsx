@@ -40,9 +40,26 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
 
   // Clean the chart input
   const cleanChart = useCallback((input: string) => {
-    return input
-      .replace(/```mermaid/g, '')
-      .replace(/```/g, '')
+    let cleaned = input.trim();
+    
+    // Remove starting markers
+    if (cleaned.startsWith('```mermaid')) {
+      cleaned = cleaned.substring(10);
+    } else if (cleaned.startsWith('```')) {
+      cleaned = cleaned.substring(3);
+    }
+    
+    // Remove if it starts with the word 'mermaid' followed by newline
+    if (cleaned.startsWith('mermaid\n')) {
+      cleaned = cleaned.substring(8);
+    }
+    
+    // Remove ending markers
+    if (cleaned.endsWith('```')) {
+      cleaned = cleaned.substring(0, cleaned.length - 3);
+    }
+    
+    return cleaned
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .trim();

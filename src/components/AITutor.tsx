@@ -1625,7 +1625,7 @@ const AITutor = () => {
           memory,
           onDelta: upsertAssistant,
           onDone: () => {
-            const { reasoning, decisions, plan, cleanContent } = parseAllBlocks(assistantContent);
+            const { reasoning, decisions, plan, quiz, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan } : m));
             setIsStreaming(false);
@@ -1742,7 +1742,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         onDone: () => {
-          const { reasoning, decisions, plan, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, cleanContent } = parseAllBlocks(assistantContent);
 
           // Save decisions to memory
           if (decisions.length > 0) {
