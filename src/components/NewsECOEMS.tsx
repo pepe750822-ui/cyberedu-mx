@@ -25,6 +25,7 @@ type ScoreCategory = "enp" | "cch" | "cecyt";
 
 interface SchoolScore {
     name: string;
+    code?: string;
     min: number;
     difficulty: "extreme" | "high" | "medium" | "accessible";
 }
@@ -38,7 +39,7 @@ const scoreData: Record<ScoreCategory, { title: string; subtitle: string; color:
         bgColor: "bg-blue-500/10",
         icon: GraduationCap,
         schools: [
-            { name: "ENP 6 — \"Antonio Caso\"", min: 111, difficulty: "extreme" },
+            { name: "ENP 6 — \"Antonio Caso\"", code: "U603000", min: 111, difficulty: "extreme" },
             { name: "ENP 9 — \"Pedro de Alba\"", min: 108, difficulty: "extreme" },
             { name: "ENP 2 — \"Erasmo C. de Romo\"", min: 105, difficulty: "extreme" },
             { name: "ENP 5 — \"José Vasconcelos\"", min: 103, difficulty: "high" },
@@ -438,7 +439,14 @@ const NewsECOEMS = () => {
                                         return (
                                             <div key={idx} className="px-5 py-3 flex items-center gap-4 hover:bg-white/[0.02] transition-colors">
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-xs font-bold text-slate-200 truncate">{school.name}</p>
+                                                    <p className="text-xs font-bold text-slate-200 truncate">
+                                                        {school.name}
+                                                        {school.code && (
+                                                            <span className="ml-2 text-[10px] text-slate-500 font-normal py-0.5 px-1.5 rounded bg-white/5 border border-white/10">
+                                                                Clave: {school.code}
+                                                            </span>
+                                                        )}
+                                                    </p>
                                                     <div className="mt-1.5 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                                                         <div
                                                             className={cn(
