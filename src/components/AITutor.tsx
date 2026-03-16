@@ -1999,6 +1999,27 @@ const AITutor = () => {
                                       </div>
                                     </div>
                                   );
+                                },
+                                table({ children }: any) {
+                                  return (
+                                    <div className="my-4 overflow-x-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
+                                      <table className="w-full text-left border-collapse min-w-[300px]">
+                                        {children}
+                                      </table>
+                                    </div>
+                                  );
+                                },
+                                thead({ children }: any) {
+                                  return <thead className="bg-primary/20 border-b border-white/10">{children}</thead>;
+                                },
+                                th({ children }: any) {
+                                  return <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-primary-foreground/90 bg-primary/20">{children}</th>;
+                                },
+                                td({ children }: any) {
+                                  return <td className="px-4 py-3 text-xs sm:text-sm text-slate-300 border-b border-white/5">{children}</td>;
+                                },
+                                tr({ children }: any) {
+                                  return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
                                 }
                             }}
                           >
