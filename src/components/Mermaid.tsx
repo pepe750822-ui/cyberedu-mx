@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 const getMermaidId = () => `mermaid-${Math.random().toString(36).substr(2, 9)}`;
 
 mermaid.initialize({
-  startOnLoad: true,
+  startOnLoad: false,
   theme: 'dark',
   securityLevel: 'loose',
   fontFamily: 'Inter, sans-serif',

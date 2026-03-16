@@ -16,7 +16,8 @@ import {
     ChevronUp,
     School,
     Target,
-    Key
+    Key,
+    MapPin
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +31,7 @@ interface SchoolScore {
 
 const scoreData: Record<ScoreCategory, { title: string; subtitle: string; color: string; borderColor: string; bgColor: string; icon: React.ElementType; schools: SchoolScore[] }> = {
     enp: {
-        title: "Prepas UNAM (ENP)",
+        title: "Prepas UNAM (ENP) — 9 Planteles",
         subtitle: "Rango: 94-111 aciertos",
         color: "text-blue-400",
         borderColor: "border-blue-500/30",
@@ -49,7 +50,7 @@ const scoreData: Record<ScoreCategory, { title: string; subtitle: string; color:
         ]
     },
     cch: {
-        title: "CCH UNAM",
+        title: "CCH UNAM — 5 Planteles",
         subtitle: "Rango: 84-94 aciertos",
         color: "text-amber-400",
         borderColor: "border-amber-500/30",
@@ -64,7 +65,7 @@ const scoreData: Record<ScoreCategory, { title: string; subtitle: string; color:
         ]
     },
     cecyt: {
-        title: "CECyT (Vocacionales) IPN",
+        title: "CECyT (Vocacionales) IPN — 15 Planteles",
         subtitle: "Rango: 80-104 aciertos",
         color: "text-rose-400",
         borderColor: "border-rose-500/30",
@@ -94,9 +95,91 @@ const difficultyConfig = {
     accessible: { label: "ACCESIBLE", color: "text-emerald-400 bg-emerald-500/20 border-emerald-500/30" },
 };
 
+const alcaldiasData = [
+    {
+        name: "Gustavo A. Madero",
+        unam: ["ENP 3", "ENP 9", "CCH Vallejo"],
+        ipn: ["CECyT 1", "CECyT 10"],
+        otras: ["CETIS", "Colbach", "CONALEP"]
+    },
+    {
+        name: "Coyoacán",
+        unam: ["ENP 6", "CCH Sur"],
+        ipn: ["CECyT 13"],
+        otras: ["CETIS 2", "Colbach 4"]
+    },
+    {
+        name: "Miguel Hidalgo",
+        unam: ["ENP 4"],
+        ipn: ["CECyT 2", "CECyT 9", "CECyT 11"],
+        otras: ["CONALEP", "CETIS"]
+    },
+    {
+        name: "Azcapotzalco",
+        unam: ["CCH Azcapotzalco"],
+        ipn: ["CECyT 6", "CECyT 8"],
+        otras: ["Colbach 1", "CONALEP"]
+    },
+    {
+        name: "Iztapalapa",
+        unam: ["CCH Oriente"],
+        ipn: ["CECyT 7"],
+        otras: ["Colbach 6 y 7", "CETIS"]
+    },
+    {
+        name: "Álvaro Obregón",
+        unam: ["ENP 8"],
+        ipn: ["CECyT 4"],
+        otras: ["CETIS 10", "Colbach"]
+    },
+    {
+        name: "Venustiano Carranza",
+        unam: ["ENP 7"],
+        ipn: ["CECyT 14"],
+        otras: ["Colbach 3", "CETIS"]
+    },
+    {
+        name: "Iztacalco",
+        unam: ["ENP 2"],
+        ipn: [],
+        otras: ["Colbach 10", "CETIS 31"]
+    },
+    {
+        name: "Tlalpan",
+        unam: ["ENP 5"],
+        ipn: [],
+        otras: ["Colbach 15", "CONALEP"]
+    },
+    {
+        name: "Xochimilco",
+        unam: ["ENP 1"],
+        ipn: [],
+        otras: ["Colbach 13", "CONALEP"]
+    },
+    {
+        name: "Cuauhtémoc",
+        unam: [],
+        ipn: ["CECyT 5", "CECyT 12"],
+        otras: ["CETIS 11", "Colbach"]
+    },
+    {
+        name: "Milpa Alta",
+        unam: [],
+        ipn: ["CECyT 15"],
+        otras: ["CETIS", "CONALEP"]
+    },
+    {
+        name: "Estado de México",
+        unam: ["CCH Naucalpan"],
+        ipn: ["CECyT 3 (Ecatepec)"],
+        otras: ["COBAEM", "CONALEP"]
+    }
+];
+
 const NewsECOEMS = () => {
     const [activeTab, setActiveTab] = useState<ScoreCategory>("enp");
     const [showScores, setShowScores] = useState(false);
+    const [showAlcaldias, setShowAlcaldias] = useState(false);
 
     const dates = [
         { event: "Publicación de Convocatoria", date: "13 Feb 2026", status: "completed" },
@@ -154,6 +237,24 @@ const NewsECOEMS = () => {
                                 El nuevo proceso **ECOEMS** sustituye definitivamente al COMIPEMS. Ahora el registro y seguimiento se centraliza en la plataforma **"Mi Derecho Mi Lugar"**.
                                 Es vital que actualices tus datos y descargues la nueva guía oficial.
                             </p>
+                        </div>
+
+                        {/* Recordatorio de Inscripción */}
+                        <div className="p-6 rounded-3xl bg-blue-500/10 border border-blue-500/20 space-y-4 relative overflow-hidden group/date">
+                            <div className="absolute -right-4 -top-4 opacity-10 group-hover/date:opacity-20 transition-all group-hover/date:scale-110">
+                                <Calendar className="h-24 w-24 text-blue-500" />
+                            </div>
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="p-2 bg-blue-500/20 rounded-xl text-blue-500 flex items-center justify-center">
+                                        <AlertCircle className="h-5 w-5 animate-pulse" />
+                                    </div>
+                                    <h3 className="text-lg font-black uppercase tracking-tight text-white">¡No olvides tu inscripción!</h3>
+                                </div>
+                                <p className="text-sm text-slate-300 leading-relaxed">
+                                    El <strong className="text-white">Registro de Aspirantes</strong> estará habilitado del <span className="text-blue-400 font-black">17 de Marzo al 14 de Abril de 2026</span>. Te sugerimos tener todos tus documentos a la mano.
+                                </p>
+                            </div>
                         </div>
 
                         {/* Nueva sección Llave MX */}
@@ -377,6 +478,61 @@ const NewsECOEMS = () => {
                                     </span>
                                 ))}
                             </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* ── Ubicación por Alcaldía ── */}
+                <div className="mt-8 pt-8 border-t border-white/5">
+                    <button
+                        onClick={() => setShowAlcaldias(!showAlcaldias)}
+                        className="w-full flex items-center justify-between group/toggle"
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-500/20">
+                                <MapPin className="h-5 w-5 text-indigo-400" />
+                            </div>
+                            <div className="text-left">
+                                <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white">
+                                    Escuelas por <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 italic">Alcaldía</span>
+                                </h3>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-1">
+                                    Encuentra opciones (UNAM, IPN y otras) cerca de ti
+                                </p>
+                            </div>
+                        </div>
+                        <div className="p-2 bg-white/5 rounded-xl border border-white/10 group-hover/toggle:bg-white/10 transition-colors">
+                            {showAlcaldias ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+                        </div>
+                    </button>
+
+                    {showAlcaldias && (
+                        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                            {alcaldiasData.map((alc, idx) => (
+                                <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-indigo-500/30 transition-colors">
+                                    <h4 className="text-sm font-black text-indigo-400 mb-3">{alc.name}</h4>
+                                    <div className="space-y-2 text-xs">
+                                        {alc.unam.length > 0 && (
+                                            <div className="flex gap-2">
+                                                <span className="font-bold text-blue-400 w-12 shrink-0">UNAM:</span>
+                                                <span className="text-slate-300">{alc.unam.join(", ")}</span>
+                                            </div>
+                                        )}
+                                        {alc.ipn.length > 0 && (
+                                            <div className="flex gap-2">
+                                                <span className="font-bold text-rose-400 w-12 shrink-0">IPN:</span>
+                                                <span className="text-slate-300">{alc.ipn.join(", ")}</span>
+                                            </div>
+                                        )}
+                                        {alc.otras.length > 0 && (
+                                            <div className="flex gap-2">
+                                                <span className="font-bold text-emerald-400 w-12 shrink-0">Otras:</span>
+                                                <span className="text-slate-300">{alc.otras.join(", ")}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
