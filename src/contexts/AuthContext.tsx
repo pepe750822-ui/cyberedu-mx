@@ -75,11 +75,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    trackLogout();
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    setSession(null);
+    try {
+      trackLogout();
+      await supabase.auth.signOut();
+      
+      // Clear all local data to prevent session leakage between different accounts
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      setUser(null);
+      setProfile(null);
+      setSession(null);
+      
+      // Force a full page reload to clear any remaining in-memory states
+      window.location.href = "/auth";
+    } catch (error) {
+      console.error("Error during sign out:", error);
+      // Fallback: still clear data even if Supabase call fails
+      localStorage.clear();
+      window.location.href = "/auth";
+    }
   };
 
   return (
