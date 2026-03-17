@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
@@ -102,6 +102,18 @@ const PageViewTracker = () => {
   return null;
 };
 
+const AuthenticatedStudyTools = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  return (
+    <>
+      <AITutor />
+      <StreakAutoSync />
+      <AchievementObserver />
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -110,9 +122,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <PageViewTracker />
-          <AITutor />
-          <StreakAutoSync />
-          <AchievementObserver />
+          <AuthenticatedStudyTools />
           <PWAInstallBanner />
           <PWAStatusBar />
           <Routes>
