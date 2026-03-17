@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3 } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -92,6 +92,13 @@ const Header = () => {
             >
               <BarChart3 className="h-3.5 w-3.5" />
               Reportes
+            </Link>
+            <Link
+              to="/modalidades"
+              className="text-sm font-bold text-amber-500 hover:text-amber-400 transition-colors flex items-center gap-1 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 hover:border-amber-500/40 animate-pulse"
+            >
+              <CalendarDays className="h-3.5 w-3.5" />
+              Modalidades
             </Link>
             <a
               href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
@@ -239,6 +246,15 @@ const Header = () => {
                   >
                     <BarChart3 className="h-5 w-5 text-primary" />
                     Dashboard de Reportes
+                  </Link>
+                  <Link
+                    to="/modalidades"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-colors text-amber-500 font-bold border border-amber-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <CalendarDays className="h-5 w-5 text-amber-500" />
+                    Modalidades de Registro
+                    <span className="ml-auto text-[8px] bg-red-500 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Nuevo</span>
                   </Link>
                   <Link
                     to="/marketing"
