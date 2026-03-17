@@ -60,37 +60,33 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
       cleaned = 'flowchart ' + cleaned.substring(6);
     }
 
-    // 4. AUTO-FIX: Aggressively quote all labels that aren't already quoted
+    // 4. AUTO-FIX: Aggressively quote all labels and sanitize IDs
     const lines = cleaned.split('\n');
     const fixedLines = lines.map(line => {
       let fixed = line;
       
-      // Handle nodes: id[Label], id(Label), id((Label)), id{Label}, id[[Label]], id[(Label)], id{{Label}}
-      // Improved ID regex to allow dots (common in syllabus numbering like 4.3)
-      const idPattern = '([a-zA-Z0-9_\\-\\.]+)';
-      
-      // [Label] or [[Label]] or [(Label)]
-      fixed = fixed.replace(new RegExp(`${idPattern}\\[+([^"\\]\\n]+)\\]+`, 'g'), (match, id, label) => {
-        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
-        const brackets = match.includes('[[') ? '[[' : '[';
-        const closeBrackets = match.includes(']]') ? ']]' : ']';
-        return `${id}${brackets}"${label.trim()}"${closeBrackets}`;
+      // Handle nodes: id[Label], id(Label), etc.
+      // IDs often have dots (topic 4.3). We must sanitize these into safe strings.
+      fixed = fixed.replace(/([a-zA-Z0-9_\-\.]+)(\[+|(\(+)|(\{+))([^"\]\)\}\n]+)(\]+|(\)+)|(\}+))/g, (match, id, open, p1, p2, label, close) => {
+          // Sanitize ID: Replace dots with underscores (Mermaid IDs hate dots)
+          const safeId = id.replace(/\./g, '_');
+          const trimmedLabel = label.trim();
+          // Quote label if not already quoted
+          const finalLabel = (trimmedLabel.startsWith('"') && trimmedLabel.endsWith('"')) 
+            ? trimmedLabel 
+            : `"${trimmedLabel}"`;
+          
+          return `${safeId}${open}${finalLabel}${close}`;
       });
 
-      // (Label) or ((Label))
-      fixed = fixed.replace(new RegExp(`${idPattern}\\(+([^"\\)\\n]+)\\)+`, 'g'), (match, id, label) => {
-        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
-        const parens = match.includes('((') ? '((' : '(';
-        const closeParens = match.includes('))') ? '))' : ')';
-        return `${id}${parens}"${label.trim()}"${closeParens}`;
-      });
-
-      // {Label} or {{Label}}
-      fixed = fixed.replace(new RegExp(`${idPattern}\\{+([^"\\}\\n]+)\\}+`, 'g'), (match, id, label) => {
-        if (label.trim().startsWith('"') && label.trim().endsWith('"')) return match;
-        const braces = match.includes('{{') ? '{{' : '{';
-        const closeBraces = match.includes('}}') ? '}}' : '}';
-        return `${id}${braces}"${label.trim()}"${closeBraces}`;
+      // Handle Arrow Targets/Sources with dots: A.1 --> B.2
+      fixed = fixed.replace(/([a-zA-Z0-9_\-\.]+)(\s*-+>+\s*)([a-zA-Z0-9_\-\.]+)/g, (match, id1, arrow, id2) => {
+        // Only if it looks like a node reference (not a word like "flowchart" or "subgraph")
+        const keywords = ['flowchart', 'graph', 'subgraph', 'click', 'style', 'class', 'direction'];
+        if (keywords.includes(id1.toLowerCase()) || keywords.includes(id2.toLowerCase())) return match;
+        const s1 = id1.replace(/\./g, '_');
+        const s2 = id2.replace(/\./g, '_');
+        return `${s1}${arrow}${s2}`;
       });
 
       // Handle Arrow Labels: -->|Label| B
@@ -100,12 +96,9 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
         return `|"${trimmed}"|`;
       });
 
-      // Handle Subgraph Titles: subgraph id [Title] or subgraph Title
+      // Handle Subgraph Titles
       fixed = fixed.replace(/subgraph\s+([a-zA-Z0-9_\-\.]+)\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph $1 "$2"');
       fixed = fixed.replace(/subgraph\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph "$1"');
-
-      // 5. Fix common v11 breaking characters in unquoted places (like single quotes in ids)
-      // but this is risky if done globally. Let's stick to labels for now.
 
       return fixed;
     });
