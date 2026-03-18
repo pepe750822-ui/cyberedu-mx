@@ -359,61 +359,54 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   
   if (quizObj && Array.isArray(quizObj.questions)) {
     quizObj.questions = quizObj.questions.map(q => {
-      let ci = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
+      let ci: any = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
+      const options = q.options || [];
+      const explanation = (q.explanation || "").toLowerCase();
+      const upperCi = String(ci).toUpperCase().trim();
       
-      if (typeof ci === 'string' && q.options) {
-        const cleanCi = ci.trim().toLowerCase();
-        const upper = ci.toUpperCase().trim();
-        
-        // 1. Literal Index in Text (A, B, C, D) or "Opción A"
-        let foundIdx = -1;
-        if (upper === 'A' || upper.startsWith('OPCION A') || upper.startsWith('OPCIÓN A') || upper.startsWith('A)')) foundIdx = 0;
-        else if (upper === 'B' || upper.startsWith('OPCION B') || upper.startsWith('OPCIÓN B') || upper.startsWith('B)')) foundIdx = 1;
-        else if (upper === 'C' || upper.startsWith('OPCION C') || upper.startsWith('OPCIÓN C') || upper.startsWith('C)')) foundIdx = 2;
-        else if (upper === 'D' || upper.startsWith('OPCION D') || upper.startsWith('OPCIÓN D') || upper.startsWith('D)')) foundIdx = 3;
+      let bestIdx = -1;
 
-        // 2. Exact Option Text Match
-        if (foundIdx === -1) {
-          foundIdx = q.options.findIndex(o => 
-            String(o).trim().toLowerCase() === cleanCi
-          );
-        }
+      // 1. Literal Index Search (A, B, C, D)
+      if (upperCi === 'A' || upperCi.startsWith('A)') || upperCi.startsWith('OPCION A') || upperCi.startsWith('OPCIÓN A')) bestIdx = 0;
+      else if (upperCi === 'B' || upperCi.startsWith('B)') || upperCi.startsWith('OPCION B') || upperCi.startsWith('OPCIÓN B')) bestIdx = 1;
+      else if (upperCi === 'C' || upperCi.startsWith('C)') || upperCi.startsWith('OPCION C') || upperCi.startsWith('OPCIÓN C')) bestIdx = 2;
+      else if (upperCi === 'D' || upperCi.startsWith('D)') || upperCi.startsWith('OPCION D') || upperCi.startsWith('OPCIÓN D')) bestIdx = 3;
 
-        // 3. Numeric string checks (1-based vs 0-based heuristic)
-        if (foundIdx === -1) {
-          const matchNum = ci.match(/\d+/);
-          if (matchNum) {
-            const num = parseInt(matchNum[0], 10);
-            if (upper.includes('OPCION') || upper.includes('OPCIÓN') || upper.includes('PREGUNTA')) {
-              // If AI says "Opción 1", "Pregunta 1", it almost always means 1st option (index 0)
-              foundIdx = num > 0 ? num - 1 : 0;
-            } else if (num >= 0 && num < q.options.length) {
-              // If it's just a number and fits in range, trust it as 0-indexed index
-              foundIdx = num;
-            }
+      // 2. Cross-reference explanation with option text (POWERFUL FALLBACK)
+      // If AI's explanation mentions an option in bold or quotes, it's the gold standard.
+      if (bestIdx === -1) {
+        for (let i = 0; i < options.length; i++) {
+          const optText = String(options[i]).toLowerCase().trim();
+          if (optText.length < 3) continue;
+          if (explanation.includes(`**${optText}**`) || explanation.includes(`"${optText}"`)) {
+            bestIdx = i;
+            break;
           }
-        }
-
-        // 4. Fuzzy Match (Inclusion) - ONLY if string is meaningfully long to avoid single-char conflicts
-        if (foundIdx === -1 && cleanCi.length > 2) {
-          foundIdx = q.options.findIndex(o => {
-            const cleanOpt = String(o).trim().toLowerCase();
-            return cleanOpt.includes(cleanCi) || cleanCi.includes(cleanOpt);
-          });
-        }
-
-        if (foundIdx !== -1) {
-          ci = foundIdx;
-        } else {
-          ci = parseInt(upper, 10);
         }
       }
 
-      // Final fallback to 0 if all parsing failed to return a valid number
-      let finalCi = isNaN(Number(ci)) ? 0 : Number(ci);
-      
-      // Boundaries check to avoid crashes
-      if (q.options && (finalCi < 0 || finalCi >= q.options.length)) {
+      // 3. Exact Text Match against ci itself
+      if (bestIdx === -1 && typeof ci === 'string') {
+        const cleanCi = ci.toLowerCase().trim();
+        bestIdx = options.findIndex(o => String(o).toLowerCase().trim() === cleanCi);
+      }
+
+      // 4. Numeric fallback
+      if (bestIdx === -1) {
+        const matchNum = String(ci).match(/\d+/);
+        if (matchNum) {
+          const num = parseInt(matchNum[0], 10);
+          if (upperCi.includes('OPCION') || upperCi.includes('OPCIÓN')) {
+            bestIdx = num - 1; // "Opción 1" -> index 0
+          } else {
+            bestIdx = num; // Just a number
+          }
+        }
+      }
+
+      // Sanitize
+      let finalCi = Number(bestIdx);
+      if (isNaN(finalCi) || finalCi < 0 || finalCi >= options.length) {
         finalCi = 0;
       }
 
