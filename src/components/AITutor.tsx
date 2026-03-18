@@ -329,15 +329,39 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   if (quizObj && Array.isArray(quizObj.questions)) {
     quizObj.questions = quizObj.questions.map(q => {
       let ci = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
-      if (typeof ci === 'string') {
-        const upper = ci.toUpperCase().trim();
-        if (upper === 'A') ci = 0;
-        else if (upper === 'B') ci = 1;
-        else if (upper === 'C') ci = 2;
-        else if (upper === 'D') ci = 3;
-        else ci = parseInt(upper, 10);
+      
+      if (typeof ci === 'string' && q.options) {
+        // 1. Tries to match the exact string content of an option first
+        const foundIdx = q.options.findIndex(o => 
+          String(o).trim().toLowerCase() === ci.trim().toLowerCase()
+        );
+        
+        if (foundIdx !== -1) {
+          ci = foundIdx;
+        } else {
+          // 2. Checks if it's a letter (A, B, C, D)
+          const upper = ci.toUpperCase().trim();
+          if (upper === 'A' || upper === 'OPCIÓN A' || upper === 'OPCION A') ci = 0;
+          else if (upper === 'B' || upper === 'OPCIÓN B' || upper === 'OPCION B') ci = 1;
+          else if (upper === 'C' || upper === 'OPCIÓN C' || upper === 'OPCION C') ci = 2;
+          else if (upper === 'D' || upper === 'OPCIÓN D' || upper === 'OPCION D') ci = 3;
+          else {
+            // 3. Fallback to integer conversion
+            ci = parseInt(upper, 10);
+            // If it returns a 1-based numeric string (like "1" to "4" but not matching standard zero-based), we trust it. Unlikely for standard zero based JSON models unless prompted off.
+          }
+        }
       }
-      return { ...q, correctIndex: isNaN(Number(ci)) ? 0 : Number(ci) };
+
+      // Final fallback to 0 if all parsing failed to return a valid number
+      let finalCi = isNaN(Number(ci)) ? 0 : Number(ci);
+      
+      // Boundaries check to avoid crashes
+      if (q.options && (finalCi < 0 || finalCi >= q.options.length)) {
+        finalCi = 0;
+      }
+
+      return { ...q, correctIndex: finalCi };
     });
   }
 
