@@ -46,7 +46,7 @@ const CHART_ICONS: Record<ChartData["type"], React.ElementType> = {
 
 /** Detecta automáticamente las claves numéricas del dato */
 function detectKeys(data: Record<string, any>[]): string[] {
-  if (!data.length) return [];
+  if (!data || !Array.isArray(data) || !data.length) return [];
   return Object.keys(data[0]).filter((k) => k !== "x" && k !== "name" && typeof data[0][k] === "number");
 }
 
@@ -67,20 +67,32 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const keys = chart.keys?.length ? chart.keys : detectKeys(chart.data);
+  // Fallback to empty array if chart.data is missing or invalid
+  const validData = Array.isArray(chart?.data) ? chart.data : [];
+
+  const keys = chart.keys?.length ? chart.keys : detectKeys(validData);
   const colors = chart.colors?.length ? chart.colors : PALETTE;
   const showLegend = chart.legend !== false && keys.length > 1;
   const showGrid = chart.grid !== false;
-  const Icon = CHART_ICONS[chart.type] || TrendingUp;
+  const Icon = CHART_ICONS[chart?.type] || TrendingUp;
 
   // ── Nombre del eje X: prioriza "x", luego "name" ──
-  const xKey = chart.data[0] && "x" in chart.data[0] ? "x" : "name";
+  const xKey = validData[0] && "x" in validData[0] ? "x" : "name";
 
   const chartHeight = isFullscreen ? "h-[55vh]" : "h-[220px] sm:h-[260px]";
 
   const renderChart = () => {
+    // Si no hay datos, mostrar un placeholder o retornar null
+    if (!validData.length) {
+      return (
+        <div className="flex items-center justify-center h-full w-full text-slate-500 text-sm">
+          No hay datos para graficar.
+        </div>
+      );
+    }
+
     const commonProps = {
-      data: chart.data,
+      data: validData,
       margin: { top: 8, right: 16, left: 0, bottom: 4 },
     };
 
@@ -96,7 +108,7 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
       return (
         <PieChart>
           <Pie
-            data={chart.data}
+            data={validData}
             dataKey={pieKey}
             nameKey={xKey}
             cx="50%"
@@ -105,7 +117,7 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
             label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
             labelLine={{ stroke: "rgba(255,255,255,0.2)" }}
           >
-            {chart.data.map((_, i) => (
+            {validData.map((_, i) => (
               <Cell key={i} fill={colors[i % colors.length]} stroke="rgba(0,0,0,0.3)" />
             ))}
           </Pie>
@@ -189,7 +201,7 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
               {chart.title || "Gráfica"}
             </span>
             <span className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-[9px] font-black text-slate-500 uppercase tracking-wider">
-              {chart.type}
+              {chart.type || "unknown"}
             </span>
           </div>
           <div className="flex items-center gap-1">

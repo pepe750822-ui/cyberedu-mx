@@ -566,7 +566,7 @@ async function streamChat({
 // ─── Reasoning Card ───
 const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
   const [open, setOpen] = useState(false);
-  const confidenceColor = reasoning.confidence >= 80 ? "text-emerald-400" : reasoning.confidence >= 50 ? "text-amber-400" : "text-red-400";
+  const confidenceColor = (reasoning?.confidence || 0) >= 80 ? "text-emerald-400" : (reasoning?.confidence || 0) >= 50 ? "text-amber-400" : "text-red-400";
 
   return (
     <div className="mb-3 border border-amber-500/20 bg-amber-500/5 rounded-xl overflow-hidden">
@@ -599,7 +599,7 @@ const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
             <p className="text-slate-300">{reasoning.approach}</p>
           </div>
 
-          {reasoning.key_concepts.length > 0 && (
+          {reasoning?.key_concepts?.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {reasoning.key_concepts.map((c, i) => (
                 <span key={i} className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-sm text-slate-400">
@@ -609,7 +609,7 @@ const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
             </div>
           )}
 
-          {reasoning.alternatives_considered.length > 0 && (
+          {reasoning?.alternatives_considered?.length > 0 && (
             <div>
               <p className="text-slate-500 font-bold mb-1">Alternativas consideradas:</p>
               <ul className="space-y-0.5">
@@ -623,7 +623,7 @@ const ReasoningCard: React.FC<{ reasoning: Reasoning }> = ({ reasoning }) => {
             </div>
           )}
 
-          {reasoning.references_to_past && (
+          {reasoning?.references_to_past && (
             <div className="flex items-start gap-1.5 p-2 bg-primary/5 border border-primary/10 rounded-lg">
               <History className="h-3 w-3 text-primary mt-0.5 shrink-0" />
               <p className="text-slate-400">{reasoning.references_to_past}</p>
@@ -732,7 +732,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
           <span className="text-[10px] text-slate-500 flex items-center gap-1 font-bold">
             <Clock className="h-3 w-3" /> {step.estimatedTime}
           </span>
-          {step.dependsOn.length > 0 && (
+          {step?.dependsOn?.length > 0 && (
             <span className="text-[9px] text-slate-600 font-bold">→ ID: {step.dependsOn.join(", ")}</span>
           )}
         </div>
@@ -833,7 +833,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
       </div>
     </div>
 
-    {analysis.weakAreas.length > 0 && (
+    {analysis?.weakAreas?.length > 0 && (
       <div className="px-5 pb-4 space-y-3">
         <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">⚠️ Temas Críticos (Click para estudiar)</p>
         <div className="space-y-2">
@@ -856,7 +856,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
       </div>
     )}
 
-    {analysis.recommendations.length > 0 && (
+    {analysis?.recommendations?.length > 0 && (
       <div className="p-5 pt-4 bg-emerald-500/5 border-t border-white/5">
         <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3">💡 Plan de Mejora</p>
         <div className="space-y-2">
@@ -892,7 +892,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
 
 // ─── Quiz Card ───
 const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => {
-  const isEvaluated = quiz.questions.length > 0 && quiz.questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
+  const isEvaluated = quiz?.questions?.length > 0 && quiz.questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
 
   return (
     <div className="my-5 space-y-5">
@@ -907,7 +907,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
       </div>
       
       <div className="space-y-5">
-        {quiz.questions.map((q, qi) => {
+        {quiz?.questions?.map((q, qi) => {
           const actualId = q.id || `q${qi}`;
           const selectedOption = answers[actualId];
           const answered = selectedOption !== undefined;
@@ -986,7 +986,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
       </div>
 
       {isEvaluated && (() => {
-        const correctCount = quiz.questions.filter((q, qi) => {
+        const correctCount = quiz?.questions?.filter((q, qi) => {
           const userPick = answers[q.id || `q${qi}`];
           const target = Number(q.correctIndex);
           return userPick !== undefined && userPick === target;
