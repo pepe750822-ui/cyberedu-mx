@@ -324,8 +324,25 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   const parsed = safeParseJSON(quizMatch[1]);
   if (!parsed) return { quiz: null, cleanContent: content };
   
+  const quizObj = parsed as PersonalizedQuiz;
+  
+  if (quizObj && Array.isArray(quizObj.questions)) {
+    quizObj.questions = quizObj.questions.map(q => {
+      let ci = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
+      if (typeof ci === 'string') {
+        const upper = ci.toUpperCase().trim();
+        if (upper === 'A') ci = 0;
+        else if (upper === 'B') ci = 1;
+        else if (upper === 'C') ci = 2;
+        else if (upper === 'D') ci = 3;
+        else ci = parseInt(upper, 10);
+      }
+      return { ...q, correctIndex: isNaN(Number(ci)) ? 0 : Number(ci) };
+    });
+  }
+
   return { 
-    quiz: parsed as PersonalizedQuiz, 
+    quiz: quizObj, 
     cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "").trim() 
   };
 }
