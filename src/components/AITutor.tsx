@@ -2101,6 +2101,13 @@ const AITutor = () => {
 
       const history = [
         { role: systemMsg.role, content: systemMsg.content },
+        { 
+          role: "system" as const, 
+          content: `MEMORIA DE ACTIVIDAD RECIENTE:
+          - Tópicos visitados: ${memory.topics.join(', ')}
+          - Insights de aprendizaje: ${memory.insights.slice(-5).join(' | ')}
+          - Resultados de Quizes: ${memory.insights.filter(i => i.includes('completó el quiz')).slice(-3).join(' | ')}`
+        },
         ...conversationHistory,
         { role: userMsg.role, content: userMsg.content }
       ];
