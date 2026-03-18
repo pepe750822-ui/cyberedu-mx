@@ -792,12 +792,13 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
     
     <div className="space-y-5">
       {quiz.questions.map((q, qi) => {
-        const answered = answers[q.id] !== undefined;
-        const selectedOption = answers[q.id];
+        const actualId = q.id || `q${qi}`;
+        const answered = answers[actualId] !== undefined;
+        const selectedOption = answers[actualId];
         const isCorrect = answered && selectedOption === q.correctIndex;
         
         return (
-          <div key={q.id || qi} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
+          <div key={actualId} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
             {/* Si ya contestó, ponemos una tirita a la izquierda indicando el resultado para mejor usabilidad */}
             {answered && (
               <div className={cn(
@@ -818,7 +819,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
                 return (
                   <button
                     key={oi}
-                    onClick={() => !answered && onAnswer(q.id, oi)}
+                    onClick={() => !answered && onAnswer(actualId, oi)}
                     disabled={answered}
                     className={cn(
                       "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
@@ -1677,7 +1678,6 @@ const AITutor = () => {
         }]);
         return;
       }
-      setQuizAnswers({});
       setMessages(prev => [...prev, {
         role: "user" as const, content: text.trim(), id: Date.now().toString()
       }, {
@@ -2105,7 +2105,14 @@ const AITutor = () => {
                       {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
                       {msg.report && <ReportCard report={msg.report} />}
                       {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
-                      {msg.quiz && <QuizCard quiz={msg.quiz} answers={quizAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [qId]: idx }))} />}
+                      {msg.quiz && (() => {
+                        const msgAnswers = Object.fromEntries(
+                          Object.entries(quizAnswers)
+                            .filter(([k]) => k.startsWith(msg.id + '_'))
+                            .map(([k, v]) => [k.substring(msg.id.length + 1), v])
+                        );
+                        return <QuizCard quiz={msg.quiz} answers={msgAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [`${msg.id}_${qId}`]: idx }))} />;
+                      })()}
                       {msg.charts?.map((chart, i) => <ChartRenderer key={i} chart={chart} />)}
                       {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
                       {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
