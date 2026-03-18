@@ -2096,13 +2096,25 @@ const AITutor = () => {
            REGLA CRÍTICA MERMAID v11: 
            - USA SIEMPRE 'flowchart TD' o 'flowchart LR' y COMILLAS DOBLES en etiquetas con acentos o paréntesis (Ej: A["Física (Mecánica)"]).
         5. QUIZ INTERACTIVO (REGLAS MUY IMPORTANTES):
-           Genera bloque <quiz> JSON para repasos con estas reglas ESTRICTAS:
-           - CRÍTICO: "correctIndex" DEBE ser un número entero 0-basado: 0, 1, 2 ó 3.
-           - 0=primera opción, 1=segunda, 2=tercera, 3=cuarta.
-           - PROHIBIDO USAR letras (A,B,C,D) o texto descriptivo en correctIndex.
-           - PROHIBIDO USAR índice 1-basado (1,2,3,4).
-           - VERIFICA: options[correctIndex] debe ser EXACTAMENTE la respuesta correcta.
-           Ejemplo correcto: {"text":"¿Capital de Francia?","options":["Madrid","París","Roma","Berlín"],"correctIndex": 1,"explanation":"París es la capital de Francia."}
+           Genera tu respuesta estrictamente encapsulada en la etiqueta <quiz> usando JSON válido. 
+           EJEMPLO OBLIGATORIO DE ESTRUCTURA:
+           <quiz>
+           {
+             "title": "Título del Quiz",
+             "difficulty": "Difícil",
+             "focusArea": "biologia",
+             "questions": [
+               {
+                 "text": "¿Pregunta de ejemplo?",
+                 "options": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+                 "correctIndex": 0,
+                 "explanation": "Explicación breve de por qué es la correcta."
+               }
+             ]
+           }
+           </quiz>
+           - CRÍTICO: "correctIndex" DEBE ser un número entero 0-basado correspondondiente al arreglo options.
+           - PROHIBIDO usar letras, índices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
         8. BLOQUEO: No respondas temas fuera del ECOEMS.`
