@@ -13,12 +13,32 @@ mermaid.initialize({
   securityLevel: 'loose',
   fontFamily: 'Inter, sans-serif',
   themeVariables: {
-    primaryColor: '#6366f1',
-    primaryTextColor: '#fff',
-    primaryBorderColor: '#6366f1',
-    lineColor: '#4f46e5',
+    // Primary palette
+    primaryColor: '#312e81',        // dark indigo background for nodes
+    primaryTextColor: '#e2e8f0',    // light slate text
+    primaryBorderColor: '#6366f1',  // indigo border
+    lineColor: '#6366f1',
+    // Secondary / tertiary node colors
     secondaryColor: '#1e1b4b',
-    tertiaryColor: '#0f172a'
+    tertiaryColor: '#0f172a',
+    // Node fill and text
+    nodeBkg: '#1e1b4b',
+    nodeBorder: '#6366f1',
+    clusterBkg: '#0f172a',
+    clusterBorder: '#4f46e5',
+    // Edge labels
+    edgeLabelBackground: '#1e1b4b',
+    // Text
+    titleColor: '#e2e8f0',
+    textColor: '#cbd5e1',
+    // Overall background
+    mainBkg: '#0f172a',
+    background: '#0f172a',
+    // Pie chart
+    pie1: '#6366f1',
+    pie2: '#22d3ee',
+    pie3: '#f59e0b',
+    pie4: '#10b981',
   },
   flowchart: {
     useMaxWidth: false,
@@ -321,9 +341,43 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
             style={{ 
               transform: `scale(${zoom})`, 
               transformOrigin: isFullscreen ? 'center' : 'top center',
-              width: 'max-content'
+              width: 'max-content',
+              // Force dark node backgrounds so white text is always visible
+              ['--mermaid-primary-color' as string]: '#312e81',
             }}
-          />
+          >
+            <style>{`
+              .mermaid .node rect,
+              .mermaid .node circle,
+              .mermaid .node ellipse,
+              .mermaid .node polygon,
+              .mermaid .node path {
+                fill: #1e1b4b !important;
+                stroke: #6366f1 !important;
+              }
+              .mermaid .node .label,
+              .mermaid .nodeLabel,
+              .mermaid text {
+                fill: #e2e8f0 !important;
+                color: #e2e8f0 !important;
+              }
+              .mermaid .edgeLabel {
+                background-color: #1e1b4b !important;
+                color: #cbd5e1 !important;
+              }
+              .mermaid .edgeLabel rect {
+                fill: #1e1b4b !important;
+                opacity: 0.9 !important;
+              }
+              .mermaid .cluster rect {
+                fill: #0f172a !important;
+                stroke: #4f46e5 !important;
+              }
+              .mermaid .cluster text {
+                fill: #a5b4fc !important;
+              }
+            `}</style>
+          </div>
         </div>
 
         {!isFullscreen && !error && (
