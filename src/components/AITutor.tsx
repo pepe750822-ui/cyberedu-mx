@@ -362,10 +362,20 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
       let ci = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
       
       if (typeof ci === 'string' && q.options) {
-        // 1. Tries to match the exact string content of an option first
-        const foundIdx = q.options.findIndex(o => 
-          String(o).trim().toLowerCase() === ci.trim().toLowerCase()
+        const cleanCi = ci.trim().toLowerCase();
+        // 1. Exact match
+        let foundIdx = q.options.findIndex(o => 
+          String(o).trim().toLowerCase() === cleanCi
         );
+        
+        // 1.5 Fuzzy match (inclusion) if exact match fails
+        if (foundIdx === -1) {
+           foundIdx = q.options.findIndex(o => {
+             const cleanOpt = String(o).trim().toLowerCase();
+             // Match if the option contains the correctIndex text, or if the correctIndex text contains the option (ignoring minor prefixes like 'c)', '3.', etc.)
+             return cleanOpt.includes(cleanCi) || cleanCi.includes(cleanOpt);
+           });
+        }
         
         if (foundIdx !== -1) {
           ci = foundIdx;
@@ -377,9 +387,19 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
           else if (upper === 'C' || upper === 'OPCIÓN C' || upper === 'OPCION C') ci = 2;
           else if (upper === 'D' || upper === 'OPCIÓN D' || upper === 'OPCION D') ci = 3;
           else {
-            // 3. Fallback to integer conversion
-            ci = parseInt(upper, 10);
-            // If it returns a 1-based numeric string (like "1" to "4" but not matching standard zero-based), we trust it. Unlikely for standard zero based JSON models unless prompted off.
+            // 3. Fallback to integer conversion from strings like "Opción 3" or just "3"
+            const matchNum = ci.match(/\d+/);
+            if (matchNum) {
+               const num = parseInt(matchNum[0], 10);
+               // Si la IA dice "Opción 1", asume índice 0. Si dice "Opción 3", índice 2
+               if (upper.includes('OPCION') || upper.includes('OPCIÓN')) {
+                   ci = num > 0 ? num - 1 : 0;
+               } else {
+                   ci = num;
+               }
+            } else {
+               ci = parseInt(upper, 10);
+            }
           }
         }
       }
