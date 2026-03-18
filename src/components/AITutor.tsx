@@ -1598,6 +1598,45 @@ const AITutor = () => {
     }));
   };
 
+  const handleQuizAnswer = (msgId: string, quiz: PersonalizedQuiz, qId: string, selectedIdx: number) => {
+    setQuizAnswers(prev => {
+      const newState = { ...prev, [`${msgId}_${qId}`]: selectedIdx };
+
+      const question = quiz.questions.find((q, i) => (q.id || `q${i}`) === qId);
+      if (question) {
+        const isCorrect = selectedIdx === question.correctIndex;
+        setMemory(mem => ({
+          ...mem,
+          insights: [
+            ...mem.insights,
+            `El usuario respondió ${isCorrect ? "correctamente" : "incorrectamente"} la pregunta: "${question.text || (question as any).question || (question as any).pregunta}"`
+          ].slice(-20)
+        }));
+      }
+
+      const allKeys = quiz.questions.map((q, i) => `${msgId}_${q.id || `q${i}`}`);
+      const isComplete = allKeys.every(k => newState[k] !== undefined);
+
+      if (isComplete) {
+        let score = 0;
+        quiz.questions.forEach((q, i) => {
+          if (newState[`${msgId}_${q.id || `q${i}`}`] === q.correctIndex) score++;
+        });
+
+        setMemory(mem => ({
+          ...mem,
+          topics: [...new Set([...mem.topics, quiz.focusArea])].slice(-15),
+          insights: [
+            ...mem.insights,
+            `El usuario completó el quiz "${quiz.title}" con ${score} aciertos de ${quiz.questions.length}.`
+          ].slice(-20)
+        }));
+      }
+
+      return newState;
+    });
+  };
+
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
 
@@ -2111,7 +2150,7 @@ const AITutor = () => {
                             .filter(([k]) => k.startsWith(msg.id + '_'))
                             .map(([k, v]) => [k.substring(msg.id.length + 1), v])
                         );
-                        return <QuizCard quiz={msg.quiz} answers={msgAnswers} onAnswer={(qId, idx) => setQuizAnswers(prev => ({ ...prev, [`${msg.id}_${qId}`]: idx }))} />;
+                        return <QuizCard quiz={msg.quiz} answers={msgAnswers} onAnswer={(qId, idx) => handleQuizAnswer(msg.id, msg.quiz!, qId, idx)} />;
                       })()}
                       {msg.charts?.map((chart, i) => <ChartRenderer key={i} chart={chart} />)}
                       {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
