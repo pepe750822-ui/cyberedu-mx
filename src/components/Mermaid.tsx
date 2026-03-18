@@ -65,18 +65,21 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
     const fixedLines = lines.map(line => {
       let fixed = line;
       
-      // Handle nodes: id[Label], id(Label), etc.
-      // IDs often have dots (topic 4.3). We must sanitize these into safe strings.
+      // Handle nodes: id[Label], id(Label), id{Label}, id((Label)), etc.
+      // We look for any character string inside brackets that isn't already quoted.
       fixed = fixed.replace(/([a-zA-Z0-9_\-\.]+)(\[+|(\(+)|(\{+))([^"\]\)\}\n]+)(\]+|(\)+)|(\}+))/g, (match, id, open, p1, p2, label, close) => {
-          // Sanitize ID: Replace dots with underscores (Mermaid IDs hate dots)
           const safeId = id.replace(/\./g, '_');
-          const trimmedLabel = label.trim();
-          // Quote label if not already quoted
-          const finalLabel = (trimmedLabel.startsWith('"') && trimmedLabel.endsWith('"')) 
-            ? trimmedLabel 
-            : `"${trimmedLabel}"`;
+          let trimmedLabel = label.trim();
           
-          return `${safeId}${open}${finalLabel}${close}`;
+          // Ensure label is quoted if not already
+          if (!(trimmedLabel.startsWith('"') && trimmedLabel.endsWith('"'))) {
+            // Remove any existing backslashes for quotes to avoid double escaping
+            trimmedLabel = trimmedLabel.replace(/\\"/g, '"');
+            // Quote it
+            trimmedLabel = `"${trimmedLabel}"`;
+          }
+          
+          return `${safeId}${open}${trimmedLabel}${close}`;
       });
 
       // Handle Arrow Targets/Sources with dots: A.1 --> B.2
