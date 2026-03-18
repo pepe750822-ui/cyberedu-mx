@@ -994,21 +994,28 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
         </div>
       )}
 
-      {isEvaluated && (
-        <div className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center">
-          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
-          <div className="flex items-center gap-4">
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
-                <p className="text-3xl font-black text-emerald-400">{quiz.questions.filter((q, qi) => answers[q.id || `q${qi}`] === Number(q.correctIndex || 0)).length}</p>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
-                <p className="text-3xl font-black text-white">{quiz.questions.length}</p>
+      {isEvaluated && (() => {
+        const correctCount = quiz.questions.filter((q, qi) => {
+          const userPick = answers[q.id || `q${qi}`];
+          return userPick !== undefined && userPick === q.correctIndex;
+        }).length;
+        
+        return (
+          <div className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center">
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
+            <div className="flex items-center gap-4">
+              <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
+                  <p className="text-3xl font-black text-emerald-400">{correctCount}</p>
+              </div>
+              <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
+                  <p className="text-3xl font-black text-white">{quiz.questions.length}</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 };
