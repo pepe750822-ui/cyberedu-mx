@@ -869,7 +869,98 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
 
 // ─── Quiz Card ───
 const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => {
+  const isEvaluated = quiz.questions.length > 0 && quiz.questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
 
+  return (
+    <div className="my-5 space-y-5">
+      <div className="p-5 border-b-2 border-indigo-500/20 bg-indigo-500/5 rounded-t-[2rem] rounded-b-xl shadow-sm">
+        <div className="flex items-center gap-3">
+          <Sparkles className="h-5 w-5 text-indigo-400" />
+          <div>
+            <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz.title}</h3>
+            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="space-y-5">
+        {quiz.questions.map((q, qi) => {
+          const actualId = q.id || `q${qi}`;
+          const selectedOption = answers[actualId];
+          const answered = selectedOption !== undefined;
+          const isCorrect = answered && selectedOption === Number(q.correctIndex || 0);
+          
+          return (
+            <div key={actualId} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
+              {answered && (
+                <div className={cn(
+                  "absolute left-0 top-0 bottom-0 w-1.5",
+                  isCorrect ? "bg-emerald-500" : "bg-rose-500"
+                )} />
+              )}
+
+              <h4 className="text-base md:text-lg font-bold text-white mb-5 leading-tight">
+                <span className="text-indigo-400 mr-1">{qi + 1}.</span> {q.text || (q as any).question || (q as any).pregunta}
+              </h4>
+
+              <div className="space-y-2.5">
+                {q.options?.map((opt, oi) => {
+                  const isOptCorrect = oi === Number(q.correctIndex || 0);
+                  const isSelected = oi === selectedOption;
+
+                  return (
+                    <button
+                      key={oi}
+                      onClick={() => !answered && onAnswer(actualId, oi)}
+                      disabled={answered}
+                      className={cn(
+                        "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
+                        !answered && "border-white/5 bg-white/5 hover:border-indigo-500/40 hover:bg-indigo-500/5",
+                        answered && isOptCorrect && "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+                        answered && isSelected && !isOptCorrect && "border-rose-500/50 bg-rose-500/10 text-rose-400",
+                        answered && !isSelected && !isOptCorrect && "border-white/5 bg-white/5 opacity-40"
+                      )}
+                    >
+                      <span className="font-bold text-sm">{opt}</span>
+                      {answered && isOptCorrect && <CheckCircle2 className="h-5 w-5 shrink-0" />}
+                      {answered && isSelected && !isOptCorrect && <XCircle className="h-5 w-5 shrink-0" />}
+                      {!answered && <Circle className="h-5 w-5 shrink-0 text-white/20 group-hover:text-white/40" />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <AnimatePresence>
+                {answered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={cn(
+                      "mt-5 p-4 rounded-2xl border shadow-lg",
+                      isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
+                    )}
+                  >
+                    <div className="flex gap-4">
+                      <div className={cn(
+                        "p-2 rounded-xl h-fit",
+                        isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                      )}>
+                        <AlertCircle className="h-4 w-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
+                        <p className="text-xs font-medium text-slate-300 leading-relaxed">
+                          {q.explanation}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
 
       {isEvaluated && (() => {
         const correctCount = quiz.questions.filter((q, qi) => {
@@ -879,7 +970,11 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
         }).length;
         
         return (
-          <div className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center animate-in zoom-in-95 duration-500">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center"
+          >
             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
             <div className="flex items-center gap-4">
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
@@ -891,7 +986,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
                   <p className="text-3xl font-black text-white">{quiz.questions.length}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         );
       })()}
     </div>
