@@ -25,6 +25,7 @@ import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 /** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
 const OAuthPassthrough = () => {
@@ -126,6 +127,7 @@ const App = () => (
           <AuthenticatedStudyTools />
           <PWAInstallBanner />
           <PWAStatusBar />
+          <WhatsAppButton />
           <Routes>
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
             <Route path="/area/:areaId" element={<ProtectedRoute><AreaDetail /></ProtectedRoute>} />
