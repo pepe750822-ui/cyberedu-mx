@@ -63,71 +63,86 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   const cleanChart = useCallback((input: string) => {
     let cleaned = input.trim();
     
-    // 1. Strip Markdown and XML-like tags (AI often wraps things)
+    // 1. Strip Markdown and XML-like tags
     cleaned = cleaned
-      .replace(/^```mermaid\s+/i, '')
-      .replace(/^```\s+/i, '')
-      .replace(/```$/g, '')
+      .replace(/^```mermaid\s*/im, '')
+      .replace(/^```\s*/im, '')
+      .replace(/```\s*$/gm, '')
       .replace(/<mermaid>|<\/mermaid>/gi, '')
+      .replace(/^mermaid\s+/i, '')
       .trim();
 
-    // 2. Remove leading 'mermaid' keyword if present
-    cleaned = cleaned.replace(/^mermaid\s+/i, '');
-    
-    // 3. Normalize Diagram Type to Flowchart (v11 preference)
-    // graph TD -> flowchart TD
-    if (cleaned.startsWith('graph ')) {
-      cleaned = 'flowchart ' + cleaned.substring(6);
+    // 2. graph TD -> flowchart TD (v11 preference)
+    if (/^graph\s/i.test(cleaned)) {
+      cleaned = 'flowchart ' + cleaned.replace(/^graph\s/i, '');
     }
 
-    // 4. AUTO-FIX: Aggressively quote all labels and sanitize IDs
+    // 3. Process line-by-line for targeted fixes
     const lines = cleaned.split('\n');
     const fixedLines = lines.map(line => {
       let fixed = line;
-      
-      // Handle nodes: id[Label], id(Label), id{Label}, id((Label)), etc.
-      // We look for any character string inside brackets that isn't already quoted.
-      fixed = fixed.replace(/([a-zA-Z0-9_\-\.]+)(\[+|(\(+)|(\{+))([^"\]\)\}\n]+)(\]+|(\)+)|(\}+))/g, (match, id, open, p1, p2, label, close) => {
-          const safeId = id.replace(/\./g, '_');
-          let trimmedLabel = label.trim();
-          
-          // Ensure label is quoted if not already
-          if (!(trimmedLabel.startsWith('"') && trimmedLabel.endsWith('"'))) {
-            // Remove any existing backslashes for quotes to avoid double escaping
-            trimmedLabel = trimmedLabel.replace(/\\"/g, '"');
-            // Quote it
-            trimmedLabel = `"${trimmedLabel}"`;
-          }
-          
-          return `${safeId}${open}${trimmedLabel}${close}`;
-      });
 
-      // Handle Arrow Targets/Sources with dots: A.1 --> B.2
-      fixed = fixed.replace(/([a-zA-Z0-9_\-\.]+)(\s*-+>+\s*)([a-zA-Z0-9_\-\.]+)/g, (match, id1, arrow, id2) => {
-        // Only if it looks like a node reference (not a word like "flowchart" or "subgraph")
-        const keywords = ['flowchart', 'graph', 'subgraph', 'click', 'style', 'class', 'direction'];
-        if (keywords.includes(id1.toLowerCase()) || keywords.includes(id2.toLowerCase())) return match;
-        const s1 = id1.replace(/\./g, '_');
-        const s2 = id2.replace(/\./g, '_');
-        return `${s1}${arrow}${s2}`;
-      });
+      // Fix dots in node IDs before arrow operators (A.1 --> B.2)
+      fixed = fixed.replace(
+        /\b([a-zA-Z][a-zA-Z0-9_]*)\.([a-zA-Z0-9_]+)\b/g,
+        '$1_$2'
+      );
 
-      // Handle Arrow Labels: -->|Label| B
-      fixed = fixed.replace(/\|([^"\|\n]+)\|/g, (match, label) => {
-        const trimmed = label.trim();
-        if (trimmed.startsWith('"') && trimmed.endsWith('"')) return match;
-        return `|"${trimmed}"|`;
-      });
+      // Quote unquoted square-bracket labels: id[label] -> id["label"]
+      // Uses \] as the only valid closer (avoids cross-bracket bugs)
+      fixed = fixed.replace(
+        /([a-zA-Z][a-zA-Z0-9_]*)\[([^"\]\n][^\]\n]*)\]/g,
+        (_, id, label) => {
+          const safe = label.trim().replace(/"/g, "'");
+          return `${id}["${safe}"]`;
+        }
+      );
 
-      // Handle Subgraph Titles
-      fixed = fixed.replace(/subgraph\s+([a-zA-Z0-9_\-\.]+)\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph $1 "$2"');
-      fixed = fixed.replace(/subgraph\s+([^" \n\r][^"\n\r]*)$/g, 'subgraph "$1"');
+      // Quote unquoted diamond labels: id{label} -> id{"label"}
+      fixed = fixed.replace(
+        /([a-zA-Z][a-zA-Z0-9_]*)\{([^"{\}\n][^{\}\n]*)\}/g,
+        (_, id, label) => {
+          const safe = label.trim().replace(/"/g, "'");
+          return `${id}{"${safe}"}`;
+        }
+      );
+
+      // Quote unquoted double-paren (circle) labels: id((label)) -> id(("label"))
+      fixed = fixed.replace(
+        /([a-zA-Z][a-zA-Z0-9_]*)\(\(([^"()\n][^()\n]*)\)\)/g,
+        (_, id, label) => {
+          const safe = label.trim().replace(/"/g, "'");
+          return `${id}(("${safe}"))`;
+        }
+      );
+
+      // Quote unquoted round-bracket labels: id(label) -> id("label")
+      // Do this AFTER double-paren so we don't double-process
+      fixed = fixed.replace(
+        /([a-zA-Z][a-zA-Z0-9_]*)\(([^"()\n][^()\n]*)\)/g,
+        (_, id, label) => {
+          const safe = label.trim().replace(/"/g, "'");
+          return `${id}("${safe}")`;
+        }
+      );
+
+      // Quote unquoted arrow labels: -->|label| -> -->|"label"|
+      fixed = fixed.replace(
+        /\|([^"'|\n][^|\n]*)\|/g,
+        (_, label) => `|"${label.trim().replace(/"/g, "'")}"|`
+      );
+
+      // Quote unquoted subgraph titles
+      fixed = fixed.replace(
+        /^(\s*subgraph\s+)([^"\n][^\n]*)$/,
+        (_, prefix, title) => `${prefix}"${title.trim().replace(/"/g, "'")}"`
+      );
 
       return fixed;
     });
     cleaned = fixedLines.join('\n');
 
-    // 5. Normalize HTML entities
+    // 4. Normalize HTML entities
     cleaned = cleaned
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
@@ -135,6 +150,43 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
       .replace(/&amp;/g, '&');
     
     return cleaned.trim();
+  }, []);
+
+  // Inject dark-theme CSS for SVG nodes only once
+  useEffect(() => {
+    const styleId = 'mermaid-dark-override';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = `
+        .mermaid-container .node rect,
+        .mermaid-container .node circle,
+        .mermaid-container .node ellipse,
+        .mermaid-container .node polygon,
+        .mermaid-container .node path {
+          fill: #1e1b4b !important;
+          stroke: #6366f1 !important;
+        }
+        .mermaid-container .nodeLabel,
+        .mermaid-container text.nodeLabel {
+          color: #e2e8f0 !important;
+          fill: #e2e8f0 !important;
+        }
+        .mermaid-container .edgeLabel rect {
+          fill: #1e1b4b !important;
+          opacity: 0.95 !important;
+        }
+        .mermaid-container .edgeLabel span {
+          color: #cbd5e1 !important;
+          background: #1e1b4b !important;
+        }
+        .mermaid-container .cluster rect {
+          fill: #0f172a !important;
+          stroke: #4f46e5 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }, []);
 
   const renderChart = useCallback(async () => {
@@ -337,47 +389,13 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
 
           <div 
             ref={ref} 
-            className={cn("mermaid transition-transform duration-200", error && "opacity-20 grayscale pointer-events-none")}
+            className={cn("mermaid-container mermaid transition-transform duration-200", error && "opacity-20 grayscale pointer-events-none")}
             style={{ 
               transform: `scale(${zoom})`, 
               transformOrigin: isFullscreen ? 'center' : 'top center',
               width: 'max-content',
-              // Force dark node backgrounds so white text is always visible
-              ['--mermaid-primary-color' as string]: '#312e81',
             }}
-          >
-            <style>{`
-              .mermaid .node rect,
-              .mermaid .node circle,
-              .mermaid .node ellipse,
-              .mermaid .node polygon,
-              .mermaid .node path {
-                fill: #1e1b4b !important;
-                stroke: #6366f1 !important;
-              }
-              .mermaid .node .label,
-              .mermaid .nodeLabel,
-              .mermaid text {
-                fill: #e2e8f0 !important;
-                color: #e2e8f0 !important;
-              }
-              .mermaid .edgeLabel {
-                background-color: #1e1b4b !important;
-                color: #cbd5e1 !important;
-              }
-              .mermaid .edgeLabel rect {
-                fill: #1e1b4b !important;
-                opacity: 0.9 !important;
-              }
-              .mermaid .cluster rect {
-                fill: #0f172a !important;
-                stroke: #4f46e5 !important;
-              }
-              .mermaid .cluster text {
-                fill: #a5b4fc !important;
-              }
-            `}</style>
-          </div>
+          />
         </div>
 
         {!isFullscreen && !error && (
