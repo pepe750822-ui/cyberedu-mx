@@ -363,44 +363,49 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
       
       if (typeof ci === 'string' && q.options) {
         const cleanCi = ci.trim().toLowerCase();
-        // 1. Exact match
-        let foundIdx = q.options.findIndex(o => 
-          String(o).trim().toLowerCase() === cleanCi
-        );
+        const upper = ci.toUpperCase().trim();
         
-        // 1.5 Fuzzy match (inclusion) if exact match fails
+        // 1. Literal Index in Text (A, B, C, D) or "Opción A"
+        let foundIdx = -1;
+        if (upper === 'A' || upper.startsWith('OPCION A') || upper.startsWith('OPCIÓN A') || upper.startsWith('A)')) foundIdx = 0;
+        else if (upper === 'B' || upper.startsWith('OPCION B') || upper.startsWith('OPCIÓN B') || upper.startsWith('B)')) foundIdx = 1;
+        else if (upper === 'C' || upper.startsWith('OPCION C') || upper.startsWith('OPCIÓN C') || upper.startsWith('C)')) foundIdx = 2;
+        else if (upper === 'D' || upper.startsWith('OPCION D') || upper.startsWith('OPCIÓN D') || upper.startsWith('D)')) foundIdx = 3;
+
+        // 2. Exact Option Text Match
         if (foundIdx === -1) {
-           foundIdx = q.options.findIndex(o => {
-             const cleanOpt = String(o).trim().toLowerCase();
-             // Match if the option contains the correctIndex text, or if the correctIndex text contains the option (ignoring minor prefixes like 'c)', '3.', etc.)
-             return cleanOpt.includes(cleanCi) || cleanCi.includes(cleanOpt);
-           });
+          foundIdx = q.options.findIndex(o => 
+            String(o).trim().toLowerCase() === cleanCi
+          );
         }
-        
+
+        // 3. Numeric string checks (1-based vs 0-based heuristic)
+        if (foundIdx === -1) {
+          const matchNum = ci.match(/\d+/);
+          if (matchNum) {
+            const num = parseInt(matchNum[0], 10);
+            if (upper.includes('OPCION') || upper.includes('OPCIÓN') || upper.includes('PREGUNTA')) {
+              // If AI says "Opción 1", "Pregunta 1", it almost always means 1st option (index 0)
+              foundIdx = num > 0 ? num - 1 : 0;
+            } else if (num >= 0 && num < q.options.length) {
+              // If it's just a number and fits in range, trust it as 0-indexed index
+              foundIdx = num;
+            }
+          }
+        }
+
+        // 4. Fuzzy Match (Inclusion) - ONLY if string is meaningfully long to avoid single-char conflicts
+        if (foundIdx === -1 && cleanCi.length > 2) {
+          foundIdx = q.options.findIndex(o => {
+            const cleanOpt = String(o).trim().toLowerCase();
+            return cleanOpt.includes(cleanCi) || cleanCi.includes(cleanOpt);
+          });
+        }
+
         if (foundIdx !== -1) {
           ci = foundIdx;
         } else {
-          // 2. Checks if it's a letter (A, B, C, D)
-          const upper = ci.toUpperCase().trim();
-          if (upper === 'A' || upper === 'OPCIÓN A' || upper === 'OPCION A') ci = 0;
-          else if (upper === 'B' || upper === 'OPCIÓN B' || upper === 'OPCION B') ci = 1;
-          else if (upper === 'C' || upper === 'OPCIÓN C' || upper === 'OPCION C') ci = 2;
-          else if (upper === 'D' || upper === 'OPCIÓN D' || upper === 'OPCION D') ci = 3;
-          else {
-            // 3. Fallback to integer conversion from strings like "Opción 3" or just "3"
-            const matchNum = ci.match(/\d+/);
-            if (matchNum) {
-               const num = parseInt(matchNum[0], 10);
-               // Si la IA dice "Opción 1", asume índice 0. Si dice "Opción 3", índice 2
-               if (upper.includes('OPCION') || upper.includes('OPCIÓN')) {
-                   ci = num > 0 ? num - 1 : 0;
-               } else {
-                   ci = num;
-               }
-            } else {
-               ci = parseInt(upper, 10);
-            }
-          }
+          ci = parseInt(upper, 10);
         }
       }
 
