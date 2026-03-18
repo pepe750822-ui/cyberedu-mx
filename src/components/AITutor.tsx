@@ -357,6 +357,13 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   
   const quizObj = parsed as PersonalizedQuiz;
   
+  if (!quizObj || !Array.isArray(quizObj.questions)) {
+    return { 
+      quiz: null, 
+      cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "\n\n> ⚠️ *El Agente intentó generar un Quiz, pero el formato interno fue inválido (faltaron las preguntas). Dile que lo vuelva a intentar.*\n\n").trim() 
+    };
+  }
+
   if (quizObj && Array.isArray(quizObj.questions)) {
     quizObj.questions = quizObj.questions.map(q => {
       let ci: any = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
@@ -901,7 +908,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
           <Sparkles className="h-5 w-5 text-indigo-400" />
           <div>
             <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz.title}</h3>
-            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz.difficulty} · {quiz?.questions?.length || 0} reactivos</p>
           </div>
         </div>
       </div>
@@ -1616,7 +1623,7 @@ const AITutor = () => {
 
     if (report.totalQuizzes > 0 || performanceRecs.length > 0 || alerts.length > 0) {
       setMessages(prev => prev.map(m => {
-        if (m.id !== 'initial' || m.report) return m;
+        if (m.id !== 'initial' || (m as any).hydrated) return m;
 
         let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento en el temario ECOEMS.\n\n";
         
@@ -1633,7 +1640,8 @@ const AITutor = () => {
           ...m, 
           content: welcomeText,
           report: report.totalQuizzes > 0 ? report : undefined,
-          alerts: alerts.length > 0 ? alerts : undefined
+          alerts: alerts.length > 0 ? alerts : undefined,
+          hydrated: true
         };
       }));
     }
