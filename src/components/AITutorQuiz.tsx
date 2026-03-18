@@ -17,6 +17,22 @@ interface Props {
     onAskHelp?: (question: string) => void;
 }
 
+const MEMORY_KEY = "cyberagent_memory_v2";
+const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
+
+function updateAgentMemory(updater: (mem: any) => any) {
+    try {
+        const raw = localStorage.getItem(MEMORY_KEY);
+        let mem = { decisions: [], topics: [], insights: [], lastUpdated: Date.now() };
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Date.now() - parsed.lastUpdated < MEMORY_TTL) mem = parsed;
+        }
+        const updated = updater(mem);
+        localStorage.setItem(MEMORY_KEY, JSON.stringify({ ...updated, lastUpdated: Date.now() }));
+    } catch { /* ignore */ }
+}
+
 export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -34,8 +50,16 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
         setIsAnswered(true);
         if (index === currentQuestion.correct_index) {
             setScore(prev => prev + 1);
+            updateAgentMemory(mem => ({
+                ...mem,
+                insights: [...mem.insights, `El usuario respondió correctamente la pregunta interactiva: "${currentQuestion.question}"`].slice(-20)
+            }));
         } else {
             setIncorrectQuestions(prev => [...prev, currentQuestion.question]);
+            updateAgentMemory(mem => ({
+                ...mem,
+                insights: [...mem.insights, `El usuario erró la pregunta interactiva: "${currentQuestion.question}" (eligió opción incorrecta)`].slice(-20)
+            }));
         }
     };
 
@@ -57,6 +81,13 @@ export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
                 total: quiz.questions.length,
                 incorrectQuestions
             });
+
+            // Update Agent Memory
+            updateAgentMemory(mem => ({
+                ...mem,
+                topics: [...new Set([...mem.topics, quiz.title])].slice(-15),
+                insights: [...mem.insights, `El usuario completó el cuestionario del video/simulador "${quiz.title}" con ${score} aciertos de ${quiz.questions.length}.`].slice(-20)
+            }));
 
             if (onComplete) onComplete(score);
         }
