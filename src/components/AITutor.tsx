@@ -272,9 +272,31 @@ function saveMemory(memory: AgentMemory) {
 // ─── Content Parsers ───
 function safeParseJSON(str: string): any {
   try {
-    const cleaned = str.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    let cleaned = str.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    
+    // Extraer solo la parte JSON en caso de que la IA agregue texto charlado dentro del bloque (ej. "Aquí tienes: { ... }")
+    const matchJsonObj = cleaned.match(/({[\s\S]*})/);
+    const matchJsonArr = cleaned.match(/(\[[\s\S]*\])/);
+    
+    if (matchJsonObj && matchJsonArr) {
+       // usar el más grande o el que empiece antes
+       cleaned = matchJsonObj[0].length > matchJsonArr[0].length ? matchJsonObj[0] : matchJsonArr[0];
+    } else if (matchJsonObj) {
+       cleaned = matchJsonObj[0];
+    } else if (matchJsonArr) {
+       cleaned = matchJsonArr[0];
+    }
+
+    // Elimina comas al final de listas u objetos que rompen el JSON estándar
+    cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
+    // Elimina comillas simples por dobles si el AI se equivoca (arriesgado pero útil en edge cases simples sin contracciones)
+    if (!cleaned.includes('"')) {
+       cleaned = cleaned.replace(/'/g, '"');
+    }
+
     return JSON.parse(cleaned);
-  } catch {
+  } catch (err) {
+    console.error("JSON Parse Error:", err, "Raw string:", str);
     return null;
   }
 }
@@ -302,7 +324,9 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
   const planMatch = content.match(/<plan>([\s\S]*?)<\/plan>/);
   if (!planMatch) return { plan: null, cleanContent: content };
   const parsed = safeParseJSON(planMatch[1]);
-  if (!parsed) return { plan: null, cleanContent: content };
+  if (!parsed) {
+    return { plan: null, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "\n\n> ⚠️ *Error de sistema: Intenté generar un Plan de Estudio aquí pero falló el formato (JSON inválido).*").trim() };
+  }
   
   const plan: Plan = {
     title: parsed.title || "Plan de estudio",
@@ -321,8 +345,15 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
 function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null; cleanContent: string } {
   const quizMatch = content.match(/<quiz>([\s\S]*?)<\/quiz>/);
   if (!quizMatch) return { quiz: null, cleanContent: content };
+  
   const parsed = safeParseJSON(quizMatch[1]);
-  if (!parsed) return { quiz: null, cleanContent: content };
+  if (!parsed) {
+    // Si la IA generó el tag <quiz> pero el JSON está corrupto/ilegible, advertimos al usuario
+    return { 
+      quiz: null, 
+      cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "\n\n> ⚠️ *Error de sistema: CyberAgent intentó generar un reto interactivo aquí pero hubo un problema de formato interno (JSON inválido). Por favor pídele: 'Vuelve a generar el quiz, asegúrate de enviar un formato JSON perfecto'.*\n\n").trim() 
+    };
+  }
   
   const quizObj = parsed as PersonalizedQuiz;
   
