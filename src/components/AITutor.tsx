@@ -791,10 +791,10 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
         const answered = answers[q.id] !== undefined;
         const isCorrect = answered && answers[q.id] === q.correctIndex;
         return (
-          <div key={q.id} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
-            <p className="text-sm text-slate-200 font-medium mb-2">{qi + 1}. {q.text}</p>
+          <div key={q.id || qi} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
+            <p className="text-sm text-slate-200 font-medium mb-2">{qi + 1}. {q.text || (q as any).question || (q as any).pregunta}</p>
             <div className="grid grid-cols-2 gap-1.5">
-              {q.options.map((opt, oi) => (
+              {q.options?.map((opt, oi) => (
                 <button
                   key={oi}
                   onClick={() => !answered && onAnswer(q.id, oi)}
