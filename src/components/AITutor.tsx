@@ -366,47 +366,70 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
       
       let bestIdx = -1;
 
-      // 1. Literal Index Search (A, B, C, D)
-      if (upperCi === 'A' || upperCi.startsWith('A)') || upperCi.startsWith('OPCION A') || upperCi.startsWith('OPCIÓN A')) bestIdx = 0;
-      else if (upperCi === 'B' || upperCi.startsWith('B)') || upperCi.startsWith('OPCION B') || upperCi.startsWith('OPCIÓN B')) bestIdx = 1;
-      else if (upperCi === 'C' || upperCi.startsWith('C)') || upperCi.startsWith('OPCION C') || upperCi.startsWith('OPCIÓN C')) bestIdx = 2;
-      else if (upperCi === 'D' || upperCi.startsWith('D)') || upperCi.startsWith('OPCION D') || upperCi.startsWith('OPCIÓN D')) bestIdx = 3;
+      // PRIORITY 0: Already a valid 0-based integer — use directly
+      if (typeof ci === 'number' && Number.isInteger(ci) && ci >= 0 && ci < options.length) {
+        bestIdx = ci;
+      }
 
-      // 2. Cross-reference explanation with option text (POWERFUL FALLBACK)
-      // If AI's explanation mentions an option in bold or quotes, it's the gold standard.
+      // 1. Letter-based (A, B, C, D) — most common AI mistake
+      if (bestIdx === -1) {
+        if (upperCi === 'A' || upperCi.startsWith('A)') || upperCi.startsWith('OPCION A') || upperCi.startsWith('OPCIÓN A')) bestIdx = 0;
+        else if (upperCi === 'B' || upperCi.startsWith('B)') || upperCi.startsWith('OPCION B') || upperCi.startsWith('OPCIÓN B')) bestIdx = 1;
+        else if (upperCi === 'C' || upperCi.startsWith('C)') || upperCi.startsWith('OPCION C') || upperCi.startsWith('OPCIÓN C')) bestIdx = 2;
+        else if (upperCi === 'D' || upperCi.startsWith('D)') || upperCi.startsWith('OPCION D') || upperCi.startsWith('OPCIÓN D')) bestIdx = 3;
+      }
+
+      // 2. Exact text match: ci equals the option text
+      if (bestIdx === -1 && typeof ci === 'string' && ci.trim().length > 2) {
+        const cleanCi = ci.toLowerCase().trim();
+        const exactIdx = options.findIndex(o => String(o).toLowerCase().trim() === cleanCi);
+        if (exactIdx !== -1) bestIdx = exactIdx;
+      }
+
+      // 3. Partial text match: ci contains the option or vice versa
+      if (bestIdx === -1 && typeof ci === 'string' && ci.trim().length > 5) {
+        const cleanCi = ci.toLowerCase().trim();
+        const partialIdx = options.findIndex(o => {
+          const optLower = String(o).toLowerCase().trim();
+          return optLower.length > 4 && (optLower.includes(cleanCi) || cleanCi.includes(optLower));
+        });
+        if (partialIdx !== -1) bestIdx = partialIdx;
+      }
+
+      // 4. Cross-reference explanation with option text
       if (bestIdx === -1) {
         for (let i = 0; i < options.length; i++) {
           const optText = String(options[i]).toLowerCase().trim();
           if (optText.length < 3) continue;
-          if (explanation.includes(`**${optText}**`) || explanation.includes(`"${optText}"`)) {
+          if (
+            explanation.includes(`**${optText}**`) ||
+            explanation.includes(`"${optText}"`) ||
+            explanation.includes(`'${optText}'`)
+          ) {
             bestIdx = i;
             break;
           }
         }
       }
 
-      // 3. Exact Text Match against ci itself
-      if (bestIdx === -1 && typeof ci === 'string') {
-        const cleanCi = ci.toLowerCase().trim();
-        bestIdx = options.findIndex(o => String(o).toLowerCase().trim() === cleanCi);
-      }
-
-      // 4. Numeric fallback
+      // 5. Numeric string fallback
       if (bestIdx === -1) {
         const matchNum = String(ci).match(/\d+/);
         if (matchNum) {
           const num = parseInt(matchNum[0], 10);
           if (upperCi.includes('OPCION') || upperCi.includes('OPCIÓN')) {
             bestIdx = num - 1; // "Opción 1" -> index 0
+          } else if (num > 0 && num <= options.length) {
+            bestIdx = num - 1; // likely 1-based
           } else {
-            bestIdx = num; // Just a number
+            bestIdx = num; // 0-based as string
           }
         }
       }
 
-      // Sanitize
       let finalCi = Number(bestIdx);
       if (isNaN(finalCi) || finalCi < 0 || finalCi >= options.length) {
+        console.warn(`[QuizParser] Could not resolve correctIndex '${ci}'. Defaulting to 0.`);
         finalCi = 0;
       }
 
@@ -2064,7 +2087,14 @@ const AITutor = () => {
            Genera diagramas mermaid para temas complejos SOLO si no se ha pedido material oficial.
            REGLA CRÍTICA MERMAID v11: 
            - USA SIEMPRE 'flowchart TD' o 'flowchart LR' y COMILLAS DOBLES en etiquetas con acentos o paréntesis (Ej: A["Física (Mecánica)"]).
-        5. QUIZ INTERACTIVO: Genera bloque <quiz> JSON para repasos.
+        5. QUIZ INTERACTIVO (REGLAS MUY IMPORTANTES):
+           Genera bloque <quiz> JSON para repasos con estas reglas ESTRICTAS:
+           - CRÍTICO: "correctIndex" DEBE ser un número entero 0-basado: 0, 1, 2 ó 3.
+           - 0=primera opción, 1=segunda, 2=tercera, 3=cuarta.
+           - PROHIBIDO USAR letras (A,B,C,D) o texto descriptivo en correctIndex.
+           - PROHIBIDO USAR índice 1-basado (1,2,3,4).
+           - VERIFICA: options[correctIndex] debe ser EXACTAMENTE la respuesta correcta.
+           Ejemplo correcto: {"text":"¿Capital de Francia?","options":["Madrid","París","Roma","Berlín"],"correctIndex": 1,"explanation":"París es la capital de Francia."}
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
         8. BLOQUEO: No respondas temas fuera del ECOEMS.`
