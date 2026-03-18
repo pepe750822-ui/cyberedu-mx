@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
   CheckCircle2, Circle, Clock, Zap, ChevronRight, ListChecks,
@@ -778,41 +779,90 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
 
 // ─── Quiz Card ───
 const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => (
-  <div className="my-3 border border-amber-500/20 bg-amber-500/5 rounded-2xl overflow-hidden">
-    <div className="p-4 border-b border-white/5">
-      <div className="flex items-center gap-2">
-        <Sparkles className="h-4 w-4 text-amber-400" />
-        <span className="text-sm font-semibold font-black text-white uppercase tracking-wider">{quiz.title}</span>
+  <div className="my-5 space-y-5">
+    <div className="p-5 border-b-2 border-indigo-500/20 bg-indigo-500/5 rounded-t-[2rem] rounded-b-xl shadow-sm">
+      <div className="flex items-center gap-3">
+        <Sparkles className="h-5 w-5 text-indigo-400" />
+        <div>
+          <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz.title}</h3>
+          <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
+        </div>
       </div>
-      <p className="text-xs text-slate-500 mt-1">Nivel: {quiz.difficulty} · {quiz.questions.length} reactivos</p>
     </div>
-    <div className="p-3 space-y-3">
+    
+    <div className="space-y-5">
       {quiz.questions.map((q, qi) => {
         const answered = answers[q.id] !== undefined;
-        const isCorrect = answered && answers[q.id] === q.correctIndex;
+        const selectedOption = answers[q.id];
+        const isCorrect = answered && selectedOption === q.correctIndex;
+        
         return (
-          <div key={q.id || qi} className={cn("p-3 rounded-xl border", answered ? (isCorrect ? "border-emerald-500/20 bg-emerald-500/5" : "border-red-500/20 bg-red-500/5") : "border-white/5 bg-white/5")}>
-            <p className="text-sm text-slate-200 font-medium mb-2">{qi + 1}. {q.text || (q as any).question || (q as any).pregunta}</p>
-            <div className="grid grid-cols-2 gap-1.5">
-              {q.options?.map((opt, oi) => (
-                <button
-                  key={oi}
-                  onClick={() => !answered && onAnswer(q.id, oi)}
-                  disabled={answered}
+          <div key={q.id || qi} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
+            {/* Si ya contestó, ponemos una tirita a la izquierda indicando el resultado para mejor usabilidad */}
+            {answered && (
+              <div className={cn(
+                "absolute left-0 top-0 bottom-0 w-1.5",
+                isCorrect ? "bg-emerald-500" : "bg-rose-500"
+              )} />
+            )}
+
+            <h4 className="text-base md:text-lg font-bold text-white mb-5 leading-tight">
+              <span className="text-indigo-400 mr-1">{qi + 1}.</span> {q.text || (q as any).question || (q as any).pregunta}
+            </h4>
+
+            <div className="space-y-2.5">
+              {q.options?.map((opt, oi) => {
+                const isOptCorrect = oi === q.correctIndex;
+                const isSelected = oi === selectedOption;
+
+                return (
+                  <button
+                    key={oi}
+                    onClick={() => !answered && onAnswer(q.id, oi)}
+                    disabled={answered}
+                    className={cn(
+                      "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
+                      !answered && "border-white/5 bg-white/5 hover:border-indigo-500/40 hover:bg-indigo-500/5",
+                      answered && isOptCorrect && "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+                      answered && isSelected && !isOptCorrect && "border-rose-500/50 bg-rose-500/10 text-rose-400",
+                      answered && !isSelected && !isOptCorrect && "border-white/5 bg-white/5 opacity-40"
+                    )}
+                  >
+                    <span className="font-bold text-sm">{opt}</span>
+                    {answered && isOptCorrect && <CheckCircle2 className="h-5 w-5 shrink-0" />}
+                    {answered && isSelected && !isOptCorrect && <XCircle className="h-5 w-5 shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            <AnimatePresence>
+              {answered && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className={cn(
-                    "text-xs text-left px-2.5 py-1.5 rounded-lg border transition-all",
-                    answered && oi === q.correctIndex ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" :
-                    answered && oi === answers[q.id] ? "border-red-500/30 bg-red-500/10 text-red-300" :
-                    "border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
+                    "mt-5 p-4 rounded-2xl border shadow-lg",
+                    isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
                   )}
                 >
-                  {opt}
-                </button>
-              ))}
-            </div>
-            {answered && (
-              <p className="text-sm text-slate-500 mt-1.5 italic">{q.explanation}</p>
-            )}
+                  <div className="flex gap-4">
+                    <div className={cn(
+                      "p-2 rounded-xl h-fit",
+                      isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                    )}>
+                      <AlertCircle className="h-4 w-4" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
+                      <p className="text-xs font-medium text-slate-300 leading-relaxed">
+                        {q.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
       })}
