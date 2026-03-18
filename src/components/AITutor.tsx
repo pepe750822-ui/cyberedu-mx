@@ -1727,7 +1727,7 @@ const AITutor = () => {
 
       const question = quiz.questions.find((q, i) => (q.id || `q${i}`) === qId);
       if (question) {
-        const isCorrect = selectedIdx === question.correctIndex;
+        const isCorrect = Number(selectedIdx) === Number(question.correctIndex);
         setMemory(mem => ({
           ...mem,
           insights: [
@@ -1743,7 +1743,10 @@ const AITutor = () => {
       if (isComplete) {
         let score = 0;
         quiz.questions.forEach((q, i) => {
-          if (newState[`${msgId}_${q.id || `q${i}`}`] === q.correctIndex) score++;
+          const userPick = newState[`${msgId}_${q.id || `q${i}`}`];
+          if (userPick !== undefined && Number(userPick) === Number(q.correctIndex)) {
+            score++;
+          }
         });
 
         setMemory(mem => ({
