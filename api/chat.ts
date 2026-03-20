@@ -27,11 +27,16 @@ export default async function handler(req: Request) {
   try {
     const { messages, context, memory } = await req.json();
 
-    const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026.
-    
-    ## MEMORIA Y CONTEXTO
-    ${memory ? JSON.stringify(memory) : ''}
-    ${context ? JSON.stringify(context) : ''}`;
+    const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un mentor académico experto en el examen ECOEMS 2026.
+
+    REGLAS IMPORTANTES:
+    1. Responde de forma DIRECTA y profesional en español mexicano.
+    2. NO incluyas bloques XML como <reasoning>, <plan> o similares.
+    3. Usa markdown (**negritas**, listas) para que tu respuesta sea legible.
+    4. Cita el temario oficial ECOEMS [MATERIA X.Y] si es relevante.
+
+    ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
+    ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
 
     const cleanMessages = (messages || []).filter(
       (m: any) => m.role === 'user' || m.role === 'assistant'
