@@ -42,7 +42,7 @@ export default async function handler(req: Request) {
       (m: any) => m.role === 'user' || m.role === 'assistant'
     );
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,50 +54,23 @@ export default async function handler(req: Request) {
         max_tokens: 4096,
         system: SYSTEM_PROMPT,
         messages: cleanMessages,
-        stream: true,
+        stream: false, // Desactivamos stream para estabilidad inicial
       }),
     });
 
-    // Convertimos el stream de Anthropic al formato compatible con OpenAI que espera AITutor.tsx
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream({
-      async start(controller) {
-        const reader = response.body!.getReader();
-        const decoder = new TextDecoder();
+    if (!apiResponse.ok) {
+       const err = await apiResponse.text();
+       return new Response(JSON.stringify({ error: err }), { status: apiResponse.status });
+    }
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+    const data = await apiResponse.json();
+    const finalContent = data.content?.[0]?.text || '';
 
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n");
+    // AITutor.tsx (Línea 549) detecta el formato: { content: "texto" }
+    // Enviar data: JSON + [DONE] para simular un fin inmediato
+    const payload = `data: ${JSON.stringify({ content: finalContent })}\n\ndata: [DONE]\n\n`;
 
-          for (const line of lines) {
-            if (!line.startsWith("data: ")) continue;
-            const data = line.slice(6).trim();
-            if (!data || data === "[DONE]") continue;
-
-            try {
-              const parsed = JSON.parse(data);
-              // Traducimos el 'text' de Anthropic al 'content' de OpenAI
-              if (parsed.type === "content_block_delta" && parsed.delta?.text) {
-                const text = parsed.delta.text;
-                controller.enqueue(
-                  encoder.encode(
-                    `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`
-                  )
-                );
-              } else if (parsed.type === "message_stop") {
-                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-              }
-            } catch { /* Ignorar líneas incompletas */ }
-          }
-        }
-        controller.close();
-      },
-    });
-
-    return new Response(stream, {
+    return new Response(payload, {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
