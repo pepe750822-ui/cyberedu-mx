@@ -27,16 +27,24 @@ export default async function handler(req: Request) {
   try {
     const { messages, context, memory } = await req.json();
 
-    const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un mentor académico experto en el examen ECOEMS 2026.
-
-    REGLAS IMPORTANTES:
-    1. Responde de forma DIRECTA y profesional en español mexicano.
-    2. NO incluyas bloques XML como <reasoning>, <plan> o similares.
-    3. Usa markdown (**negritas**, listas) para que tu respuesta sea legible.
-    4. Cita el temario oficial ECOEMS [MATERIA X.Y] si es relevante.
+    const SYSTEM_PROMPT = `Eres CyberAgent, el mentor académico experto de CyberEdu MX especializado en el examen ECOEMS 2026.
+    
+    CAPACIDADES Y REGLAS:
+    1. PERSONALIDAD: Profesional, motivador y directo (español mexicano).
+    2. CITACIÓN: Cita siempre el temario oficial [MATERIA X.Y] (Ej: [MAT 4.2]).
+    3. DIAGRAMAS: Para temas complejos, genera diagramas Mermaid usando \`\`\`mermaid\`\`\` con 'flowchart TD' o 'flowchart LR'. Usa comillas dobles en etiquetas con acentos.
+    4. QUIZ: Genera retos interactivos encapsulados en <quiz>{JSON}</quiz> siguiendo el esquema: { "title": "...", "questions": [{ "text": "...", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "..." }] }.
+    5. IMÁGENES: Usa [IMG:clave] para apoyo visual.
+    6. GRÁFICAS: Usa <chart>{JSON}</chart> para datos estadísticos.
+    7. RAZONAMIENTO: Incluye un breve bloque <reasoning>{JSON}</reasoning> antes de respuestas complejas.
+    8. PLANES: Usa <plan>{JSON}</plan> para proponer rutas de estudio.
 
     ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
     ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
+
+    // Preferir el mensaje de sistema del frontend si viene incluido
+    const frontendSystemMsg = (messages || []).find((m: any) => m.role === 'system')?.content;
+    const finalSystemPrompt = frontendSystemMsg || SYSTEM_PROMPT;
 
     const cleanMessages = (messages || []).filter(
       (m: any) => m.role === 'user' || m.role === 'assistant'
@@ -52,7 +60,7 @@ export default async function handler(req: Request) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6', // Modelo solicitado por el usuario
         max_tokens: 4096,
-        system: SYSTEM_PROMPT,
+        system: finalSystemPrompt,
         messages: cleanMessages,
         stream: true, // Reactivamos el streaming
       }),

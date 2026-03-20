@@ -101,6 +101,12 @@ serve(async (req) => {
     // Construir System Prompt con contexto del usuario
     let systemContent = SYSTEM_PROMPT;
 
+    // Si el front-end envía su propio System Message, lo priorizamos
+    const frontendSystemMsg = (messages || []).find((m: any) => m.role === "system")?.content;
+    if (frontendSystemMsg) {
+      systemContent = frontendSystemMsg;
+    }
+
     if (memory) {
       systemContent += `\n\n## MEMORIA DE SESIÓN`;
       if (memory.decisions?.length) {
