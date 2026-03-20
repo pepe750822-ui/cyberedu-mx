@@ -538,12 +538,21 @@ async function streamChat({
       textBuffer = textBuffer.slice(newlineIndex + 1);
       if (line.endsWith("\r")) line = line.slice(0, -1);
       if (line.startsWith(":") || line.trim() === "") continue;
+      if (line.startsWith("event: ")) continue;
       if (!line.startsWith("data: ")) continue;
       const jsonStr = line.slice(6).trim();
       if (jsonStr === "[DONE]") { streamDone = true; break; }
       try {
         const parsed = JSON.parse(jsonStr);
-        const c = parsed.choices?.[0]?.delta?.content as string | undefined;
+        let c: string | undefined;
+        // Soporte para formato OpenAI (Lovable) 
+        if (parsed.choices?.[0]?.delta?.content) {
+          c = parsed.choices[0].delta.content;
+        } 
+        // Soporte para formato Anthropic (Claude)
+        else if (parsed.type === "content_block_delta" && parsed.delta?.text) {
+          c = parsed.delta.text;
+        }
         if (c) onDelta(c);
       } catch {
         textBuffer = line + "\n" + textBuffer;
@@ -557,12 +566,18 @@ async function streamChat({
       if (!raw) continue;
       if (raw.endsWith("\r")) raw = raw.slice(0, -1);
       if (raw.startsWith(":") || raw.trim() === "") continue;
+      if (raw.startsWith("event: ")) continue;
       if (!raw.startsWith("data: ")) continue;
       const jsonStr = raw.slice(6).trim();
       if (jsonStr === "[DONE]") continue;
       try {
         const parsed = JSON.parse(jsonStr);
-        const c = parsed.choices?.[0]?.delta?.content as string | undefined;
+        let c: string | undefined;
+        if (parsed.choices?.[0]?.delta?.content) {
+          c = parsed.choices[0].delta.content;
+        } else if (parsed.type === "content_block_delta" && parsed.delta?.text) {
+          c = parsed.delta.text;
+        }
         if (c) onDelta(c);
       } catch { /* ignore */ }
     }
