@@ -158,6 +158,7 @@ serve(async (req) => {
 
     // Traducir el stream de Anthropic al formato que lee AITutor.tsx
     const encoder = new TextEncoder();
+    let buffer = "";
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body!.getReader();
@@ -167,8 +168,9 @@ serve(async (req) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value, { stream: true });
+          const chunk = buffer + decoder.decode(value, { stream: true });
           const lines = chunk.split("\n");
+          buffer = lines.pop() || "";
 
           for (const line of lines) {
             if (!line.startsWith("data: ")) continue;

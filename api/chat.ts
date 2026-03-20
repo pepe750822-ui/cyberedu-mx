@@ -67,6 +67,7 @@ export default async function handler(req: Request) {
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     
+    let buffer = '';
     const stream = new ReadableStream({
       async start(controller) {
         const reader = apiResponse.body!.getReader();
@@ -74,8 +75,9 @@ export default async function handler(req: Request) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value, { stream: true });
+          const chunk = buffer + decoder.decode(value, { stream: true });
           const lines = chunk.split('\n');
+          buffer = lines.pop() || '';
 
           for (const line of lines) {
             if (!line.startsWith('data: ')) continue;
