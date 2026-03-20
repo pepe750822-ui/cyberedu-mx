@@ -489,9 +489,18 @@ function parseAllBlocks(content: string) {
 }
 
 function stripStreamingBlocks(content: string): string {
-  // Oculta temporalmente los bloques XML crudos mientras el LLM los está escribiendo en el stream.
+  // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   return content
-    .replace(/<(reasoning|decision|plan|quiz|chart)>[\s\S]*?(<\/\1>|$)/g, "")
+    .replace(/<(reasoning|decision|plan|quiz|chart)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+      const names: Record<string, string> = {
+        reasoning: "pensando",
+        decision: "decisión",
+        plan: "plan de estudio",
+        quiz: "quiz interactivo",
+        chart: "gráfica"
+      };
+      return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
+    })
     .trim();
 }
 
@@ -2003,8 +2012,13 @@ const AITutor = () => {
 
       let assistantContent = "";
       const assistantId = (Date.now() + 1).toString();
+      let lastUiUpdate = 0;
       const upsertAssistant = (chunk: string) => {
         assistantContent += chunk;
+        const now = Date.now();
+        if (now - lastUiUpdate < 100) return;
+        lastUiUpdate = now;
+
         setMessages(prev => {
           const last = prev[prev.length - 1];
           const displayContent = stripStreamingBlocks(assistantContent);
@@ -2061,8 +2075,14 @@ const AITutor = () => {
     let assistantContent = "";
     const assistantId = (Date.now() + 1).toString();
 
+    let lastUiUpdate = 0;
     const upsertAssistant = (chunk: string) => {
       assistantContent += chunk;
+      
+      const now = Date.now();
+      if (now - lastUiUpdate < 100) return; // Limitar a 10 actualizaciones por segundo
+      lastUiUpdate = now;
+
       setMessages(prev => {
         const last = prev[prev.length - 1];
         const displayContent = stripStreamingBlocks(assistantContent);
