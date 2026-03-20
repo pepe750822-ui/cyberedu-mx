@@ -490,7 +490,7 @@ function parseAllBlocks(content: string) {
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
-  return content
+  let cleaned = content
     .replace(/<(reasoning|decision|plan|quiz|chart)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
@@ -500,8 +500,21 @@ function stripStreamingBlocks(content: string): string {
         chart: "gráfica"
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
-    })
-    .trim();
+    });
+
+  // Ocultar diagramas Mermaid mientras se están escribiendo para evitar errores de sintaxis y parpadeos
+  cleaned = cleaned.replace(/```mermaid[\s\S]*?(```|$)/g, (match) => {
+    if (match.endsWith('```')) return match;
+    return `\n\n> 📊 *Generando diagrama...*\n\n`;
+  });
+
+  // Ocultar imágenes inacabadas (Markdown)
+  cleaned = cleaned.replace(/!\[.*?\]\((.*?)\)?/g, (match) => {
+    if (match.endsWith(')')) return match;
+    return `\n\n> 🖼️ *Cargando imagen...*\n\n`;
+  });
+
+  return cleaned.trim();
 }
 
 // ─── Streaming helper ───
@@ -1461,6 +1474,191 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
   );
 };
 
+// ─── Message Bubble Component (Memoized) ───
+const MessageBubble = React.memo(({ 
+  msg, 
+  isExpanded, 
+  handleFeedback, 
+  handlePlanAction, 
+  handleToggleStep, 
+  handleQuizAnswer, 
+  quizAnswers, 
+  togglePaso, 
+  deletePlan, 
+  agentNavigate,
+  fixingCheckId,
+  setFixingCheckId,
+  setMessages,
+  runDiagnostics,
+  setLatestDiagnostics,
+  markdownComponents,
+  isStreaming,
+  speakMessage,
+  isSpeaking
+}: any) => {
+  const isAssistant = msg.role === "assistant";
+  
+  const msgAnswers = useMemo<Record<string, number>>(() => {
+    if (!msg.quiz) return {};
+    return Object.fromEntries(
+      Object.entries(quizAnswers)
+        .filter(([k]) => k.startsWith(msg.id + '_'))
+        .map(([k, v]) => [k.substring(msg.id.length + 1), v])
+    ) as Record<string, number>;
+  }, [quizAnswers, msg.id, msg.quiz]);
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-1.5 max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
+        !isAssistant ? "ml-auto items-end" : "mr-auto items-start"
+      )}
+    >
+      <div className={cn("flex items-end gap-2", !isAssistant ? "flex-row-reverse" : "flex-row")}>
+        <div className={cn(
+          "h-7 w-7 rounded-lg flex items-center justify-center shrink-0 border",
+          !isAssistant ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
+        )}>
+          {!isAssistant ? <User className="h-3.5 w-3.5 text-slate-400" /> : <Bot className="h-3.5 w-3.5 text-primary" />}
+        </div>
+
+        <div className={cn(
+          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed",
+          !isAssistant
+            ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
+            : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
+        )}>
+          {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
+          {msg.decisions?.map((d: any, i: number) => <DecisionCard key={i} decision={d} />)}
+          {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
+          {msg.report && <ReportCard report={msg.report} />}
+          {msg.alerts?.map((a: any, i: number) => <AlertCard key={i} alert={a} />)}
+          {msg.quiz && (
+            <QuizCard 
+              quiz={msg.quiz} 
+              answers={msgAnswers} 
+              onAnswer={(qId, idx) => handleQuizAnswer(msg.id, msg.quiz!, qId, idx)} 
+            />
+          )}
+          {msg.charts?.map((chart: any, i: number) => <ChartRenderer key={i} chart={chart} />)}
+          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
+          {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
+          {msg.diagnostics && <DiagnosticsCard 
+            result={msg.diagnostics} 
+            fixingId={fixingCheckId} 
+            isFixingAll={fixingCheckId === 'all'}
+            onFixAll={async () => {
+              const fixable = msg.diagnostics!.checks.filter((c: any) => (c.status === "error" || c.status === "warning") && c.fix);
+              if (fixable.length === 0) return;
+              
+              setFixingCheckId('all');
+              let successCount = 0;
+              for (const check of fixable) {
+                try {
+                  await check.fix!();
+                  successCount++;
+                } catch (e) {
+                  console.error(`Error fixing ${check.id}:`, e);
+                }
+              }
+              
+              toast.success(`Corrección masiva completa: ${successCount} problemas resueltos`);
+              
+              const newResult = await runDiagnostics();
+              setLatestDiagnostics(newResult);
+              setMessages((prev: any[]) => prev.map(m =>
+                m.id === msg.id ? { ...m, diagnostics: newResult } : m
+              ));
+              setFixingCheckId(null);
+            }}
+            onFix={async (checkId) => {
+              const check = msg.diagnostics!.checks.find((c: any) => c.id === checkId);
+              if (!check?.fix) return;
+              setFixingCheckId(checkId);
+              try {
+                const fixResult = await check.fix();
+                toast.success(`Auto-corrección: ${fixResult}`);
+                const newResult = await runDiagnostics();
+                setLatestDiagnostics(newResult);
+                setMessages((prev: any[]) => prev.map(m =>
+                  m.id === msg.id ? { ...m, diagnostics: newResult } : m
+                ));
+              } catch { toast.error("Error al aplicar corrección"); }
+              setFixingCheckId(null);
+            }}
+          />}
+          {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
+          {msg.plan && (
+            <PlanCard
+              plan={msg.plan}
+              onApprove={() => handlePlanAction(msg.id, "approve")}
+              onReject={() => handlePlanAction(msg.id, "reject")}
+              onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
+              onNavigate={agentNavigate}
+            />
+          )}
+          {isAssistant ? (
+            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary", isExpanded ? "prose-base" : "prose-sm")}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+                components={markdownComponents}
+              >
+                {msg.content
+                  .replace(
+                    /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
+                    (match, materia, code) => `[${match}](citation://${materia}/${code})`
+                  )
+                  .replace(/([^\n])\n\|/g, '$1\n\n|')
+                  .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
+                }
+              </ReactMarkdown>
+            </div>
+          ) : (
+            <span>{msg.content}</span>
+          )}
+        </div>
+      </div>
+
+      {isAssistant && msg.id !== "initial" && !isStreaming && (
+        <div className="flex items-center gap-2 px-9">
+          <button
+            onClick={() => speakMessage(msg.content, msg.id)}
+            className={cn(
+              "p-1.5 rounded-lg transition-all flex items-center gap-1.5",
+              isSpeaking === msg.id 
+                ? "bg-primary text-white scale-110 shadow-lg" 
+                : "hover:bg-white/10 text-slate-500 hover:text-white"
+            )}
+            title={isSpeaking === msg.id ? "Detener voz" : "Escuchar respuesta"}
+          >
+            {isSpeaking === msg.id ? <VolumeX className="h-3 w-3 animate-pulse" /> : <Volume2 className="h-3 w-3" />}
+          </button>
+          
+          <button
+            onClick={() => handleFeedback(msg.id, "up")}
+            className={cn(
+              "p-1.5 rounded-lg transition-all",
+              msg.feedback === "up" ? "bg-emerald-500/20 text-emerald-400" : "hover:bg-emerald-500/10 text-slate-500 hover:text-emerald-400"
+            )}
+          >
+            <ThumbsUp className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => handleFeedback(msg.id, "down")}
+            className={cn(
+              "p-1.5 rounded-lg transition-all",
+              msg.feedback === "down" ? "bg-rose-500/20 text-rose-400" : "hover:bg-rose-500/10 text-slate-500 hover:text-rose-400"
+            )}
+          >
+            <ThumbsDown className="h-3 w-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+});
+
 // ─── Main Component ───
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1678,9 +1876,20 @@ const AITutor = () => {
     }
   }, [getWeeklyReport, getAlertasRiesgo, getRecomendacionesDiarias]);
 
-  // Auto-scroll
+  // Auto-scroll smoother (optimized for streaming)
   useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        const isNearBottom = scrollHeight - scrollTop - clientHeight < 250;
+        
+        // Always scroll if streaming or if user was already at the bottom
+        if (isNearBottom || isStreaming) {
+           scrollRef.current.scrollTo({
+              top: scrollHeight,
+              behavior: isStreaming ? 'auto' : 'smooth'
+           });
+        }
+    }
   }, [messages, isStreaming]);
 
   const contextualSuggestions = useMemo(() => {
@@ -1721,7 +1930,7 @@ const AITutor = () => {
     toast.info("Conversación y memoria reiniciadas");
   };
 
-  const handleFeedback = (id: string, type: "up" | "down") => {
+  const handleFeedback = useCallback((id: string, type: "up" | "down") => {
     setMessages(prev => prev.map(m => m.id === id ? { ...m, feedback: type } : m));
     if (type === "down") {
       setMemory(prev => ({
@@ -1730,9 +1939,9 @@ const AITutor = () => {
       }));
     }
     toast.success(type === "up" ? "¡Gracias por tu feedback!" : "Tomaré nota para mejorar.");
-  };
+  }, []);
 
-  const handlePlanAction = (messageId: string, action: "approve" | "reject") => {
+  const handlePlanAction = useCallback((messageId: string, action: "approve" | "reject") => {
     setMessages(prev => prev.map(m => {
       if (m.id !== messageId || !m.plan) return m;
 
@@ -1760,7 +1969,7 @@ const AITutor = () => {
         ...prev,
         decisions: [...prev.decisions.slice(-20), {
           question: "Plan de estudio aprobado",
-          chosen: messages.find(m => m.id === messageId)?.plan?.title || "Plan",
+          chosen: "Plan sugerido",
           reasoning: "Aprobado por el usuario",
           impact: "Se seguirán los pasos del plan guardado",
         }],
@@ -1769,9 +1978,9 @@ const AITutor = () => {
     } else {
       toast.error("Plan rechazado.");
     }
-  };
+  }, [addPlan]);
 
-  const handleToggleStep = (messageId: string, stepId: number) => {
+  const handleToggleStep = useCallback((messageId: string, stepId: number) => {
     setMessages(prev => prev.map(m => {
       if (m.id !== messageId || !m.plan) return m;
       const newSteps = m.plan.steps.map(s => {
@@ -1781,9 +1990,9 @@ const AITutor = () => {
       });
       return { ...m, plan: { ...m.plan, steps: newSteps } };
     }));
-  };
+  }, []);
 
-  const handleQuizAnswer = (msgId: string, quiz: PersonalizedQuiz, qId: string, selectedIdx: number) => {
+  const handleQuizAnswer = useCallback((msgId: string, quiz: PersonalizedQuiz, qId: string, selectedIdx: number) => {
     setQuizAnswers(prev => {
       const newState = { ...prev, [`${msgId}_${qId}`]: selectedIdx };
 
@@ -1823,7 +2032,91 @@ const AITutor = () => {
 
       return newState;
     });
-  };
+  }, []);
+
+  const markdownComponents = useMemo(() => ({
+    code({ node, inline, className, children, ...props }: any) {
+      const match = /language-(\w+)/.exec(className || '');
+      if (!inline && match && match[1] === 'mermaid') {
+        return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+      }
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+    a({ href, children }: any) {
+      if (href?.startsWith('citation://')) {
+        const url = href.replace('citation://', '');
+        const [materia, code] = url.split('/');
+        return (
+          <button 
+            onClick={() => {
+              const areaId = MATERIA_TO_AREA[materia];
+              if (!areaId) {
+                 toast.error(`Materia "${materia}" no reconocida.`);
+                 return;
+              }
+              const area = areas.find(a => a.id === areaId);
+              if (!area) return;
+              const chapter = code.split('.')[0];
+              const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
+              const targetVideoId = `${prefix}-${chapter}`;
+              const videoExists = area.videos.some(v => v.id === targetVideoId);
+              
+              if (videoExists) {
+                  agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
+              } else {
+                  agentNavigate(`/area/${areaId}`);
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
+            title={`Ref: ${materia} ${code} - Clic para ver temario`}
+          >
+            <BookOpen className="h-2.5 w-2.5" />
+            {children}
+          </button>
+        );
+      }
+
+      return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
+    },
+    img({ src, alt }: any) {
+      return (
+        <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 max-w-sm sm:max-w-md mx-auto shadow-2xl" onClick={() => window.open(src, '_blank')}>
+          <img src={src} loading="lazy" alt={alt} className="w-full h-auto transition-transform duration-500 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
+              <Maximize2 className="h-4 w-4 text-white" />
+              <span className="text-xs font-bold text-white uppercase tracking-widest text-shadow">Ampliar</span>
+            </div>
+          </div>
+        </div>
+      );
+    },
+    table({ children }: any) {
+      return (
+        <div className="my-4 overflow-x-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
+          <table className="w-full text-left border-collapse min-w-[300px]">
+            {children}
+          </table>
+        </div>
+      );
+    },
+    thead({ children }: any) {
+      return <thead className="bg-primary/20 border-b border-white/10">{children}</thead>;
+    },
+    th({ children }: any) {
+      return <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-primary-foreground/90 bg-primary/20">{children}</th>;
+    },
+    td({ children }: any) {
+      return <td className="px-4 py-3 text-xs sm:text-sm text-slate-300 border-b border-white/5">{children}</td>;
+    },
+    tr({ children }: any) {
+      return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
+    }
+  }), [isExpanded, agentNavigate]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
@@ -2322,262 +2615,55 @@ const AITutor = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className={cn("flex-1 flex overflow-hidden", isExpanded ? "flex-row" : "flex-col")}>
+        <div className={cn("flex-1 flex overflow-hidden relative", isExpanded ? "flex-row" : "flex-col")}>
           {/* Chat Column */}
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
                 <div className={cn(
-                  "space-y-6 transition-all duration-500 pb-20", 
-                  isExpanded 
-                    ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12") 
+                  "space-y-6 transition-all duration-500 pb-20",
+                  isExpanded
+                    ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12")
                     : "max-w-4xl mx-auto w-full px-4"
                 )}>
                   {showTasks && !isExpanded && (
-                      <TaskCenter 
-                        tasks={tasks} 
-                        onRemove={removeTask} 
-                        onRetry={retryTask} 
-                        onClear={clearCompleted} 
-                        onClose={() => setShowTasks(false)} 
+                      <TaskCenter
+                        tasks={tasks}
+                        onRemove={removeTask}
+                        onRetry={retryTask}
+                        onClear={clearCompleted}
+                        onClose={() => setShowTasks(false)}
                       />
                   )}
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={cn(
-                    "flex flex-col gap-1.5 max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
-                    msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
-                  )}
-                >
-                  <div className={cn("flex items-end gap-2", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
-                    <div className={cn(
-                      "h-7 w-7 rounded-lg flex items-center justify-center shrink-0 border",
-                      msg.role === "user" ? "bg-slate-800 border-white/10" : "bg-primary/20 border-primary/30"
-                    )}>
-                      {msg.role === "user" ? <User className="h-3.5 w-3.5 text-slate-400" /> : <Bot className="h-3.5 w-3.5 text-primary" />}
-                    </div>
-
-                    <div className={cn(
-                      "px-4 py-3 text-sm md:text-base font-medium leading-relaxed",
-                      msg.role === "user"
-                        ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
-                        : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
-                    )}>
-                      {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
-                      {msg.decisions?.map((d, i) => <DecisionCard key={i} decision={d} />)}
-                      {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
-                      {msg.report && <ReportCard report={msg.report} />}
-                      {msg.alerts?.map((a, i) => <AlertCard key={i} alert={a} />)}
-                      {msg.quiz && (() => {
-                        const msgAnswers = Object.fromEntries(
-                          Object.entries(quizAnswers)
-                            .filter(([k]) => k.startsWith(msg.id + '_'))
-                            .map(([k, v]) => [k.substring(msg.id.length + 1), v])
-                        );
-                        return <QuizCard quiz={msg.quiz} answers={msgAnswers} onAnswer={(qId, idx) => handleQuizAnswer(msg.id, msg.quiz!, qId, idx)} />;
-                      })()}
-                      {msg.charts?.map((chart, i) => <ChartRenderer key={i} chart={chart} />)}
-                      {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
-                      {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
-                      {msg.diagnostics && <DiagnosticsCard 
-                        result={msg.diagnostics} 
-                        fixingId={fixingCheckId} 
-                        isFixingAll={fixingCheckId === 'all'}
-                        onFixAll={async () => {
-                          const fixable = msg.diagnostics!.checks.filter(c => (c.status === "error" || c.status === "warning") && c.fix);
-                          if (fixable.length === 0) return;
-                          
-                          setFixingCheckId('all');
-                          let successCount = 0;
-                          for (const check of fixable) {
-                            try {
-                              await check.fix!();
-                              successCount++;
-                            } catch (e) {
-                              console.error(`Error fixing ${check.id}:`, e);
-                            }
-                          }
-                          
-                          toast.success(`Corrección masiva completa: ${successCount} problemas resueltos`);
-                          
-                          // Re-run diagnostics
-                          const newResult = await runDiagnostics();
-                          setLatestDiagnostics(newResult);
-                          setMessages(prev => prev.map(m =>
-                            m.id === msg.id ? { ...m, diagnostics: newResult } : m
-                          ));
-                          setFixingCheckId(null);
-                        }}
-                        onFix={async (checkId) => {
-                          const check = msg.diagnostics!.checks.find(c => c.id === checkId);
-                          if (!check?.fix) return;
-                          setFixingCheckId(checkId);
-                          try {
-                            const fixResult = await check.fix();
-                            toast.success(`Auto-corrección: ${fixResult}`);
-                            // Re-run diagnostics
-                            const newResult = await runDiagnostics();
-                            setLatestDiagnostics(newResult);
-                            setMessages(prev => prev.map(m =>
-                              m.id === msg.id ? { ...m, diagnostics: newResult } : m
-                            ));
-                          } catch { toast.error("Error al aplicar corrección"); }
-                          setFixingCheckId(null);
-                        }}
-                      />}
-                      {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
-                      {msg.plan && (
-                        <PlanCard
-                          plan={msg.plan}
-                          onApprove={() => handlePlanAction(msg.id, "approve")}
-                          onReject={() => handlePlanAction(msg.id, "reject")}
-                          onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
-                          onNavigate={agentNavigate}
-                        />
-                      )}
-                      {msg.role === "assistant" ? (
-                        <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary", isExpanded ? "prose-base" : "prose-sm")}>
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            rehypePlugins={[rehypeKatex]}
-                            components={{
-                              code({ node, inline, className, children, ...props }: any) {
-                                const match = /language-(\w+)/.exec(className || '');
-                                if (!inline && match && match[1] === 'mermaid') {
-                                  return <Mermaid chart={String(children).replace(/\n$/, '')} />;
-                                }
-                                return (
-                                  <code className={className} {...props}>
-                                    {children}
-                                  </code>
-                                );
-                              },
-                              a({ href, children }: any) {
-                                if (href?.startsWith('citation://')) {
-                                  const url = href.replace('citation://', '');
-                                  const [materia, code] = url.split('/');
-                                  return (
-                                    <button 
-                                      onClick={() => {
-                                        const areaId = MATERIA_TO_AREA[materia];
-                                        if (!areaId) {
-                                           toast.error(`Materia "${materia}" no reconocida.`);
-                                           return;
-                                        }
-                                        const area = areas.find(a => a.id === areaId);
-                                        if (!area) return;
-                                        const chapter = code.split('.')[0];
-                                        const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
-                                        const targetVideoId = `${prefix}-${chapter}`;
-                                        const videoExists = area.videos.some(v => v.id === targetVideoId);
-                                        
-                                        if (videoExists) {
-                                            agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
-                                        } else {
-                                            agentNavigate(`/area/${areaId}`);
-                                        }
-                                      }}
-                                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
-                                      title={`Ref: ${materia} ${code} - Clic para ver temario`}
-                                    >
-                                      <BookOpen className="h-2.5 w-2.5" />
-                                      {children}
-                                    </button>
-                                  );
-                                }
-
-                                  return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
-                                },
-                                img({ src, alt }: any) {
-                                  return (
-                                    <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 max-w-sm sm:max-w-md mx-auto shadow-2xl" onClick={() => window.open(src, '_blank')}>
-                                      <img src={src} alt={alt} className="w-full h-auto transition-transform duration-500 group-hover:scale-105" />
-                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
-                                          <Maximize2 className="h-4 w-4 text-white" />
-                                          <span className="text-xs font-bold text-white uppercase tracking-widest text-shadow">Ampliar</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                },
-                                table({ children }: any) {
-                                  return (
-                                    <div className="my-4 overflow-x-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
-                                      <table className="w-full text-left border-collapse min-w-[300px]">
-                                        {children}
-                                      </table>
-                                    </div>
-                                  );
-                                },
-                                thead({ children }: any) {
-                                  return <thead className="bg-primary/20 border-b border-white/10">{children}</thead>;
-                                },
-                                th({ children }: any) {
-                                  return <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-primary-foreground/90 bg-primary/20">{children}</th>;
-                                },
-                                td({ children }: any) {
-                                  return <td className="px-4 py-3 text-xs sm:text-sm text-slate-300 border-b border-white/5">{children}</td>;
-                                },
-                                tr({ children }: any) {
-                                  return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
-                                }
-                            }}
-                          >
-                            {msg.content
-                              .replace(
-                                /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
-                                (match, materia, code) => `[${match}](citation://${materia}/${code})`
-                              )
-                              .replace(/([^\n])\n\|/g, '$1\n\n|') // Ensure tables have leading newline
-                              .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|') // Fix broken tables with extra newlines between rows
-                            }
-                          </ReactMarkdown>
-                        </div>
-                      ) : (
-                        <span>{msg.content}</span>
-                      )}
-                    </div>
-                  </div>
-
-                  {msg.role === "assistant" && msg.id !== "initial" && !isStreaming && (
-                    <div className="flex items-center gap-2 px-9">
-                      <button
-                        onClick={() => speakMessage(msg.content, msg.id)}
-                        className={cn("p-1 rounded-lg transition-colors", isSpeaking === msg.id ? "text-primary bg-primary/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
-                        title={isSpeaking === msg.id ? "Detener voz" : "Escuchar respuesta"}
-                      >
-                        {isSpeaking === msg.id ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
-                      </button>
-                      <button
-                        onClick={() => handleFeedback(msg.id, "up")}
-                        className={cn("p-1 rounded-lg transition-colors", msg.feedback === "up" ? "text-emerald-500 bg-emerald-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
-                      >
-                        <ThumbsUp className="h-3 w-3" />
-                      </button>
-                      <button
-                        onClick={() => handleFeedback(msg.id, "down")}
-                        className={cn("p-1 rounded-lg transition-colors", msg.feedback === "down" ? "text-red-500 bg-red-500/10" : "text-slate-600 hover:text-white hover:bg-white/5")}
-                      >
-                        <ThumbsDown className="h-3 w-3" />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
-                <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-2xl p-4 w-fit animate-pulse">
-                  <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                  <span className="text-sm font-black text-slate-400 uppercase tracking-widest">Razonando...</span>
-                </div>
-              )}
-              </div>
+                  {messages.map((msg) => (
+                    <MessageBubble 
+                      key={msg.id}
+                      msg={msg}
+                      isExpanded={isExpanded}
+                      handleFeedback={handleFeedback}
+                      handlePlanAction={handlePlanAction}
+                      handleToggleStep={handleToggleStep}
+                      handleQuizAnswer={handleQuizAnswer}
+                      quizAnswers={quizAnswers}
+                      togglePaso={togglePaso}
+                      deletePlan={deletePlan}
+                      agentNavigate={agentNavigate}
+                      fixingCheckId={fixingCheckId}
+                      setFixingCheckId={setFixingCheckId}
+                      setMessages={setMessages}
+                      runDiagnostics={runDiagnostics}
+                      setLatestDiagnostics={setLatestDiagnostics}
+                      markdownComponents={markdownComponents}
+                      isStreaming={isStreaming && messages[messages.length-1].id === msg.id}
+                      speakMessage={speakMessage}
+                      isSpeaking={isSpeaking}
+                    />
+                  ))}
+               </div>
             </div>
 
             {/* Suggestions */}
-            {!isStreaming && (
+            {!isStreaming && contextualSuggestions.length > 0 && (
               <div className={cn("px-5 py-2 flex flex-wrap gap-1.5", isExpanded && "max-w-3xl mx-auto w-full")}>
                 {contextualSuggestions.map((s, i) => (
                   <button
@@ -2655,55 +2741,54 @@ const AITutor = () => {
                   </p>
                 </div>
               </div>
-            </div>
+          </div>
 
           {/* Sidebar for Expanded Mode */}
-          {isExpanded && showAgentSidebar ? (
+          {showAgentSidebar && (
             <div className={cn(
                "border-l border-white/5 bg-slate-900/95 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto transition-all duration-500 z-[60]",
-               "fixed inset-y-0 right-0 w-[85%] sm:w-80 shadow-2xl", // Mobile: Absolute overlay
-               "md:relative md:w-72 lg:w-80 md:translate-x-0",       // Desktop: Side panel
-               showAgentSidebar ? "translate-x-0" : "translate-x-full"
+               isExpanded ? "md:relative md:w-72 lg:w-80 md:translate-x-0" : "fixed inset-y-0 right-0 w-[85%] sm:w-80 shadow-2xl",
+               showAgentSidebar ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
             )}>
-              {/* Internal Close Button for better UX */}
-              <button 
-                onClick={() => setShowAgentSidebar(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg text-slate-500 hover:text-white md:hidden transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <div>
-                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
                     <History className="h-3 w-3" /> Memoria del Agente
                 </h3>
-                <div className="space-y-4">
-                  {memory.topics.length > 0 && (
-                      <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                        <p className="text-[10px] font-black text-primary uppercase mb-2">Temas Recientes</p>
-                        <div className="flex flex-wrap gap-1">
-                          {memory.topics.map((t, i) => (
-                            <span key={i} className="px-2 py-0.5 rounded bg-primary/10 text-[10px] text-primary-foreground font-bold">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                  )}
-                  {memory.decisions.length > 0 && (
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-500 uppercase">Últimas Decisiones</p>
-                        {memory.decisions.slice(-3).map((d, i) => (
-                           <div key={i} className="p-2 rounded-lg bg-white/5 border border-white/5 text-[10px]">
-                              <p className="text-white font-bold truncate">{d.question}</p>
-                              <p className="text-slate-500 italic truncate">{d.chosen}</p>
-                           </div>
-                        ))}
-                      </div>
-                  )}
-                </div>
+                <button 
+                  onClick={() => setShowAgentSidebar(false)}
+                  className="p-1 hover:bg-white/10 rounded text-slate-500"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
               </div>
 
-              <div className="flex-1">
+              <div className="space-y-4">
+                {memory.topics.length > 0 && (
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                      <p className="text-[10px] font-black text-primary uppercase mb-2">Temas Recientes</p>
+                      <div className="flex flex-wrap gap-1">
+                        {memory.topics.map((t, i) => (
+                          <span key={i} className="px-2 py-0.5 rounded bg-primary/10 text-[10px] text-primary-foreground font-bold">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                )}
+                {memory.decisions.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-black text-slate-500 uppercase">Últimas Decisiones</p>
+                      {memory.decisions.slice(-3).map((d, i) => (
+                         <div key={i} className="p-2 rounded-lg bg-white/5 border border-white/5 text-[10px]">
+                            <p className="text-white font-bold truncate">{d.question}</p>
+                            <p className="text-slate-500 italic truncate">{d.chosen}</p>
+                         </div>
+                      ))}
+                    </div>
+                )}
+              </div>
+
+              <div className="flex-1 mt-6">
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <Layers className="h-3 w-3" /> Actividad en Cola
                 </h3>
@@ -2734,7 +2819,7 @@ const AITutor = () => {
                     </div>
               </div>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </>
