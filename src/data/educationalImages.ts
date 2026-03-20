@@ -483,10 +483,42 @@ export const educationalImages: EduImage[] = [
   },
   {
     key: "independencia-mexico",
-    title: "Independencia de México",
-    description: "Miguel Hidalgo y la ruta de la Independencia de México",
+    title: "Miguel Hidalgo y Costilla",
+    description: "Miguel Hidalgo, el 'Padre de la Patria', iniciador del movimiento de Independencia en 1810",
     area: "Historia de México",
     url: "https://upload.wikimedia.org/wikipedia/commons/2/20/Miguel_Hidalgo.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "grito-de-dolores",
+    title: "Grito de Dolores",
+    description: "La Parroquia de Dolores Hidalgo, donde se inició la gesta independentista el 16 de septiembre de 1810",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/d/df/Parroquia_de_nuestra_senora_de_los_dolores.jpg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "morelos-retrato",
+    title: "José María Morelos y Pavón",
+    description: "Generalísimo de los ejércitos insurgentes y autor de 'Sentimientos de la Nación'",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Jos%C3%A9_Mar%C3%ADa_Morelos%2C_grabado.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "abrazo-acatempan",
+    title: "Abrazo de Acatempan",
+    description: "Encuentro entre Agustín de Iturbide y Vicente Guerrero en 1821, sellando la paz",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Abrazo_Acatempan.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "bandera-trigarante",
+    title: "Bandera del Ejército Trigarante",
+    description: "Bandera de las Tres Garantías (Religión, Unión e Independencia) de 1821",
+    area: "Historia de México",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Bandera_del_Ej%C3%A9rcito_Trigarante.svg",
     source: "Wikimedia Commons"
   },
   {
