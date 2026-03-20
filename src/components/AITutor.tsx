@@ -545,11 +545,15 @@ async function streamChat({
       try {
         const parsed = JSON.parse(jsonStr);
         let c: string | undefined;
+        // Formato nuevo Edge Function: { content: "texto" }
+        if (parsed.content !== undefined) {
+          c = parsed.content;
+        }
         // Soporte para formato OpenAI (Lovable) 
-        if (parsed.choices?.[0]?.delta?.content) {
+        else if (parsed.choices?.[0]?.delta?.content) {
           c = parsed.choices[0].delta.content;
         } 
-        // Soporte para formato Anthropic (Claude)
+        // Soporte para formato Anthropic (Claude) raw
         else if (parsed.type === "content_block_delta" && parsed.delta?.text) {
           c = parsed.delta.text;
         }
@@ -573,7 +577,10 @@ async function streamChat({
       try {
         const parsed = JSON.parse(jsonStr);
         let c: string | undefined;
-        if (parsed.choices?.[0]?.delta?.content) {
+        // Formato nuevo Edge Function: { content: "texto" }
+        if (parsed.content !== undefined) {
+          c = parsed.content;
+        } else if (parsed.choices?.[0]?.delta?.content) {
           c = parsed.choices[0].delta.content;
         } else if (parsed.type === "content_block_delta" && parsed.delta?.text) {
           c = parsed.delta.text;
