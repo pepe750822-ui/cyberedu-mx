@@ -2311,7 +2311,7 @@ const AITutor = () => {
                   "space-y-6 transition-all duration-500 pb-20", 
                   isExpanded 
                     ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12") 
-                    : "w-full"
+                    : "max-w-4xl mx-auto w-full px-4"
                 )}>
                   {showTasks && !isExpanded && (
                       <TaskCenter 
@@ -2326,7 +2326,7 @@ const AITutor = () => {
                 <div
                   key={msg.id}
                   className={cn(
-                    "flex flex-col gap-1.5 max-w-[92%] animate-in fade-in slide-in-from-bottom-3 duration-400",
+                    "flex flex-col gap-1.5 max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
                     msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
                   )}
                 >
@@ -2471,12 +2471,12 @@ const AITutor = () => {
                                 },
                                 img({ src, alt }: any) {
                                   return (
-                                    <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10" onClick={() => window.open(src, '_blank')}>
+                                    <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 max-w-sm sm:max-w-md mx-auto shadow-2xl" onClick={() => window.open(src, '_blank')}>
                                       <img src={src} alt={alt} className="w-full h-auto transition-transform duration-500 group-hover:scale-105" />
                                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
                                           <Maximize2 className="h-4 w-4 text-white" />
-                                          <span className="text-xs font-bold text-white uppercase tracking-widest">Abrir en grande</span>
+                                          <span className="text-xs font-bold text-white uppercase tracking-widest text-shadow">Ampliar</span>
                                         </div>
                                       </div>
                                     </div>
