@@ -1,37 +1,165 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
+};
+
+const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026 para ingreso al bachillerato y nivel superior en México. Tu nombre es "CyberAgent".
+
+## PERSONALIDAD
+- Profesional pero cercano, como un mentor universitario joven.
+- Usas español mexicano natural (sin jerga excesiva).
+- Eres directo: respuestas claras y accionables.
+- Usas emojis con moderación para dar énfasis.
+
+## CAPACIDADES PRINCIPALES
+
+### 1. MODO RAZONAMIENTO (SIEMPRE ACTIVO)
+Antes de dar CUALQUIER respuesta sustancial (no saludos simples), DEBES incluir un bloque de razonamiento que muestre tu proceso de pensamiento. Envuélvelo en etiquetas:
+
+<reasoning>
+{
+  "question_type": "plan|explanation|analysis|recommendation",
+  "key_concepts": ["concepto1", "concepto2"],
+  "approach": "Breve descripción de cómo abordarás la respuesta",
+  "alternatives_considered": ["alternativa1", "alternativa2"],
+  "confidence": 85,
+  "references_to_past": "Referencia a decisiones o temas previos si aplica"
+}
+</reasoning>
+
+El bloque <reasoning> va ANTES de tu respuesta. Luego continúa con tu respuesta normal.
+
+### 2. MODO PLAN (Planificación Profunda)
+Cuando el usuario pida algo complejo (ej: "ayúdame a estudiar matemáticas", "prepárame para el examen"), genera un plan estructurado:
+
+<plan>
+{
+  "title": "Título del plan",
+  "description": "Breve descripción del objetivo",
+  "steps": [
+    {"id": 1, "text": "Descripción del paso", "priority": "alta|media|baja", "estimatedTime": "15 min", "dependsOn": []},
+    {"id": 2, "text": "Segundo paso", "priority": "alta", "estimatedTime": "20 min", "dependsOn": [1]}
+  ]
+}
+</plan>
+
+### 3. MODO DECISIÓN
+<decision>
+{
+  "question": "¿Qué decisión se tomó?",
+  "chosen": "Opción elegida",
+  "reasoning": "Por qué es la mejor opción",
+  "impact": "Cómo afecta el plan de estudio"
+}
+</decision>
+
+### 4. MODO QUIZ (Evaluación Rápida)
+<quiz>
+{
+  "title": "Quiz de Práctica",
+  "focusArea": "Tema específico",
+  "difficulty": "básico|intermedio|avanzado",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "¿Pregunta de opción múltiple?",
+      "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
+      "correctIndex": 0,
+      "explanation": "Explicación de por qué la Opción A es correcta."
+    }
+  ]
+}
+</quiz>
+
+## REGLAS DE CITACIÓN ECOEMS (OBLIGATORIO)
+Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 usando el formato \`[MATERIA X.Y]\`.
+1. **HV**: Habilidad Verbal | 2. **HM**: Habilidad Matemática | 3. **BIO**: Biología | 4. **QUI**: Química
+5. **FIS**: Física | 6. **MAT**: Matemáticas | 7. **ESP**: Español | 8. **HIS-M**: Historia de México
+9. **HIS-U**: Historia Universal | 10. **GEO**: Geografía | 11. **FCE**: Formación Cívica y Ética
+
+## REGLAS
+- Usa markdown: **negrita**, listas, encabezados ##.
+- Para preguntas simples (saludos), NO generes bloques XML.
+- Para solicitudes complejas, SIEMPRE genera <reasoning>.
+- Máx ~400 palabras salvo que se pida más detalle.
+- **Diagramas**: Para temas complejos genera un diagrama Mermaid en bloque \`\`\`mermaid\`\`\`.`;
+
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-    });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { messages, systemPrompt } = await req.json();
+    if (!ANTHROPIC_API_KEY) {
+      throw new Error("ANTHROPIC_API_KEY no está configurada en los secretos de Supabase.");
+    }
+
+    const { messages, context, memory } = await req.json();
+
+    // Construir System Prompt con contexto del usuario
+    let systemContent = SYSTEM_PROMPT;
+
+    if (memory) {
+      systemContent += `\n\n## MEMORIA DE SESIÓN`;
+      if (memory.decisions?.length) {
+        systemContent += `\n### Decisiones previas:\n`;
+        memory.decisions.forEach((d: any, i: number) => {
+          systemContent += `${i + 1}. **${d.question}** → ${d.chosen} (${d.reasoning})\n`;
+        });
+      }
+      if (memory.topics?.length) {
+        systemContent += `\n### Temas discutidos: ${memory.topics.join(", ")}\n`;
+      }
+      if (memory.insights?.length) {
+        systemContent += `\n### Insights del usuario:\n`;
+        memory.insights.forEach((ins: string) => { systemContent += `- ${ins}\n`; });
+      }
+    }
+
+    if (context) {
+      systemContent += `\n\n## CONTEXTO ACTUAL DEL USUARIO\n`;
+      if (context.currentPage) systemContent += `- Página actual: ${context.currentPage}\n`;
+      if (context.progress)    systemContent += `- Progreso global: ${context.progress}%\n`;
+      if (context.weakAreas?.length) systemContent += `- Áreas débiles: ${context.weakAreas.join(", ")}\n`;
+      if (context.streak)      systemContent += `- Racha de estudio: ${context.streak} días\n`;
+    }
+
+    // Solo roles permitidos por Anthropic: user y assistant
+    const cleanMessages = (messages || []).filter(
+      (m: any) => m.role === "user" || m.role === "assistant"
+    );
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY!,
+        "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1024,
-        system: systemPrompt ?? "Eres un tutor educativo experto que ayuda a estudiantes mexicanos a prepararse para sus exámenes de admisión COMIPEMS y Politécnico.",
-        messages: messages,
+        model: "claude-3-5-sonnet-20241022",
+        max_tokens: 4096,
+        system: systemContent,
+        messages: cleanMessages,
         stream: true,
       }),
     });
 
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Anthropic API error:", response.status, errText);
+      return new Response(
+        JSON.stringify({ error: `Error de la API de Claude: ${response.status}` }),
+        { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Traducir el stream de Anthropic al formato que lee AITutor.tsx
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
@@ -42,24 +170,28 @@ serve(async (req) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n").filter((l) => l.trim());
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split("\n");
 
           for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6);
-              if (data === "[DONE]") continue;
+            if (!line.startsWith("data: ")) continue;
+            const data = line.slice(6).trim();
+            if (!data || data === "[DONE]") continue;
 
-              try {
-                const parsed = JSON.parse(data);
-                if (parsed.type === "content_block_delta") {
-                  const text = parsed.delta?.text ?? "";
-                  controller.enqueue(
-                    encoder.encode(`data: ${JSON.stringify({ content: text })}\n\n`)
-                  );
-                }
-              } catch {}
-            }
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.type === "content_block_delta" && parsed.delta?.text) {
+                const text = parsed.delta.text;
+                // Emitir en formato compatible con el parser del frontend
+                controller.enqueue(
+                  encoder.encode(
+                    `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}\n\n`
+                  )
+                );
+              } else if (parsed.type === "message_stop") {
+                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+              }
+            } catch { /* ignorar líneas malformadas */ }
           }
         }
         controller.close();
@@ -68,15 +200,17 @@ serve(async (req) => {
 
     return new Response(stream, {
       headers: {
+        ...corsHeaders,
         "Content-Type": "text/event-stream",
-        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-cache",
       },
     });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+
+  } catch (e) {
+    console.error("agent-chat error:", e);
+    return new Response(
+      JSON.stringify({ error: e instanceof Error ? e.message : "Error desconocido" }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 });
