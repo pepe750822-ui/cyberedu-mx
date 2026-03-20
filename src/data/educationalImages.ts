@@ -135,6 +135,46 @@ export const educationalImages: EduImage[] = [
     url: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Carbon_cycle.svg",
     source: "Wikimedia Commons"
   },
+  {
+    key: "ciclo-nitrogeno",
+    title: "Ciclo del Nitrógeno",
+    description: "Proceso de transformación del nitrógeno en la atmósfera, suelo y seres vivos",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Nitrogen_Cycle_es.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "piramide-trofica",
+    title: "Pirámide Trófica",
+    description: "Niveles de energía y biomasa en un ecosistema",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/a/a3/EcologicalPyramid.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "adn-replicacion",
+    title: "Replicación del ADN",
+    description: "Proceso por el cual el ADN se duplica para la división celular",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/3/36/DNA_replication_it.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "aparato-reproductor-masculino",
+    title: "Aparato Reproductor Masculino",
+    description: "Anatomía del sistema reproductor masculino humano",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Male_anatomy_es.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "aparato-reproductor-femenino",
+    title: "Aparato Reproductor Femenino",
+    description: "Anatomía del sistema reproductor femenino humano",
+    area: "Biología",
+    url: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Female_anatomy_es.svg",
+    source: "Wikimedia Commons"
+  },
 
   // ─── FÍSICA ───
   {
@@ -215,6 +255,22 @@ export const educationalImages: EduImage[] = [
     description: "Prisma separando la luz blanca en los colores del arcoíris",
     area: "Física",
     url: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Prism_rainbow_schema.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "plano-inclinado",
+    title: "Plano Inclinado",
+    description: "Descomposición de fuerzas en un objeto sobre una rampa",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Incline.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "maquina-vapor",
+    title: "Máquina de Vapor (Watt)",
+    description: "Funcionamiento básico de la máquina de vapor, clave en la Revolución Industrial",
+    area: "Física",
+    url: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Engine_watt.svg",
     source: "Wikimedia Commons"
   },
 
@@ -439,6 +495,22 @@ export const educationalImages: EduImage[] = [
     url: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Pangaea_continents.svg",
     source: "Wikimedia Commons"
   },
+  {
+    key: "sismo-epicentro",
+    title: "Epicentro e Hipocentro",
+    description: "Diagrama de la propagación de ondas sísmicas desde el foco del terremoto",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/6/67/Epicenter_Diagram.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "globalizacion",
+    title: "La Globalización",
+    description: "Interconexión mundial en economía, cultura y tecnología",
+    area: "Geografía",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/bd/World_map_blank_without_borders.svg",
+    source: "Wikimedia Commons"
+  },
 
   // ─── HISTORIA ───
   {
@@ -479,6 +551,22 @@ export const educationalImages: EduImage[] = [
     description: "El mundo bipolar: Bloque Capitalista (OTAN) vs Bloque Comunista (Pacto de Varsovia)",
     area: "Historia Universal",
     url: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Cold_war_europe_military_alliances_map_en.png",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "segunda-guerra-mapa",
+    title: "Frentes de la Segunda Guerra Mundial",
+    description: "Principales escenarios de batalla en Europa y el Pacífico (1939-1945)",
+    area: "Historia Universal",
+    url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/World_War_II_in_Europe%2C_1942.svg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "revolucion-rusa-mapa",
+    title: "La Revolución Rusa (1917)",
+    description: "El Imperio Ruso antes de la caída del Zar y el ascenso de los Bolcheviques",
+    area: "Historia Universal",
+    url: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Russian_Republic_in_1917.svg",
     source: "Wikimedia Commons"
   },
   {
@@ -595,6 +683,14 @@ export const educationalImages: EduImage[] = [
     description: "Principios de universalidad, interdependencia, indivisibilidad y progresividad",
     area: "Formación Cívica",
     url: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Eleanor_Roosevelt_UDHR.jpg",
+    source: "Wikimedia Commons"
+  },
+  {
+    key: "derechos-ninos",
+    title: "Derechos de las Niñas, Niños y Adolescentes",
+    description: "Principios fundamentales de la Convención sobre los Derechos del Niño",
+    area: "Formación Cívica",
+    url: "https://upload.wikimedia.org/wikipedia/commons/a/af/UN_Convention_on_the_Rights_of_the_Child_-_Logo.svg",
     source: "Wikimedia Commons"
   }
 ];
