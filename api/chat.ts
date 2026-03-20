@@ -54,7 +54,7 @@ export default async function handler(req: Request) {
         max_tokens: 4096,
         system: SYSTEM_PROMPT,
         messages: cleanMessages,
-        stream: false, // Desactivamos stream para estabilidad inicial
+        stream: true, // Reactivamos el streaming
       }),
     });
 
@@ -63,14 +63,41 @@ export default async function handler(req: Request) {
        return new Response(JSON.stringify({ error: err }), { status: apiResponse.status });
     }
 
-    const data = await apiResponse.json();
-    const finalContent = data.content?.[0]?.text || '';
+    // Usamos un TransformStream para convertir el formato de Anthropic al de OpenAI/Front-end en tiempo real
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = apiResponse.body!.getReader();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-    // AITutor.tsx (Línea 549) detecta el formato: { content: "texto" }
-    // Enviar data: JSON + [DONE] para simular un fin inmediato
-    const payload = `data: ${JSON.stringify({ content: finalContent })}\n\ndata: [DONE]\n\n`;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
 
-    return new Response(payload, {
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = line.slice(6).trim();
+            if (!data || data === '[DONE]') continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                // Formato compatible con el front-end AITutor.tsx
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
+              } else if (parsed.type === 'message_stop') {
+                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+              }
+            } catch (e) { /* ignore chunk parsing errors */ }
+          }
+        }
+        controller.close();
+      }
+    });
+
+    return new Response(stream, {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
