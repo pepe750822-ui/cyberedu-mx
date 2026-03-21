@@ -87,7 +87,7 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
 - Máx ~400 palabras salvo que se pida más detalle.
 - **Diagramas**: Para temas complejos genera un diagrama Mermaid en bloque \`\`\`mermaid\`\`\`.`;
 
-const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") || "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";
+const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -145,7 +145,7 @@ serve(async (req) => {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
+        model: "claude-3-5-sonnet-latest",
         max_tokens: 4096,
         system: systemContent,
         messages: cleanMessages,

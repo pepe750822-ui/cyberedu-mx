@@ -14,13 +14,23 @@ export default async function handler(req: Request) {
     });
   }
 
+  const allowedOrigins = [
+    'https://cyberedumx.lovable.app',
+    'https://cyberedu-mx.vercel.app',
+    'http://localhost:5173'
+  ];
+  const origin = req.headers.get('origin');
+  const corsOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': corsOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+
   if (req.method === 'OPTIONS') {
     return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
+      headers: corsHeaders,
     });
   }
 
@@ -58,7 +68,7 @@ export default async function handler(req: Request) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6', // Modelo solicitado por el usuario
+        model: 'claude-3-5-sonnet-latest', // Modelo oficial de Anthropic (Claude 3.5 Sonnet)
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: cleanMessages,
@@ -68,7 +78,10 @@ export default async function handler(req: Request) {
 
     if (!apiResponse.ok) {
        const err = await apiResponse.text();
-       return new Response(JSON.stringify({ error: err }), { status: apiResponse.status });
+       return new Response(JSON.stringify({ error: err }), { 
+         status: apiResponse.status,
+         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+       });
     }
 
     // Usamos un TransformStream para convertir el formato de Anthropic al de OpenAI/Front-end en tiempo real
@@ -109,15 +122,15 @@ export default async function handler(req: Request) {
 
     return new Response(stream, {
       headers: {
+        ...corsHeaders,
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Access-Control-Allow-Origin': '*',
       },
     });
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 }
