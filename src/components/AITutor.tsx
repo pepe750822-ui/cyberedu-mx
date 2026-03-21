@@ -524,15 +524,18 @@ async function streamChat({
   memory,
   onDelta,
   onDone,
+  signal,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
   memory?: AgentMemory;
   onDelta: (text: string) => void;
   onDone: () => void;
+  signal?: AbortSignal;
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
+    signal,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
@@ -1727,18 +1730,18 @@ const AITutor = () => {
   useEffect(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = "es-MX";
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "es-MX";
 
-      recognitionRef.current.onresult = (event: any) => {
+      recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInput(prev => prev + (prev ? " " : "") + transcript);
         setIsListening(false);
       };
 
-      recognitionRef.current.onerror = (event: any) => {
+      recognition.onerror = (event: any) => {
         console.error("Speech recognition error", event.error);
         setIsListening(false);
         if (event.error === 'not-allowed') {
@@ -1746,10 +1749,20 @@ const AITutor = () => {
         }
       };
 
-      recognitionRef.current.onend = () => {
+      recognition.onend = () => {
         setIsListening(false);
       };
+
+      recognitionRef.current = recognition;
     }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) { /* ignore */ }
+      }
+    };
   }, []);
 
   const toggleListening = () => {
@@ -1804,6 +1817,26 @@ const AITutor = () => {
     window.speechSynthesis.speak(utterance);
   };
 
+  // Cleanup speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Cleanup AbortController on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
   // Load messages from localStorage
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem(HISTORY_KEY);
@@ -1839,7 +1872,9 @@ const AITutor = () => {
 
   // Persist messages & memory
   useEffect(() => {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify({ data: messages, timestamp: Date.now() }));
+    // Limit and persist
+    const limitedMessages = messages.slice(-20);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify({ data: limitedMessages, timestamp: Date.now() }));
   }, [messages]);
 
   useEffect(() => { saveMemory(memory); }, [memory]);
@@ -2299,9 +2334,14 @@ const AITutor = () => {
       const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen ECOEMS.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
       // Fall through to normal AI processing with enriched prompt
       const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
-      setMessages(prev => [...prev, userMsg]);
+      setMessages(prev => [...prev, userMsg].slice(-20));
       setInput("");
       setIsStreaming(true);
+
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      abortControllerRef.current = new AbortController();
 
       let assistantContent = "";
       const assistantId = (Date.now() + 1).toString();
@@ -2329,6 +2369,7 @@ const AITutor = () => {
           context: buildContext(),
           memory,
           onDelta: upsertAssistant,
+          signal: abortControllerRef.current.signal,
           onDone: () => {
             const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
@@ -2350,9 +2391,14 @@ const AITutor = () => {
 
 
     const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(prev => [...prev, userMsg].slice(-20));
     setInput("");
     setIsStreaming(true);
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
 
     // Extract topics from user message
     const words = text.toLowerCase().split(/\s+/);
@@ -2479,6 +2525,7 @@ const AITutor = () => {
         context: buildContext(),
         memory,
         onDelta: upsertAssistant,
+        signal: abortControllerRef.current.signal,
         onDone: () => {
           const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
 

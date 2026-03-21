@@ -52,7 +52,6 @@ export default async function handler(req: Request) {
     ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
     ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
 
-    // Preferir el mensaje de sistema del frontend si viene incluido
     const frontendSystemMsg = (messages || []).find((m: any) => m.role === 'system')?.content;
     const finalSystemPrompt = frontendSystemMsg || SYSTEM_PROMPT;
 
@@ -68,11 +67,11 @@ export default async function handler(req: Request) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-latest', // Modelo oficial de Anthropic (Claude 3.5 Sonnet)
+        model: 'claude-3-5-sonnet-latest',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: cleanMessages,
-        stream: true, // Reactivamos el streaming
+        stream: true,
       }),
     });
 
@@ -84,39 +83,56 @@ export default async function handler(req: Request) {
        });
     }
 
-    // Usamos un TransformStream para convertir el formato de Anthropic al de OpenAI/Front-end en tiempo real
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     
-    let buffer = '';
     const stream = new ReadableStream({
       async start(controller) {
-        const reader = apiResponse.body!.getReader();
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = buffer + decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
-          buffer = lines.pop() || '';
-
-          for (const line of lines) {
-            if (!line.startsWith('data: ')) continue;
-            const data = line.slice(6).trim();
-            if (!data || data === '[DONE]') continue;
-
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
-                // Formato compatible con el front-end AITutor.tsx
-                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
-              } else if (parsed.type === 'message_stop') {
-                controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-              }
-            } catch (e) { /* ignore chunk parsing errors */ }
-          }
+        if (!apiResponse.body) {
+          controller.close();
+          return;
         }
-        controller.close();
+
+        const reader = apiResponse.body.getReader();
+        let buffer = '';
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = buffer + decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue;
+              const data = line.slice(6).trim();
+              if (!data || data === '[DONE]') continue;
+
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
+                } else if (parsed.type === 'message_stop') {
+                  controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+                }
+              } catch (e) { /* silent chunk error */ }
+            }
+          }
+        } catch (error) {
+          console.error("Stream error:", error);
+          controller.error(error);
+        } finally {
+          reader.releaseLock();
+          controller.close();
+        }
+      },
+      cancel() {
+        // Handle client-side cancellation
+        if (apiResponse.body) {
+          apiResponse.body.cancel();
+        }
       }
     });
 
@@ -125,6 +141,7 @@ export default async function handler(req: Request) {
         ...corsHeaders,
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
       },
     });
   } catch (error: any) {
