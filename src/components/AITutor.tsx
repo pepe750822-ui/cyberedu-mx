@@ -255,7 +255,8 @@ const HISTORY_KEY = "ai_agent_history_v2";
 
 // ─── Helpfully sanitize Mermaid syntax for Lovable/v11 ───
 const sanitizeMermaidForLovable = (content: string): string => {
-  return content
+  // Limpieza global de acentos y caracteres de forma segura
+  let result = content
     .replace(/[áÁ]/g, 'a')
     .replace(/[éÉ]/g, 'e')
     .replace(/[íÍ]/g, 'i')
@@ -265,6 +266,21 @@ const sanitizeMermaidForLovable = (content: string): string => {
     .replace(/[ñÑ]/g, 'n')
     .replace(/\(/g, '[')
     .replace(/\)/g, ']');
+
+  // Procesar específicamente las etiquetas dentro de [] (nodos) y || (flechas)
+  // para evitar romper la estructura estructural (como --> o TD)
+  result = result.replace(/\[(.*?)\]|\|(.*?)\|/g, (match, p1, p2) => {
+    const label = p1 || p2 || "";
+    const cleanedLabel = label
+      .replace(/>/g, ' mayor que ')
+      .replace(/</g, ' menor que ')
+      .replace(/:/g, ' - ')
+      .replace(/[^a-zA-Z0-9\s-]/g, ' '); // Letras, números y espacios
+    
+    return p1 ? `[${cleanedLabel}]` : `|${cleanedLabel}|`;
+  });
+
+  return result;
 };
 
 // ─── Memory Manager ───
