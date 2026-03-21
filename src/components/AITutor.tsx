@@ -249,7 +249,7 @@ interface AgentMemory {
 
 // ─── Constants ───
 const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
-const CHAT_URL = "/api/chat";
+const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.app/api/chat";
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
