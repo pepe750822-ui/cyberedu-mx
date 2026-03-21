@@ -1727,7 +1727,7 @@ const AITutor = () => {
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
         streak: analysis.streak,
         detailedSyllabus,
-        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se limita estrictamente al temario numerado: ${JSON.stringify(detailedSyllabus)}. Si te preguntan sobre temas fuera de este temario (como Inglés), indica amablemente que no forman parte del examen oficial.`
+        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.`
       };
     } catch {
       return { 
@@ -2514,7 +2514,7 @@ const AITutor = () => {
            - PROHIBIDO usar letras, índices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
-        8. BLOQUEO: No respondas temas fuera del ECOEMS.`
+         8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.`
       };
 
       // Always include the system message at the start, then the last N messages
