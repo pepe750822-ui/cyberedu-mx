@@ -83,7 +83,8 @@ Cita el temario oficial ECOEMS 2026 con el formato \`[MATERIA X.Y]\`:
 - Para saludos simples, NO generes bloques XML.
 - Para solicitudes complejas, SIEMPRE genera <reasoning>.
 - Máx ~400 palabras salvo que se pida más detalle.
-- Para temas complejos genera diagrama Mermaid en bloque \`\`\`mermaid\`\`\`.`;
+- **Diagramas**: Para temas complejos genera diagrama Mermaid en bloque \`\`\`mermaid\`\`\`. NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes [].
+- **Fuera del temario**: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

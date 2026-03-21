@@ -85,7 +85,8 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
 - Para preguntas simples (saludos), NO generes bloques XML.
 - Para solicitudes complejas, SIEMPRE genera <reasoning>.
 - Máx ~400 palabras salvo que se pida más detalle.
-- **Diagramas**: Para temas complejos genera un diagrama Mermaid en bloque \`\`\`mermaid\`\`\`.`;
+- **Diagramas**: Para temas complejos genera un diagrama Mermaid en bloque \`\`\`mermaid\`\`\`. NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes [].
+- **Fuera del temario**: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.`;
 
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
 
