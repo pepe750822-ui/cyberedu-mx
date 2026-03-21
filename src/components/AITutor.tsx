@@ -253,6 +253,20 @@ const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.ap
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
+// ─── Helpfully sanitize Mermaid syntax for Lovable/v11 ───
+const sanitizeMermaidForLovable = (content: string): string => {
+  return content
+    .replace(/[áÁ]/g, 'a')
+    .replace(/[éÉ]/g, 'e')
+    .replace(/[íÍ]/g, 'i')
+    .replace(/[óÓ]/g, 'o')
+    .replace(/[úÚ]/g, 'u')
+    .replace(/[üÜ]/g, 'u')
+    .replace(/[ñÑ]/g, 'n')
+    .replace(/\(/g, '[')
+    .replace(/\)/g, ']');
+};
+
 // ─── Memory Manager ───
 function loadMemory(): AgentMemory {
   try {
@@ -2073,7 +2087,9 @@ const AITutor = () => {
     code({ node, inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || '');
       if (!inline && match && match[1] === 'mermaid') {
-        return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+        const rawContent = String(children).replace(/\n$/, '');
+        const sanitized = sanitizeMermaidForLovable(rawContent);
+        return <Mermaid chart={sanitized} />;
       }
       return (
         <code className={className} {...props}>
