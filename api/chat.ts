@@ -50,6 +50,7 @@ export default async function handler(req: Request) {
     8. PLANES: Usa <plan>{JSON}</plan> para proponer rutas de estudio.
     9. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.
     10. COMPATIBILIDAD MERMAID: Cuando generes diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes []. Esto es obligatorio para compatibilidad con Mermaid v11.
+    11. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
 
     ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
     ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;

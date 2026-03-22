@@ -1743,7 +1743,7 @@ const AITutor = () => {
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
         streak: analysis.streak,
         detailedSyllabus,
-        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.`
+        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.`
       };
     } catch {
       return { 
@@ -2164,8 +2164,8 @@ const AITutor = () => {
     },
     table({ children }: any) {
       return (
-        <div className="my-4 overflow-x-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
-          <table className="w-full text-left border-collapse min-w-[300px]">
+        <div className="my-4 overflow-x-auto w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
+          <table className="min-w-full text-left border-collapse">
             {children}
           </table>
         </div>
@@ -2530,7 +2530,8 @@ const AITutor = () => {
            - PROHIBIDO usar letras, índices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
-         8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.`
+         8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.
+          9. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.`
       };
 
       // Always include the system message at the start, then the last N messages
