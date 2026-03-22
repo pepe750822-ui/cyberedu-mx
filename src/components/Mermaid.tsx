@@ -270,7 +270,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
   return (
     <>
       <div className={cn(
-        "group relative flex flex-col my-6 bg-slate-900/40 rounded-[2rem] border border-white/5 shadow-inner transition-all overflow-hidden",
+        "group relative flex flex-col my-6 bg-slate-900/40 rounded-[2rem] border border-white/5 shadow-inner transition-all overflow-hidden max-w-full",
         isFullscreen ? "fixed inset-4 z-[1000] bg-slate-950/95 backdrop-blur-xl border-white/10" : "w-full"
       )}>
         {/* Toolbar */}

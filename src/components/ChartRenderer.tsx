@@ -188,7 +188,7 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
   return (
     <>
       <div className={cn(
-        "group my-5 bg-slate-900/50 border border-white/5 rounded-[1.75rem] overflow-hidden transition-all",
+        "group my-5 bg-slate-900/50 border border-white/5 rounded-[1.75rem] overflow-hidden transition-all w-full max-w-full",
         isFullscreen && "fixed inset-4 z-[1000] bg-slate-950/98 backdrop-blur-xl border-white/10 flex flex-col"
       )}>
         {/* Header */}
