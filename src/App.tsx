@@ -28,13 +28,6 @@ import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
 import WhatsAppButton from "./components/WhatsAppButton";
 
-/** Routes starting with /~oauth are handled by Lovable Cloud infrastructure */
-const OAuthPassthrough = () => {
-  // Force a full-page navigation so the request reaches the server
-  window.location.reload();
-  return null;
-};
-
 /**
  * StreakAutoSync — invisible component that:
  * 1. Updates streak count when user studies today
@@ -141,7 +134,6 @@ const App = () => (
             <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
             <Route path="/sugerencias" element={<ProtectedRoute><Sugerencias /></ProtectedRoute>} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/~oauth/*" element={<OAuthPassthrough />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
