@@ -1718,8 +1718,19 @@ const AITutor = () => {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
   const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
+  const [showPromoBanner, setShowPromoBanner] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !localStorage.getItem("cyberedu_banner_ia_aviso");
+    }
+    return false;
+  });
 
   const agentNavigate = useAgentNavigation(setIsOpen);
+
+  const closeBanner = () => {
+    setShowPromoBanner(false);
+    localStorage.setItem("cyberedu_banner_ia_aviso", "true");
+  };
 
   const buildContext = useCallback(() => {
     try {
@@ -2694,6 +2705,29 @@ const AITutor = () => {
             </div>
           </div>
         </div>
+
+        <AnimatePresence>
+          {showPromoBanner && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="bg-amber-500/10 border-b border-amber-500/20 backdrop-blur-md overflow-hidden relative shrink-0"
+            >
+              <div className="max-w-4xl mx-auto px-4 py-3 sm:px-6 flex items-start gap-3">
+                <div className="flex-1 text-[10px] sm:text-xs font-bold text-amber-200/90 leading-relaxed pr-6 text-left">
+                  🔔 Aviso: Todo el contenido de CyberEdu MX seguirá siendo GRATUITO — videos, guías, simuladores y quizzes. Solo el chat con el Tutor IA tendrá un costo simbólico de $50 pesos/mes próximamente. ¡Aprovecha el acceso gratuito mientras dure! 🎓
+                </div>
+                <button
+                  onClick={closeBanner}
+                  className="absolute top-2 right-2 p-1 hover:bg-amber-500/20 rounded-full text-amber-500/60 hover:text-amber-500 transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Main Content Area */}
         <div className={cn("flex-1 flex overflow-hidden relative", isExpanded ? "flex-row" : "flex-col")}>
