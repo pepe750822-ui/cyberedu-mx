@@ -1539,7 +1539,7 @@ const MessageBubble = React.memo(({
         </div>
 
         <div className={cn(
-          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-hidden",
+          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-hidden min-w-0 break-words",
           !isAssistant
             ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
             : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
@@ -1614,7 +1614,7 @@ const MessageBubble = React.memo(({
             />
           )}
           {isAssistant ? (
-            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-hidden", isExpanded ? "prose-base" : "prose-sm")}>
+            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-hidden min-w-0 break-words", isExpanded ? "prose-base" : "prose-sm")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
