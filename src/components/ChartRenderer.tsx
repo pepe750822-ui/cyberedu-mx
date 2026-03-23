@@ -70,8 +70,8 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Fallback to empty array if chart.data is missing or invalid. Soporte para propiedades traducidas por el AI (ej. datos, valores)
-  const rawData = chart?.data || (chart as any)?.datos || (chart as any)?.valores || (chart as any)?.puntos || [];
+  // Fallback to empty array if chart.data is missing or invalid. Soporte para propiedades traducidas por el AI (ej. datos, valores) y Arrays directos
+  const rawData = Array.isArray(chart) ? chart : (chart?.data || (chart as any)?.datos || (chart as any)?.valores || (chart as any)?.puntos || []);
   const validData = Array.isArray(rawData) ? rawData : [];
 
   const keys = chart.keys?.length ? chart.keys : detectKeys(validData);
