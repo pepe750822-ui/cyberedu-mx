@@ -214,6 +214,9 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
     try {
       const id = getMermaidId();
       const content = cleanChart(chart);
+
+      console.log('MERMAID ORIGINAL:', chart);
+      console.log('MERMAID SANITIZADO:', content);
       
       // We render with useMaxWidth: false to get natural size
       const { svg } = await mermaid.render(id, content);
