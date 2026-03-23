@@ -276,7 +276,11 @@ const sanitizeMermaidForLovable = (content: string): string => {
       .replace(/>/g, ' mayor que ')
       .replace(/</g, ' menor que ')
       .replace(/:/g, ' - ')
-      .replace(/[^a-zA-Z0-9\s-]/g, ' '); // Letras, números y espacios
+      .replace(/\?/g, '')
+      .replace(/!/g, '')
+      .replace(/[¿¡]/g, '')
+      .replace(/[\(\)]/g, ' ')
+      .replace(/[^a-zA-Z0-9\s-]/g, ' '); // Permitir solo lo esencial
     
     return p1 ? `[${cleanedLabel}]` : `|${cleanedLabel}|`;
   });
@@ -1639,6 +1643,7 @@ const MessageBubble = React.memo(({
                 components={markdownComponents}
               >
                 {msg.content
+                  .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
                   .replace(
                     /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`

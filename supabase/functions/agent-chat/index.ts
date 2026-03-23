@@ -81,6 +81,7 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
 9. **HIS-U**: Historia Universal | 10. **GEO**: Geografía | 11. **FCE**: Formación Cívica y Ética
 
 ## REGLAS
+- **CRÍTICO: Al generar diagramas Mermaid NUNCA uses acentos, ñ, signos de interrogación, exclamación, paréntesis ni dos puntos dentro de los nodos. Usa SOLO letras sin acento, números, espacios y guiones. Esta regla es OBLIGATORIA sin excepciones.**
 - Usa markdown: **negrita**, listas, encabezados ##.
 - Para preguntas simples (saludos), NO generes bloques XML.
 - Para solicitudes complejas, SIEMPRE genera <reasoning>.
