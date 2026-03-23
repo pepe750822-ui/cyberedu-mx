@@ -219,7 +219,7 @@ const Index = () => {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="absolute top-full left-0 right-0 mt-4 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50 overflow-hidden divide-y divide-white/5"
+                      className="absolute top-full left-0 right-0 mt-4 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50 overflow-y-auto max-h-[400px] divide-y divide-white/5 scrollbar-thin scrollbar-thumb-white/10"
                     >
                       {filteredTopics.map((topic, i) => (
                         <button
@@ -252,7 +252,7 @@ const Index = () => {
       </section>
 
       {/* Dashboard de Progreso Personalizado */}
-      <section className="container mx-auto px-4 relative z-10 -mt-20 md:-mt-24 mb-16 space-y-12">
+      <section className="container mx-auto px-4 relative z-10 mt-12 mb-16 space-y-12">
         <PredictiveFeedback />
         <PlanEstudioDiario />
         <UltimoVideoCard />
