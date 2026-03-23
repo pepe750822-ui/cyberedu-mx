@@ -1,5 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   GraduationCap,
   BookOpen,
@@ -20,8 +21,10 @@ import {
   Award,
   ShieldCheck,
   Download,
-  Share2
+  Share2,
+  Search
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { areas } from "@/data/areas";
 import { studioMapping, fullSimulators } from "@/data/studioMap";
 import { getAreaNotebookKeys } from "@/data/notebookMap";
@@ -101,6 +104,30 @@ const Index = () => {
     }).length;
   }, [areaProgress]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredTopics = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    
+    const query = searchQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const results: Array<{ areaId: string; videoId: string; title: string; areaName: string }> = [];
+    
+    areas.forEach(area => {
+      area.videos.forEach(video => {
+        const title = video.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (title.includes(query) || area.name.toLowerCase().includes(query)) {
+          results.push({
+            areaId: area.id,
+            videoId: video.id,
+            title: video.title,
+            areaName: area.name
+          });
+        }
+      });
+    });
+    
+    return results.slice(0, 10);
+  }, [searchQuery]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -145,6 +172,80 @@ const Index = () => {
                 <BarChart3 className="h-5 w-5" />
                 <span>Ver Analíticos</span>
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 📚 Buscador de Contenido Gratuito */}
+      <section className="container mx-auto px-4 relative z-20 mb-12">
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+          <div className="relative bg-card/80 backdrop-blur-xl border border-primary/20 rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden">
+            <div className="absolute -right-10 -top-10 opacity-[0.05] pointer-events-none">
+              <Search className="h-64 w-64 text-primary" />
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                <Sparkles className="h-4 w-4" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-blue-300">Acceso 100% Libre</span>
+              </div>
+              
+              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground max-w-4xl text-balance">
+                📚 Busca tu tema y accede al material completo <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 italic">
+                  Videos + Infografías + PDFs + Podcasts + Quizzes — Todo GRATIS
+                </span>
+              </h2>
+              
+              <div className="w-full max-w-2xl relative">
+                <div className="relative h-16 md:h-20 group/input">
+                  <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-md opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground transition-colors group-focus-within:text-primary" />
+                  <Input 
+                    type="text" 
+                    placeholder="Ej: Biología Celular, Leyes de Newton, Geometría..."
+                    className="h-full w-full pl-16 pr-6 rounded-2xl bg-slate-950/50 border-2 border-border focus:border-primary/50 text-lg md:text-xl font-medium transition-all"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                
+                {/* Search Results */}
+                <AnimatePresence>
+                  {filteredTopics.length > 0 && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="absolute top-full left-0 right-0 mt-4 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50 overflow-hidden divide-y divide-white/5"
+                    >
+                      {filteredTopics.map((topic, i) => (
+                        <button
+                          key={`${topic.areaId}-${topic.videoId}-${i}`}
+                          onClick={() => navigate(`/area/${topic.areaId}?video=${topic.videoId}`)}
+                          className="w-full flex items-center justify-between p-4 hover:bg-white/10 transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
+                        >
+                          <div className="flex-1 min-w-0 pr-4">
+                            <p className="text-xs font-black text-primary/70 uppercase tracking-widest mb-0.5">{topic.areaName}</p>
+                            <p className="text-sm md:text-base font-bold text-white group-hover:text-primary transition-colors truncate">{topic.title}</p>
+                          </div>
+                          <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                            <ChevronRight className="h-4 w-4" />
+                          </div>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              
+              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> Sin registro forzoso</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-blue-500" /> Multimedia Premium</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-violet-500" /> Disponible 24/7</span>
+              </div>
             </div>
           </div>
         </div>

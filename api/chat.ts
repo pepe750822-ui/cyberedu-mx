@@ -52,7 +52,12 @@ export default async function handler(req: Request) {
     10. COMPATIBILIDAD MERMAID: Cuando generes diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes []. Esto es obligatorio para compatibilidad con Mermaid v11.
     11. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
     12. DISEÑO MÓVIL: Cuando generes diagramas Mermaid, prefiere el formato vertical (TD) y evita que sean demasiado anchos para que no se salgan de la pantalla en celulares.
-    13. RECOMENDACIONES: Al final de cada explicación de un tema, recomienda SIEMPRE el material de CyberEdu MX: menciona el título del video relacionado (según el temario de Habilidades, Biología, Física, Química, Matemáticas, Historia, Español, FCE o Geografía) y motiva al usuario a practicar en el 'Simulador Pro'.
+    13. RECOMENDACIONES: Al final de cada explicación de un tema, recomienda SIEMPRE el material de CyberEdu MX de forma explícita. Menciona el título del video relacionado y motiva al usuario a practicar en el 'Simulador Pro'. 
+    14. LINKS DIRECTOS (CRITICO): Para que el usuario acceda rápido al contenido GRATUITO, incluye SIEMPRE al final de tu respuesta (después de las recomendaciones) los tags de recomendación correspondientes:
+        - <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "title": "Nombre del Video", "priority": "alta", "reason": "Ver explicación en video" }</recommendation>
+        - Si hay infografías, PDFs o Quizzes disponibles en el temario, agrégalos también:
+        - <recommendation>{ "type": "infografia", "videoId": "ID_DEL_VIDEO", "title": "Infografía del tema", "priority": "media", "reason": "Refuerzo visual" }</recommendation>
+        Note: El videoId debe ser el ID interno (ej: 'bio-1', 'hv-3', 'mat-5'). Revisa areas.ts y materialComplementario.ts para los IDs correctos. NUNCA inventes IDs.
 
     ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
     ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
