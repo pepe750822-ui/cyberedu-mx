@@ -70,8 +70,9 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Fallback to empty array if chart.data is missing or invalid
-  const validData = Array.isArray(chart?.data) ? chart.data : [];
+  // Fallback to empty array if chart.data is missing or invalid. Soporte para propiedades traducidas por el AI (ej. datos, valores)
+  const rawData = chart?.data || (chart as any)?.datos || (chart as any)?.valores || (chart as any)?.puntos || [];
+  const validData = Array.isArray(rawData) ? rawData : [];
 
   const keys = chart.keys?.length ? chart.keys : detectKeys(validData);
   const colors = chart.colors?.length ? chart.colors : PALETTE;
@@ -88,8 +89,9 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
     // Si no hay datos, mostrar un placeholder o retornar null
     if (!validData.length) {
       return (
-        <div className="flex items-center justify-center h-full w-full text-slate-500 text-sm">
-          No hay datos para graficar.
+        <div className="flex flex-col items-center justify-center h-full w-full text-slate-500 text-sm p-4 overflow-auto">
+          <span>No hay datos para graficar. Datos crudos recibidos:</span>
+          <pre className="text-[10px] text-left mt-2 whitespace-pre-wrap">{JSON.stringify(chart, null, 2)}</pre>
         </div>
       );
     }
