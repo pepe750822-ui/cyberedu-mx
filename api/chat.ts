@@ -52,6 +52,7 @@ export default async function handler(req: Request) {
     10. COMPATIBILIDAD MERMAID: Cuando generes diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes []. Esto es obligatorio para compatibilidad con Mermaid v11.
     11. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
     12. DISEÑO MÓVIL: Cuando generes diagramas Mermaid, prefiere el formato vertical (TD) y evita que sean demasiado anchos para que no se salgan de la pantalla en celulares.
+    13. RECOMENDACIONES: Al final de cada explicación de un tema, recomienda SIEMPRE el material de CyberEdu MX: menciona el título del video relacionado (según el temario de Habilidades, Biología, Física, Química, Matemáticas, Historia, Español, FCE o Geografía) y motiva al usuario a practicar en el 'Simulador Pro'.
 
     ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
     ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
@@ -71,7 +72,7 @@ export default async function handler(req: Request) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: cleanMessages,
