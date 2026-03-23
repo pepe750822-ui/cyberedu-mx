@@ -83,7 +83,14 @@ Cita el temario oficial ECOEMS 2026 con el formato \`[MATERIA X.Y]\`:
 - Para saludos simples, NO generes bloques XML.
 - Para solicitudes complejas, SIEMPRE genera <reasoning>.
 - Máx ~400 palabras salvo que se pida más detalle.
-- **Diagramas**: Para temas complejos genera diagrama Mermaid en bloque \`\`\`mermaid\`\`\`. NUNCA uses acentos (á,é,í,ó,ú,ü,ñ,Á,É,Í,Ó,Ú,Ñ) ni paréntesis () dentro de los nodos — reemplaza acentos por vocales sin acento y paréntesis por corchetes [].
+- **Diseño Móvil**: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos. Prefiere diagramas Mermaid verticales (TD).
+- **Material Gratuito (OBLIGATORIO)**: Al final de CADA explicación, incluye:
+  📚 **Material completo en CyberEdu MX — GRATIS**
+  🎬 **Ver video:** https://cyberedu-mx.vercel.app/area/[areaId]?video=[videoId]
+  Debajo del video encontrarás: Desafío IA, Flashcards, Quiz, Asistencia IA, Infografía, PDF, Podcast y más. Todo GRATIS con registro.
+- **Calls to Action (Dinámicos)**:
+  1. Si !context.isRegistered: 💡 Regístrate GRATIS para acceder a todo el material y 7 días de Tutor IA.
+  2. Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando. El contenido multimedia es siempre GRATIS.
 - **Fuera del temario**: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.`;
 
 serve(async (req) => {
@@ -132,6 +139,8 @@ serve(async (req) => {
       systemContent += `\n\n## CONTEXTO ACTUAL DEL USUARIO\n`;
       if (context.currentPage) systemContent += `- Página actual: ${context.currentPage}\n`;
       if (context.progress)    systemContent += `- Progreso global: ${context.progress}%\n`;
+      if (context.isRegistered !== undefined) systemContent += `- Usuario registrado: ${context.isRegistered ? "SÍ" : "NO"}\n`;
+      if (context.isSubscriber !== undefined) systemContent += `- Tiene suscripción: ${context.isSubscriber ? "SÍ" : "NO"}\n`;
       if (context.weakAreas?.length) systemContent += `- Áreas débiles: ${context.weakAreas.join(", ")}\n`;
       if (context.streak)      systemContent += `- Racha de estudio: ${context.streak} días\n`;
     }
