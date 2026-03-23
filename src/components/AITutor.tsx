@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Send, Bot, User, Loader2, Brain, RefreshCw, GraduationCap,
@@ -1867,6 +1868,7 @@ const AITutor = () => {
     };
   }, []);
 
+  const { user, isSubscriber, trialDaysRemaining } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2199,8 +2201,28 @@ const AITutor = () => {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
 
-    // Handle skill commands
     const trimmed = text.trim().toLowerCase();
+    const isCommand = ['/quiz', '/reporte', '/analisis', '/análisis', '/diagnostico', '/diagnóstico'].some(cmd => trimmed.startsWith(cmd));
+
+    // Validaciones de Suscripción/Prueba (Solo para chat normal, los comandos son gratis)
+    if (!isCommand) {
+      if (!user) {
+        const assistantId = Date.now().toString();
+        setMessages(prev => [
+          ...prev, 
+          { role: "user", content: text.trim(), id: (Date.now() - 1).toString() },
+          { role: "assistant", content: "Regístrate gratis para chatear con el Tutor IA 🎓", id: assistantId }
+        ]);
+        setInput("");
+        return;
+      }
+
+      if (!isSubscriber && trialDaysRemaining <= 0) {
+        toast.info("Tu periodo de prueba ha expirado. Suscríbete para continuar usando el Tutor IA.");
+        navigate("/subscription");
+        return;
+      }
+    }
 
     // /diagnostico - System diagnostics
     if (trimmed === '/diagnostico' || trimmed === '/diagnóstico') {
@@ -2707,7 +2729,7 @@ const AITutor = () => {
         </div>
 
         <AnimatePresence>
-          {showPromoBanner && (
+          {(!isSubscriber && trialDaysRemaining > 0 && trialDaysRemaining <= 3) && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
@@ -2716,13 +2738,13 @@ const AITutor = () => {
             >
               <div className="max-w-4xl mx-auto px-4 py-3 sm:px-6 flex items-start gap-3">
                 <div className="flex-1 text-[10px] sm:text-xs font-bold text-amber-200/90 leading-relaxed pr-6 text-left">
-                  🔔 Aviso: Todo el contenido de CyberEdu MX seguirá siendo GRATUITO — videos, guías, simuladores y quizzes. Solo el chat con el Tutor IA tendrá un costo simbólico de $50 pesos/mes próximamente. ¡Aprovecha el acceso gratuito mientras dure! 🎓
+                  ⏰ Te quedan <span className="text-white font-black">{trialDaysRemaining}</span> {trialDaysRemaining === 1 ? 'día' : 'días'} de prueba gratuita. ¡Suscríbete para mantener tu acceso ilimitado al AITutor! 🎓
                 </div>
                 <button
-                  onClick={closeBanner}
-                  className="absolute top-2 right-2 p-1 hover:bg-amber-500/20 rounded-full text-amber-500/60 hover:text-amber-500 transition-colors"
+                  onClick={() => navigate("/subscription")}
+                  className="px-2 py-1 bg-amber-500 text-black text-[10px] font-black uppercase rounded-lg hover:bg-amber-400 transition-colors"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  Ver planes
                 </button>
               </div>
             </motion.div>

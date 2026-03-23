@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useMemo, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 import { trackLogout } from "@/hooks/useAnalytics";
@@ -13,6 +13,8 @@ interface UserProfile {
   weekly_reminders?: boolean;
   newsletter_opt_in?: boolean;
   area_of_interest?: string[] | null;
+  trial_started_at?: string | null;
+  subscription_status?: string | null;
 }
 
 interface AuthContextValue {
@@ -21,6 +23,8 @@ interface AuthContextValue {
   session: Session | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
+  isSubscriber: boolean;
+  trialDaysRemaining: number;
 }
 
 const AuthContext = createContext<AuthContextValue>({
@@ -29,6 +33,8 @@ const AuthContext = createContext<AuthContextValue>({
   session: null,
   isLoading: true,
   signOut: async () => { },
+  isSubscriber: false,
+  trialDaysRemaining: 0,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -97,8 +103,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const isSubscriber = profile?.subscription_status === 'active';
+
+  const trialDaysRemaining = useMemo(() => {
+    if (!profile?.trial_started_at) return 0;
+    const started = new Date(profile.trial_started_at).getTime();
+    const now = new Date().getTime();
+    const diff = now - started;
+    const daysPassed = Math.floor(diff / (1000 * 60 * 60 * 24));
+    return Math.max(0, 7 - daysPassed);
+  }, [profile?.trial_started_at]);
+
   return (
-    <AuthContext.Provider value={{ user, profile, session, isLoading, signOut }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      profile, 
+      session, 
+      isLoading, 
+      signOut,
+      isSubscriber,
+      trialDaysRemaining
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
+import Subscription from "./pages/Subscription";
 import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
@@ -133,6 +134,7 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
             <Route path="/sugerencias" element={<ProtectedRoute><Sugerencias /></ProtectedRoute>} />
+            <Route path="/subscription" element={<Subscription />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
