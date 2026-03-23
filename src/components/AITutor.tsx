@@ -255,38 +255,16 @@ const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
 // ─── Helpfully sanitize Mermaid syntax for Lovable/v11 ───
-const sanitizeMermaidForLovable = (content: string): string => {
-  // Limpieza global de acentos y caracteres de forma segura
-  let result = content
-    .replace(/[áÁ]/g, 'a')
-    .replace(/[éÉ]/g, 'e')
-    .replace(/[íÍ]/g, 'i')
-    .replace(/[óÓ]/g, 'o')
-    .replace(/[úÚ]/g, 'u')
-    .replace(/[üÜ]/g, 'u')
-    .replace(/[ñÑ]/g, 'n')
-    .replace(/\(/g, '[')
-    .replace(/\)/g, ']');
-
-  // Procesar específicamente las etiquetas dentro de [] (nodos) y || (flechas)
-  // para evitar romper la estructura estructural (como --> o TD)
-  result = result.replace(/\[(.*?)\]|\|(.*?)\|/g, (match, p1, p2) => {
-    const label = p1 || p2 || "";
-    const cleanedLabel = label
-      .replace(/>/g, ' mayor que ')
-      .replace(/</g, ' menor que ')
-      .replace(/:/g, ' - ')
-      .replace(/\?/g, '')
-      .replace(/!/g, '')
-      .replace(/[¿¡]/g, '')
-      .replace(/[\(\)]/g, ' ')
-      .replace(/[^a-zA-Z0-9\s-]/g, ' '); // Permitir solo lo esencial
-    
-    return p1 ? `[${cleanedLabel}]` : `|${cleanedLabel}|`;
-  });
-
-  return result;
-};
+const sanitizeMermaidForLovable = (content: string): string => content
+  .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+  .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ü/g, 'u')
+  .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
+  .replace(/Ó/g, 'O').replace(/Ú/g, 'U')
+  .replace(/ñ/g, 'n').replace(/Ñ/g, 'N')
+  .replace(/¿/g, '').replace(/¡/g, '')
+  .replace(/\(/g, ' ').replace(/\)/g, ' ')
+  .replace(/:/g, ' -')
+  .replace(/"/g, "'");
 
 // ─── Memory Manager ───
 function loadMemory(): AgentMemory {

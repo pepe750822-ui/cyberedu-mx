@@ -142,12 +142,17 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
     });
     cleaned = fixedLines.join('\n');
 
-    // 4. Aggressive character sanitization (v11 compatibility)
+    // 4. Ultra-aggressive character sanitization (v11 compatibility)
     cleaned = cleaned
-      .replace(/[áÁ]/g, 'a').replace(/[éÉ]/g, 'e').replace(/[íÍ]/g, 'i')
-      .replace(/[óÓ]/g, 'o').replace(/[úÚ]/g, 'u').replace(/[üÜ]/g, 'u')
-      .replace(/[ñÑ]/g, 'n').replace(/[¿?¡!]/g, '')
-      .replace(/[:]/g, ' - ');
+      .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+      .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ü/g, 'u')
+      .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
+      .replace(/Ó/g, 'O').replace(/Ú/g, 'U')
+      .replace(/ñ/g, 'n').replace(/Ñ/g, 'N')
+      .replace(/¿/g, '').replace(/¡/g, '')
+      .replace(/\(/g, ' ').replace(/\)/g, ' ')
+      .replace(/:/g, ' -')
+      .replace(/"/g, "'");
 
     // 5. Normalize HTML entities
     cleaned = cleaned
