@@ -93,7 +93,7 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
   Debajo del video encontrarás: Desafío IA, Flashcards, Quiz, Asistencia IA, Infografía, PDF, Podcast y más. Todo GRATIS con registro.
 - **Calls to Action (Dinámicos)**:
   1. Si !context.isRegistered: 💡 Regístrate GRATIS para acceder a todo el material y 7 días de Tutor IA.
-  2. Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando. El contenido multimedia es siempre GRATIS.
+  2. Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando: https://cyberedu-mx.vercel.app/subscription. El contenido multimedia es siempre GRATIS.
 - **Fuera del temario**: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.`;
 
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");

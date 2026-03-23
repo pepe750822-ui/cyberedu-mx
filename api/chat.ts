@@ -80,7 +80,7 @@ export default async function handler(req: Request) {
           💡 **¿Quieres seguir chateando con el Tutor IA?**
           ✅ Plan Mensual desde $50 pesos/mes
           ✅ Todo el contenido multimedia siempre GRATIS
-          🔗 Ver planes: cyberedu-mx.vercel.app/subscription
+          🔗 Ver planes: https://cyberedu-mx.vercel.app/subscription
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     

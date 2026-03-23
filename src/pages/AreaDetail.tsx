@@ -25,7 +25,25 @@ const AreaDetail = () => {
   // Flatten all videos for global index calculation
   const allVideos = useMemo(() => areas.flatMap(a => a.videos.map(v => ({ ...v, areaId: a.id }))), []);
 
-  const [activeGlobalIndex, setActiveGlobalIndex] = useState(0);
+  const [activeGlobalIndex, setActiveGlobalIndex] = useState(() => {
+    // Attempt to determine the correct index before first render
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get("video");
+    const pathParts = window.location.pathname.split("/");
+    const areaIdFromPath = pathParts[pathParts.length - 1];
+    
+    if (videoId) {
+      const idx = allVideos.findIndex(v => v.id === videoId);
+      if (idx >= 0) return idx;
+    }
+    
+    if (areaIdFromPath) {
+      const idx = allVideos.findIndex(v => v.areaId === areaIdFromPath);
+      if (idx >= 0) return idx;
+    }
+    
+    return 0;
+  });
   const activeVideo = allVideos[activeGlobalIndex];
   const area = areas.find((a) => a.id === activeVideo?.areaId);
 
