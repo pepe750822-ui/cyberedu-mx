@@ -201,7 +201,7 @@ const Index = () => {
               
               <div className="w-full max-w-2xl relative">
                 <div className="relative h-16 md:h-20 group/input">
-                  <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-md opacity-0 group-hover/input:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-md opacity-0 group-hover/input:opacity-100 transition-opacity pointer-events-none"></div>
                   <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground transition-colors group-focus-within:text-primary" />
                   <Input 
                     type="text" 
