@@ -6,7 +6,16 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
 };
 
-const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026 para ingreso al bachillerato y nivel superior en México. Tu nombre es "CyberAgent".
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
+    const APP_URL = Deno.env.get("APP_URL") || "https://cyberedu-mx.vercel.app";
+
+    const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026 para ingreso al bachillerato y nivel superior en México. Tu nombre es "CyberAgent".
 
 ## PERSONALIDAD
 - Profesional pero cercano, como un mentor universitario joven.
@@ -87,26 +96,12 @@ Cita el temario oficial ECOEMS 2026 con el formato \`[MATERIA X.Y]\`:
 - **Diseño Móvil**: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos. Prefiere diagramas Mermaid verticales (TD).
 - **Material Gratuito (OBLIGATORIO)**: Al final de CADA explicación, incluye:
   📚 **Material completo en CyberEdu MX — GRATIS**
-  🎬 **Ver video:** https://cyberedu-mx.vercel.app/area/[areaId]?video=[videoId]
+  🎬 **Ver video:** ${APP_URL}/area/[areaId]?video=[videoId]
   Debajo del video encontrarás: Desafío IA, Flashcards, Quiz, Asistencia IA, Infografía, PDF, Podcast y más. Todo GRATIS con registro.
 - **Calls to Action (Dinámicos)**:
-  1. Si !context.isRegistered: 💡 Regístrate GRATIS para acceder a todo el material y 7 días de Tutor IA.
-  2. Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando: https://cyberedu-mx.vercel.app/subscription. El contenido multimedia es siempre GRATIS.
+  1. Si !context.isRegistered: 💡 Regístrate GRATIS para acceder a todo el material y 7 días de Tutor IA en ${APP_URL}
+  2. Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando: ${APP_URL}/subscription. El contenido multimedia es siempre GRATIS.
 - **Fuera del temario**: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.`;
-
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
-
-  try {
-    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!ANTHROPIC_API_KEY) {
-      return new Response(
-        JSON.stringify({ error: "ANTHROPIC_API_KEY no configurada. Ve a Supabase → Settings → Edge Functions → Secrets y agrégala." }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
 
     const { messages, context, memory } = await req.json();
 

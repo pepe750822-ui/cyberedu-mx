@@ -49,7 +49,8 @@ export default async function handler(req: Request) {
 
     // El host dinámico para las URLs de retorno y el webhook
     const protocol = req.headers.get('x-forwarded-proto') || 'https';
-    const host = req.headers.get('host') || 'cyberedu-mx.vercel.app';
+    const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
+    const host = req.headers.get('host') || new URL(APP_URL).host;
     const baseUrl = `${protocol}://${host}`;
 
     const preferenceBody = {

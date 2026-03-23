@@ -250,7 +250,7 @@ interface AgentMemory {
 
 // ─── Constants ───
 const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
-const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.app/api/chat";
+const CHAT_URL = import.meta.env.VITE_CHAT_URL || (typeof window !== "undefined" ? window.location.origin + "/api/chat" : "https://cyberedu-mx.vercel.app/api/chat");
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
@@ -1766,7 +1766,17 @@ const AITutor = () => {
         isRegistered: !!user,
         isSubscriber: !!isSubscriber,
         detailedSyllabus,
-        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien. Prefiere diagramas Mermaid verticales (TD) para que no se salgan de la pantalla.`
+        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda. Prefiere diagramas Mermaid verticales (TD).
+        
+        RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo:
+        📚 **Material completo en CyberEdu MX — GRATIS**
+        🎬 **Ver video:** ${window.location.origin}/area/[areaId]?video=[videoId]
+
+        Todo completamente GRATIS con registro.
+        
+        CALLS TO ACTION SEGÚN USUARIO:
+        - Si !context.isRegistered: 💡 Regístrate GRATIS en ${window.location.origin}
+        - Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando: ${window.location.origin}/subscription`
       };
     } catch {
       return { 
@@ -2585,7 +2595,34 @@ const AITutor = () => {
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
          8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.
           9. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
-          10. DISEÑO MÓVIL: En diagramas Mermaid, prefiere 'flowchart TD' y evita que sean demasiado anchos para pantallas pequeñas.`
+          10. DISEÑO MÓVIL: En diagramas Mermaid, prefiere 'flowchart TD' y evita que sean demasiado anchos para pantallas pequeñas.
+          11. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo:
+              📚 **Material completo en CyberEdu MX — GRATIS**
+              🎬 **Ver video:** ${window.location.origin}/area/[areaId]?video=[videoId]
+
+              Debajo del video encontrarás:
+              🎯 Desafío IA — NotebookLM
+              🎴 Flashcards interactivas
+              📝 Quiz original del tema
+              🧠 Asistencia IA
+              🖼️ Infografía descargable
+              📄 Documento técnico PDF
+              🎙️ Podcast de repaso
+              📘 Guía de estudio intensiva
+              🚀 Entrenamiento Studio
+
+              Todo completamente GRATIS con registro.
+          12. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
+              - Si !context.isRegistered:
+                💡 **¿Quieres acceder a todo este material?**
+                ✅ Regístrate GRATIS en ${window.location.origin}
+                ✅ 7 días de acceso completo al Tutor IA incluidos
+                ✅ Sin tarjeta de crédito
+              - Si context.isRegistered && !context.isSubscriber:
+                💡 **¿Quieres seguir chateando con el Tutor IA?**
+                ✅ Plan Mensual desde $50 pesos/mes
+                ✅ Todo el contenido multimedia siempre GRATIS
+                🔗 Ver planes: ${window.location.origin}/subscription`
       };
 
       // Always include the system message at the start, then the last N messages

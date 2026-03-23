@@ -14,9 +14,10 @@ export default async function handler(req: Request) {
     });
   }
 
+  const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
     'https://cyberedumx.lovable.app',
-    'https://cyberedu-mx.vercel.app',
+    APP_URL,
     'http://localhost:5173'
   ];
   const origin = req.headers.get('origin');
@@ -55,7 +56,7 @@ export default async function handler(req: Request) {
     13. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo. Adapta los links con el areaId y videoId correctos (usa areas.ts):
         
         📚 **Material completo en CyberEdu MX — GRATIS** 
-        🎬 **Ver video:** https://cyberedu-mx.vercel.app/area/[areaId]?video=[videoId]
+        🎬 **Ver video:** ${APP_URL}/area/[areaId]?video=[videoId]
 
         Debajo del video encontrarás:
         🎯 Desafío IA — NotebookLM
@@ -71,16 +72,16 @@ export default async function handler(req: Request) {
         Todo completamente GRATIS con registro.
 
     14. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO): 
-        - Si el usuario NO está registrado (!context.isRegistered):
-          💡 **¿Quieres acceder a todo este material?**
-          ✅ Regístrate GRATIS en cyberedu-mx.vercel.app
-          ✅ 7 días de acceso completo al Tutor IA incluidos
-          ✅ Sin tarjeta de crédito
-        - Si el usuario está registrado pero NO es suscriptor (context.isRegistered && !context.isSubscriber):
-          💡 **¿Quieres seguir chateando con el Tutor IA?**
-          ✅ Plan Mensual desde $50 pesos/mes
-          ✅ Todo el contenido multimedia siempre GRATIS
-          🔗 Ver planes: https://cyberedu-mx.vercel.app/subscription
+    - Si !context.isRegistered:
+      💡 **¿Quieres acceder a todo este material?**
+      ✅ Regístrate GRATIS en ${APP_URL}
+      ✅ 7 días de acceso completo al Tutor IA incluidos
+      ✅ Sin tarjeta de crédito
+    - Si context.isRegistered && !context.isSubscriber:
+      💡 **¿Quieres seguir chateando con el Tutor IA?**
+      ✅ Plan Mensual desde $50 pesos/mes
+      ✅ Todo el contenido multimedia siempre GRATIS
+      🔗 Ver planes: ${APP_URL}/subscription
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     
