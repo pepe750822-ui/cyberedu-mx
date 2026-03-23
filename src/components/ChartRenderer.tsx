@@ -70,14 +70,37 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Fallback to empty array if chart.data is missing or invalid. Soporte para propiedades traducidas por el AI (ej. datos, valores) y Arrays directos
-  const rawData = Array.isArray(chart) ? chart : (chart?.data || (chart as any)?.datos || (chart as any)?.valores || (chart as any)?.puntos || []);
+  // Fallback to empty array if chart.data is missing or invalid. Soporte para propiedades traducidas por el AI
+  let rawData = Array.isArray(chart) ? chart : (chart?.data || (chart as any)?.datos || (chart as any)?.valores || (chart as any)?.puntos || []);
+  
+  // Soporte automático para si el LLM "alucina" el formato de Chart.js en lugar del formato estándar (ej: data: { labels: [], datasets: [] })
+  if (rawData && !Array.isArray(rawData) && rawData.datasets && Array.isArray(rawData.datasets)) {
+    const labels = rawData.labels || [];
+    rawData = labels.map((label: string, index: number) => {
+      const point: any = { name: label };
+      rawData.datasets.forEach((ds: any, dsIndex: number) => {
+        const keyName = ds.label || `serie_${dsIndex}`;
+        point[keyName] = ds.data[index] !== undefined ? ds.data[index] : 0;
+      });
+      return point;
+    });
+  }
+
   const validData = Array.isArray(rawData) ? rawData : [];
 
   const keys = chart.keys?.length ? chart.keys : detectKeys(validData);
   const colors = chart.colors?.length ? chart.colors : PALETTE;
   const showLegend = chart.legend !== false && keys.length > 1;
   const showGrid = chart.grid !== false;
+  
+  // Intenta recuperar el título si vino en formato Chart.js
+  const displayTitle = chart.title || (chart as any)?.options?.plugins?.title?.text || "Gráfica";
+  
+  // Extrae un posible nombre del eje x/y si vino en Chart.js
+  const chartJsXLabel = (chart as any)?.options?.scales?.x?.title?.text;
+  const chartJsYLabel = (chart as any)?.options?.scales?.y?.title?.text;
+  const finalXLabel = chart.xLabel || chartJsXLabel;
+  const finalYLabel = chart.yLabel || chartJsYLabel;
   const Icon = CHART_ICONS[chart?.type] || TrendingUp;
 
   // ── Nombre del eje X: prioriza "x", luego "name" ──
@@ -102,8 +125,8 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
     };
 
     const axisStyle = { fontSize: 10, fill: "#64748b", fontWeight: 700 };
-    const xAxis = <XAxis dataKey={xKey} tick={axisStyle} label={chart.xLabel ? { value: chart.xLabel, position: "insideBottom", offset: -2, fill: "#475569", fontSize: 10 } : undefined} />;
-    const yAxis = <YAxis tick={axisStyle} width={36} label={chart.yLabel ? { value: chart.yLabel, angle: -90, position: "insideLeft", fill: "#475569", fontSize: 10 } : undefined} />;
+    const xAxis = <XAxis dataKey={xKey} tick={axisStyle} label={finalXLabel ? { value: finalXLabel, position: "insideBottom", offset: -2, fill: "#475569", fontSize: 10 } : undefined} />;
+    const yAxis = <YAxis tick={axisStyle} width={36} label={finalYLabel ? { value: finalYLabel, angle: -90, position: "insideLeft", fill: "#475569", fontSize: 10 } : undefined} />;
     const grid = showGrid ? <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" /> : null;
     const tooltip = <Tooltip content={<CustomTooltip />} />;
     const legend = showLegend ? <Legend wrapperStyle={{ fontSize: 10, color: "#94a3b8" }} /> : null;
@@ -203,7 +226,7 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
               <Icon className="h-3.5 w-3.5 text-primary" />
             </div>
             <span className="text-xs font-black text-white uppercase tracking-wider">
-              {chart.title || "Gráfica"}
+              {displayTitle}
             </span>
             <span className="px-1.5 py-0.5 bg-white/5 border border-white/10 rounded text-[9px] font-black text-slate-500 uppercase tracking-wider">
               {chart.type || "unknown"}
@@ -228,16 +251,16 @@ const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
         </div>
 
         {/* Footer labels */}
-        {(chart.xLabel || chart.yLabel) && (
+        {(finalXLabel || finalYLabel) && (
           <div className="px-4 pb-3 flex items-center gap-4 opacity-50">
-            {chart.xLabel && (
+            {finalXLabel && (
               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                Eje X: {chart.xLabel}
+                Eje X: {finalXLabel}
               </span>
             )}
-            {chart.yLabel && (
+            {finalYLabel && (
               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                Eje Y: {chart.yLabel}
+                Eje Y: {finalYLabel}
               </span>
             )}
           </div>
