@@ -1636,7 +1636,7 @@ const MessageBubble = React.memo(({
             />
           )}
           {isAssistant ? (
-            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-primary w-full overflow-hidden", isExpanded ? "prose-base" : "prose-sm")}>
+            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-hidden", isExpanded ? "prose-base" : "prose-sm")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -1644,6 +1644,10 @@ const MessageBubble = React.memo(({
               >
                 {msg.content
                   .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
+                  .replace(
+                    /(?<!\()https:\/\/([^\s\n\)]+)(?!\))/g, 
+                    (match) => `[${match}](${match})`
+                  )
                   .replace(
                     /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`
@@ -2167,7 +2171,16 @@ const AITutor = () => {
         );
       }
 
-      return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
+      return (
+        <a 
+          href={href} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors"
+        >
+          {children}
+        </a>
+      );
     },
     img({ src, alt }: any) {
       return (
