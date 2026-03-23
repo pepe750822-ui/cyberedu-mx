@@ -181,7 +181,7 @@ const Index = () => {
       <section className="container mx-auto px-4 relative z-20 mb-12">
         <div className="relative group">
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-          <div className="relative bg-card/80 backdrop-blur-xl border border-primary/20 rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden">
+          <div className="relative bg-card/80 backdrop-blur-xl border border-primary/20 rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-visible">
             <div className="absolute -right-10 -top-10 opacity-[0.05] pointer-events-none">
               <Search className="h-64 w-64 text-primary" />
             </div>
@@ -216,22 +216,23 @@ const Index = () => {
                 <AnimatePresence>
                   {filteredTopics.length > 0 && (
                     <motion.div 
+                      style={{ position: "absolute", zIndex: 100 }}
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="absolute top-full left-0 right-0 mt-4 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50 overflow-y-auto max-h-[400px] divide-y divide-white/5 scrollbar-thin scrollbar-thumb-white/10"
+                      className="top-full left-0 right-0 mt-4 bg-card/95 backdrop-blur-2xl border border-border rounded-2xl p-2 shadow-2xl overflow-y-auto max-h-[400px] divide-y divide-border scrollbar-thin scrollbar-thumb-primary/20"
                     >
                       {filteredTopics.map((topic, i) => (
                         <button
                           key={`${topic.areaId}-${topic.videoId}-${i}`}
                           onClick={() => navigate(`/area/${topic.areaId}?video=${topic.videoId}`)}
-                          className="w-full flex items-center justify-between p-4 hover:bg-white/10 transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
+                          className="w-full flex items-center justify-between p-4 hover:bg-primary/5 transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
                         >
                           <div className="flex-1 min-w-0 pr-4">
-                            <p className="text-xs font-black text-primary/70 uppercase tracking-widest mb-0.5">{topic.areaName}</p>
-                            <p className="text-sm md:text-base font-bold text-white group-hover:text-primary transition-colors truncate">{topic.title}</p>
+                            <p className="text-[10px] font-black text-primary/70 uppercase tracking-widest mb-0.5">{topic.areaName}</p>
+                            <p className="text-sm md:text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">{topic.title}</p>
                           </div>
-                          <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                          <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                             <ChevronRight className="h-4 w-4" />
                           </div>
                         </button>
