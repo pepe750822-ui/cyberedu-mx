@@ -111,7 +111,14 @@ export default async function handler(req: Request) {
 
 
     const frontendSystemMsg = (messages || []).find((m: any) => m.role === 'system')?.content;
-    const finalSystemPrompt = frontendSystemMsg || SYSTEM_PROMPT;
+    const finalSystemPromptText = frontendSystemMsg || SYSTEM_PROMPT;
+    const finalSystemPrompt = [
+      {
+        type: "text",
+        text: finalSystemPromptText,
+        cache_control: { type: "ephemeral" }
+      }
+    ];
 
     const cleanMessages = (messages || []).filter(
       (m: any) => m.role === 'user' || m.role === 'assistant'
@@ -125,7 +132,7 @@ export default async function handler(req: Request) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-3-5-haiku-20241022',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: cleanMessages,
