@@ -1706,7 +1706,7 @@ const AITutor = () => {
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
   const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
-  const { addMetric } = useChatAnalytics();
+  const { addMetric, addError } = useChatAnalytics();
 
   // ─── Topic extractor ───
   const extractTopic = (text: string): string => {
@@ -2720,6 +2720,7 @@ const AITutor = () => {
       });
     } catch (err: any) {
       console.error("Agent chat error:", err);
+      addError(err.message || 'Error desconocido en el chat', err.status);
       setMessages(prev => {
         const last = prev[prev.length - 1];
         const errContent = `⚠️ ${err.message || "Error de conexión. Intenta de nuevo."}`;

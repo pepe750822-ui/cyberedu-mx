@@ -1,123 +1,389 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { useChatAnalytics } from '@/hooks/useChatAnalytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, BarChart, Clock, MessageSquare, Zap } from 'lucide-react';
+import {
+  Download, BarChart, Clock, MessageSquare, Zap,
+  CheckCircle2, XCircle, AlertTriangle, RefreshCw,
+  Key, ExternalLink, TrendingUp, Activity, AlertCircle
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function AdminAnalytics() {
-  const { metrics, aggregateMetrics, exportToCSV } = useChatAnalytics();
-  const stats = useMemo(() => aggregateMetrics(), [metrics, aggregateMetrics]);
+// ─── Types ───────────────────────────────────────────────────
+interface ApiStatus {
+  status: 'ok' | 'warning' | 'error' | 'loading' | null;
+  message: string;
+  hasKey: boolean;
+  keyPrefix: string | null;
+  lastChecked: string | null;
+  model?: string;
+  modelAvailable?: boolean;
+  anthropicStatus?: {
+    rateLimitRemaining?: number | null;
+    rateLimitTokensRemaining?: number | null;
+    rateLimitReset?: string | null;
+    availableModels?: string[];
+    httpStatus?: number;
+  };
+}
+
+const STATUS_URL = 'https://cyberedu-mx.vercel.app/api/admin/status';
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutos
+
+// ─── API Status Banner ────────────────────────────────────────
+function ApiStatusBanner({ status, onRefresh, loading }: {
+  status: ApiStatus;
+  onRefresh: () => void;
+  loading: boolean;
+}) {
+  const bgColor = {
+    ok: 'bg-emerald-950/60 border-emerald-500/30',
+    warning: 'bg-amber-950/60 border-amber-500/30',
+    error: 'bg-red-950/60 border-red-500/30',
+    loading: 'bg-slate-900/60 border-white/10',
+    null: 'bg-slate-900/60 border-white/10',
+  }[status.status ?? 'null'];
+
+  const icon = {
+    ok: <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />,
+    warning: <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0 animate-pulse" />,
+    error: <XCircle className="h-5 w-5 text-red-400 shrink-0" />,
+    loading: <RefreshCw className="h-5 w-5 text-slate-400 animate-spin shrink-0" />,
+    null: <Activity className="h-5 w-5 text-slate-400 shrink-0" />,
+  }[status.status ?? 'null'];
+
+  const textColor = {
+    ok: 'text-emerald-300',
+    warning: 'text-amber-300',
+    error: 'text-red-300',
+    loading: 'text-slate-400',
+    null: 'text-slate-400',
+  }[status.status ?? 'null'];
+
+  const timeSince = (iso: string | null) => {
+    if (!iso) return 'nunca';
+    const diff = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+    if (diff < 60) return `hace ${diff}s`;
+    if (diff < 3600) return `hace ${Math.round(diff / 60)}min`;
+    return `hace ${Math.round(diff / 3600)}h`;
+  };
 
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <BarChart className="h-8 w-8 text-primary" />
-          Analíticas de Chat IA
-        </h1>
-        <Button onClick={exportToCSV} className="flex items-center gap-2">
-          <Download className="h-4 w-4" /> Exportar CSV
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Total Consultas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalQueries}</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Costo Estimado</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <div className="text-2xl font-bold text-emerald-500">
-               ${stats.totalCost.toFixed(4)} USD
-             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Tiempo de Respuesta</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <Clock className="h-5 w-5 text-amber-500" />
-              {(stats.avgResponseTime / 1000).toFixed(2)}s
+    <div className={cn('border rounded-2xl p-5 backdrop-blur-md', bgColor)}>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Left: status */}
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5">{icon}</div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={cn('font-black text-sm uppercase tracking-widest', textColor)}>
+                Estado de API — Anthropic
+              </span>
+              {status.model && (
+                <span className="px-2 py-0.5 rounded-full border border-white/10 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5">
+                  {status.model}
+                </span>
+              )}
             </div>
-          </CardContent>
-        </Card>
+            <p className="text-sm mt-1 text-white/80">{status.message || 'Verificando...'}</p>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Temas Detectados</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <div className="text-2xl font-bold flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-blue-500" />
-              {Object.keys(stats.topicsFrequency).length}
-             </div>
-          </CardContent>
-        </Card>
+            <div className="flex flex-wrap gap-3 mt-2">
+              {status.keyPrefix && (
+                <span className="flex items-center gap-1 text-xs text-slate-400">
+                  <Key className="h-3 w-3" /> {status.keyPrefix}
+                </span>
+              )}
+              {status.lastChecked && (
+                <span className="flex items-center gap-1 text-xs text-slate-500">
+                  <Clock className="h-3 w-3" /> {timeSince(status.lastChecked)}
+                </span>
+              )}
+              {status.anthropicStatus?.rateLimitRemaining != null && (
+                <span className="flex items-center gap-1 text-xs text-slate-400">
+                  <Zap className="h-3 w-3 text-amber-400" />
+                  {status.anthropicStatus.rateLimitRemaining} requests restantes
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right: actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onRefresh}
+            disabled={loading}
+            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1"
+          >
+            <RefreshCw className={cn('h-3 w-3', loading && 'animate-spin')} />
+            Verificar ahora
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => window.open('https://console.anthropic.com/settings/billing', '_blank')}
+            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1"
+          >
+            <ExternalLink className="h-3 w-3" />
+            Anthropic Console
+          </Button>
+        </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Temas más populares</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {Object.entries(stats.topicsFrequency)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 10)
-                .map(([topic, count]) => (
-                  <div key={topic} className="flex items-center">
-                    <div className="w-32 truncate pr-2 text-sm font-medium">{topic}</div>
-                    <div className="flex-1 bg-slate-100 rounded-full h-3">
-                      <div 
-                        className="bg-primary h-3 rounded-full" 
-                        style={{ width: `${Math.min(100, (count / stats.totalQueries) * 100)}%` }} 
-                      />
+// ─── Main Component ───────────────────────────────────────────
+export default function AdminAnalytics() {
+  const { metrics, errors, aggregateMetrics, exportToCSV } = useChatAnalytics();
+  const stats = useMemo(() => aggregateMetrics(), [metrics, aggregateMetrics]);
+
+  const [apiStatus, setApiStatus] = useState<ApiStatus>({
+    status: null,
+    message: 'Sin verificar',
+    hasKey: false,
+    keyPrefix: null,
+    lastChecked: null,
+  });
+  const [apiLoading, setApiLoading] = useState(false);
+
+  // Métricas de hoy
+  const today = new Date().toISOString().split('T')[0];
+  const todayMetrics = metrics.filter(m => m.timestamp.startsWith(today));
+  const todayCost = todayMetrics.reduce((s, m) => s + m.cost, 0);
+  const todayTokens = {
+    input: todayMetrics.reduce((s, m) => s + m.tokensInput, 0),
+    output: todayMetrics.reduce((s, m) => s + m.tokensOutput, 0),
+    cached: todayMetrics.reduce((s, m) => s + m.tokensCached, 0),
+  };
+
+  const fetchStatus = useCallback(async () => {
+    setApiLoading(true);
+    try {
+      const res = await fetch(STATUS_URL);
+      const data = await res.json();
+      setApiStatus({ ...data });
+    } catch (err: any) {
+      setApiStatus({
+        status: 'error',
+        message: `No se pudo contactar el endpoint de estado: ${err.message}`,
+        hasKey: false,
+        keyPrefix: null,
+        lastChecked: new Date().toISOString(),
+      });
+    } finally {
+      setApiLoading(false);
+    }
+  }, []);
+
+  // Verificar al montar y cada 5 minutos
+  useEffect(() => {
+    fetchStatus();
+    const interval = setInterval(fetchStatus, REFRESH_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [fetchStatus]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 sm:p-8">
+      <div className="max-w-6xl mx-auto space-y-6">
+
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-black text-white flex items-center gap-3">
+              <BarChart className="h-8 w-8 text-primary" />
+              Panel de Administración
+            </h1>
+            <p className="text-sm text-slate-400 mt-1">Monitoreo de costos, estado de API y analíticas del chat</p>
+          </div>
+          <Button onClick={exportToCSV} className="flex items-center gap-2 shrink-0">
+            <Download className="h-4 w-4" /> Exportar CSV
+          </Button>
+        </div>
+
+        {/* API Status Banner */}
+        <ApiStatusBanner
+          status={apiStatus}
+          onRefresh={fetchStatus}
+          loading={apiLoading}
+        />
+
+        {/* Stats de hoy */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            {
+              label: 'Consultas hoy',
+              value: todayMetrics.length,
+              icon: <MessageSquare className="h-5 w-5 text-blue-400" />,
+              color: 'text-white',
+            },
+            {
+              label: 'Costo hoy',
+              value: `$${todayCost.toFixed(4)} USD`,
+              icon: <TrendingUp className="h-5 w-5 text-emerald-400" />,
+              color: 'text-emerald-400',
+            },
+            {
+              label: 'Tokens cacheados hoy',
+              value: todayTokens.cached.toLocaleString(),
+              icon: <Zap className="h-5 w-5 text-amber-400" />,
+              color: 'text-amber-400',
+            },
+            {
+              label: 'Costo total acumulado',
+              value: `$${stats.totalCost.toFixed(4)} USD`,
+              icon: <Activity className="h-5 w-5 text-purple-400" />,
+              color: 'text-purple-400',
+            },
+          ].map(({ label, value, icon, color }) => (
+            <Card key={label} className="bg-white/5 border-white/10 text-white">
+              <CardHeader className="pb-1 pt-4 px-4">
+                <CardTitle className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                  {icon} {label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-4">
+                <div className={cn('text-2xl font-black', color)}>{value}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Stats generales */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Card className="bg-white/5 border-white/10 text-white">
+            <CardHeader className="pb-1 pt-4 px-4">
+              <CardTitle className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total consultas (todo)</CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl font-black">{stats.totalQueries}</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/5 border-white/10 text-white">
+            <CardHeader className="pb-1 pt-4 px-4">
+              <CardTitle className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                <Clock className="h-3 w-3" /> Tiempo prom. respuesta
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl font-black text-amber-400">{(stats.avgResponseTime / 1000).toFixed(2)}s</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/5 border-white/10 text-white">
+            <CardHeader className="pb-1 pt-4 px-4">
+              <CardTitle className="text-xs font-bold text-slate-400 uppercase tracking-widest">Temas únicos</CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 pb-4">
+              <div className="text-2xl font-black text-blue-400">{Object.keys(stats.topicsFrequency).length}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Temas + Historial */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Temas populares */}
+          <Card className="bg-white/5 border-white/10 text-white">
+            <CardHeader>
+              <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-300">Temas más populares</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {Object.keys(stats.topicsFrequency).length === 0 ? (
+                <p className="text-sm text-slate-500 italic">Sin datos aún</p>
+              ) : (
+                <div className="space-y-3">
+                  {Object.entries(stats.topicsFrequency)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10)
+                    .map(([topic, count]) => (
+                      <div key={topic} className="flex items-center gap-3">
+                        <div className="w-28 truncate text-xs font-medium text-slate-300">{topic}</div>
+                        <div className="flex-1 bg-white/10 rounded-full h-2">
+                          <div
+                            className="bg-primary h-2 rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(100, (count / stats.totalQueries) * 100)}%` }}
+                          />
+                        </div>
+                        <div className="w-10 text-right text-xs text-slate-500 font-bold">{count}</div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Historial reciente */}
+          <Card className="bg-white/5 border-white/10 text-white">
+            <CardHeader>
+              <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-300">Historial reciente</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {metrics.length === 0 ? (
+                <p className="text-sm text-slate-500 italic">Sin consultas registradas aún. Inicia el chat para empezar a ver datos.</p>
+              ) : (
+                <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                  {[...metrics].reverse().slice(0, 20).map(m => (
+                    <div key={m.id} className="text-sm border-b border-white/5 pb-2">
+                      <div className="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>{new Date(m.timestamp).toLocaleString('es-MX')}</span>
+                        <span className="flex items-center gap-1">
+                          <Zap className="h-3 w-3" /> {(m.responseTime / 1000).toFixed(1)}s
+                        </span>
+                      </div>
+                      <div className="font-medium text-slate-200 truncate">"{m.question}"</div>
+                      <div className="flex gap-2 mt-1 flex-wrap">
+                        <span className="text-[10px] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-slate-400">{m.questionTopic}</span>
+                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
+                          ${m.cost.toFixed(5)} USD
+                        </span>
+                        {m.hasChart && <span className="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded">📊 gráfica</span>}
+                        {m.hasMermaid && <span className="text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded">🔀 mermaid</span>}
+                      </div>
                     </div>
-                    <div className="w-12 text-right text-xs text-slate-500">{count}</div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Errores recientes */}
+        {errors.length > 0 && (
+          <Card className="bg-red-950/30 border-red-500/20 text-white">
+            <CardHeader>
+              <CardTitle className="text-sm font-black uppercase tracking-widest text-red-300 flex items-center gap-2">
+                <AlertCircle className="h-4 w-4" /> Errores recientes del chat
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                {errors.slice(0, 20).map(e => (
+                  <div key={e.id} className="flex items-start gap-3 text-xs border-b border-red-500/10 pb-2">
+                    <span className="text-red-400 shrink-0">{new Date(e.timestamp).toLocaleString('es-MX')}</span>
+                    {e.statusCode && (
+                      <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded font-bold shrink-0">
+                        {e.statusCode}
+                      </span>
+                    )}
+                    <span className="text-red-200/80">{e.message}</span>
                   </div>
                 ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Historial Reciente</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-              {[...metrics].reverse().slice(0, 20).map(m => (
-                <div key={m.id} className="text-sm border-b pb-2">
-                  <div className="flex justify-between text-xs text-slate-400 mb-1">
-                    <span>{new Date(m.timestamp).toLocaleString()}</span>
-                    <span className="flex items-center gap-1">
-                      <Zap className="h-3 w-3" /> {(m.responseTime / 1000).toFixed(1)}s
-                    </span>
-                  </div>
-                  <div className="font-medium text-slate-700">"{m.question}"</div>
-                  <div className="flex gap-2 mt-1">
-                    <span className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">{m.questionTopic}</span>
-                    <span className="text-xs bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded">
-                      ${m.cost.toFixed(5)}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Tip de costos */}
+        <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 text-sm text-slate-400">
+          <p className="font-bold text-primary mb-1">💡 Referencia de precios Haiku 4.5</p>
+          <p>Input: $0.80/M tokens · Output: $4.00/M tokens · Cache read: $0.08/M tokens</p>
+          <p className="mt-1">El prompt caching reduce hasta un <strong className="text-white">90%</strong> el costo por tokens de entrada. Para ver tu saldo real ve a{' '}
+            <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+              console.anthropic.com
+            </a>.
+          </p>
+        </div>
       </div>
     </div>
   );

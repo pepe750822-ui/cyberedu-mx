@@ -15,6 +15,13 @@ export interface ChatMetric {
   feedback: 'up' | 'down' | null;
 }
 
+export interface ChatError {
+  id: string;
+  timestamp: string;
+  message: string;
+  statusCode?: number;
+}
+
 export interface AggregatedMetrics {
   totalQueries: number;
   totalCost: number;
@@ -25,11 +32,21 @@ export interface AggregatedMetrics {
 }
 
 const METRICS_KEY = 'cyberedu_chat_metrics';
+const ERRORS_KEY  = 'cyberedu_chat_errors';
 
 export function useChatAnalytics() {
   const [metrics, setMetrics] = useState<ChatMetric[]>(() => {
     try {
       const stored = localStorage.getItem(METRICS_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [errors, setErrors] = useState<ChatError[]>(() => {
+    try {
+      const stored = localStorage.getItem(ERRORS_KEY);
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
@@ -52,16 +69,13 @@ export function useChatAnalytics() {
       agg.totalCost += m.cost;
       totalWait += m.responseTime;
 
-      // Temas
       const topic = m.questionTopic || 'general';
       agg.topicsFrequency[topic] = (agg.topicsFrequency[topic] || 0) + 1;
 
-      // Horas (0-23)
       const date = new Date(m.timestamp);
       const hour = date.getHours();
       agg.queriesByHour[hour] = (agg.queriesByHour[hour] || 0) + 1;
 
-      // Días (YYYY-MM-DD)
       const day = date.toISOString().split('T')[0];
       agg.queriesByDay[day] = (agg.queriesByDay[day] || 0) + 1;
     });
@@ -78,6 +92,20 @@ export function useChatAnalytics() {
       const newMetrics = [...prev, metric];
       localStorage.setItem(METRICS_KEY, JSON.stringify(newMetrics));
       return newMetrics;
+    });
+  }, []);
+
+  const addError = useCallback((message: string, statusCode?: number) => {
+    const newError: ChatError = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      message,
+      statusCode,
+    };
+    setErrors(prev => {
+      const updated = [newError, ...prev].slice(0, 50);
+      localStorage.setItem(ERRORS_KEY, JSON.stringify(updated));
+      return updated;
     });
   }, []);
 
@@ -123,7 +151,9 @@ export function useChatAnalytics() {
 
   return {
     metrics,
+    errors,
     addMetric,
+    addError,
     updateFeedback,
     aggregateMetrics,
     exportToCSV
