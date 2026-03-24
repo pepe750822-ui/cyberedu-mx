@@ -251,7 +251,11 @@ interface AgentMemory {
 
 // ─── Constants ───
 const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
-const CHAT_URL = import.meta.env.VITE_CHAT_URL || (typeof window !== "undefined" ? window.location.origin + "/api/chat" : "https://cyberedu-mx.vercel.app/api/chat");
+// Siempre apunta a Vercel como backend canónico del chat.
+// Esto garantiza que Lovable (lovable.app) y cualquier otro ambiente
+// usen el mismo endpoint optimizado: Haiku 4.5 + prompt caching + analytics.
+// Para sobreescribir en desarrollo local, define VITE_CHAT_URL en .env
+const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.app/api/chat";
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
