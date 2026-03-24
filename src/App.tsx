@@ -19,6 +19,7 @@ import BlogPostDetail from "./pages/BlogPostDetail";
 import Modalidades from "./pages/Modalidades";
 import Sugerencias from "./pages/Sugerencias";
 import AITutor from "./components/AITutor";
+import AdminAnalytics from "./components/AdminAnalytics";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import PWAStatusBar from "./components/PWAStatusBar";
@@ -135,6 +136,7 @@ const App = () => (
             <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
             <Route path="/sugerencias" element={<ProtectedRoute><Sugerencias /></ProtectedRoute>} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

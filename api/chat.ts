@@ -177,7 +177,11 @@ export default async function handler(req: Request) {
 
               try {
                 const parsed = JSON.parse(data);
-                if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                if (parsed.type === 'message_start' && parsed.message?.usage) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage: parsed.message.usage })}\n\n`));
+                } else if (parsed.type === 'message_delta' && parsed.usage) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage_delta: parsed.usage })}\n\n`));
+                } else if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
                 } else if (parsed.type === 'message_stop') {
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));

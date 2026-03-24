@@ -18,6 +18,7 @@ import { useAppDiagnostics, DiagnosticsResult, DiagnosticCheck } from "@/hooks/u
 import { useStudyPlans, PlanEstudio } from "@/hooks/useStudyPlans";
 import { useAnalisisRendimiento } from "@/hooks/useAnalisisRendimiento";
 import { useTaskQueue, AgentTask } from "@/hooks/useTaskQueue";
+import { useChatAnalytics } from "@/hooks/useChatAnalytics";
 import { areas } from "@/data/areas";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
@@ -537,6 +538,7 @@ async function streamChat({
   memory,
   onDelta,
   onDone,
+  onUsage,
   signal,
 }: {
   messages: { role: string; content: string }[];
@@ -544,6 +546,7 @@ async function streamChat({
   memory?: AgentMemory;
   onDelta: (text: string) => void;
   onDone: () => void;
+  onUsage?: (usage: any) => void;
   signal?: AbortSignal;
 }) {
   const resp = await fetch(CHAT_URL, {
@@ -565,6 +568,7 @@ async function streamChat({
   const decoder = new TextDecoder();
   let textBuffer = "";
   let streamDone = false;
+  let aggregatedUsage: any = {};
 
   while (!streamDone) {
     const { done, value } = await reader.read();
@@ -582,6 +586,9 @@ async function streamChat({
       if (jsonStr === "[DONE]") { streamDone = true; break; }
       try {
         const parsed = JSON.parse(jsonStr);
+        if (parsed.usage) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage };
+        if (parsed.usage_delta) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage_delta };
+
         let c: string | undefined;
         // Formato nuevo Edge Function: { content: "texto" }
         if (parsed.content !== undefined) {
@@ -614,6 +621,8 @@ async function streamChat({
       if (jsonStr === "[DONE]") continue;
       try {
         const parsed = JSON.parse(jsonStr);
+        if (parsed.usage) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage };
+        if (parsed.usage_delta) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage_delta };
         let c: string | undefined;
         // Formato nuevo Edge Function: { content: "texto" }
         if (parsed.content !== undefined) {
@@ -626,6 +635,9 @@ async function streamChat({
         if (c) onDelta(c);
       } catch { /* ignore */ }
     }
+  }
+  if (onUsage && Object.keys(aggregatedUsage).length > 0) {
+    onUsage(aggregatedUsage);
   }
   onDone();
 }
@@ -1690,6 +1702,28 @@ const AITutor = () => {
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
   const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
+  const { addMetric } = useChatAnalytics();
+
+  // ─── Topic extractor ───
+  const extractTopic = (text: string): string => {
+    const lower = text.toLowerCase();
+    const topicMap: [string[], string][] = [
+      [['biolog', 'célula', 'fotosíntesis', 'dna', 'genética', 'organismo', 'carbono', 'ecosistema'], 'biología'],
+      [['físic', 'movimiento', 'fuerza', 'energía', 'newton', 'cinemática', 'óptica'], 'física'],
+      [['químic', 'átomo', 'molécula', 'reacción', 'elemento', 'tabla periódica'], 'química'],
+      [['matemát', 'álgebra', 'geometría', 'ecuación', 'fracción', 'trigonometría', 'estadística'], 'matemáticas'],
+      [['español', 'lectura', 'comprensión', 'gramática', 'ortografía', 'puntuación'], 'español'],
+      [['historia', 'revolución', 'guerra', 'siglo', 'cultura', 'civilización'], 'historia'],
+      [['geografía', 'mapa', 'continente', 'población', 'clima', 'relieve'], 'geografía'],
+      [['cívica', 'democracia', 'ciudadanía', 'ética', 'derechos', 'constitución'], 'formación cívica'],
+      [['habilidad', 'verbal', 'razonamiento', 'lógico', 'sucesión', 'analogía'], 'habilidades'],
+      [['ecoems', 'examen', 'simulacro', 'quiz', 'estudiar', 'repaso'], 'preparación ECOEMS'],
+    ];
+    for (const [keywords, topic] of topicMap) {
+      if (keywords.some(k => lower.includes(k))) return topic;
+    }
+    return 'general';
+  };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
   const [isOpen, setIsOpen] = useState(false);
@@ -2622,14 +2656,47 @@ const AITutor = () => {
         { role: userMsg.role, content: userMsg.content }
       ];
 
+      const startTime = Date.now();
+
       await streamChat({
         messages: history,
         context: buildContext(),
         memory,
         onDelta: upsertAssistant,
         signal: abortControllerRef.current.signal,
+        onUsage: (usage: any) => {
+          // Usage data is captured here; we store it in a ref-like variable for onDone
+          (window as any).__lastChatUsage = usage;
+        },
         onDone: () => {
           const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const responseTime = Date.now() - startTime;
+          const usage = (window as any).__lastChatUsage || {};
+          delete (window as any).__lastChatUsage;
+
+          // Haiku 4.5 pricing (USD per million tokens, as of March 2026)
+          const INPUT_PRICE = 0.80 / 1_000_000;
+          const OUTPUT_PRICE = 4.00 / 1_000_000;
+          const CACHE_READ_PRICE = 0.08 / 1_000_000;
+          const inputTokens = usage.input_tokens || 0;
+          const outputTokens = usage.output_tokens || 0;
+          const cachedTokens = usage.cache_read_input_tokens || 0;
+          const cost = inputTokens * INPUT_PRICE + outputTokens * OUTPUT_PRICE + cachedTokens * CACHE_READ_PRICE;
+
+          addMetric({
+            id: assistantId,
+            timestamp: new Date().toISOString(),
+            question: text.trim().slice(0, 200),
+            questionTopic: extractTopic(text),
+            responseTime,
+            tokensInput: inputTokens,
+            tokensOutput: outputTokens,
+            tokensCached: cachedTokens,
+            cost,
+            hasChart: charts.length > 0,
+            hasMermaid: assistantContent.includes('```mermaid'),
+            feedback: null,
+          });
 
           // Save decisions to memory
           if (decisions.length > 0) {
