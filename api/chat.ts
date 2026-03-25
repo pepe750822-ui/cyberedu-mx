@@ -13,6 +13,19 @@ const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDI
 const MEM_CACHE = new Map<string, { content: string; ts: number }>();
 const MEM_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+// Helper to get userId from JWT
+function getUserIdFromToken(token: string | null): string | null {
+  if (!token) return null;
+  try {
+    const parts = token.replace('Bearer ', '').split('.');
+    if (parts.length !== 3) return null;
+    const payload = JSON.parse(atob(parts[1]));
+    return payload.sub || null;
+  } catch {
+    return null;
+  }
+}
+
 async function cacheGet(key: string): Promise<string | null> {
   // 1. Try Upstash
   if (UPSTASH_URL && UPSTASH_TOKEN) {
@@ -151,6 +164,38 @@ export default async function handler(req: Request) {
 
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // ─── Rate Limiting ───────────────────────────────────────
+  const authHeader = req.headers.get('Authorization');
+  const userId = getUserIdFromToken(authHeader);
+  const today = new Date().toISOString().split('T')[0];
+  const rateLimitKey = `ratelimit:user:${userId || 'anon'}:${today}`;
+
+  if (userId && UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const resp = await fetch(`${UPSTASH_URL}/incr/${encodeURIComponent(rateLimitKey)}`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+      if (resp.ok) {
+        const { result } = await resp.json() as { result: number };
+        if (result === 1) {
+          // Set TTL of 24h on first hit
+          await fetch(`${UPSTASH_URL}/expire/${encodeURIComponent(rateLimitKey)}/86400`, {
+            headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+          });
+        }
+        if (result > 50) {
+          return new Response(JSON.stringify({ 
+            error: 'Has alcanzado tu límite diario. Vuelve mañana.',
+            isRateLimited: true 
+          }), {
+            status: 429,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      }
+    } catch (e) { console.error('Rate limit error:', e); }
   }
 
   try {
@@ -309,6 +354,50 @@ export default async function handler(req: Request) {
     // Accumulate full response text for caching
     let fullResponseText = '';
 
+    // ─── Usage / Cost Tracking Helpers ─────────────────────────
+    let totalInputTokens = 0;
+    let totalOutputTokens = 0;
+    
+    function trackUsage(usage: any) {
+      if (!usage) return;
+      if (usage.input_tokens) totalInputTokens += usage.input_tokens;
+      if (usage.output_tokens) totalOutputTokens += usage.output_tokens;
+    }
+
+    async function saveDailyCost() {
+      if (!UPSTASH_URL || !UPSTASH_TOKEN) return;
+      
+      // Haiku 4.5 pricing
+      const INPUT_PRICE = 0.80 / 1000000;
+      const OUTPUT_PRICE = 4.00 / 1000000;
+      const cost = (totalInputTokens * INPUT_PRICE) + (totalOutputTokens * OUTPUT_PRICE);
+      
+      const dayCostKey = `daily_cost:${today}`;
+      try {
+        // We use INCRBYFLOAT in Redis
+        await fetch(`${UPSTASH_URL}`, {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${UPSTASH_TOKEN}`,
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify(['INCRBYFLOAT', dayCostKey, cost.toString()])
+        });
+
+        // Some Redis providers use different syntax for floats, for Upstash REST:
+        await fetch(`${UPSTASH_URL}`, {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${UPSTASH_TOKEN}`,
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify(['EXPIRE', dayCostKey, '2678400'])
+        });
+      } catch (e) {
+        console.error('Error saving daily cost:', e);
+      }
+    }
+
     const stream = new ReadableStream({
       async start(controller) {
         if (!apiResponse.body) {
@@ -336,18 +425,21 @@ export default async function handler(req: Request) {
               try {
                 const parsed = JSON.parse(data);
                 if (parsed.type === 'message_start' && parsed.message?.usage) {
-                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage: parsed.message.usage })}\n\n`));
+                  const usage = parsed.message.usage;
+                  trackUsage(usage);
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage })}\n\n`));
                 } else if (parsed.type === 'message_delta' && parsed.usage) {
+                  trackUsage(parsed.usage);
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage_delta: parsed.usage })}\n\n`));
                 } else if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
                   fullResponseText += parsed.delta.text;
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
                 } else if (parsed.type === 'message_stop') {
-                  // Save to cache before sending DONE
                   if (shouldCache && fullResponseText.length > 50) {
                     const ttl = cacheType === 'complex' ? 604800 : 86400;
                     await cacheSet(cacheKey, fullResponseText, ttl).catch(() => {});
                   }
+                  await saveDailyCost();
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                 }
               } catch (e) { /* silent chunk error */ }

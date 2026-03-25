@@ -547,6 +547,7 @@ async function streamChat({
   onUsage,
   onCache,
   signal,
+  token,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
@@ -556,13 +557,14 @@ async function streamChat({
   onUsage?: (usage: any) => void;
   onCache?: (cacheType?: 'simple' | 'complex') => void;
   signal?: AbortSignal;
+  token?: string;
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
     signal,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      Authorization: token ? `Bearer ${token}` : `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
     },
     body: JSON.stringify({ messages, context, memory }),
   });
@@ -1923,7 +1925,7 @@ const AITutor = () => {
     };
   }, []);
 
-  const { user, isSubscriber, trialDaysRemaining } = useAuth();
+  const { user, isSubscriber, trialDaysRemaining, session } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2499,6 +2501,7 @@ const AITutor = () => {
           memory,
           onDelta: upsertAssistant,
           signal: abortControllerRef.current.signal,
+          token: session?.access_token,
           onDone: () => {
             const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
@@ -2508,7 +2511,11 @@ const AITutor = () => {
         });
       } catch (err: any) {
         setMessages(prev => {
-          const errContent = `⚠️ ${err.message || "Error de conexión."}`;
+          const isRateLimit = err.message.includes("límite diario");
+          const errContent = isRateLimit 
+            ? "🚫 **Has alcanzado tu límite diario.**\n\nHas llegado al tope de 50 consultas diarias. Vuelve mañana para seguir estudiando con CyberAgent. 🎯"
+            : `⚠️ ${err.message || "Error de conexión."}`;
+          
           const last = prev[prev.length - 1];
           if (last?.role === "assistant" && last.id === assistantId) return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: errContent } : m);
           return [...prev, { role: "assistant", content: errContent, id: assistantId }];
@@ -2688,6 +2695,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         signal: abortControllerRef.current.signal,
+        token: session?.access_token,
         onCache: (type) => { hitCache = true; cacheTypeHit = type || 'simple'; },
         onUsage: (usage: any) => {
           // Usage data is captured here; we store it in a ref-like variable for onDone

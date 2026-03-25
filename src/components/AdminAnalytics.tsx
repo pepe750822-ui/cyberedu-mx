@@ -8,6 +8,8 @@ import {
   Key, ExternalLink, TrendingUp, Activity, AlertCircle, Database, Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from "sonner";
+import { Mail, Loader2 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────
 interface ApiStatus {
@@ -148,6 +150,16 @@ export default function AdminAnalytics() {
     lastChecked: null,
   });
   const [apiLoading, setApiLoading] = useState(false);
+  
+  // Cost alert state
+  const ALERTS_URL = 'https://cyberedu-mx.vercel.app/api/admin/alerts';
+  const [costAlert, setCostAlert] = useState<{
+    current_cost: number;
+    limit: number;
+    is_above_limit: boolean;
+    is_approaching: boolean;
+    alert_sent: boolean;
+  } | null>(null);
 
   // Cache management state
   const CACHE_URL = 'https://cyberedu-mx.vercel.app/api/admin/cache';
@@ -163,6 +175,28 @@ export default function AdminAnalytics() {
       setCacheInfo(data);
     } catch { } finally { setCacheLoading(false); }
   }, [CACHE_URL]);
+
+  const [testingAlert, setTestingAlert] = useState(false);
+  const onTestAlert = async () => {
+    setTestingAlert(true);
+    try {
+      const res = await fetch(ALERTS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ test: true })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`✅ ${data.msg}`);
+      } else {
+        toast.error(`❌ Error: ${data.msg || 'No se pudo enviar la alerta'}`);
+      }
+    } catch (err: any) {
+      toast.error(`❌ Error: ${err.message}`);
+    } finally {
+      setTestingAlert(false);
+    }
+  };
 
   const clearCache = useCallback(async () => {
     setClearingCache(true);
@@ -210,12 +244,24 @@ export default function AdminAnalytics() {
     }
   }, []);
 
+  const fetchAlerts = useCallback(async () => {
+    try {
+      const res = await fetch(ALERTS_URL);
+      const data = await res.json();
+      setCostAlert(data);
+    } catch (e) { console.error('Error fetching cost alerts:', e); }
+  }, [ALERTS_URL]);
+
   // Verificar al montar y cada 5 minutos
   useEffect(() => {
     fetchStatus();
-    const interval = setInterval(fetchStatus, REFRESH_INTERVAL_MS);
+    fetchAlerts();
+    const interval = setInterval(() => {
+      fetchStatus();
+      fetchAlerts();
+    }, REFRESH_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [fetchStatus]);
+  }, [fetchStatus, fetchAlerts]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 sm:p-8">
@@ -230,9 +276,20 @@ export default function AdminAnalytics() {
             </h1>
             <p className="text-sm text-slate-400 mt-1">Monitoreo de costos, estado de API y analíticas del chat</p>
           </div>
-          <Button onClick={exportToCSV} className="flex items-center gap-2 shrink-0">
-            <Download className="h-4 w-4" /> Exportar CSV
-          </Button>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button 
+                variant="outline" 
+                onClick={onTestAlert} 
+                disabled={testingAlert}
+                className="flex items-center gap-2 border-primary/30 hover:bg-primary/5 hover:border-primary/50 text-slate-300"
+            >
+              {testingAlert ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4 text-primary" />}
+              Probar alerta
+            </Button>
+            <Button onClick={exportToCSV} className="flex items-center gap-2 shrink-0">
+              <Download className="h-4 w-4" /> Exportar CSV
+            </Button>
+          </div>
         </div>
 
         {/* API Status Banner */}
@@ -241,6 +298,30 @@ export default function AdminAnalytics() {
           onRefresh={fetchStatus}
           loading={apiLoading}
         />
+
+        {/* Cost Alert Banner */}
+        {costAlert && (costAlert.is_approaching || costAlert.is_above_limit) && (
+          <div className={cn(
+            "p-4 rounded-2xl border flex items-center gap-3 animate-in fade-in slide-in-from-top-2",
+            costAlert.is_above_limit ? "bg-red-950/60 border-red-500/50" : "bg-amber-950/60 border-amber-500/50"
+          )}>
+            <AlertTriangle className={cn("h-6 w-6 shrink-0", costAlert.is_above_limit ? "text-red-400" : "text-amber-400")} />
+            <div className="flex-1">
+              <p className={cn("text-sm font-black uppercase tracking-widest", costAlert.is_above_limit ? "text-red-400" : "text-amber-400")}>
+                {costAlert.is_above_limit ? 'Límite de costo excedido' : 'Límite de costo acercándose'}
+              </p>
+              <p className="text-sm text-white/90">
+                El costo diario actual es de <strong>${costAlert.current_cost.toFixed(2)} USD</strong>. 
+                El límite configurado es de <strong>${costAlert.limit.toFixed(2)} USD</strong>.
+              </p>
+            </div>
+            {costAlert.alert_sent && (
+              <span className="px-2 py-1 rounded-full bg-white/10 text-[10px] font-bold text-white/60 uppercase tracking-widest border border-white/10">
+                Email enviado
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Stats de hoy */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
