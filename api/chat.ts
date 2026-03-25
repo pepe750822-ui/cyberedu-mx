@@ -94,7 +94,8 @@ function normalizeCacheKey(text: string): string {
 // ─── Should this question be cached? ─────────────────────────
 // Skip cache for questions that depend on personal context
 function isCacheable(message: string, history: any[]): boolean {
-  if (history.length > 1) return false; // only cache first question in session
+  const userMessages = history.filter(m => m.role === 'user');
+  if (userMessages.length > 1) return false; // only cache first question in session
   const lower = message.toLowerCase();
   const contextual = ['mi avance', 'mis notas', 'mi progreso', 'cuánto llevo',
     'cuándo', 'recuerda', 'dijiste', 'antes', 'mi plan', 'explícame más',
