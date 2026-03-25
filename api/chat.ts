@@ -325,7 +325,7 @@ export default async function handler(req: Request) {
                 } else if (parsed.type === 'message_stop') {
                   // Save to cache before sending DONE
                   if (shouldCache && fullResponseText.length > 50) {
-                    cacheSet(cacheKey, fullResponseText).catch(() => {});
+                    await cacheSet(cacheKey, fullResponseText).catch(() => {});
                   }
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                 }
