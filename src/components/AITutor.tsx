@@ -543,14 +543,16 @@ async function streamChat({
   onDelta,
   onDone,
   onUsage,
+  onCache,
   signal,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
   memory?: AgentMemory;
   onDelta: (text: string) => void;
-  onDone: () => void;
+  onDone: (fromCache?: boolean) => void;
   onUsage?: (usage: any) => void;
+  onCache?: () => void;
   signal?: AbortSignal;
 }) {
   const resp = await fetch(CHAT_URL, {
@@ -592,6 +594,8 @@ async function streamChat({
         const parsed = JSON.parse(jsonStr);
         if (parsed.usage) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage };
         if (parsed.usage_delta) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage_delta };
+        // Detect cache hit flag
+        if (parsed.fromCache === true && onCache) onCache();
 
         let c: string | undefined;
         // Formato nuevo Edge Function: { content: "texto" }
@@ -1553,6 +1557,13 @@ const MessageBubble = React.memo(({
         )}>
           {!isAssistant ? <User className="h-3.5 w-3.5 text-slate-400" /> : <Bot className="h-3.5 w-3.5 text-primary" />}
         </div>
+
+        {/* Cache badge — shown when response came from server cache */}
+        {isAssistant && msg.isFromCache && (
+          <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full select-none mb-0.5">
+            📦 Caché
+          </span>
+        )}
 
         <div className={cn(
           "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-hidden min-w-0 break-words",
@@ -2661,6 +2672,7 @@ const AITutor = () => {
       ];
 
       const startTime = Date.now();
+      let hitCache = false;
 
       await streamChat({
         messages: history,
@@ -2668,6 +2680,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         signal: abortControllerRef.current.signal,
+        onCache: () => { hitCache = true; },
         onUsage: (usage: any) => {
           // Usage data is captured here; we store it in a ref-like variable for onDone
           (window as any).__lastChatUsage = usage;
@@ -2685,7 +2698,7 @@ const AITutor = () => {
           const inputTokens = usage.input_tokens || 0;
           const outputTokens = usage.output_tokens || 0;
           const cachedTokens = usage.cache_read_input_tokens || 0;
-          const cost = inputTokens * INPUT_PRICE + outputTokens * OUTPUT_PRICE + cachedTokens * CACHE_READ_PRICE;
+          const cost = hitCache ? 0 : inputTokens * INPUT_PRICE + outputTokens * OUTPUT_PRICE + cachedTokens * CACHE_READ_PRICE;
 
           addMetric({
             id: assistantId,
@@ -2712,7 +2725,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined }
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache }
               : m
           ));
           setIsStreaming(false);

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
   Download, BarChart, Clock, MessageSquare, Zap,
   CheckCircle2, XCircle, AlertTriangle, RefreshCw,
-  Key, ExternalLink, TrendingUp, Activity, AlertCircle
+  Key, ExternalLink, TrendingUp, Activity, AlertCircle, Database, Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -148,6 +148,31 @@ export default function AdminAnalytics() {
     lastChecked: null,
   });
   const [apiLoading, setApiLoading] = useState(false);
+
+  // Cache management state
+  const CACHE_URL = 'https://cyberedu-mx.vercel.app/api/admin/cache';
+  const [cacheInfo, setCacheInfo] = useState<{ count: number; keys: { key: string; preview: string }[]; upstashConfigured?: boolean; usingMemoryCache?: boolean } | null>(null);
+  const [cacheLoading, setCacheLoading] = useState(false);
+  const [clearingCache, setClearingCache] = useState(false);
+
+  const fetchCache = useCallback(async () => {
+    setCacheLoading(true);
+    try {
+      const res = await fetch(CACHE_URL);
+      const data = await res.json();
+      setCacheInfo(data);
+    } catch { } finally { setCacheLoading(false); }
+  }, [CACHE_URL]);
+
+  const clearCache = useCallback(async () => {
+    setClearingCache(true);
+    try {
+      await fetch(CACHE_URL, { method: 'DELETE' });
+      await fetchCache();
+    } catch { } finally { setClearingCache(false); }
+  }, [CACHE_URL, fetchCache]);
+
+  useEffect(() => { fetchCache(); }, [fetchCache]);
 
   // Métricas de hoy
   const today = new Date().toISOString().split('T')[0];
@@ -373,6 +398,57 @@ export default function AdminAnalytics() {
             </CardContent>
           </Card>
         )}
+
+        {/* Cache Manager */}
+        <Card className="bg-cyan-950/30 border-cyan-500/20 text-white">
+          <CardHeader>
+            <CardTitle className="text-sm font-black uppercase tracking-widest text-cyan-300 flex items-center justify-between gap-2 flex-wrap">
+              <span className="flex items-center gap-2"><Database className="h-4 w-4" /> Caché de Respuestas</span>
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={fetchCache} disabled={cacheLoading}
+                  className="border-white/10 text-white/60 hover:text-white hover:bg-white/10 text-xs gap-1">
+                  <RefreshCw className={cn('h-3 w-3', cacheLoading && 'animate-spin')} /> Actualizar
+                </Button>
+                <Button size="sm" variant="outline" onClick={clearCache}
+                  disabled={clearingCache || !cacheInfo || cacheInfo.count === 0}
+                  className="border-red-500/20 text-red-300 hover:text-red-200 hover:bg-red-500/10 text-xs gap-1">
+                  <Trash2 className="h-3 w-3" /> Limpiar todo
+                </Button>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {!cacheInfo ? (
+              <p className="text-sm text-slate-500 italic">Cargando info de caché...</p>
+            ) : cacheInfo.usingMemoryCache ? (
+              <div className="space-y-2">
+                <p className="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                  ⚠️ <strong>Upstash Redis no configurado.</strong> La caché funciona en memoria (se resetea en cada deploy). Para activar caché persistente, conecta una integración de Redis en{' '}
+                  <a href="https://vercel.com/dashboard/integrations" target="_blank" rel="noopener noreferrer" className="underline text-amber-200">Vercel Integrations</a>.
+                </p>
+                <p className="text-xs text-slate-400">Variables requeridas: <code className="text-cyan-300">KV_REST_API_URL</code> y <code className="text-cyan-300">KV_REST_API_TOKEN</code></p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-slate-300">
+                  <strong className="text-cyan-300 text-xl">{cacheInfo.count}</strong>{' '}
+                  {cacheInfo.count === 1 ? 'respuesta cacheada' : 'respuestas cacheadas'}
+                  <span className="text-slate-500 ml-2">· TTL: 24 horas</span>
+                </p>
+                {cacheInfo.keys.length > 0 && (
+                  <div className="space-y-2 max-h-[160px] overflow-y-auto">
+                    {cacheInfo.keys.map((entry, i) => (
+                      <div key={i} className="text-xs border-b border-cyan-500/10 pb-2">
+                        <div className="font-bold text-cyan-200 truncate">"{entry.key}"</div>
+                        <div className="text-slate-500 mt-0.5 line-clamp-2">{entry.preview}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Tip de costos */}
         <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 text-sm text-slate-400">

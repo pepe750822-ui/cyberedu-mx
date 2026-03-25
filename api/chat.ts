@@ -1,9 +1,104 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export const config = {
   runtime: 'edge',
 };
 
+// ─── Upstash Redis helpers (REST API, no package needed) ───────
+// These env vars are automatically set when you connect an Upstash Redis
+// integration from the Vercel dashboard (Integrations → Marketplace → Redis).
+const UPSTASH_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+// In-process fallback cache (resets on cold start, but helps burst traffic)
+const MEM_CACHE = new Map<string, { content: string; ts: number }>();
+const MEM_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+async function cacheGet(key: string): Promise<string | null> {
+  // 1. Try Upstash
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const res = await fetch(`${UPSTASH_URL}/get/${encodeURIComponent(key)}`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+      if (res.ok) {
+        const data = await res.json() as { result: string | null };
+        return data.result ?? null;
+      }
+    } catch { /* fall through to memory */ }
+  }
+  // 2. Fallback: in-memory
+  const entry = MEM_CACHE.get(key);
+  if (entry && Date.now() - entry.ts < MEM_TTL_MS) return entry.content;
+  return null;
+}
+
+async function cacheSet(key: string, value: string, ttlSeconds = 86400): Promise<void> {
+  // 1. Try Upstash
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      await fetch(`${UPSTASH_URL}/set/${encodeURIComponent(key)}/${encodeURIComponent(value)}?EX=${ttlSeconds}`, {
+        method: 'GET', // Upstash REST GET-style set
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+    } catch { /* fall through */ }
+  }
+  // 2. Always store in memory too
+  MEM_CACHE.set(key, { content: value, ts: Date.now() });
+  // Cleanup memory if too large (keep latest 200 entries)
+  if (MEM_CACHE.size > 200) {
+    const oldest = [...MEM_CACHE.entries()].sort((a, b) => a[1].ts - b[1].ts)[0];
+    MEM_CACHE.delete(oldest[0]);
+  }
+}
+
+async function cacheKeys(pattern: string): Promise<string[]> {
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const res = await fetch(`${UPSTASH_URL}/keys/${encodeURIComponent(pattern)}`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+      if (res.ok) {
+        const data = await res.json() as { result: string[] };
+        return data.result ?? [];
+      }
+    } catch { /* fall through */ }
+  }
+  return [...MEM_CACHE.keys()].filter(k => k.startsWith('chat:'));
+}
+
+async function cacheDel(key: string): Promise<void> {
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      await fetch(`${UPSTASH_URL}/del/${encodeURIComponent(key)}`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+    } catch { /* ignore */ }
+  }
+  MEM_CACHE.delete(key);
+}
+
+// ─── Cache key normalizer ─────────────────────────────────────
+function normalizeCacheKey(text: string): string {
+  return 'chat:' + text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[¿?¡!.,;:"""''()\[\]{}]/g, '')
+    .slice(0, 200); // max 200 chars for key
+}
+
+// ─── Should this question be cached? ─────────────────────────
+// Skip cache for questions that depend on personal context
+function isCacheable(message: string, history: any[]): boolean {
+  if (history.length > 1) return false; // only cache first question in session
+  const lower = message.toLowerCase();
+  const contextual = ['mi avance', 'mis notas', 'mi progreso', 'cuánto llevo',
+    'cuándo', 'recuerda', 'dijiste', 'antes', 'mi plan', 'explícame más',
+    'continúa', 'siguiente', 'sigue', 'quiz', 'examen a mí'];
+  return !contextual.some(w => lower.includes(w)) && message.length > 20;
+}
+
+// ─── Main handler ─────────────────────────────────────────────
 export default async function handler(req: Request) {
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
@@ -30,13 +125,47 @@ export default async function handler(req: Request) {
   };
 
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: corsHeaders,
-    });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { messages, context, memory } = await req.json();
+
+    // ── Cache check ──────────────────────────────────────────
+    const lastUserMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || '';
+    const cacheKey = normalizeCacheKey(lastUserMsg);
+    const shouldCache = isCacheable(lastUserMsg, messages || []);
+
+    if (shouldCache) {
+      const cached = await cacheGet(cacheKey);
+      if (cached) {
+        // Return cached response as a simulated SSE stream
+        const encoder = new TextEncoder();
+        const stream = new ReadableStream({
+          start(controller) {
+            // Send cache hit flag first
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ fromCache: true })}\n\n`));
+            // Stream content in chunks to preserve the typing UX
+            const chunkSize = 40;
+            for (let i = 0; i < cached.length; i += chunkSize) {
+              const chunk = cached.slice(i, i + chunkSize);
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: chunk } }] })}\n\n`));
+            }
+            controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+            controller.close();
+          }
+        });
+        return new Response(stream, {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'X-Cache': 'HIT',
+          },
+        });
+      }
+    }
 
     const SYSTEM_PROMPT = `Eres CyberAgent, el mentor académico experto de CyberEdu MX especializado en el examen ECOEMS 2026.
     
@@ -130,6 +259,7 @@ export default async function handler(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'prompt-caching-2024-07-31',
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
@@ -151,6 +281,9 @@ export default async function handler(req: Request) {
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     
+    // Accumulate full response text for caching
+    let fullResponseText = '';
+
     const stream = new ReadableStream({
       async start(controller) {
         if (!apiResponse.body) {
@@ -182,8 +315,13 @@ export default async function handler(req: Request) {
                 } else if (parsed.type === 'message_delta' && parsed.usage) {
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage_delta: parsed.usage })}\n\n`));
                 } else if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                  fullResponseText += parsed.delta.text;
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
                 } else if (parsed.type === 'message_stop') {
+                  // Save to cache before sending DONE
+                  if (shouldCache && fullResponseText.length > 50) {
+                    cacheSet(cacheKey, fullResponseText).catch(() => {});
+                  }
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                 }
               } catch (e) { /* silent chunk error */ }
@@ -198,7 +336,6 @@ export default async function handler(req: Request) {
         }
       },
       cancel() {
-        // Handle client-side cancellation
         if (apiResponse.body) {
           apiResponse.body.cancel();
         }
@@ -210,7 +347,8 @@ export default async function handler(req: Request) {
         ...corsHeaders,
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'X-Cache': 'MISS',
       },
     });
   } catch (error: any) {
