@@ -82,8 +82,8 @@ async function cacheDel(key: string): Promise<void> {
 }
 
 // ─── Cache key normalizer ─────────────────────────────────────
-function normalizeCacheKey(text: string): string {
-  return 'chat:' + text
+function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
+  return `chat:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -91,16 +91,36 @@ function normalizeCacheKey(text: string): string {
     .slice(0, 200); // max 200 chars for key
 }
 
+function isComplexQuery(question: string): boolean {
+  const complexIndicators = [
+    /calcula/i, /resuelve/i, /desarrolla/i, /demuestra/i,
+    /paso a paso/i, /procedimiento/i, /fórmula/i,
+    /ejercicio/i, /problema/i, /ecuación/i,
+    /compar[a|e]/i, /analiza/i, /justifica/i,
+    /sistema de ecuaciones/i, /derivada/i, /integral/i,
+    /probabilidad/i, /estadística/i, /trigonometría/i
+  ];
+  const isLong = question.length > 80;
+  const hasComplexIndicator = complexIndicators.some(pattern => pattern.test(question));
+  return isLong || hasComplexIndicator;
+}
+
 // ─── Should this question be cached? ─────────────────────────
 // Skip cache for questions that depend on personal context
-function isCacheable(message: string, history: any[]): boolean {
+function isCacheable(message: string, history: any[]): { shouldCache: boolean; cacheType: 'simple' | 'complex' | null } {
   const userMessages = history.filter(m => m.role === 'user');
-  if (userMessages.length > 1) return false; // only cache first question in session
+  if (userMessages.length > 1) return { shouldCache: false, cacheType: null }; // only cache first question in session
   const lower = message.toLowerCase();
   const contextual = ['mi avance', 'mis notas', 'mi progreso', 'cuánto llevo',
     'cuándo', 'recuerda', 'dijiste', 'antes', 'mi plan', 'explícame más',
     'continúa', 'siguiente', 'sigue', 'quiz', 'examen a mí'];
-  return !contextual.some(w => lower.includes(w)) && message.length > 20;
+    
+  if (contextual.some(w => lower.includes(w)) || message.length <= 20) {
+    return { shouldCache: false, cacheType: null };
+  }
+  
+  const isComplex = isComplexQuery(message);
+  return { shouldCache: true, cacheType: isComplex ? 'complex' : 'simple' };
 }
 
 // ─── Main handler ─────────────────────────────────────────────
@@ -138,8 +158,8 @@ export default async function handler(req: Request) {
 
     // ── Cache check ──────────────────────────────────────────
     const lastUserMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || '';
-    const cacheKey = normalizeCacheKey(lastUserMsg);
-    const shouldCache = isCacheable(lastUserMsg, messages || []);
+    const { shouldCache, cacheType } = isCacheable(lastUserMsg, messages || []);
+    const cacheKey = shouldCache ? normalizeCacheKey(lastUserMsg, cacheType!) : normalizeCacheKey(lastUserMsg, 'simple');
 
     if (shouldCache) {
       const cached = await cacheGet(cacheKey);
@@ -149,7 +169,7 @@ export default async function handler(req: Request) {
         const stream = new ReadableStream({
           start(controller) {
             // Send cache hit flag first
-            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ fromCache: true })}\n\n`));
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ fromCache: true, cacheType })}\n\n`));
             // Stream content in chunks to preserve the typing UX
             const chunkSize = 40;
             for (let i = 0; i < cached.length; i += chunkSize) {
@@ -325,7 +345,8 @@ export default async function handler(req: Request) {
                 } else if (parsed.type === 'message_stop') {
                   // Save to cache before sending DONE
                   if (shouldCache && fullResponseText.length > 50) {
-                    await cacheSet(cacheKey, fullResponseText).catch(() => {});
+                    const ttl = cacheType === 'complex' ? 604800 : 86400;
+                    await cacheSet(cacheKey, fullResponseText, ttl).catch(() => {});
                   }
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                 }

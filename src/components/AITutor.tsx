@@ -197,6 +197,8 @@ interface Message {
   alerts?: any[];
   charts?: ChartData[];
   eduImages?: EduImage[];
+  isFromCache?: boolean;
+  cacheType?: 'simple' | 'complex' | null;
 }
 
 // ─── Shared Navigation Handler Wrapper ───
@@ -552,7 +554,7 @@ async function streamChat({
   onDelta: (text: string) => void;
   onDone: (fromCache?: boolean) => void;
   onUsage?: (usage: any) => void;
-  onCache?: () => void;
+  onCache?: (cacheType?: 'simple' | 'complex') => void;
   signal?: AbortSignal;
 }) {
   const resp = await fetch(CHAT_URL, {
@@ -595,7 +597,7 @@ async function streamChat({
         if (parsed.usage) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage };
         if (parsed.usage_delta) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage_delta };
         // Detect cache hit flag
-        if (parsed.fromCache === true && onCache) onCache();
+        if (parsed.fromCache === true && onCache) onCache(parsed.cacheType || 'simple');
 
         let c: string | undefined;
         // Formato nuevo Edge Function: { content: "texto" }
@@ -1560,8 +1562,13 @@ const MessageBubble = React.memo(({
 
         {/* Cache badge — shown when response came from server cache */}
         {isAssistant && msg.isFromCache && (
-          <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full select-none mb-0.5">
-            📦 Caché
+          <span className={cn(
+            "flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full select-none mb-0.5",
+            msg.cacheType === 'complex' 
+              ? "text-fuchsia-300 bg-fuchsia-500/20 border border-fuchsia-500/30" 
+              : "text-cyan-300 bg-cyan-500/10 border border-cyan-500/20"
+          )}>
+            {msg.cacheType === 'complex' ? '🧠 Caché Experto' : '📦 Caché'}
           </span>
         )}
 
@@ -2673,6 +2680,7 @@ const AITutor = () => {
 
       const startTime = Date.now();
       let hitCache = false;
+      let cacheTypeHit: 'simple' | 'complex' | null = null;
 
       await streamChat({
         messages: history,
@@ -2680,7 +2688,7 @@ const AITutor = () => {
         memory,
         onDelta: upsertAssistant,
         signal: abortControllerRef.current.signal,
-        onCache: () => { hitCache = true; },
+        onCache: (type) => { hitCache = true; cacheTypeHit = type || 'simple'; },
         onUsage: (usage: any) => {
           // Usage data is captured here; we store it in a ref-like variable for onDone
           (window as any).__lastChatUsage = usage;
@@ -2713,6 +2721,7 @@ const AITutor = () => {
             hasChart: charts.length > 0,
             hasMermaid: assistantContent.includes('```mermaid'),
             feedback: null,
+            cacheType: cacheTypeHit,
           });
 
           // Save decisions to memory
@@ -2725,7 +2734,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache }
+              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);

@@ -13,6 +13,7 @@ export interface ChatMetric {
   hasChart: boolean;
   hasMermaid: boolean;
   feedback: 'up' | 'down' | null;
+  cacheType?: 'simple' | 'complex' | null;
 }
 
 export interface ChatError {
@@ -120,7 +121,7 @@ export function useChatAnalytics() {
   const exportToCSV = useCallback(() => {
     if (metrics.length === 0) return;
     
-    const headers = ['id', 'timestamp', 'question', 'questionTopic', 'responseTime', 'tokensInput', 'tokensOutput', 'tokensCached', 'cost', 'hasChart', 'hasMermaid', 'feedback'];
+    const headers = ['id', 'timestamp', 'question', 'questionTopic', 'responseTime', 'tokensInput', 'tokensOutput', 'tokensCached', 'cost', 'hasChart', 'hasMermaid', 'feedback', 'cacheType'];
     const csvContent = [
       headers.join(','),
       ...metrics.map(m => [
@@ -135,7 +136,8 @@ export function useChatAnalytics() {
         m.cost.toFixed(6),
         m.hasChart,
         m.hasMermaid,
-        m.feedback || 'none'
+        m.feedback || 'none',
+        m.cacheType || 'none'
       ].join(','))
     ].join('\n');
 

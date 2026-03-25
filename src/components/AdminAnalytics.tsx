@@ -184,6 +184,13 @@ export default function AdminAnalytics() {
     cached: todayMetrics.reduce((s, m) => s + m.tokensCached, 0),
   };
 
+  const cachedMetrics = metrics.filter(m => m.cacheType != null);
+  const simpleCacheHits = cachedMetrics.filter(m => m.cacheType === 'simple').length;
+  const complexCacheHits = cachedMetrics.filter(m => m.cacheType === 'complex').length;
+  const nonCachedMetrics = metrics.filter(m => !m.cacheType);
+  const avgCostNonCached = nonCachedMetrics.length > 0 ? nonCachedMetrics.reduce((s, m) => s + m.cost, 0) / nonCachedMetrics.length : 0.01;
+  const estimatedSavings = cachedMetrics.length * avgCostNonCached;
+
   const fetchStatus = useCallback(async () => {
     setApiLoading(true);
     try {
@@ -430,11 +437,40 @@ export default function AdminAnalytics() {
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-slate-300">
-                  <strong className="text-cyan-300 text-xl">{cacheInfo.count}</strong>{' '}
-                  {cacheInfo.count === 1 ? 'respuesta cacheada' : 'respuestas cacheadas'}
-                  <span className="text-slate-500 ml-2">· TTL: 24 horas</span>
-                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+                      <span className="text-cyan-400">📦</span> Simple cache
+                    </div>
+                    <div className="text-xl font-black text-cyan-50">
+                      {simpleCacheHits} <span className="text-sm font-medium text-slate-500">hits</span>
+                    </div>
+                  </div>
+                  <div className="bg-fuchsia-950/20 border border-fuchsia-500/20 rounded-xl p-3">
+                    <div className="flex items-center gap-1.5 text-xs text-fuchsia-400/80 mb-1">
+                      <span>🧠</span> Complex cache
+                    </div>
+                    <div className="text-xl font-black text-fuchsia-100">
+                      {complexCacheHits} <span className="text-sm font-medium text-fuchsia-500/50">hits</span>
+                    </div>
+                  </div>
+                  <div className="bg-emerald-950/20 border border-emerald-500/20 rounded-xl p-3">
+                    <div className="flex items-center gap-1.5 text-xs text-emerald-400/80 mb-1">
+                      <span>💰</span> Ahorro est.
+                    </div>
+                    <div className="text-xl font-black text-emerald-100">
+                      ${estimatedSavings.toFixed(4)} <span className="text-sm font-medium text-emerald-500/50">USD</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-sm text-slate-300 mt-2 border-t border-white/5 pt-3">
+                  <p>
+                    <strong className="text-cyan-300 text-lg mr-1">{cacheInfo.count}</strong>
+                    {cacheInfo.count === 1 ? 'llave activa en DB' : 'llaves activas en DB'}
+                  </p>
+                  <span className="text-slate-500 text-xs font-medium">TTL: 24h - 7d</span>
+                </div>
                 {cacheInfo.keys.length > 0 && (
                   <div className="space-y-2 max-h-[160px] overflow-y-auto">
                     {cacheInfo.keys.map((entry, i) => (
