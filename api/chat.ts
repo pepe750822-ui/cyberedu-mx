@@ -36,9 +36,13 @@ async function cacheSet(key: string, value: string, ttlSeconds = 86400): Promise
   // 1. Try Upstash
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     try {
-      await fetch(`${UPSTASH_URL}/set/${encodeURIComponent(key)}/${encodeURIComponent(value)}?EX=${ttlSeconds}`, {
-        method: 'GET', // Upstash REST GET-style set
-        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      await fetch(`${UPSTASH_URL}`, {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${UPSTASH_TOKEN}`,
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(['SET', key, value, 'EX', ttlSeconds])
       });
     } catch { /* fall through */ }
   }
