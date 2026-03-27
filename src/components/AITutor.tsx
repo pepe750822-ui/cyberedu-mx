@@ -9,7 +9,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket
+  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -2955,8 +2955,8 @@ const AITutor = () => {
             {/* Input Overlay for chat */}
             <div className="p-5 bg-slate-900/50 border-t border-white/5">
               <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
-                  {/* Token/Trial Status Bar */}
-                  <div className="mb-4 flex items-center justify-between px-2">
+                  {/* Improved Token/Trial Status Bar */}
+                  <div className="mb-4 flex items-center justify-between px-2 bg-slate-900/30 p-2 rounded-xl border border-white/5 shadow-inner">
                     <div className="flex flex-col">
                       {(() => {
                         const tokens = profile?.tokens || 0;
@@ -2971,42 +2971,43 @@ const AITutor = () => {
                         const diffTime = Math.abs(now.getTime() - trialStartedAt.getTime());
                         const trialDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                        if (tokens > 0) {
-                          return (
-                            <div className="flex flex-col">
-                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
-                                <Ticket className="h-3 w-3 text-primary" /> Te quedan <span className="text-primary">{tokens}</span> tokens
-                              </p>
-                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">💰 Cada pregunta cuesta 1 token</p>
+                        return (
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-2 mb-0.5">
+                                <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
+                                    <Ticket className="h-3.5 w-3.5 text-primary" /> 
+                                    Balance: <span className={cn("px-1.5 py-0.5 rounded-md", tokens > 0 ? "bg-primary/20 text-primary border border-primary/30" : "bg-slate-800 text-slate-500 border border-white/5")}>
+                                      {tokens} {tokens === 1 ? 'TOKEN' : 'TOKENS'}
+                                    </span>
+                                </p>
                             </div>
-                          );
-                        } else if (trialDay <= 7) {
-                          return (
-                            <div className="flex flex-col">
-                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
-                                <span className="text-primary">🎁</span> PRUEBA GRATIS: {5 - actualDailyCount}/5 hoy
-                              </p>
-                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">📅 Día {trialDay} de 7</p>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div className="flex flex-col">
-                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
-                                <span className="text-primary">💬</span> {isToday && dailyCount >= 1 ? '0/1' : '1/1'} pregunta gratis hoy
-                              </p>
-                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">✨ Compra tokens para más preguntas</p>
-                            </div>
-                          );
-                        }
+                            
+                            {tokens <= 0 && (
+                                <div className="flex flex-col gap-0.5 mt-1 border-t border-white/5 pt-1">
+                                    {trialDay <= 7 ? (
+                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
+                                            <span className="text-amber-500 text-[11px]">🎁</span> 
+                                            PRUEBA: {5 - actualDailyCount}/5 gratis hoy · Día {trialDay}/7
+                                        </p>
+                                    ) : (
+                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
+                                            <span className="text-primary">💬</span> 
+                                            {isToday && dailyCount >= 1 ? '0/1' : '1/1'} diario gratis
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+                          </div>
+                        );
                       })()}
                     </div>
                     
                     <button 
                       onClick={() => agentNavigate("/tokens")}
-                      className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-black text-primary uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-sm shadow-primary/10"
+                      className="px-3 py-1.5 h-auto rounded-xl bg-primary/10 border border-primary/30 text-[9px] font-black text-primary uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-md shadow-primary/10 flex items-center gap-2"
                     >
-                      [➕ Comprar más]
+                      <Ticket className="h-3 w-3 " />
+                      Comprar más
                     </button>
                   </div>
 

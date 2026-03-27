@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays, Crown, Sparkles, Clock } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays, Crown, Sparkles, Clock, Ticket } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -122,6 +122,23 @@ const Header = () => {
             </TooltipTrigger>
             <TooltipContent>Cambiar tema</TooltipContent>
           </Tooltip>
+
+          {profile && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div 
+                  onClick={() => navigate("/tokens")}
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full cursor-pointer hover:bg-primary/20 transition-all active:scale-95 group"
+                >
+                  <Ticket className="h-3.5 w-3.5 text-primary group-hover:rotate-12 transition-transform" />
+                  <span className="text-[10px] font-black text-primary uppercase tracking-widest whitespace-nowrap">
+                    {profile.tokens || 0} TOKENS
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Tu balance de tokens</TooltipContent>
+            </Tooltip>
+          )}
 
           <div className="hidden lg:flex items-center gap-2">
             {isSubscriber ? (
