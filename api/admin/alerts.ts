@@ -107,7 +107,7 @@ export default async function handler(req: Request) {
         },
         body: JSON.stringify({
           from: 'CyberEdu Alerts <alerts@cyberedumx.com>',
-          to: ['admin@cyberedumx.com'], // In production, this should be configurable
+          to: ['pepe750822@gmail.com'], // Update to real admin email if different
           subject: `⚠️ ALERTA DE COSTO: Límite excedido (${today})`,
           html: `<p>El costo diario de CyberEdu MX ha superado el límite de $${threshold} USD.</p>
                  <p>Costo actual: <strong>$${currentCost.toFixed(2)} USD</strong></p>

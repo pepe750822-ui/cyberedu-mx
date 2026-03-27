@@ -15,6 +15,9 @@ interface UserProfile {
   area_of_interest?: string[] | null;
   trial_started_at?: string | null;
   subscription_status?: string | null;
+  subscription_plan?: string | null;
+  subscription_expires_at?: string | null;
+  is_premium?: boolean;
 }
 
 interface AuthContextValue {
@@ -103,7 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const isSubscriber = profile?.subscription_status === 'active';
+  const isSubscriber = profile?.subscription_status === 'active' || profile?.is_premium === true;
 
   const trialDaysRemaining = useMemo(() => {
     if (!profile?.trial_started_at) return 0;

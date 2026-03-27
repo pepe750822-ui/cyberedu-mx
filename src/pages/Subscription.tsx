@@ -13,7 +13,8 @@ import {
   Clock, 
   Trophy,
   BrainCircuit,
-  Bot
+  Bot,
+  History as HistoryIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -78,7 +79,7 @@ const plans = [
 ];
 
 const Subscription = () => {
-  const { user } = useAuth();
+  const { user, profile, isSubscriber } = useAuth();
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
@@ -199,88 +200,179 @@ const Subscription = () => {
           </div>
         </div>
 
-        {/* Info Box */}
-        <div className="glass-card-premium p-6 rounded-2xl border-amber-500/20 bg-amber-500/5 animate-in fade-in duration-1000 delay-200">
-          <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
-            <div className="p-3 rounded-full bg-amber-500/20">
-              <Clock className="h-6 w-6 text-amber-500" />
-            </div>
-            <div>
-              <p className="text-amber-200 font-bold uppercase tracking-wider text-sm">Tu periodo de prueba</p>
-              <p className="text-slate-400 text-sm">
-                Recuerda que tienes <span className="text-white font-bold">7 días de acceso completo</span> gratis al registrarte. 
-                Suscríbete ahora para no perder el progreso con el Mentor IA.
-              </p>
+        {!isSubscriber && (
+          <div className="glass-card-premium p-6 rounded-2xl border-amber-500/20 bg-amber-500/5 animate-in fade-in duration-1000 delay-200">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+              <div className="p-3 rounded-full bg-amber-500/20">
+                <Clock className="h-6 w-6 text-amber-500" />
+              </div>
+              <div>
+                <p className="text-amber-200 font-bold uppercase tracking-wider text-sm">Tu periodo de prueba</p>
+                <p className="text-slate-400 text-sm">
+                  Recuerda que tienes <span className="text-white font-bold">7 días de acceso completo</span> gratis al registrarte. 
+                  Suscríbete ahora para no perder el progreso con el Mentor IA.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {plans.map((plan, idx) => (
-            <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * (idx + 3) }}
-            >
-              <Card className={cn(
-                "relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02]",
-                "glass-card-premium rounded-[2rem] border-white/10",
-                plan.highlight && "border-primary/40 card-shadow pulse-subtle bg-primary/5"
-              )}>
-                {plan.badge && (
-                  <div className="absolute top-6 right-[-35px] rotate-45 bg-primary text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20">
-                    {plan.badge}
+        {isSubscriber && (
+          <div className="max-w-2xl mx-auto w-full animate-in fade-in zoom-in duration-500">
+            <Card className="glass-card-premium rounded-[2.5rem] border-primary/30 bg-primary/5 overflow-hidden relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <Crown className="h-24 w-24 text-primary" />
+              </div>
+              
+              <CardHeader className="p-8 md:p-12 text-center md:text-left pb-4">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="mx-auto md:mx-0 w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary/30">
+                    <Check className="h-10 w-10 text-primary" />
                   </div>
-                )}
+                  <div className="space-y-1">
+                    <Badge className="bg-emerald-500 text-white font-black uppercase tracking-widest text-[10px] px-3 py-1 mb-2">Activa</Badge>
+                    <h2 className="text-3xl font-black uppercase tracking-tight text-white">✅ ¡Ya eres Premium!</h2>
+                    <p className="text-slate-400 font-medium">Gracias por apoyar CyberEdu MX y confiar en tu preparación.</p>
+                  </div>
+                </div>
+              </CardHeader>
 
-                <CardHeader className="p-8 pb-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="p-2 rounded-xl bg-white/5 border border-white/10">
-                      {plan.icon}
+              <CardContent className="p-8 md:p-12 pt-0 mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Plan Actual</p>
+                  <p className="text-2xl font-black text-primary uppercase tracking-tighter">
+                    {profile?.subscription_plan === 'mensual' ? 'Guerrero Mensual' : 
+                     profile?.subscription_plan === 'trimestral' ? 'Estratega Trimestral' : 
+                     profile?.subscription_plan === 'anual' ? 'Maestro Anual' : 'Suscripción Activa'}
+                  </p>
+                </div>
+                
+                <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Próxima Renovación</p>
+                  <p className="text-2xl font-black text-white tracking-tighter">
+                    {profile?.subscription_expires_at 
+                      ? new Date(profile.subscription_expires_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+                      : 'N/A'}
+                  </p>
+                </div>
+              </CardContent>
+
+              <CardFooter className="p-8 md:p-12 pt-0 border-t border-white/5 bg-white/5 flex flex-col sm:flex-row gap-4">
+                <Button 
+                    className="flex-1 h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] bg-white/10 hover:bg-white/20 border border-white/10 gap-2"
+                    onClick={() => toast.info("Historial de pagos próximamente disponible")}
+                >
+                  <HistoryIcon className="h-4 w-4" /> Ver historial
+                </Button>
+                <Button 
+                    variant="ghost" 
+                    className="flex-1 h-14 rounded-2xl font-black uppercase tracking-widest text-[10px] text-slate-400 hover:text-white"
+                    onClick={() => navigate("/")}
+                >
+                  Ir al Panel de Estudio
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        )}
+
+        {!isSubscriber ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {plans.map((plan, idx) => (
+              <motion.div
+                key={plan.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * (idx + 3) }}
+              >
+                <Card className={cn(
+                  "relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02]",
+                  "glass-card-premium rounded-[2rem] border-white/10",
+                  plan.highlight && "border-primary/40 card-shadow pulse-subtle bg-primary/5"
+                )}>
+                  {plan.badge && (
+                    <div className="absolute top-6 right-[-35px] rotate-45 bg-primary text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20">
+                      {plan.badge}
                     </div>
-                  </div>
-                  <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{plan.name}</CardTitle>
-                  <CardDescription className="text-slate-400 text-sm min-h-[40px]">{plan.description}</CardDescription>
-                </CardHeader>
+                  )}
 
-                <CardContent className="p-8 pt-0 flex-grow space-y-6">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-5xl font-black text-white">${plan.price}</span>
-                    <span className="text-slate-500 font-bold">/ {plan.period}</span>
-                  </div>
-
-                  <div className="space-y-3">
-                    {plan.features.map((feature, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span className="text-slate-300 text-sm font-medium leading-tight">{feature}</span>
+                  <CardHeader className="p-8 pb-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                        {plan.icon}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
+                    </div>
+                    <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{plan.name}</CardTitle>
+                    <CardDescription className="text-slate-400 text-sm min-h-[40px]">{plan.description}</CardDescription>
+                  </CardHeader>
 
-                <CardFooter className="p-8 pt-0">
-                  <Button 
-                    className={cn(
-                      "w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all",
-                      plan.highlight ? "bg-primary hover:bg-primary/80" : "bg-white/10 hover:bg-white/20 border-white/10"
-                    )}
-                    onClick={() => handleCheckout(plan.id)}
-                    disabled={loadingPlan === plan.id}
-                  >
-                    {loadingPlan === plan.id ? (
-                      <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      "Elegir plan"
-                    )}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                  <CardContent className="p-8 pt-0 flex-grow space-y-6">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl font-black text-white">${plan.price}</span>
+                      <span className="text-slate-500 font-bold">/ {plan.period}</span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {plan.features.map((feature, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                          <span className="text-slate-300 text-sm font-medium leading-tight">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="p-8 pt-0">
+                    <Button 
+                      className={cn(
+                        "w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all",
+                        plan.highlight ? "bg-primary hover:bg-primary/80" : "bg-white/10 hover:bg-white/20 border-white/10"
+                      )}
+                      onClick={() => handleCheckout(plan.id)}
+                      disabled={loadingPlan === plan.id}
+                    >
+                      {loadingPlan === plan.id ? (
+                        <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        "Elegir plan"
+                      )}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="p-12 glass-card-premium rounded-[3rem] border-white/5 text-center space-y-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden group">
+             <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+             <div className="space-y-4 relative z-10">
+                <h3 className="text-3xl font-black uppercase tracking-tighter text-white">Beneficios Activos de tu Cuenta</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-6">
+                   <div className="p-6 rounded-3xl bg-white/5 border border-white/5 space-y-3">
+                      <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto mb-2">
+                        <Bot className="h-5 w-5 text-indigo-400" />
+                      </div>
+                      <p className="text-xs font-black uppercase tracking-widest text-white">Mentor IA Ilimitado</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase">Sin restricciones de mensajes</p>
+                   </div>
+                   <div className="p-6 rounded-3xl bg-white/5 border border-white/5 space-y-3">
+                      <div className="w-10 h-10 rounded-full bg-fuchsia-500/20 flex items-center justify-center mx-auto mb-2">
+                        <Sparkles className="h-5 w-5 text-fuchsia-400" />
+                      </div>
+                      <p className="text-xs font-black uppercase tracking-widest text-white">Contenido Pro</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase">Material exclusivo de estudio</p>
+                   </div>
+                   <div className="p-6 rounded-3xl bg-white/5 border border-white/5 space-y-3">
+                      <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-2">
+                        <HistoryIcon className="h-5 w-5 text-cyan-400" />
+                      </div>
+                      <p className="text-xs font-black uppercase tracking-widest text-white">Backup de Progreso</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase">Sincronización en la nube</p>
+                   </div>
+                </div>
+             </div>
+          </div>
+        )}
 
         {/* Mercado Pago Container */}
         <AnimatePresence>

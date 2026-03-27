@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays, Crown, Sparkles, Clock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -14,7 +14,7 @@ import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 import { Users } from "lucide-react";
 
 const Header = () => {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, isSubscriber, trialDaysRemaining } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const onlineCount = useOnlineUsers();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,6 +123,42 @@ const Header = () => {
             <TooltipContent>Cambiar tema</TooltipContent>
           </Tooltip>
 
+          <div className="hidden lg:flex items-center gap-2">
+            {isSubscriber ? (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate("/subscription")}
+                className="h-9 px-4 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 font-black text-[10px] uppercase tracking-widest animate-pulse transition-all shadow-sm"
+              >
+                <Crown className="h-3.5 w-3.5 mr-1.5" />
+                PREMIUM
+              </Button>
+            ) : (
+              <Button 
+                variant="default" 
+                size="sm" 
+                onClick={() => navigate("/subscription")}
+                className="h-9 px-4 rounded-full bg-primary hover:bg-primary/90 text-white font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+              >
+                <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+                HAZTE PREMIUM
+              </Button>
+            )}
+
+            {!isSubscriber && trialDaysRemaining > 0 && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900/50 border border-white/5 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-400 select-none">
+                    <Clock className="h-3 w-3 text-amber-500" />
+                    {trialDaysRemaining} {trialDaysRemaining === 1 ? 'DÍA' : 'DÍAS'} RESTANTES
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>Periodo de prueba activa</TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={() => navigate("/marketing")} className="transition-colors duration-300">
@@ -136,15 +172,34 @@ const Header = () => {
             <div className="hidden sm:flex items-center gap-3">
               <ProfileDialog>
                 <button className="flex items-center gap-3 hover:opacity-80 transition-opacity outline-none">
-                  <Avatar className="h-8 w-8 border border-primary/20">
-                    <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary uppercase">
-                      {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm font-black text-foreground max-w-[120px] truncate uppercase tracking-tighter">
-                    {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
-                  </span>
+                  <div className="relative">
+                    <Avatar className="h-8 w-8 border border-primary/20">
+                      <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
+                      <AvatarFallback className="text-xs bg-primary/10 text-primary uppercase">
+                        {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    {isSubscriber && (
+                      <div className="absolute -top-1 -right-1 bg-amber-400 text-[8px] p-0.5 rounded-full shadow-lg border border-slate-950">
+                        <Crown className="h-2.5 w-2.5 text-slate-950 fill-slate-950" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-foreground max-w-[120px] truncate uppercase tracking-tighter">
+                      {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
+                    </span>
+                    {isSubscriber && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="bg-[#fbbf24] text-white p-0.5 rounded shadow-sm hover:scale-110 transition-transform cursor-pointer">
+                            <Crown className="h-3 w-3 fill-white" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>Suscriptor Premium</TooltipContent>
+                      </Tooltip>
+                    )}
+                  </div>
                 </button>
               </ProfileDialog>
               <Button variant="ghost" size="icon" onClick={signOut} title="Cerrar sesión" className="text-muted-foreground hover:text-destructive">
@@ -281,28 +336,71 @@ const Header = () => {
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Sesión</p>
                   {user ? (
                     <>
-                      <div className="p-4 bg-muted/30 rounded-3xl mb-4 border border-white/5">
+                      <div className="p-4 bg-muted/30 rounded-3xl mb-4 border border-white/5 relative overflow-hidden">
+                        {isSubscriber && (
+                          <div className="absolute top-0 right-0 p-2 opacity-10">
+                            <Crown className="h-12 w-12" />
+                          </div>
+                        )}
                         <div className="flex items-center gap-4 mb-4">
-                          <Avatar className="h-12 w-12 border-2 border-primary/20">
-                            <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
-                            <AvatarFallback className="bg-primary/20 text-primary">
-                              {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
+                          <div className="relative">
+                            <Avatar className="h-12 w-12 border-2 border-primary/20">
+                              <AvatarImage src={localStorage.getItem('user_avatar') || profile?.avatar_url || ""} />
+                              <AvatarFallback className="bg-primary/20 text-primary">
+                                {(localStorage.getItem('user_display_name') || profile?.name || user.email || "U").charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            {isSubscriber && (
+                              <div className="absolute -top-1.5 -right-1.5 bg-[#fbbf24] text-white p-1 rounded-full shadow-lg border-2 border-slate-950">
+                                <Crown className="h-3 w-3 fill-white" />
+                              </div>
+                            )}
+                          </div>
                           <div className="min-w-0">
-                            <p className="text-base font-black truncate uppercase tracking-tighter">
-                              {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
-                            </p>
+                            <div className="flex items-center gap-2">
+                              <p className="text-base font-black truncate uppercase tracking-tighter">
+                                {localStorage.getItem('user_display_name') || profile?.name || user.email?.split('@')[0]}
+                              </p>
+                              {isSubscriber && <Crown className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />}
+                            </div>
                             <p className="text-[10px] text-muted-foreground truncate font-bold uppercase tracking-widest">{user.email}</p>
+                            {!isSubscriber && trialDaysRemaining > 0 && (
+                              <div className="mt-1 inline-flex items-center gap-1 text-[8px] font-black uppercase text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                                <Clock className="h-2 w-2" />
+                                {trialDaysRemaining} días gratis
+                              </div>
+                            )}
                           </div>
                         </div>
 
-                        <ProfileDialog>
-                          <Button variant="outline" className="w-full h-12 rounded-2xl gap-2 font-black uppercase tracking-widest text-[10px] bg-white/5 border-white/10">
-                            <Settings className="h-4 w-4" />
-                            Personalizar Perfil
-                          </Button>
-                        </ProfileDialog>
+                        <div className="flex flex-col gap-2">
+                          <ProfileDialog>
+                            <Button variant="outline" className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] bg-white/5 border-white/10">
+                              <Settings className="h-4 w-4" />
+                              Personalizar Perfil
+                            </Button>
+                          </ProfileDialog>
+                          {!isSubscriber && (
+                            <Button 
+                              variant="default" 
+                              onClick={() => { setIsMenuOpen(false); navigate("/subscription"); }}
+                              className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] bg-primary shadow-lg shadow-primary/20"
+                            >
+                              <Sparkles className="h-4 w-4" />
+                              HAZTE PREMIUM
+                            </Button>
+                          )}
+                          {isSubscriber && (
+                            <Button 
+                                variant="outline" 
+                                onClick={() => { setIsMenuOpen(false); navigate("/subscription"); }}
+                                className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] text-amber-500 border-amber-500/30 bg-amber-500/5"
+                            >
+                              <Crown className="h-4 w-4" />
+                              Gestionar Plan
+                            </Button>
+                          )}
+                        </div>
                       </div>
 
                       <Button variant="ghost" className="w-full justify-start gap-4 hover:bg-destructive/10 hover:text-destructive h-14 rounded-2xl font-black uppercase tracking-widest text-xs px-6" onClick={() => { signOut(); setIsMenuOpen(false); }}>
