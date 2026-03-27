@@ -2285,7 +2285,7 @@ const AITutor = () => {
 
       if (!isSubscriber && trialDaysRemaining <= 0) {
         toast.info("Tu periodo de prueba ha expirado. Suscríbete para continuar usando el Tutor IA.");
-        navigate("/tokens");
+        agentNavigate("/tokens");
         return;
       }
     }
@@ -2879,7 +2879,7 @@ const AITutor = () => {
                   ⏰ Te quedan <span className="text-white font-black">{trialDaysRemaining}</span> {trialDaysRemaining === 1 ? 'día' : 'días'} de prueba gratuita. ¡Suscríbete para mantener tu acceso ilimitado al AITutor! 🎓
                 </div>
                 <button
-                  onClick={() => navigate("/tokens")}
+                  onClick={() => agentNavigate("/tokens")}
                   className="px-2 py-1 bg-amber-500 text-black text-[10px] font-black uppercase rounded-lg hover:bg-amber-400 transition-colors"
                 >
                   Ver planes
@@ -3003,7 +3003,7 @@ const AITutor = () => {
                     </div>
                     
                     <button 
-                      onClick={() => navigate("/tokens")}
+                      onClick={() => agentNavigate("/tokens")}
                       className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-black text-primary uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-sm shadow-primary/10"
                     >
                       [➕ Comprar más]
