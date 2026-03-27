@@ -9,7 +9,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard
+  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -1812,7 +1812,7 @@ const AITutor = () => {
         
         CALLS TO ACTION SEGÚN USUARIO:
         - Si !context.isRegistered: 💡 Regístrate GRATIS en ${window.location.origin}
-        - Si context.isRegistered && !context.isSubscriber: 💡 Suscríbete desde $50/mes para seguir chateando: ${window.location.origin}/subscription`
+        - Si el usuario no tiene tokens: 💡 Consigue tokens desde $25 para seguir chateando: ${window.location.origin}/tokens`
       };
     } catch {
       return { 
@@ -1925,7 +1925,7 @@ const AITutor = () => {
     };
   }, []);
 
-  const { user, isSubscriber, trialDaysRemaining, session } = useAuth();
+  const { user, profile, isSubscriber, trialDaysRemaining, session } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2285,7 +2285,7 @@ const AITutor = () => {
 
       if (!isSubscriber && trialDaysRemaining <= 0) {
         toast.info("Tu periodo de prueba ha expirado. Suscríbete para continuar usando el Tutor IA.");
-        navigate("/subscription");
+        navigate("/tokens");
         return;
       }
     }
@@ -2661,9 +2661,10 @@ const AITutor = () => {
                 ✅ Sin tarjeta de crédito
               - Si context.isRegistered && !context.isSubscriber:
                 💡 **¿Quieres seguir chateando con el Tutor IA?**
-                ✅ Plan Mensual desde $50 pesos/mes
+                ✅ Paquetes desde $25 pesos (10 tokens)
+                ✅ Plan Maestro Ilimitado por $200/mes
                 ✅ Todo el contenido multimedia siempre GRATIS
-                🔗 Ver planes: ${window.location.origin}/subscription`
+                🔗 Comprar tokens: ${window.location.origin}/tokens`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -2878,7 +2879,7 @@ const AITutor = () => {
                   ⏰ Te quedan <span className="text-white font-black">{trialDaysRemaining}</span> {trialDaysRemaining === 1 ? 'día' : 'días'} de prueba gratuita. ¡Suscríbete para mantener tu acceso ilimitado al AITutor! 🎓
                 </div>
                 <button
-                  onClick={() => navigate("/subscription")}
+                  onClick={() => navigate("/tokens")}
                   className="px-2 py-1 bg-amber-500 text-black text-[10px] font-black uppercase rounded-lg hover:bg-amber-400 transition-colors"
                 >
                   Ver planes
@@ -2954,6 +2955,61 @@ const AITutor = () => {
             {/* Input Overlay for chat */}
             <div className="p-5 bg-slate-900/50 border-t border-white/5">
               <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
+                  {/* Token/Trial Status Bar */}
+                  <div className="mb-4 flex items-center justify-between px-2">
+                    <div className="flex flex-col">
+                      {(() => {
+                        const tokens = profile?.tokens || 0;
+                        const dailyCount = profile?.daily_questions_count || 0;
+                        const today = new Date().toISOString().split('T')[0];
+                        const isToday = profile?.last_daily_free === today;
+                        const actualDailyCount = isToday ? dailyCount : 0;
+                        
+                        // Calculate trial days (Rule: 1-7 days)
+                        const trialStartedAt = profile?.trial_started_at ? new Date(profile.trial_started_at) : new Date();
+                        const now = new Date();
+                        const diffTime = Math.abs(now.getTime() - trialStartedAt.getTime());
+                        const trialDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        if (tokens > 0) {
+                          return (
+                            <div className="flex flex-col">
+                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
+                                <Ticket className="h-3 w-3 text-primary" /> Te quedan <span className="text-primary">{tokens}</span> tokens
+                              </p>
+                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">💰 Cada pregunta cuesta 1 token</p>
+                            </div>
+                          );
+                        } else if (trialDay <= 7) {
+                          return (
+                            <div className="flex flex-col">
+                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
+                                <span className="text-primary">🎁</span> PRUEBA GRATIS: {5 - actualDailyCount}/5 hoy
+                              </p>
+                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">📅 Día {trialDay} de 7</p>
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div className="flex flex-col">
+                              <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
+                                <span className="text-primary">💬</span> {isToday && dailyCount >= 1 ? '0/1' : '1/1'} pregunta gratis hoy
+                              </p>
+                              <p className="text-[9px] font-bold uppercase text-slate-500 tracking-tighter">✨ Compra tokens para más preguntas</p>
+                            </div>
+                          );
+                        }
+                      })()}
+                    </div>
+                    
+                    <button 
+                      onClick={() => navigate("/tokens")}
+                      className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-black text-primary uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-sm shadow-primary/10"
+                    >
+                      [➕ Comprar más]
+                    </button>
+                  </div>
+
                   {/* Quick Actions */}
                   <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
                     {[

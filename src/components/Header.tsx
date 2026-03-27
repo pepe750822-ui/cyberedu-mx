@@ -128,7 +128,7 @@ const Header = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => navigate("/subscription")}
+                onClick={() => navigate("/tokens")}
                 className="h-9 px-4 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 font-black text-[10px] uppercase tracking-widest animate-pulse transition-all shadow-sm"
               >
                 <Crown className="h-3.5 w-3.5 mr-1.5" />
@@ -138,7 +138,7 @@ const Header = () => {
               <Button 
                 variant="default" 
                 size="sm" 
-                onClick={() => navigate("/subscription")}
+                onClick={() => navigate("/tokens")}
                 className="h-9 px-4 rounded-full bg-primary hover:bg-primary/90 text-white font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
               >
                 <Sparkles className="h-3.5 w-3.5 mr-1.5" />
@@ -383,7 +383,7 @@ const Header = () => {
                           {!isSubscriber && (
                             <Button 
                               variant="default" 
-                              onClick={() => { setIsMenuOpen(false); navigate("/subscription"); }}
+                              onClick={() => { setIsMenuOpen(false); navigate("/tokens"); }}
                               className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] bg-primary shadow-lg shadow-primary/20"
                             >
                               <Sparkles className="h-4 w-4" />
@@ -393,7 +393,7 @@ const Header = () => {
                           {isSubscriber && (
                             <Button 
                                 variant="outline" 
-                                onClick={() => { setIsMenuOpen(false); navigate("/subscription"); }}
+                                onClick={() => { setIsMenuOpen(false); navigate("/tokens"); }}
                                 className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] text-amber-500 border-amber-500/30 bg-amber-500/5"
                             >
                               <Crown className="h-4 w-4" />

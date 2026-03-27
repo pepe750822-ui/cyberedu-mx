@@ -3,12 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
-import Subscription from "./pages/Subscription";
+import Tokens from "./pages/Tokens";
 import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
@@ -135,7 +135,8 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
             <Route path="/sugerencias" element={<ProtectedRoute><Sugerencias /></ProtectedRoute>} />
-            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
+            <Route path="/tokens" element={<Tokens />} />
             <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />

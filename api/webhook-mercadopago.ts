@@ -44,21 +44,43 @@ export default async function handler(req: Request) {
       if (status === 'approved' && external_reference) {
         const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
         
-        // Actualizar el perfil del usuario (usando Service Role para saltar el RLS)
-        const { error } = await supabase
-          .from('profiles')
-          .update({ 
-            subscription_status: 'active',
-            // Opcional: registrar el plan si viene en metadata
-          })
-          .eq('id', external_reference);
+        // Determinar qué estamos activando basándonos en metadata
+        const isTokenPurchase = metadata?.type === 'token_purchase';
+        const tokenAmount = metadata?.token_amount || metadata?.tokenAmount || 0;
 
-        if (error) {
-          console.error(`Error de base de datos para usuario ${external_reference}:`, error);
-          throw error;
+        if (isTokenPurchase && tokenAmount > 0) {
+           // 1. Obtener balance actual
+           const { data: profile } = await supabase.from('profiles').select('tokens, subscription_status').eq('id', external_reference).single();
+           const currentTokens = profile?.tokens || 0;
+
+           // 2. Sumar tokens
+           const { error } = await supabase
+            .from('profiles')
+            .update({ 
+               tokens: currentTokens + Number(tokenAmount),
+               updated_at: new Date().toISOString(),
+               // Si es el plan ilimitado, también podemos marcar is_premium si lo deseamos, 
+               // pero el usuario pidió que el plan ilimitado de 1000 tokens se renueve mensual.
+               subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile?.subscription_status
+            })
+            .eq('id', external_reference);
+
+           if (error) throw error;
+           console.log(`TOKENS AGREGADOS: ${tokenAmount} tokens al usuario ${external_reference}`);
+        } else {
+          // Lógica anterior de suscripción fija
+          const { error } = await supabase
+            .from('profiles')
+            .update({ 
+              subscription_status: 'active',
+              is_premium: true,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', external_reference);
+
+          if (error) throw error;
+          console.log(`SUSCRIPCIÓN ACTIVADA: Usuario ${external_reference}`);
         }
-
-        console.log(`SUSCRIPCIÓN ACTIVADA: Usuario ${external_reference} con pago ID ${paymentId}`);
       } else {
         console.log(`Estado del pago ${paymentId}: ${status}`);
       }

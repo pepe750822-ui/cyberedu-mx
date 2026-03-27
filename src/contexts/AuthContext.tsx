@@ -18,6 +18,10 @@ interface UserProfile {
   subscription_plan?: string | null;
   subscription_expires_at?: string | null;
   is_premium?: boolean;
+  tokens?: number;
+  trial_used?: boolean;
+  last_daily_free?: string | null;
+  daily_questions_count?: number;
 }
 
 interface AuthContextValue {
@@ -27,6 +31,7 @@ interface AuthContextValue {
   isLoading: boolean;
   signOut: () => Promise<void>;
   isSubscriber: boolean;
+  hasTokens: boolean;
   trialDaysRemaining: number;
 }
 
@@ -37,6 +42,7 @@ const AuthContext = createContext<AuthContextValue>({
   isLoading: true,
   signOut: async () => { },
   isSubscriber: false,
+  hasTokens: false,
   trialDaysRemaining: 0,
 });
 
@@ -125,6 +131,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isLoading, 
       signOut,
       isSubscriber,
+      hasTokens: (profile?.tokens || 0) > 0,
       trialDaysRemaining
     }}>
       {children}

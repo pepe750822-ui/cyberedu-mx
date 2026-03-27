@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js';
 
 export const config = {
   runtime: 'edge',
@@ -166,37 +167,96 @@ export default async function handler(req: Request) {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // ─── Rate Limiting ───────────────────────────────────────
+  // ─── Token/Trial Monitoring (Access Control) ───────────────────────
   const authHeader = req.headers.get('Authorization');
   const userId = getUserIdFromToken(authHeader);
-  const today = new Date().toISOString().split('T')[0];
-  const rateLimitKey = `ratelimit:user:${userId || 'anon'}:${today}`;
-
-  if (userId && UPSTASH_URL && UPSTASH_TOKEN) {
-    try {
-      const resp = await fetch(`${UPSTASH_URL}/incr/${encodeURIComponent(rateLimitKey)}`, {
-        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
-      });
-      if (resp.ok) {
-        const { result } = await resp.json() as { result: number };
-        if (result === 1) {
-          // Set TTL of 24h on first hit
-          await fetch(`${UPSTASH_URL}/expire/${encodeURIComponent(rateLimitKey)}/86400`, {
-            headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
-          });
-        }
-        if (result > 50) {
-          return new Response(JSON.stringify({ 
-            error: 'Has alcanzado tu límite diario. Vuelve mañana.',
-            isRateLimited: true 
-          }), {
-            status: 429,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
-        }
-      }
-    } catch (e) { console.error('Rate limit error:', e); }
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!userId || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    return new Response(JSON.stringify({ error: 'Sesión inválida o configuración faltante' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const today = new Date().toISOString().split('T')[0];
+
+  // 1. Fetch profile for access check
+  const { data: profile, error: profileErr } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (profileErr || !profile) {
+    return new Response(JSON.stringify({ error: 'Perfil no encontrado' }), {
+      status: 404,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Determine access
+  let allowed = false;
+  let reason = 'no_tokens';
+  let consumptionType: 'token' | 'trial' | 'daily_free' | null = null;
+
+  // Rule A: If tokens > 0, always allowed (gasta 1 token)
+  if ((profile.tokens || 0) > 0) {
+    allowed = true;
+    consumptionType = 'token';
+  } 
+  // Rule B: Trial period (Days 1-7, 5 questions/day)
+  else {
+    const trialStartedAt = profile.trial_started_at ? new Date(profile.trial_started_at) : new Date();
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - trialStartedAt.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    // Reset daily count if day changed
+    let dailyCount = profile.daily_questions_count || 0;
+    const lastDailyFree = profile.last_daily_free;
+    if (lastDailyFree !== today) {
+       dailyCount = 0;
+    }
+
+    if (diffDays <= 7 && dailyCount < 5) {
+      allowed = true;
+      reason = 'trial';
+      consumptionType = 'trial';
+    } 
+    // Rule C: Registered (Day 8+, 1 question/day)
+    else if (lastDailyFree !== today) {
+      allowed = true;
+      reason = 'daily_free';
+      consumptionType = 'daily_free';
+    }
+  }
+
+  if (!allowed) {
+    return new Response(JSON.stringify({ 
+      error: 'Has alcanzado el límite gratuito. ¡Compra tokens para seguir chateando!',
+      isAccessDenied: true,
+      reason
+    }), {
+      status: 403,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  // 2. Consume resource
+  const updates: any = {
+    last_daily_free: today,
+    daily_questions_count: (profile.last_daily_free === today ? (profile.daily_questions_count || 0) : 0) + 1,
+    updated_at: new Date().toISOString()
+  };
+
+  if (consumptionType === 'token') {
+    updates.tokens = Math.max(0, (profile.tokens || 1) - 1);
+  }
+
+  await supabase.from('profiles').update(updates).eq('id', userId);
 
   try {
     const { messages, context, memory } = await req.json();
