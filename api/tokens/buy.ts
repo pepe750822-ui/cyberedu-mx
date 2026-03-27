@@ -27,7 +27,7 @@ export default async function handler(req: Request) {
 
     // Definir paquetes
     const packages: Record<string, { name: string; price: number; tokens: number }> = {
-      'basico': { name: 'Paquete Básico (10 tokens)', price: 25, tokens: 10 },
+      'basico': { name: 'Paquete Básico (10 tokens)', price: 10, tokens: 10 },
       'popular': { name: 'Paquete Popular (30 tokens)', price: 60, tokens: 30 },
       'pro': { name: 'Paquete Pro (100 tokens)', price: 150, tokens: 100 },
       'ilimitado': { name: 'Paquete Ilimitado (1000 tokens/mes)', price: 200, tokens: 1000 },

@@ -23,8 +23,9 @@ const tokenPackages = [
     id: "basico",
     name: "Básico",
     tokens: 10,
-    price: 25,
-    pricePerToken: 2.50,
+    price: 10,
+    pricePerToken: 1.00,
+    badge: "Lanzamiento",
     icon: <Ticket className="h-6 w-6 text-slate-400" />,
     description: "Ideal para dudas rápidas."
   },

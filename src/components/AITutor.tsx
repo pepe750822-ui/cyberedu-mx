@@ -1812,7 +1812,7 @@ const AITutor = () => {
         
         CALLS TO ACTION SEGÚN USUARIO:
         - Si !context.isRegistered: 💡 Regístrate GRATIS en ${window.location.origin}
-        - Si el usuario no tiene tokens: 💡 Consigue tokens desde $25 para seguir chateando: ${window.location.origin}/tokens`
+        - Si el usuario no tiene tokens: 💡 Consigue tokens desde $10 para seguir chateando: ${window.location.origin}/tokens`
       };
     } catch {
       return { 
@@ -2661,7 +2661,7 @@ const AITutor = () => {
                 ✅ Sin tarjeta de crédito
               - Si context.isRegistered && !context.isSubscriber:
                 💡 **¿Quieres seguir chateando con el Tutor IA?**
-                ✅ Paquetes desde $25 pesos (10 tokens)
+                ✅ Paquetes desde $10 pesos (10 tokens)
                 ✅ Plan Maestro Ilimitado por $200/mes
                 ✅ Todo el contenido multimedia siempre GRATIS
                 🔗 Comprar tokens: ${window.location.origin}/tokens`
