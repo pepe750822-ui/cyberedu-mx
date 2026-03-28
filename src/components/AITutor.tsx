@@ -2986,15 +2986,35 @@ const AITutor = () => {
                             {tokens <= 0 && (
                                 <div className="flex flex-col gap-0.5 mt-1 border-t border-white/5 pt-1">
                                     {trialDay <= 7 ? (
-                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
-                                            <span className="text-amber-500 text-[11px]">🎁</span> 
-                                            PRUEBA: {5 - actualDailyCount}/5 gratis hoy · Día {trialDay}/7
-                                        </p>
+                                        <>
+                                            {5 - actualDailyCount === 1 ? (
+                                                <p className="text-[9px] font-black uppercase text-amber-500 animate-pulse flex items-center gap-1">
+                                                    ⚠️ Te queda 1 pregunta gratuita hoy — ¡Úsala bien! Compra tokens para continuar sin límites
+                                                </p>
+                                            ) : 5 - actualDailyCount <= 0 ? (
+                                                <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
+                                                    🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens desde $10 pesos
+                                                </p>
+                                            ) : (
+                                                <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
+                                                    <span className="text-amber-500 text-[11px]">🎁</span> 
+                                                    PRUEBA: {5 - actualDailyCount}/5 gratis hoy · Día {trialDay}/7
+                                                </p>
+                                            )}
+                                        </>
                                     ) : (
-                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
-                                            <span className="text-primary">💬</span> 
-                                            {isToday && dailyCount >= 1 ? '0/1' : '1/1'} diario gratis
-                                        </p>
+                                        <>
+                                            {isToday && dailyCount >= 1 ? (
+                                                <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
+                                                    🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens desde $10 pesos
+                                                </p>
+                                            ) : (
+                                                <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
+                                                    <span className="text-primary">💬</span> 
+                                                    1/1 diario gratis
+                                                </p>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                             )}
