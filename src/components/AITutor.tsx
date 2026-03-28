@@ -1925,7 +1925,7 @@ const AITutor = () => {
     };
   }, []);
 
-  const { user, profile, isSubscriber, trialDaysRemaining, session } = useAuth();
+  const { user, profile, isSubscriber, trialDaysRemaining, session, refreshProfile } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2747,6 +2747,7 @@ const AITutor = () => {
               : m
           ));
           setIsStreaming(false);
+          refreshProfile();
         },
       });
     } catch (err: any) {

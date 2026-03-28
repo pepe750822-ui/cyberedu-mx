@@ -30,6 +30,7 @@ interface AuthContextValue {
   session: Session | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
   isSubscriber: boolean;
   hasTokens: boolean;
   trialDaysRemaining: number;
@@ -41,6 +42,7 @@ const AuthContext = createContext<AuthContextValue>({
   session: null,
   isLoading: true,
   signOut: async () => { },
+  refreshProfile: async () => { },
   isSubscriber: false,
   hasTokens: false,
   trialDaysRemaining: 0,
@@ -61,6 +63,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq("id", userId)
       .single();
     if (data) setProfile(data as UserProfile);
+  };
+
+  const refreshProfile = async () => {
+    if (user?.id) {
+      await fetchProfile(user.id);
+    }
   };
 
   useEffect(() => {
@@ -130,6 +138,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       session, 
       isLoading, 
       signOut,
+      refreshProfile,
       isSubscriber,
       hasTokens: (profile?.tokens || 0) > 0,
       trialDaysRemaining
