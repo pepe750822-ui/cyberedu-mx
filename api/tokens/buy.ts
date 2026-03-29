@@ -27,9 +27,9 @@ export default async function handler(req: Request) {
 
     // Definir paquetes
     const packages: Record<string, { name: string; price: number; tokens: number }> = {
-      'basico': { name: 'Paquete Básico (10 tokens)', price: 10, tokens: 10 },
-      'popular': { name: 'Paquete Popular (30 tokens)', price: 60, tokens: 30 },
-      'pro': { name: 'Paquete Pro (100 tokens)', price: 150, tokens: 100 },
+      'basico':    { name: 'Paquete Básico (10 tokens)',         price: 10,  tokens: 10   },
+      'popular':   { name: 'Paquete Popular (30 tokens)',         price: 60,  tokens: 30   },
+      'pro':       { name: 'Paquete Pro (100 tokens)',            price: 150, tokens: 100  },
       'ilimitado': { name: 'Paquete Ilimitado (1000 tokens/mes)', price: 200, tokens: 1000 },
     };
 
@@ -41,6 +41,12 @@ export default async function handler(req: Request) {
       });
     }
 
+    // Detectar si estamos en sandbox o producción según el token
+    const isSandbox = MP_ACCESS_TOKEN.startsWith('TEST-');
+    console.log(`[MP] Modo: ${isSandbox ? 'SANDBOX (TEST-)' : 'PRODUCCIÓN (APP_USR-)'}`);
+
+    const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
+
     const preference = {
       items: [
         {
@@ -49,25 +55,33 @@ export default async function handler(req: Request) {
           unit_price: pkg.price,
           quantity: 1,
           currency_id: 'MXN',
-        }
+        },
       ],
       payer: {
-        email: userEmail || 'test_user_123@testuser.com',
+        // En producción usar email real; en sandbox acepta cualquiera
+        email: userEmail || (isSandbox ? 'test_user_123@testuser.com' : 'pagador@cyberedumx.com'),
       },
       external_reference: userId,
       metadata: {
         type: 'token_purchase',
         userId: userId,
         packageId: packageId,
-        tokenAmount: pkg.tokens
+        tokenAmount: pkg.tokens,
       },
       back_urls: {
-        success: `${process.env.APP_URL || 'https://cyberedu-mx.vercel.app'}/tokens?status=success`,
-        failure: `${process.env.APP_URL || 'https://cyberedu-mx.vercel.app'}/tokens?status=failure`,
-        pending: `${process.env.APP_URL || 'https://cyberedu-mx.vercel.app'}/tokens?status=pending`,
+        success: `${APP_URL}/tokens?status=success`,
+        failure: `${APP_URL}/tokens?status=failure`,
+        pending: `${APP_URL}/tokens?status=pending`,
       },
       auto_return: 'approved',
-      notification_url: `${process.env.APP_URL || 'https://cyberedu-mx.vercel.app'}/api/webhook-mercadopago`,
+      notification_url: `${APP_URL}/api/webhook-mercadopago`,
+      // ✅ Forzar 1 cuota — sin esto MP intenta calcular MSI y bloquea el botón "Pagar"
+      payment_methods: {
+        excluded_payment_types: [],
+        installments: 1,
+      },
+      // ✅ Modo binario: aprobado o rechazado de inmediato, sin estados "en proceso"
+      binary_mode: true,
     };
 
     const mpResp = await fetch('https://api.mercadopago.com/checkout/preferences', {
@@ -85,12 +99,21 @@ export default async function handler(req: Request) {
     }
 
     const data = await mpResp.json();
-    return new Response(JSON.stringify({ id: data.id, init_point: data.init_point }), {
+
+    // ✅ Sandbox → sandbox_init_point | Producción → init_point
+    const checkoutUrl = isSandbox
+      ? (data.sandbox_init_point || data.init_point)
+      : data.init_point;
+
+    console.log(`[MP] Preferencia creada: ${data.id} | Modo: ${isSandbox ? 'sandbox' : 'producción'} | URL: ${checkoutUrl}`);
+
+    return new Response(JSON.stringify({ id: data.id, init_point: checkoutUrl }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
 
   } catch (error: any) {
+    console.error('[MP] Error al crear preferencia:', error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
