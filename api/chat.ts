@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
+// Removed resend SDK to use raw fetch for better Edge compatibility
 
 export const config = {
   runtime: 'edge',
@@ -8,10 +8,12 @@ export const config = {
 // ─── Upstash Redis helpers (REST API, no package needed) ───────
 // These env vars are automatically set when you connect an Upstash Redis
 // integration from the Vercel dashboard (Integrations → Marketplace → Redis).
+// @ts-ignore
 const UPSTASH_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+// @ts-ignore
 const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
+// @ts-ignore
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const resend = new Resend(RESEND_API_KEY);
 
 // In-process fallback cache (resets on cold start, but helps burst traffic)
 const MEM_CACHE = new Map<string, { content: string; ts: number }>();
@@ -140,8 +142,56 @@ function isCacheable(message: string, history: any[]): { shouldCache: boolean; c
   return { shouldCache: true, cacheType: isComplex ? 'complex' : 'simple' };
 }
 
+// ─── Redis Rate Limiting (Safety Layer) ───────────────────────
+async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
+  if (!UPSTASH_URL || !UPSTASH_TOKEN) return { allowed: true, remaining: 999 };
+  
+  const today = new Date().toISOString().split('T')[0];
+  const rateLimitKey = `ratelimit:${userId}:${today}`;
+  const LIMIT = 50;
+
+  try {
+    // Increment the count in Redis
+    const res = await fetch(`${UPSTASH_URL}`, {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Bearer ${UPSTASH_TOKEN}`,
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(['INCR', rateLimitKey])
+    });
+    
+    if (res.ok) {
+      const data = await res.json() as { result: number };
+      const currentCount = data.result;
+      
+      // Set expiration only on the first request of the day
+      if (currentCount === 1) {
+        await fetch(`${UPSTASH_URL}`, {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${UPSTASH_TOKEN}`,
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify(['EXPIRE', rateLimitKey, '86400']) // 24 hours
+        });
+      }
+      
+      return { 
+        allowed: currentCount <= LIMIT, 
+        remaining: Math.max(0, LIMIT - currentCount) 
+      };
+    }
+  } catch (e) {
+    console.error('Redis Rate Limit Error:', e);
+  }
+  
+  return { allowed: true, remaining: 999 }; // Fallback to allow if Redis is down
+}
+
 // ─── Main handler ─────────────────────────────────────────────
 export default async function handler(req: Request) {
+// @ts-ignore
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
   if (!ANTHROPIC_API_KEY) {
@@ -151,6 +201,7 @@ export default async function handler(req: Request) {
     });
   }
 
+// @ts-ignore
   const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
     'https://cyberedumx.lovable.app',
@@ -173,7 +224,9 @@ export default async function handler(req: Request) {
   // ─── Token/Trial Monitoring (Access Control) ───────────────────────
   const authHeader = req.headers.get('Authorization');
   const userId = getUserIdFromToken(authHeader);
+// @ts-ignore
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+// @ts-ignore
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
   
   if (!userId || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
@@ -186,12 +239,13 @@ export default async function handler(req: Request) {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   const today = new Date().toISOString().split('T')[0];
 
-  // 1. Fetch profile for access check
-  const { data: profile, error: profileErr } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
+  // 1. Fetch profile and check rate limit
+  const [profileResult, rateLimit] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', userId).single(),
+    checkRateLimit(userId)
+  ]);
+
+  const { data: profile, error: profileErr } = profileResult;
 
   if (profileErr || !profile) {
     return new Response(JSON.stringify({ error: 'Perfil no encontrado' }), {
@@ -200,13 +254,30 @@ export default async function handler(req: Request) {
     });
   }
 
+  // Safety check: Global Daily Limit (Redis)
+  if (!rateLimit.allowed) {
+    return new Response(JSON.stringify({ 
+      error: '⚠️ Límite de seguridad diario excedido (50 consultas). Por favor contacta a soporte si crees que es un error.',
+      isAccessDenied: true,
+      reason: 'global_rate_limit'
+    }), {
+      status: 429,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   // Determine access
   let allowed = false;
   let reason = 'no_tokens';
-  let consumptionType: 'token' | 'trial' | 'daily_free' | null = null;
+  let consumptionType: 'token' | 'trial' | 'daily_free' | 'unlimited' | null = null;
 
+  // Rule 0: Unlimited Subscription (Status Active or is_premium)
+  if (profile.subscription_status === 'active' || profile.is_premium === true) {
+    allowed = true;
+    consumptionType = 'unlimited';
+  }
   // Rule A: If tokens > 0, always allowed (gasta 1 token)
-  if ((profile.tokens || 0) > 0) {
+  else if ((profile.tokens || 0) > 0) {
     allowed = true;
     consumptionType = 'token';
   } 
@@ -358,9 +429,10 @@ export default async function handler(req: Request) {
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:
       💡 **¿Quieres seguir chateando con el Tutor IA?**
-      ✅ Plan Mensual desde $50 pesos/mes
+      ✅ Paquetes desde $10 pesos (10 tokens)
+      ✅ Plan Maestro Ilimitado por $200/mes
       ✅ Todo el contenido multimedia siempre GRATIS
-      🔗 Ver planes: ${APP_URL}/subscription
+      🔗 Comprar tokens: ${APP_URL}/tokens
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     
@@ -410,12 +482,19 @@ export default async function handler(req: Request) {
                             apiResponse.status === 529;
 
        if (isInsufficient && RESEND_API_KEY) {
-          // Send urgent email to admin
-          await resend.emails.send({
-            from: 'CyberEdu Alertas <onboarding@resend.dev>',
-            to: ['pepe750822@gmail.com'],
-            subject: 'CyberEdu MX — URGENTE: Recargar API Key Anthropic',
-            text: 'Se agotaron los créditos de Anthropic. Recargar en console.anthropic.com'
+          // Send urgent email to admin using raw fetch
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${RESEND_API_KEY}`
+            },
+            body: JSON.stringify({
+              from: 'CyberEdu Alertas <alerts@cyberedumx.com>',
+              to: ['pepe750822@gmail.com'],
+              subject: 'CyberEdu MX — URGENTE: Recargar API Key Anthropic',
+              text: 'Se agotaron los créditos de Anthropic. Recargar en console.anthropic.com'
+            })
           }).catch(e => console.error("Error enviando email:", e));
 
           return new Response(JSON.stringify({ 

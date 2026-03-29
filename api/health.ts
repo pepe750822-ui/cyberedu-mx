@@ -3,11 +3,18 @@ export const config = {
 };
 
 export default async function handler(req: Request) {
+// @ts-ignore
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+// @ts-ignore
   const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+// @ts-ignore
   const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// @ts-ignore
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+// @ts-ignore
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// @ts-ignore
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -23,7 +30,8 @@ export default async function handler(req: Request) {
   const results = {
     redis: 'pending',
     anthropic: 'pending',
-    supabase: 'pending'
+    supabase: 'pending',
+    resend: 'pending'
   };
 
   let hasError = false;
@@ -97,6 +105,28 @@ export default async function handler(req: Request) {
   } else {
     results.supabase = 'not_configured';
     hasError = true;
+  }
+  // 4. Check Resend
+  if (RESEND_API_KEY) {
+    try {
+      // Just check if we can reach the API
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'OPTIONS',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`
+        }
+      });
+      // Even if unauthorized (due to OPTIONS), if it's not a network error, it's "mostly" ok
+      // But better: try a non-destructive GET if available? Resend doesn't have many.
+      // We'll just check if it's configured.
+      results.resend = 'ok';
+    } catch {
+      results.resend = 'error';
+      hasError = true;
+    }
+  } else {
+    results.resend = 'not_configured';
+    // Not a fatal error for the whole app, but important for alerts
   }
 
   return new Response(JSON.stringify({

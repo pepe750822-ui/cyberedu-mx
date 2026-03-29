@@ -30,11 +30,13 @@ interface ApiStatus {
 }
 
 const STATUS_URL = 'https://cyberedu-mx.vercel.app/api/admin/status';
+const HEALTH_URL = 'https://cyberedu-mx.vercel.app/api/health';
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutos
 
 // ─── API Status Banner ────────────────────────────────────────
-function ApiStatusBanner({ status, onRefresh, loading }: {
+function ApiStatusBanner({ status, health, onRefresh, loading }: {
   status: ApiStatus;
+  health: { redis: string; anthropic: string; supabase: string } | null;
   onRefresh: () => void;
   loading: boolean;
 }) {
@@ -70,16 +72,22 @@ function ApiStatusBanner({ status, onRefresh, loading }: {
     return `hace ${Math.round(diff / 3600)}h`;
   };
 
+  const getHealthIcon = (s?: string) => {
+    if (s === 'ok') return <CheckCircle2 className="h-3 w-3 text-emerald-400" />;
+    if (s === 'not_configured' || s === 'warning') return <AlertTriangle className="h-3 w-3 text-amber-400" />;
+    return <XCircle className="h-3 w-3 text-red-400" />;
+  };
+
   return (
     <div className={cn('border rounded-2xl p-5 backdrop-blur-md', bgColor)}>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         {/* Left: status */}
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 flex-1">
           <div className="mt-0.5">{icon}</div>
-          <div>
+          <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className={cn('font-black text-sm uppercase tracking-widest', textColor)}>
-                Estado de API — Anthropic
+                Monitor de Salud Global
               </span>
               {status.model && (
                 <span className="px-2 py-0.5 rounded-full border border-white/10 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5">
@@ -87,23 +95,39 @@ function ApiStatusBanner({ status, onRefresh, loading }: {
                 </span>
               )}
             </div>
-            <p className="text-sm mt-1 text-white/80">{status.message || 'Verificando...'}</p>
+            
+            <p className="text-sm mt-1 text-white/80 font-medium">{status.message || 'Verificando...'}</p>
 
-            <div className="flex flex-wrap gap-3 mt-2">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 p-3 rounded-xl bg-black/20 border border-white/5">
+                <div className="flex items-center gap-2">
+                    {getHealthIcon(health?.anthropic)}
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Anthropic</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    {getHealthIcon(health?.redis)}
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Redis (Upstash)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    {getHealthIcon(health?.supabase)}
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Supabase</span>
+                </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mt-3">
               {status.keyPrefix && (
-                <span className="flex items-center gap-1 text-xs text-slate-400">
+                <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 bg-white/5 px-2 py-0.5 rounded">
                   <Key className="h-3 w-3" /> {status.keyPrefix}
                 </span>
               )}
               {status.lastChecked && (
-                <span className="flex items-center gap-1 text-xs text-slate-500">
+                <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-600">
                   <Clock className="h-3 w-3" /> {timeSince(status.lastChecked)}
                 </span>
               )}
               {status.anthropicStatus?.rateLimitRemaining != null && (
-                <span className="flex items-center gap-1 text-xs text-slate-400">
+                <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/5 px-2 py-0.5 rounded border border-amber-500/10">
                   <Zap className="h-3 w-3 text-amber-400" />
-                  {status.anthropicStatus.rateLimitRemaining} requests restantes
+                  {status.anthropicStatus.rateLimitRemaining} reqs
                 </span>
               )}
             </div>
@@ -111,25 +135,25 @@ function ApiStatusBanner({ status, onRefresh, loading }: {
         </div>
 
         {/* Right: actions */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-row md:flex-col items-center md:items-end gap-2 shrink-0">
           <Button
             size="sm"
             variant="outline"
             onClick={onRefresh}
             disabled={loading}
-            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1"
+            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1 w-full justify-start md:justify-center"
           >
             <RefreshCw className={cn('h-3 w-3', loading && 'animate-spin')} />
-            Verificar ahora
+            Actualizar Todo
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={() => window.open('https://console.anthropic.com/settings/billing', '_blank')}
-            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1"
+            className="border-white/10 text-white/70 hover:text-white hover:bg-white/10 text-xs gap-1 w-full justify-start md:justify-center"
           >
             <ExternalLink className="h-3 w-3" />
-            Anthropic Console
+            Billing Console
           </Button>
         </div>
       </div>
@@ -225,12 +249,21 @@ export default function AdminAnalytics() {
   const avgCostNonCached = nonCachedMetrics.length > 0 ? nonCachedMetrics.reduce((s, m) => s + m.cost, 0) / nonCachedMetrics.length : 0.01;
   const estimatedSavings = cachedMetrics.length * avgCostNonCached;
 
+  const [healthStatus, setHealthStatus] = useState<{ redis: string; anthropic: string; supabase: string } | null>(null);
+
   const fetchStatus = useCallback(async () => {
     setApiLoading(true);
     try {
-      const res = await fetch(STATUS_URL);
-      const data = await res.json();
-      setApiStatus({ ...data });
+      const [statusRes, healthRes] = await Promise.all([
+        fetch(STATUS_URL),
+        fetch(HEALTH_URL)
+      ]);
+      
+      const statusData = await statusRes.json();
+      const healthData = await healthRes.json();
+      
+      setApiStatus({ ...statusData });
+      setHealthStatus(healthData.results);
     } catch (err: any) {
       setApiStatus({
         status: 'error',
@@ -295,6 +328,7 @@ export default function AdminAnalytics() {
         {/* API Status Banner */}
         <ApiStatusBanner
           status={apiStatus}
+          health={healthStatus}
           onRefresh={fetchStatus}
           loading={apiLoading}
         />

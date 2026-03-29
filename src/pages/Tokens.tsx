@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   Ticket, 
   Check, 
-  ArrowLeft, 
   ShieldCheck, 
   Rocket, 
   Zap, 
   Crown, 
   Star,
-  Info
+  Info,
+  CheckCircle,
+  XCircle,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -65,6 +67,20 @@ const TokensPage = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+
+  // Mostrar feedback cuando el usuario regresa de Mercado Pago
+  useEffect(() => {
+    const status = searchParams.get('status');
+    if (status === 'success') {
+      toast.success('¡Pago exitoso! Tus tokens se acreditarán en breve. 🎉', { duration: 6000 });
+    } else if (status === 'failure') {
+      toast.error('El pago no fue procesado. Intenta nuevamente.', { duration: 5000 });
+    } else if (status === 'pending') {
+      toast.info('Tu pago está pendiente de acreditación. Te notificaremos cuando se confirme.', { duration: 6000 });
+    }
+  }, [searchParams]);
+
 
   const handleBuy = async (packageId: string) => {
     if (!user) {

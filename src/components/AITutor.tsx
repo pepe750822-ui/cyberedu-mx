@@ -1925,7 +1925,7 @@ const AITutor = () => {
     };
   }, []);
 
-  const { user, profile, isSubscriber, trialDaysRemaining, session, refreshProfile } = useAuth();
+  const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2283,8 +2283,8 @@ const AITutor = () => {
         return;
       }
 
-      if (!isSubscriber && trialDaysRemaining <= 0) {
-        toast.info("Tu periodo de prueba ha expirado. Suscríbete para continuar usando el Tutor IA.");
+      if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
+        toast.info("Tu periodo de prueba ha terminado. Compra tokens o activa el Plan Maestro para seguir chateando.");
         agentNavigate("/tokens");
         return;
       }

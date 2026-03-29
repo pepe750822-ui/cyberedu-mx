@@ -3,10 +3,15 @@ export const config = {
 };
 
 export default async function handler(req: Request) {
+// @ts-ignore
   const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+// @ts-ignore
   const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// @ts-ignore
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// @ts-ignore
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+// @ts-ignore
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   const corsHeaders = {
@@ -96,39 +101,64 @@ export default async function handler(req: Request) {
   };
 
   // 2. Check if we need to send an alert
-  if (currentCost >= threshold && !alertSent && RESEND_API_KEY) {
-    try {
-      // Send email using Resend
-      const emailRes = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${RESEND_API_KEY}`
-        },
-        body: JSON.stringify({
-          from: 'CyberEdu Alerts <alerts@cyberedumx.com>',
-          to: ['pepe750822@gmail.com'], // Update to real admin email if different
-          subject: `⚠️ ALERTA DE COSTO: Límite excedido (${today})`,
-          html: `<p>El costo diario de CyberEdu MX ha superado el límite de $${threshold} USD.</p>
-                 <p>Costo actual: <strong>$${currentCost.toFixed(2)} USD</strong></p>
-                 <p>Por favor revise el panel de administración y el uso de la API.</p>`
-        })
-      });
-
-      if (emailRes.ok) {
-        // Mark alert as sent for today
-        await fetch(`${UPSTASH_URL}/set/${encodeURIComponent(alertSentKey)}/true/EX/86400`, {
-          headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+  if (currentCost >= threshold && !alertSent) {
+    let emailSent = false;
+    
+    // A. Send email using Resend
+    if (RESEND_API_KEY) {
+      try {
+        const emailRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${RESEND_API_KEY}`
+          },
+          body: JSON.stringify({
+            from: 'CyberEdu Alerts <alerts@cyberedumx.com>',
+            to: ['pepe750822@gmail.com'],
+            subject: `⚠️ ALERTA DE COSTO: Límite excedido (${today})`,
+            html: `<p>El costo diario de CyberEdu MX ha superado el límite de $${threshold} USD.</p>
+                   <p>Costo actual: <strong>$${currentCost.toFixed(2)} USD</strong></p>
+                   <p>Por favor revise el panel de administración y el uso de la API.</p>`
+          })
         });
-        info.alert_sent = true;
+        if (emailRes.ok) emailSent = true;
+      } catch (e) {
+        console.error('Error sending email alert:', e);
       }
-    } catch (e) {
-      console.error('Error sending email alert:', e);
     }
-  } else if (currentCost >= threshold && !alertSent && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
-      // Fallback: Send using Supabase Edge Function if exists, 
-      // or record it in a notification table
-      // For now, we'll try to use the build-in notification logic if available.
+
+    // B. Persist alert in Supabase (Record keeping / Fallback)
+    if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/cost_alerts`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            date: today,
+            cost: currentCost,
+            threshold: threshold,
+            email_sent: emailSent,
+            created_at: new Date().toISOString()
+          })
+        });
+      } catch (e) {
+        console.error('Error recording alert in Supabase:', e);
+      }
+    }
+
+    if (emailSent && UPSTASH_URL && UPSTASH_TOKEN) {
+      // Mark alert as sent for today in Redis to avoid spamming
+      await fetch(`${UPSTASH_URL}/set/${encodeURIComponent(alertSentKey)}/true/EX/86400`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+      });
+      info.alert_sent = true;
+    }
   }
 
   return new Response(JSON.stringify({
