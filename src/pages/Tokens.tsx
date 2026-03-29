@@ -9,10 +9,7 @@ import {
   Zap, 
   Crown, 
   Star,
-  Info,
-  CheckCircle,
-  XCircle,
-  Clock
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
