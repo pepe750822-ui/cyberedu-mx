@@ -1,4 +1,5 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Removed unused @vercel/node import causing build failures on Edge runtime
+
 
 export const config = {
   runtime: 'edge',
