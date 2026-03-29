@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 export const config = {
   runtime: 'edge',
@@ -9,6 +10,8 @@ export const config = {
 // integration from the Vercel dashboard (Integrations → Marketplace → Redis).
 const UPSTASH_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const resend = new Resend(RESEND_API_KEY);
 
 // In-process fallback cache (resets on cold start, but helps burst traffic)
 const MEM_CACHE = new Map<string, { content: string; ts: number }>();
@@ -401,8 +404,29 @@ export default async function handler(req: Request) {
     });
 
     if (!apiResponse.ok) {
-       const err = await apiResponse.text();
-       return new Response(JSON.stringify({ error: err }), { 
+       const rawText = await apiResponse.text();
+       const isInsufficient = rawText.includes('insufficient_credits') || 
+                            rawText.includes('credit_balance') || 
+                            apiResponse.status === 529;
+
+       if (isInsufficient && RESEND_API_KEY) {
+          // Send urgent email to admin
+          await resend.emails.send({
+            from: 'CyberEdu Alertas <onboarding@resend.dev>',
+            to: ['pepe750822@gmail.com'],
+            subject: 'CyberEdu MX — URGENTE: Recargar API Key Anthropic',
+            text: 'Se agotaron los créditos de Anthropic. Recargar en console.anthropic.com'
+          }).catch(e => console.error("Error enviando email:", e));
+
+          return new Response(JSON.stringify({ 
+            error: '⚠️ El servicio de IA está temporalmente en mantenimiento. Por favor intenta más tarde.' 
+          }), { 
+            status: 503,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+       }
+
+       return new Response(JSON.stringify({ error: rawText }), { 
          status: apiResponse.status,
          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
        });
