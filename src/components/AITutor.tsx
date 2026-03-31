@@ -2287,16 +2287,6 @@ const AITutor = () => {
         return;
       }
 
-      if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
-        // Guardar la pregunta antes de redirigir para no perderla
-        localStorage.setItem('cyberedu_pending_question', JSON.stringify({
-          question: text.trim(),
-          timestamp: Date.now()
-        }));
-        toast.info("Tu periodo de prueba ha terminado. Compra tokens y tu pregunta se responderá automáticamente.");
-        agentNavigate("/tokens");
-        return;
-      }
     }
 
     // /diagnostico - System diagnostics
@@ -2465,6 +2455,20 @@ const AITutor = () => {
       return;
     }
 
+    // Validaciones de Suscripción/Prueba para mensajes regulares (API-bound)
+    if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
+      const usedFree = localStorage.getItem('cyberedu_used_free_message');
+      if (usedFree) {
+        localStorage.setItem('cyberedu_pending_question', JSON.stringify({
+          question: text.trim(),
+          timestamp: Date.now()
+        }));
+        toast.info("Tu periodo de prueba ha terminado. Compra tokens y tu pregunta se responderá automáticamente.");
+        agentNavigate("/tokens");
+        return;
+      }
+    }
+
     // /explica <tema> - Enhanced explanation via AI with context
     const explicaMatch = text.trim().match(/^\/explica\s+(.+)/i);
     if (explicaMatch) {
@@ -2514,7 +2518,17 @@ const AITutor = () => {
           onDone: () => {
             const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
-            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined } : m));
+            
+            let finalCleanContent = cleanContent;
+            if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
+              const usedFree = localStorage.getItem('cyberedu_used_free_message');
+              if (!usedFree) {
+                localStorage.setItem('cyberedu_used_free_message', 'true');
+                finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $10 pesos en cyberedumx.com/tokens';
+              }
+            }
+
+            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined } : m));
             setIsStreaming(false);
           },
         });
@@ -2750,9 +2764,18 @@ const AITutor = () => {
             }));
           }
 
+          let finalCleanContent = cleanContent;
+          if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
+            const usedFree = localStorage.getItem('cyberedu_used_free_message');
+            if (!usedFree) {
+              localStorage.setItem('cyberedu_used_free_message', 'true');
+              finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $10 pesos en cyberedumx.com/tokens';
+            }
+          }
+
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: cleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
