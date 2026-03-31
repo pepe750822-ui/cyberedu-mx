@@ -1927,30 +1927,7 @@ const AITutor = () => {
     };
   }, []);
 
-  // Auto-enviar pregunta pendiente cuando el usuario regresa con tokens
-  useEffect(() => {
-    const raw = localStorage.getItem('cyberedu_pending_question');
-    if (!raw || !user) return;
-    try {
-      const { question, timestamp } = JSON.parse(raw);
-      if (Date.now() - timestamp < 1800000) {
-        // Pregunta válida (menos de 30 min) — limpiar y enviar automáticamente
-        localStorage.removeItem('cyberedu_pending_question');
-        // Pequeño delay para que el componente esté completamente montado
-        const timer = setTimeout(() => {
-          setIsOpen(true);
-          sendMessage(question);
-        }, 800);
-        return () => clearTimeout(timer);
-      } else {
-        // Expirada — limpiar sin enviar
-        localStorage.removeItem('cyberedu_pending_question');
-      }
-    } catch {
-      localStorage.removeItem('cyberedu_pending_question');
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+
 
   const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -2814,6 +2791,31 @@ const AITutor = () => {
       setIsStreaming(false);
     }
   };
+
+  // Auto-enviar pregunta pendiente cuando el usuario regresa con tokens
+  useEffect(() => {
+    const raw = localStorage.getItem('cyberedu_pending_question');
+    if (!raw || !user) return;
+    try {
+      const { question, timestamp } = JSON.parse(raw);
+      if (Date.now() - timestamp < 1800000) {
+        // Pregunta válida (menos de 30 min) — limpiar y enviar automáticamente
+        localStorage.removeItem('cyberedu_pending_question');
+        // Pequeño delay para que el componente esté completamente montado
+        const timer = setTimeout(() => {
+          setIsOpen(true);
+          sendMessage(question);
+        }, 800);
+        return () => clearTimeout(timer);
+      } else {
+        // Expirada — limpiar sin enviar
+        localStorage.removeItem('cyberedu_pending_question');
+      }
+    } catch {
+      localStorage.removeItem('cyberedu_pending_question');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <>
