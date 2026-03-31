@@ -65,6 +65,19 @@ const TokensPage = () => {
   const navigate = useNavigate();
   const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
+  const [pendingQuestionMsg, setPendingQuestionMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    const raw = localStorage.getItem('cyberedu_pending_question');
+    if (raw) {
+      try {
+        const { timestamp } = JSON.parse(raw);
+        if (Date.now() - timestamp < 1800000) {
+          setPendingQuestionMsg("Tu pregunta está guardada. En cuanto tengas tokens la respondemos automáticamente.");
+        }
+      } catch { /* ignore */ }
+    }
+  }, []);
 
   // Mostrar feedback cuando el usuario regresa de Mercado Pago
   useEffect(() => {
@@ -119,6 +132,17 @@ const TokensPage = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-6 pt-24 space-y-12 relative">
+        {pendingQuestionMsg && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-3 bg-primary/20 border border-primary/50 text-white px-4 py-3 rounded-2xl shadow-lg -mb-6"
+          >
+            <Info className="h-5 w-5 text-primary shrink-0" />
+            <p className="text-sm font-bold tracking-wide">{pendingQuestionMsg}</p>
+          </motion.div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col items-center text-center space-y-6">
           <motion.div

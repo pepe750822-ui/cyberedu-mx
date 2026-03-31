@@ -564,7 +564,9 @@ async function streamChat({
     signal,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      // Solo enviar Authorization si hay token real de usuario — la publishable key de Supabase
+      // no es un JWT de usuario y causaría 401 en el backend.
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({ messages, context, memory }),
   });
@@ -1925,6 +1927,31 @@ const AITutor = () => {
     };
   }, []);
 
+  // Auto-enviar pregunta pendiente cuando el usuario regresa con tokens
+  useEffect(() => {
+    const raw = localStorage.getItem('cyberedu_pending_question');
+    if (!raw || !user) return;
+    try {
+      const { question, timestamp } = JSON.parse(raw);
+      if (Date.now() - timestamp < 1800000) {
+        // Pregunta válida (menos de 30 min) — limpiar y enviar automáticamente
+        localStorage.removeItem('cyberedu_pending_question');
+        // Pequeño delay para que el componente esté completamente montado
+        const timer = setTimeout(() => {
+          setIsOpen(true);
+          sendMessage(question);
+        }, 800);
+        return () => clearTimeout(timer);
+      } else {
+        // Expirada — limpiar sin enviar
+        localStorage.removeItem('cyberedu_pending_question');
+      }
+    } catch {
+      localStorage.removeItem('cyberedu_pending_question');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -2284,7 +2311,12 @@ const AITutor = () => {
       }
 
       if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
-        toast.info("Tu periodo de prueba ha terminado. Compra tokens o activa el Plan Maestro para seguir chateando.");
+        // Guardar la pregunta antes de redirigir para no perderla
+        localStorage.setItem('cyberedu_pending_question', JSON.stringify({
+          question: text.trim(),
+          timestamp: Date.now()
+        }));
+        toast.info("Tu periodo de prueba ha terminado. Compra tokens y tu pregunta se responderá automáticamente.");
         agentNavigate("/tokens");
         return;
       }
@@ -2753,6 +2785,24 @@ const AITutor = () => {
     } catch (err: any) {
       console.error("Agent chat error:", err);
       addError(err.message || 'Error desconocido en el chat', err.status);
+
+      // Detectar si el backend rechazó por falta de tokens (403 isAccessDenied)
+      const isTokenError = err.message?.includes('límite gratuito') ||
+                           err.message?.includes('Compra tokens') ||
+                           err.message?.includes('alcanzado el límite') ||
+                           err.status === 403;
+
+      if (isTokenError) {
+        localStorage.setItem('cyberedu_pending_question', JSON.stringify({
+          question: text.trim(),
+          timestamp: Date.now()
+        }));
+        toast.info("Sin tokens disponibles. Tu pregunta está guardada — responderemos en cuanto recargues.");
+        agentNavigate("/tokens");
+        setIsStreaming(false);
+        return;
+      }
+
       setMessages(prev => {
         const last = prev[prev.length - 1];
         const errContent = `⚠️ ${err.message || "Error de conexión. Intenta de nuevo."}`;
