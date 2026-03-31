@@ -266,71 +266,50 @@ export default async function handler(req: Request) {
     });
   }
 
-  // Determine access
-  let allowed = false;
-  let reason = 'no_tokens';
-  let consumptionType: 'token' | 'trial' | 'daily_free' | 'unlimited' | null = null;
+  // 2. Determine access & Consume resource
+  const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+  const tzDate = new Date(todayInMexico);
+  const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
 
-  // Rule 0: Unlimited Subscription (Status Active or is_premium)
+  // Rule 1: Subscriber -> pasa sin límite
   if (profile.subscription_status === 'active' || profile.is_premium === true) {
-    allowed = true;
-    consumptionType = 'unlimited';
+    // No consume tokens ni límite diario
   }
-  // Rule A: If tokens > 0, always allowed (gasta 1 token)
+  // Rule 2: hasTokens -> descuenta 1 token y pasa
   else if ((profile.tokens || 0) > 0) {
-    allowed = true;
-    consumptionType = 'token';
+    await supabase.from('profiles').update({ 
+      tokens: Math.max(0, profile.tokens - 1),
+      updated_at: new Date().toISOString()
+    }).eq('id', userId);
   } 
-  // Rule B: Trial period (Days 1-7, 5 questions/day)
+  // Rule 3: Límite diario (5 max)
   else {
-    const trialStartedAt = profile.trial_started_at ? new Date(profile.trial_started_at) : new Date();
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - trialStartedAt.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    // Reset daily count if day changed
-    let dailyCount = profile.daily_questions_count || 0;
-    const lastDailyFree = profile.last_daily_free;
-    if (lastDailyFree !== today) {
-       dailyCount = 0;
+    const { data: usageData } = await supabase
+      .from('daily_usage')
+      .select('count')
+      .eq('user_id', userId)
+      .eq('date', localToday)
+      .single();
+
+    const currentCount = usageData?.count || 0;
+
+    if (currentCount < 5) {
+      await supabase.from('daily_usage').upsert({
+        user_id: userId,
+        date: localToday,
+        count: currentCount + 1
+      }, { onConflict: 'user_id, date' });
+    } else {
+      return new Response(JSON.stringify({ 
+        isAccessDenied: true, 
+        reason: "daily_limit", 
+        message: "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos." 
+      }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
-
-    if (diffDays <= 7 && dailyCount < 5) {
-      allowed = true;
-      reason = 'trial';
-      consumptionType = 'trial';
-    } 
-    // Rule C: Registered (Day 8+, 1 question/day)
-    else if (lastDailyFree !== today) {
-      allowed = true;
-      reason = 'daily_free';
-      consumptionType = 'daily_free';
-    }
   }
-
-  if (!allowed) {
-    return new Response(JSON.stringify({ 
-      error: 'Has alcanzado el límite gratuito. ¡Compra tokens para seguir chateando!',
-      isAccessDenied: true,
-      reason
-    }), {
-      status: 403,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
-
-  // 2. Consume resource
-  const updates: any = {
-    last_daily_free: today,
-    daily_questions_count: (profile.last_daily_free === today ? (profile.daily_questions_count || 0) : 0) + 1,
-    updated_at: new Date().toISOString()
-  };
-
-  if (consumptionType === 'token') {
-    updates.tokens = Math.max(0, (profile.tokens || 1) - 1);
-  }
-
-  await supabase.from('profiles').update(updates).eq('id', userId);
 
   try {
     const { messages, context, memory } = await req.json();

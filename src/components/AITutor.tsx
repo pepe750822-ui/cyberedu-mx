@@ -1773,6 +1773,22 @@ const AITutor = () => {
     return false;
   });
 
+  const [dailyLimitBanner, setDailyLimitBanner] = useState<{ visible: boolean, message: string }>(() => {
+    if (typeof window !== "undefined") {
+      const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+      const tzDate = new Date(todayInMexico);
+      const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
+      
+      if (localStorage.getItem("cyberedu_daily_limit_dismissed") === localToday) {
+         return { visible: false, message: "Alcanzaste tus 5 preguntas gratuitas de hoy." };
+      }
+      if (localStorage.getItem("cyberedu_daily_limit_reached") === localToday) {
+        return { visible: true, message: "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora." };
+      }
+    }
+    return { visible: false, message: "" };
+  });
+
   const agentNavigate = useAgentNavigation(setIsOpen);
 
   const closeBanner = () => {
@@ -2793,6 +2809,16 @@ const AITutor = () => {
                            err.status === 403;
 
       if (isTokenError) {
+        if (err.reason === "daily_limit" || err.message?.includes('Alcanzaste tus 5 preguntas')) {
+          const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+          const tzDate = new Date(todayInMexico);
+          const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
+          localStorage.setItem('cyberedu_daily_limit_reached', localToday);
+          setDailyLimitBanner({ visible: true, message: err.message || err.reason });
+          setIsStreaming(false);
+          return;
+        }
+
         localStorage.setItem('cyberedu_pending_question', JSON.stringify({
           question: text.trim(),
           timestamp: Date.now()
@@ -3107,6 +3133,34 @@ const AITutor = () => {
                     </button>
                   </div>
 
+                  {/* Banner Límite Diario */}
+                  {dailyLimitBanner.visible && (
+                    <div className="mb-3 p-3 bg-red-900/20 border border-red-500/30 rounded-xl relative overflow-hidden animate-in slide-in-from-bottom-2 fade-in">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-red-500 rounded-l" />
+                      <p className="text-xs text-red-100 font-medium mb-2 pl-2 shadow-sm">{dailyLimitBanner.message}</p>
+                      <div className="flex flex-wrap gap-2 pl-2">
+                        <button 
+                          onClick={() => agentNavigate("/tokens")}
+                          className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500 hover:text-white border border-red-500/50 text-[10px] font-black text-red-200 uppercase tracking-widest transition-all shadow-md flex items-center gap-1"
+                        >
+                          <Ticket className="h-3 w-3" /> Conseguir tokens
+                        </button>
+                        <button 
+                          onClick={() => {
+                            const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+                            const tzDate = new Date(todayInMexico);
+                            const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
+                            localStorage.setItem("cyberedu_daily_limit_dismissed", localToday);
+                            setDailyLimitBanner(prev => ({ ...prev, visible: false }));
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-black text-slate-300 uppercase tracking-widest transition-all"
+                        >
+                          Entendido
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Quick Actions */}
                   <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
                     {[
@@ -3136,8 +3190,8 @@ const AITutor = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-                        placeholder={isListening ? "Escuchando..." : "Pregunta algo o usa un comando..."}
-                        disabled={isStreaming}
+                        placeholder={isListening ? "Escuchando..." : (dailyLimitBanner.message ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
+                        disabled={isStreaming || !!dailyLimitBanner.message}
                         className={cn(
                           "w-full bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50",
                           isListening && "border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]"
@@ -3145,7 +3199,7 @@ const AITutor = () => {
                       />
                       <button
                         onClick={toggleListening}
-                        disabled={isStreaming}
+                        disabled={isStreaming || !!dailyLimitBanner.message}
                         className={cn(
                           "absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-all",
                           isListening ? "text-primary animate-pulse" : "text-slate-500 hover:text-white hover:bg-white/5"
@@ -3157,7 +3211,7 @@ const AITutor = () => {
                     </div>
                     <button
                       onClick={() => sendMessage(input)}
-                      disabled={!input.trim() || isStreaming}
+                      disabled={!input.trim() || isStreaming || !!dailyLimitBanner.message}
                       className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
                     >
                       {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
