@@ -2471,19 +2471,8 @@ const AITutor = () => {
       return;
     }
 
-    // Validaciones de Suscripción/Prueba para mensajes regulares (API-bound)
-    if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
-      const usedFree = localStorage.getItem('cyberedu_used_free_message');
-      if (usedFree) {
-        localStorage.setItem('cyberedu_pending_question', JSON.stringify({
-          question: text.trim(),
-          timestamp: Date.now()
-        }));
-        toast.info("Tu periodo de prueba ha terminado. Compra tokens y tu pregunta se responderá automáticamente.");
-        agentNavigate("/tokens");
-        return;
-      }
-    }
+    // Se eliminó la validación estricta local de tokens (probadita). 
+    // Ahora delegamos que el backend aplique el límite de 5 consultas diarias y retorne el banner 403.
 
     // /explica <tema> - Enhanced explanation via AI with context
     const explicaMatch = text.trim().match(/^\/explica\s+(.+)/i);
