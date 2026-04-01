@@ -292,18 +292,22 @@ export default async function handler(req: Request) {
       .single();
 
     const currentCount = usageData?.count || 0;
+    const dailyLimit = 5;
 
-    if (currentCount < 5) {
+    if (currentCount < dailyLimit) {
       await supabase.from('daily_usage').upsert({
         user_id: userId,
         date: localToday,
         count: currentCount + 1
       }, { onConflict: 'user_id, date' });
     } else {
+      const msg = "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.";
+        
       return new Response(JSON.stringify({ 
+        error: msg,
         isAccessDenied: true, 
         reason: "daily_limit", 
-        message: "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos." 
+        message: msg
       }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

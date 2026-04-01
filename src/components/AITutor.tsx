@@ -573,7 +573,10 @@ async function streamChat({
 
   if (!resp.ok || !resp.body) {
     const errBody = await resp.json().catch(() => ({}));
-    throw new Error(errBody.error || `Error ${resp.status}`);
+    const error = new Error(errBody.error || errBody.message || `Error ${resp.status}`);
+    Object.assign(error, errBody);
+    (error as any).status = resp.status;
+    throw error;
   }
 
   const reader = resp.body.getReader();
@@ -1791,6 +1794,27 @@ const AITutor = () => {
 
   const agentNavigate = useAgentNavigation(setIsOpen);
 
+  const [usageStats, setUsageStats] = useState<{ used: number, limit: number, tokens: number, isSubscriber: boolean } | null>(null);
+
+  const fetchUsageStats = useCallback(async () => {
+    if (!session?.access_token) return;
+    try {
+      const res = await fetch("/api/usage", {
+        headers: { "Authorization": `Bearer ${session.access_token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUsageStats(data);
+      }
+    } catch (e) {
+      console.error("Failed to fetch usage stats", e);
+    }
+  }, [session?.access_token]);
+
+  useEffect(() => {
+    fetchUsageStats();
+  }, [fetchUsageStats]);
+
   const closeBanner = () => {
     setShowPromoBanner(false);
     localStorage.setItem("cyberedu_banner_ia_aviso", "true");
@@ -2535,6 +2559,7 @@ const AITutor = () => {
 
             setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined } : m));
             setIsStreaming(false);
+            fetchUsageStats();
           },
         });
       } catch (err: any) {
@@ -2785,6 +2810,7 @@ const AITutor = () => {
           ));
           setIsStreaming(false);
           refreshProfile();
+          fetchUsageStats();
         },
       });
     } catch (err: any) {
@@ -3050,17 +3076,11 @@ const AITutor = () => {
                   <div className="mb-4 flex items-center justify-between px-2 bg-slate-900/30 p-2 rounded-xl border border-white/5 shadow-inner">
                     <div className="flex flex-col">
                       {(() => {
-                        const tokens = profile?.tokens || 0;
-                        const dailyCount = profile?.daily_questions_count || 0;
-                        const today = new Date().toISOString().split('T')[0];
-                        const isToday = profile?.last_daily_free === today;
-                        const actualDailyCount = isToday ? dailyCount : 0;
-                        
-                        // Calculate trial days (Rule: 1-7 days)
-                        const trialStartedAt = profile?.trial_started_at ? new Date(profile.trial_started_at) : new Date();
-                        const now = new Date();
-                        const diffTime = Math.abs(now.getTime() - trialStartedAt.getTime());
-                        const trialDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        // Use usageStats as the source of truth for daily usage and tokens
+                        const tokens = usageStats?.tokens || profile?.tokens || 0;
+                        const actualDailyCount = usageStats?.used || 0;
+                        const dailyLimit = usageStats?.limit || 5;
+                        const isSubscriber = usageStats?.isSubscriber || profile?.subscription_status === 'active' || profile?.is_premium === true;
 
                         return (
                           <div className="flex flex-col">
@@ -3073,38 +3093,21 @@ const AITutor = () => {
                                 </p>
                             </div>
                             
-                            {tokens <= 0 && (
+                            {!isSubscriber && tokens <= 0 && (
                                 <div className="flex flex-col gap-0.5 mt-1 border-t border-white/5 pt-1">
-                                    {trialDay <= 7 ? (
-                                        <>
-                                            {5 - actualDailyCount === 1 ? (
-                                                <p className="text-[9px] font-black uppercase text-amber-500 animate-pulse flex items-center gap-1">
-                                                    ⚠️ Te queda 1 pregunta gratuita hoy — ¡Úsala bien! Compra tokens para continuar sin límites
-                                                </p>
-                                            ) : 5 - actualDailyCount <= 0 ? (
-                                                <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
-                                                    🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens desde $10 pesos
-                                                </p>
-                                            ) : (
-                                                <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
-                                                    <span className="text-amber-500 text-[11px]">🎁</span> 
-                                                    PRUEBA: {5 - actualDailyCount}/5 gratis hoy · Día {trialDay}/7
-                                                </p>
-                                            )}
-                                        </>
+                                    {dailyLimit - actualDailyCount === 1 ? (
+                                        <p className="text-[9px] font-black uppercase text-amber-500 animate-pulse flex items-center gap-1">
+                                            ⚠️ Te queda 1 pregunta gratuita hoy — ¡Úsala bien!
+                                        </p>
+                                    ) : dailyLimit - actualDailyCount <= 0 ? (
+                                        <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
+                                            🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens.
+                                        </p>
                                     ) : (
-                                        <>
-                                            {isToday && dailyCount >= 1 ? (
-                                                <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
-                                                    🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens desde $10 pesos
-                                                </p>
-                                            ) : (
-                                                <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
-                                                    <span className="text-primary">💬</span> 
-                                                    1/1 diario gratis
-                                                </p>
-                                            )}
-                                        </>
+                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
+                                            <span className="text-primary text-[11px]">🎁</span> 
+                                            GRATIS HOY: {actualDailyCount}/{dailyLimit} preguntas realizadas
+                                        </p>
                                     )}
                                 </div>
                             )}
@@ -3172,6 +3175,16 @@ const AITutor = () => {
                     ))}
                   </div>
 
+                  {!dailyLimitBanner.visible && usageStats && !usageStats.isSubscriber && (
+                    <div className="text-right mb-2">
+                      {usageStats.tokens > 0 ? (
+                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">🎟️ {usageStats.tokens} tokens disponibles</span>
+                      ) : (
+                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">🎁 {usageStats.used} de {usageStats.limit} preguntas hoy</span>
+                      )}
+                    </div>
+                  )}
+                  
                   <div className="flex items-center gap-2">
                     <div className="relative flex-1">
                       <input
@@ -3179,8 +3192,8 @@ const AITutor = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-                        placeholder={isListening ? "Escuchando..." : (dailyLimitBanner.message ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
-                        disabled={isStreaming || !!dailyLimitBanner.message}
+                        placeholder={isListening ? "Escuchando..." : (dailyLimitBanner.visible ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
+                        disabled={isStreaming || dailyLimitBanner.visible}
                         className={cn(
                           "w-full bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50",
                           isListening && "border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]"
@@ -3188,7 +3201,7 @@ const AITutor = () => {
                       />
                       <button
                         onClick={toggleListening}
-                        disabled={isStreaming || !!dailyLimitBanner.message}
+                        disabled={isStreaming || dailyLimitBanner.visible}
                         className={cn(
                           "absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-all",
                           isListening ? "text-primary animate-pulse" : "text-slate-500 hover:text-white hover:bg-white/5"
@@ -3200,7 +3213,7 @@ const AITutor = () => {
                     </div>
                     <button
                       onClick={() => sendMessage(input)}
-                      disabled={!input.trim() || isStreaming || !!dailyLimitBanner.message}
+                      disabled={!input.trim() || isStreaming || dailyLimitBanner.visible}
                       className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
                     >
                       {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}

@@ -197,6 +197,28 @@ const TokensPage = () => {
             </div>
         </div>
 
+        {/* Explanatory Section */}
+        <div className="max-w-4xl mx-auto space-y-6 pt-4 pb-8">
+          <h2 className="text-xl md:text-2xl font-black uppercase tracking-widest text-center text-slate-300">¿Cómo funciona el acceso al AITutor?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-slate-900/50 p-6 rounded-2xl border border-white/5 flex flex-col gap-2 transition-transform hover:-translate-y-1">
+              <div className="text-4xl mb-2">🎁</div>
+              <h3 className="font-bold text-lg text-white">Gratis</h3>
+              <p className="text-sm text-slate-400 font-medium">5 preguntas al día, se resetea cada 24 horas.</p>
+            </div>
+            <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20 flex flex-col gap-2 transition-transform hover:-translate-y-1 shadow-[0_0_30px_rgba(var(--primary),0.05)]">
+              <div className="text-4xl mb-2">🎟️</div>
+              <h3 className="font-bold text-lg text-primary">Tokens</h3>
+              <p className="text-sm text-slate-300 font-medium">Sin límite diario, 1 token por pregunta, no expiran.</p>
+            </div>
+            <div className="bg-amber-500/10 p-6 rounded-2xl border border-amber-500/20 flex flex-col gap-2 transition-transform hover:-translate-y-1">
+              <div className="text-4xl mb-2">👑</div>
+              <h3 className="font-bold text-lg text-amber-500">Maestro Ilimitado</h3>
+              <p className="text-sm text-amber-100/70 font-medium">Preguntas ilimitadas por $200/mes.</p>
+            </div>
+          </div>
+        </div>
+
         {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tokenPackages.map((pkg, idx) => (
