@@ -112,6 +112,9 @@ const AuthenticatedStudyTools = () => {
   );
 };
 
+// Prevent ref warnings - these are plain functional components rendered directly, not via forwardRef
+// The warnings come from React internals when components return null inside fragments
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
