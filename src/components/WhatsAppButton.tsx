@@ -19,9 +19,9 @@ const WhatsAppButton: React.FC = () => {
       aria-label="Contactar por WhatsApp"
       style={{
         position: "fixed",
-        bottom: "6rem",          // above AI Tutor FAB
+        bottom: "6rem",
         left: "1.25rem",
-        zIndex: 99,
+        zIndex: 50,
         display: "flex",
         alignItems: "center",
         gap: "0.5rem",

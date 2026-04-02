@@ -136,7 +136,8 @@ const Index = () => {
       <section className="relative overflow-hidden mb-12 border-b border-primary/20">
         <div className="absolute inset-0">
           <img src={heroImage} alt="Estudiantes preparándose" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 hero-gradient opacity-90" />
+          <div className="absolute inset-0 bg-background/70" />
+          <div className="absolute inset-0 hero-gradient opacity-95" />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-2xl">
