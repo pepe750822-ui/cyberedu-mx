@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_agent_tasks: {
+        Row: {
+          completed_at: string | null
+          context: Json | null
+          created_at: string
+          error_msg: string | null
+          id: string
+          memory: Json | null
+          priority: Database["public"]["Enums"]["agent_task_priority"]
+          prompt: string
+          result: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["agent_task_status"]
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          context?: Json | null
+          created_at?: string
+          error_msg?: string | null
+          id?: string
+          memory?: Json | null
+          priority?: Database["public"]["Enums"]["agent_task_priority"]
+          prompt: string
+          result?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["agent_task_status"]
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          context?: Json | null
+          created_at?: string
+          error_msg?: string | null
+          id?: string
+          memory?: Json | null
+          priority?: Database["public"]["Enums"]["agent_task_priority"]
+          prompt?: string
+          result?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["agent_task_status"]
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       flashcards: {
         Row: {
           back: string
@@ -148,6 +193,8 @@ export type Database = {
       }
     }
     Enums: {
+      agent_task_priority: "alta" | "media" | "baja"
+      agent_task_status: "queued" | "running" | "done" | "error"
       app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
@@ -276,6 +323,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      agent_task_priority: ["alta", "media", "baja"],
+      agent_task_status: ["queued", "running", "done", "error"],
       app_role: ["admin", "moderator", "user"],
     },
   },
