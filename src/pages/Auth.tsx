@@ -98,44 +98,44 @@ const Auth = () => {
 
     if (!isLogin && password !== confirmPassword) {
       toast({
-        title: "Error de validación",
-        description: "Las contraseñas no coinciden.",
-        variant: "destructive"
+        title: "Error",
+        description: "Las contraseñas no coinciden",
+        variant: "destructive",
       });
       return;
     }
 
     setLoading(true);
-
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
         if (error) throw error;
         trackLogin('email');
-        navigate("/");
-        toast({ title: "¡Bienvenido de nuevo!", description: "Sesión iniciada correctamente." });
       } else {
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
-            data: { full_name: name },
+            data: {
+              full_name: name,
+            },
           },
         });
         if (error) throw error;
         trackRegister('email');
         toast({
-          title: "¡Registro exitoso!",
-          description: "Revisa tu correo para confirmar tu cuenta y empezar a estudiar.",
-          variant: "default"
+          title: "Cuenta creada",
+          description: "Revisa tu correo para confirmar tu registro.",
         });
       }
     } catch (error: any) {
       toast({
-        title: isLogin ? "Error al iniciar sesión" : "Error al registrarse",
-        description: error.message || "Ocurrió un error inesperado.",
-        variant: "destructive"
+        title: isLogin ? "Error de acceso" : "Error de registro",
+        description: error.message,
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -163,6 +163,8 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden flex flex-col items-center justify-center p-4 cyber-grid">
