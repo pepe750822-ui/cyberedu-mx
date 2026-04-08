@@ -301,7 +301,7 @@ export default async function handler(req: Request) {
         count: currentCount + 1
       }, { onConflict: 'user_id, date' });
     } else {
-      const msg = "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.";
+      const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.`;
         
       return new Response(JSON.stringify({ 
         error: msg,

@@ -1732,6 +1732,7 @@ const AITutor = () => {
   const { plans: studyPlans, addPlan, deletePlan, togglePaso, getActivePlans, getCompletedPlans } = useStudyPlans();
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
   const { addMetric, addError } = useChatAnalytics();
+  const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
 
   // ─── Topic extractor ───
   const extractTopic = (text: string): string => {
@@ -1783,10 +1784,10 @@ const AITutor = () => {
       const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
       
       if (localStorage.getItem("cyberedu_daily_limit_dismissed") === localToday) {
-         return { visible: false, message: "Alcanzaste tus 5 preguntas gratuitas de hoy." };
+         return { visible: false, message: "Alcanzaste el límite de preguntas gratuitas de hoy." };
       }
       if (localStorage.getItem("cyberedu_daily_limit_reached") === localToday) {
-        return { visible: true, message: "Alcanzaste tus 5 preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora." };
+        return { visible: true, message: "Alcanzaste el límite de preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora." };
       }
     }
     return { visible: false, message: "" };
@@ -1969,7 +1970,7 @@ const AITutor = () => {
 
 
 
-  const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
+
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Cleanup AbortController on unmount
@@ -2824,7 +2825,7 @@ const AITutor = () => {
                            err.status === 403;
 
       if (isTokenError) {
-        if (err.reason === "daily_limit" || err.message?.includes('Alcanzaste tus 5 preguntas')) {
+        if (err.reason === "daily_limit" || err.message?.includes('Alcanzaste') || err.message?.includes('límite gratuito')) {
           const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
           const tzDate = new Date(todayInMexico);
           const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
@@ -3094,7 +3095,7 @@ const AITutor = () => {
                             </div>
                             
                             {!isSubscriber && tokens <= 0 && (
-                                <div className="flex flex-col gap-0.5 mt-1 border-t border-white/5 pt-1">
+                                <div className="flex flex-col gap-1 mt-1 border-t border-white/5 pt-1">
                                     {dailyLimit - actualDailyCount === 1 ? (
                                         <p className="text-[9px] font-black uppercase text-amber-500 animate-pulse flex items-center gap-1">
                                             ⚠️ Te queda 1 pregunta gratuita hoy — ¡Úsala bien!
@@ -3109,6 +3110,17 @@ const AITutor = () => {
                                             GRATIS HOY: {actualDailyCount}/{dailyLimit} preguntas realizadas
                                         </p>
                                     )}
+                                    {/* Visual Progress Bar */}
+                                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-0.5">
+                                      <div 
+                                        className={cn(
+                                          "h-full transition-all duration-700 ease-out",
+                                          (actualDailyCount / dailyLimit) >= 1 ? "bg-rose-500" : 
+                                          (actualDailyCount / dailyLimit) >= 0.8 ? "bg-amber-500" : "bg-primary"
+                                        )}
+                                        style={{ width: `${Math.min(100, (actualDailyCount / dailyLimit) * 100)}%` }}
+                                      />
+                                    </div>
                                 </div>
                             )}
                           </div>
