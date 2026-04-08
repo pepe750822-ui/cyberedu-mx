@@ -1806,6 +1806,13 @@ const AITutor = () => {
       if (res.ok) {
         const data = await res.json();
         setUsageStats(data);
+        
+        // Auto-unblock if backend says we have questions left (avoids false positives from legacy localStorage)
+        if (data.used < data.limit && dailyLimitBanner.visible) {
+          console.log("Desbloqueando tutor basado en uso real del servidor");
+          setDailyLimitBanner({ visible: false, message: "" });
+          localStorage.removeItem("cyberedu_daily_limit_reached");
+        }
       }
     } catch (e) {
       console.error("Failed to fetch usage stats", e);
