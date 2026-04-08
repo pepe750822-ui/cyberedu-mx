@@ -254,15 +254,15 @@ interface AgentMemory {
 // ─── Constants ───
 const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
 // Siempre apunta a Vercel como backend canónico del chat.
-// Esto garantiza que Lovable (lovable.app) y cualquier otro ambiente
+// Esto garantiza que el ambiente de producción y cualquier otro ambiente
 // usen el mismo endpoint optimizado: Haiku 4.5 + prompt caching + analytics.
 // Para sobreescribir en desarrollo local, define VITE_CHAT_URL en .env
 const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.app/api/chat";
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
-// ─── Helpfully sanitize Mermaid syntax for Lovable/v11 ───
-const sanitizeMermaidForLovable = (content: string): string => content
+// ─── Helpfully sanitize Mermaid syntax for v11 ───
+const sanitizeMermaidContent = (content: string): string => content
   .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
   .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ü/g, 'u')
   .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
@@ -2219,7 +2219,7 @@ const AITutor = () => {
       const match = /language-(\w+)/.exec(className || '');
       if (!inline && match && match[1] === 'mermaid') {
         const rawContent = String(children).replace(/\n$/, '');
-        const sanitized = sanitizeMermaidForLovable(rawContent);
+        const sanitized = sanitizeMermaidContent(rawContent);
         return <Mermaid chart={sanitized} />;
       }
       return (
@@ -2564,6 +2564,31 @@ const AITutor = () => {
           },
         });
       } catch (err: any) {
+        console.error("Explica error:", err);
+        
+        // Detectar si el backend rechazó por límites o tokens (unificado)
+        const isTokenError = err.status === 403 || 
+                             err.message?.includes('límite gratuito') ||
+                             err.message?.includes('Compra tokens') ||
+                             err.message?.includes('Alcanzaste');
+
+        if (isTokenError) {
+          if (err.reason === "daily_limit" || err.message?.includes('Alcanzaste')) {
+            const todayInMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+            const tzDate = new Date(todayInMexico);
+            const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
+            localStorage.setItem('cyberedu_daily_limit_reached', localToday);
+            setDailyLimitBanner({ visible: true, message: err.message || err.reason });
+            setIsStreaming(false);
+            return;
+          }
+          
+          toast.info("Sin tokens disponibles. Recarga para continuar.");
+          agentNavigate("/tokens");
+          setIsStreaming(false);
+          return;
+        }
+
         setMessages(prev => {
           const isRateLimit = err.message.includes("límite diario");
           const errContent = isRateLimit 
@@ -3187,15 +3212,35 @@ const AITutor = () => {
                     ))}
                   </div>
 
-                  {!dailyLimitBanner.visible && usageStats && !usageStats.isSubscriber && (
                     <div className="text-right mb-2">
-                      {usageStats.tokens > 0 ? (
-                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">🎟️ {usageStats.tokens} tokens disponibles</span>
-                      ) : (
-                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">🎁 {usageStats.used} de {usageStats.limit} preguntas hoy</span>
-                      )}
+                       {!usageStats && !isSubscriber && (
+                         <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">
+                           Sincronizando uso...
+                         </span>
+                       )}
+                       {usageStats && !usageStats.isSubscriber && (
+                         <>
+                           {usageStats.tokens > 0 ? (
+                             <div className="flex flex-col items-end gap-1">
+                               <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 flex items-center gap-1.5">
+                                 <Ticket className="h-3 w-3" /> {usageStats.tokens} tokens disponibles
+                               </span>
+                               <span className="text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
+                                 Límite gratuito: {usageStats.used}/{usageStats.limit} hoy
+                               </span>
+                             </div>
+                           ) : (
+                             <span className={cn(
+                               "text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5",
+                               usageStats.used >= usageStats.limit ? "text-rose-500 border-rose-500/30" : 
+                               usageStats.used >= usageStats.limit - 1 ? "text-amber-500 animate-pulse" : "text-slate-400"
+                             )}>
+                               🎁 {usageStats.used}/{usageStats.limit} preguntas hoy
+                             </span>
+                           )}
+                         </>
+                       )}
                     </div>
-                  )}
                   
                   <div className="flex items-center gap-2">
                     <div className="relative flex-1">

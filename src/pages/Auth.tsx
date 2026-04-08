@@ -26,19 +26,22 @@ const Auth = () => {
 
   useEffect(() => {
     // Detect password recovery mode from URL hash/supabase session
-    const checkRecovery = async () => {
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
-        if (event === "PASSWORD_RECOVERY") {
-          setIsResettingPassword(true);
-          setIsLogin(false);
-          setIsRecovering(false);
-        }
-      });
-      return () => subscription.unsubscribe();
-    };
-    checkRecovery();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setIsResettingPassword(true);
+        setIsLogin(false);
+        setIsRecovering(false);
+      }
+    });
 
-    if (user && !isResettingPassword) navigate("/", { replace: true });
+    if (user && !isResettingPassword) {
+      // If we are coming back from a redirect, we might have a 'from' location in state
+      const locationState = window.history.state?.usr;
+      const from = locationState?.from?.pathname || "/";
+      navigate(from, { replace: true });
+    }
+
+    return () => subscription.unsubscribe();
   }, [user, navigate, isResettingPassword]);
 
   const passwordsMatch = isLogin || isRecovering || password === confirmPassword;
@@ -148,7 +151,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/auth`,
         },
       });
       if (error) throw error;
