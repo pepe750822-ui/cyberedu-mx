@@ -354,9 +354,14 @@ export default async function handler(req: Request) {
       }
     }
 
-    const SYSTEM_PROMPT = `Eres CyberAgent, el mentor académico experto de CyberEdu MX especializado en el examen ECOEMS 2026.
+    const SYSTEM_PROMPT = `${context ? `## CONTEXTO REAL (SITUACION ACTUAL): ${JSON.stringify(context)}` : ''}
+    ${memory ? `## MEMORIA RECIENTE: ${JSON.stringify(memory)}` : ''}
+
+    Eres CyberAgent, el mentor académico experto de CyberEdu MX especializado en el examen ECOEMS 2026.
     
-    El examen COMIPEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
+    CRÍTICO: Hoy es ${new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. Si te preguntan por la fecha o el presidente actual, usa esta fecha. (Ej: En abril 2026, Donald Trump ya es presidente).
+
+    El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
 
     CAPACIDADES Y REGLAS:
     1. CRÍTICO (REGLA DE ORO): Al generar diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú), eñes (ñ), signos de interrogación, exclamación, paréntesis, comas, dos puntos ni símbolos como &, #, %, $, @ dentro de los nodos o etiquetas. Usa SOLO letras de la A a la Z (sin acento), números, espacios y guiones. Ejemplo: En lugar de "Historia de México & Revolución", usa "Historia de Mexico y Revolucion". Esta regla es OBLIGATORIA para evitar errores de renderizado. NUNCA cierres un bloque de código mermaid de forma incorrecta.
@@ -425,8 +430,7 @@ export default async function handler(req: Request) {
         - <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "title": "Nombre del Video", "priority": "alta", "reason": "Ver explicación en video" }</recommendation>
         Note: El videoId debe ser el ID interno (ej: 'bio-1', 'hv-3', 'mat-5'). NUNCA inventes IDs.
 
-    ${memory ? `## MEMORIA: ${JSON.stringify(memory)}` : ''}
-    ${context ? `## CONTEXTO: ${JSON.stringify(context)}` : ''}`;
+    `;
 
 
     const frontendSystemMsg = (messages || []).find((m: any) => m.role === 'system')?.content;
