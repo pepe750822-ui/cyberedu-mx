@@ -1845,10 +1845,12 @@ const AITutor = () => {
       };
       
       return {
+        today: new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+        current_time: new Date().toLocaleTimeString('es-MX'),
         currentPage: location.pathname,
-        progress: analysis.totalProgress,
+        progress: `${analysis.totalProgress}% general completado`,
         weakAreas: analysis.weakAreas.map((a: any) => a.name),
-        streak: analysis.streak,
+        streak: `${analysis.streak} días seguidos`,
         isRegistered: !!user,
         isSubscriber: !!isSubscriber,
         detailedSyllabus,
