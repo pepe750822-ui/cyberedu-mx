@@ -1580,7 +1580,7 @@ const MessageBubble = React.memo(({
         )}
 
         <div className={cn(
-          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-hidden min-w-0 break-words",
+          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-x-auto min-w-0 break-words scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent",
           !isAssistant
             ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
             : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
@@ -1655,7 +1655,7 @@ const MessageBubble = React.memo(({
             />
           )}
           {isAssistant ? (
-            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-hidden min-w-0 break-words", isExpanded ? "prose-base" : "prose-sm")}>
+            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-auto min-w-0 break-words", isExpanded ? "prose-base" : "prose-sm")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -2281,6 +2281,21 @@ const AITutor = () => {
           {children}
         </a>
       );
+    },
+    table({ children }: any) {
+      return (
+        <div className="w-full overflow-x-auto my-4 border border-white/10 rounded-xl scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          <table className="min-w-full border-collapse text-[11px] md:text-xs">
+            {children}
+          </table>
+        </div>
+      );
+    },
+    td({ children }: any) {
+      return <td className="border border-white/10 p-2 text-slate-300">{children}</td>;
+    },
+    th({ children }: any) {
+      return <th className="border border-white/10 p-2 bg-white/5 text-primary font-black uppercase tracking-widest text-[9px]">{children}</th>;
     },
     img({ src, alt }: any) {
       return (
