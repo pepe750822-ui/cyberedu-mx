@@ -148,22 +148,25 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
+      console.log("Iniciando Google Login redirect a:", window.location.origin);
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth`,
+          redirectTo: window.location.origin,
         },
       });
       if (error) throw error;
       trackLogin('google');
     } catch (error: any) {
+      console.error("Error en Google Login:", error);
       toast({
         title: "Error con Google",
         description: error.message || String(error),
         variant: "destructive"
       });
     } finally {
-      setLoading(false);
+      if (typeof setLoading === 'function') setLoading(false);
     }
   };
 

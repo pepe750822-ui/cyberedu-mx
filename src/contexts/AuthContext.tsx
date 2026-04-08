@@ -57,12 +57,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    if (data) setProfile(data as UserProfile);
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", userId)
+        .single();
+      
+      if (data) {
+        setProfile(data as UserProfile);
+      } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
+        console.log("Perfil no encontrado, creando uno nuevo para el usuario:", userId);
+        // Intentar crear perfil si falta (común en OAuth)
+        const { data: { session } } = await supabase.auth.getSession();
+        const currentUser = session?.user;
+        
+        if (currentUser && currentUser.id === userId) {
+          const { data: newProfile, error: insertError } = await supabase
+            .from("profiles")
+            .insert({
+              id: userId,
+              email: currentUser.email,
+              name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email?.split('@')[0],
+              updated_at: new Date().toISOString()
+            })
+            .select()
+            .single();
+          
+          if (insertError) {
+            console.error("Error al crear perfil automático:", insertError);
+          } else if (newProfile) {
+            setProfile(newProfile as UserProfile);
+          }
+        }
+      } else if (error) {
+        console.error("Error al cargar perfil:", error);
+      }
+    } catch (e) {
+      console.error("Error inesperado en fetchProfile:", e);
+    }
   };
 
   const refreshProfile = async () => {
@@ -74,12 +107,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let mounted = true;
 
+    // Detect if we're in the middle of a redirect from OAuth
+    const isAuthRedirect = window.location.hash.includes('access_token=') || 
+                           window.location.hash.includes('type=recovery') ||
+                           window.location.search.includes('code=');
+
+    if (isAuthRedirect) {
+      console.log("Auth redirect detected - waiting for session processing...");
+    }
+
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
         
-        console.log("Auth event:", event);
+        console.log("Auth event:", event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -89,6 +131,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setProfile(null);
         }
         
+        // Only stop loading if we're not expecting an INITIAL_SESSION that hasn't happened yet,
+        // or if we just got a meaningful event.
         setIsLoading(false);
       }
     );
@@ -96,7 +140,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     const checkSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        
         if (!mounted) return;
         
         if (session) {
@@ -107,15 +153,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (error) {
         console.error("Error checking session:", error);
       } finally {
-        if (mounted) setIsLoading(false);
+        // If we're in a redirect, wait a bit longer for the onAuthStateChange event
+        // which is more reliable for OAuth hash processing.
+        if (mounted && !isAuthRedirect) {
+          setIsLoading(false);
+        }
       }
     };
 
     checkSession();
 
+    // Safety timeout: if after 5 seconds we're still loading, something went wrong
+    const timeoutId = setTimeout(() => {
+      if (mounted && isLoading) {
+        console.warn("Auth sync timeout - forcing stop loading");
+        setIsLoading(false);
+      }
+    }, 5000);
+
     return () => {
       mounted = false;
       subscription.unsubscribe();
+      clearTimeout(timeoutId);
     };
   }, []);
 
