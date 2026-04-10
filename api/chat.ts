@@ -430,19 +430,121 @@ export default async function handler(req: Request) {
         - <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "title": "Nombre del Video", "priority": "alta", "reason": "Ver explicación en video" }</recommendation>
         Note: El videoId debe ser el ID interno (ej: 'bio-1', 'hv-3', 'mat-5'). NUNCA inventes IDs.
 
-    17. CATÁLOGO DE IDs OBLIGATORIOS: Al recomendar un video, DEBES usar estrictamente uno de los siguientes areaId y sus correspondientes videoId. ¡No inventes IDs ni áreas!
-    - habilidades: hv-0 a hv-5, hm-1 a hm-5
-    - biologia: bio-1 a bio-7
-    - fisica: fis-1 a fis-7
-    - quimica: qui-1 a qui-6
-    - matematicas: mat-1 a mat-14
-    - historia-universal: hu-1 a hu-7
-    - historia-mexico: hm-mx-1 a hm-mx-7 (ej. hm-mx-4 es Independencia)
-    - espanol: esp-1 a esp-10
-    - formacion-civica: fce-1 a fce-8
-    - geografia: geo-1 a geo-10
-    - repaso-final: rep-1 a rep-4
-    Siempre asegúrate de usar prefijos correctos (ej: 'hm-mx-' para historia de méxico, no uses 'his-').
+    17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
+    Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
+
+    [areaId: habilidades]
+    hv-0: Introducción BioReto Academy - Estrategia Inteligente ECOEMS 2026
+    hv-1: Habilidad Verbal - Comprensión Lectora (Parte 1)
+    hv-2: Habilidad Verbal - Comprensión Lectora (Parte 2)
+    hv-3: Habilidad Verbal - Manejo de Vocabulario (Parte 1)
+    hv-4: Habilidad Verbal - Manejo de Vocabulario (Parte 2)
+    hv-5: Habilidad Verbal - Integración Total y Aplicación Master
+    hm-1: Habilidad Matemática - Series Numéricas
+    hm-2: Series Espaciales
+    hm-3: Imaginación Espacial - Visualización 3D
+    hm-4: Problemas de Razonamiento - Lógica Aplicada
+    hm-5: Integración Total - Habilidad Matemática
+
+    [areaId: biologia]
+    bio-1: Bases de la Biología - Características de los Seres Vivos
+    bio-2: Biodiversidad Mexicana - Conservación y Desarrollo Sustentable
+    bio-3: Tecnología y Metabolismo - Fotosíntesis y Respiración Celular
+    bio-4: Ciclos y Nutrición - Ciclo del Carbono y Alimentación
+    bio-5: Salud y Reproducción - Contaminación, Mitosis y Meiosis
+    bio-6: Genética y Biotecnología - ADN y Manipulación Genética
+    bio-7: Integración Total Biología
+
+    [areaId: fisica]
+    fis-1: Introducción a Física - Movimiento, Rapidez y Gráficas
+    fis-2: Fuerzas y Leyes de Newton - Primera y Segunda Ley
+    fis-3: Tercera Ley y Fuerzas Especiales
+    fis-4: Energía y Trabajo - Conservación de Energía Mecánica
+    fis-5: Electricidad y Magnetismo
+    fis-6: Ondas y Luz - Espectro Electromagnético
+    fis-7: Física Moderna - Estructura de la Materia y Energía
+
+    [areaId: quimica]
+    qui-1: Introducción a Química - Materia y Propiedades
+    qui-2: Estructura Atómica
+    qui-3: Tabla Periódica y Estructura de Lewis
+    qui-4: Enlaces Químicos
+    qui-5: Reacciones Químicas - Ecuaciones y Balanceo
+    qui-6: Ácidos, Bases y Reacciones Redox
+
+    [areaId: matematicas]
+    mat-1: Números Enteros y Operaciones
+    mat-2: Números Fraccionarios y Decimales
+    mat-3: Introducción al Álgebra
+    mat-4: Ecuaciones de Primer Grado
+    mat-5: Sistemas de Ecuaciones
+    mat-6: Ecuaciones Cuadráticas
+    mat-7: Proporcionalidad
+    mat-8: Estadística Descriptiva
+    mat-9: Probabilidad Básica
+    mat-10: Elementos Básicos de Geometría
+    mat-11: Semejanza y Teorema de Pitágoras
+    mat-12: Razones Trigonométricas
+    mat-13: Perímetros y Áreas
+    mat-14: Volúmenes
+
+    [areaId: historia-universal]
+    hu-1: Renacimiento y Descubrimientos
+    hu-2: Ilustración y Revoluciones Políticas
+    hu-3: Revolución Industrial
+    hu-4: Imperialismo y Primera Guerra Mundial
+    hu-5: Período de Entreguerras
+    hu-6: Segunda Guerra Mundial
+    hu-7: Guerra Fría y Globalización
+
+    [areaId: historia-mexico]
+    hm-mx-1: Culturas Prehispánicas
+    hm-mx-2: Conquista de México
+    hm-mx-3: Virreinato de Nueva España
+    hm-mx-4: Independencia de México
+    hm-mx-5: México Siglo XIX
+    hm-mx-6: Revolución Mexicana
+    hm-mx-7: México Contemporáneo
+
+    [areaId: espanol]
+    esp-1: Fundamentos - Fichas Bibliográficas y Organización
+    esp-2: Coherencia y Cohesión I - Los Nexos
+    esp-3: Coherencia y Cohesión II - Gramática y Puntuación
+    esp-4: Análisis de Textos Informativos
+    esp-5: Análisis de Textos Publicitarios
+    esp-6: Textos Literarios I: Narrativa
+    esp-7: Textos Literarios II: Lírica y Dramática
+    esp-8: Ortografía Estratégica
+    esp-9: Redacción Efectiva
+    esp-10: Integración Total Español
+
+    [areaId: formacion-civica]
+    fce-1: Fundamentos Personales e Interculturalidad
+    fce-2: Adolescencia y Sociedad
+    fce-3: El Estado Mexicano
+    fce-4: Democracia y Derechos Humanos
+    fce-5: Sistema de Partidos y Elecciones
+    fce-6: Organizaciones de la Sociedad Civil
+    fce-7: Medios de Comunicación y Opinión Pública
+    fce-8: Corrupción y Transparencia
+
+    [areaId: geografia]
+    geo-1: El Espacio Geográfico y los Mapas
+    geo-2: Recursos Naturales y Preservación (Parte 1)
+    geo-3: Biosfera y Biodiversidad
+    geo-4: Desarrollo Sustentable y Políticas Ambientales
+    geo-5: Población y Migración
+    geo-6: Vulnerabilidad y Resiliencia
+    geo-7: Economía Global: Producción y Comercio
+    geo-8: El Mundo Desigual: IDH y Ciudades Globales
+    geo-9: Cultura, Identidad y Fronteras
+    geo-10: Patrimonio y Soberanía
+
+    [areaId: repaso-final]
+    rep-1: Repaso Estratégico I - Ciencias y Matemáticas
+    rep-2: Repaso Estratégico II - Historia y Ciencias Sociales
+    rep-3: Estrategias Finales - Examen en Línea ECOEMS
+    rep-4: Cierre Total - Tu Puente Hacia el Bachillerato
     `;
 
 
