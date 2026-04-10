@@ -1195,7 +1195,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
           return (
             <div key={i} className="relative group/rec w-full">
               <button
-                onClick={() => onNavigate(generatedUrl)}
+                onClick={() => window.open(window.location.origin + generatedUrl, '_blank')}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group pr-20"
               >
                 <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
