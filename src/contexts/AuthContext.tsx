@@ -188,20 +188,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       trackLogout();
       await supabase.auth.signOut();
       
-      // Clear all local data to prevent session leakage between different accounts
-      localStorage.clear();
-      sessionStorage.clear();
+      // Limpiar solo claves específicas de CyberEdu
+      const keysToRemove = [
+        'cyberedu_pending_question',
+        'cyberedu_used_free_message', 
+        'cyberedu_daily_limit_reached',
+        'cyberedu_daily_limit_dismissed'
+      ];
+      keysToRemove.forEach(key => localStorage.removeItem(key));
       
       setUser(null);
       setProfile(null);
       setSession(null);
       
-      // Force a full page reload to clear any remaining in-memory states
       window.location.href = "/auth";
     } catch (error) {
       console.error("Error during sign out:", error);
-      // Fallback: still clear data even if Supabase call fails
-      localStorage.clear();
       window.location.href = "/auth";
     }
   };
