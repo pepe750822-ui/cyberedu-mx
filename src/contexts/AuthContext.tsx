@@ -186,14 +186,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
+    if (isSigningOut.current) return;
     isSigningOut.current = true;
-    console.log('[signOut] iniciando...');
+    
+    console.log('[signOut] Nuclear iniciado...');
+    
+    // 1. Limpieza inmediata del estado UI para que el usuario vea el cambio
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+
+    // 2. Limpieza de TODO el localStorage relacionado con auth
     try {
-      console.log('[signOut] llamando supabase.auth.signOut...');
-      await supabase.auth.signOut();
-      console.log('[signOut] supabase cerró sesión OK');
-      
-      // Limpiar solo claves específicas de CyberEdu
       const keysToRemove = [
         'cyberedu_pending_question',
         'cyberedu_used_free_message', 
@@ -201,22 +205,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         'cyberedu_daily_limit_dismissed'
       ];
       keysToRemove.forEach(key => localStorage.removeItem(key));
-      console.log('[signOut] localStorage limpio');
       
-      setUser(null);
-      setProfile(null);
-      setSession(null);
-      console.log('[signOut] estado limpio, redirigiendo...');
-
-      // Traqueo al final con catch de seguridad para no bloquear el proceso
-      try { trackLogout(); } catch (_) { }
-      
-      window.location.href = "/auth";
-    } catch (error) {
-      console.error('[signOut] ERROR:', error);
-      isSigningOut.current = false;
-      window.location.href = "/auth";
+      // Limpiar tokens de supabase manualmente por si acaso (para evitar restauraciones zombies)
+      Object.keys(localStorage).forEach(key => {
+        if (key.includes('sb-') && key.includes('-auth-token')) {
+          localStorage.removeItem(key);
+        }
+      });
+      console.log('[signOut] LocalStorage purgado.');
+    } catch (e) {
+      console.error("Error limpiando storage:", e);
     }
+
+    // 3. Intento de cerrar sesión en servidor con Timeout de seguridad
+    const signOutPromise = supabase.auth.signOut();
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 1500, 'timeout'));
+
+    try {
+      const result = await Promise.race([signOutPromise, timeoutPromise]);
+      if (result === 'timeout') {
+        console.warn('[signOut] El servidor de Supabase tardó demasiado, forzando salida local.');
+      } else {
+        console.log('[signOut] Servidor de Supabase respondió OK.');
+      }
+    } catch (error) {
+      console.error('[signOut] Error en servidor, pero continuamos salida local:', error);
+    }
+
+    // Traqueo opcional (si falla no importa)
+    try { trackLogout(); } catch (_) { }
+
+    // 4. Redirección final garantizada
+    console.log('[signOut] Redirigiendo a /auth...');
+    window.location.href = "/auth";
   };
 
   const isSubscriber = profile?.subscription_status === 'active' || profile?.is_premium === true;
