@@ -2311,19 +2311,32 @@ const AITutor = () => {
         return (
           <button 
             onClick={() => {
-              const areaId = MATERIA_TO_AREA[cleanMateria];
+              const cleanMateria = materia.toUpperCase().trim();
+              let areaId = MATERIA_TO_AREA[cleanMateria];
+              
               if (!areaId) {
                  toast.error(`Materia "${cleanMateria}" no reconocida.`);
                  return;
               }
               
-              // Usamos resolveVideoId para encontrar el mejor match (exacto o cercano)
               const chapter = code.split('.')[0];
               const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
               const desiredVideoId = `${prefix}-${chapter}`;
               
-              const resolved = resolveVideoId(areaId, desiredVideoId);
+              let resolved = resolveVideoId(areaId, desiredVideoId);
               
+              // --- ESCANEO DE AMBIGÜEDAD (HIST/HIS) ---
+              // Si es historia y el primer intento no encontró un video útil, probamos en la otra historia
+              if (!resolved.videoId && (cleanMateria === 'HIST' || cleanMateria === 'HIS')) {
+                const alternativeAreaId = areaId === 'historia-universal' ? 'historia-mexico' : 'historia-universal';
+                const altPrefix = alternativeAreaId === 'historia-mexico' ? 'hm-mx' : 'hu';
+                const altDesiredVideoId = `${altPrefix}-${chapter}`;
+                const fallbackResolved = resolveVideoId(alternativeAreaId, altDesiredVideoId);
+                if (fallbackResolved.videoId) {
+                  resolved = fallbackResolved;
+                }
+              }
+
               if (resolved.videoId) {
                   agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
               } else {
