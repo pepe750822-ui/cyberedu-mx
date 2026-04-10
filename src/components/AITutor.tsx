@@ -277,37 +277,27 @@ interface Message {
 const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
   return (path: string) => {
-    console.log("[useAgentNavigation] Intentando navegación crítica a:", path);
+    if (!path) return;
+    console.log("[useAgentNavigation] EJECUTANDO NAVEGACIÓN DIRECTA:", path);
     
-    // 1. Mostrar feedback inmediato
-    toast.info("Cargando video y material...", { 
-      icon: "🚀",
-      duration: 3000,
-      id: "nav-toast" // ID único para evitar duplicados
-    });
-
-    // 2. Cerrar el tutor con prioridad máxima
-    setIsOpen(false);
-    
-    // 3. Ejecutar navegación con triple validación
-    setTimeout(() => {
-      try {
-        // Opción A: Intento con React Router (más rápido, sin recarga)
+    // 1. Iniciamos la navegación INMEDIATAMENTE (Prioridad A)
+    try {
+      if (path.startsWith('/')) {
         navigate(path, { replace: true });
-        
-        // Opción B: Verificación de seguridad. Si el path no cambió en 1 seg, forzar recarga
-        setTimeout(() => {
-          if (window.location.pathname + window.location.search !== path && !path.startsWith('http')) {
-             console.warn("[useAgentNavigation] Navigation stalled, forcing window.location...");
-             window.location.href = path;
-          }
-        }, 1200);
-
-      } catch (err) {
-        console.error("[useAgentNavigation] Fallo crítico, usando window.location:", err);
+      } else {
         window.location.href = path;
       }
-    }, 150);
+    } catch (e) {
+      window.location.href = path;
+    }
+
+    // 2. Feedback visual
+    toast.info("Cargando contenido...", { icon: "🚀", id: "nav-toast", duration: 1500 });
+    
+    // 3. Cerramos el tutor DESPUÉS de haber iniciado la navegación
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 50);
   };
 };
 
