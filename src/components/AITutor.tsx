@@ -851,7 +851,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
             step.text,
             resolved.areaId
           );
-          window.open(window.location.origin + generatedUrl, '_blank');
+          onNavigate(generatedUrl);
         }}
         className="flex-1 flex flex-col p-3 text-left min-w-0 pr-14 group/step"
         title="Clic para ir al contenido"
@@ -981,7 +981,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
           {analysis.weakAreas.map((a, i) => (
             <button 
               key={i} 
-              onClick={() => window.open(window.location.origin + getUrlForPaso('video', a.id, a.name), '_blank')}
+              onClick={() => onNavigate(getUrlForPaso('video', a.id, a.name))}
               className="w-full space-y-1.5 group text-left hover:bg-white/5 p-1 rounded-lg transition-colors"
             >
               <div className="flex justify-between items-center text-[10px] font-bold">
@@ -1011,7 +1011,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
                 onClick={() => {
                   if (isTopic) {
                      const area = areas.find(a => a.name === topicName || a.id === topicName.toLowerCase());
-                     if (area) window.open(window.location.origin + getUrlForPaso('video', area.id, area.name), '_blank');
+                     if (area) onNavigate(getUrlForPaso('video', area.id, area.name));
                   }
                 }}
                 className={cn(
@@ -1240,7 +1240,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
           return (
             <div key={i} className="relative group/rec w-full">
               <button
-                onClick={() => window.open(window.location.origin + generatedUrl, '_blank')}
+                onClick={() => onNavigate(generatedUrl)}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-left group pr-20"
               >
                 <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
@@ -1262,7 +1262,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(window.location.origin + infoUrl, '_blank');
+                      onNavigate(infoUrl);
                     }}
                     className="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg opacity-0 group-hover/rec:opacity-100 hover:bg-emerald-500/20 hover:scale-110 active:scale-95 transition-all border border-emerald-500/20"
                     title="Ver Infografía"
@@ -1273,7 +1273,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    window.open(window.location.origin + generatedUrl, '_blank');
+                    onNavigate(generatedUrl);
                   }}
                   className="p-1.5 bg-primary/10 text-primary rounded-lg opacity-50 group-hover/rec:opacity-100 hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20"
                   title="Ir al video"
@@ -1534,7 +1534,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(window.location.origin + getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area), '_blank');
+                      onNavigate(getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area));
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
@@ -1903,13 +1903,13 @@ const AITutor = () => {
         
         RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo:
         📚 **Material completo en CyberEdu MX — GRATIS**
-        🎬 **Ver video:** ${window.location.origin}/area/[areaId]?video=[videoId]
+        🎬 **Ver video:** /area/[areaId]?video=[videoId]
 
         Todo completamente GRATIS con registro.
         
         CALLS TO ACTION SEGÚN USUARIO:
-        - Si !context.isRegistered: 💡 Regístrate GRATIS en ${window.location.origin}
-        - Si el usuario no tiene tokens: 💡 Consigue tokens desde $10 para seguir chateando: ${window.location.origin}/tokens`
+        - Si !context.isRegistered: 💡 Regístrate GRATIS en /
+        - Si el usuario no tiene tokens: 💡 Consigue tokens desde $10 para seguir chateando: /tokens`
       };
     } catch {
       return { 
@@ -2302,9 +2302,9 @@ const AITutor = () => {
               const videoExists = area.videos.some(v => v.id === targetVideoId);
               
               if (videoExists) {
-                  window.open(window.location.origin + `/area/${areaId}?video=${targetVideoId}`, '_blank');
+                  agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
               } else {
-                  window.open(window.location.origin + `/area/${areaId}`, '_blank');
+                  agentNavigate(`/area/${areaId}`);
               }
             }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
@@ -2319,9 +2319,9 @@ const AITutor = () => {
       // Solo permitimos navegación interna SIN recarga para rutas de la App
       // Cualquier otra URL (especialmente las completas de Vercel/Producción) abre en _blank
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
-      // Forzamos links a /area/ a abrir en pestaña nueva para no destruir el contexto
+      // Links internos navegan en la misma pestaña para preservar la sesión
       const isAreaLink = href?.includes('/area/');
-      const finalTarget = isAreaLink ? "_blank" : (isInternalPath ? "_self" : "_blank");
+      const finalTarget = (isInternalPath || isAreaLink) ? "_self" : "_blank";
 
       let finalHref = href;
       if (isAreaLink && href) {
@@ -2348,6 +2348,12 @@ const AITutor = () => {
           target={finalTarget}
           rel={finalTarget === "_blank" ? "noopener noreferrer" : undefined}
           className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors"
+          onClick={(e) => {
+            if (finalTarget === "_self") {
+              e.preventDefault();
+              agentNavigate(finalHref);
+            }
+          }}
         >
           {children}
         </a>
@@ -2813,7 +2819,7 @@ const AITutor = () => {
           10. DISEÑO MÓVIL: En diagramas Mermaid, prefiere 'flowchart TD' y evita que sean demasiado anchos para pantallas pequeñas.
           11. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo:
               📚 **Material completo en CyberEdu MX — GRATIS**
-              🎬 **Ver video:** ${window.location.origin}/area/[areaId]?video=[videoId]
+              🎬 **Ver video:** /area/[areaId]?video=[videoId]
 
               Debajo del video encontrarás:
               🎯 Desafío IA — NotebookLM
@@ -2830,7 +2836,7 @@ const AITutor = () => {
           12. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
               - Si !context.isRegistered:
                 💡 **¿Quieres acceder a todo este material?**
-                ✅ Regístrate GRATIS en ${window.location.origin}
+                ✅ Regístrate GRATIS en /
                 ✅ 7 días de acceso completo al Tutor IA incluidos
                 ✅ Sin tarjeta de crédito
               - Si context.isRegistered && !context.isSubscriber:
@@ -2838,7 +2844,7 @@ const AITutor = () => {
                 ✅ Paquetes desde $10 pesos (10 tokens)
                 ✅ Plan Maestro Ilimitado por $200/mes
                 ✅ Todo el contenido multimedia siempre GRATIS
-                🔗 Comprar tokens: ${window.location.origin}/tokens`
+                🔗 Comprar tokens: /tokens`
       };
 
       // Always include the system message at the start, then the last N messages
