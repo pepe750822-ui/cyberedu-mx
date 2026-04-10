@@ -184,8 +184,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
+    console.log('[signOut] iniciando...');
     try {
+      console.log('[signOut] llamando supabase.auth.signOut...');
       await supabase.auth.signOut();
+      console.log('[signOut] supabase cerró sesión OK');
       
       // Limpiar solo claves específicas de CyberEdu
       const keysToRemove = [
@@ -195,17 +198,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         'cyberedu_daily_limit_dismissed'
       ];
       keysToRemove.forEach(key => localStorage.removeItem(key));
+      console.log('[signOut] localStorage limpio');
       
       setUser(null);
       setProfile(null);
       setSession(null);
+      console.log('[signOut] estado limpio, redirigiendo...');
 
       // Traqueo al final con catch de seguridad para no bloquear el proceso
       try { trackLogout(); } catch (_) { }
       
       window.location.href = "/auth";
     } catch (error) {
-      console.error("Error during sign out:", error);
+      console.error('[signOut] ERROR:', error);
       window.location.href = "/auth";
     }
   };
