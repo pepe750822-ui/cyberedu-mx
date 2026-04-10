@@ -2351,12 +2351,15 @@ const AITutor = () => {
           <button 
             onClick={() => {
               const areaId = MATERIA_TO_AREA[cleanMateria];
-              const chapter = code.split('.')[0];
+              const isSubItem = code.includes('.');
               const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
-              const desiredVideoId = `${prefix}-${chapter}`;
+              
+              // Si es un código de temario con subíndice (ej. 5.2), lo usamos directamente para búsqueda fuzzy.
+              // De lo contrario, intentamos el formato estándar prefijo-número.
+              const searchQuery = isSubItem ? code : `${prefix}-${code}`;
               
               // Resolvemos el video usando el motor inteligente
-              const resolved = resolveVideoId(areaId || cleanMateria, desiredVideoId);
+              const resolved = resolveVideoId(areaId || cleanMateria, searchQuery);
 
               if (resolved.videoId) {
                   agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
