@@ -1725,7 +1725,7 @@ const MessageBubble = React.memo(({
                     (match) => `[${match}](${match})`
                   )
                   .replace(
-                    /\[([A-Z-]{2,7})\s+(\d+(\.\d+)?)\]/g, 
+                    /\[([A-Z-]{2,7})\s+(\d+(\.\d+)?)([^\]]*)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`
                   )
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
@@ -2295,7 +2295,16 @@ const AITutor = () => {
       );
     },
     a({ href, children }: any) {
-      if (href?.startsWith('citation://')) {
+      const isInternalScheme = href?.startsWith('citation://');
+      const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
+      // Links que incluyan el nombre de nuestra app también deben ser internos
+      const isExternalInternal = href?.includes('cyberedu-mx.vercel.app') || href?.includes('cyberedumx.com');
+      // Links internos navegan con agentNavigate para preservar la sesión
+      const isAreaLink = href?.includes('/area/');
+      
+      const isProbablyInternal = isInternalScheme || isInternalPath || isExternalInternal || isAreaLink || !href?.startsWith('http');
+
+      if (isInternalScheme) {
         const url = href.replace('citation://', '');
         const [materia, code] = url.split('/');
         const cleanMateria = materia.toUpperCase().trim();
@@ -2320,24 +2329,17 @@ const AITutor = () => {
                   agentNavigate(`/area/${areaId}`);
               }
             }}
-            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95 shrink-0"
             title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
           >
             <BookOpen className="h-2.5 w-2.5" />
-            {children}
+            <span className="truncate max-w-[150px]">{children}</span>
           </button>
         );
       }
 
-      // Solo permitimos navegación interna SIN recarga para rutas de la App
-      const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
-      // Links que incluyan el nombre de nuestra app también deben ser internos
-      const isExternalInternal = href?.includes('cyberedu-mx.vercel.app') || href?.includes('cyberedumx.com');
-      // Links internos navegan con agentNavigate para preservar la sesión
-      const isAreaLink = href?.includes('/area/');
-
-      if (isInternalPath || isAreaLink || isExternalInternal) {
-        let finalHref = href;
+      if (isProbablyInternal) {
+        let finalHref = href || '/';
         if (isExternalInternal && !isInternalPath) {
           try {
             const urlObj = new URL(href);
@@ -2345,7 +2347,8 @@ const AITutor = () => {
           } catch(e) {}
         }
         
-        if (isAreaLink && finalHref) {
+        // Si el link tiene formato de área, intentamos resolver el video exacto
+        if (finalHref.includes('/area/')) {
           try {
             const urlStr = finalHref.startsWith('/') ? window.location.origin + finalHref : finalHref;
             const urlObj = new URL(urlStr);
@@ -2366,13 +2369,14 @@ const AITutor = () => {
         return (
           <button
             onClick={() => agentNavigate(finalHref)}
-            className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors bg-transparent border-none p-0 items-baseline"
+            className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors bg-transparent border-none p-0 inline align-baseline"
           >
             {children}
           </button>
         );
       }
 
+      // Enlace externo real
       return (
         <a 
           href={href} 
