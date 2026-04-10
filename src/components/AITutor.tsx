@@ -1761,7 +1761,7 @@ const MessageBubble = React.memo(({
                     (match) => `[${match}](${match})`
                   )
                   .replace(
-                    /\[([A-Z-]{2,7})\s+(\d+(\.\d+)?)([^\]]*)\]/g, 
+                    /\[([A-Z-]{2,20})\s+(\d+(\.\d+)?)([^\]]*)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`
                   )
                   .replace(/([^\n])\n\|/g, '$1\n\n|')

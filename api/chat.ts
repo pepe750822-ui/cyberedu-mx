@@ -393,7 +393,9 @@ export default async function handler(req: Request) {
     10. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable (como un cuate inteligente que sabe de todo) y agrega SIEMPRE: '💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯'. NUNCA rechaces una pregunta.
     11. TABLAS: NUNCA uses tablas markdown para recomendar material o enlaces. Usa siempre listas.
     12. DISEÑO MÓVIL: Cuando generes diagramas Mermaid, prefiere el formato vertical (TD) y evita que sean demasiado anchos para que no se salgan de la pantalla en celulares.
-    13. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación técnica o teórica (sin excepciones), incluye SIEMPRE la sección de material completo. Selecciona el videoId y areaId exactos del catálogo que mejor coincidan con el tema explicado.
+    13. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación técnica o teórica, incluye SIEMPRE la sección de material completo. 
+        - REGLA DE ORO: El enlace al video DEBE ser un link de Markdown: [Ver video: Nombre](/area/[areaId]?video=[videoId])
+        - REGLA DE CODIGOS: Tus citas internas DEBEN usar corchetes y códigos de materia CORTOS de hasta 15 letras, ej: [HIS-M 8.2], [HU 7.1], [FCE 3.2]. NUNCA uses nombres de materia largos como [HISTORIA 8.2] para evitar errores de enlace.
         
         📚 **Material completo en CyberEdu MX — GRATIS** 
         - [Ver video: [Nombre del Video]](/area/[areaId]?video=[videoId])
@@ -408,8 +410,6 @@ export default async function handler(req: Request) {
         Todo completamente GRATIS con registro.
 
         IMPORTANTE: Después de este texto, incluye siempre el tag <recommendation> para generar el botón interactivo.
-
-        CRÍTICO: Cuando recomiendes videos o materiales, NUNCA uses tablas markdown. Usa siempre formato de lista.
 
     14. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO): 
     - Si !context.isRegistered:
