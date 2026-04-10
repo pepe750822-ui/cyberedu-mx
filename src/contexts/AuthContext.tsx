@@ -185,7 +185,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     try {
-      trackLogout();
       await supabase.auth.signOut();
       
       // Limpiar solo claves específicas de CyberEdu
@@ -200,6 +199,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
       setProfile(null);
       setSession(null);
+
+      // Traqueo al final con catch de seguridad para no bloquear el proceso
+      try { trackLogout(); } catch (_) { }
       
       window.location.href = "/auth";
     } catch (error) {
