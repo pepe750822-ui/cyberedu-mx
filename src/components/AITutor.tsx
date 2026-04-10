@@ -97,7 +97,11 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
     const partial = area.videos.find(v => v.id.endsWith(`-${rawQuery}`) || v.id.endsWith(`-${q}`));
     if (partial) return partial.id;
 
-    // C. Match por palabras clave en título (Fuzzy)
+    // C. Match por Temario específico (Prioridad para códigos como 4.2)
+    const syllabusMatch = area.videos.find(v => v.description.includes(`(Temario ${query})`) || v.description.includes(` ${query})`));
+    if (syllabusMatch) return syllabusMatch.id;
+
+    // D. Match por palabras clave en título (Fuzzy)
     const words = q.split(/\s+/).filter(w => w.length > 2);
     if (words.length > 0) {
       const fuzzy = area.videos.find(v => 
@@ -105,7 +109,7 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
       );
       if (fuzzy) return fuzzy.id;
       
-      // D. Cualquier palabra coincide
+      // E. Cualquier palabra coincide
       const looseFuzzy = area.videos.find(v => 
         words.some(word => v.title.toLowerCase().includes(word))
       );
@@ -359,10 +363,14 @@ const sanitizeMermaidContent = (content: string): string => content
   .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
   .replace(/Ó/g, 'O').replace(/Ú/g, 'U')
   .replace(/ñ/g, 'n').replace(/Ñ/g, 'N')
-  .replace(/¿/g, '').replace(/¡/g, '')
-  .replace(/\(/g, ' ').replace(/\)/g, ' ')
-  .replace(/:/g, ' -')
-  .replace(/"/g, "'");
+  .replace(/[""]/g, "'")
+  .replace(/[^a-zA-Z0-9\s\-\>\[\]\{\} \n]/g, ''); // Eliminar todo lo que no sea seguro para Mermaid v11
+
+// ─── Link Hyper-Resolution ───
+const autoLinkCitations = (text: string): string => {
+  // Convierte [BIO 5.2] -> [BIO 5.2](citation://BIO/5.2) si no es ya un link
+  return text.replace(/\[([A-Z\-]{2,10})\s+(\d+(?:\.\d+)*)\](?!\(citation:\/\/)/g, '[$1 $2](citation://$1/$2)');
+};
 
 // ─── Memory Manager ───
 function loadMemory(): AgentMemory {
@@ -2807,7 +2815,7 @@ const AITutor = () => {
 
       setMessages(prev => {
         const last = prev[prev.length - 1];
-        const displayContent = stripStreamingBlocks(assistantContent);
+        const displayContent = autoLinkCitations(stripStreamingBlocks(assistantContent));
 
         if (last?.role === "assistant" && last.id === assistantId) {
           return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: displayContent } : m);
@@ -2988,7 +2996,7 @@ const AITutor = () => {
             }));
           }
 
-          let finalCleanContent = cleanContent;
+          let finalCleanContent = autoLinkCitations(cleanContent);
           if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
             const usedFree = localStorage.getItem('cyberedu_used_free_message');
             if (!usedFree) {
