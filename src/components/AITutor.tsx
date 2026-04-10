@@ -62,6 +62,50 @@ const MATERIA_PREFIX: Record<string, string> = {
   "FCE": "fce"
 };
 
+// ─── Semantic Matching ───
+export function resolveVideoId(areaId: string, videoId: string): { areaId: string, videoId: string } {
+  const cleanAreaId = String(areaId || "").toLowerCase();
+  const rawVideoId = String(videoId || "");
+  const cleanVideoId = rawVideoId.toLowerCase().replace(/[-_]/g, ' ');
+
+  let targetArea = areas.find(a => a.id.toLowerCase() === cleanAreaId);
+
+  // 1. Fuzzy match Area
+  if (!targetArea) {
+    const searchTerms = cleanAreaId.split(/[\s]+/).filter(t => t.length > 3);
+    targetArea = areas.find(a => 
+      searchTerms.some(term => a.name.toLowerCase().includes(term) || a.id.toLowerCase().includes(term))
+    ) || areas[0];
+  }
+
+  // 2. Fuzzy match Video
+  let targetVideoId = "";
+  const exactVideo = targetArea.videos.find(v => v.id.toLowerCase() === rawVideoId.toLowerCase());
+  
+  if (exactVideo) {
+    targetVideoId = exactVideo.id;
+  } else {
+    const partialMatch = targetArea.videos.find(v => v.id.endsWith(`-${rawVideoId}`));
+    if (partialMatch) {
+      targetVideoId = partialMatch.id;
+    } else {
+      const videoTerms = cleanVideoId.split(/[\s]+/).filter(t => t.length > 2);
+      const matchedVideo = targetArea.videos.find(v => 
+        videoTerms.some(term => v.title.toLowerCase().includes(term)) ||
+        videoTerms.some(term => v.description.toLowerCase().includes(term))
+      );
+
+      if (matchedVideo) {
+        targetVideoId = matchedVideo.id;
+      } else {
+        targetVideoId = targetArea.videos[0]?.id || "0";
+      }
+    }
+  }
+
+  return { areaId: targetArea.id, videoId: targetVideoId };
+}
+
 // ─── Navigation Helper ───
 function getUrlForPaso(type: string, id: string, title?: string, areaHint?: string): string {
   
@@ -800,11 +844,12 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
       {/* 2. SECCIÓN DE CONTENIDO (Navegación al hacer clic) */}
       <button
         onClick={() => {
+          const resolved = resolveVideoId(step.areaId || planTitle || "", step.videoId || step.text || step.id.toString());
           const generatedUrl = getUrlForPaso(
             getStepType(), 
-            step.videoId || step.id.toString(), 
+            resolved.videoId, 
             step.text,
-            step.areaId || planTitle
+            resolved.areaId
           );
           window.open(window.location.origin + generatedUrl, '_blank');
         }}
@@ -1186,10 +1231,10 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
         const icons = { video: <Play className="h-3.5 w-3.5" />, area: <BookOpen className="h-3.5 w-3.5" />, simulador: <Target className="h-3.5 w-3.5" /> };
         const prioColors = { alta: "text-red-400 bg-red-500/10 border-red-500/20", media: "text-amber-400 bg-amber-500/10 border-amber-500/20", baja: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
         return (() => {
-          const generatedUrl = getUrlForPaso(r.type === 'area' ? 'video' : r.type, r.videoId || r.areaId || '0', r.title);
-          const vMatch = generatedUrl.match(/video=([^&]+)/);
-          const resolvedVideoId = vMatch ? vMatch[1] : null;
-          const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId) : '';
+          const resolved = resolveVideoId(r.areaId || "", r.videoId || r.title || "");
+          const generatedUrl = getUrlForPaso(r.type === 'area' ? 'video' : r.type, resolved.videoId, r.title, resolved.areaId);
+          const resolvedVideoId = resolved.videoId;
+          const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId, r.title, resolved.areaId) : '';
           const hasInfo = resolvedVideoId ? !!materiales[resolvedVideoId]?.infografia : false;
 
           return (
@@ -2278,9 +2323,28 @@ const AITutor = () => {
       const isAreaLink = href?.includes('/area/');
       const finalTarget = isAreaLink ? "_blank" : (isInternalPath ? "_self" : "_blank");
 
+      let finalHref = href;
+      if (isAreaLink && href) {
+        try {
+          const urlStr = href.startsWith('/') ? window.location.origin + href : href;
+          const urlObj = new URL(urlStr);
+          const pathParts = urlObj.pathname.split('/');
+          const areaIndex = pathParts.indexOf('area');
+          if (areaIndex !== -1 && pathParts[areaIndex + 1]) {
+             const rawAreaId = pathParts[areaIndex + 1];
+             const rawVideoId = urlObj.searchParams.get('video') || '';
+             const resolved = resolveVideoId(rawAreaId, rawVideoId);
+             urlObj.pathname = `/area/${resolved.areaId}`;
+             urlObj.searchParams.set('video', resolved.videoId);
+             finalHref = urlObj.pathname + urlObj.search;
+             if (!href.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
+          }
+        } catch(e) {}
+      }
+
       return (
         <a 
-          href={href} 
+          href={finalHref} 
           target={finalTarget}
           rel={finalTarget === "_blank" ? "noopener noreferrer" : undefined}
           className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors"

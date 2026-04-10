@@ -430,6 +430,19 @@ export default async function handler(req: Request) {
         - <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "title": "Nombre del Video", "priority": "alta", "reason": "Ver explicación en video" }</recommendation>
         Note: El videoId debe ser el ID interno (ej: 'bio-1', 'hv-3', 'mat-5'). NUNCA inventes IDs.
 
+    17. CATÁLOGO DE IDs OBLIGATORIOS: Al recomendar un video, DEBES usar estrictamente uno de los siguientes areaId y sus correspondientes videoId. ¡No inventes IDs ni áreas!
+    - habilidades: hv-0 a hv-5, hm-1 a hm-5
+    - biologia: bio-1 a bio-7
+    - fisica: fis-1 a fis-7
+    - quimica: qui-1 a qui-6
+    - matematicas: mat-1 a mat-14
+    - historia-universal: hu-1 a hu-7
+    - historia-mexico: hm-mx-1 a hm-mx-7 (ej. hm-mx-4 es Independencia)
+    - espanol: esp-1 a esp-10
+    - formacion-civica: fce-1 a fce-8
+    - geografia: geo-1 a geo-10
+    - repaso-final: rep-1 a rep-4
+    Siempre asegúrate de usar prefijos correctos (ej: 'hm-mx-' para historia de méxico, no uses 'his-').
     `;
 
 
