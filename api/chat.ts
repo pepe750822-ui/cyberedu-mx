@@ -396,7 +396,7 @@ export default async function handler(req: Request) {
     13. RECOMENDACIONES Y MATERIAL GRATUITO (OBLIGATORIO): Al final de CADA explicación de un tema, incluye SIEMPRE esta sección de material completo. Adapta los links con el areaId y videoId correctos (usa areas.ts):
         
         📚 **Material completo en CyberEdu MX — GRATIS** 
-        🎬 **Ver video:** ${APP_URL}/area/[areaId]?video=[videoId]
+        🎬 **Ver video:** /area/[areaId]?video=[videoId]
 
         Debajo del video encontrarás:
         🎯 Desafío IA — NotebookLM
@@ -414,7 +414,7 @@ export default async function handler(req: Request) {
     14. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO): 
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
-      ✅ Regístrate GRATIS en ${APP_URL}
+      ✅ Regístrate GRATIS en /
       ✅ 7 días de acceso completo al Tutor IA incluidos
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:
@@ -422,7 +422,7 @@ export default async function handler(req: Request) {
       ✅ Paquetes desde $10 pesos (10 tokens)
       ✅ Plan Maestro Ilimitado por $200/mes
       ✅ Todo el contenido multimedia siempre GRATIS
-      🔗 Comprar tokens: ${APP_URL}/tokens
+      🔗 Comprar tokens: /tokens
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     
@@ -545,6 +545,8 @@ export default async function handler(req: Request) {
     rep-2: Repaso Estratégico II - Historia y Ciencias Sociales
     rep-3: Estrategias Finales - Examen en Línea ECOEMS
     rep-4: Cierre Total - Tu Puente Hacia el Bachillerato
+
+    CRÍTICO: Los links de video SIEMPRE deben ser rutas relativas como /area/historia-mexico?video=hm-mx-6 — NUNCA uses URLs absolutas con https:// ni el dominio completo.
     `;
 
 
