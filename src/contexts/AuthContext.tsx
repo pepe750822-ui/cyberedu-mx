@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useMemo, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useMemo, ReactNode, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 import { trackLogout } from "@/hooks/useAnalytics";
@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isSigningOut = useRef(false);
 
   const fetchProfile = async (userId: string) => {
     try {
@@ -120,6 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
+        if (isSigningOut.current) return; // Ignorar eventos de auth si estamos cerrando sesión activamente
         
         console.log("Auth event:", event, session?.user?.email);
         
@@ -184,6 +186,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signOut = async () => {
+    isSigningOut.current = true;
     console.log('[signOut] iniciando...');
     try {
       console.log('[signOut] llamando supabase.auth.signOut...');
@@ -211,6 +214,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       window.location.href = "/auth";
     } catch (error) {
       console.error('[signOut] ERROR:', error);
+      isSigningOut.current = false;
       window.location.href = "/auth";
     }
   };
