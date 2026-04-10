@@ -107,14 +107,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let mounted = true;
-    isSigningOut.current = false; // Asegurar que empezamos en falso al recargar/montar
 
     // Detect if we're in the middle of a redirect from OAuth
     const isAuthRedirect = window.location.hash.includes('access_token=') || 
                            window.location.hash.includes('type=recovery') ||
                            window.location.search.includes('code=');
 
-    console.log("Auth Mount - isAuthRedirect:", isAuthRedirect);
+    console.log("Auth Context Mount - Redirect detected:", isAuthRedirect);
 
     if (isAuthRedirect) {
       console.log("Auth redirect detected - waiting for session processing...");
@@ -175,14 +174,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     checkSession();
 
-    // Safety timeout: if after 5 seconds we're still loading, something went wrong
+    // Safety timeout: if after 7 seconds we're still loading, something went wrong
     // ESPECIALLY important for OAuth redirects that might hang.
     const safetyTimeoutId = setTimeout(() => {
       if (mounted && isLoading) {
         console.warn("Auth sync safety timeout reached - forcing stop loading");
         setIsLoading(false);
       }
-    }, 6000);
+    }, 7000);
 
     return () => {
       mounted = false;
