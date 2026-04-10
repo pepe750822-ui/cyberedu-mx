@@ -277,8 +277,24 @@ interface Message {
 const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
   return (path: string) => {
-    navigate(path);
+    console.log("[useAgentNavigation] Iniciando navegación a:", path);
+    
+    // Primero cerramos el chat drawer para que no interfiera
     setIsOpen(false);
+    
+    // Pequeño delay de seguridad para asegurar que la animación de cierre no interrumpa el cambio de ruta
+    setTimeout(() => {
+      try {
+        navigate(path);
+        // Toast para confirmar acción al usuario
+        toast.info("Navegando al material recomendado...", {
+          icon: "🚀",
+          duration: 2000
+        });
+      } catch (err) {
+        console.error("[useAgentNavigation] Error al navegar:", err);
+      }
+    }, 100);
   };
 };
 
