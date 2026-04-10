@@ -277,24 +277,37 @@ interface Message {
 const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
   return (path: string) => {
-    console.log("[useAgentNavigation] Iniciando navegación a:", path);
+    console.log("[useAgentNavigation] Intentando navegación crítica a:", path);
     
-    // Primero cerramos el chat drawer para que no interfiera
+    // 1. Mostrar feedback inmediato
+    toast.info("Cargando video y material...", { 
+      icon: "🚀",
+      duration: 3000,
+      id: "nav-toast" // ID único para evitar duplicados
+    });
+
+    // 2. Cerrar el tutor con prioridad máxima
     setIsOpen(false);
     
-    // Pequeño delay de seguridad para asegurar que la animación de cierre no interrumpa el cambio de ruta
+    // 3. Ejecutar navegación con triple validación
     setTimeout(() => {
       try {
-        navigate(path);
-        // Toast para confirmar acción al usuario
-        toast.info("Navegando al material recomendado...", {
-          icon: "🚀",
-          duration: 2000
-        });
+        // Opción A: Intento con React Router (más rápido, sin recarga)
+        navigate(path, { replace: true });
+        
+        // Opción B: Verificación de seguridad. Si el path no cambió en 1 seg, forzar recarga
+        setTimeout(() => {
+          if (window.location.pathname + window.location.search !== path && !path.startsWith('http')) {
+             console.warn("[useAgentNavigation] Navigation stalled, forcing window.location...");
+             window.location.href = path;
+          }
+        }, 1200);
+
       } catch (err) {
-        console.error("[useAgentNavigation] Error al navegar:", err);
+        console.error("[useAgentNavigation] Fallo crítico, usando window.location:", err);
+        window.location.href = path;
       }
-    }, 100);
+    }, 150);
   };
 };
 
