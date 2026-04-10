@@ -44,6 +44,10 @@ const MATERIA_TO_AREA: Record<string, string> = {
   "ESP": "espanol",
   "HIS-M": "historia-mexico",
   "HIS-U": "historia-universal",
+  "HIST-M": "historia-mexico",
+  "HIST-U": "historia-universal",
+  "HIST": "historia-universal",
+  "HIS": "historia-universal",
   "GEO": "geografia",
   "FCE": "formacion-civica"
 };
@@ -58,6 +62,10 @@ const MATERIA_PREFIX: Record<string, string> = {
   "ESP": "esp",
   "HIS-M": "hm-mx",
   "HIS-U": "hu",
+  "HIST-M": "hm-mx",
+  "HIST-U": "hu",
+  "HIST": "hu",
+  "HIS": "hu",
   "GEO": "geo",
   "FCE": "fce"
 };
@@ -1713,11 +1721,11 @@ const MessageBubble = React.memo(({
                     (match) => `[${match}](${match})`
                   )
                   .replace(
-                    /(?<!\(|\[)\/(area|tokens|planes|diagnostico)([^\s\n\)]*)(?!\))/g, 
+                    /(?<!\(|\[)\/(area|tokens|planes|diagnostico|registro|auth)([^\s\n\)]*)(?!\))/g, 
                     (match) => `[${match}](${match})`
                   )
                   .replace(
-                    /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
+                    /\[([A-Z-]{2,7})\s+(\d+(\.\d+)?)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`
                   )
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
@@ -2290,18 +2298,19 @@ const AITutor = () => {
       if (href?.startsWith('citation://')) {
         const url = href.replace('citation://', '');
         const [materia, code] = url.split('/');
+        const cleanMateria = materia.toUpperCase().trim();
         return (
           <button 
             onClick={() => {
-              const areaId = MATERIA_TO_AREA[materia];
+              const areaId = MATERIA_TO_AREA[cleanMateria];
               if (!areaId) {
-                 toast.error(`Materia "${materia}" no reconocida.`);
+                 toast.error(`Materia "${cleanMateria}" no reconocida.`);
                  return;
               }
               const area = areas.find(a => a.id === areaId);
               if (!area) return;
               const chapter = code.split('.')[0];
-              const prefix = MATERIA_PREFIX[materia] || materia.toLowerCase();
+              const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
               const targetVideoId = `${prefix}-${chapter}`;
               const videoExists = area.videos.some(v => v.id === targetVideoId);
               
@@ -2312,7 +2321,7 @@ const AITutor = () => {
               }
             }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
-            title={`Ref: ${materia} ${code} - Clic para ver temario`}
+            title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
           >
             <BookOpen className="h-2.5 w-2.5" />
             {children}
@@ -2322,14 +2331,23 @@ const AITutor = () => {
 
       // Solo permitimos navegación interna SIN recarga para rutas de la App
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
+      // Links que incluyan el nombre de nuestra app también deben ser internos
+      const isExternalInternal = href?.includes('cyberedu-mx.vercel.app') || href?.includes('cyberedumx.com');
       // Links internos navegan con agentNavigate para preservar la sesión
       const isAreaLink = href?.includes('/area/');
 
-      if (isInternalPath || isAreaLink) {
+      if (isInternalPath || isAreaLink || isExternalInternal) {
         let finalHref = href;
-        if (isAreaLink && href) {
+        if (isExternalInternal && !isInternalPath) {
           try {
-            const urlStr = href.startsWith('/') ? window.location.origin + href : href;
+            const urlObj = new URL(href);
+            finalHref = urlObj.pathname + urlObj.search;
+          } catch(e) {}
+        }
+        
+        if (isAreaLink && finalHref) {
+          try {
+            const urlStr = finalHref.startsWith('/') ? window.location.origin + finalHref : finalHref;
             const urlObj = new URL(urlStr);
             const pathParts = urlObj.pathname.split('/');
             const areaIndex = pathParts.indexOf('area');
@@ -2340,7 +2358,7 @@ const AITutor = () => {
                urlObj.pathname = `/area/${resolved.areaId}`;
                urlObj.searchParams.set('video', resolved.videoId);
                finalHref = urlObj.pathname + urlObj.search;
-               if (!href.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
+               if (!finalHref.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
             }
           } catch(e) {}
         }
