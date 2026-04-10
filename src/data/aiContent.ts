@@ -41,5 +41,14 @@ export const aiContent: Record<string, AIContent> = {
             { title: "Simulador de Adición de Vectores, PhET", url: "https://phet.colorado.edu/es/simulations/vector-addition", type: "video" },
             { title: "Física Universitaria (OpenStax)", url: "https://openstax.org/details/books/f%C3%ADsica-universitaria-volumen-1", type: "book" }
         ]
+    },
+    "hv-5": {
+        videoId: "hv-5",
+        summary: "Integración total de Habilidad Verbal. En este módulo master, combinamos los 16 subíndices de Comprensión Lectora (1.1.1 a 1.1.10) y Vocabulario (1.2.1 a 1.2.6) en ejercicios complejos de alta exigencia, emulando el nivel real del examen ECOEMS 2026.",
+        deepExplanation: "La clave del 'Dominio Total' es la simultaneidad. En el examen, no encontrarás preguntas aisladas de vocabulario; estas vendrán sumergidas en lecturas densas. La estrategia Master consiste en identificar si una pregunta requiere información explícita, una inferencia lógica o una analogía contextual, todo en un tiempo récord de 45 segundos por reactivo. Enfócate en el 'Código de Colores Mental' para separar el reto gramatical del léxico.",
+        extraMaterials: [
+            { title: "Guía de Integración Master PDF", url: "/videos/video5/presentacion.pdf", type: "book" },
+            { title: "Simulador de Habilidades ECOEMS", url: "/simulador-pro", type: "video" }
+        ]
     }
 };
