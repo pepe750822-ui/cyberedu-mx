@@ -433,8 +433,8 @@ export default async function handler(req: Request) {
     `;
 
 
-    const frontendSystemMsg = (messages || []).find((m: any) => m.role === 'system')?.content;
-    const finalSystemPromptText = frontendSystemMsg || SYSTEM_PROMPT;
+    // Ignoramos el mensaje de sistema del frontend para evitar que sobrescriba la fecha y reglas del servidor
+    const finalSystemPromptText = SYSTEM_PROMPT;
     const finalSystemPrompt = [
       {
         type: "text",
