@@ -806,7 +806,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
             step.text,
             step.areaId || planTitle
           );
-          onNavigate(generatedUrl);
+          window.open(window.location.origin + generatedUrl, '_blank');
         }}
         className="flex-1 flex flex-col p-3 text-left min-w-0 pr-14 group/step"
         title="Clic para ir al contenido"
@@ -936,7 +936,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
           {analysis.weakAreas.map((a, i) => (
             <button 
               key={i} 
-              onClick={() => onNavigate(getUrlForPaso('video', a.id, a.name))}
+              onClick={() => window.open(window.location.origin + getUrlForPaso('video', a.id, a.name), '_blank')}
               className="w-full space-y-1.5 group text-left hover:bg-white/5 p-1 rounded-lg transition-colors"
             >
               <div className="flex justify-between items-center text-[10px] font-bold">
@@ -966,7 +966,7 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
                 onClick={() => {
                   if (isTopic) {
                      const area = areas.find(a => a.name === topicName || a.id === topicName.toLowerCase());
-                     if (area) onNavigate(getUrlForPaso('video', area.id, area.name));
+                     if (area) window.open(window.location.origin + getUrlForPaso('video', area.id, area.name), '_blank');
                   }
                 }}
                 className={cn(
@@ -1217,7 +1217,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      onNavigate(infoUrl);
+                      window.open(window.location.origin + infoUrl, '_blank');
                     }}
                     className="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg opacity-0 group-hover/rec:opacity-100 hover:bg-emerald-500/20 hover:scale-110 active:scale-95 transition-all border border-emerald-500/20"
                     title="Ver Infografía"
@@ -1228,7 +1228,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    onNavigate(generatedUrl);
+                    window.open(window.location.origin + generatedUrl, '_blank');
                   }}
                   className="p-1.5 bg-primary/10 text-primary rounded-lg opacity-50 group-hover/rec:opacity-100 hover:bg-primary/20 hover:scale-110 active:scale-95 transition-all border border-primary/20"
                   title="Ir al video"
@@ -1489,7 +1489,7 @@ const StudyPlanCards: React.FC<{
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onNavigate(getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area));
+                      window.open(window.location.origin + getUrlForPaso(paso.tipo, paso.id, paso.titulo, plan.titulo + " " + plan.area), '_blank');
                     }}
                     className="p-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-primary transition-all"
                     title="Ver contenido"
@@ -2257,9 +2257,9 @@ const AITutor = () => {
               const videoExists = area.videos.some(v => v.id === targetVideoId);
               
               if (videoExists) {
-                  agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
+                  window.open(window.location.origin + `/area/${areaId}?video=${targetVideoId}`, '_blank');
               } else {
-                  agentNavigate(`/area/${areaId}`);
+                  window.open(window.location.origin + `/area/${areaId}`, '_blank');
               }
             }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95"
@@ -2274,7 +2274,9 @@ const AITutor = () => {
       // Solo permitimos navegación interna SIN recarga para rutas de la App
       // Cualquier otra URL (especialmente las completas de Vercel/Producción) abre en _blank
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
-      const finalTarget = isInternalPath ? "_self" : "_blank";
+      // Forzamos links a /area/ a abrir en pestaña nueva para no destruir el contexto
+      const isAreaLink = href?.includes('/area/');
+      const finalTarget = isAreaLink ? "_blank" : (isInternalPath ? "_self" : "_blank");
 
       return (
         <a 
