@@ -66,12 +66,17 @@ const AreaDetail = () => {
       // Auto-expand the area of the active video
       const vAreaId = allVideos[targetIndex].areaId;
       setExpandedAreas(prev => prev.includes(vAreaId) ? prev : [...prev, vAreaId]);
+      
+      // Force scroll to player when navigating from external (like AITutor)
+      if (videoParam) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   }, [searchParams, areaId, allVideos]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [activeGlobalIndex]);
+    // Scroll to top only on mount or area change, but be careful with mid-page video changes
+  }, [activeVideo?.id]);
 
   const {
     markAsViewed,
