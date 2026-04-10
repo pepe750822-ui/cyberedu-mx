@@ -2316,24 +2316,25 @@ const AITutor = () => {
                  toast.error(`Materia "${cleanMateria}" no reconocida.`);
                  return;
               }
-              const area = areas.find(a => a.id === areaId);
-              if (!area) return;
+              
+              // Usamos resolveVideoId para encontrar el mejor match (exacto o cercano)
               const chapter = code.split('.')[0];
               const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
-              const targetVideoId = `${prefix}-${chapter}`;
-              const videoExists = area.videos.some(v => v.id === targetVideoId);
+              const desiredVideoId = `${prefix}-${chapter}`;
               
-              if (videoExists) {
-                  agentNavigate(`/area/${areaId}?video=${targetVideoId}`);
+              const resolved = resolveVideoId(areaId, desiredVideoId);
+              
+              if (resolved.videoId) {
+                  agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
               } else {
-                  agentNavigate(`/area/${areaId}`);
+                  agentNavigate(`/area/${resolved.areaId}`);
               }
             }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95 shrink-0"
             title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
           >
             <BookOpen className="h-2.5 w-2.5" />
-            <span className="truncate max-w-[150px]">{children}</span>
+            <span className="truncate max-w-[150px]">{children ?? `${cleanMateria} ${code}`}</span>
           </button>
         );
       }
