@@ -70,48 +70,68 @@ const MATERIA_PREFIX: Record<string, string> = {
   "FCE": "fce"
 };
 
-// ─── Semantic Matching ───
-export function resolveVideoId(areaId: string, videoId: string): { areaId: string, videoId: string } {
+// ─── Semantic Matching (VERSIÓN GLOBAL INTELIGENTE) ───
+export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId: string, videoId: string } {
   const cleanAreaId = String(areaId || "").toLowerCase();
-  const rawVideoId = String(videoId || "");
-  const cleanVideoId = rawVideoId.toLowerCase().replace(/[-_]/g, ' ');
+  const rawQuery = String(videoIdOrQuery || "");
+  const cleanQuery = rawQuery.toLowerCase().trim().replace(/[-_.]/g, ' ');
 
-  let targetArea = areas.find(a => a.id.toLowerCase() === cleanAreaId);
+  // 1. Intentar encontrar el área primaria
+  let primaryArea = areas.find(a => a.id.toLowerCase() === cleanAreaId);
 
-  // 1. Fuzzy match Area
-  if (!targetArea) {
-    const searchTerms = cleanAreaId.split(/[\s]+/).filter(t => t.length > 3);
-    targetArea = areas.find(a => 
-      searchTerms.some(term => a.name.toLowerCase().includes(term) || a.id.toLowerCase().includes(term))
-    ) || areas[0];
+  // 2. Si no hay área primaria, buscarla por nombre
+  if (!primaryArea) {
+    primaryArea = areas.find(a => 
+      a.name.toLowerCase().includes(cleanAreaId) || cleanAreaId.includes(a.id.toLowerCase())
+    );
   }
 
-  // 2. Fuzzy match Video
-  let targetVideoId = "";
-  const exactVideo = targetArea.videos.find(v => v.id.toLowerCase() === rawVideoId.toLowerCase());
-  
-  if (exactVideo) {
-    targetVideoId = exactVideo.id;
-  } else {
-    const partialMatch = targetArea.videos.find(v => v.id.endsWith(`-${rawVideoId}`));
-    if (partialMatch) {
-      targetVideoId = partialMatch.id;
-    } else {
-      const videoTerms = cleanVideoId.split(/[\s]+/).filter(t => t.length > 2);
-      const matchedVideo = targetArea.videos.find(v => 
-        videoTerms.some(term => v.title.toLowerCase().includes(term)) ||
-        videoTerms.some(term => v.description.toLowerCase().includes(term))
+  // Helper para buscar video en un área específica
+  const findInArea = (area: typeof areas[0], query: string) => {
+    const q = query.toLowerCase();
+    // A. Match exacto por ID (ej: hu-7)
+    const exact = area.videos.find(v => v.id.toLowerCase() === rawQuery.toLowerCase());
+    if (exact) return exact.id;
+
+    // B. Match por terminación (ej: "7" -> "hu-7")
+    const partial = area.videos.find(v => v.id.endsWith(`-${rawQuery}`) || v.id.endsWith(`-${q}`));
+    if (partial) return partial.id;
+
+    // C. Match por palabras clave en título (Fuzzy)
+    const words = q.split(/\s+/).filter(w => w.length > 2);
+    if (words.length > 0) {
+      const fuzzy = area.videos.find(v => 
+        words.every(word => v.title.toLowerCase().includes(word) || v.description.toLowerCase().includes(word))
       );
-
-      if (matchedVideo) {
-        targetVideoId = matchedVideo.id;
-      } else {
-        targetVideoId = targetArea.videos[0]?.id || "0";
-      }
+      if (fuzzy) return fuzzy.id;
+      
+      // D. Cualquier palabra coincide
+      const looseFuzzy = area.videos.find(v => 
+        words.some(word => v.title.toLowerCase().includes(word))
+      );
+      if (looseFuzzy) return looseFuzzy.id;
     }
+
+    return null;
+  };
+
+  // 3. Buscar en el área primaria primero
+  if (primaryArea) {
+    const videoId = findInArea(primaryArea, rawQuery);
+    if (videoId) return { areaId: primaryArea.id, videoId };
   }
 
-  return { areaId: targetArea.id, videoId: targetVideoId };
+  // 4. BÚSQUEDA GLOBAL: Si no se encontró en la primaria, escanear TODAS las áreas
+  // Esto resuelve problemas como [HIST 8.2] (que es México pero la IA cree que es Universal)
+  for (const area of areas) {
+    if (area.id === primaryArea?.id) continue;
+    const videoId = findInArea(area, rawQuery);
+    if (videoId) return { areaId: area.id, videoId };
+  }
+
+  // 5. Fallback final: Si tenemos área, ir al video 1 de esa área. Si no, a la primera que exista.
+  const finalArea = primaryArea || areas[0];
+  return { areaId: finalArea.id, videoId: finalArea.videos[0]?.id || "" };
 }
 
 // ─── Navigation Helper ───
@@ -2315,7 +2335,9 @@ const AITutor = () => {
               let areaId = MATERIA_TO_AREA[cleanMateria];
               
               if (!areaId) {
-                 toast.error(`Materia "${cleanMateria}" no reconocida.`);
+                 // Si la materia no se conoce (ej: "BIO-AVANZADA") intentamos buscarla globalmente
+                 const globalResolved = resolveVideoId(materia, children?.toString() || "");
+                 agentNavigate(`/area/${globalResolved.areaId}${globalResolved.videoId ? `?video=${globalResolved.videoId}` : ''}`);
                  return;
               }
               
@@ -2323,19 +2345,7 @@ const AITutor = () => {
               const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
               const desiredVideoId = `${prefix}-${chapter}`;
               
-              let resolved = resolveVideoId(areaId, desiredVideoId);
-              
-              // --- ESCANEO DE AMBIGÜEDAD (HIST/HIS) ---
-              // Si es historia y el primer intento no encontró un video útil, probamos en la otra historia
-              if (!resolved.videoId && (cleanMateria === 'HIST' || cleanMateria === 'HIS')) {
-                const alternativeAreaId = areaId === 'historia-universal' ? 'historia-mexico' : 'historia-universal';
-                const altPrefix = alternativeAreaId === 'historia-mexico' ? 'hm-mx' : 'hu';
-                const altDesiredVideoId = `${altPrefix}-${chapter}`;
-                const fallbackResolved = resolveVideoId(alternativeAreaId, altDesiredVideoId);
-                if (fallbackResolved.videoId) {
-                  resolved = fallbackResolved;
-                }
-              }
+              const resolved = resolveVideoId(areaId, desiredVideoId);
 
               if (resolved.videoId) {
                   agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
