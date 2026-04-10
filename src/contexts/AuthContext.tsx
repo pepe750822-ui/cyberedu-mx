@@ -122,17 +122,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!mounted) return;
         
         console.log("Auth event:", event, session?.user?.email);
+        
+        // Evitarnos relogueos innecesarios si la sesión no ha cambiado realmente (prevención de loops)
+        if (event === 'INITIAL_SESSION' && !session) {
+           setIsLoading(false);
+           return;
+        }
+
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
           await fetchProfile(session.user.id);
-        } else {
+        } else if (event === 'SIGNED_OUT') {
           setProfile(null);
         }
         
-        // Only stop loading if we're not expecting an INITIAL_SESSION that hasn't happened yet,
-        // or if we just got a meaningful event.
         setIsLoading(false);
       }
     );

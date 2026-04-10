@@ -2271,11 +2271,16 @@ const AITutor = () => {
         );
       }
 
+      // Solo permitimos navegación interna SIN recarga para rutas de la App
+      // Cualquier otra URL (especialmente las completas de Vercel/Producción) abre en _blank
+      const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
+      const finalTarget = isInternalPath ? "_self" : "_blank";
+
       return (
         <a 
           href={href} 
-          target="_blank" 
-          rel="noopener noreferrer" 
+          target={finalTarget}
+          rel={finalTarget === "_blank" ? "noopener noreferrer" : undefined}
           className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors"
         >
           {children}
