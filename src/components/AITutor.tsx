@@ -1713,6 +1713,10 @@ const MessageBubble = React.memo(({
                     (match) => `[${match}](${match})`
                   )
                   .replace(
+                    /(?<!\(|\[)\/(area|tokens|planes|diagnostico)([^\s\n\)]*)(?!\))/g, 
+                    (match) => `[${match}](${match})`
+                  )
+                  .replace(
                     /\[([A-Z-]{2,5})\s+(\d+(\.\d+)?)\]/g, 
                     (match, materia, code) => `[${match}](citation://${materia}/${code})`
                   )
@@ -2317,43 +2321,46 @@ const AITutor = () => {
       }
 
       // Solo permitimos navegación interna SIN recarga para rutas de la App
-      // Cualquier otra URL (especialmente las completas de Vercel/Producción) abre en _blank
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
-      // Links internos navegan en la misma pestaña para preservar la sesión
+      // Links internos navegan con agentNavigate para preservar la sesión
       const isAreaLink = href?.includes('/area/');
-      const finalTarget = (isInternalPath || isAreaLink) ? "_self" : "_blank";
 
-      let finalHref = href;
-      if (isAreaLink && href) {
-        try {
-          const urlStr = href.startsWith('/') ? window.location.origin + href : href;
-          const urlObj = new URL(urlStr);
-          const pathParts = urlObj.pathname.split('/');
-          const areaIndex = pathParts.indexOf('area');
-          if (areaIndex !== -1 && pathParts[areaIndex + 1]) {
-             const rawAreaId = pathParts[areaIndex + 1];
-             const rawVideoId = urlObj.searchParams.get('video') || '';
-             const resolved = resolveVideoId(rawAreaId, rawVideoId);
-             urlObj.pathname = `/area/${resolved.areaId}`;
-             urlObj.searchParams.set('video', resolved.videoId);
-             finalHref = urlObj.pathname + urlObj.search;
-             if (!href.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
-          }
-        } catch(e) {}
+      if (isInternalPath || isAreaLink) {
+        let finalHref = href;
+        if (isAreaLink && href) {
+          try {
+            const urlStr = href.startsWith('/') ? window.location.origin + href : href;
+            const urlObj = new URL(urlStr);
+            const pathParts = urlObj.pathname.split('/');
+            const areaIndex = pathParts.indexOf('area');
+            if (areaIndex !== -1 && pathParts[areaIndex + 1]) {
+               const rawAreaId = pathParts[areaIndex + 1];
+               const rawVideoId = urlObj.searchParams.get('video') || '';
+               const resolved = resolveVideoId(rawAreaId, rawVideoId);
+               urlObj.pathname = `/area/${resolved.areaId}`;
+               urlObj.searchParams.set('video', resolved.videoId);
+               finalHref = urlObj.pathname + urlObj.search;
+               if (!href.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
+            }
+          } catch(e) {}
+        }
+
+        return (
+          <button
+            onClick={() => agentNavigate(finalHref)}
+            className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors bg-transparent border-none p-0 items-baseline"
+          >
+            {children}
+          </button>
+        );
       }
 
       return (
         <a 
-          href={finalHref} 
-          target={finalTarget}
-          rel={finalTarget === "_blank" ? "noopener noreferrer" : undefined}
+          href={href} 
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors"
-          onClick={(e) => {
-            if (finalTarget === "_self") {
-              e.preventDefault();
-              agentNavigate(finalHref);
-            }
-          }}
         >
           {children}
         </a>
