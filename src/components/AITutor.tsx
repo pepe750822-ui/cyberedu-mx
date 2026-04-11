@@ -9,7 +9,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash, Copy, Share2
+  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -1712,16 +1712,6 @@ const MessageBubble = React.memo(({
 }: any) => {
   const isAssistant = msg.role === "assistant";
   
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(msg.content);
-    toast.success("Copiado al portapapeles");
-  };
-
-  const shareWhatsApp = () => {
-    const text = encodeURIComponent(msg.content);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  };
-
   const msgAnswers = useMemo<Record<string, number>>(() => {
     if (!msg.quiz) return {};
     return Object.fromEntries(
@@ -1734,7 +1724,7 @@ const MessageBubble = React.memo(({
   return (
     <div
       className={cn(
-        "flex flex-col gap-1.5 max-w-[95%] sm:max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
+        "flex flex-col gap-1.5 max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
         !isAssistant ? "ml-auto items-end" : "mr-auto items-start"
       )}
     >
@@ -1839,7 +1829,6 @@ const MessageBubble = React.memo(({
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
                 components={markdownComponents}
-                urlTransform={(url) => url}
               >
                 {msg.content
                   .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
@@ -1906,22 +1895,6 @@ const MessageBubble = React.memo(({
           >
             <ThumbsDown className="h-3 w-3" />
           </button>
-
-          <button
-            onClick={copyToClipboard}
-            title="Copiar respuesta"
-            className="p-1.5 rounded-lg transition-all hover:bg-white/10 text-slate-500 hover:text-white"
-          >
-            <Copy className="h-3 w-3" />
-          </button>
-
-          <button
-            onClick={shareWhatsApp}
-            title="Compartir por WhatsApp"
-            className="p-1.5 rounded-lg transition-all hover:bg-emerald-500/10 text-slate-500 hover:text-emerald-400"
-          >
-            <Share2 className="h-3 w-3" />
-          </button>
         </div>
       )}
     </div>
@@ -1963,13 +1936,7 @@ const AITutor = () => {
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isOpen, setIsOpen] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("cyberedu_chat_open");
-      return saved === null ? true : saved === "true";
-    }
-    return false;
-  });
+  const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(isMobile);
   const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
@@ -2006,12 +1973,7 @@ const AITutor = () => {
     return { visible: false, message: "" };
   });
 
-  const toggleOpen = (val: boolean) => {
-    setIsOpen(val);
-    localStorage.setItem("cyberedu_chat_open", String(val));
-  };
-
-  const agentNavigate = useAgentNavigation(toggleOpen);
+  const agentNavigate = useAgentNavigation(setIsOpen);
 
   const [usageStats, setUsageStats] = useState<{ used: number, limit: number, tokens: number, isSubscriber: boolean } | null>(null);
 
@@ -2338,7 +2300,7 @@ const AITutor = () => {
       report: report.totalQuizzes > 0 ? report : undefined,
       alerts: alerts.length > 0 ? alerts : undefined
     }]);
-    toggleOpen(false);
+    setIsOpen(false);
     toast.info("Conversación y memoria reiniciadas");
   };
 
@@ -3191,7 +3153,7 @@ const AITutor = () => {
         localStorage.removeItem('cyberedu_pending_question');
         // Pequeño delay para que el componente esté completamente montado
         const timer = setTimeout(() => {
-          toggleOpen(true);
+          setIsOpen(true);
           sendMessage(question);
         }, 800);
         return () => clearTimeout(timer);
@@ -3209,7 +3171,7 @@ const AITutor = () => {
     <>
       {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
       <button
-        onClick={() => toggleOpen(!isOpen)}
+        onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center",
           isOpen && isExpanded
@@ -3240,7 +3202,7 @@ const AITutor = () => {
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
         isExpanded 
           ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[1000]" 
-          : "bottom-20 sm:bottom-24 inset-x-2 sm:inset-auto sm:right-6 w-[calc(100%-1rem)] sm:w-[550px] h-[650px] max-h-[calc(100dvh-120px)] sm:max-h-[75vh]"
+          : "bottom-20 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-6 w-[95vw] sm:w-[550px] h-[650px] max-h-[75vh]"
       )}>
         {/* Header */}
         <div className="p-3 sm:p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
@@ -3297,7 +3259,7 @@ const AITutor = () => {
               </button>
               {/* Botón cerrar visible solo en móvil — el botón flotante se oculta en fullscreen */}
               <button
-                onClick={() => toggleOpen(false)}
+                onClick={() => setIsOpen(false)}
                 title="Cerrar tutor"
                 className="flex sm:hidden p-1.5 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
               >
