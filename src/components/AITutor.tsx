@@ -118,7 +118,6 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
       
       return false;
     });
-    console.log('[resolver] query:', query, 'area:', areaId, 'match:', syllabusMatch?.id);
     if (syllabusMatch) return syllabusMatch.id;
 
     // D. Match por palabras clave en título (Fuzzy)
@@ -300,15 +299,14 @@ interface Message {
 // ─── Shared Navigation Handler Wrapper ───
 const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
-  return (path: string) => {
+  return useCallback((path: string) => {
     if (!path) return;
-    console.log('[useAgentNavigation] path:', path);
 
     // 1. Cierra el chat inmediatamente
     setIsOpen(false);
 
     // 2. Toast de feedback
-    toast.info('Cargando contenido...', { icon: '\ud83d\ude80', id: 'nav-toast', duration: 1200 });
+    toast.info('Cargando contenido...', { icon: '🚀', id: 'nav-toast', duration: 1200 });
 
     // 3. Navegar: React Router para rutas internas.
     // IMPORTANTE: navigate() es síncrono — no usar setTimeout porque puede
@@ -325,7 +323,7 @@ const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
     } else {
       window.location.assign(path);
     }
-  };
+  }, [navigate, setIsOpen]);
 };
 
 interface PlanStep {
@@ -1907,7 +1905,7 @@ const MessageBubble = React.memo(({
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
+
 
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
   const { runDiagnostics, errorCount, clearErrors } = useAppDiagnostics();
@@ -2451,7 +2449,6 @@ const AITutor = () => {
               
               // Resolvemos el video usando el motor inteligente
               const resolved = resolveVideoId(areaId || cleanMateria, searchQuery);
-              console.log('[cita] path generado:', `/area/${resolved.areaId}?video=${resolved.videoId}`);
 
               if (resolved.videoId) {
                   agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
@@ -2505,10 +2502,12 @@ const AITutor = () => {
           } catch(e) { console.error('[a() link]', e); }
         }
 
-        console.log('[agentNavigate] finalHref:', finalHref);
         return (
           <button
-            onClick={() => agentNavigate(finalHref)}
+            onClick={(e) => {
+              e.preventDefault();
+              agentNavigate(finalHref);
+            }}
             className="text-cyan-400 underline hover:text-cyan-300 cursor-pointer font-bold transition-colors bg-transparent border-none p-0 inline align-baseline"
           >
             {children}
