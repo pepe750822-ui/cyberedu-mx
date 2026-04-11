@@ -2294,22 +2294,12 @@ const AITutor = () => {
         const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
         const isNearBottom = scrollHeight - scrollTop - clientHeight < 250;
         
-        if (isStreaming) {
-           // Durante el streaming, seguimos el fondo para ver lo nuevo
+        // Always scroll if streaming or if user was already at the bottom
+        if (isNearBottom || isStreaming) {
            scrollRef.current.scrollTo({
               top: scrollHeight,
-              behavior: 'auto'
+              behavior: isStreaming ? 'auto' : 'smooth'
            });
-        } else if (isNearBottom && messages.length > 0) {
-           // Al recibir un mensaje completo, hacemos scroll al INICIO del mensaje nuevo
-           // para que la respuesta aparezca justo debajo de la pregunta.
-           const messageList = scrollRef.current.firstElementChild;
-           if (messageList && messageList.lastElementChild) {
-             messageList.lastElementChild.scrollIntoView({ 
-               behavior: 'smooth', 
-               block: 'start' 
-             });
-           }
         }
     }
   }, [messages, isStreaming]);
