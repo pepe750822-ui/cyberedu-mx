@@ -2437,7 +2437,7 @@ const AITutor = () => {
         const rawContent = String(children).replace(/\n$/, '');
         const sanitized = sanitizeMermaidContent(rawContent);
         return (
-          <div className="max-w-full overflow-x-auto my-4 custom-scrollbar">
+          <div className="max-w-[calc(100vw-2rem)] overflow-x-auto my-4 custom-scrollbar">
             <Mermaid chart={sanitized} />
           </div>
         );
@@ -2557,7 +2557,7 @@ const AITutor = () => {
     table({ children }: any) {
       return (
         <div className="my-4 overflow-x-auto w-full max-w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
-          <table className="min-w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse text-xs sm:text-sm">
             {children}
           </table>
         </div>
@@ -3305,7 +3305,7 @@ const AITutor = () => {
           {/* Chat Column */}
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
                 <div className={cn(
                   "space-y-6 transition-all duration-500 pb-20",
                   isExpanded
