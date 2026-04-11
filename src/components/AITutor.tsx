@@ -97,14 +97,27 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
     const partial = area.videos.find(v => v.id.endsWith(`-${rawQuery}`) || v.id.endsWith(`-${q}`));
     if (partial) return partial.id;
 
-    // C. Match por Temario específico (Prioridad para códigos como 4.2 o rangos)
-    const syllabusMatch = area.videos.find(v => 
-      v.description.includes(`(Temario ${query})`) || 
-      v.description.includes(`(Temario ${query}-`) ||
-      v.description.includes(`(Temario ${query}.`) ||
-      v.description.includes(` ${query})`) ||
-      v.description.includes(` ${query}-`)
-    );
+    const syllabusMatch = area.videos.find(v => {
+      if (!v.description) return false;
+      
+      // Match exacto
+      if (v.description.includes(`(Temario ${query})`)) return true;
+      if (v.description.includes(`(Temario ${query}-`)) return true;
+      if (v.description.includes(`(Temario ${query}.`)) return true;
+      
+      // Match dentro de rango numérico (ej: 5.1 está en "Temario 4.3-5.4")
+      const rangeMatch = v.description.match(/\(Temario ([\d.]+)-([\d.]+)\)/);
+      if (rangeMatch) {
+        const start = parseFloat(rangeMatch[1]);
+        const end = parseFloat(rangeMatch[2]);
+        const qVal = parseFloat(query);
+        if (!isNaN(start) && !isNaN(end) && !isNaN(qVal)) {
+          if (qVal >= start && qVal <= end) return true;
+        }
+      }
+      
+      return false;
+    });
     if (syllabusMatch) return syllabusMatch.id;
 
     // D. Match por palabras clave en título (Fuzzy)
