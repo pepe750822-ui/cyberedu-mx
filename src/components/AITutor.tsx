@@ -2562,7 +2562,7 @@ const AITutor = () => {
     tr({ children }: any) {
       return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
     }
-  }), [isExpanded, agentNavigate]);
+  }), [agentNavigate]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
