@@ -155,9 +155,9 @@ export const areas: Area[] = [
       { id: "hm-mx-2", title: "Conquista de México", description: "Conquista de México. (Temario 8.2)", videoUrl: embedUrl("gYaNWsMePSI"), duration: "5:00" },
       { id: "hm-mx-3", title: "Virreinato de Nueva España", description: "Virreinato. (Temario 8.2)", videoUrl: embedUrl("HRTQQ-Bw1SU"), duration: "5:00" },
       { id: "hm-mx-4", title: "Independencia de México", description: "Independencia. (Temario 8.2)", videoUrl: embedUrl("T2Dx4S9oHis"), duration: "5:00" },
-      { id: "hm-mx-5", title: "México Siglo XIX", description: "Siglo XIX. (Temario 8.2)", videoUrl: embedUrl("JtwPBC9fM4U"), duration: "5:00" },
-      { id: "hm-mx-6", title: "Revolución Mexicana", description: "Revolución Mexicana. (Temario 8.2)", videoUrl: embedUrl("puhli0gtaK0"), duration: "5:00" },
-      { id: "hm-mx-7", title: "México Contemporáneo", description: "México Contemporáneo. (Temario 8.2)", videoUrl: embedUrl("FzUlr0NAfXc"), duration: "5:00" },
+      { id: "hm-mx-5", title: "México Siglo XIX", description: "Siglo XIX. (Temario 8.2.1)", videoUrl: embedUrl("JtwPBC9fM4U"), duration: "5:00" },
+      { id: "hm-mx-6", title: "Revolución Mexicana", description: "Revolución Mexicana. (Temario 8.2.2)", videoUrl: embedUrl("puhli0gtaK0"), duration: "5:00" },
+      { id: "hm-mx-7", title: "México Contemporáneo", description: "México Contemporáneo. (Temario 8.2.3)", videoUrl: embedUrl("FzUlr0NAfXc"), duration: "5:00" },
     ],
   },
   {
