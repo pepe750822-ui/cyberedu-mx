@@ -258,6 +258,7 @@ const AreaDetail = () => {
             <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-2xl">
               <div className="aspect-video bg-black overflow-hidden relative">
                 <YouTubePlayer
+                  key={activeVideo.id}
                   videoId={activeVideo.id}
                   videoUrl={activeVideo.videoUrl}
                   tiempoInicial={initialTime}

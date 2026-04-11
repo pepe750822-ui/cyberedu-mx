@@ -288,30 +288,29 @@ const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
   return (path: string) => {
     if (!path) return;
-    console.log("[useAgentNavigation] NAVEGANDO A:", path);
+    console.log('[useAgentNavigation] path:', path);
 
-    // Feedback visual primero para que el usuario vea reacción inmediata
-    toast.info("Cargando contenido...", { icon: "🚀", id: "nav-toast", duration: 1200 });
-
-    // Cerramos el tutor antes de navegar para que no bloquee la vista
+    // 1. Cierra el chat inmediatamente
     setIsOpen(false);
 
-    // Navegamos con un pequeño delay (100ms) para que el cierre del chat
-    // no cause un flicker visual ANTES de que la nueva página esté lista.
-    // Usamos navigate() SIN replace:true para que React Router siempre haga
-    // un push real, lo que garantiza que AreaDetail reciba el cambio de
-    // searchParams aunque ya esté en la misma ruta base.
-    setTimeout(() => {
+    // 2. Toast de feedback
+    toast.info('Cargando contenido...', { icon: '\ud83d\ude80', id: 'nav-toast', duration: 1200 });
+
+    // 3. Navegar: React Router para rutas internas.
+    // IMPORTANTE: navigate() es síncrono — no usar setTimeout porque puede
+    // quedar fuera del ciclo de reconciliación de React y no dispararse.
+    if (path.startsWith('/')) {
       try {
-        if (path.startsWith('/')) {
-          navigate(path);
-        } else {
-          window.location.href = path;
-        }
+        navigate(path);
+        // Scroll to top para que el usuario vea el nuevo contenido
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {
-        window.location.href = path;
+        console.error('[useAgentNavigation] navigate() falló, usando location.assign:', e);
+        window.location.assign(path);
       }
-    }, 100);
+    } else {
+      window.location.assign(path);
+    }
   };
 };
 
