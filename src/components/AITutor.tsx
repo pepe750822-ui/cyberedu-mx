@@ -2456,14 +2456,17 @@ const AITutor = () => {
 
       if (isProbablyInternal) {
         let finalHref = href || '/';
+
+        // Normalizar links de dominio externo al path relativo
         if (isExternalInternal && !isInternalPath) {
           try {
             const urlObj = new URL(href);
             finalHref = urlObj.pathname + urlObj.search;
           } catch(e) {}
         }
-        
-        // Si el link tiene formato de área, intentamos resolver el video exacto
+
+        // Para links /area/X?video=Y: verificar si el videoId ya es exacto en el catálogo.
+        // Solo re-resolvemos si el videoId NO existe exacto (necesita fuzzy matching).
         if (finalHref.includes('/area/')) {
           try {
             const urlStr = finalHref.startsWith('/') ? window.location.origin + finalHref : finalHref;
@@ -2471,17 +2474,24 @@ const AITutor = () => {
             const pathParts = urlObj.pathname.split('/');
             const areaIndex = pathParts.indexOf('area');
             if (areaIndex !== -1 && pathParts[areaIndex + 1]) {
-               const rawAreaId = pathParts[areaIndex + 1];
-               const rawVideoId = urlObj.searchParams.get('video') || '';
-               const resolved = resolveVideoId(rawAreaId, rawVideoId);
-               urlObj.pathname = `/area/${resolved.areaId}`;
-               urlObj.searchParams.set('video', resolved.videoId);
-               finalHref = urlObj.pathname + urlObj.search;
-               if (!finalHref.startsWith('http')) finalHref = finalHref.replace(window.location.origin, '');
+              const rawAreaId = pathParts[areaIndex + 1];
+              const rawVideoId = urlObj.searchParams.get('video') || '';
+              // ¿El video existe EXACTO en el catálogo?
+              const allAreaVideos = areas.flatMap(a => a.videos.map(v => ({ ...v, areaId: a.id })));
+              const exactMatch = rawVideoId ? allAreaVideos.find(v => v.id === rawVideoId) : null;
+              if (exactMatch) {
+                // Link ya es correcto — navegar directo sin tocar nada
+                finalHref = `/area/${exactMatch.areaId}?video=${exactMatch.id}`;
+              } else if (rawAreaId || rawVideoId) {
+                // Necesita fuzzy resolution
+                const resolved = resolveVideoId(rawAreaId, rawVideoId);
+                finalHref = `/area/${resolved.areaId}?video=${resolved.videoId}`;
+              }
             }
-          } catch(e) {}
+          } catch(e) { console.error('[a() link]', e); }
         }
 
+        console.log('[agentNavigate] finalHref:', finalHref);
         return (
           <button
             onClick={() => agentNavigate(finalHref)}
