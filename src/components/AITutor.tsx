@@ -2408,6 +2408,24 @@ const AITutor = () => {
     });
   }, []);
 
+  const handleCitationClick = useCallback((href: string) => {
+    const url = href.replace('citation://', '');
+    const [materia, code] = url.split('/');
+    const cleanMateria = materia.toUpperCase().trim();
+    
+    const areaId = MATERIA_TO_AREA[cleanMateria];
+    const resolved = resolveVideoId(areaId || cleanMateria, code);
+    
+    const path = resolved.videoId 
+      ? `/area/${resolved.areaId}?video=${resolved.videoId}`
+      : `/area/${resolved.areaId || 'habilidades'}`;
+    
+    alert('Path: ' + path); // DEBUG
+    
+    setIsOpen(false);
+    window.location.href = path;
+  }, [setIsOpen]);
+
   const markdownComponents = useMemo(() => ({
     code({ node, inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || '');
@@ -2438,23 +2456,7 @@ const AITutor = () => {
         const cleanMateria = materia.toUpperCase().trim();
         return (
           <button 
-            onClick={() => {
-              const url = href.replace('citation://', '');
-              const [materia, code] = url.split('/');
-              const cleanMateria = materia.toUpperCase().trim();
-              
-              const areaId = MATERIA_TO_AREA[cleanMateria];
-              const resolved = resolveVideoId(areaId || cleanMateria, code);
-              
-              const path = resolved.videoId 
-                ? `/area/${resolved.areaId}?video=${resolved.videoId}`
-                : `/area/${resolved.areaId || 'habilidades'}`;
-              
-              alert('Path: ' + path + ' | videoId: ' + resolved.videoId); // DEBUG
-              
-              setIsOpen(false);
-              window.location.href = path;
-            }}
+            onClick={() => handleCitationClick(href)}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95 shrink-0"
             title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
           >
@@ -2561,7 +2563,7 @@ const AITutor = () => {
     tr({ children }: any) {
       return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
     }
-  }), [agentNavigate]);
+  }), [agentNavigate, handleCitationClick]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
