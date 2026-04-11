@@ -231,7 +231,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
         }
       }
     } catch (err) {
-      console.error('Mermaid render error:', err);
+      console.error('Mermaid error en:', content, err);
       setError(true);
     } finally {
       setIsRendering(false);
