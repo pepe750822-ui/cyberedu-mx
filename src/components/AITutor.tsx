@@ -1829,6 +1829,7 @@ const MessageBubble = React.memo(({
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
                 components={markdownComponents}
+                urlTransform={(url) => url}
               >
                 {msg.content
                   .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
