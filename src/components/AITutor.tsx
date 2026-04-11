@@ -2456,7 +2456,11 @@ const AITutor = () => {
         const cleanMateria = materia.toUpperCase().trim();
         return (
           <button 
-            onClick={() => handleCitationClick(href)}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleCitationClick(href);
+            }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95 shrink-0"
             title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
           >
