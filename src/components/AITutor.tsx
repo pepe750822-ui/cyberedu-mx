@@ -118,6 +118,7 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
       
       return false;
     });
+    console.log('[resolver] query:', query, 'area:', areaId, 'match:', syllabusMatch?.id);
     if (syllabusMatch) return syllabusMatch.id;
 
     // D. Match por palabras clave en título (Fuzzy)
@@ -2450,6 +2451,7 @@ const AITutor = () => {
               
               // Resolvemos el video usando el motor inteligente
               const resolved = resolveVideoId(areaId || cleanMateria, searchQuery);
+              console.log('[cita] path generado:', `/area/${resolved.areaId}?video=${resolved.videoId}`);
 
               if (resolved.videoId) {
                   agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
