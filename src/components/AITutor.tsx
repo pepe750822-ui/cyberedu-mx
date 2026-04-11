@@ -386,6 +386,46 @@ const autoLinkCitations = (text: string): string => {
   );
 };
 
+// ─── Auto-link "Ver video: Título" plain-text → real markdown link ───
+// The AI sometimes ignores format instructions and writes "Ver video: Segunda
+// Guerra Mundial" as plain text. This scans for those patterns and resolves
+// them to accurate /area/... links using the catalog — independent of AI compliance.
+const autoLinkVideoMentions = (text: string): string => {
+  return text.replace(
+    /(?<!\[)\*{0,2}(?:🎦\s*)?(?:\*{0,2})?\s*Ver video[:\s—-]+\*{0,2}([^\n\[\]*(]{3,80}?)(?=\n|$|\*{2}|\[)/gi,
+    (match, rawTitle) => {
+      const title = rawTitle.trim().replace(/[*_\ud83c\udfa6]/g, '').trim();
+      if (!title || title.length < 3) return match;
+
+      let bestVideo: { areaId: string; videoId: string; videoTitle: string } | null = null;
+      let bestScore = 0;
+      const queryWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+
+      for (const area of areas) {
+        for (const video of area.videos) {
+          const vtLower = video.title.toLowerCase();
+          const tLower = title.toLowerCase();
+          // Exact / substring match wins immediately
+          if (vtLower.includes(tLower) || tLower.includes(vtLower.substring(0, 12))) {
+            return `[🎦 Ver video: ${video.title}](/area/${area.id}?video=${video.id})`;
+          }
+          // Word-overlap fuzzy score
+          const score = queryWords.filter(w => vtLower.includes(w)).length;
+          if (score > bestScore) {
+            bestScore = score;
+            bestVideo = { areaId: area.id, videoId: video.id, videoTitle: video.title };
+          }
+        }
+      }
+
+      if (bestVideo && bestScore >= 1) {
+        return `[🎦 Ver video: ${bestVideo.videoTitle}](/area/${bestVideo.areaId}?video=${bestVideo.videoId})`;
+      }
+      return match;
+    }
+  );
+};
+
 // ─── Memory Manager ───
 function loadMemory(): AgentMemory {
   try {
@@ -1790,6 +1830,11 @@ const MessageBubble = React.memo(({
                   .split('\n').map(line =>
                     // Skip lines inside code blocks to avoid corrupting Mermaid/code
                     line.startsWith('    ') || line.startsWith('\t') ? line : autoLinkCitations(line)
+                  ).join('\n')
+                  // Auto-resolve "Ver video: Titulo" plain text -> real markdown link
+                  // Works even when AI ignores format instructions
+                  .split('\n').map(line =>
+                    line.startsWith('    ') || line.startsWith('\t') ? line : autoLinkVideoMentions(line)
                   ).join('\n')
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
                   .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
