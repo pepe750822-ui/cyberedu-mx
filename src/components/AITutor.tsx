@@ -97,8 +97,14 @@ export function resolveVideoId(areaId: string, videoIdOrQuery: string): { areaId
     const partial = area.videos.find(v => v.id.endsWith(`-${rawQuery}`) || v.id.endsWith(`-${q}`));
     if (partial) return partial.id;
 
-    // C. Match por Temario específico (Prioridad para códigos como 4.2)
-    const syllabusMatch = area.videos.find(v => v.description.includes(`(Temario ${query})`) || v.description.includes(` ${query})`));
+    // C. Match por Temario específico (Prioridad para códigos como 4.2 o rangos)
+    const syllabusMatch = area.videos.find(v => 
+      v.description.includes(`(Temario ${query})`) || 
+      v.description.includes(`(Temario ${query}-`) ||
+      v.description.includes(`(Temario ${query}.`) ||
+      v.description.includes(` ${query})`) ||
+      v.description.includes(` ${query}-`)
+    );
     if (syllabusMatch) return syllabusMatch.id;
 
     // D. Match por palabras clave en título (Fuzzy)
