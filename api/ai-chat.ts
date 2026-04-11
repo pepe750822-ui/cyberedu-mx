@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 // Removed resend SDK to use raw fetch for better Edge compatibility
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 // ─── Upstash Redis helpers (REST API, no package needed) ───────
