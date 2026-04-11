@@ -1766,7 +1766,11 @@ const MessageBubble = React.memo(({
               onAnswer={(qId, idx) => handleQuizAnswer(msg.id, msg.quiz!, qId, idx)} 
             />
           )}
-          {msg.charts?.map((chart: any, i: number) => <ChartRenderer key={i} chart={chart} />)}
+          {msg.charts?.map((chart: any, i: number) => (
+            <div key={i} className="max-w-full overflow-hidden my-4">
+              <ChartRenderer chart={chart} />
+            </div>
+          ))}
           {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
           {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
           {msg.diagnostics && <DiagnosticsCard 
@@ -2432,7 +2436,11 @@ const AITutor = () => {
       if (!inline && match && match[1] === 'mermaid') {
         const rawContent = String(children).replace(/\n$/, '');
         const sanitized = sanitizeMermaidContent(rawContent);
-        return <Mermaid chart={sanitized} />;
+        return (
+          <div className="max-w-full overflow-x-auto my-4 custom-scrollbar">
+            <Mermaid chart={sanitized} />
+          </div>
+        );
       }
       return (
         <code className={className} {...props}>
@@ -2548,7 +2556,7 @@ const AITutor = () => {
     },
     table({ children }: any) {
       return (
-        <div className="my-4 overflow-x-auto w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
+        <div className="my-4 overflow-x-auto w-full max-w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl custom-scrollbar">
           <table className="min-w-full text-left border-collapse">
             {children}
           </table>
@@ -3297,7 +3305,7 @@ const AITutor = () => {
           {/* Chat Column */}
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
                 <div className={cn(
                   "space-y-6 transition-all duration-500 pb-20",
                   isExpanded
