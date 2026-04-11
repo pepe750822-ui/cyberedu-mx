@@ -352,7 +352,7 @@ const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
 // Esto garantiza que el ambiente de producción y cualquier otro ambiente
 // usen el mismo endpoint optimizado: Haiku 4.5 + prompt caching + analytics.
 // Para sobreescribir en desarrollo local, define VITE_CHAT_URL en .env
-const CHAT_URL = import.meta.env.VITE_CHAT_URL || "https://cyberedu-mx.vercel.app/api/chat";
+const CHAT_URL = "/api/ai-chat";
 const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
