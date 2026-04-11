@@ -288,26 +288,30 @@ const useAgentNavigation = (setIsOpen: (open: boolean) => void) => {
   const navigate = useNavigate();
   return (path: string) => {
     if (!path) return;
-    console.log("[useAgentNavigation] EJECUTANDO NAVEGACIÓN DIRECTA:", path);
-    
-    // 1. Iniciamos la navegación INMEDIATAMENTE (Prioridad A)
-    try {
-      if (path.startsWith('/')) {
-        navigate(path, { replace: true });
-      } else {
+    console.log("[useAgentNavigation] NAVEGANDO A:", path);
+
+    // Feedback visual primero para que el usuario vea reacción inmediata
+    toast.info("Cargando contenido...", { icon: "🚀", id: "nav-toast", duration: 1200 });
+
+    // Cerramos el tutor antes de navegar para que no bloquee la vista
+    setIsOpen(false);
+
+    // Navegamos con un pequeño delay (100ms) para que el cierre del chat
+    // no cause un flicker visual ANTES de que la nueva página esté lista.
+    // Usamos navigate() SIN replace:true para que React Router siempre haga
+    // un push real, lo que garantiza que AreaDetail reciba el cambio de
+    // searchParams aunque ya esté en la misma ruta base.
+    setTimeout(() => {
+      try {
+        if (path.startsWith('/')) {
+          navigate(path);
+        } else {
+          window.location.href = path;
+        }
+      } catch (e) {
         window.location.href = path;
       }
-    } catch (e) {
-      window.location.href = path;
-    }
-
-    // 2. Feedback visual
-    toast.info("Cargando contenido...", { icon: "🚀", id: "nav-toast", duration: 1500 });
-    
-    // 3. Cerramos el tutor DESPUÉS de haber iniciado la navegación
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 50);
+    }, 100);
   };
 };
 
