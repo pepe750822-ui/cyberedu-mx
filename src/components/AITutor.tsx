@@ -363,19 +363,27 @@ const MEMORY_KEY = "cyberagent_memory_v2";
 const HISTORY_KEY = "ai_agent_history_v2";
 
 // ─── Helpfully sanitize Mermaid syntax for v11 ───
+// NOTE: We ONLY replace accented characters and curly quotes.
+// We intentionally preserve: " ' ( ) : | > -  — all needed for valid Mermaid v11 syntax.
+// The Mermaid component (Mermaid.tsx) does the heavy auto-fixing (quoting labels, etc.).
 const sanitizeMermaidContent = (content: string): string => content
   .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
   .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ü/g, 'u')
   .replace(/Á/g, 'A').replace(/É/g, 'E').replace(/Í/g, 'I')
   .replace(/Ó/g, 'O').replace(/Ú/g, 'U')
   .replace(/ñ/g, 'n').replace(/Ñ/g, 'N')
-  .replace(/[""]/g, "'")
-  .replace(/[^a-zA-Z0-9\s\-\>\[\]\{\} \n]/g, ''); // Eliminar todo lo que no sea seguro para Mermaid v11
+  .replace(/\u201C|\u201D/g, '"') // curly double quotes -> straight
+  .replace(/\u2018|\u2019/g, "'"); // curly single quotes -> straight
 
 // ─── Link Hyper-Resolution ───
 const autoLinkCitations = (text: string): string => {
-  // Convierte [BIO 5.2] -> [BIO 5.2](citation://BIO/5.2) si no es ya un link
-  return text.replace(/\[([A-Z\-]{2,10})\s+(\d+(?:\.\d+)*)\](?!\(citation:\/\/)/g, '[$1 $2](citation://$1/$2)');
+  // Convierte [BIO 5.2] -> [BIO 5.2](citation://BIO/5.2) SOLO si:
+  // 1. No está ya dentro de un link markdown: (?<!\])
+  // 2. No está ya precedido de ]( — es decir no tiene URL asignada: (?!\(citation://)
+  return text.replace(
+    /(?<!\])\[([A-Z][A-Z0-9\-]{1,9})\s+(\d+(?:\.\d+)*)\](?!\()/g,
+    '[$1 $2](citation://$1/$2)'
+  );
 };
 
 // ─── Memory Manager ───
@@ -1777,10 +1785,12 @@ const MessageBubble = React.memo(({
                     /(?<!\(|\[)\/(area|tokens|planes|diagnostico|registro|auth)([^\s\n\)]*)(?!\))/g, 
                     (match) => `[${match}](${match})`
                   )
-                  .replace(
-                    /\[([A-Z-]{2,20})\s+(\d+(\.\d+)?)([^\]]*)\]/g, 
-                    (match, materia, code) => `[${match}](citation://${materia}/${code})`
-                  )
+                  // Apply citation auto-linking (shared function, avoids double-wrap)
+                  // This must run AFTER the URL-linking passes above
+                  .split('\n').map(line =>
+                    // Skip lines inside code blocks to avoid corrupting Mermaid/code
+                    line.startsWith('    ') || line.startsWith('\t') ? line : autoLinkCitations(line)
+                  ).join('\n')
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
                   .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
                 }
@@ -2440,21 +2450,7 @@ const AITutor = () => {
         </a>
       );
     },
-    table({ children }: any) {
-      return (
-        <div className="w-full overflow-x-auto my-4 border border-white/10 rounded-xl scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-          <table className="min-w-full border-collapse text-[11px] md:text-xs">
-            {children}
-          </table>
-        </div>
-      );
-    },
-    td({ children }: any) {
-      return <td className="border border-white/10 p-2 text-slate-300">{children}</td>;
-    },
-    th({ children }: any) {
-      return <th className="border border-white/10 p-2 bg-white/5 text-primary font-black uppercase tracking-widest text-[9px]">{children}</th>;
-    },
+
     img({ src, alt }: any) {
       return (
         <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 max-w-sm sm:max-w-md mx-auto shadow-2xl" onClick={() => window.open(src, '_blank')}>

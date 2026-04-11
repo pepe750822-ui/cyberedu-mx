@@ -142,7 +142,8 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
     });
     cleaned = fixedLines.join('\n');
 
-    // 4. Ultra-aggressive character sanitization (v11 compatibility)
+    // 4. Accented-character and curly-quote sanitization (v11 compatibility)
+    // We intentionally keep: " ' ( ) : | > - — all used by Mermaid v11 syntax
     cleaned = cleaned
       .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
       .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ü/g, 'u')
@@ -150,9 +151,8 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
       .replace(/Ó/g, 'O').replace(/Ú/g, 'U')
       .replace(/ñ/g, 'n').replace(/Ñ/g, 'N')
       .replace(/¿/g, '').replace(/¡/g, '')
-      .replace(/\(/g, ' ').replace(/\)/g, ' ')
-      .replace(/:/g, ' -')
-      .replace(/"/g, "'");
+      .replace(/\u201C|\u201D/g, '"')  // curly double quotes -> straight
+      .replace(/\u2018|\u2019/g, "'"); // curly single quotes -> straight
 
     // 5. Normalize HTML entities
     cleaned = cleaned
