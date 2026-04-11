@@ -2439,22 +2439,20 @@ const AITutor = () => {
         return (
           <button 
             onClick={() => {
+              const url = href.replace('citation://', '');
+              const [materia, code] = url.split('/');
+              const cleanMateria = materia.toUpperCase().trim();
+              
               const areaId = MATERIA_TO_AREA[cleanMateria];
-              const isSubItem = code.includes('.');
-              const prefix = MATERIA_PREFIX[cleanMateria] || cleanMateria.toLowerCase();
-              
-              // Si es un código de temario con subíndice (ej. 5.2), lo usamos directamente para búsqueda fuzzy.
-              // De lo contrario, intentamos el formato estándar prefijo-número.
-              const searchQuery = isSubItem ? code : `${prefix}-${code}`;
-              
-              // Resolvemos el video usando el motor inteligente
+              const searchQuery = code;
               const resolved = resolveVideoId(areaId || cleanMateria, searchQuery);
-
-              if (resolved.videoId) {
-                  agentNavigate(`/area/${resolved.areaId}?video=${resolved.videoId}`);
-              } else {
-                  agentNavigate(`/area/${resolved.areaId || 'habilidades'}`);
-              }
+              
+              const path = resolved.videoId 
+                ? `/area/${resolved.areaId}?video=${resolved.videoId}`
+                : `/area/${resolved.areaId || 'habilidades'}`;
+              
+              setIsOpen(false);
+              window.location.href = path;
             }}
             className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all font-black text-[10px] uppercase tracking-tighter mx-0.5 align-middle shadow-sm hover:scale-105 active:scale-95 shrink-0"
             title={`Ref: ${cleanMateria} ${code} - Clic para ver temario`}
