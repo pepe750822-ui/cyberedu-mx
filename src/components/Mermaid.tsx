@@ -229,6 +229,19 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
           svgElement.style.height = 'auto';
           svgElement.style.width = 'auto';
         }
+        
+        // Forzar colores en el SVG generado para evitar override de Tailwind
+        const svgEl = document.querySelector(`#${id}`) || ref.current.querySelector('svg');
+        if (svgEl) {
+          svgEl.querySelectorAll('.node rect, .node circle, .node ellipse, .node polygon').forEach(el => {
+            (el as HTMLElement).style.fill = '#1e1b4b';
+            (el as HTMLElement).style.stroke = '#6366f1';
+          });
+          svgEl.querySelectorAll('.node .label, .nodeLabel, text').forEach(el => {
+            (el as HTMLElement).style.fill = '#e2e8f0';
+            (el as HTMLElement).style.color = '#e2e8f0';
+          });
+        }
       }
     } catch (err) {
       console.error('Mermaid error en:', content, err);

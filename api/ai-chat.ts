@@ -379,6 +379,16 @@ export default async function handler(req: Request) {
     HISTORIA UNIVERSAL [HU]: Siglo XVI a XVIII → [HU 1.1] | Siglo XVIII a XIX → [HU 2.1] | Siglo XIX a 1920 → [HU 3.1] | El mundo entre 1920 y 1960 → [HU 4.1] | Décadas recientes → [HU 5.1]
     HISTORIA DE MÉXICO [HIS-M]: Culturas Prehispánicas → [HIS-M 6.1] | Conquista de México → [HIS-M 6.2] | Virreinato de Nueva España → [HIS-M 6.3] | Independencia de México → [HIS-M 7.3] | México Siglo XIX → [HIS-M 8.1] | Revolución Mexicana → [HIS-M 9.1] | Constitución de 1917 → [HIS-M 9.3] | México Contemporáneo → [HIS-M 10.1] (NUNCA uses [HIS-M 8.2] — ese número no existe)
     MATEMÁTICAS [MAT]: Números enteros → [MAT 1.1] | Fracciones y decimales → [MAT 1.3] | Introducción al álgebra → [MAT 2.1] | Ecuaciones de primer grado → [MAT 2.4] | Sistemas de ecuaciones → [MAT 2.6] | Ecuaciones cuadráticas → [MAT 2.8] | Proporcionalidad → [MAT 2.10] | Estadística → [MAT 3.1] | Probabilidad → [MAT 3.5] | Geometría básica → [MAT 4.1] | Semejanza y Pitágoras → [MAT 4.3] | Trigonometría → [MAT 4.5] | Perímetros y áreas → [MAT 4.6] | Volúmenes → [MAT 4.8]
+    NOTAS IMPORTANTES DE CITACIÓN (evita errores comunes):
+    - Contaminación del agua y ambiente → [GEO 2.9] o [GEO 2.10], NUNCA [BIO]
+    - Desarrollo sustentable → [GEO 2.8] o [GEO 2.10]
+    - Fotosíntesis y respiración → [BIO 3.1], NUNCA [GEO]
+    - Biodiversidad y ecosistemas → [BIO 1.1] o [BIO 1.4]
+    - Contaminación atmosférica y salud → [BIO 4.3]
+    - Derechos laborales y jornada → [FCE 4.3] o [HIS-M 9.3]
+    - Estado mexicano y poderes → [FCE 6.1] o [FCE 6.2]
+    - Constitución de 1917 → [HIS-M 9.3]
+    - Revolución Mexicana → [HIS-M 9.1], NUNCA [HIS-M 8.2]
     4. DIAGRAMAS: Genera EXACTAMENTE UN solo diagrama por respuesta usando \`\`\`mermaid\`\`\` con flowchart TD. PROHIBIDO generar un segundo diagrama bajo cualquier circunstancia. Si necesitas más información visual usa tablas markdown. NUNCA uses acentos, eñes, paréntesis, signos de interrogación, exclamación, comas, dos puntos ni símbolos matemáticos dentro de los nodos. Usa SOLO letras A-Z, números y espacios.
     5. QUIZ: Genera retos interactivos encapsulados en <quiz>{JSON}</quiz> siguiendo el esquema: { "title": "...", "questions": [{ "text": "...", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "..." }] }.
     6. IMÁGENES: Usa [IMG:clave] para apoyo visual.
