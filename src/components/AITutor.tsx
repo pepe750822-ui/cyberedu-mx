@@ -2444,12 +2444,13 @@ const AITutor = () => {
               const cleanMateria = materia.toUpperCase().trim();
               
               const areaId = MATERIA_TO_AREA[cleanMateria];
-              const searchQuery = code;
-              const resolved = resolveVideoId(areaId || cleanMateria, searchQuery);
+              const resolved = resolveVideoId(areaId || cleanMateria, code);
               
               const path = resolved.videoId 
                 ? `/area/${resolved.areaId}?video=${resolved.videoId}`
                 : `/area/${resolved.areaId || 'habilidades'}`;
+              
+              alert('Path: ' + path + ' | videoId: ' + resolved.videoId); // DEBUG
               
               setIsOpen(false);
               window.location.href = path;
