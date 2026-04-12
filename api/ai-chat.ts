@@ -148,7 +148,7 @@ async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remai
   
   const today = new Date().toISOString().split('T')[0];
   const rateLimitKey = `ratelimit:${userId}:${today}`;
-  const LIMIT = 50;
+  const LIMIT = 200;
 
   try {
     // Increment the count in Redis
@@ -257,7 +257,7 @@ export default async function handler(req: Request) {
   // Safety check: Global Daily Limit (Redis)
   if (!rateLimit.allowed) {
     return new Response(JSON.stringify({ 
-      error: '⚠️ Límite de seguridad diario excedido (50 consultas). Por favor contacta a soporte si crees que es un error.',
+      error: '⚠️ Límite de seguridad diario excedido (200 consultas). Por favor contacta a soporte si crees que es un error.',
       isAccessDenied: true,
       reason: 'global_rate_limit'
     }), {
