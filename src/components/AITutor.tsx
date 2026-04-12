@@ -1980,9 +1980,7 @@ const AITutor = () => {
     return 'general';
   };
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
   const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(isMobile);
   const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
@@ -3219,7 +3217,6 @@ const AITutor = () => {
       <button
         onClick={() => {
           setIsOpen(true);
-          setIsExpanded(true);
         }}
         className={cn(
           "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center",
@@ -3247,11 +3244,9 @@ const AITutor = () => {
       </button>
 
       <div className={cn(
-        "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
-        isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
-        isExpanded 
-          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[1000]" 
-          : "bottom-20 sm:bottom-24 inset-x-2 sm:inset-auto sm:right-6 w-auto sm:w-[550px] h-[650px] max-h-[calc(100dvh-120px)] sm:max-h-[75vh]"
+        "fixed transition-all duration-500 z-[10000] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)]",
+        "bottom-0 right-0 w-full h-[100dvh]",
+        isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
       )}>
         {/* Header */}
         <div className="p-3 sm:p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
@@ -3293,13 +3288,6 @@ const AITutor = () => {
               </button>
               {/* Expand/Collapse — solo visible en desktop */}
               <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                title={isExpanded ? "Contraer chat" : "Expandir chat"}
-                className="hidden sm:flex p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
-              >
-                {isExpanded ? <Minimize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
-              </button>
-              <button
                 onClick={clearHistory}
                 title="Reiniciar chat y memoria"
                 className="p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
@@ -3310,7 +3298,6 @@ const AITutor = () => {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  setIsExpanded(false);
                 }}
                 title="Cerrar tutor"
                 className="flex sm:hidden p-1.5 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
@@ -3345,31 +3332,17 @@ const AITutor = () => {
         </AnimatePresence>
 
         {/* Main Content Area */}
-        <div className={cn("flex-1 flex overflow-hidden relative", isExpanded ? "flex-row" : "flex-col")}>
+        <div className={cn("flex-1 flex overflow-hidden relative flex-row")}>
           {/* Chat Column */}
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
-                <div className={cn(
-                  "space-y-6 transition-all duration-500 pb-20",
-                  isExpanded
-                    ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12")
-                    : "max-w-4xl mx-auto w-full px-4"
-                )}>
-                  {showTasks && !isExpanded && (
-                      <TaskCenter
-                        tasks={tasks}
-                        onRemove={removeTask}
-                        onRetry={retryTask}
-                        onClear={clearCompleted}
-                        onClose={() => setShowTasks(false)}
-                      />
-                  )}
+                  "space-y-6 transition-all duration-500 pb-20 max-w-5xl mx-auto px-6 lg:px-12"
                   {messages.map((msg) => (
                     <MessageBubble 
                       key={msg.id}
                       msg={msg}
-                      isExpanded={isExpanded}
+                      isExpanded={true}
                       handleFeedback={handleFeedback}
                       handlePlanAction={handlePlanAction}
                       handleToggleStep={handleToggleStep}
@@ -3394,7 +3367,7 @@ const AITutor = () => {
 
             {/* Suggestions */}
             {!isStreaming && contextualSuggestions.length > 0 && (
-              <div className={cn("px-5 py-2 flex flex-wrap gap-1.5", isExpanded && "max-w-3xl mx-auto w-full")}>
+              <div className={cn("px-5 py-2 flex flex-wrap gap-1.5 max-w-3xl mx-auto w-full")}>
                 {contextualSuggestions.map((s, i) => (
                   <button
                     key={i}
@@ -3409,7 +3382,7 @@ const AITutor = () => {
 
             {/* Input Overlay for chat */}
             <div className="p-5 bg-slate-900/50 border-t border-white/5">
-              <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
+              <div className={cn("w-full mx-auto max-w-3xl")}>
                   {/* Improved Token/Trial Status Bar */}
                   <div className="mb-4 flex items-center justify-between px-2 bg-slate-900/30 p-2 rounded-xl border border-white/5 shadow-inner">
                     <div className="flex flex-col">
@@ -3595,8 +3568,7 @@ const AITutor = () => {
           {/* Sidebar for Expanded Mode */}
           {showAgentSidebar && (
             <div className={cn(
-               "border-l border-white/5 bg-slate-900/95 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto transition-all duration-500 z-[60]",
-               isExpanded ? "md:relative md:w-72 lg:w-80 md:translate-x-0" : "fixed inset-y-0 right-0 w-[85%] sm:w-80 shadow-2xl",
+               "border-l border-white/5 bg-slate-900/95 backdrop-blur-3xl flex flex-col p-5 space-y-6 overflow-y-auto transition-all duration-500 z-[60] md:relative md:w-72 lg:w-80 md:translate-x-0",
                showAgentSidebar ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
             )}>
               <div className="flex items-center justify-between mb-2">
