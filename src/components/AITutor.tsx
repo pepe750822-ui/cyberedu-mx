@@ -1263,35 +1263,29 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
                 })}
               </div>
 
-              <AnimatePresence>
-                {answered && (
-                  <motion.div
-                    key={`explanation-${actualId}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className={cn(
-                      "mt-5 p-4 rounded-2xl border shadow-lg",
-                      isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
-                    )}
-                  >
-                    <div className="flex gap-4">
-                      <div className={cn(
-                        "p-2 rounded-xl h-fit",
-                        isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
-                      )}>
-                        <AlertCircle className="h-4 w-4" />
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
-                        <p className="text-xs font-medium text-slate-300 leading-relaxed">
-                          {q.explanation}
-                        </p>
-                      </div>
+              {answered && (
+                <div
+                  className={cn(
+                    "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
+                    isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
+                  )}
+                >
+                  <div className="flex gap-4">
+                    <div className={cn(
+                      "p-2 rounded-xl h-fit",
+                      isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                    )}>
+                      <AlertCircle className="h-4 w-4" />
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
+                      <p className="text-xs font-medium text-slate-300 leading-relaxed">
+                        {q.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
