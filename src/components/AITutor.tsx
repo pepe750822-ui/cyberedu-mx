@@ -1406,6 +1406,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
           const resolvedVideoId = resolved.videoId;
           const infoUrl = resolvedVideoId ? getUrlForPaso('infografia', resolvedVideoId, r.title, resolved.areaId) : '';
           const hasInfo = resolvedVideoId ? !!materiales[resolvedVideoId]?.infografia : false;
+          const infoImgUrl = hasInfo ? materiales[resolvedVideoId]?.infografia?.url : '';
 
           return (
             <div key={i} className="relative group/rec w-full">
@@ -1417,6 +1418,14 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                   {icons[r.type]}
                 </div>
                 <div className="flex-1 min-w-0">
+                  {infoImgUrl && (
+                    <img 
+                      src={infoImgUrl} 
+                      alt={`Infografía ${r.title}`}
+                      className="w-full h-24 object-cover rounded-lg mb-2 opacity-80 group-hover:opacity-100 transition-opacity border border-white/5 shadow-sm"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  )}
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-black text-slate-200 truncate uppercase tracking-tight">{r.title}</p>
                     <span className={cn("px-1.5 py-0.5 text-[9px] font-black uppercase rounded border shrink-0", prioColors[r.priority])}>

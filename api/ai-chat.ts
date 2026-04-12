@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v7:${cacheType}:` + text
+  return `chat:v8:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -448,7 +448,7 @@ export default async function handler(req: Request) {
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     
-    16. LINKS DIRECTOS (INTERNAL TAGS): Inmediatamente después del texto de recomendación, incluye OBLIGATORIAMENTE este tag JSON para que la interfaz renderice el botón de navegación:
+    16. LINKS DIRECTOS (INTERNAL TAGS): Inmediatamente después del texto de recomendación, incluye OBLIGATORIAMENTE este tag JSON para que la interfaz renderice el botón de navegación. Al recomendar un video, usa siempre el tag <recommendation> con el areaId y videoId correctos — esto permite mostrar la infografía del tema automáticamente:
         <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "areaId": "AREA_ID", "title": "Nombre del Video", "priority": "alta", "reason": "Ver video ahora" }</recommendation>
         Note: El videoId y areaId deben ser los del catálogo (punto 17). NUNCA inventes IDs. Si el tema es general, usa el video de introducción del área.
 
