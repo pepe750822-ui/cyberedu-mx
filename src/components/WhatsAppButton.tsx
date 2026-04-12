@@ -17,17 +17,13 @@ const WhatsAppButton: React.FC = () => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Contactar por WhatsApp"
+      className="fixed bottom-[6rem] left-1 z-[100] flex items-center gap-2 no-underline"
       style={{
-        position: "fixed",
-        bottom: "6rem",
-        left: "0.25rem",
-        zIndex: 50,
-        display: "flex",
-        alignItems: "center",
-        gap: "0.5rem",
-        textDecoration: "none",
+        right: "auto",
         transition: "transform 0.25s ease, box-shadow 0.25s ease",
         transform: hovered ? "scale(1.08)" : "scale(1)",
+        margin: 0,
+        width: "auto"
       }}
     >
       {/* Tooltip label */}
