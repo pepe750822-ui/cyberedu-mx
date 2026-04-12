@@ -29,6 +29,7 @@ import "katex/dist/katex.min.css";
 import Mermaid from "./Mermaid";
 import ChartRenderer, { ChartData } from "./ChartRenderer";
 import EduImageViewer from "./EduImageViewer";
+import CalculatorArtifact from "./CalculatorArtifact";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -291,6 +292,7 @@ interface Message {
   report?: any;
   alerts?: any[];
   charts?: ChartData[];
+  calculator?: any;
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -651,6 +653,13 @@ function parseChartsFromContent(content: string): { charts: ChartData[]; cleanCo
   return { charts, cleanContent: cleaned };
 }
 
+function parseCalculatorFromContent(content: string): { calculator: any; cleanContent: string } {
+  const match = content.match(/<calculator>([\s\S]*?)<\/calculator>/);
+  if (!match) return { calculator: null, cleanContent: content };
+  const parsed = safeParseJSON(match[1]);
+  return { calculator: parsed, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/, "").trim() };
+}
+
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
@@ -672,8 +681,9 @@ function parseAllBlocks(content: string) {
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
   const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
-  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c5);
-  return { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent: c6 };
+  const { calculator, cleanContent: c55 } = parseCalculatorFromContent(c5);
+  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c55);
+  return { reasoning, decisions, plan, quiz, charts, calculator, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -685,7 +695,8 @@ function stripStreamingBlocks(content: string): string {
         decision: "decisión",
         plan: "plan de estudio",
         quiz: "quiz interactivo",
-        chart: "gráfica"
+        chart: "gráfica",
+        calculator: "calculadora"
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -1772,6 +1783,7 @@ const MessageBubble = React.memo(({
               <ChartRenderer chart={chart} />
             </div>
           ))}
+          {msg.calculator && <CalculatorArtifact calculator={msg.calculator} />}
           {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
           {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
           {msg.diagnostics && <DiagnosticsCard 
