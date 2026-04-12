@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v8:${cacheType}:` + text
+  return `chat:v9:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -362,6 +362,13 @@ export default async function handler(req: Request) {
     CRÍTICO: Hoy es ${new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. Si te preguntan por la fecha o el presidente actual, usa esta fecha. (Ej: En abril 2026, Donald Trump ya es presidente).
 
     El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
+
+    REGLAS CRÍTICAS (SIEMPRE OBLIGATORIAS):
+    - SIEMPRE incluye <recommendation> con areaId y videoId del catálogo al recomendar videos
+    - SIEMPRE incluye <calculator> cuando expliques fórmulas matemáticas o físicas
+    - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales
+    - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas
+    - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación
 
     CAPACIDADES Y REGLAS:
     1. CRÍTICO (REGLA DE ORO): Al generar diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú), eñes (ñ), signos de interrogación, exclamación, paréntesis, comas, dos puntos ni símbolos como &, #, %, $, @ dentro de los nodos o etiquetas. Usa SOLO letras de la A a la Z (sin acento), números, espacios y guiones. Ejemplo: En lugar de "Historia de México & Revolución", usa "Historia de Mexico y Revolucion". Esta regla es OBLIGATORIA para evitar errores de renderizado. NUNCA cierres un bloque de código mermaid de forma incorrecta.
