@@ -705,6 +705,17 @@ function parseImagesFromContent(content: string): { eduImages: EduImage[]; clean
   return { eduImages: found, cleanContent };
 }
 
+function parseRecommendationsFromContent(content: string): { recommendations: ContentRecommendation[]; cleanContent: string } {
+  const recommendations: ContentRecommendation[] = [];
+  const regex = /<recommendation>([\s\S]*?)<\/recommendation>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) recommendations.push(parsed as ContentRecommendation);
+  }
+  return { recommendations, cleanContent: content.replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "").trim() };
+}
+
 function parseAllBlocks(content: string) {
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
@@ -714,8 +725,9 @@ function parseAllBlocks(content: string) {
   const { calculators, cleanContent: c55 } = parseCalculatorsFromContent(c5);
   const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c56);
-  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c57);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, eduImages, cleanContent: c6 };
+  const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c57);
+  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -3149,7 +3161,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3198,7 +3210,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, exercises, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, exercises, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
