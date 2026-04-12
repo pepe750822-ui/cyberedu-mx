@@ -2466,52 +2466,57 @@ const AITutor = () => {
   }, []);
 
   const handleQuizAnswer = useCallback((msgId: string, quiz: PersonalizedQuiz, qId: string, selectedIdx: number) => {
-    // 1. Calc logic upfront
-    const question = quiz.questions.find((q, i) => (q.id || `q${i}`) === qId);
-    const isCorrect = question ? Number(selectedIdx) === Number(question.correctIndex) : false;
+    try {
+      const questions = Array.isArray(quiz?.questions) ? quiz.questions : [];
+      const question = questions.find((q, i) => (q.id || `q${i}`) === qId);
+      const isCorrect = question ? Number(selectedIdx) === Number(question.correctIndex) : false;
 
-    // 2. Perform memory update OUTSIDE setQuizAnswers to avoid React StrictMode crashes
-    if (question) {
-      setMemory(mem => ({
-        ...mem,
-        insights: [
-          ...(mem.insights || []),
-          `El usuario respondió ${isCorrect ? "correctamente" : "incorrectamente"} la pregunta: "${question.text || (question as any).question || (question as any).pregunta}"`
-        ].slice(-20)
-      }));
-    }
-
-    // 3. Formulate the state change safely
-    setQuizAnswers(prev => {
-      const newState = { ...prev, [`${msgId}_${qId}`]: selectedIdx };
-
-      const allKeys = quiz.questions.map((q, i) => `${msgId}_${q.id || `q${i}`}`);
-      const isComplete = allKeys.every(k => newState[k] !== undefined);
-
-      // Async/Timeout wrapper is safe against concurrent state mutations during prev callback
-      if (isComplete) {
-        let score = 0;
-        quiz.questions.forEach((q, i) => {
-          const userPick = newState[`${msgId}_${q.id || `q${i}`}`];
-          if (userPick !== undefined && Number(userPick) === Number(q.correctIndex)) {
-            score++;
-          }
-        });
-
-        setTimeout(() => {
-          setMemory(mem => ({
-            ...mem,
-            topics: [...new Set([...(mem.topics || []), quiz.focusArea])].slice(-15),
-            insights: [
-              ...(mem.insights || []),
-              `El usuario completó el quiz "${quiz.title}" con ${score} aciertos de ${quiz.questions.length}.`
-            ].slice(-20)
-          }));
-        }, 50);
+      if (question) {
+        setMemory(mem => ({
+          ...mem,
+          insights: [
+            ...(mem?.insights || []),
+            `El usuario respondió ${isCorrect ? "correctamente" : "incorrectamente"} la pregunta: "${question?.text || (question as any)?.question || (question as any)?.pregunta || 'Desconocida'}"`
+          ].slice(-20)
+        }));
       }
 
-      return newState;
-    });
+      setQuizAnswers(prev => {
+        const newState = { ...prev, [`${msgId}_${qId}`]: selectedIdx };
+
+        const allKeys = questions.map((q, i) => `${msgId}_${q.id || `q${i}`}`);
+        const isComplete = allKeys.length > 0 && allKeys.every(k => newState[k] !== undefined);
+
+        if (isComplete) {
+          let score = 0;
+          questions.forEach((q, i) => {
+            const userPick = newState[`${msgId}_${q.id || `q${i}`}`];
+            if (userPick !== undefined && Number(userPick) === Number(q.correctIndex)) {
+              score++;
+            }
+          });
+
+          setTimeout(() => {
+            setMemory(mem => {
+              const safeTopics = Array.isArray(mem?.topics) ? mem.topics : [];
+              const safeInsights = Array.isArray(mem?.insights) ? mem.insights : [];
+              return {
+                ...mem,
+                topics: quiz?.focusArea ? [...new Set([...safeTopics, quiz.focusArea])].slice(-15) : safeTopics,
+                insights: [
+                  ...safeInsights,
+                  `El usuario completó el quiz "${quiz?.title || 'Evaluación'}" con ${score} aciertos de ${questions.length}.`
+                ].slice(-20)
+              };
+            });
+          }, 50);
+        }
+
+        return newState;
+      });
+    } catch (e) {
+      console.error("[CyberEdu] Error processing quiz answer:", e);
+    }
   }, []);
 
   const handleCitationClick = useCallback((href: string) => {
