@@ -3254,11 +3254,11 @@ const AITutor = () => {
           : "bottom-20 sm:bottom-24 inset-x-2 sm:inset-auto sm:right-6 w-auto sm:w-[550px] h-[650px] max-h-[calc(100dvh-120px)] sm:max-h-[75vh]"
       )}>
         {/* Header */}
-        <div className="p-3 sm:p-5 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
+        <div className="p-2 sm:p-3 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="h-9 w-9 sm:h-11 sm:w-11 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center relative shrink-0">
-                <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <div className="h-7 w-7 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center relative shrink-0">
+                <Brain className="h-4 w-4 text-primary" />
                 <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 bg-emerald-500 rounded-full border-[2px] sm:border-[3px] border-slate-950" />
               </div>
               <div className="min-w-0">
