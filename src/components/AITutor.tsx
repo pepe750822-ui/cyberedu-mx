@@ -3511,11 +3511,11 @@ const AITutor = () => {
                       { label: "📚 Mis Planes", cmd: "/planes" },
                       { label: "🧠 Explica...", cmd: "/explica " },
                       { label: "🧩 Quiz...", cmd: "/quiz " },
-                      { label: "🔧 Sistema", cmd: "/diagnostico" }
-                    ].map((btn, i) => (
+                      { label: "🎟️ Tokens", cmd: "tokens", isLink: true }
+                    ].map((btn: any, i) => (
                       <button
                         key={i}
-                        onClick={() => btn.cmd.endsWith(" ") ? setInput(btn.cmd) : sendMessage(btn.cmd)}
+                        onClick={() => btn.isLink ? agentNavigate("/tokens") : btn.cmd.endsWith(" ") ? setInput(btn.cmd) : sendMessage(btn.cmd)}
                         disabled={isStreaming}
                         className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:bg-primary/20 hover:text-white transition-all active:scale-95 disabled:opacity-50"
                       >
