@@ -8,8 +8,8 @@ import {
   ThumbsUp, ThumbsDown, AlertTriangle, Play, Lightbulb, ChevronDown,
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
-  Shield, ShieldCheck, ShieldAlert, Wrench, Activity, AlertCircle,
-  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash
+  Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash,
+  Copy, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -1899,6 +1899,28 @@ const MessageBubble = React.memo(({
             )}
           >
             <ThumbsDown className="h-3 w-3" />
+          </button>
+
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(msg.content);
+              toast.success('Copiado');
+            }}
+            className="p-1.5 text-slate-500 hover:text-white transition-colors"
+            title="Copiar respuesta"
+          >
+            <Copy className="h-3 w-3" />
+          </button>
+
+          <button
+            onClick={() => {
+              const text = encodeURIComponent(msg.content.slice(0, 500));
+              window.open(`https://wa.me/?text=${text}`, '_blank');
+            }}
+            className="p-1.5 text-slate-500 hover:text-green-400 transition-colors"
+            title="Compartir por WhatsApp"
+          >
+            <Share2 className="h-3 w-3" />
           </button>
         </div>
       )}
