@@ -30,6 +30,7 @@ import Mermaid from "./Mermaid";
 import ChartRenderer, { ChartData } from "./ChartRenderer";
 import EduImageViewer from "./EduImageViewer";
 import CalculatorArtifact from "./CalculatorArtifact";
+import SimulatorArtifact from "./SimulatorArtifact";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -293,6 +294,7 @@ interface Message {
   alerts?: any[];
   charts?: ChartData[];
   calculator?: any;
+  simulator?: any;
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -660,6 +662,13 @@ function parseCalculatorFromContent(content: string): { calculator: any; cleanCo
   return { calculator: parsed, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/, "").trim() };
 }
 
+function parseSimulatorFromContent(content: string): { simulator: any; cleanContent: string } {
+  const match = content.match(/<simulator>([\s\S]*?)<\/simulator>/);
+  if (!match) return { simulator: null, cleanContent: content };
+  const parsed = safeParseJSON(match[1]);
+  return { simulator: parsed, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/, "").trim() };
+}
+
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
@@ -682,8 +691,9 @@ function parseAllBlocks(content: string) {
   const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
   const { calculator, cleanContent: c55 } = parseCalculatorFromContent(c5);
-  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c55);
-  return { reasoning, decisions, plan, quiz, charts, calculator, eduImages, cleanContent: c6 };
+  const { simulator, cleanContent: c56 } = parseSimulatorFromContent(c55);
+  const { eduImages, cleanContent: c6 } = parseImagesFromContent(c56);
+  return { reasoning, decisions, plan, quiz, charts, calculator, simulator, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -696,7 +706,8 @@ function stripStreamingBlocks(content: string): string {
         plan: "plan de estudio",
         quiz: "quiz interactivo",
         chart: "gráfica",
-        calculator: "calculadora"
+        calculator: "calculadora",
+        simulator: "simulador"
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -1784,6 +1795,7 @@ const MessageBubble = React.memo(({
             </div>
           ))}
           {msg.calculator && <CalculatorArtifact calculator={msg.calculator} />}
+          {msg.simulator && <SimulatorArtifact simulator={msg.simulator} />}
           {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
           {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
           {msg.diagnostics && <DiagnosticsCard 
@@ -3100,7 +3112,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculator, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculator, simulator, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3149,7 +3161,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculator, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculator, simulator, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);

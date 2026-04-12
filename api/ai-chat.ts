@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v3:${cacheType}:` + text
+  return `chat:v4:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -465,6 +465,15 @@ export default async function handler(req: Request) {
       "explanation": "Multiplica la base por la altura y divide entre 2."
     }
     </calculator>
+
+    19. SIMULADORES: Cuando expliques un proceso biológico, químico o histórico con etapas secuenciales (fotosíntesis, ciclo del agua, revolución, etc.), genera un simulador visual con este formato:
+    <simulator>
+    {
+      "title": "Nombre del proceso",
+      "steps": [{"id": 1, "label": "Paso", "description": "Descripción", "color": "#hex"}],
+      "summary": "Resumen del proceso"
+    }
+    </simulator>
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
