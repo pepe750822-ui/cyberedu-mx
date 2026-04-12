@@ -657,6 +657,7 @@ function parseChartsFromContent(content: string): { charts: ChartData[]; cleanCo
 
 function parseCalculatorFromContent(content: string): { calculator: any; cleanContent: string } {
   const match = content.match(/<calculator>([\s\S]*?)<\/calculator>/);
+  console.log('[parser] calculator match:', !!match, content.slice(0, 200));
   if (!match) return { calculator: null, cleanContent: content };
   const parsed = safeParseJSON(match[1]);
   return { calculator: parsed, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/, "").trim() };
@@ -664,6 +665,7 @@ function parseCalculatorFromContent(content: string): { calculator: any; cleanCo
 
 function parseSimulatorFromContent(content: string): { simulator: any; cleanContent: string } {
   const match = content.match(/<simulator>([\s\S]*?)<\/simulator>/);
+  console.log('[parser] simulator match:', !!match, content.slice(0, 200));
   if (!match) return { simulator: null, cleanContent: content };
   const parsed = safeParseJSON(match[1]);
   return { simulator: parsed, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/, "").trim() };

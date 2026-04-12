@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v4:${cacheType}:` + text
+  return `chat:v5:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -464,6 +464,11 @@ export default async function handler(req: Request) {
       "result_unit": "cm²",
       "explanation": "Multiplica la base por la altura y divide entre 2."
     }
+    </calculator>
+
+    CRÍTICO: Los tags <calculator> y </calculator> (al igual que <simulator> y </simulator>) deben estar PERFECTAMENTE cerrados. NUNCA uses <calculator sin el > de cierre. El formato correcto es exactamente:
+    <calculator>
+    { JSON aquí }
     </calculator>
 
     19. SIMULADORES: Cuando expliques un proceso biológico, químico o histórico con etapas secuenciales (fotosíntesis, ciclo del agua, revolución, etc.), genera un simulador visual con este formato:
