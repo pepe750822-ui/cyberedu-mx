@@ -2248,15 +2248,10 @@ const AITutor = () => {
     const performanceRecs = getRecomendacionesDiarias();
     const alerts = getAlertasRiesgo();
 
-    let welcomeText = "¡Hola! Soy **CyberAgent**, tu tutor experto especializado exclusivamente en el **Temario ECOEMS 2026**.\n\n";
-    
+    let welcomeText = "¡Hola! Soy tu tutor ECOEMS 2026. ¿Con qué tema empezamos hoy?";
     if (performanceRecs.length > 0) {
-      welcomeText += `🔍 **Análisis Predictivo:** He detectado áreas del temario que podemos reforzar.\n\n`;
+      welcomeText += "\n\n🔍 He detectado áreas que podemos reforzar.";
     }
-    
-    welcomeText += "Mi conocimiento está optimizado para las áreas de **Habilidades, Ciencias, Matemáticas, Historia, Español, Cívica y Geografía**. Si preguntas sobre otros temas (como Inglés), te ayudaré pero te recordaré que no forman parte del examen oficial.\n\n";
-
-    welcomeText += "**¿En qué área del temario nos enfocamos hoy?**\n- Escribe `/reporte` para ver tu rendimiento.\n- Escribe `/analisis` para ver tus temas críticos.\n- Escribe `/recomienda` para un plan de acción ECOEMS.\n- Escribe `/explica [tema]` para conceptos del examen.\n- O simplemente hazme una consulta académica.";
 
     return [{
       role: "assistant" as const,
@@ -2339,16 +2334,7 @@ const AITutor = () => {
     const performanceRecs = getRecomendacionesDiarias();
     const alerts = getAlertasRiesgo();
 
-    let welcomeText = "¡Historial de memoria y chat reiniciados! Empecemos de nuevo. \n\n";
-    
-    if (performanceRecs.length > 0) {
-      welcomeText += `🔍 **Análisis Predictivo:** He detectado que podrías mejorar en algunas áreas.\n\n`;
-    }
-    if (alerts.length > 0) {
-      welcomeText += `🚨 **Alertas de Riesgo:** Se han identificado posibles riesgos en tu progreso.\n\n`;
-    }
-
-    welcomeText += "**¿Cómo puedes usarme?**\n- Escribe `/reporte` para ver tu rendimiento semanal.\n- Escribe `/analisis` para ver tu diagnóstico de áreas débiles.\n- Escribe `/recomienda` para generarte un **Plan de Acción** en base a tus resultados.\n- Escribe `/explica [tema]` para que te explique cualquier concepto con contexto del examen.\n- Escribe `/planes` para ver los planes que hemos construido juntos.\n- O simplemente platica conmigo y hazme preguntas.\n\n¿Con qué empezamos hoy?";
+    let welcomeText = "¡Historial reiniciado! ¿Con qué empezamos?";
 
     setMessages([{
       role: "assistant",
@@ -3231,7 +3217,10 @@ const AITutor = () => {
     <>
       {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(true);
+          setIsExpanded(true);
+        }}
         className={cn(
           "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center",
           isOpen && isExpanded
@@ -3319,7 +3308,10 @@ const AITutor = () => {
               </button>
               {/* Botón cerrar visible solo en móvil — el botón flotante se oculta en fullscreen */}
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsExpanded(false);
+                }}
                 title="Cerrar tutor"
                 className="flex sm:hidden p-1.5 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
               >
@@ -3596,9 +3588,6 @@ const AITutor = () => {
                       {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
                     </button>
                   </div>
-                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.2em] text-center mt-3 opacity-50">
-                    Propulsado por CyberAgent IA v8.4
-                  </p>
                 </div>
               </div>
           </div>
