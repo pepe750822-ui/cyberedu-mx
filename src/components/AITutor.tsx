@@ -2379,12 +2379,7 @@ const AITutor = () => {
     }
   }, [messages, isStreaming]);
 
-  const contextualSuggestions = useMemo(() => {
-    const path = location.pathname;
-    if (path === "/simulador-pro") return ["Dame una pista para esta pregunta", "Explica la estrategia del simulador"];
-    if (path.includes("/area/")) return ["Crea un plan de estudio para esta área", "Resumen rápido de los temas clave"];
-    return ["¿Cómo voy en mi progreso?", "Crea un plan de estudio personalizado", "Explícame razonamiento lógico"];
-  }, [location.pathname]);
+
 
   const clearHistory = () => {
     localStorage.removeItem(MEMORY_KEY);
@@ -3424,7 +3419,7 @@ const AITutor = () => {
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
                 <div className={cn(
-                  "space-y-6 transition-all duration-500 pb-20",
+                  "space-y-6 transition-all duration-500 pb-4",
                   isExpanded
                     ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12")
                     : "max-w-4xl mx-auto w-full px-4"
@@ -3465,20 +3460,7 @@ const AITutor = () => {
                </div>
             </div>
 
-            {/* Suggestions */}
-            {!isStreaming && contextualSuggestions.length > 0 && (
-              <div className={cn("px-5 py-2 flex flex-wrap gap-1.5", isExpanded && "max-w-3xl mx-auto w-full")}>
-                {contextualSuggestions.map((s, i) => (
-                  <button
-                    key={i}
-                    onClick={() => sendMessage(s)}
-                    className="px-3 py-1.5 bg-slate-800/50 hover:bg-primary/20 border border-white/5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
+
 
             {/* Input Overlay for chat */}
             <div className="p-5 bg-slate-900/50 border-t border-white/5">
