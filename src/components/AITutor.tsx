@@ -3465,69 +3465,7 @@ const AITutor = () => {
             {/* Input Overlay for chat */}
             <div className="p-5 bg-slate-900/50 border-t border-white/5">
               <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
-                  {/* Improved Token/Trial Status Bar */}
-                  <div className="mb-4 flex items-center justify-between px-2 bg-slate-900/30 p-2 rounded-xl border border-white/5 shadow-inner">
-                    <div className="flex flex-col">
-                      {(() => {
-                        // Use usageStats as the source of truth for daily usage and tokens
-                        const tokens = usageStats?.tokens || profile?.tokens || 0;
-                        const actualDailyCount = usageStats?.used || 0;
-                        const dailyLimit = usageStats?.limit || 5;
-                        const isSubscriber = usageStats?.isSubscriber || profile?.subscription_status === 'active' || profile?.is_premium === true;
 
-                        return (
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-2 mb-0.5">
-                                <p className="text-[10px] font-black uppercase text-white flex items-center gap-1.5">
-                                    <Ticket className="h-3.5 w-3.5 text-primary" /> 
-                                    Balance: <span className={cn("px-1.5 py-0.5 rounded-md", tokens > 0 ? "bg-primary/20 text-primary border border-primary/30" : "bg-slate-800 text-slate-500 border border-white/5")}>
-                                      {tokens} {tokens === 1 ? 'TOKEN' : 'TOKENS'}
-                                    </span>
-                                </p>
-                            </div>
-                            
-                            {!isSubscriber && tokens <= 0 && (
-                                <div className="flex flex-col gap-1 mt-1 border-t border-white/5 pt-1">
-                                    {dailyLimit - actualDailyCount === 1 ? (
-                                        <p className="text-[9px] font-black uppercase text-amber-500 animate-pulse flex items-center gap-1">
-                                            ⚠️ Te queda 1 pregunta gratuita hoy — ¡Úsala bien!
-                                        </p>
-                                    ) : dailyLimit - actualDailyCount <= 0 ? (
-                                        <p className="text-[9px] font-black uppercase text-rose-500 flex items-center gap-1">
-                                            🔒 Agotaste tus preguntas gratuitas de hoy. Vuelve mañana o compra tokens.
-                                        </p>
-                                    ) : (
-                                        <p className="text-[9px] font-black uppercase text-slate-400 flex items-center gap-1">
-                                            <span className="text-primary text-[11px]">🎁</span> 
-                                            GRATIS HOY: {actualDailyCount}/{dailyLimit} preguntas realizadas
-                                        </p>
-                                    )}
-                                    {/* Visual Progress Bar */}
-                                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-0.5">
-                                      <div 
-                                        className={cn(
-                                          "h-full transition-all duration-700 ease-out",
-                                          (actualDailyCount / dailyLimit) >= 1 ? "bg-rose-500" : 
-                                          (actualDailyCount / dailyLimit) >= 0.8 ? "bg-amber-500" : "bg-primary"
-                                        )}
-                                        style={{ width: `${Math.min(100, (actualDailyCount / dailyLimit) * 100)}%` }}
-                                      />
-                                    </div>
-                                </div>
-                            )}
-                          </div>
-                        );
-                      })()}
-                    </div>
-                    
-                    <button 
-                      onClick={() => agentNavigate("/tokens")}
-                      className="px-3 py-1.5 h-auto rounded-xl bg-primary/10 border border-primary/30 text-[9px] font-black text-primary uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-md shadow-primary/10 flex items-center gap-2"
-                    >
-                      <Ticket className="h-3 w-3 " />
-                      Comprar más
-                    </button>
-                  </div>
 
                   {/* Banner Límite Diario */}
                   {dailyLimitBanner.visible && (
@@ -3559,6 +3497,13 @@ const AITutor = () => {
 
                   {/* Quick Actions */}
                   <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
+                    <button
+                      onClick={() => agentNavigate("/tokens")}
+                      className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/30 text-xs font-black text-primary hover:bg-primary hover:text-white transition-all active:scale-95 flex items-center gap-1 shrink-0"
+                    >
+                      <Ticket className="h-3 w-3" />
+                      {usageStats?.tokens || profile?.tokens || 0} tokens
+                    </button>
                     {[
                       { label: "📈 Reporte", cmd: "/reporte" },
                       { label: "📊 Análisis", cmd: "/analisis" },
