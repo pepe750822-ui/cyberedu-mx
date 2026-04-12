@@ -1903,7 +1903,16 @@ const MessageBubble = React.memo(({
 
           <button
             onClick={() => {
-              navigator.clipboard.writeText(msg.content);
+              const clean = msg.content
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\*(.*?)\*/g, '$1')
+                .replace(/#{1,6}\s/g, '')
+                .replace(/```[\s\S]*?```/g, '')
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                .replace(/[|#>`]/g, '')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+              navigator.clipboard.writeText(clean);
               toast.success('Copiado');
             }}
             className="p-1.5 text-slate-500 hover:text-white transition-colors"
@@ -1914,7 +1923,15 @@ const MessageBubble = React.memo(({
 
           <button
             onClick={() => {
-              const text = encodeURIComponent(msg.content.slice(0, 500));
+              const clean = msg.content
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\*(.*?)\*/g, '$1')
+                .replace(/```[\s\S]*?```/g, '')
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                .replace(/[|#>`]/g, '')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+              const text = encodeURIComponent(clean.slice(0, 1500));
               window.open(`https://wa.me/?text=${text}`, '_blank');
             }}
             className="p-1.5 text-slate-500 hover:text-green-400 transition-colors"
