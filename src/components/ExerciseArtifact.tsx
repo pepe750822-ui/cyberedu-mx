@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { Target, CheckCircle2, XCircle, Lightbulb, ChevronRight } from "lucide-react";
+import { Target, CheckCircle2, XCircle, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface ExerciseProps {
-  exercise: {
-    title: string;
-    problem: string;
-    placeholder?: string;
-    expected_answer: string;
-    hint: string;
-    explanation: string;
-  };
+interface ExerciseData {
+  title: string;
+  problem: string;
+  hint: string;
+  answer: number | string;
+  answer_unit?: string;
+  explanation: string;
 }
 
-export const ExerciseArtifact: React.FC<ExerciseProps> = ({ exercise }) => {
+export const ExerciseArtifact: React.FC<{ exercise: ExerciseData }> = ({ exercise }) => {
   const [value, setValue] = useState("");
   const [status, setStatus] = useState<"idle" | "correct" | "incorrect">("idle");
   const [showHint, setShowHint] = useState(false);
@@ -21,11 +19,12 @@ export const ExerciseArtifact: React.FC<ExerciseProps> = ({ exercise }) => {
 
   const checkAnswer = () => {
     if (!value.trim()) return;
-    
-    // Basic normalization for comparison
-    const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, '').replace(',', '.');
-    const isMatch = normalize(value) === normalize(exercise.expected_answer);
-    
+    const normalize = (s: string) =>
+      s.toLowerCase().replace(/\s+/g, "").replace(",", ".").replace(/[^0-9.]/g, "");
+    const userNum = parseFloat(normalize(value));
+    const correctNum = parseFloat(String(exercise.answer).replace(",", "."));
+    // Accept ±1% tolerance for floating point
+    const isMatch = !isNaN(userNum) && !isNaN(correctNum) && Math.abs(userNum - correctNum) / (Math.abs(correctNum) || 1) < 0.01;
     if (isMatch) {
       setStatus("correct");
       setShowExplanation(true);
@@ -34,124 +33,125 @@ export const ExerciseArtifact: React.FC<ExerciseProps> = ({ exercise }) => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") checkAnswer();
-  };
-
   return (
-    <div className="my-6 rounded-3xl border border-white/10 bg-slate-900/50 backdrop-blur-xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 max-w-sm sm:max-w-md mx-auto">
-      {/* Header */}
-      <div className="bg-primary/20 p-4 border-b border-white/10 flex items-center gap-3">
-        <div className="p-2 bg-primary/20 rounded-lg border border-primary/30">
-          <Target className="h-4 w-4 text-primary" />
-        </div>
-        <div>
-          <h3 className="text-sm font-black text-white uppercase tracking-wider">{exercise.title || "Ejercicio Práctico"}</h3>
-          <p className="text-[10px] text-primary font-bold uppercase tracking-widest leading-none mt-1 opacity-70">
-            Reto Interactivo
-          </p>
-        </div>
+    <div className="my-3 rounded-xl border border-white/10 bg-slate-900/50 overflow-hidden">
+      {/* Header compacto */}
+      <div className="px-3 py-2 border-b border-white/10 flex items-center gap-2">
+        <Target className="h-3.5 w-3.5 text-primary shrink-0" />
+        <span className="text-xs font-black text-white uppercase tracking-wider truncate">
+          {exercise.title || "Ejercicio Práctico"}
+        </span>
+        <span className="ml-auto text-[9px] font-black text-primary/60 uppercase tracking-widest shrink-0">
+          Reto Interactivo
+        </span>
       </div>
 
-      <div className="p-5 space-y-5">
-        {/* Plantear Problema */}
-        <p className="text-sm text-slate-200 leading-relaxed font-medium">
-          {exercise.problem}
-        </p>
+      <div className="px-3 py-3 space-y-3">
+        {/* Problema */}
+        <p className="text-sm text-slate-200 leading-relaxed">{exercise.problem}</p>
 
-        {/* Área de Entrada */}
-        <div className="relative">
-          <input
-            type="text"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              setStatus("idle");
-            }}
-            onKeyDown={handleKeyDown}
-            disabled={status === "correct"}
-            placeholder={exercise.placeholder || "Escribe tu respuesta aquí..."}
-            className={cn(
-              "w-full bg-slate-800/80 border rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all pr-12",
-              status === "idle" ? "border-white/10 focus:border-primary/50 focus:ring-2 ring-primary/10" :
-              status === "correct" ? "border-green-500/50 bg-green-500/10 text-green-200" :
-              "border-red-500/50 bg-red-500/10 text-red-200"
+        {/* Input + botón */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <input
+              type="number"
+              value={value}
+              onChange={(e) => { setValue(e.target.value); setStatus("idle"); }}
+              onKeyDown={(e) => e.key === "Enter" && checkAnswer()}
+              disabled={status === "correct"}
+              placeholder={`Tu respuesta${exercise.answer_unit ? ` (${exercise.answer_unit})` : ""}...`}
+              className={cn(
+                "w-full bg-slate-800/80 border rounded-lg px-3 py-2 text-sm text-white focus:outline-none transition-all",
+                status === "idle" && "border-white/10 focus:border-primary/50",
+                status === "correct" && "border-emerald-500/50 bg-emerald-500/10 text-emerald-200",
+                status === "incorrect" && "border-rose-500/50 bg-rose-500/10 text-rose-200"
+              )}
+            />
+            {exercise.answer_unit && (
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-slate-500 font-bold pointer-events-none">
+                {exercise.answer_unit}
+              </span>
             )}
-          />
+          </div>
           <button
             onClick={checkAnswer}
             disabled={status === "correct" || !value.trim()}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-primary/20 hover:bg-primary/40 rounded-lg text-primary transition-colors disabled:opacity-50"
+            className="px-3 py-2 bg-primary/20 hover:bg-primary/40 border border-primary/30 rounded-lg text-xs font-black text-primary transition-all disabled:opacity-40 whitespace-nowrap"
           >
-            <ChevronRight className="h-4 w-4" />
+            Verificar
           </button>
         </div>
 
-        {/* Feedback Messages */}
+        {/* Feedback incorrecto */}
         {status === "incorrect" && (
-          <div className="animate-in slide-in-from-top-2 duration-300">
-            <p className="text-xs text-red-400 font-bold flex items-center gap-2">
-              <XCircle className="h-4 w-4" /> Respuesta incorrecta. Inténtalo de nuevo.
+          <div className="flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
+            <p className="text-xs text-rose-400 font-bold flex items-center gap-1.5">
+              <XCircle className="h-3.5 w-3.5 shrink-0" /> Respuesta incorrecta. Inténtalo de nuevo.
             </p>
             {!showHint && (
-              <button 
+              <button
                 onClick={() => setShowHint(true)}
-                className="mt-3 text-[11px] uppercase tracking-widest font-black text-primary/80 hover:text-primary transition-colors flex items-center gap-1"
+                className="text-[10px] uppercase tracking-widest font-black text-yellow-500/80 hover:text-yellow-400 transition-colors flex items-center gap-1 shrink-0"
               >
-                <Lightbulb className="h-3 w-3" /> Ver pista
+                <Lightbulb className="h-3 w-3" /> Pista
               </button>
             )}
           </div>
         )}
 
+        {/* Pista */}
         {showHint && status !== "correct" && (
-          <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl animate-in fade-in duration-300">
-            <p className="text-xs text-yellow-500 font-medium italic flex items-start gap-2">
-              <Lightbulb className="h-4 w-4 shrink-0 mt-0.5" />
+          <div className="p-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-lg animate-in fade-in duration-200">
+            <p className="text-xs text-yellow-400 font-medium italic flex items-start gap-1.5">
+              <Lightbulb className="h-3.5 w-3.5 shrink-0 mt-0.5" />
               {exercise.hint}
             </p>
-            <button 
-                onClick={() => setShowExplanation(true)}
-                className="mt-3 text-[10px] uppercase tracking-widest text-slate-400 hover:text-white transition-colors underline"
-              >
-                Me rindo, ver respuesta
+            <button
+              onClick={() => setShowExplanation(true)}
+              className="mt-2 text-[10px] uppercase tracking-widest text-slate-500 hover:text-white transition-colors underline"
+            >
+              Ver respuesta
             </button>
           </div>
         )}
 
-        {/* Explicación (Success or Gave up) */}
+        {/* Explicación (correcto o rendido) */}
         {showExplanation && (
-          <div className={cn(
-            "p-4 rounded-xl border animate-in zoom-in-95 duration-500",
-            status === "correct" ? "bg-green-500/10 border-green-500/30" : "bg-primary/10 border-primary/30"
-          )}>
-            <div className="flex items-center gap-2 mb-2">
-              {status === "correct" ? (
-                 <CheckCircle2 className="h-5 w-5 text-green-400" />
-              ) : (
-                 <Target className="h-5 w-5 text-primary" />
-              )}
-              <h4 className={cn("text-xs font-black uppercase tracking-wider", status === "correct" ? "text-green-400" : "text-primary")}>
-                {status === "correct" ? "¡Excelente trabajo!" : "Solución"}
-              </h4>
-            </div>
-            
-            {status !== "correct" && (
-               <p className="text-sm font-bold text-white mb-2">
-                 Respuesta esperada: <span className="text-primary">{exercise.expected_answer}</span>
-               </p>
+          <div
+            className={cn(
+              "p-3 rounded-lg border animate-in fade-in slide-in-from-top-1 duration-300",
+              status === "correct"
+                ? "bg-emerald-500/10 border-emerald-500/30"
+                : "bg-primary/10 border-primary/20"
             )}
-            
-            <p className="text-sm text-slate-300 leading-relaxed">
-              {exercise.explanation}
-            </p>
+          >
+            <div className="flex items-center gap-2 mb-1.5">
+              {status === "correct" ? (
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+              ) : (
+                <Target className="h-4 w-4 text-primary shrink-0" />
+              )}
+              <p className={cn("text-xs font-black uppercase tracking-wider",
+                status === "correct" ? "text-emerald-400" : "text-primary"
+              )}>
+                {status === "correct" ? "¡Excelente trabajo!" : "Solución"}
+              </p>
+              {status !== "correct" && (
+                <span className="ml-auto text-xs font-bold text-white">
+                  {exercise.answer}{exercise.answer_unit ? ` ${exercise.answer_unit}` : ""}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">{exercise.explanation}</p>
           </div>
         )}
-
       </div>
-      
-      <div className="px-5 py-3 bg-white/[0.02] border-t border-white/5 flex justify-center">
-        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">ECOEMS 2026 • Evaluación Rápida</p>
+
+      {/* Footer */}
+      <div className="px-3 py-1.5 bg-white/[0.02] border-t border-white/5 flex justify-center">
+        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">
+          ECOEMS 2026 • Evaluación Rápida
+        </p>
       </div>
     </div>
   );

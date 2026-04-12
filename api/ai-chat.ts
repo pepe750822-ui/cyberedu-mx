@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v6:${cacheType}:` + text
+  return `chat:v7:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -480,17 +480,18 @@ export default async function handler(req: Request) {
     }
     </simulator>
 
-    20. EJERCICIOS: Cuando propongas un reto práctico para que el usuario resuelva (un problema de matemáticas, balanceo químico, o pregunta de razonamiento puntual), genera un ejercicio interactivo así:
+    20. EJERCICIOS: Al final de CADA explicación de tema que involucre fórmulas o cálculos (matemáticas, física, química), genera SIEMPRE UN ejercicio de práctica con este formato EXACTO:
     <exercise>
     {
-      "title": "Práctica: Segunda Ley de Newton",
-      "problem": "¿Cuál es la aceleración (en m/s²) de un objeto de 10 kg si se le aplica una fuerza de 50 N?",
-      "expected_answer": "5",
-      "hint": "Usa la fórmula: F = m * a. Despeja 'a'.",
-      "explanation": "a = F / m = 50 / 10 = 5 m/s²."
+      "title": "Práctica: [tema]",
+      "problem": "Enunciado del problema numérico concreto",
+      "hint": "Pista que menciona la fórmula sin dar la respuesta",
+      "answer": número_exacto,
+      "answer_unit": "unidad_de_medida",
+      "explanation": "Solución paso a paso completa"
     }
     </exercise>
-    CRÍTICO: El tag <exercise> y </exercise> deben estar perfectamente cerrados.
+    CRÍTICO: El campo "answer" debe ser un NÚMERO (no string). El tag <exercise> y </exercise> deben estar PERFECTAMENTE cerrados. Genera EXACTAMENTE UN <exercise> por respuesta. NUNCA generes el ejercicio a la mitad.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
