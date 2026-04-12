@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlayCircle, ArrowRight, Info } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SimulatorStep {
@@ -9,96 +9,53 @@ interface SimulatorStep {
   color: string;
 }
 
-interface SimulatorProps {
-  simulator: {
-    title: string;
-    steps: SimulatorStep[];
-    summary: string;
-  };
-}
-
-export const SimulatorArtifact: React.FC<SimulatorProps> = ({ simulator }) => {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
+export const SimulatorArtifact: React.FC<{ simulator: { title: string; steps: SimulatorStep[]; summary: string; } }> = ({ simulator }) => {
+  const [activeStep, setActiveStep] = useState<number>(simulator.steps[0]?.id ?? 1);
+  const active = simulator.steps.find(s => s.id === activeStep);
 
   return (
-    <div className="my-6 rounded-3xl border border-white/10 bg-slate-900/50 backdrop-blur-xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 max-w-sm sm:max-w-md mx-auto">
-      {/* Header */}
-      <div className="bg-primary/20 p-4 border-b border-white/10 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-primary/20 rounded-lg border border-primary/30">
-            <PlayCircle className="h-4 w-4 text-primary" />
-          </div>
-          <div>
-            <h3 className="text-sm font-black text-white uppercase tracking-wider">{simulator.title}</h3>
-            <p className="text-[10px] text-primary font-bold uppercase tracking-widest leading-none mt-1 opacity-70">
-              Simulador Visual
-            </p>
-          </div>
-        </div>
+    <div className="my-3 rounded-xl border border-white/10 bg-slate-900/50 overflow-hidden">
+      {/* Header compacto */}
+      <div className="px-3 py-2 border-b border-white/10 flex items-center gap-2">
+        <PlayCircle className="h-3.5 w-3.5 text-primary shrink-0" />
+        <span className="text-xs font-black text-white uppercase tracking-wider truncate">{simulator.title}</span>
       </div>
 
-      <div className="p-5 space-y-6">
-        {/* Steps Flow */}
-        <div className="flex flex-col gap-3">
-          {simulator.steps.map((step, index) => (
-            <React.Fragment key={step.id}>
-              <button
-                onClick={() => setActiveStep(activeStep === step.id ? null : step.id)}
-                className={cn(
-                  "relative flex flex-col items-start w-full p-4 rounded-2xl border transition-all duration-300 text-left",
-                  activeStep === step.id 
-                    ? "bg-white/10 border-white/20 scale-[1.02]" 
-                    : "bg-slate-800/50 border-white/5 hover:bg-slate-800/80"
-                )}
-                style={{
-                  borderLeftColor: step.color,
-                  borderLeftWidth: activeStep === step.id ? '6px' : '4px'
-                }}
-              >
-                <div className="flex items-center gap-3 w-full">
-                  <div 
-                    className="flex items-center justify-center h-8 w-8 rounded-full font-black text-sm shrink-0 shadow-lg text-white"
-                    style={{ backgroundColor: step.color }}
-                  >
-                    {step.id}
-                  </div>
-                  <span className="font-bold text-white uppercase tracking-wider text-sm flex-1">
-                    {step.label}
-                  </span>
-                </div>
-
-                <div 
-                  className={cn(
-                    "overflow-hidden transition-all duration-300 w-full pl-11",
-                    activeStep === step.id ? "max-h-40 mt-3 opacity-100" : "max-h-0 opacity-0"
-                  )}
-                >
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </button>
-              
-              {index < simulator.steps.length - 1 && (
-                <div className="flex justify-center -my-2 opacity-50">
-                  <ArrowRight className="h-4 w-4 text-slate-500 rotate-90" />
-                </div>
+      {/* Pasos horizontales */}
+      <div className="flex overflow-x-auto gap-1 p-2 custom-scrollbar">
+        {simulator.steps.map((step, index) => (
+          <React.Fragment key={step.id}>
+            <button
+              onClick={() => setActiveStep(step.id)}
+              className={cn(
+                "flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg border transition-all shrink-0 min-w-[60px] max-w-[80px]",
+                activeStep === step.id ? "bg-white/15 border-white/20" : "bg-slate-800/50 border-white/5 hover:bg-slate-800/80"
               )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* Summary Area */}
-        <div className="mt-6 pt-4 border-t border-white/10 flex items-start gap-2">
-          <Info className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-          <p className="text-xs font-bold text-slate-400 leading-relaxed italic">
-            {simulator.summary}
-          </p>
-        </div>
+            >
+              <div className="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-black text-white shrink-0"
+                style={{ backgroundColor: step.color }}>
+                {step.id}
+              </div>
+              <span className="text-[9px] font-bold text-slate-300 text-center leading-tight line-clamp-2">{step.label}</span>
+            </button>
+            {index < simulator.steps.length - 1 && (
+              <div className="flex items-center shrink-0 text-slate-600 text-xs">→</div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
-      
-      <div className="px-5 py-3 bg-white/[0.02] border-t border-white/5 flex justify-center">
-        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">ECOEMS 2026 • Simulador Visual</p>
+
+      {/* Descripción del paso activo */}
+      {active && (
+        <div className="px-3 py-2 border-t border-white/5 flex items-start gap-2">
+          <div className="h-4 w-4 rounded-full shrink-0 mt-0.5" style={{ backgroundColor: active.color }} />
+          <p className="text-xs text-slate-300 leading-relaxed">{active.description}</p>
+        </div>
+      )}
+
+      {/* Resumen */}
+      <div className="px-3 py-1.5 bg-white/[0.02] border-t border-white/5">
+        <p className="text-[9px] text-slate-500 italic">{simulator.summary}</p>
       </div>
     </div>
   );
