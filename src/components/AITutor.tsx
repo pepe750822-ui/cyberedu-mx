@@ -1727,6 +1727,7 @@ const MessageBubble = React.memo(({
         "flex flex-col gap-1.5 max-w-[85%] animate-in fade-in slide-in-from-bottom-3 duration-400",
         !isAssistant ? "ml-auto items-end" : "mr-auto items-start"
       )}
+      data-role={msg.role}
     >
       <div className={cn("flex items-end gap-2", !isAssistant ? "flex-row-reverse" : "flex-row")}>
         <div className={cn(
@@ -1985,6 +1986,14 @@ const AITutor = () => {
   const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
+
+  // Bug 2 — Abre el chat de forma segura tras la autenticación solo en la primera visita
+  useEffect(() => {
+    if (user && !localStorage.getItem('cyberedu_chat_visited')) {
+      setIsOpen(true);
+      localStorage.setItem('cyberedu_chat_visited', 'true');
+    }
+  }, [user]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState<string | null>(null);
@@ -2294,19 +2303,18 @@ const AITutor = () => {
     }
   }, [getWeeklyReport, getAlertasRiesgo, getRecomendacionesDiarias]);
 
-  // Auto-scroll smoother (optimized for streaming)
+  // Bug 5 — Scroll inteligente: fondo durante streaming, inicio del mensaje al terminar
   useEffect(() => {
-    if (scrollRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-        const isNearBottom = scrollHeight - scrollTop - clientHeight < 250;
-        
-        // Always scroll if streaming or if user was already at the bottom
-        if (isNearBottom || isStreaming) {
-           scrollRef.current.scrollTo({
-              top: scrollHeight,
-              behavior: isStreaming ? 'auto' : 'smooth'
-           });
-        }
+    if (!scrollRef.current) return;
+    const { scrollHeight } = scrollRef.current;
+    
+    if (isStreaming) {
+      scrollRef.current.scrollTo({ top: scrollHeight, behavior: 'auto' });
+    } else if (messages.length > 0) {
+      const lastMessage = scrollRef.current.querySelector('[data-role="assistant"]:last-child');
+      if (lastMessage) {
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   }, [messages, isStreaming]);
 
