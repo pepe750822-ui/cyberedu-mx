@@ -1434,7 +1434,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                     <img 
                       src={infoImgUrl} 
                       alt={`Infografía ${r.title}`}
-                      className="w-full h-24 object-cover rounded-lg mb-2 opacity-80 group-hover:opacity-100 transition-opacity border border-white/5 shadow-sm"
+                      className="w-full h-40 object-contain rounded-lg mb-2 bg-slate-800/50 opacity-80 group-hover:opacity-100 transition-opacity border border-white/5 shadow-sm"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                     />
                   )}
