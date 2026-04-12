@@ -3295,7 +3295,7 @@ const AITutor = () => {
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 title={isExpanded ? "Contraer chat" : "Expandir chat"}
-                className="hidden sm:flex p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
+                className="hidden p-1.5 sm:p-2 hover:bg-white/10 rounded-xl text-slate-500 hover:text-white transition-colors"
               >
                 {isExpanded ? <Minimize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
               </button>
@@ -3313,7 +3313,7 @@ const AITutor = () => {
                   setIsExpanded(false);
                 }}
                 title="Cerrar tutor"
-                className="flex sm:hidden p-1.5 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
+                className="flex p-1.5 mr-2 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
