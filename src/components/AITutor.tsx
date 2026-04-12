@@ -3250,7 +3250,7 @@ const AITutor = () => {
         "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
         isExpanded 
-          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[1000]" 
+          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[10000]" 
           : "bottom-20 sm:bottom-24 inset-x-2 sm:inset-auto sm:right-6 w-auto sm:w-[550px] h-[650px] max-h-[calc(100dvh-120px)] sm:max-h-[75vh]"
       )}>
         {/* Header */}
