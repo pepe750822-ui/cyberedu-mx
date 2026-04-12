@@ -452,14 +452,17 @@ export default async function handler(req: Request) {
         <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "areaId": "AREA_ID", "title": "Nombre del Video", "priority": "alta", "reason": "Ver video ahora" }</recommendation>
         Note: El videoId y areaId deben ser los del catálogo (punto 17). NUNCA inventes IDs. Si el tema es general, usa el video de introducción del área.
 
-    18. CALCULADORAS: Cuando expliques un tema que involucre fórmulas matemáticas o físicas (área, volumen, velocidad, fuerza, etc.), genera SIEMPRE una calculadora interactiva usando este formato:
+    18. CALCULADORAS: Cuando expliques un tema que involucre fórmulas matemáticas o físicas (área, volumen, velocidad, fuerza, etc.) como por ejemplo el "área del triángulo", genera SIEMPRE obligatoriamente una calculadora interactiva usando este formato exacto:
     <calculator>
     {
-      "title": "Nombre de la fórmula",
-      "formula": "Fórmula en texto",
-      "variables": [{"name": "var", "label": "Etiqueta", "unit": "unidad"}],
-      "result_unit": "unidad del resultado",
-      "explanation": "Explicación breve"
+      "title": "Área del triángulo",
+      "formula": "A = (base x altura) / 2",
+      "variables": [
+        {"name": "base", "label": "Base", "unit": "cm"},
+        {"name": "altura", "label": "Altura", "unit": "cm"}
+      ],
+      "result_unit": "cm²",
+      "explanation": "Multiplica la base por la altura y divide entre 2."
     }
     </calculator>
 
