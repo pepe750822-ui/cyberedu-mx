@@ -293,8 +293,8 @@ interface Message {
   report?: any;
   alerts?: any[];
   charts?: ChartData[];
-  calculator?: any;
-  simulator?: any;
+  calculators?: any[];
+  simulators?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -655,20 +655,26 @@ function parseChartsFromContent(content: string): { charts: ChartData[]; cleanCo
   return { charts, cleanContent: cleaned };
 }
 
-function parseCalculatorFromContent(content: string): { calculator: any; cleanContent: string } {
-  const match = content.match(/<calculator>([\s\S]*?)<\/calculator>/);
-  console.log('[parser] calculator match:', !!match, content.slice(0, 200));
-  if (!match) return { calculator: null, cleanContent: content };
-  const parsed = safeParseJSON(match[1]);
-  return { calculator: parsed, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/, "").trim() };
+function parseCalculatorsFromContent(content: string): { calculators: any[]; cleanContent: string } {
+  const calculators: any[] = [];
+  const regex = /<calculator>([\s\S]*?)<\/calculator>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) calculators.push(parsed);
+  }
+  return { calculators, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/g, "").trim() };
 }
 
-function parseSimulatorFromContent(content: string): { simulator: any; cleanContent: string } {
-  const match = content.match(/<simulator>([\s\S]*?)<\/simulator>/);
-  console.log('[parser] simulator match:', !!match, content.slice(0, 200));
-  if (!match) return { simulator: null, cleanContent: content };
-  const parsed = safeParseJSON(match[1]);
-  return { simulator: parsed, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/, "").trim() };
+function parseSimulatorsFromContent(content: string): { simulators: any[]; cleanContent: string } {
+  const simulators: any[] = [];
+  const regex = /<simulator>([\s\S]*?)<\/simulator>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) simulators.push(parsed);
+  }
+  return { simulators, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/g, "").trim() };
 }
 
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
@@ -692,10 +698,10 @@ function parseAllBlocks(content: string) {
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);
   const { quiz, cleanContent: c4 } = parseQuizFromContent(c3);
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
-  const { calculator, cleanContent: c55 } = parseCalculatorFromContent(c5);
-  const { simulator, cleanContent: c56 } = parseSimulatorFromContent(c55);
+  const { calculators, cleanContent: c55 } = parseCalculatorsFromContent(c5);
+  const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c56);
-  return { reasoning, decisions, plan, quiz, charts, calculator, simulator, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -1796,8 +1802,12 @@ const MessageBubble = React.memo(({
               <ChartRenderer chart={chart} />
             </div>
           ))}
-          {msg.calculator && <CalculatorArtifact calculator={msg.calculator} />}
-          {msg.simulator && <SimulatorArtifact simulator={msg.simulator} />}
+          {msg.calculators?.map((calc: any, i: number) => (
+            <CalculatorArtifact key={`calc-${i}`} calculator={calc} />
+          ))}
+          {msg.simulators?.map((sim: any, i: number) => (
+            <SimulatorArtifact key={`sim-${i}`} simulator={sim} />
+          ))}
           {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
           {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
           {msg.diagnostics && <DiagnosticsCard 
@@ -3114,7 +3124,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculator, simulator, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3163,7 +3173,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculator, simulator, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
