@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v5:${cacheType}:` + text
+  return `chat:v6:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -479,6 +479,18 @@ export default async function handler(req: Request) {
       "summary": "Resumen del proceso"
     }
     </simulator>
+
+    20. EJERCICIOS: Cuando propongas un reto práctico para que el usuario resuelva (un problema de matemáticas, balanceo químico, o pregunta de razonamiento puntual), genera un ejercicio interactivo así:
+    <exercise>
+    {
+      "title": "Práctica: Segunda Ley de Newton",
+      "problem": "¿Cuál es la aceleración (en m/s²) de un objeto de 10 kg si se le aplica una fuerza de 50 N?",
+      "expected_answer": "5",
+      "hint": "Usa la fórmula: F = m * a. Despeja 'a'.",
+      "explanation": "a = F / m = 50 / 10 = 5 m/s²."
+    }
+    </exercise>
+    CRÍTICO: El tag <exercise> y </exercise> deben estar perfectamente cerrados.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
