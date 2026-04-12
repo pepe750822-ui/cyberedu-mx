@@ -1834,7 +1834,6 @@ const MessageBubble = React.memo(({
             <ExerciseArtifact key={`ex-${i}`} exercise={ex} />
           ))}
           {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
-          {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
           {msg.diagnostics && <DiagnosticsCard 
             result={msg.diagnostics} 
             fixingId={fixingCheckId} 
@@ -1926,6 +1925,7 @@ const MessageBubble = React.memo(({
           ) : (
             <span>{msg.content}</span>
           )}
+          {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
         </div>
       </div>
 
