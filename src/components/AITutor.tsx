@@ -1200,9 +1200,19 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
   );
 };
 
-// ─── Quiz Card ───
-const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: number) => void; answers: Record<string, number> }> = ({ quiz, onAnswer, answers }) => {
-  const isEvaluated = Array.isArray(quiz?.questions) && quiz.questions.length > 0 && quiz.questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
+// ─── Quiz Card (self-contained, no external state) ───
+const QuizCard: React.FC<{ quiz: PersonalizedQuiz }> = ({ quiz }) => {
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  
+  const questions = Array.isArray(quiz?.questions) ? quiz.questions : [];
+  const isEvaluated = questions.length > 0 && questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
+
+  const handleAnswer = (qId: string, idx: number) => {
+    setAnswers(prev => {
+      if (prev[qId] !== undefined) return prev; // already answered
+      return { ...prev, [qId]: idx };
+    });
+  };
 
   return (
     <div className="my-5 space-y-5">
@@ -1210,18 +1220,19 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
         <div className="flex items-center gap-3">
           <Sparkles className="h-5 w-5 text-indigo-400" />
           <div>
-            <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz.title}</h3>
-            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz.difficulty} · {quiz?.questions?.length || 0} reactivos</p>
+            <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz?.title || "Quiz"}</h3>
+            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">Nivel: {quiz?.difficulty || "—"} · {questions.length} reactivos</p>
           </div>
         </div>
       </div>
       
       <div className="space-y-5">
-        {Array.isArray(quiz?.questions) && quiz.questions.map((q, qi) => {
+        {questions.map((q, qi) => {
           const actualId = q.id || `q${qi}`;
           const selectedOption = answers[actualId];
           const answered = selectedOption !== undefined;
-          const isCorrect = answered && selectedOption === Number(q.correctIndex || 0);
+          const isCorrect = answered && selectedOption === Number(q.correctIndex ?? 0);
+          const opts = Array.isArray(q?.options) ? q.options : [];
           
           return (
             <div key={actualId} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
@@ -1233,18 +1244,18 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
               )}
 
               <h4 className="text-base md:text-lg font-bold text-white mb-5 leading-tight">
-                <span className="text-indigo-400 mr-1">{qi + 1}.</span> {q.text || (q as any).question || (q as any).pregunta}
+                <span className="text-indigo-400 mr-1">{qi + 1}.</span> {q.text || (q as any).question || (q as any).pregunta || ""}
               </h4>
 
               <div className="space-y-2.5">
-                {Array.isArray(q?.options) && q.options.map((opt, oi) => {
-                  const isOptCorrect = oi === Number(q.correctIndex || 0);
+                {opts.map((opt, oi) => {
+                  const isOptCorrect = oi === Number(q.correctIndex ?? 0);
                   const isSelected = oi === selectedOption;
 
                   return (
                     <button
                       key={oi}
-                      onClick={() => !answered && onAnswer(actualId, oi)}
+                      onClick={() => !answered && handleAnswer(actualId, oi)}
                       disabled={answered}
                       className={cn(
                         "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
@@ -1264,12 +1275,10 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
               </div>
 
               {answered && (
-                <div
-                  className={cn(
-                    "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
-                    isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
-                  )}
-                >
+                <div className={cn(
+                  "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
+                  isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
+                )}>
                   <div className="flex gap-4">
                     <div className={cn(
                       "p-2 rounded-xl h-fit",
@@ -1280,7 +1289,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
                     <div className="space-y-1">
                       <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
                       <p className="text-xs font-medium text-slate-300 leading-relaxed">
-                        {q.explanation}
+                        {q.explanation || ""}
                       </p>
                     </div>
                   </div>
@@ -1292,35 +1301,31 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
       </div>
 
       {isEvaluated && (() => {
-        const correctCount = Array.isArray(quiz?.questions) ? quiz.questions.filter((q, qi) => {
+        const correctCount = questions.filter((q, qi) => {
           const userPick = answers[q.id || `q${qi}`];
-          const target = Number(q.correctIndex);
-          return userPick !== undefined && userPick === target;
-        }).length : 0;
+          return userPick !== undefined && userPick === Number(q.correctIndex ?? 0);
+        }).length;
         
         return (
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center"
-          >
+          <div className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center">
             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
             <div className="flex items-center gap-4">
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
-                  <p className="text-3xl font-black text-emerald-400">{correctCount}</p>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
+                <p className="text-3xl font-black text-emerald-400">{correctCount}</p>
               </div>
               <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
-                  <p className="text-3xl font-black text-white">{quiz.questions.length}</p>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
+                <p className="text-3xl font-black text-white">{questions.length}</p>
               </div>
             </div>
-          </motion.div>
+          </div>
         );
       })()}
     </div>
   );
 };
+
 
 // ─── Report Card ───
 const ReportCard: React.FC<{ report: any }> = ({ report }) => (
@@ -1752,15 +1757,6 @@ const MessageBubble = React.memo(({
   isSpeaking
 }: any) => {
   const isAssistant = msg.role === "assistant";
-  
-  const msgAnswers = useMemo<Record<string, number>>(() => {
-    if (!msg.quiz) return {};
-    return Object.fromEntries(
-      Object.entries(quizAnswers)
-        .filter(([k]) => k.startsWith(msg.id + '_'))
-        .map(([k, v]) => [k.substring(msg.id.length + 1), v])
-    ) as Record<string, number>;
-  }, [quizAnswers, msg.id, msg.quiz]);
 
   return (
     <div
@@ -1801,13 +1797,7 @@ const MessageBubble = React.memo(({
           {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
           {msg.report && <ReportCard report={msg.report} />}
           {msg.alerts?.map((a: any, i: number) => <AlertCard key={i} alert={a} />)}
-          {msg.quiz && (
-            <QuizCard 
-              quiz={msg.quiz} 
-              answers={msgAnswers} 
-              onAnswer={(qId, idx) => handleQuizAnswer(msg.id, msg.quiz!, qId, idx)} 
-            />
-          )}
+          {msg.quiz && <QuizCard quiz={msg.quiz} />}
           {msg.charts?.map((chart: any, i: number) => (
             <div key={i} className="max-w-full overflow-hidden my-4">
               <ChartRenderer chart={chart} />
