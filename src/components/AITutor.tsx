@@ -3497,21 +3497,30 @@ const AITutor = () => {
 
                   {/* Quick Actions */}
                   <div className="flex items-center gap-2 mb-3 overflow-x-auto custom-scrollbar pb-1">
+                    {/* Balance de tokens */}
+                    <button
+                      onClick={() => agentNavigate("/tokens")}
+                      className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-slate-800 border border-white/10 text-xs font-black text-white flex items-center gap-1 shrink-0"
+                    >
+                      <Ticket className="h-3 w-3 text-primary" />
+                      {(usageStats?.tokens || profile?.tokens || 0)} tkn
+                    </button>
+
+                    {/* Comprar tokens */}
                     <button
                       onClick={() => agentNavigate("/tokens")}
                       className="whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/30 text-xs font-black text-primary hover:bg-primary hover:text-white transition-all active:scale-95 flex items-center gap-1 shrink-0"
                     >
-                      <Ticket className="h-3 w-3" />
-                      {usageStats?.tokens || profile?.tokens || 0} tokens
+                      <Plus className="h-3 w-3" />
+                      Comprar
                     </button>
+
                     {[
                       { label: "📈 Reporte", cmd: "/reporte" },
                       { label: "📊 Análisis", cmd: "/analisis" },
                       { label: "✨ Planes IA", cmd: "/recomienda" },
-                      { label: "📚 Mis Planes", cmd: "/planes" },
                       { label: "🧠 Explica...", cmd: "/explica " },
-                      { label: "🧩 Quiz...", cmd: "/quiz " },
-                      { label: "🎟️ Tokens", cmd: "tokens", isLink: true }
+                      { label: "🧩 Quiz...", cmd: "/quiz " }
                     ].map((btn: any, i) => (
                       <button
                         key={i}
