@@ -20,7 +20,7 @@ const WhatsAppButton: React.FC = () => {
       style={{
         position: "fixed",
         bottom: "6rem",
-        left: "1.25rem",
+        left: "0.25rem",
         zIndex: 50,
         display: "flex",
         alignItems: "center",
