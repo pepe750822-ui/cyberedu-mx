@@ -1266,8 +1266,10 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz; onAnswer: (qId: string, idx: 
               <AnimatePresence>
                 {answered && (
                   <motion.div
+                    key={`explanation-${actualId}`}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
                     className={cn(
                       "mt-5 p-4 rounded-2xl border shadow-lg",
                       isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
