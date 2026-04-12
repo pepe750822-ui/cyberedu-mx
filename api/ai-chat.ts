@@ -102,7 +102,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v9:${cacheType}:` + text
+  return `chat:v10:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -364,11 +364,11 @@ export default async function handler(req: Request) {
     El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
 
     REGLAS CRÍTICAS (SIEMPRE OBLIGATORIAS):
-    - SIEMPRE incluye <recommendation> con areaId y videoId del catálogo al recomendar videos
-    - SIEMPRE incluye <calculator> cuando expliques fórmulas matemáticas o físicas
-    - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales
-    - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas
-    - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación
+    - SIEMPRE incluye <recommendation> al final con areaId y videoId del catálogo (Punto 16). NUNCA solo texto plano.
+    - SIEMPRE incluye <calculator> cuando expliques fórmulas matemáticas o físicas (Punto 18).
+    - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
+    - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
+    - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
 
     CAPACIDADES Y REGLAS:
     1. CRÍTICO (REGLA DE ORO): Al generar diagramas Mermaid NUNCA uses acentos (á,é,í,ó,ú), eñes (ñ), signos de interrogación, exclamación, paréntesis, comas, dos puntos ni símbolos como &, #, %, $, @ dentro de los nodos o etiquetas. Usa SOLO letras de la A a la Z (sin acento), números, espacios y guiones. Ejemplo: En lugar de "Historia de México & Revolución", usa "Historia de Mexico y Revolucion". Esta regla es OBLIGATORIA para evitar errores de renderizado. NUNCA cierres un bloque de código mermaid de forma incorrecta.
@@ -455,9 +455,10 @@ export default async function handler(req: Request) {
 
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
     
-    16. LINKS DIRECTOS (INTERNAL TAGS): Inmediatamente después del texto de recomendación, incluye OBLIGATORIAMENTE este tag JSON para que la interfaz renderice el botón de navegación. Al recomendar un video, usa siempre el tag <recommendation> con el areaId y videoId correctos — esto permite mostrar la infografía del tema automáticamente:
-        <recommendation>{ "type": "video", "videoId": "ID_DEL_VIDEO", "areaId": "AREA_ID", "title": "Nombre del Video", "priority": "alta", "reason": "Ver video ahora" }</recommendation>
-        Note: El videoId y areaId deben ser los del catálogo (punto 17). NUNCA inventes IDs. Si el tema es general, usa el video de introducción del área.
+    16. RECOMMENDATION TAG (OBLIGATORIO EN CADA RESPUESTA): SIEMPRE al final de cada explicación incluye este tag exacto. Para fotosíntesis sería:
+        <recommendation>{ "type": "video", "videoId": "bio-3", "areaId": "biologia", "title": "Tecnología y Metabolismo - Fotosíntesis y Respiración Celular", "priority": "alta", "reason": "Ver explicación completa en video" }</recommendation>
+        
+        NUNCA pongas solo el texto "Ver video:" sin el tag. El tag es lo que activa la infografía en la interfaz. Note: El videoId y areaId deben ser los del catálogo (punto 17). NUNCA inventes IDs. Si el tema es general, usa el video de introducción del área.
 
     18. CALCULADORAS: Cuando expliques un tema que involucre fórmulas matemáticas o físicas (área, volumen, velocidad, fuerza, etc.) como por ejemplo el "área del triángulo", genera SIEMPRE obligatoriamente una calculadora interactiva usando este formato exacto:
     <calculator>
