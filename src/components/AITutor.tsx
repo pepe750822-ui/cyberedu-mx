@@ -3133,7 +3133,7 @@ const AITutor = () => {
 
       // Always include the system message at the start, then the last N messages
       const conversationHistory = messages
-        .filter(m => m.id !== "initial")
+        .filter(m => m.id !== "initial" && m.content && m.content.trim() !== "")
         .slice(-12)
         .map(m => ({ role: m.role, content: m.content }));
 

@@ -631,7 +631,7 @@ export default async function handler(req: Request) {
     ];
 
     const cleanMessages = (messages || []).filter(
-      (m: any) => m.role === 'user' || m.role === 'assistant'
+      (m: any) => (m.role === 'user' || m.role === 'assistant') && m.content && m.content.toString().trim() !== ""
     );
 
     const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
