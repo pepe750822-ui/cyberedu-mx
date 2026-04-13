@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://cyberedumx.com/cyberedu-mx/sitemap.xml
+Sitemap: https://cyberedumx.com/sitemap.xml

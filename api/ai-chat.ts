@@ -316,7 +316,7 @@ export default async function handler(req: Request) {
   }
 
   try {
-    const { messages, context, memory } = await req.json();
+    const { messages, context, memory, file } = await req.json();
 
     // ── Cache check ──────────────────────────────────────────
     const lastUserMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || '';
@@ -492,14 +492,13 @@ export default async function handler(req: Request) {
     <exercise>
     {
       "title": "Práctica: [tema]",
-      "problem": "Enunciado del problema numérico concreto",
-      "hint": "Pista que menciona la fórmula sin dar la respuesta",
-      "answer": número_exacto,
-      "answer_unit": "unidad_de_medida",
+      "problem": "Enunciado del problema concreto (ej: ¿Cuál es el área de...?)",
+      "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
+      "correct_index": 1,
       "explanation": "Solución paso a paso completa"
     }
     </exercise>
-    CRÍTICO: El campo "answer" debe ser un NÚMERO (no string). El tag <exercise> y </exercise> deben estar PERFECTAMENTE cerrados. Genera EXACTAMENTE UN <exercise> por respuesta. NUNCA generes el ejercicio a la mitad.
+    CRÍTICO: El ejercicio DEBE ser de opción múltiple con 4 opciones. El "correct_index" es 0-based. El tag <exercise> y </exercise> deben estar PERFECTAMENTE cerrados. Genera EXACTAMENTE UN <exercise> por respuesta.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
@@ -647,7 +646,37 @@ export default async function handler(req: Request) {
         model: 'claude-haiku-4-5',
         max_tokens: 4096,
         system: finalSystemPrompt,
-        messages: cleanMessages,
+        messages: (() => {
+          const anthropicMessages = [...cleanMessages];
+          if (file && anthropicMessages.length > 0) {
+            const lastUserIdx = anthropicMessages.findLastIndex(m => m.role === 'user');
+            if (lastUserIdx !== -1) {
+              const textContent = anthropicMessages[lastUserIdx].content;
+              const isImage = file.type.startsWith('image/');
+              anthropicMessages[lastUserIdx].content = [
+                { type: "text", text: textContent },
+                isImage 
+                  ? { 
+                      type: "image", 
+                      source: { 
+                        type: "base64", 
+                        media_type: file.type, 
+                        data: file.data 
+                      } 
+                    }
+                  : { 
+                      type: "document", 
+                      source: { 
+                        type: "base64", 
+                        media_type: "application/pdf", 
+                        data: file.data 
+                      } 
+                    }
+              ];
+            }
+          }
+          return anthropicMessages;
+        })(),
         stream: true,
       }),
     });

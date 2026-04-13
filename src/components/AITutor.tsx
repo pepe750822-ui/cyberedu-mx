@@ -9,7 +9,7 @@ import {
   BookOpen, Target, History, Layers, Plus, Trash2, Eye, XCircle,
   BarChart3, Sparkles, Search, TrendingUp, Award, ArrowRight,
   Maximize2, Minimize2, Mic, MicOff, Volume2, VolumeX, PanelRightClose, PanelRightOpen, LayoutDashboard, Ticket, TicketSlash,
-  Copy, Share2
+  Copy, Share2, Paperclip, FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -1813,81 +1813,7 @@ const MessageBubble = React.memo(({
             ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
             : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
         )}>
-          {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
-          {msg.decisions?.map((d: any, i: number) => <DecisionCard key={i} decision={d} />)}
-          {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
-          {msg.report && <ReportCard report={msg.report} />}
-          {msg.alerts?.map((a: any, i: number) => <AlertCard key={i} alert={a} />)}
-          {msg.quiz && <QuizCard quiz={msg.quiz} />}
-          {msg.charts?.map((chart: any, i: number) => (
-            <div key={i} className="max-w-full overflow-hidden my-4">
-              <ChartRenderer chart={chart} />
-            </div>
-          ))}
-          {msg.calculators?.map((calc: any, i: number) => (
-            <CalculatorArtifact key={`calc-${i}`} calculator={calc} />
-          ))}
-          {msg.simulators?.map((sim: any, i: number) => (
-            <SimulatorArtifact key={`sim-${i}`} simulator={sim} />
-          ))}
-          {msg.exercises?.map((ex: any, i: number) => (
-            <ExerciseArtifact key={`ex-${i}`} exercise={ex} />
-          ))}
-          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
-          {msg.diagnostics && <DiagnosticsCard 
-            result={msg.diagnostics} 
-            fixingId={fixingCheckId} 
-            isFixingAll={fixingCheckId === 'all'}
-            onFixAll={async () => {
-              const fixable = msg.diagnostics!.checks.filter((c: any) => (c.status === "error" || c.status === "warning") && c.fix);
-              if (fixable.length === 0) return;
-              
-              setFixingCheckId('all');
-              let successCount = 0;
-              for (const check of fixable) {
-                try {
-                  await check.fix!();
-                  successCount++;
-                } catch (e) {
-                  console.error(`Error fixing ${check.id}:`, e);
-                }
-              }
-              
-              toast.success(`Corrección masiva completa: ${successCount} problemas resueltos`);
-              
-              const newResult = await runDiagnostics();
-              setLatestDiagnostics(newResult);
-              setMessages((prev: any[]) => prev.map(m =>
-                m.id === msg.id ? { ...m, diagnostics: newResult } : m
-              ));
-              setFixingCheckId(null);
-            }}
-            onFix={async (checkId) => {
-              const check = msg.diagnostics!.checks.find((c: any) => c.id === checkId);
-              if (!check?.fix) return;
-              setFixingCheckId(checkId);
-              try {
-                const fixResult = await check.fix();
-                toast.success(`Auto-corrección: ${fixResult}`);
-                const newResult = await runDiagnostics();
-                setLatestDiagnostics(newResult);
-                setMessages((prev: any[]) => prev.map(m =>
-                  m.id === msg.id ? { ...m, diagnostics: newResult } : m
-                ));
-              } catch { toast.error("Error al aplicar corrección"); }
-              setFixingCheckId(null);
-            }}
-          />}
-          {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
-          {msg.plan && (
-            <PlanCard
-              plan={msg.plan}
-              onApprove={() => handlePlanAction(msg.id, "approve")}
-              onReject={() => handlePlanAction(msg.id, "reject")}
-              onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
-              onNavigate={agentNavigate}
-            />
-          )}
+          {/* 1. Texto (ReactMarkdown) */}
           {isAssistant ? (
             <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-auto min-w-0 break-words", isExpanded ? "prose-base" : "prose-sm")}>
               <ReactMarkdown
@@ -1925,9 +1851,54 @@ const MessageBubble = React.memo(({
           ) : (
             <span>{msg.content}</span>
           )}
+
+          {/* 2. Gráficas (ChartRenderer) */}
+          {msg.charts?.map((chart: any, i: number) => (
+            <div key={i} className="max-w-full overflow-hidden my-4">
+              <ChartRenderer chart={chart} />
+            </div>
+          ))}
+
+          {/* 3. Calculadora (CalculatorArtifact) */}
+          {msg.calculators?.map((calc: any, i: number) => (
+            <CalculatorArtifact key={`calc-${i}`} calculator={calc} />
+          ))}
+
+          {/* 4. Simulador (SimulatorArtifact) */}
+          {msg.simulators?.map((sim: any, i: number) => (
+            <SimulatorArtifact key={`sim-${i}`} simulator={sim} />
+          ))}
+
+          {/* 5. Ejercicio (ExerciseArtifact) */}
+          {msg.exercises?.map((ex: any, i: number) => (
+            <ExerciseArtifact key={`ex-${i}`} exercise={ex} />
+          ))}
+
+          {/* 6. Quiz (AITutorQuiz) */}
+          {msg.quiz && <QuizCard quiz={msg.quiz} />}
+
+          {/* 7. Recomendación (RecommendationsCard) */}
           {msg.recommendations && msg.recommendations.length > 0 && 
             msg.recommendations.some((r: any) => r.videoId && r.areaId) && (
              <RecommendationsCard recs={msg.recommendations.filter((r: any) => r.videoId && r.areaId)} onNavigate={agentNavigate} />
+          )}
+
+          {/* Otros Artefactos (Reasoning, Plan, etc.) */}
+          {msg.reasoning && <ReasoningCard reasoning={msg.reasoning} />}
+          {msg.decisions?.map((d: any, i: number) => <DecisionCard key={i} decision={d} />)}
+          {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
+          {msg.report && <ReportCard report={msg.report} />}
+          {msg.alerts?.map((a: any, i: number) => <AlertCard key={i} alert={a} />)}
+          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
+          {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
+          {msg.plan && (
+            <PlanCard
+              plan={msg.plan}
+              onApprove={() => handlePlanAction(msg.id, "approve")}
+              onReject={() => handlePlanAction(msg.id, "reject")}
+              onToggleStep={(stepId) => handleToggleStep(msg.id, stepId)}
+              onNavigate={agentNavigate}
+            />
           )}
         </div>
       </div>
@@ -2072,6 +2043,33 @@ const AITutor = () => {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [fixingCheckId, setFixingCheckId] = useState<string | null>(null);
   const [latestDiagnostics, setLatestDiagnostics] = useState<DiagnosticsResult | null>(null);
+  const [pendingFile, setPendingFile] = useState<{ name: string; type: string; data: string; preview: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("El archivo es demasiado grande (máx 10MB)");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (prev) => {
+      const base64 = prev.target?.result as string;
+      const base64Data = base64.split(',')[1];
+      setPendingFile({
+        name: file.name,
+        type: file.type,
+        data: base64Data,
+        preview: file.type.startsWith('image/') ? base64 : 'pdf-icon'
+      });
+    };
+    reader.readAsDataURL(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const [showPromoBanner, setShowPromoBanner] = useState(() => {
     if (typeof window !== "undefined") {
       return !localStorage.getItem("cyberedu_banner_ia_aviso");
@@ -3025,6 +3023,9 @@ const AITutor = () => {
       });
     };
 
+    const currentFile = pendingFile;
+    setPendingFile(null);
+
     try {
       const detailedSyllabus = {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
@@ -3150,6 +3151,7 @@ const AITutor = () => {
         messages: history,
         context: buildContext(),
         memory,
+        file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
         onDelta: upsertAssistant,
         signal: abortControllerRef.current.signal,
         token: session?.access_token,
@@ -3564,7 +3566,51 @@ const AITutor = () => {
                        )}
                     </div>
                   
+                  {/* File Preview */}
+                  {pendingFile && (
+                    <div className="mb-3 animate-in slide-in-from-bottom-2 duration-300">
+                      <div className="relative group w-fit">
+                        <div className="bg-slate-800/90 border border-primary/30 rounded-xl p-2 pr-10 flex items-center gap-2 shadow-2xl backdrop-blur-md">
+                          {pendingFile.type.startsWith('image/') ? (
+                            <img src={pendingFile.preview} alt="Preview" className="h-10 w-10 rounded-lg object-cover border border-white/10" />
+                          ) : (
+                            <div className="h-10 w-10 rounded-lg bg-rose-500/20 flex items-center justify-center border border-rose-500/30">
+                              <FileText className="h-5 w-5 text-rose-400" />
+                            </div>
+                          )}
+                          <div className="min-w-0 pr-2">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest truncate max-w-[120px]">
+                              {pendingFile.type.startsWith('image/') ? 'Imagen' : 'Documento PDF'}
+                            </p>
+                            <p className="text-xs font-bold text-white truncate max-w-[150px]">{pendingFile.name}</p>
+                          </div>
+                          <button 
+                            onClick={() => setPendingFile(null)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex items-center gap-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileSelect}
+                      accept="image/*,application/pdf"
+                      className="hidden"
+                    />
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isStreaming || !!pendingFile || dailyLimitBanner.visible}
+                      className="h-12 w-12 bg-white/5 border border-white/10 hover:bg-white/10 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 shrink-0"
+                      title="Adjuntar imagen o PDF"
+                    >
+                      <Paperclip className="h-5 w-5" />
+                    </button>
                     <div className="relative flex-1">
                       <input
                         type="text"
