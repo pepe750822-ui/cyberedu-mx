@@ -56,6 +56,13 @@
   <meta name="google-site-verification" content="a2a310e1d404c0e6" />
 
   <script>
+    // Migración automática de Lovable a Vercel
+    if (window.location.hostname.includes('lovable.app')) {
+      window.location.replace('https://cyberedu-mx.vercel.app' + window.location.pathname + window.location.search);
+    }
+  </script>
+
+  <script>
     (function () {
       const theme = localStorage.getItem('theme');
       if (theme === 'light') {
