@@ -55,26 +55,26 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
 
     // Heuristics for common educational formulas
     if (formulaStr.includes('π') || formulaStr.includes('pi') || formulaStr.includes('radio')) {
-      // Área del círculo: π * r² o Perímetro: 2 * π * r
-      if (formulaStr.includes('²')) {
-        calculated = Math.PI * Math.pow(nums[0], 2);
-      } else if (formulaStr.includes('2') && (formulaStr.includes('*') || formulaStr.includes('×'))) {
-        calculated = 2 * Math.PI * nums[0];
+      // Area or Perimeter of a circle
+      const radius = nums[0];
+      if (formulaStr.includes('²') || formulaStr.includes('r2') || formulaStr.includes('area')) {
+        calculated = Math.PI * Math.pow(radius, 2);
       } else {
-        calculated = Math.PI * Math.pow(nums[0], 2); // Default to area if circle-related
+        // Assume perimeter if 2*pi*r or similar
+        calculated = 2 * Math.PI * radius;
       }
-    } else if (formulaStr.includes('base') && formulaStr.includes('altura') && formulaStr.includes('/ 2')) {
+    } else if (formulaStr.includes('base') && formulaStr.includes('altura') && (formulaStr.includes('/ 2') || formulaStr.includes('0.5'))) {
       calculated = (nums[0] * nums[1]) / 2;
     } else if (formulaStr.includes('base') && formulaStr.includes('altura')) {
       calculated = nums[0] * nums[1];
     } else if (formulaStr.includes('largo') && formulaStr.includes('ancho') && formulaStr.includes('alto')) {
-      calculated = nums[0] * nums[1] * nums[2];
+      calculated = (nums[0] || 1) * (nums[1] || 1) * (nums[2] || 1);
     } else if (formulaStr.includes('masa') && formulaStr.includes('aceleracion')) {
       calculated = nums[0] * nums[1];
     } else if (formulaStr.includes('distancia') && formulaStr.includes('tiempo')) {
       calculated = nums[0] / nums[1];
     } else {
-      // Fallback: simple product of all variables if not identified
+      // Fallback: try to see if AI specified a simple multiplier
       calculated = nums.reduce((acc, curr) => acc * curr, 1);
     }
 
