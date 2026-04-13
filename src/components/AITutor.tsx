@@ -773,6 +773,7 @@ async function streamChat({
   onCache,
   signal,
   token,
+  file,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
@@ -783,6 +784,7 @@ async function streamChat({
   onCache?: (cacheType?: 'simple' | 'complex') => void;
   signal?: AbortSignal;
   token?: string;
+  file?: { type: string; data: string };
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
@@ -793,7 +795,7 @@ async function streamChat({
       // no es un JWT de usuario y causaría 401 en el backend.
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({ messages, context, memory }),
+    body: JSON.stringify({ messages, context, memory, file }),
   });
 
   if (!resp.ok || !resp.body) {
@@ -2694,6 +2696,9 @@ const AITutor = () => {
 
     if (!finalChatText || isStreaming) return;
 
+    const currentFile = pendingFile;
+    if (currentFile) setPendingFile(null);
+
     const trimmed = finalChatText.toLowerCase();
     const isCommand = ['/quiz', '/reporte', '/analisis', '/análisis', '/diagnostico', '/diagnóstico'].some(cmd => trimmed.startsWith(cmd));
 
@@ -2927,6 +2932,7 @@ const AITutor = () => {
           onDelta: upsertAssistant,
           signal: abortControllerRef.current.signal,
           token: session?.access_token,
+          file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
           onDone: () => {
             const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
@@ -3030,8 +3036,7 @@ const AITutor = () => {
       });
     };
 
-    const currentFile = pendingFile;
-    setPendingFile(null);
+    const assistantId = (Date.now() + 1).toString();
 
     try {
       const detailedSyllabus = {
