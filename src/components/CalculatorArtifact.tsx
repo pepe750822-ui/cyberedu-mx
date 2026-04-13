@@ -53,8 +53,17 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
     let calculated = 0;
     const formulaStr = calculator.formula.toLowerCase();
 
-    // Heuristics for common formulas
-    if (formulaStr.includes('base') && formulaStr.includes('altura') && formulaStr.includes('/ 2')) {
+    // Heuristics for common educational formulas
+    if (formulaStr.includes('π') || formulaStr.includes('pi') || formulaStr.includes('radio')) {
+      // Área del círculo: π * r² o Perímetro: 2 * π * r
+      if (formulaStr.includes('²')) {
+        calculated = Math.PI * Math.pow(nums[0], 2);
+      } else if (formulaStr.includes('2') && (formulaStr.includes('*') || formulaStr.includes('×'))) {
+        calculated = 2 * Math.PI * nums[0];
+      } else {
+        calculated = Math.PI * Math.pow(nums[0], 2); // Default to area if circle-related
+      }
+    } else if (formulaStr.includes('base') && formulaStr.includes('altura') && formulaStr.includes('/ 2')) {
       calculated = (nums[0] * nums[1]) / 2;
     } else if (formulaStr.includes('base') && formulaStr.includes('altura')) {
       calculated = nums[0] * nums[1];
@@ -68,8 +77,9 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
       // Fallback: simple product of all variables if not identified
       calculated = nums.reduce((acc, curr) => acc * curr, 1);
     }
-    
-    setResult(calculated);
+
+    // Limit to 2 decimal places for cleaner UI
+    setResult(Number(calculated.toFixed(2)));
   };
 
   const reset = () => {
