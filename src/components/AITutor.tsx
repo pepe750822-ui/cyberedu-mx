@@ -1821,7 +1821,7 @@ const MessageBubble = React.memo(({
         )}>
           {/* 1. Texto (ReactMarkdown) */}
           {isAssistant ? (
-            <div className={cn("prose prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-auto min-w-0 break-words", isExpanded ? "prose-base" : "prose-sm")}>
+            <div className={cn("prose prose-invert max-w-none prose-p:my-2 prose-headings:mt-6 prose-headings:mb-3 prose-li:my-1 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-auto min-w-0 break-words", isExpanded ? "prose-base leading-relaxed" : "prose-sm leading-relaxed")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -1851,6 +1851,9 @@ const MessageBubble = React.memo(({
                   ).join('\n')
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
                   .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
+                  // Conservar los saltos de línea simples originales convirtiéndolos a hard-breaks (dos espacios)
+                  // Solo aplica fuera de bloques de código (índices pares)
+                  .split('```').map((part, i) => i % 2 === 0 ? part.replace(/([^\s\n])\n(?!\n)/g, '$1  \n') : part).join('```')
                 }
               </ReactMarkdown>
             </div>
