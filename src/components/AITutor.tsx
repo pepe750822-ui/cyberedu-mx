@@ -1859,6 +1859,9 @@ const MessageBubble = React.memo(({
             <span>{msg.content}</span>
           )}
 
+          {/* Imágenes Educativas */}
+          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
+
           {/* 2. Gráficas (ChartRenderer) */}
           {msg.charts?.map((chart: any, i: number) => (
             <div key={i} className="max-w-full overflow-hidden my-4">
@@ -1896,7 +1899,6 @@ const MessageBubble = React.memo(({
           {msg.analysis && <AnalysisCard analysis={msg.analysis} onNavigate={agentNavigate} />}
           {msg.report && <ReportCard report={msg.report} />}
           {msg.alerts?.map((a: any, i: number) => <AlertCard key={i} alert={a} />)}
-          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
           {msg.studyPlans && <StudyPlanCards plans={msg.studyPlans} onToggle={togglePaso} onDelete={deletePlan} onNavigate={agentNavigate} />}
           {msg.plan && (
             <PlanCard
