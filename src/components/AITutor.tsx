@@ -2685,9 +2685,16 @@ const AITutor = () => {
   }), [agentNavigate, handleCitationClick]);
 
   const sendMessage = async (text: string) => {
-    if (!text.trim() || isStreaming) return;
+    let finalChatText = text.trim();
+    
+    // Auto-prompt if there's a file but no text
+    if (!finalChatText && pendingFile) {
+      finalChatText = "¿Qué es esto?";
+    }
 
-    const trimmed = text.trim().toLowerCase();
+    if (!finalChatText || isStreaming) return;
+
+    const trimmed = finalChatText.toLowerCase();
     const isCommand = ['/quiz', '/reporte', '/analisis', '/análisis', '/diagnostico', '/diagnóstico'].some(cmd => trimmed.startsWith(cmd));
 
     // Validaciones de Suscripción/Prueba (Solo para chat normal, los comandos son gratis)
@@ -3638,7 +3645,7 @@ const AITutor = () => {
                     </div>
                     <button
                       onClick={() => sendMessage(input)}
-                      disabled={!input.trim() || isStreaming || dailyLimitBanner.visible}
+                      disabled={(!input.trim() && !pendingFile) || isStreaming || dailyLimitBanner.visible}
                       className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
                     >
                       {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
