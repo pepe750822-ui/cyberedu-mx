@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 CyberEduMX - Simulador Ecoems 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/96/000000/artificial-intelligence.png">
+    <!-- Fuentes Cyber -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header CyberEduMX -->
+    <header class="cyber-header">
+        <div class="cyber-nav">
+            <div class="cyber-brand">
+                <div class="cyber-logo">
+                    <i class="fas fa-brain"></i>
+                    <span class="cyber-text">CYBER<span class="edu-text">EDU</span><span
+                            class="mx-text">MX</span></span>
+                </div>
+                <div class="cyber-tagline">
+                    <span class="cyber-subtitle">SIMULADOR INTELIGENTE ECOEMS 2026</span>
+                    <div class="cyber-chip">
+                        <i class="fas fa-microchip"></i>
+                        <span>AI-Powered Learning</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cyber-stats">
+                <div class="stat-card">
+                    <i class="fas fa-database"></i>
+                    <div>
+                        <span class="stat-number" id="total-questions">1,060</span>
+                        <span class="stat-label">PREGUNTAS</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bolt"></i>
+                    <div>
+                        <span class="stat-number" id="active-users">2,548</span>
+                        <span class="stat-label">USUARIOS ACTIVOS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de progreso global -->
+        <div class="cyber-progress">
+            <div class="progress-label">
+                <span>PROGRESO GLOBAL DE LA COMUNIDAD</span>
+                <span id="global-progress">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+                <div class="progress-glitch"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="cyber-container">
+        <!-- PANEL DE CONTROL PRINCIPAL -->
+        <section id="cyber-dashboard" class="active-section">
+            <div class="cyber-title">
+                <h1><i class="fas fa-terminal"></i> <span class="cyber-glow">PANEL DE CONTROL</span></h1>
+                <p class="cyber-description">Sistema de preparación inteligente para el <span class="highlight">Ecoems
+                        2026</span></p>
+            </div>
+
+            <!-- Tarjetas de Materias -->
+            <div class="cyber-grid">
+                <!-- Habilidad Verbal -->
+                <div class="subject-card" data-subject="hab_verb">
+                    <div class="subject-header">
+                        <i class="fas fa-comments"></i>
+                        <h3>HABILIDAD VERBAL</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 130 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 13 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('hab_verb')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Habilidad Matemática -->
+                <div class="subject-card" data-subject="hab_mat">
+                    <div class="subject-header">
+                        <i class="fas fa-brain"></i>
+                        <h3>HABILIDAD MATEMÁTICA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 40 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 4 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('hab_mat')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Matemáticas -->
+                <div class="subject-card" data-subject="matematicas">
+                    <div class="subject-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>MATEMÁTICAS</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 100 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 10 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('matematicas')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Biología -->
+                <div class="subject-card" data-subject="biologia">
+                    <div class="subject-header">
+                        <i class="fas fa-dna"></i>
+                        <h3>BIOLOGÍA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 100 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 10 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('biologia')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Física -->
+                <div class="subject-card" data-subject="fisica">
+                    <div class="subject-header">
+                        <i class="fas fa-atom"></i>
+                        <h3>FÍSICA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 150 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 15 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('fisica')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Química -->
+                <div class="subject-card" data-subject="quimica">
+                    <div class="subject-header">
+                        <i class="fas fa-flask"></i>
+                        <h3>QUÍMICA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 80 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 8 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('quimica')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Historia -->
+                <div class="subject-card" data-subject="historia">
+                    <div class="subject-header">
+                        <i class="fas fa-landmark"></i>
+                        <h3>HISTORIA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 150 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 15 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('historia')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Geografía -->
+                <div class="subject-card" data-subject="geografia">
+                    <div class="subject-header">
+                        <i class="fas fa-globe-americas"></i>
+                        <h3>GEOGRAFÍA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 150 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 15 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('geografia')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Español -->
+                <div class="subject-card" data-subject="espanol">
+                    <div class="subject-header">
+                        <i class="fas fa-language"></i>
+                        <h3>ESPAÑOL</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 80 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 8 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('espanol')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+
+                <!-- Formación Cívica -->
+                <div class="subject-card" data-subject="civica">
+                    <div class="subject-header">
+                        <i class="fas fa-balance-scale"></i>
+                        <h3>FORMACIÓN CÍVICA</h3>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat"><i class="fas fa-list-ol"></i> 80 preguntas</span>
+                        <span class="stat"><i class="fas fa-brain"></i> 8 subíndices</span>
+                    </div>
+                    <div class="subject-progress">
+                        <div class="mini-progress">
+                            <div class="mini-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% completado</span>
+                    </div>
+                    <button class="cyber-btn" onclick="startQuiz('civica')">
+                        <i class="fas fa-play"></i> INICIAR SIMULACIÓN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel de Control Avanzado -->
+            <div class="cyber-controls">
+                <div class="control-card">
+                    <h4><i class="fas fa-sliders-h"></i> CONFIGURACIÓN AVANZADA</h4>
+                    <div class="control-options">
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="randomize-mode" checked>
+                            <span class="switch-slider"></span>
+                            <span>Modo Aleatorio</span>
+                        </label>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="timer-mode" checked>
+                            <span class="switch-slider"></span>
+                            <span>Temporizador Activo</span>
+                        </label>
+                        <label class="cyber-switch">
+                            <input type="checkbox" id="sound-effects" checked>
+                            <span class="switch-slider"></span>
+                            <span>Efectos de Sonido</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <h4><i class="fas fa-chart-line"></i> ESTADÍSTICAS RÁPIDAS</h4>
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Total Completado: <strong id="total-completed">0/1060</strong></span>
+                        </div>
+                        <div class="quick-stat">
+                            <i class="fas fa-percentage"></i>
+                            <span>Precisión Global: <strong id="global-accuracy">0%</strong></span>
+                        </div>
+                        <div class="quick-stat">
+                            <i class="fas fa-clock"></i>
+                            <span>Tiempo Promedio: <strong id="avg-time">0s</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <h4><i class="fas fa-bolt"></i> ACCIONES RÁPIDAS</h4>
+                    <div class="action-buttons">
+                        <button class="cyber-btn secondary" onclick="startFullSimulation()">
+                            <i class="fas fa-play-circle"></i> SIMULACIÓN COMPLETA
+                        </button>
+                        <button class="cyber-btn secondary" onclick="viewProgress()">
+                            <i class="fas fa-chart-bar"></i> VER PROGRESO
+                        </button>
+                        <button class="cyber-btn secondary" onclick="resetProgress()">
+                            <i class="fas fa-redo"></i> REINICIAR TODO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE SELECCIÓN DE SUBÍNDICES -->
+        <section id="subindex-section" class="hidden-section">
+            <div class="quiz-header">
+                <button class="cyber-btn back-btn" onclick="backToDashboard()">
+                    <i class="fas fa-arrow-left"></i> VOLVER AL PANEL
+                </button>
+                <div class="quiz-info">
+                    <h2 id="subject-selection-title">SELECCIONA UN SUBÍNDICE</h2>
+                    <p class="text-muted" id="subject-selection-desc">10 preguntas por subíndice</p>
+                </div>
+            </div>
+
+            <div class="subjects-grid" id="subindices-container" style="margin-top: 2rem;">
+                <!-- Los subíndices se generan dinámicamente aquí -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN DEL QUIZ -->
+        <section id="quiz-section" class="hidden-section">
+            <div class="quiz-header">
+                <button class="cyber-btn back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> VOLVER AL PANEL
+                </button>
+                <div class="quiz-info">
+                    <h2 id="subject-title">HABILIDAD VERBAL</h2>
+                    <div class="quiz-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-layer-group"></i>
+                            <span id="subindex-title">1.1 Sinónimos y antónimos</span>
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span id="question-counter">Pregunta 1/10</span>
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="quiz-timer">02:00</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="quiz-progress">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quiz-progress-fill"></div>
+                        </div>
+                        <span id="quiz-percentage">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-body">
+                <div class="question-container">
+                    <div class="question-header">
+                        <span class="question-number" id="current-question">01</span>
+                        <h3 id="question-text">¿Cuál es el antónimo de 'alegre'?</h3>
+                    </div>
+
+                    <div class="options-grid" id="options-container">
+                        <!-- Las opciones se generan dinámicamente -->
+                    </div>
+
+                    <div class="quiz-controls">
+                        <button class="cyber-btn" id="prev-btn" onclick="prevQuestion()">
+                            <i class="fas fa-chevron-left"></i> ANTERIOR
+                        </button>
+                        <button class="cyber-btn" id="next-btn" onclick="nextQuestion()">
+                            SIGUIENTE <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="cyber-btn secondary" id="hint-btn" onclick="showHint()">
+                            <i class="fas fa-lightbulb"></i> AYUDA
+                        </button>
+                        <button class="cyber-btn accent" id="submit-btn" onclick="submitAnswer()">
+                            <i class="fas fa-paper-plane"></i> ENVIAR RESPUESTA
+                        </button>
+                    </div>
+                </div>
+
+                <div class="explanation-panel" id="explanation-panel">
+                    <div class="explanation-header">
+                        <h4><i class="fas fa-info-circle"></i> EXPLICACIÓN DETALLADA</h4>
+                        <button class="close-explanation" onclick="hideExplanation()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="explanation-content" id="explanation-content">
+                        <!-- La explicación se carga aquí -->
+                    </div>
+                    <div class="explanation-footer">
+                        <span class="difficulty-label" id="difficulty-label">DIFICULTAD: MEDIA</span>
+                        <span class="accuracy-label" id="accuracy-label">PRECISIÓN: 65%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE RESULTADOS -->
+        <section id="results-section" class="hidden-section">
+            <div class="results-header">
+                <h2><i class="fas fa-trophy"></i> RESULTADOS DE SIMULACIÓN</h2>
+                <p id="results-subtitle">Habilidad Verbal - Subíndice 1.1</p>
+            </div>
+
+            <div class="results-body">
+                <div class="results-card main-result">
+                    <div class="result-score">
+                        <div class="score-circle">
+                            <svg width="120" height="120">
+                                <circle class="score-bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="score-progress" cx="60" cy="60" r="54" stroke-dasharray="339.292"
+                                    stroke-dashoffset="339.292"></circle>
+                            </svg>
+                            <div class="score-text">
+                                <span id="final-score">0</span>
+                                <span class="score-percent">%</span>
+                            </div>
+                        </div>
+                        <div class="score-details">
+                            <h3>PUNTUACIÓN FINAL</h3>
+                            <div class="score-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Correctas:</span>
+                                    <span class="breakdown-value" id="correct-answers">0</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Incorrectas:</span>
+                                    <span class="breakdown-value" id="incorrect-answers">0</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Tiempo:</span>
+                                    <span class="breakdown-value" id="total-time">00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h4><i class="fas fa-chart-bar"></i> ESTADÍSTICAS DETALLADAS</h4>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <span>Precisión por Materia</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="subject-accuracy">0%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Velocidad de Respuesta</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="speed-result">0s/pregunta</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Consistencia</span>
+                                <div class="stat-bar">
+                                    <div class="stat-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="consistency-result">Baja</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4><i class="fas fa-lightbulb"></i> RECOMENDACIONES</h4>
+                        <div class="recommendations" id="recommendations-list">
+                            <!-- Recomendaciones dinámicas -->
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h4><i class="fas fa-medal"></i> LOGROS DESBLOQUEADOS</h4>
+                        <div class="achievements" id="achievements-list">
+                            <!-- Logros dinámicos -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="cyber-btn" onclick="reviewQuestions()">
+                        <i class="fas fa-search"></i> REVISAR RESPUESTAS
+                    </button>
+                    <button class="cyber-btn secondary" onclick="retrySubindex()">
+                        <i class="fas fa-redo"></i> REPETIR SUBÍNDICE
+                    </button>
+                    <button class="cyber-btn accent" onclick="continueToNext()">
+                        <i class="fas fa-forward"></i> SIGUIENTE SUBÍNDICE
+                    </button>
+                    <button class="cyber-btn" onclick="goToDashboard()">
+                        <i class="fas fa-home"></i> VOLVER AL PANEL
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE PROGRESO -->
+        <section id="progress-section" class="hidden-section">
+            <div class="progress-header">
+                <h2><i class="fas fa-chart-line"></i> PANEL DE PROGRESO</h2>
+                <p>Seguimiento detallado de tu preparación para el Ecoems 2026</p>
+            </div>
+
+            <div class="progress-body">
+                <div class="progress-overview">
+                    <div class="overview-card">
+                        <h3>PROGRESO GENERAL</h3>
+                        <div class="overview-progress">
+                            <div class="overview-circle">
+                                <svg width="140" height="140">
+                                    <circle class="overview-bg" cx="70" cy="70" r="65"></circle>
+                                    <circle class="overview-fill" cx="70" cy="70" r="65" stroke-dashoffset="409">
+                                    </circle>
+                                </svg>
+                                <div class="overview-text">
+                                    <span id="overall-progress">0%</span>
+                                    <span>COMPLETADO</span>
+                                </div>
+                            </div>
+                            <div class="overview-stats">
+                                <div class="overview-stat">
+                                    <span class="stat-label">Preguntas Contestadas</span>
+                                    <span class="stat-value" id="answered-questions">0</span>
+                                </div>
+                                <div class="overview-stat">
+                                    <span class="stat-label">Precisión Promedio</span>
+                                    <span class="stat-value" id="average-accuracy">0%</span>
+                                </div>
+                                <div class="overview-stat">
+                                    <span class="stat-label">Tiempo Invertido</span>
+                                    <span class="stat-value" id="total-study-time">0h 0m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-details">
+                    <h3>PROGRESO POR MATERIA</h3>
+                    <div class="subject-progress-list" id="subject-progress-list">
+                        <!-- Se genera dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer CyberEduMX -->
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="cyber-logo">
+                    <i class="fas fa-brain"></i>
+                    <span class="cyber-text">CYBER<span class="edu-text">EDU</span><span
+                            class="mx-text">MX</span></span>
+                </div>
+                <p class="footer-tagline">Sistema Inteligente de Preparación Académica 2026</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>RECURSOS</h4>
+                    <a href="#"><i class="fas fa-book"></i> Guía de Estudio</a>
+                    <a href="#"><i class="fas fa-file-pdf"></i> Materiales PDF</a>
+                    <a href="#"><i class="fas fa-video"></i> Video Tutoriales</a>
+                </div>
+                <div class="footer-section">
+                    <h4>COMUNIDAD</h4>
+                    <a href="#"><i class="fas fa-users"></i> Foro de Estudio</a>
+                    <a href="#"><i class="fas fa-trophy"></i> Ranking Global</a>
+                    <a href="#"><i class="fas fa-share-alt"></i> Compartir Progreso</a>
+                </div>
+                <div class="footer-section">
+                    <h4>SOPORTE</h4>
+                    <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="#"><i class="fas fa-headset"></i> Soporte Técnico</a>
+                    <a href="#"><i class="fas fa-bug"></i> Reportar Error</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025-2026 CyberEduMX - Todos los derechos reservados. Sistema desarrollado para la preparación del
+                Ecoems 2026.</p>
+            <div class="footer-tech">
+                <span><i class="fas fa-code"></i> Desarrollado con</span>
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">AI</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio para efectos -->
+    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"
+        preload="auto"></audio>
+    <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3"
+        preload="auto"></audio>
+    <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"
+        preload="auto"></audio>
+    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"
+        preload="auto"></audio>
+
+    <!-- Particle Background -->
+    <div id="particles-container"></div>
+
+    <!-- Scripts -->
+    <script src="questions_data.js?v=9.3"></script>
+    <script src="confetti_simple.js?v=9.3"></script>
+    <script src="script.js?v=9.3"></script>
+</body>
+
+</html>

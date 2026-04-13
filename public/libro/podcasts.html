@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcasts - ECOEMS 2026</title>
+    <meta name="description"
+        content="Accede a los 91 podcasts del curso ECOEMS 2026. Material de audio para estudiar en cualquier lugar.">
+    <meta name="keywords" content="ECOEMS 2026, Podcasts, Audio, Material de Estudio, BioReto Academy">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --card-bg: #1e293b;
+            --accent: #4ECDC4;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .podcast-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .podcast-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+        }
+
+        .materia-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .audio-player {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full glass-effect shadow-xl z-50 py-3 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <a href="dashboard.html" class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                        <i class="fas fa-arrow-left text-white"></i>
+                    </div>
+                    <div>
+                        <span
+                            class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Podcasts</span>
+                        <span class="text-sm text-gray-400 block">91 Audios Educativos</span>
+                    </div>
+                </a>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTheme()"
+                        class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+                        <i id="theme-icon" class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- HEADER -->
+            <div class="glass-effect rounded-2xl p-6 md:p-8 mb-8 shadow-2xl border border-gray-700">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
+                    <i class="fas fa-podcast text-purple-400"></i>
+                    Podcasts ECOEMS 2026
+                </h1>
+                <p class="text-gray-400 mb-4">
+                    Accede a los 91 podcasts del curso. Escucha y aprende en cualquier lugar: mientras viajas, haces
+                    ejercicio o descansas.
+                </p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="glass-effect rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-cyan-400">91</div>
+                        <div class="text-gray-400 text-sm">Podcasts</div>
+                    </div>
+                    <div class="glass-effect rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-green-400">11</div>
+                        <div class="text-gray-400 text-sm">Materias</div>
+                    </div>
+                    <div class="glass-effect rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-400">MP3</div>
+                        <div class="text-gray-400 text-sm">Alta Calidad</div>
+                    </div>
+                    <div class="glass-effect rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-orange-400">FREE</div>
+                        <div class="text-gray-400 text-sm">Gratuito</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTROS POR MATERIA -->
+            <div class="glass-effect rounded-xl p-4 mb-6 shadow-xl border border-gray-700">
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <button onclick="filtrarMateria('all')"
+                        class="filter-btn active px-4 py-2 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-all">
+                        <i class="fas fa-globe mr-2"></i>Todas (91)
+                    </button>
+                    <button onclick="filtrarMateria('estrategia')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-chess mr-2"></i>Estrategia (1)
+                    </button>
+                    <button onclick="filtrarMateria('habilidad_verbal')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-comment-alt mr-2"></i>H. Verbal (5)
+                    </button>
+                    <button onclick="filtrarMateria('habilidad_matematica')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-brain mr-2"></i>H. Matemática (5)
+                    </button>
+                    <button onclick="filtrarMateria('biologia')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-dna mr-2"></i>Biología (7)
+                    </button>
+                    <button onclick="filtrarMateria('fisica')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-atom mr-2"></i>Física (7)
+                    </button>
+                    <button onclick="filtrarMateria('quimica')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-flask mr-2"></i>Química (6)
+                    </button>
+                    <button onclick="filtrarMateria('matematicas')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-calculator mr-2"></i>Matemáticas (14)
+                    </button>
+                    <button onclick="filtrarMateria('historia')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-landmark mr-2"></i>Historia (14)
+                    </button>
+                    <button onclick="filtrarMateria('espanol')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-book mr-2"></i>Español (10)
+                    </button>
+                    <button onclick="filtrarMateria('formacion_civica')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-user-shield mr-2"></i>F. Cívica (8)
+                    </button>
+                    <button onclick="filtrarMateria('geografia')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-globe-americas mr-2"></i>Geografía (10)
+                    </button>
+                    <button onclick="filtrarMateria('repaso')"
+                        class="filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+                        <i class="fas fa-sync-alt mr-2"></i>Repaso (4)
+                    </button>
+                </div>
+            </div>
+
+            <!-- GRID DE PODCASTS -->
+            <div id="podcasts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Los podcasts se generarán dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Configuración de materias y sus colores
+        const materias = {
+            estrategia: { nombre: 'Estrategia', color: '#FF6B8B', icono: 'fa-chess', rango: [0, 0] },
+            habilidad_verbal: { nombre: 'Habilidad Verbal', color: '#4ECDC4', icono: 'fa-comment-alt', rango: [1, 5] },
+            habilidad_matematica: { nombre: 'Habilidad Matemática', color: '#FFD166', icono: 'fa-brain', rango: [6, 10] },
+            biologia: { nombre: 'Biología', color: '#06D6A0', icono: 'fa-dna', rango: [11, 17] },
+            fisica: { nombre: 'Física', color: '#118AB2', icono: 'fa-atom', rango: [18, 24] },
+            quimica: { nombre: 'Química', color: '#FF9E6D', icono: 'fa-flask', rango: [25, 30] },
+            matematicas: { nombre: 'Matemáticas', color: '#9D4EDD', icono: 'fa-calculator', rango: [31, 44] },
+            historia: { nombre: 'Historia', color: '#EF476F', icono: 'fa-landmark', rango: [45, 58] },
+            espanol: { nombre: 'Español', color: '#6A4C93', icono: 'fa-book', rango: [59, 68] },
+            formacion_civica: { nombre: 'Formación Cívica', color: '#3A86FF', icono: 'fa-user-shield', rango: [69, 76] },
+            geografia: { nombre: 'Geografía', color: '#1B9AAA', icono: 'fa-globe-americas', rango: [77, 86] },
+            repaso: { nombre: 'Repaso Final', color: '#FF006E', icono: 'fa-sync-alt', rango: [87, 90] }
+        };
+
+        function determinarMateria(num) {
+            for (const [key, value] of Object.entries(materias)) {
+                if (num >= value.rango[0] && num <= value.rango[1]) {
+                    return { key, ...value };
+                }
+            }
+            return { key: 'repaso', ...materias.repaso };
+        }
+
+        function generarPodcasts() {
+            const grid = document.getElementById('podcasts-grid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i <= 90; i++) {
+                const materia = determinarMateria(i);
+                const audioUrl = `https://cyberedumx.com/ecoems2026/videos/video${i}/podcast.mp3`;
+
+                const card = document.createElement('div');
+                card.className = `podcast-card glass-effect rounded-xl p-5 shadow-lg materia-${materia.key}`;
+                card.setAttribute('data-materia', materia.key);
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: ${materia.color}20; color: ${materia.color};">
+                                <i class="fas ${materia.icono} text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-white font-bold">Video ${i}</div>
+                                <div class="text-gray-400 text-sm">${materia.nombre}</div>
+                            </div>
+                        </div>
+                        <span class="materia-badge" style="background: ${materia.color}20; color: ${materia.color};">
+                            MP3
+                        </span>
+                    </div>
+                    
+                    <div class="audio-player mb-3">
+                        <audio controls preload="none">
+                            <source src="${audioUrl}" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <i class="fas fa-headphones text-purple-400"></i>
+                            <span>Escucha en cualquier lugar</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <i class="fas fa-download text-green-400"></i>
+                            <span>Descargable</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <a href="${audioUrl}" target="_blank" 
+                           class="flex-1 px-4 py-2 rounded-lg text-center text-white font-semibold transition-all"
+                           style="background: linear-gradient(135deg, ${materia.color}, ${materia.color}dd);"
+                           onclick="gtag('event', 'podcast_play', {'event_category': 'content', 'event_label': 'Video ${i}'})">
+                            <i class="fas fa-play mr-2"></i>Reproducir
+                        </a>
+                        <a href="${audioUrl}" download="ECOEMS_2026_Video_${i}_Podcast.mp3"
+                           class="flex-1 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-center text-white font-semibold transition-all"
+                           onclick="gtag('event', 'podcast_download', {'event_category': 'content', 'event_label': 'Video ${i}'})">
+                            <i class="fas fa-download mr-2"></i>Descargar
+                        </a>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            }
+        }
+
+        function filtrarMateria(materia) {
+            const cards = document.querySelectorAll('.podcast-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active', 'bg-cyan-500/20', 'text-cyan-400'));
+            event.target.closest('.filter-btn').classList.add('active', 'bg-cyan-500/20', 'text-cyan-400');
+
+            cards.forEach(card => {
+                if (materia === 'all' || card.getAttribute('data-materia') === materia) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.3s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.theme = 'light';
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            generarPodcasts();
+
+            if (localStorage.theme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // Animación de fade in
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

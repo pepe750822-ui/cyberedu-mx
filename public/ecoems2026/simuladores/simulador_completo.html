@@ -1,0 +1,807 @@
+<?php
+// Manejo de errores mejorado
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Incluir config.php con verificación
+$config_file = 'config.php';
+if (!file_exists($config_file)) {
+    die("❌ Error: Archivo config.php no encontrado en: " . realpath('.'));
+}
+
+include $config_file;
+
+// Verificar que $pdo existe y está conectado
+if (!isset($pdo)) {
+    die("❌ Error: Conexión PDO no establecida. Verifica config.php");
+}
+
+// Obtener parámetros
+$materia = $_GET['materia'] ?? '';
+$year = $_GET['year'] ?? 2025;
+$limit = $_GET['limit'] ?? 10;
+
+// Inicializar preguntas
+$preguntas = [];
+$error_message = '';
+
+try {
+    // Consulta base
+    $sql = "SELECT p.*, m.nombre as materia_nombre 
+            FROM preguntas p 
+            JOIN materias m ON p.materia_id = m.id 
+            WHERE p.guia_year = :year";
+    
+    $params = [':year' => $year];
+    
+    if (!empty($materia)) {
+        $sql .= " AND m.nombre = :materia";
+        $params[':materia'] = $materia;
+    }
+    
+    $sql .= " ORDER BY RAND() LIMIT :limit";
+    $params[':limit'] = (int)$limit;
+    
+    // Preparar y ejecutar consulta
+    $stmt = $pdo->prepare($sql);
+    
+    foreach ($params as $key => $value) {
+        if ($key === ':limit') {
+            $stmt->bindValue($key, $value, PDO::PARAM_INT);
+        } else {
+            $stmt->bindValue($key, $value);
+        }
+    }
+    
+    $stmt->execute();
+    $preguntas = $stmt->fetchAll();
+    
+} catch (PDOException $e) {
+    $error_message = "Error en la consulta: " . $e->getMessage();
+} catch (Exception $e) {
+    $error_message = "Error: " . $e->getMessage();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simulador ECOEMS 2026</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .filtros { 
+            background: #f8f9fa; 
+            padding: 25px; 
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .filtros h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .filtros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        select, input, button { 
+            padding: 12px 15px; 
+            margin: 2px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        button { 
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        button:hover { 
+            background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+        
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .debug-info {
+            background: #f39c12;
+            color: white;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .pregunta { 
+            background: white; 
+            margin: 20px; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        
+        .pregunta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .materia-tag {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .tema-tag {
+            background: #95a5a6;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .pregunta-texto {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .opciones-grid {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .opcion { 
+            margin: 0; 
+            padding: 15px; 
+            cursor: pointer; 
+            border: 2px solid #e9ecef; 
+            border-radius: 8px; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+        }
+        
+        .opcion:hover { 
+            background: #f8f9fa; 
+            border-color: #3498db; 
+            transform: translateX(5px);
+        }
+        
+        .opcion strong {
+            margin-right: 10px;
+            color: #3498db;
+            font-size: 1.1em;
+        }
+        
+        .correcta { 
+            background: #d4edda !important; 
+            border-color: #28a745 !important; 
+            color: #155724;
+        }
+        
+        .incorrecta { 
+            background: #f8d7da !important; 
+            border-color: #dc3545 !important; 
+            color: #721c24;
+        }
+        
+        .resultado {
+            margin-top: 15px; 
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .estadisticas { 
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        
+        /* Estadísticas */
+        .estadisticas-finales {
+            background: white;
+            margin: 30px 20px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 2px solid #3498db;
+        }
+
+        .estadisticas-finales h3 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.correcta {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        }
+
+        .stat-card.incorrecta {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        }
+
+        .stat-card.total {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #d6eaf8, #aed6f1);
+        }
+
+        .stat-card.porcentaje {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        /* Estadísticas por materia */
+        .stats-materias {
+            margin-top: 25px;
+        }
+
+        .stats-materias h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .materia-stat {
+            margin-bottom: 15px;
+        }
+
+        .materia-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .materia-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .materia-score {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Botón de reinicio */
+        .btn-reiniciar {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reiniciar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .no-preguntas {
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            margin: 20px;
+            border-radius: 10px;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .filtros-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .pregunta {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pregunta-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏫 Simulador ECOEMS 2026</h1>
+            <p>Tu herramienta definitiva para preparar el examen de ingreso al bachillerato</p>
+        </div>
+        
+        <?php if (!empty($error_message)): ?>
+            <div class="error-message">
+                <h3>❌ Error del Sistema</h3>
+                <p><?= htmlspecialchars($error_message) ?></p>
+                <p style="margin-top: 10px; font-size: 0.9em;">
+                    Verifica la configuración de la base de datos en config.php
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <div class="filtros">
+            <h3>🎯 Configura tu simulación</h3>
+            <form method="GET" class="filtros-grid">
+                <div class="form-group">
+                    <label for="materia">Materia:</label>
+                    <select name="materia" id="materia">
+                        <option value="">Todas las materias</option>
+                        <option value="Habilidad Matemática">Habilidad Matemática</option>
+                        <option value="Ciencias I (Biología)">Ciencias I (Biología)</option>
+                        <option value="Español">Español</option>
+                        <option value="Ciencias III (Química)">Ciencias III (Química)</option>
+                        <option value="Historia">Historia</option>
+                        <option value="Matemáticas">Matemáticas</option>
+                        <option value="Habilidad verbal">Habilidad verbal</option>
+                        <option value="Geografía">Geografía</option>
+                        <option value="Ciencias II (Física)">Ciencias II (Física)</option>
+                        <option value="Formación cívica y ética">Formación cívica y ética</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Guía:</label>
+                    <select name="year" id="year">
+                        <option value="2025">Guía 2025</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="limit">📊 Número de preguntas:</label>
+                    <select name="limit" id="limit">
+                        <option value="5">⚡ 5 preguntas (Rápido)</option>
+                        <option value="10" selected>🎯 10 preguntas (Recomendado)</option>
+                        <option value="20">⏱️ 20 preguntas (Media sesión)</option>
+                        <option value="30">📚 30 preguntas</option>
+                        <option value="50">🎓 50 preguntas (Sesión completa)</option>
+                        <option value="75">🏫 75 preguntas</option>
+                        <option value="100">📈 100 preguntas</option>
+                        <option value="128">🏆 128 preguntas (Examen completo)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit">🚀 Comenzar Simulación</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="preguntasContainer">
+            <?php if (!empty($error_message)): ?>
+                <div class="debug-info">
+                    <strong>Información de depuración:</strong><br>
+                    Archivo config.php: <?= file_exists($config_file) ? '✅ Existe' : '❌ No existe' ?><br>
+                    Conexión PDO: <?= isset($pdo) ? '✅ Activa' : '❌ Inactiva' ?>
+                </div>
+            <?php elseif (empty($preguntas)): ?>
+                <div class="no-preguntas">
+                    <h3>📚 No hay preguntas disponibles</h3>
+                    <p>Selecciona una materia y haz clic en "Comenzar Simulación"</p>
+                    <div style="margin-top: 20px; font-size: 0.9em; color: #95a5a6;">
+                        <p><strong>Materias disponibles con preguntas:</strong></p>
+                        <p>• Habilidad Matemática • Ciencias I (Biología) • Español</p>
+                        <p>• Ciencias III (Química) • Historia • Matemáticas</p>
+                        <p>• Habilidad verbal • Geografía • Física • Formación cívica</p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="estadisticas">
+                    <p>📊 <strong>Simulación activa:</strong> <?= count($preguntas) ?> preguntas de 
+                    <?= !empty($materia) ? htmlspecialchars($materia) : 'todas las materias' ?> | 
+                    📅 Guía: <?= $year ?></p>
+                </div>
+                
+                <?php foreach ($preguntas as $index => $pregunta): ?>
+                <div class="pregunta" id="pregunta-<?= $pregunta['id'] ?>">
+                    <div class="pregunta-header">
+                        <div>
+                            <h3>📝 Pregunta <?= $pregunta['numero_pregunta'] ?> - Guía ECOEMS <?= $pregunta['guia_year'] ?></h3>
+                            <p style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                                🎯 Simulador: <?= $index + 1 ?> de <?= count($preguntas) ?> | 📚 Original: <?= $pregunta['numero_pregunta'] ?> de 128
+                            </p>
+                        </div>
+                        <div>
+                            <span class="materia-tag">📖 <?= htmlspecialchars($pregunta['materia_nombre']) ?></span>
+                            <span class="tema-tag">🏷️ <?= htmlspecialchars($pregunta['tema']) ?></span>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-texto">
+                        <?= nl2br(htmlspecialchars($pregunta['pregunta_texto'])) ?>
+                    </div>
+                    
+                    <div class="opciones-grid">
+                        <div class="opcion" onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, 'A')">
+                            <strong>A)</strong> <?= htmlspecialchars($pregunta['opcion_a']) ?>
+                        </div>
+                        <div class="opcion" onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, 'B')">
+                            <strong>B)</strong> <?= htmlspecialchars($pregunta['opcion_b']) ?>
+                        </div>
+                        <div class="opcion" onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, 'C')">
+                            <strong>C)</strong> <?= htmlspecialchars($pregunta['opcion_c']) ?>
+                        </div>
+                        <div class="opcion" onclick="seleccionarRespuesta(<?= $pregunta['id'] ?>, 'D')">
+                            <strong>D)</strong> <?= htmlspecialchars($pregunta['opcion_d']) ?>
+                        </div>
+                    </div>
+                    
+                    <div id="resultado-<?= $pregunta['id'] ?>" class="resultado"></div>
+                </div>
+                <?php endforeach; ?>
+                
+                <!-- Contenedor para estadísticas -->
+                <div id="estadisticasContainer"></div>
+            <?php endif; ?>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 Simulador ECOEMS 2026 - Preparación para el examen de ingreso al bachillerato</p>
+        </div>
+    </div>
+
+    <script>
+    // Variables globales para estadísticas
+    let estadisticas = {
+        total: 0,
+        correctas: 0,
+        incorrectas: 0,
+        sinResponder: 0,
+        porMateria: {}
+    };
+
+    // Función para actualizar estadísticas
+    function actualizarEstadisticas(preguntaId, esCorrecta, materia) {
+        estadisticas.total++;
+        
+        if (esCorrecta) {
+            estadisticas.correctas++;
+        } else {
+            estadisticas.incorrectas++;
+        }
+        
+        // Estadísticas por materia
+        if (!estadisticas.porMateria[materia]) {
+            estadisticas.porMateria[materia] = { correctas: 0, total: 0 };
+        }
+        estadisticas.porMateria[materia].total++;
+        if (esCorrecta) {
+            estadisticas.porMateria[materia].correctas++;
+        }
+        
+        mostrarEstadisticas();
+    }
+
+    // Función para mostrar estadísticas
+    function mostrarEstadisticas() {
+        const porcentaje = estadisticas.total > 0 ? Math.round((estadisticas.correctas / estadisticas.total) * 100) : 0;
+        
+        let html = `
+            <div class="estadisticas-finales">
+                <h3>📊 ESTADÍSTICAS FINALES</h3>
+                <div class="stats-grid">
+                    <div class="stat-card correcta">
+                        <div class="stat-number">${estadisticas.correctas}</div>
+                        <div class="stat-label">✅ Correctas</div>
+                    </div>
+                    <div class="stat-card incorrecta">
+                        <div class="stat-number">${estadisticas.incorrectas}</div>
+                        <div class="stat-label">❌ Incorrectas</div>
+                    </div>
+                    <div class="stat-card total">
+                        <div class="stat-number">${estadisticas.total}</div>
+                        <div class="stat-label">📝 Total</div>
+                    </div>
+                    <div class="stat-card porcentaje">
+                        <div class="stat-number">${porcentaje}%</div>
+                        <div class="stat-label">🎯 Efectividad</div>
+                    </div>
+                </div>
+        `;
+        
+        // Estadísticas por materia
+        if (Object.keys(estadisticas.porMateria).length > 0) {
+            html += `<div class="stats-materias">
+                        <h4>📚 Desempeño por Materia</h4>`;
+            
+            for (const [materia, datos] of Object.entries(estadisticas.porMateria)) {
+                const porcentajeMateria = Math.round((datos.correctas / datos.total) * 100);
+                const barraWidth = porcentajeMateria + '%';
+                
+                html += `
+                    <div class="materia-stat">
+                        <div class="materia-header">
+                            <span class="materia-name">${materia}</span>
+                            <span class="materia-score">${datos.correctas}/${datos.total} (${porcentajeMateria}%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${barraWidth}; background: ${porcentajeMateria >= 70 ? '#27ae60' : porcentajeMateria >= 50 ? '#f39c12' : '#e74c3c'};"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+        }
+        
+        html += `
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-reiniciar" onclick="reiniciarSimulacion()">🔄 Reiniciar Simulación</button>
+            </div>
+        </div>`;
+        
+        // Mostrar u ocultar contenedor de estadísticas
+        let statsContainer = document.getElementById('estadisticasContainer');
+        if (!statsContainer) {
+            statsContainer = document.createElement('div');
+            statsContainer.id = 'estadisticasContainer';
+            document.getElementById('preguntasContainer').appendChild(statsContainer);
+        }
+        statsContainer.innerHTML = html;
+    }
+
+    // Función para reiniciar simulación
+    function reiniciarSimulacion() {
+        location.reload();
+    }
+
+    // Función principal para seleccionar respuestas
+    async function seleccionarRespuesta(preguntaId, respuesta) {
+        const opciones = document.querySelectorAll(`#pregunta-${preguntaId} .opcion`);
+        const materia = document.querySelector(`#pregunta-${preguntaId} .materia-tag`).textContent.replace('📖 ', '');
+        
+        // Deshabilitar todas las opciones temporalmente
+        opciones.forEach(opcion => {
+            opcion.style.pointerEvents = 'none';
+        });
+
+        try {
+            const response = await fetch('verificar_respuesta.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    pregunta_id: preguntaId, 
+                    respuesta_usuario: respuesta 
+                })
+            });
+
+            const resultado = await response.json();
+            const resultadoDiv = document.getElementById(`resultado-${preguntaId}`);
+            
+            if (resultado.es_correcta) {
+                resultadoDiv.innerHTML = '<div style="color: #27ae60; background: #d4edda; padding: 15px; border-radius: 8px; border: 2px solid #27ae60;">✅ <strong>¡Correcto!</strong> Has seleccionado la respuesta correcta.</div>';
+            } else {
+                resultadoDiv.innerHTML = `<div style="color: #e74c3c; background: #f8d7da; padding: 15px; border-radius: 8px; border: 2px solid #e74c3c;">❌ <strong>Incorrecto.</strong> La respuesta correcta es: <strong>${resultado.respuesta_correcta}</strong></div>`;
+            }
+
+            // Actualizar estadísticas
+            actualizarEstadisticas(preguntaId, resultado.es_correcta, materia);
+
+            // Colorear opciones
+            opciones.forEach(opcion => {
+                opcion.classList.remove('correcta', 'incorrecta');
+                
+                if (opcion.textContent.includes(respuesta)) {
+                    opcion.classList.add(resultado.es_correcta ? 'correcta' : 'incorrecta');
+                }
+                
+                if (opcion.textContent.includes(resultado.respuesta_correcta)) {
+                    opcion.classList.add('correcta');
+                }
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+            const resultadoDiv = document.getElementById(`resultado-${preguntaId}`);
+            resultadoDiv.innerHTML = '<div style="color: #e74c3c;">⚠️ Error al verificar la respuesta</div>';
+        } finally {
+            // Rehabilitar las opciones después de 2 segundos
+            setTimeout(() => {
+                opciones.forEach(opcion => {
+                    opcion.style.pointerEvents = 'auto';
+                });
+            }, 2000);
+        }
+    }
+
+    // Efectos de hover mejorados
+    document.addEventListener('DOMContentLoaded', function() {
+        const opciones = document.querySelectorAll('.opcion');
+        opciones.forEach(opcion => {
+            opcion.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('correcta') && !this.classList.contains('incorrecta')) {
+                    this.style.transform = 'translateX(5px)';
+                    this.style.boxShadow = '0 3px 10px rgba(52, 152, 219, 0.2)';
+                }
+            });
+            
+            opcion.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('correcta') && !this.classList.contains('incorrecta')) {
+                    this.style.transform = 'translateX(0)';
+                    this.style.boxShadow = 'none';
+                }
+            });
+        });
+        
+        // Inicializar estadísticas
+        estadisticas = {
+            total: 0,
+            correctas: 0,
+            incorrectas: 0,
+            sinResponder: 0,
+            porMateria: {}
+        };
+    });
+    </script>
+</body>
+</html>

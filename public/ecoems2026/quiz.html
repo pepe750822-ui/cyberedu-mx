@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Pro - Cuestionario</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container animate-in">
+        <div id="quiz-view">
+            <div class="quiz-header">
+                <div>
+                    <h2 id="subject-name" class="subject-name" style="margin-bottom: 0.25rem;">Cargando...</h2>
+                    <p style="color: var(--text-muted)">Pregunta <span id="current-index">0</span> de <span
+                            id="total-questions">0</span></p>
+                </div>
+                <div id="timer-display" class="timer">00:00</div>
+            </div>
+
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+            <div class="quiz-container">
+                <div id="question-text" class="question-text">
+                    Preparando cuestionario...
+                </div>
+
+                <div id="options-grid" class="options-grid">
+                    <!-- Options will be injected here -->
+                </div>
+
+                <div id="feedback-area" class="feedback-area" style="display: none;">
+                    <!-- Feedback will be injected here -->
+                </div>
+
+                <div class="controls">
+                    <button id="next-btn" class="btn-next" style="display: none;"
+                        onclick="quizEngine.nextQuestion()">Siguiente →</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: left;">
+                <a href="dashboard.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left"></i> Salir del simulador
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/subjects_data.js"></script>
+    <script src="js/quiz_engine.js"></script>
+</body>
+
+</html>

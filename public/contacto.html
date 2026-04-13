@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contacto - CyberEdu MX | Soporte y Consultas</title>
+
+    <!-- ========== META TAGS SEO ========== -->
+    <meta name="description"
+        content="Contacta a CyberEdu MX para soporte técnico, consultas académicas o colaboraciones. Estamos aquí para ayudarte en tu preparación educativa.">
+    <meta name="keywords"
+        content="contacto CyberEdu MX, soporte técnico, consultas académicas, ayuda ECOEMS, preguntas cursos">
+    <meta name="author" content="CyberEdu MX">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://cyberedumx.com/contacto">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Contacto - CyberEdu MX | Soporte y Consultas">
+    <meta property="og:description"
+        content="Contacta a CyberEdu MX para soporte técnico, consultas académicas o colaboraciones.">
+    <meta property="og:url" content="https://cyberedumx.com/contacto">
+    <meta property="og:site_name" content="CyberEdu MX">
+    <meta property="og:image" content="https://cyberedumx.com/assets/contacto-cyberedumx.jpg">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contacto - CyberEdu MX",
+        "description": "Página de contacto para soporte y consultas académicas",
+        "publisher": {
+            "@type": "Organization",
+            "name": "CyberEdu MX",
+            "url": "https://cyberedumx.com"
+        }
+    }
+    </script>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 80px;
+            background: #f8f9fa;
+        }
+
+        .contact-hero {
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+
+        .contact-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            border: none;
+            padding: 12px 30px;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>
+                CyberEdu MX
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/quienes-somos">Quiénes Somos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/curso/ecoems-2026-estrategia-inteligente">ECOEMS 2026</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/curso/ingles">Inglés</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/preguntas-frecuentes-ecoems">Preguntas Frecuentes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/contacto">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="contact-hero">
+        <div class="container text-center">
+            <h1 class="display-5 fw-bold mb-3">Contacta a CyberEdu MX</h1>
+            <p class="lead mb-0">¿Tienes preguntas sobre nuestros cursos? ¿Necesitas soporte técnico? Estamos aquí para
+                ayudarte.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mb-5">
+            <!-- Canales de Contacto -->
+            <div class="col-lg-4 mb-4">
+                <h2 class="mb-4"><i class="fas fa-comments me-2"></i>Canales de Contacto</h2>
+
+                <div class="contact-card p-4 mb-4 bg-white">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt fa-2x text-white"></i>
+                    </div>
+                    <h5 class="text-center mb-3">Teléfono / WhatsApp</h5>
+                    <p class="text-center mb-2">
+                        <a href="https://wa.me/525523269241" class="text-decoration-none">
+                            <i class="fab fa-whatsapp text-success me-2"></i>
+                            <strong>55 2326 9241</strong>
+                        </a>
+                    </p>
+                    <p class="text-center small text-muted">Disponible de 9 AM a 6 PM (CDMX)</p>
+                </div>
+
+                <div class="contact-card p-4 mb-4 bg-white">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope fa-2x text-white"></i>
+                    </div>
+                    <h5 class="text-center mb-3">Correo Electrónico</h5>
+                    <p class="text-center mb-2">
+                        <a href="mailto:joseluisglez@cyberedumx.com" class="text-decoration-none">
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            <strong>joseluisglez@cyberedumx.com</strong>
+                        </a>
+                    </p>
+                    <p class="text-center small text-muted">Respuesta en menos de 24 horas</p>
+                </div>
+
+                <div class="contact-card p-4 bg-white">
+                    <div class="contact-icon">
+                        <i class="fas fa-globe-americas fa-2x text-white"></i>
+                    </div>
+                    <h5 class="text-center mb-3">Sitio Web</h5>
+                    <p class="text-center mb-2">
+                        <a href="https://cyberedumx.com" class="text-decoration-none">
+                            <i class="fas fa-link text-info me-2"></i>
+                            <strong>cyberedumx.com</strong>
+                        </a>
+                    </p>
+                    <p class="text-center small text-muted">Nuestra plataforma educativa</p>
+                </div>
+            </div>
+
+            <!-- Formulario de Contacto -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="mb-4"><i class="fas fa-paper-plane me-2"></i>Envíanos un Mensaje</h2>
+                        <p class="text-muted mb-4">Completa este formulario y te responderemos a la brevedad.</p>
+
+                        <form id="contactForm" onsubmit="submitContactForm(event)">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre completo *</label>
+                                    <input type="text" class="form-control" id="nombre" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Correo electrónico *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono (opcional)</label>
+                                <input type="tel" class="form-control" id="telefono">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="asunto" class="form-label">Asunto *</label>
+                                <select class="form-select" id="asunto" required>
+                                    <option value="" selected disabled>Selecciona una opción</option>
+                                    <option value="soporte">Soporte técnico</option>
+                                    <option value="ecoems">Consulta sobre ECOEMS 2026</option>
+                                    <option value="ingles">Consulta sobre curso de inglés</option>
+                                    <option value="colaboracion">Propuesta de colaboración</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label">Mensaje *</label>
+                                <textarea class="form-control" id="mensaje" rows="5" required
+                                    placeholder="Describe tu consulta o pregunta..."></textarea>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="privacidad" required>
+                                <label class="form-check-label" for="privacidad">
+                                    Acepto la <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">política
+                                        de privacidad</a> *
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Enviar Mensaje
+                            </button>
+
+                            <div id="formMessage" class="mt-3" style="display: none;"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Información Adicional -->
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5><i class="fas fa-clock me-2"></i>Horarios de Atención</h5>
+                                <p class="mb-0">Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                                <p class="mb-0">Sábados: 10:00 AM - 2:00 PM</p>
+                                <p class="mb-0 small text-muted">Horario de la Ciudad de México</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5><i class="fas fa-info-circle me-2"></i>¿Para qué contactarnos?</h5>
+                                <ul class="mb-0 small">
+                                    <li>Soporte técnico del sitio</li>
+                                    <li>Consultas sobre cursos</li>
+                                    <li>Problemas con acceso a material</li>
+                                    <li>Propuestas de colaboración</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ubicación (opcional) -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-map-marker-alt me-2"></i>Nuestra Ubicación</h2>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.8883152462746!2d-99.16976772413515!3d19.427396740809554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff35f5bd1563%3A0x6c366f0e2de02ff7!2sEl%20%C3%81ngel%20de%20la%20Independencia!5e0!3m2!1ses-419!2smx!4v1698791234567!5m2!1ses-419!2smx"
+                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Ubicación de CyberEdu MX en Ciudad de México">
+                    </iframe>
+                </div>
+                <p class="text-center mt-3 small text-muted">
+                    <i class="fas fa-map-pin me-1"></i>
+                    CyberEdu MX - Educación Digital para México
+                </p>
+            </div>
+        </div>
+
+        <!-- FAQ Rápido Contacto -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="mb-4"><i class="fas fa-question-circle me-2"></i>Preguntas Frecuentes sobre Contacto
+                        </h3>
+
+                        <div class="accordion" id="contactFAQ">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#faq1">
+                                        ¿Cuál es el tiempo de respuesta?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                                    <div class="accordion-body">
+                                        Generalmente respondemos en menos de 24 horas hábiles. Para consultas urgentes,
+                                        recomendamos contactarnos por WhatsApp.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#faq2">
+                                        ¿Ofrecen soporte técnico los fines de semana?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                                    <div class="accordion-body">
+                                        Sí, ofrecemos soporte limitado los sábados de 10:00 AM a 2:00 PM (horario de la
+                                        Ciudad de México).
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#faq3">
+                                        ¿Puedo agendar una asesoría personalizada?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                                    <div class="accordion-body">
+                                        Sí, ofrecemos asesorías personalizadas. Contáctanos para agendar una cita según
+                                        tu disponibilidad.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        CyberEdu MX
+                    </h5>
+                    <p class="small">Tu éxito académico es nuestra misión.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Cursos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/curso/ecoems-2026-estrategia-inteligente"
+                                class="text-white text-decoration-none">ECOEMS 2026</a></li>
+                        <li class="mb-2"><a href="/curso/ingles" class="text-white text-decoration-none">Curso de
+                                Inglés</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Contacto Rápido</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fab fa-whatsapp me-2"></i>55 2326 9241</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>JoseLuisGlez@cyberedumx.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-white my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy;
+                    <?php echo date('Y'); ?> CyberEdu MX. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Política de Privacidad -->
+    <div class="modal fade" id="privacyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Política de Privacidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>En CyberEdu MX respetamos tu privacidad. La información que nos proporciones será utilizada
+                        únicamente para:</p>
+                    <ul>
+                        <li>Responder a tus consultas y solicitudes</li>
+                        <li>Brindarte soporte técnico</li>
+                        <li>Mejorar nuestros servicios educativos</li>
+                        <li>Enviar información relevante sobre nuestros cursos (solo si lo solicitas)</li>
+                    </ul>
+                    <p>No compartimos tu información con terceros sin tu consentimiento.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Manejo del formulario
+        function submitContactForm(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('contactForm');
+            const messageDiv = document.getElementById('formMessage');
+
+            // Validación básica
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const asunto = document.getElementById('asunto').value;
+            const mensaje = document.getElementById('mensaje').value;
+
+            if (!nombre || !email || !asunto || !mensaje) {
+                showMessage('Por favor, completa todos los campos obligatorios.', 'danger');
+                return;
+            }
+
+            // Simulación de envío (en producción, conectarías a un backend)
+            showMessage('Enviando tu mensaje...', 'info');
+
+            setTimeout(() => {
+                // Aquí normalmente harías una petición fetch a tu servidor
+                // fetch('/api/contacto', { method: 'POST', body: new FormData(form) })
+
+                showMessage('¡Mensaje enviado con éxito! Te contactaremos pronto.', 'success');
+                form.reset();
+
+                // Trackear envío para Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'contact_form_submit', {
+                        'event_category': 'engagement',
+                        'event_label': 'Formulario de contacto'
+                    });
+                }
+            }, 1500);
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${text}
+                    <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'"></button>
+                </div>
+            `;
+            messageDiv.style.display = 'block';
+        }
+
+        // Schema.org para página de contacto
+        const contactSchema = {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contacto - CyberEdu MX",
+            "description": "Página de contacto para soporte y consultas",
+            "url": "https://cyberedumx.com/contacto",
+            "mainEntity": {
+                "@type": "Organization",
+                "name": "CyberEdu MX",
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+52-55-2326-9241",
+                    "contactType": "customer service",
+                    "areaServed": "MX",
+                    "availableLanguage": "es"
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

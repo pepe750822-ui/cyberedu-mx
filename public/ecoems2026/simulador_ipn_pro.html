@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador IPN 2025 - Profesional</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Standalone Style Block - Derived from style_v2.css and IPN theme */
+        :root {
+            --bg-dark: #050510;
+            --bg-card: rgba(15, 15, 35, 0.7);
+            --cyber-primary: #ffcc00;
+            --cyber-secondary: #ff00ff;
+            --cyber-accent: #00ff9d;
+            --cyber-warning: #ffcc00;
+            --cyber-danger: #ff3366;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --ipn-maroon: #800000;
+            --ipn-gold: #c5b358;
+            --transition-norm: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 20% 20%, rgba(128, 0, 0, 0.1) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(197, 179, 88, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .ipn-header {
+            background: linear-gradient(135deg, var(--ipn-maroon) 0%, #4a0000 100%);
+            padding: 2rem;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--ipn-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #fff, var(--ipn-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .subject-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: var(--transition-norm);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--ipn-gold);
+        }
+
+        .subject-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--subject-color);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--subject-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        /* Modal */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0a0a1a;
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Quiz UI */
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--ipn-gold);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 255, 157, 0.2);
+            border-color: var(--cyber-accent);
+        }
+
+        .option-btn.incorrect {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: var(--cyber-danger);
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            font-weight: 800;
+        }
+
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--ipn-gold);
+        }
+
+        .btn-primary {
+            background: var(--ipn-gold);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header class="ipn-header animate-fade">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="color: var(--ipn-gold); font-size: 2.2rem;"></i>
+                <div>
+                    <h1 class="gradient-text" style="font-family: 'Outfit', sans-serif; font-size: 1.5rem;">SIMULADOR
+                        IPN 2025</h1>
+                    <p style="font-size: 0.7rem; color: var(--ipn-gold); letter-spacing: 2px;">PRO VERSIÓN STANDALONE
+                    </p>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item"><i class="fas fa-tasks"></i> <span id="stats-progress">0/10</span> Temas</div>
+                <div class="stat-item"><i class="fas fa-bullseye"></i> <span id="stats-acc">0%</span></div>
+            </div>
+        </header>
+
+        <main id="dashboard" class="animate-fade">
+            <div id="subjects-grid" class="subjects-grid"></div>
+        </main>
+    </div>
+
+    <div id="modal-overlay" class="overlay">
+        <div id="modal-content" class="modal-content">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modal-view"></div>
+        </div>
+    </div>
+
+    <script>
+        // STANDALONE DATA & LOGIC
+        const subjects = {
+            'matematicas': {
+                name: "Matemáticas", icon: "fa-calculator", color: "#00ff9d", subindices: ["Aritmética", "Álgebra", "Geometría"],
+                quiz: [
+                    { q: "Una persona caminó durante media hora y luego consiguió un aventón que duró la tercera parte de una hora. ¿Qué parte de una hora duró el viaje completo?", options: ["3/2", "5/6", "4/3", "8/6"], correct: 1, rationale: "1/2 + 1/3 = 5/6 de una hora (50 minutos)." },
+                    { q: "Es el polígono que se forma por la intersección de tres segmentos y la suma de sus ángulos interiores es de 180º.", options: ["Cuadrilátero", "Pentágono", "Heptágono", "Triángulo"], correct: 3, rationale: "Un triángulo siempre suma 180º en sus ángulos internos." },
+                    { q: "Es el teorema que enuncia: El cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.", options: ["Arquímedes", "Euclides", "Pitágoras", "Tales"], correct: 2, rationale: "Teorema de Pitágoras aplicable a triángulos rectángulos." },
+                    { q: "¿Cuál es el valor de 'x' en la ecuación 3x - 11 = x - 7?", options: ["x = 2", "x = 1", "x = 4/7", "x = 1/2"], correct: 0, rationale: "3x - x = 11 - 7 => 2x = 4 => x = 2." },
+                    { q: "Si la arista de un cubo mide 3m, ¿cuál es su área total?", options: ["9m²", "18m²", "54m²", "27m²"], correct: 2, rationale: "Área = 6 * lado² = 6 * 3² = 54m²." },
+                    { q: "En un hexágono regular, ¿cuánto suman sus ángulos interiores?", options: ["180°", "360°", "540°", "720°"], correct: 3, rationale: "Suma = (n-2) * 180 = (6-2) * 180 = 720°." },
+                    { q: "¿Cuál es el resultado de la operación: 3/4 + 1/2 - 1/8?", options: ["9/8", "7/8", "5/8", "3/8"], correct: 0, rationale: "6/8 + 4/8 - 1/8 = 9/8." },
+                    { q: "Si el 20% de un número es 40, ¿cuál es el número?", options: ["100", "150", "200", "250"], correct: 2, rationale: "40 / 0.2 = 200." },
+                    { q: "Simplifica la expresión: 5x + 3(x - 2)", options: ["8x - 2", "8x - 6", "5x + 3x - 2", "2x - 6"], correct: 1, rationale: "5x + 3x - 6 = 8x - 6." },
+                    { q: "Un ángulo que mide 120° se clasifica como:", options: ["Agudo", "Recto", "Obtuso", "Llano"], correct: 2, rationale: "Es obtuso porque es mayor a 90° y menor a 180°." },
+                    { q: "¿Cuál es el área de un círculo con radio de 5cm? (Usa π ≈ 3.14)", options: ["15.7 cm²", "31.4 cm²", "78.5 cm²", "100 cm²"], correct: 2, rationale: "Área = π * r² = 3.14 * 25 = 78.5 cm²." },
+                    { q: "Calcula la pendiente de la recta que pasa por (1, 2) y (3, 6):", options: ["2", "4", "3", "1/2"], correct: 0, rationale: "m = (y2 - y1) / (x2 - x1) = (6 - 2) / (3 - 1) = 4 / 2 = 2." },
+                    { q: "¿Cuál es el resultado de 2⁴?", options: ["8", "12", "16", "32"], correct: 2, rationale: "2 * 2 * 2 * 2 = 16." },
+                    { q: "En la sucesión 2, 5, 10, 17, ..., ¿cuál es el siguiente término?", options: ["24", "26", "28", "30"], correct: 1, rationale: "Los saltos son 3, 5, 7, el siguiente es 9: 17 + 9 = 26." },
+                    { q: "Resuelve para 'y': 2y/5 = 10", options: ["y = 4", "y = 25", "y = 20", "y = 50"], correct: 1, rationale: "2y = 50 => y = 25." },
+                    { q: "El valor absoluto de -15 es:", options: ["15", "-15", "0", "1"], correct: 0, rationale: "El valor absoluto siempre es positivo." },
+                    { q: "¿Cuántos segundos hay en 1.5 horas?", options: ["3600", "5400", "7200", "9000"], correct: 1, rationale: "1.5 * 3600 = 5400 segundos." },
+                    { q: "Si compro 3 cuadernos por $45, ¿cuánto pagaré por 7 cuadernos?", options: ["$90", "$105", "$115", "$120"], correct: 1, rationale: "$15 por cuaderno * 7 = $105." },
+                    { q: "El complemento de un ángulo de 35° es:", options: ["55°", "65°", "145°", "155°"], correct: 0, rationale: "90° - 35° = 55°." },
+                    { q: "¿Cuál es la raíz cuadrada de 144?", options: ["10", "11", "12", "14"], correct: 2, rationale: "12 * 12 = 144." },
+                    { q: "Un triángulo isósceles tiene:", options: ["3 lados iguales", "2 lados iguales", "0 lados iguales", "Un ángulo de 90°"], correct: 1, rationale: "Esa es la definición de isósceles." },
+                    { q: "Resuelve: (x + 3)²", options: ["x² + 9", "x² + 3x + 9", "x² + 6x + 9", "2x + 6"], correct: 2, rationale: "Binomio al cuadrado: a² + 2ab + b²." },
+                    { q: "¿Cuál es el MCD de 12 y 18?", options: ["2", "3", "6", "12"], correct: 2, rationale: "6 es el mayor número que divide a ambos." },
+                    { q: "En el sistema de coordenadas, el eje horizontal se llama:", options: ["Eje de las ordenadas", "Eje de las abscisas", "Origen", "Cuadrante"], correct: 1, rationale: "Eje X = Abscisas, Eje Y = Ordenadas." },
+                    { q: "Observa la figura y determina el valor de 'x':", options: ["10°", "20°", "30°", "45°"], image: "img/mate_q25.png", correct: 2, rationale: "Basado en la suma de ángulos suplementarios mostrados en la imagen." },
+                    { q: "Simplifica: (2x³)²", options: ["4x⁵", "4x⁶", "2x⁶", "4x⁹"], correct: 1, rationale: "2² * (x³)² = 4 * x⁶." },
+                    { q: "¿Cuál es el suplemento de un ángulo de 80°?", options: ["10°", "100°", "110°", "280°"], correct: 1, rationale: "180° - 80° = 100°." },
+                    { q: "¿Cuál de estos números es primo?", options: ["9", "15", "17", "21"], correct: 2, rationale: "17 solo es divisible por 1 y por sí mismo." },
+                    { q: "Resuelve la proporción 2/x = 6/15", options: ["x = 5", "x = 4", "x = 3", "x = 10"], correct: 0, rationale: "6x = 30 => x = 5." },
+                    { q: "El área de un rectángulo con base 10 y altura 4 es:", options: ["14", "20", "28", "40"], correct: 3, rationale: "Base * Altura = 10 * 4 = 40." }
+                ]
+            },
+            'fisica': {
+                name: "Física", icon: "fa-atom", color: "#9900ff", subindices: ["Mecánica", "Calor", "Electricidad"],
+                quiz: [
+                    { q: "¿Cuál es el principio en el que se basa el funcionamiento del gato hidráulico?", options: ["Bernoulli", "Torricelli", "Arquímedes", "Pascal"], correct: 3, rationale: "El Principio de Pascal explica la transmisión de presión en fluidos." },
+                    { q: "El proceso por el que se transfiere la energía térmica mediante colisiones de moléculas adyacentes.", options: ["Convección", "Conducción", "Radiación", "Reflexión"], correct: 1, rationale: "La conducción requiere contacto físico entre las partículas." },
+                    { q: "¿Cuál es el resultado de convertir 12 m/s a km/h?", options: ["3.33 km/h", "43.2 km/h", "48.2 km/h", "50.0 km/h"], correct: 1, rationale: "12 * 3.6 = 43.2." },
+                    { q: "En el movimiento rectilíneo uniforme, la aceleración es:", options: ["Constante", "Cero", "Variable", "Infinita"], correct: 1, rationale: "La velocidad no cambia, por lo que la aceleración es nula." },
+                    { q: "Selecciona los elementos que componen un vector:", options: ["Flecha, origen, magnitud", "Magnitud, dirección, sentido", "Punto, línea, color", "Masa, peso, volumen"], correct: 1, rationale: "Módulo, dirección y sentido son las partes fundamentales." },
+                    { q: "La energía ________ se obtiene al convertir el movimiento de las aspas de un aerogenerador en electricidad.", options: ["geotérmica", "hidráulica", "eólica", "mareomotriz"], correct: 2, rationale: "El viento (energía eólica) impulsa los aerogeneradores." }
+                ]
+            },
+            'biologia': {
+                name: "Biología", icon: "fa-dna", color: "#ff9900", subindices: ["Ecosistemas", "Célula", "Salud"],
+                quiz: [
+                    { q: "Nombre que recibe la variedad de seres vivos y las relaciones que establecen entre sí.", options: ["Diversidad", "Ecosistema", "Biodiversidad", "Ambiente"], correct: 2, rationale: "La biodiversidad incluye especies y sus interacciones." },
+                    { q: "Proceso biológico que permite la generación de nuevos individuos para preservar las especies.", options: ["Adaptación", "Supervivencia", "Reproducción", "Sexualidad"], correct: 2, rationale: "La reproducción garantiza la continuidad biológica." },
+                    { q: "La unidad morfológica y funcional de todo ser vivo es:", options: ["Microbio", "Óvulo", "Átomo", "Célula"], correct: 3, rationale: "La célula es el ladrillo fundamental de la vida." },
+                    { q: "¿Cuál de estos es un gas de efecto invernadero?", options: ["Oxígeno", "Nitrógeno", "Dióxido de Carbono", "Argón"], correct: 2, rationale: "El CO2 atrapa el calor en la atmósfera terrestre." }
+                ]
+            },
+            'quimica': {
+                name: "Química", icon: "fa-flask", color: "#ff3366", subindices: ["Materia", "Atomos", "Enlaces"],
+                quiz: [
+                    { q: "Es la unidad química que mide la cantidad de sustancia:", options: ["Ion", "Mol", "Molécula", "Partícula"], correct: 1, rationale: "El mol contiene el número de Avogadro de entidades." },
+                    { q: "¿Qué nombre reciben los elementos del grupo IIA de la tabla periódica?", options: ["Alcalinos", "Alcalinotérreos", "Halógenos", "Gases nobles"], correct: 1, rationale: "Ejemplos: Magnesio, Calcio, Bario." },
+                    { q: "Una solución que tiene un valor de 8 en la escala de pH se considera:", options: ["Ácida", "Alcalina", "Neutra", "Mezcla"], correct: 1, rationale: "Toda sustancia con pH superior a 7 es base/alcalina." },
+                    { q: "¿Qué partículas se localizan en el núcleo del átomo?", options: ["Isótopos", "Aniones", "Protones y neutrones", "Electrones"], correct: 2, rationale: "El núcleo concentra la masa positiva y neutra del átomo." }
+                ]
+            },
+            'espanol': {
+                name: "Español", icon: "fa-language", color: "#9966ff", subindices: ["Literatura", "Gramática", "Lengua"],
+                quiz: [
+                    { q: "Los artículos de opinión son textos ________ breves que tratan un tema actual y controvertido.", options: ["descriptivos", "expositivos", "comparativos", "argumentativos"], correct: 3, rationale: "Su propósito es exponer la postura del autor." },
+                    { q: "Es la explicación de un texto empleando las propias palabras para facilitar su comprensión.", options: ["Cita textual", "Índice", "Paráfrasis", "Explicación"], correct: 2, rationale: "La paráfrasis ayuda a digerir textos complejos." },
+                    { q: "¿Cuál de las siguientes palabras es un ejemplo de onomatopeya?", options: ["PLAS!", "Cantar", "Rápido", "Azul"], correct: 0, rationale: "Representa el sonido de un golpe o impacto." },
+                    { q: "El subgénero literario de más reciente creación es:", options: ["Histórico", "Fantasía", "Aventura", "Ciencia Ficción"], correct: 3, rationale: "Asociado a los avances tecnológicos modernos." }
+                ]
+            },
+            'historia': {
+                name: "Historia", icon: "fa-landmark", color: "#ffcc00", subindices: ["Universal", "México"],
+                quiz: [
+                    { q: "¿Cuál es la teoría del poblamiento de América que sostiene el ingreso por el estrecho de Bering?", options: ["Clovis", "Consenso Clovis", "Pre-Clovis", "Insenso Clovis"], correct: 1, rationale: "Propone que los humanos cruzaron Beringia hace ~14,000 años." },
+                    { q: "¿En qué fecha se conmemora el Día Internacional de la Mujer?", options: ["8 de marzo", "6 de mayo", "18 de marzo", "15 de mayo"], correct: 0, rationale: "Celebración de la lucha por la igualdad y derechos." },
+                    { q: "El periodo que abarca desde la caída de Roma (476) hasta 1492 se conoce como:", options: ["Ilustración", "Edad Antigua", "Imperialismo", "Edad Media"], correct: 3, rationale: "Mil años de historia feudal y religiosa." },
+                    { q: "El presidente que mandó al escuadrón 201 a combatir en la Segunda Guerra Mundial fue:", options: ["Díaz Ordaz", "Lázaro Cárdenas", "Miguel Alemán", "Manuel Ávila Camacho"], correct: 3, rationale: "Bajo la política de Unidad Nacional." }
+                ]
+            },
+            'geografia': {
+                name: "Geografía", icon: "fa-globe-americas", color: "#00cc99", subindices: ["Tierra", "Población", "Agua"],
+                quiz: [
+                    { q: "¿Qué anuncia la teoría de la deriva continental?", options: ["Pangea", "Sismos", "Mareas", "Climas"], correct: 0, rationale: "Explica cómo los continentes se mueven sobre el manto." },
+                    { q: "¿Cómo se denomina al retorno de población desde áreas urbanas hacia rurales?", options: ["Urbanización", "Inmigración", "Centralización", "Ruralización"], correct: 3, rationale: "Suele ocurrir por saturación urbana." },
+                    { q: "El choque entre la placa de ________ y la placa ________ producen la mayoría de los sismos en México.", options: ["Pacífico y Caribe", "Juan de Fuca y Rivera", "Cocos y Norteamericana", "Caribe y Norteamericana"], correct: 2, rationale: "Zona de subducción en el Pacífico mexicano." }
+                ]
+            },
+            'civica': {
+                name: "Cívica", icon: "fa-balance-scale", color: "#ff6666", subindices: ["Ética", "Valores", "Democracia"],
+                quiz: [
+                    { q: "¿Cuál es la disciplina filosófica que estudia los valores y su influencia?", options: ["Filosofía", "Axiología", "Ética", "Moral"], correct: 1, rationale: "Axios (valor) + Logia (estudio)." },
+                    { q: "¿Quién es considerado el padre de la Ética?", options: ["Aristóteles", "Sócrates", "Platón", "Lutero"], correct: 1, rationale: "Sócrates buscó la virtud a través de la razón." },
+                    { q: "¿Cuál es el valor que se relaciona con la acción de participar en algún culto los domingos?", options: ["Económico", "Político", "Religioso", "Moral"], correct: 2, rationale: "Acción basada en la fe y práctica espiritual." }
+                ]
+            },
+            'hab_mat': {
+                name: "H. Matemática", icon: "fa-brain", color: "#ff00ff", subindices: ["Lógica", "Series"],
+                quiz: [
+                    { q: "¿Qué letra debe situarse en la casilla vacía del patrón? (A-d-g / r-u-x / d-?-j)", options: ["b", "c", "f", "g"], correct: 3, rationale: "Sigue la secuencia de letras saltando de 2 en 2." },
+                    { q: "Si 50 latas de aceite valen $300, ¿cuántas compras con $4200?", options: ["670", "680", "690", "700"], correct: 3, rationale: "Proporción: 4200 / (300/50) = 700." },
+                    { q: "Mi hermano tiene un reloj que atrasa 3 min por hora. Si se sincroniza a las 10:00 am, ¿qué hora marcará a las 7:00 pm?", options: ["18:20", "18:40", "18:27", "18:33"], correct: 3, rationale: "9 horas * 3 min = 27 min de atraso. 19:00 - 27 min = 18:33." }
+                ]
+            },
+            'hab_verb': {
+                name: "H. Verbal", icon: "fa-comments", color: "#00f3ff", subindices: ["Comprensión", "Uso"],
+                quiz: [
+                    { q: "¿Cuál es el antónimo de 'Prevenido'?", options: ["Desprevenido", "Atento", "Rápido", "Lento"], correct: 0, rationale: "La falta de preparación previa." },
+                    { q: "Un eslogan es una frase corta que busca:", options: ["Engañar", "Identificar marca", "Aprender", "Escribir"], correct: 1, rationale: "Facilita la identificación mnemotécnica de un producto." },
+                    { q: "Son palabras homófonas aquellas que:", options: ["Igual escritura", "Diferente pronunciación", "Igual pronunciación - diferente escritura", "Significado igual"], correct: 2, rationale: "Cosen (cocinar) y cosen (costura) suenan igual." }
+                ]
+            }
+        };
+
+        let currentQ = 0;
+        let score = 0;
+        let activeQuiz = [];
+        let activeSub = '';
+
+        function renderDashboard() {
+            const grid = document.getElementById('subjects-grid');
+            grid.innerHTML = '';
+            for (const key in subjects) {
+                const s = subjects[key];
+                const card = document.createElement('div');
+                card.className = 'subject-card animate-fade';
+                card.style.setProperty('--subject-color', s.color);
+                card.innerHTML = `
+                    <div class="subject-icon"><i class="fas ${s.icon}"></i></div>
+                    <h3>${s.name}</h3>
+                    <p>${s.subindices.length} Temas disponibles</p>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                `;
+                card.onclick = () => startSubject(key);
+                grid.appendChild(card);
+            }
+        }
+
+        function startSubject(key) {
+            activeSub = key;
+            activeQuiz = subjects[key].quiz;
+            currentQ = 0;
+            score = 0;
+            showQuestion();
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function showQuestion() {
+            const q = activeQuiz[currentQ];
+            const view = document.getElementById('modal-view');
+            view.innerHTML = `
+                <div class="animate-fade">
+                    <p style="text-transform:uppercase; font-size:0.7rem; font-weight:bold; color:var(--ipn-gold); margin-bottom:1rem;">${subjects[activeSub].name} • Pregunta ${currentQ + 1}/${activeQuiz.length}</p>
+                    <h2 style="font-size:1.2rem; margin-bottom:1.5rem;">${q.q}</h2>
+                    
+                    ${q.image ? `<div style="text-align:center; margin-bottom:1.5rem; background:rgba(255,255,255,0.05); padding:1rem; border-radius:12px;">
+                        <img src="${q.image}" alt="Pregunta" style="max-width:100%; border-radius:8px; border:1px solid var(--glass-border);">
+                    </div>` : ''}
+
+                    <div id="options-container">
+                        ${q.options.map((opt, i) => `
+                            <button class="option-btn" onclick="checkAns(${i}, this)">
+                                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                <span>${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback" style="display:none;" class="animate-fade"></div>
+                </div>
+            `;
+        }
+
+        function checkAns(idx, btn) {
+            if (document.getElementById('feedback').style.display === 'block') return;
+            const q = activeQuiz[currentQ];
+            const isCorrect = idx === q.correct;
+            if (isCorrect) score++;
+
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach((b, i) => {
+                if (i === q.correct) b.classList.add('correct');
+                else if (i === idx) b.classList.add('incorrect');
+                b.style.pointerEvents = 'none';
+            });
+
+            const fed = document.getElementById('feedback');
+            fed.style.display = 'block';
+            fed.innerHTML = `
+                <div class="feedback-card">
+                    <p style="font-weight:bold; color:${isCorrect ? 'var(--cyber-accent)' : 'var(--cyber-danger)'}; margin-bottom:0.5rem;">
+                        ${isCorrect ? '¡CORRECTO!' : 'INCORRECTO'}
+                    </p>
+                    <p style="font-size:0.9rem;">${q.rationale}</p>
+                    <button class="btn-primary" style="margin-top:1rem;" onclick="nextQ()">${currentQ === activeQuiz.length - 1 ? 'FINALIZAR' : 'SIGUIENTE'}</button>
+                </div>
+            `;
+        }
+
+        function nextQ() {
+            currentQ++;
+            if (currentQ < activeQuiz.length) showQuestion();
+            else showFinalResults();
+        }
+
+        function showFinalResults() {
+            const view = document.getElementById('modal-view');
+            const pct = (score / activeQuiz.length) * 100;
+            view.innerHTML = `
+                <div style="text-align:center;" class="animate-fade">
+                    <i class="fas fa-trophy" style="font-size:3rem; color:var(--ipn-gold); margin-bottom:1rem;"></i>
+                    <h2>Resultado Final</h2>
+                    <p style="font-size:3rem; font-weight:800; color:var(--ipn-gold);">${pct.toFixed(0)}%</p>
+                    <p style="margin-bottom:2rem;">Aciertos: ${score} de ${activeQuiz.length}</p>
+                    <button class="btn-primary" onclick="closeModal()">VOLVER AL INICIO</button>
+                </div>
+            `;
+        }
+
+        function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); }
+
+        window.onload = renderDashboard;
+    </script>
+</body>
+
+</html>

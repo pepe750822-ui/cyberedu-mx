@@ -1,0 +1,87 @@
+{
+  "version": "10.0",
+  "fecha_actualizacion": "2025-12-24",
+  "detalles_curso": {
+    "nombre": "BioReto Academy ECOEMS 2026",
+    "materias_total": 10,
+    "episodios_total": 91,
+    "temas_subtitulos": 212,
+    "materias": [
+      "Habilidad Verbal",
+      "Habilidad Matemática",
+      "Biología",
+      "Física",
+      "Química",
+      "Matemáticas",
+      "Historia",
+      "Español",
+      "Formación Cívica",
+      "Geografía"
+    ],
+    "recursos": [
+      "Videos en estilo Anime",
+      "NotebookLM con IA",
+      "Simuladores interactivos",
+      "Guías en PDF",
+      "Infografías",
+      "Cuestionarios"
+    ]
+  },
+  "ventas": {
+    "proceso": "Para inscribirte, haz clic en el botón de WhatsApp y un asesor te guiará con el pago y acceso.",
+    "metodos_pago": [
+      "Transferencia Bancaria",
+      "Tarjeta de Crédito/Débito",
+      "PayPal",
+      "Mercado Pago"
+    ],
+    "beneficios": "Acceso de por vida, actualizaciones constantes y soporte por IA personalizado."
+  },
+  "preguntas_comunes": {
+    "horario examen": "El ECOEMS 2026 será el 15 de junio de 2026 a las 9:00 AM",
+    "requisitos": "Necesitas CURP, comprobante de estudios y certificado de secundaria",
+    "preguntas total": "128 preguntas en el examen real",
+    "duración examen": "Tendrás 3 horas para completar el examen",
+    "material permitido": "Solo lápiz, borrador y sacapuntas. NO calculadora",
+    "precio": "🚀 ¡PROMO ESPECIAL! Domina el ECOEMS 2026 por solo $50 MXN solicitando tu cupón de Udemy por WhatsApp. Incluye las 128 preguntas resueltas con IA y video.",
+    "udemy_promo": "🎓 **Curso Udemy ECOEMS 2026 + Guía 128 Preguntas:**\n\n• Precio especial: **$50 MXN** (vía WhatsApp)\n• Contenido: 128 preguntas 2025 resueltas con NotebookLM\n• Formato: Video por cada pregunta + Método Triple\n• Link: [Inscribirse en Udemy](https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC)\n\n👉 *Pídeme el código de descuento por WhatsApp para activarlo.*"
+  },
+  "conocimiento": [
+    {
+      "id": 1,
+      "tema": "ecoems",
+      "preguntas": [
+        "qué es ecoems",
+        "qué es el ecoems",
+        "para qué sirve el ecoems"
+      ],
+      "respuesta": "📘 **¿Qué es el ECOEMS?**\n\nEl Examen de Competencia para la Educación Media Superior (ECOEMS) es la prueba oficial para ingresar a preparatoria en México.\n\n**Características principales:**\n• 128 preguntas de opción múltiple\n• 11 áreas de conocimiento\n• Duración: 3 horas\n• Fecha: 15 de junio 2026\n• Resultados: julio 2026\n\n🎯 **Con este examen podrás:**\n• Ingresar a preparatorias públicas\n• Obtener becas educativas\n• Medir tu nivel académico\n• Prepararte para la universidad",
+      "video_relacionado": 0,
+      "acciones": [
+        {
+          "tipo": "recomendar_video",
+          "video_id": 0,
+          "titulo": "Estrategia Anime ECOEMS 2026"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tema": "matematicas",
+      "preguntas": [
+        "matemáticas básicas",
+        "álgebra para ecoems",
+        "geometría fácil"
+      ],
+      "respuesta": "🧮 **Matemáticas para ECOEMS**\n\nLas matemáticas representan 24 preguntas del examen. Temas clave:\n\n**1. Aritmética:**\n• Operaciones básicas\n• Fracciones y decimales\n• Porcentajes\n\n**2. Álgebra:**\n• Ecuaciones lineales\n• Sistemas de ecuaciones\n• Factorización\n\n**3. Geometría:**\n• Áreas y perímetros\n• Teorema de Pitágoras\n• Volúmenes\n\n💡 **Consejo anime:** Empieza con el video 31 (álgebra básica) y avanza gradualmente.",
+      "video_relacionado": 31,
+      "acciones": [
+        {
+          "tipo": "ejercicio",
+          "materia": "matematicas",
+          "dificultad": 1
+        }
+      ]
+    }
+  ]
+}

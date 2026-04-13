@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador IPN 2025 - Profesional</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style_v2.css">
+    <style>
+        :root {
+            --ipn-maroon: #800000;
+            --ipn-gold: #c5b358;
+            --cyber-primary: #ffcc00;
+            /* Overriding for IPN theme */
+        }
+
+        .ipn-header {
+            background: linear-gradient(135deg, var(--ipn-maroon) 0%, #4a0000 100%);
+            padding: 2rem;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--ipn-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #fff, var(--ipn-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subject-card:hover {
+            border-color: var(--ipn-gold);
+        }
+
+        .btn-primary {
+            background: var(--ipn-gold);
+            color: var(--bg-dark);
+            font-weight: 800;
+        }
+
+        .btn-primary:hover {
+            background: #e6d375;
+            box-shadow: 0 0 15px rgba(197, 179, 88, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="ipn-header animate-fade">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="color: var(--ipn-gold); font-size: 2.5rem;"></i>
+                <div>
+                    <h1 class="gradient-text" style="font-family: 'Outfit', sans-serif;">SIMULADOR IPN <span
+                            style="font-size: 0.8rem;">2025</span></h1>
+                    <p style="font-size: 0.8rem; color: var(--ipn-gold); letter-spacing: 2px;">MATERIAL DE APOYO
+                        PROFESIONAL</p>
+                </div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-check-double"></i>
+                    <span id="global-progress">0/300</span> <span class="text-muted"
+                        style="margin-left: 5px;">Extracción Real</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-bullseye"></i>
+                    <span id="global-accuracy">0%</span> <span class="text-muted"
+                        style="margin-left: 5px;">Precisión</span>
+                </div>
+                <button class="btn-primary" onclick="window.location.reload()" title="Reiniciar">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main id="dashboard" class="animate-fade">
+            <div style="margin-bottom: 2.5rem; text-align: center;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; font-family: 'Outfit', sans-serif;">Examen de
+                    Admisión Nivel Medio Superior</h2>
+                <p class="text-muted">Domina los campos formativos con preguntas reales extraídas de la guía oficial.
+                </p>
+            </div>
+
+            <!-- Subject Cards Container -->
+            <div id="subjects-grid" class="subjects-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Overlay / Modal for Subindices & Quiz -->
+    <div id="modal-overlay" class="overlay">
+        <div id="modal-content" class="modal-content">
+            <button class="close-btn" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div id="modal-view">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2000;"></div>
+
+    <!-- Scripts -->
+    <script src="questions_data.js"></script>
+    <script src="ipn_questions_ext.js"></script>
+    <script src="confetti_simple.js"></script>
+    <script>
+        // Emergency Check and Manual Injection
+        if (typeof subjectsData === 'undefined') {
+            console.error("❌ questions_data.js NOT FOUND or failed to load");
+        } else {
+            console.log("💎 Inyectando preguntas IPN...");
+            if (typeof injectIpnQuestions === 'function') injectIpnQuestions();
+        }
+    </script>
+    <script src="script_v2.js"></script>
+</body>
+
+</html>

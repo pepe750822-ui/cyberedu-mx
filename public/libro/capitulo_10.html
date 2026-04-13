@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - ECOEMS 2026</title>
+    <meta name="description" content="Manual Estratégico ECOEMS 2026. {title}. Recursos multimedia y material de estudio.">
+    <meta name="keywords" content="ECOEMS 2026, Manual Estratégico, BioReto Academy, CyberEdu MX, Guía de Estudio">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        :root { --bg-color: #f4f7f6; --text-color: #333; --card-bg: white; --nav-bg: #2c3e50; }
+        .dark-mode { --bg-color: #0f172a; --text-color: #e2e8f0; --card-bg: #1e293b; --nav-bg: #1e293b; }
+
+        body { margin: 0; padding: 0; background: var(--bg-color); color: var(--text-color); transition: background 0.3s, color 0.3s; }
+        .nav-bar { position: sticky; top: 0; background: var(--nav-bg); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-family: 'Montserrat', sans-serif; }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-btn { color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-size: 0.9em; display: flex; align-items: center; gap: 8px; }
+        .nav-btn:hover { background: #4ECDC4; color: #2c3e50; }
+        .nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+        
+        .theme-toggle { cursor: pointer; padding: 8px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.3s; }
+        .theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+        .capitulo-section { font-family: 'Lora', serif; max-width: 21cm; margin: 40px auto; padding: 2cm; background: var(--card-bg); box-shadow: 0 0 20px rgba(0,0,0,0.1); border-radius: 8px; color: var(--text-color); }
+        .capitulo-section h1 { font-family: 'Montserrat', sans-serif; color: #4ECDC4; font-size: 24pt; border-bottom: 3px solid #4ECDC4; padding-bottom: 10px; margin-bottom: 30px; }
+        .chap-intro { font-size: 12pt; margin-bottom: 40px; text-align: justify; }
+        .video-block { margin-bottom: 50px; border-bottom: 1px solid #eee; padding-bottom: 30px; page-break-inside: avoid; }
+        .video-block:last-child { border-bottom: none; }
+        .video-title { font-family: 'Montserrat', sans-serif; font-size: 14pt; font-weight: 700; color: #4ECDC4; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .video-desc { font-style: italic; color: #666; margin-bottom: 15px; font-size: 11pt; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .notebooklm-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4ECDC4, #2c3e50); color: white; text-decoration: none; padding: 10px 20px; border-radius: 25px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 10pt; transition: transform 0.2s, box-shadow 0.2s; }
+        .notebooklm-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4); }
+        .print-only-qr { display: none; text-align: center; margin-top: 10px; padding: 10px; background: #f9f9f9; border: 1px dashed #ccc; }
+        
+        .fab-contact { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .fab-btn { width: 50px; height: 50px; border-radius: 50%; background: #4ECDC4; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .fab-btn:hover { transform: rotate(15deg) scale(1.1); }
+        .fab-menu { display: none; margin-bottom: 10px; flex-direction: column; gap: 10px; }
+        .fab-menu a { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 18px; }
+
+        @media print { .nav-bar { display: none; } .video-wrapper, .notebooklm-btn, .fab-contact { display: none; } .print-only-qr { display: block; } .capitulo-section { padding: 0; width: 100%; box-shadow: none; margin: 0; } }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-btn"><i class="fas fa-th"></i> Portal Estratégico</a>
+            <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-moon"></i></div>
+        </div>
+        <div class="nav-links">
+            <a href="capitulo_9.html" class="nav-btn {prev_disabled}"><i class="fas fa-chevron-left"></i> Anterior</a>
+            <a href="capitulo_11.html" class="nav-btn {next_disabled}">Siguiente <i class="fas fa-chevron-right"></i></a>
+        </div>
+    </div>
+    <div class="capitulo-section" id="cap-10">
+        <h1>Capítulo 10: Geografía</h1>
+        <div class="chap-intro">
+            <p>Un viaje por el planeta. Paisajes, recursos y sociedad global.</p>
+        </div>
+
+        <!-- VIDEO 77 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                77. GEOGRAFÍA - EL ESPACIO GEOGRÁFICO Y LOS MAPAS | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/px5h6XUA8WU" title="Video 77" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video77/infografia.png" alt="Infografía Video 77"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video77/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video77/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video77/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/d881ad4a-f11d-42fd-afad-522aeaaa9d37?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 77:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=px5h6XUA8WU&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=78" alt="QR Video 77" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 78 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                78. GEOGRAFÍA - RECURSOS NATURALES Y PRESERVACIÓN (PARTE 1) | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/sipi5K6KS70" title="Video 78" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video78/infografia.png" alt="Infografía Video 78"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video78/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video78/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video78/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/6c664da7-ad86-4efc-bfd4-82b00aa7d613?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 78:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=sipi5K6KS70&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=79" alt="QR Video 78" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 79 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                79. GEOGRAFÍA - BIOSFERA Y BIODIVERSIDAD | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/H32qpwBURCQ" title="Video 79" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video79/infografia.png" alt="Infografía Video 79"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video79/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video79/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video79/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/0878e14e-a74e-416b-9c03-bc29cf6f501a?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 79:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=H32qpwBURCQ&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=80" alt="QR Video 79" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 80 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                80. GEOGRAFÍA - DESARROLLO SUSTENTABLE Y POLÍTICAS AMBIENTALES | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/pC__ISdmNeI" title="Video 80" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video80/infografia.png" alt="Infografía Video 80"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video80/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video80/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video80/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/651b863e-008b-40d1-ba8e-7e24e3da51b2?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 80:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=pC__ISdmNeI&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=81" alt="QR Video 80" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 81 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                81. GEOGRAFÍA - LA HUMANIDAD EN MOVIMIENTO: POBLACIÓN Y MIGRACIÓN | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/fK6LqcZVLlE" title="Video 81" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video81/infografia.png" alt="Infografía Video 81"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video81/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video81/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video81/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/d9c2f83e-d4db-499b-8cac-82d2d1d79a20?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 81:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=fK6LqcZVLlE&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=82" alt="QR Video 81" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 82 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                82. GEOGRAFÍA - VIVIR EN ZONA DE RIESGO: VULNERABILIDAD Y RESILIENCIA | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/qwVePjEM7U4" title="Video 82" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video82/infografia.png" alt="Infografía Video 82"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video82/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video82/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video82/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/84bbb065-5fa2-4130-b1f8-d90f45923045?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 82:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=qwVePjEM7U4&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=83" alt="QR Video 82" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 83 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                83. GEOGRAFÍA - LA ECONOMÍA GLOBAL: PRODUCCIÓN, COMERCIO Y DESIGUALDAD | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/l6X8_PQwOeU" title="Video 83" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video83/infografia.png" alt="Infografía Video 83"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video83/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video83/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video83/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/90120fc0-25b0-4859-83d1-bb7cca619f4e?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 83:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=l6X8_PQwOeU&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=84" alt="QR Video 83" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 84 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                84. GEOGRAFÍA - EL MUNDO DESIGUAL: IDH, REGIONES Y CIUDADES GLOBALES | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/iKLqy3qtyQM" title="Video 84" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video84/infografia.png" alt="Infografía Video 84"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video84/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video84/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video84/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/17c9b85b-a7ce-4986-b86f-2959be589706?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 84:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=iKLqy3qtyQM&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=85" alt="QR Video 84" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 85 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                85. GEOGRAFÍA - CULTURA, IDENTIDAD Y FRONTERAS EN UN MUNDO GLOBAL | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/oXKMuvw-RsQ" title="Video 85" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video85/infografia.png" alt="Infografía Video 85"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video85/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video85/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video85/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/deca7128-9d46-4abf-9570-f08ef4f89244?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 85:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=oXKMuvw-RsQ&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=86" alt="QR Video 85" width="100">
+            </div>
+        </div>
+    
+        <!-- VIDEO 86 -->
+        <div class="video-block">
+            <div class="video-title">
+                <i class="fas fa-play-circle"></i>
+                86. GEOGRAFÍA - PATRIMONIO Y SOBERANÍA: LO QUE NOS UNE COMO NACIÓN | ECOEMS 2026
+            </div>
+            <div class="video-desc">
+                Recursos multimedia y material de estudio para esta lección.
+            </div>
+
+            <!-- Web Player -->
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/akYP7VgIgcs" title="Video 86" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <!-- ASSETS SECTION -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="margin-top:0; font-weight:bold; color:#2c3e50;"><i class="fas fa-box-open"></i> Recursos de la Misión:</p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: start; justify-content: space-between;">
+                    <!-- Graphic -->
+                    <div style="flex: 1; min-width: 250px; text-align: center;">
+                        <img src="../ecoems2026/videos/video86/infografia.png" alt="Infografía Video 86"
+                            style="max-width: 100%; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src)">
+                        <p style="font-size: 0.9em; color: #777;">Infografía Resumen</p>
+                    </div>
+
+                    <!-- Audio -->
+                    <div style="flex: 1; min-width: 250px;">
+                        <audio controls style="width: 100%; margin-bottom: 10px;">
+                            <source src="../ecoems2026/videos/video86/podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div style="font-size: 0.8em; color: #666; text-align: center;"><i class="fas fa-headphones"></i> Podcast / Audio de Repaso</div>
+                    </div>
+                </div>
+
+                <!-- PDF Embed -->
+                <div style="margin-top: 20px;">
+                    <p style="font-weight: bold; font-size: 0.9em; color: #e74c3c; margin-bottom: 5px;"><i class="fas fa-file-pdf"></i> Material de Estudio (PDF):</p>
+                    <object data="../ecoems2026/videos/video86/presentacion.pdf" type="application/pdf" width="100%" height="400px" style="border: 1px solid #ddd; border-radius: 5px;">
+                        <p>Tu navegador no puede mostrar este PDF. <a href="../ecoems2026/videos/video86/presentacion.pdf">Descárgalo aquí</a>.</p>
+                    </object>
+                </div>
+            </div>
+
+            <!-- NotebookLM Link -->
+            <div style="text-align: right; margin-top: 15px;">
+                <a href="https://notebooklm.google.com/notebook/5d832abe-407e-43e9-9f60-c4d9a08b2483?authuser=2" target="_blank" class="notebooklm-btn">
+                    <i class="fas fa-robot"></i> Estudiar con NotebookLM
+                </a>
+            </div>
+
+            <!-- Print QR -->
+            <div class="print-only-qr">
+                <strong>Ver Video 86:</strong><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=akYP7VgIgcs&list=PLG1K4pAhMRgJRmanxPmX3AeAMpLS-sXlG&index=87" alt="QR Video 86" width="100">
+            </div>
+        </div>
+    
+    </div>
+    <!-- Footer Nav -->
+    <div style="max-width: 21cm; margin: 20px auto 30px; display: flex; justify-content: space-between; font-family: 'Montserrat', sans-serif;">
+        <a href="capitulo_9.html" style="text-decoration:none; color:#4ECDC4; font-weight:bold;" class="">
+            <i class="fas fa-arrow-left"></i> Capítulo Anterior
+        </a>
+        <a href="dashboard.html" style="text-decoration:none; color:#4ECDC4; font-weight:bold;">
+            <i class="fas fa-th"></i> Portal Estratégico
+        </a>
+        <a href="capitulo_11.html" style="text-decoration:none; color:#4ECDC4; font-weight:bold;" class="">
+            Capítulo Siguiente <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Ecosystem Links -->
+    <div style="max-width: 21cm; margin: 0 auto 100px; text-align: center; font-family: 'Montserrat', sans-serif; color: #777; font-size: 0.9em;">
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="https://cyberedumx.com" target="_blank" style="color: inherit; text-decoration: none;">cyberedumx.com</a>
+            <a href="../ecoems2026.php" style="color: inherit; text-decoration: none;">Plataforma ECOEMS</a>
+            <a href="https://www.udemy.com/course/ecoems2026conia/" target="_blank" style="color: inherit; text-decoration: none;">Curso Udemy</a>
+        </div>
+    </div>
+
+    <!-- Floating Action Button (Contact) -->
+    <div class="fab-contact">
+        <div id="fab-menu" class="fab-menu">
+            <a href="https://wa.me/525523269241" target="_blank" style="background:#25D366;"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:JoseLuisGlez@cyberedumx.com" style="background:#0078D4;"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="fab-btn" onclick="toggleFAB()"><i class="fas fa-headset"></i></div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                localStorage.theme = 'light';
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.theme = 'dark';
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+
+        function toggleFAB() {
+            const menu = document.getElementById('fab-menu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Initialize Theme
+        if (localStorage.theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.classList.replace('fa-moon', 'fa-sun');
+        }
+    </script>
+</body>
+</html>

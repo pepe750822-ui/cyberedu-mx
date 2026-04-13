@@ -1,0 +1,64 @@
+{
+"name": "Preparación ECOEMS 2025 - Habilidad Verbal",
+"children": [
+    {
+        "name": "Contexto y Cobertura",
+        "children": [
+            {
+                "name": "Serie de Videos",
+                "children": [
+                    { "name": "Video 1 de 82" },
+                    { "name": "Video 2 (Próximo)" },
+                    { "name": "Cobertura Total ECOEMS 2025" }
+                ]
+            },
+            { "name": "Materia", "children": [ { "name": "Habilidad Verbal" } ] },
+            { "name": "Tema Específico", "children": [ { "name": "Comprensión Lectora" } ] },
+            { "name": "Fuente Oficial", "children": [ { "name": "Página 12 (Temas 1.1, 1.2, 1.3)" } ] },
+            { "name": "Duración Video 1", "children": [ { "name": "4:10 minutos" } ] }
+        ]
+    },
+    {
+        "name": "Preguntas del Examen",
+        "children": [
+            { "name": "Cuatro Preguntas Clave" },
+            { "name": "Páginas 71-72" },
+            {
+                "name": "Preguntas Específicas",
+                "children": [
+                    { "name": "#77" },
+                    { "name": "#78" },
+                    { "name": "#79" },
+                    { "name": "#80" }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Estrategias de Comprensión Lectora",
+        "children": [
+            {
+                "name": "Estrategia para #77",
+                "children": [ { "name": "Buscar información EXPLÍCITA" } ]
+            },
+            {
+                "name": "Estrategia para #78 y #79",
+                "children": [ { "name": "INFERIR lo que el texto sugiere" } ]
+            },
+            {
+                "name": "Estrategia para #80",
+                "children": [ { "name": "Identificar la IDEA PRINCIPAL" } ]
+            },
+            { "name": "Meta", "children": [ { "name": "Cuatro aciertos SEGUROS" } ] }
+        ]
+    },
+    {
+        "name": "Acciones Inmediatas",
+        "children": [
+            { "name": "Curso GRATIS completo", "children": [ { "name": "cyberedumx.com" } ] },
+            { "name": "Consultas / Dudas", "children": [ { "name": "WhatsApp 55 2326 9241" } ] },
+            { "name": "Ejercicios Adicionales", "children": [ { "name": "NotebookLM" } ] }
+        ]
+    }
+]
+}

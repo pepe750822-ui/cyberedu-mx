@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioReto: Física - El Estudio de la Materia y Energía</title>
+    <style>
+        :root {
+            --primary: #1565C0;
+            --primary-light: #1976D2;
+            --primary-dark: #0D47A1;
+            --secondary: #00897B;
+            --secondary-light: #009688;
+            --accent: #FF8F00;
+            --accent-light: #FFB74D;
+            --text: #333;
+            --light: #f5f5f5;
+            --white: #fff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M20,20 Q40,5 60,20 T100,20 Q85,40 100,60 T100,100 Q60,85 20,100 T0,100 Q5,60 0,20 T20,20 Z" fill="white"/></svg>');
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00695C;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #E65100;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-tab {
+            padding: 10px 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .nav-tab:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content-area {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .topic-content {
+            display: none;
+        }
+        
+        .topic-content.active {
+            display: block;
+        }
+        
+        .concept-card {
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .concept-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .menu-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .menu-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-light);
+            color: var(--white);
+        }
+        
+        .option.correct {
+            background-color: #4caf50;
+            color: var(--white);
+        }
+        
+        .option.incorrect {
+            background-color: #f44336;
+            color: var(--white);
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+            display: block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .results {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0 5px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 10px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .formula-container {
+            width: 100%;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .formula-table th, .formula-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .formula-table th {
+            background-color: var(--primary-light);
+            color: white;
+        }
+        
+        .formula-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .formula {
+            background-color: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            border-radius: 3px;
+            padding: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .initial-message {
+            text-align: center;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent);
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .glossary-list {
+            list-style-type: none;
+        }
+        
+        .glossary-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .topic-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @media (max-width: 900px) {
+            .nav-tabs {
+                flex-direction: column;
+                display: none;
+            }
+            
+            .nav-tabs.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-tab {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .exam-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .exam-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            background-color: #fff3e0;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin: 15px 0;
+        }
+
+        .question-counter {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .developer-info {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #fff;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-confirm {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exam-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-exit {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-exit:hover {
+            background: #c82333;
+        }
+
+        /* Estilos para el botón de regreso al index */
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .btn-index {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-index:hover {
+            background-color: #E65100;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            
+            .btn-index {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <!-- Botón para regresar al index.php -->
+            <div class="header-controls">
+                <a href="index.php" class="btn-index">
+                    ← Volver al Inicio Principal
+                </a>
+            </div>
+            
+            <h1>BioReto: Física - El Estudio de la Materia y Energía</h1>
+            <p class="subtitle">Temario completo de Física para el examen de ingreso a educación media superior</p>
+            <div class="developer-info">Desarrollado por CyberEdu MX con tecnología DeepSeek</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <div id="home-screen" class="screen active">
+            <h2>¡Bienvenido a BioReto: Física!</h2>
+            <p>Explora el temario completo de Física, pon a prueba tus conocimientos y prepárate para tu examen de ingreso.</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="showScreen('topics-screen')">
+                    <div class="topic-icon">📚</div>
+                    <h3>Temario Completo</h3>
+                    <p>Estudia todos los temas de Física organizados por áreas</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('formulas-screen')">
+                    <div class="topic-icon">🧮</div>
+                    <h3>Fórmulas y Conceptos</h3>
+                    <p>Consulta las principales fórmulas y conceptos de física</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('quiz-screen')">
+                    <div class="topic-icon">🧠</div>
+                    <h3>Cuestionarios</h3>
+                    <p>Pon a prueba tus conocimientos con cuestionarios de diferentes niveles</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('glossary-screen')">
+                    <div class="topic-icon">📖</div>
+                    <h3>Glosario</h3>
+                    <p>Consulta términos importantes de Física con definiciones claras</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('stats-screen')">
+                    <div class="topic-icon">📊</div>
+                    <h3>Estadísticas</h3>
+                    <p>Revisa tu progreso y tus resultados en los cuestionarios</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('exam-screen')">
+                    <div class="topic-icon">🎯</div>
+                    <h3>Examen Simulador</h3>
+                    <p>Realiza un examen completo con tiempo limitado como preparación</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline" onclick="showScreen('about-screen')">Acerca de BioReto Física</button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Temario -->
+        <div id="topics-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Temario Completo de Física</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="nav-container">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰ Menú de Temas</button>
+                <div class="nav-tabs" id="nav-tabs">
+                    <div class="nav-tab active" onclick="selectNavTab(this, 'topic-1')">Movimiento</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-2')">Fuerzas</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-3')">Interacciones de la materia</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-4')">Estructura de la materia</div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <!-- Tema 1: Movimiento -->
+                <div id="topic-1" class="topic-content active">
+                    <h3>El movimiento. La descripción de los cambios en la naturaleza</h3>
+                    <p>Estudio de los diferentes tipos de movimiento y su representación.</p>
+                    
+                    <div class="concept-card">
+                        <h4>1.1 Conceptos de velocidad y rapidez</h4>
+                        <p><strong>Velocidad:</strong> Magnitud vectorial que incluye dirección y sentido</p>
+                        <p><strong>Rapidez:</strong> Magnitud escalar que solo considera la magnitud del movimiento</p>
+                        <p><strong>Velocidad media:</strong> v = Δx / Δt</p>
+                        <p><strong>Rapidez media:</strong> r = distancia total / tiempo total</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.2 Tipos de movimientos de los objetos en gráficas de posición-tiempo</h4>
+                        <p><strong>Movimiento rectilíneo uniforme (MRU):</strong> Gráfica posición-tiempo es una línea recta con pendiente constante</p>
+                        <p><strong>Movimiento rectilíneo uniformemente acelerado (MRUA):</strong> Gráfica posición-tiempo es una parábola</p>
+                        <p><strong>Reposo:</strong> Gráfica posición-tiempo es una línea horizontal</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.3 Relación entre gráficas posición-tiempo y un conjunto de datos</h4>
+                        <p><strong>Pendiente:</strong> Representa la velocidad en la gráfica posición-tiempo</p>
+                        <p><strong>Área bajo la curva:</strong> En gráficas velocidad-tiempo representa el desplazamiento</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.4 Velocidad, desplazamiento y tiempo</h4>
+                        <p><strong>Desplazamiento:</strong> Cambio de posición de un objeto</p>
+                        <p><strong>Velocidad:</strong> v = Δx / Δt</p>
+                        <p><strong>Tiempo:</strong> Variable independiente en el estudio del movimiento</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.5 El movimiento con velocidad variable: la aceleración</h4>
+                        <p><strong>Aceleración:</strong> a = Δv / Δt</p>
+                        <p><strong>Aceleración constante:</strong> Movimiento uniformemente acelerado</p>
+                        <p><strong>Ecuaciones del MRUA:</strong></p>
+                        <ul>
+                            <li>v = v₀ + at</li>
+                            <li>x = x₀ + v₀t + ½at²</li>
+                            <li>v² = v₀² + 2a(x - x₀)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.6 El movimiento de los cuerpos que caen</h4>
+                        <p><strong>Caída libre:</strong> Movimiento bajo la acción exclusiva de la gravedad</p>
+                        <p><strong>Aceleración de la gravedad:</strong> g ≈ 9.8 m/s² (hacia abajo)</p>
+                        <p><strong>Ecuaciones de caída libre:</strong> Son las mismas del MRUA con a = -g</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 2: Fuerzas -->
+                <div id="topic-2" class="topic-content">
+                    <h3>Las fuerzas. La explicación de los cambios</h3>
+                    <p>Estudio de las fuerzas y su relación con el movimiento de los objetos.</p>
+                    
+                    <div class="concept-card">
+                        <h4>2.1 Fuerza resultante</h4>
+                        <p><strong>Fuerza:</strong> Toda causa capaz de modificar el estado de movimiento o de reposo de un cuerpo</p>
+                        <p><strong>Fuerza resultante:</strong> Suma vectorial de todas las fuerzas que actúan sobre un cuerpo</p>
+                        <p><strong>Unidad:</strong> Newton (N) = kg·m/s²</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.2 Las leyes de Newton en la vida cotidiana</h4>
+                        <p><strong>Primera Ley (Ley de Inercia):</strong> Todo cuerpo permanece en reposo o MRU a menos que una fuerza neta actúe sobre él</p>
+                        <p><strong>Segunda Ley:</strong> F = m·a</p>
+                        <p><strong>Tercera Ley (Acción-Reacción):</strong> A toda acción corresponde una reacción de igual magnitud pero en sentido contrario</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.3 Pares de fuerzas</h4>
+                        <p><strong>Par acción-reacción:</strong> Siempre actúan sobre cuerpos diferentes</p>
+                        <p><strong>Ejemplos:</strong> Al empujar una pared, la pared empuja hacia atrás; al caminar, empujamos el suelo hacia atrás</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.4 Las fuerzas que actúan sobre los objetos en reposo o movimiento</h4>
+                        <p><strong>Fuerzas de contacto:</strong> Normal, rozamiento, tensión</p>
+                        <p><strong>Fuerzas a distancia:</strong> Gravitatoria, eléctrica, magnética</p>
+                        <p><strong>Equilibrio:</strong> Cuando la fuerza resultante es cero</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.5 Ley de Gravitación Universal y el peso de los objetos</h4>
+                        <p><strong>Ley de Gravitación Universal:</strong> F = G·(m₁·m₂)/r²</p>
+                        <p><strong>Peso:</strong> Fuerza con que la Tierra atrae a los objetos, P = m·g</p>
+                        <p><strong>Masa vs Peso:</strong> La masa es constante, el peso depende de la gravedad</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.6 La energía y la descripción de las transformaciones</h4>
+                        <p><strong>Energía cinética:</strong> Ec = ½mv²</p>
+                        <p><strong>Energía potencial gravitatoria:</strong> Ep = mgh</p>
+                        <p><strong>Trabajo:</strong> W = F·d·cosθ</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.7 La conservación de la energía mecánica</h4>
+                        <p><strong>Energía mecánica:</strong> Em = Ec + Ep</p>
+                        <p><strong>Principio de conservación:</strong> En ausencia de fuerzas no conservativas, la energía mecánica se conserva</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.8 Cargas eléctricas y formas de electrización</h4>
+                        <p><strong>Cargas eléctricas:</strong> Positivas (protones) y negativas (electrones)</p>
+                        <p><strong>Ley de Coulomb:</strong> F = k·(q₁·q₂)/r²</p>
+                        <p><strong>Formas de electrización:</strong> Frotamiento, contacto e inducción</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.9 Imanes y magnetismo terrestre</h4>
+                        <p><strong>Polos magnéticos:</strong> Norte y sur, polos iguales se repelen, polos diferentes se atraen</p>
+                        <p><strong>Campo magnético terrestre:</strong> Protege a la Tierra del viento solar</p>
+                        <p><strong>Brújula:</strong> Aguja imantada que apunta al norte magnético</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 3: Interacciones de la materia -->
+                <div id="topic-3" class="topic-content">
+                    <h3>Las interacciones de la materia. Un modelo para describir lo que no percibimos</h3>
+                    <p>Estudio de la estructura interna de la materia y sus interacciones.</p>
+                    
+                    <div class="concept-card">
+                        <h4>3.1 El modelo cinético de partículas</h4>
+                        <p><strong>Postulados:</strong></p>
+                        <ul>
+                            <li>La materia está formada por partículas en continuo movimiento</li>
+                            <li>Entre las partículas existen fuerzas de atracción y repulsión</li>
+                            <li>La temperatura está relacionada con la energía cinética media de las partículas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.2 Calor y temperatura</h4>
+                        <p><strong>Temperatura:</strong> Medida de la energía cinética media de las partículas</p>
+                        <p><strong>Calor:</strong> Energía en tránsito entre cuerpos a diferente temperatura</p>
+                        <p><strong>Equilibrio térmico:</strong> Cuando dos cuerpos alcanzan la misma temperatura</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.3 El modelo de partículas y la presión</h4>
+                        <p><strong>Presión:</strong> Fuerza por unidad de área, P = F/A</p>
+                        <p><strong>Presión en gases:</strong> Resultado de los choques de las moléculas con las paredes del recipiente</p>
+                        <p><strong>Ley de Boyle-Mariotte:</strong> P₁V₁ = P₂V₂ (a temperatura constante)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.4 La ecuación del principio de Pascal</h4>
+                        <p><strong>Principio de Pascal:</strong> La presión aplicada a un fluido encerrado se transmite por igual en todas direcciones</p>
+                        <p><strong>Aplicaciones:</strong> Prensa hidráulica, frenos hidráulicos</p>
+                        <p><strong>Fórmula:</strong> F₁/A₁ = F₂/A₂</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.5 Principio de conservación de la energía</h4>
+                        <p><strong>Enunciado:</strong> La energía no se crea ni se destruye, solo se transforma</p>
+                        <p><strong>Formas de energía:</strong> Mecánica, térmica, química, eléctrica, nuclear, etc.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 4: Estructura de la materia -->
+                <div id="topic-4" class="topic-content">
+                    <h3>Manifestaciones de la estructura interna de la materia</h3>
+                    <p>Estudio de la estructura atómica y molecular de la materia.</p>
+                    
+                    <div class="concept-card">
+                        <h4>4.1 Estructura interna de la materia</h4>
+                        <p><strong>Átomo:</strong> Partícula más pequeña de un elemento que conserva sus propiedades</p>
+                        <p><strong>Partículas subatómicas:</strong> Protones, neutrones y electrones</p>
+                        <p><strong>Núcleo atómico:</strong> Formado por protones y neutrones</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.2 Capacidad de los materiales para conducir la corriente eléctrica</h4>
+                        <p><strong>Conductores:</strong> Permiten el paso de corriente eléctrica (metales)</p>
+                        <p><strong>Aislantes:</strong> No permiten el paso de corriente eléctrica (plástico, madera)</p>
+                        <p><strong>Semiconductores:</strong> Conductividad intermedia (silicio, germanio)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.3 Campos magnéticos y cargas eléctricas</h4>
+                        <p><strong>Campo magnético:</strong> Región del espacio donde una carga en movimiento experimenta una fuerza</p>
+                        <p><strong>Fuerza de Lorentz:</strong> F = q(v × B)</p>
+                        <p><strong>Regla de la mano derecha:</strong> Para determinar la dirección de la fuerza</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.4 Experimentos de inducción electromagnética</h4>
+                        <p><strong>Ley de Faraday:</strong> Un campo magnético variable induce una corriente eléctrica</p>
+                        <p><strong>Ley de Lenz:</strong> La corriente inducida se opone al cambio que la produce</p>
+                        <p><strong>Aplicaciones:</strong> Generadores eléctricos, transformadores</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.5 Características del movimiento ondulatorio</h4>
+                        <p><strong>Onda:</strong> Perturbación que se propaga transportando energía sin transporte de materia</p>
+                        <p><strong>Elementos:</strong> Cresta, valle, amplitud, longitud de onda, frecuencia, period</p>
+                        <p><strong>Ecuación:</strong> v = λ·f</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.6 La radiación electromagnética y sus implicaciones tecnológicas</h4>
+                        <p><strong>Espectro electromagnético:</strong> Radio, microondas, infrarrojo, visible, ultravioleta, rayos X, rayos gamma</p>
+                        <p><strong>Propiedades:</strong> Se propagan en el vacío, son transversales, velocidad c = 3×10⁸ m/s</p>
+                        <p><strong>Aplicaciones:</strong> Comunicaciones, medicina, astronomía</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.7 Los prismas y la descomposición de la luz</h4>
+                        <p><strong>Dispersión:</strong> Separación de la luz en sus colores componentes</p>
+                        <p><strong>Causa:</strong> Diferente índice de refracción para cada longitud de onda</p>
+                        <p><strong>Espectro visible:</strong> Rojo, naranja, amarillo, verde, azul, añil, violeta</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.8 La refracción de la luz blanca</h4>
+                        <p><strong>Refracción:</strong> Cambio de dirección de la luz al pasar de un medio a otro</p>
+                        <p><strong>Ley de Snell:</strong> n₁·senθ₁ = n₂·senθ₂</p>
+                        <p><strong>Índice de refracción:</strong> n = c/v</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.9 La luz. Longitud de onda, frecuencia y energía</h4>
+                        <p><strong>Longitud de onda (λ):</strong> Distancia entre dos puntos equivalentes de una onda</p>
+                        <p><strong>Frecuencia (f):</strong> Número de oscilaciones por segundo (Hz)</p>
+                        <p><strong>Energía:</strong> E = h·f (h = constante de Planck)</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="showScreen('quiz-screen')">Realizar Cuestionario sobre este Tema</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Fórmulas -->
+        <div id="formulas-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Fórmulas y Conceptos de Física</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Consulta las principales fórmulas y conceptos de física organizados por temas.</p>
+                
+                <div class="concept-card">
+                    <h4>Cinemática</h4>
+                    <table class="formula-table">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Fórmula</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>Velocidad media</td>
+                            <td>v = Δx / Δt</td>
+                            <td>Cambio de posición entre cambio de tiempo</td>
+                        </tr>
+                        <tr>
+                            <td>Aceleración media</td>
+                            <td>a = Δv / Δt</td>
+                            <td>Cambio de velocidad entre cambio de tiempo</td>
+                        </tr>
+                        <tr>
+                            <td>MRU: Posición</td>
+                            <td>x = x₀ + v·t</td>
+                            <td>Posición final en movimiento rectilíneo uniforme</td>
+                        </tr>
+                        <tr>
+                            <td>MRUA: Velocidad</td>
+                            <td>v = v₀ + a·t</td>
+                            <td>Velocidad final en movimiento uniformemente acelerado</td>
+                        </tr>
+                        <tr>
+                            <td>MRUA: Posición</td>
+                            <td>x = x₀ + v₀·t + ½a·t²</td>
+                            <td>Posición final en movimiento uniformemente acelerado</td>
+                        </tr>
+                        <tr>
+                            <td>MRUA: Velocidad al cuadrado</td>
+                            <td>v² = v₀² + 2a·Δx</td>
+                            <td>Relación entre velocidad y desplazamiento</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Dinámica</h4>
+                    <table class="formula-table">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Fórmula</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>Segunda Ley de Newton</td>
+                            <td>F = m·a</td>
+                            <td>Fuerza igual a masa por aceleración</td>
+                        </tr>
+                        <tr>
+                            <td>Peso</td>
+                            <td>P = m·g</td>
+                            <td>Fuerza de gravedad sobre un cuerpo</td>
+                        </tr>
+                        <tr>
+                            <td>Ley de Gravitación Universal</td>
+                            <td>F = G·m₁·m₂ / r²</td>
+                            <td>Fuerza entre dos masas (G = 6.67×10⁻¹¹ N·m²/kg²)</td>
+                        </tr>
+                        <tr>
+                            <td>Fuerza de rozamiento</td>
+                            <td>Fₓ = μ·N</td>
+                            <td>Fuerza de fricción (μ = coeficiente de rozamiento)</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Energía y Trabajo</h4>
+                    <table class="formula-table">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Fórmula</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>Trabajo</td>
+                            <td>W = F·d·cosθ</td>
+                            <td>Producto de fuerza por desplazamiento</td>
+                        </tr>
+                        <tr>
+                            <td>Energía cinética</td>
+                            <td>Ec = ½m·v²</td>
+                            <td>Energía debida al movimiento</td>
+                        </tr>
+                        <tr>
+                            <td>Energía potencial gravitatoria</td>
+                            <td>Ep = m·g·h</td>
+                            <td>Energía debida a la posición</td>
+                        </tr>
+                        <tr>
+                            <td>Energía mecánica</td>
+                            <td>Em = Ec + Ep</td>
+                            <td>Suma de energías cinética y potencial</td>
+                        </tr>
+                        <tr>
+                            <td>Potencia</td>
+                            <td>P = W / t</td>
+                            <td>Trabajo realizado por unidad de tiempo</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Electricidad y Magnetismo</h4>
+                    <table class="formula-table">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Fórmula</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>Ley de Coulomb</td>
+                            <td>F = k·q₁·q₂ / r²</td>
+                            <td>Fuerza entre cargas (k = 9×10⁹ N·m²/C²)</td>
+                        </tr>
+                        <tr>
+                            <td>Campo eléctrico</td>
+                            <td>E = F / q</td>
+                            <td>Fuerza por unidad de carga</td>
+                        </tr>
+                        <tr>
+                            <td>Diferencia de potencial</td>
+                            <td>V = W / q</td>
+                            <td>Trabajo por unidad de carga</td>
+                        </tr>
+                        <tr>
+                            <td>Resistencia</td>
+                            <td>R = ρ·L / A</td>
+                            <td>Resistencia de un conductor (ρ = resistividad)</td>
+                        </tr>
+                        <tr>
+                            <td>Ley de Ohm</td>
+                            <td>V = I·R</td>
+                            <td>Relación voltaje-corriente-resistencia</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Ondas y Óptica</h4>
+                    <table class="formula-table">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Fórmula</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>Velocidad de onda</td>
+                            <td>v = λ·f</td>
+                            <td>Longitud de onda por frecuencia</td>
+                        </tr>
+                        <tr>
+                            <td>Ley de Snell</td>
+                            <td>n₁·senθ₁ = n₂·senθ₂</td>
+                            <td>Refracción de la luz</td>
+                        </tr>
+                        <tr>
+                            <td>Energía de un fotón</td>
+                            <td>E = h·f</td>
+                            <td>h = 6.63×10⁻³⁴ J·s (constante de Planck)</td>
+                        </tr>
+                        <tr>
+                            <td>Ecuación de lens delgada</td>
+                            <td>1/f = 1/p + 1/q</td>
+                            <td>Relación distancia focal, objeto e imagen</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Cuestionarios -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Cuestionarios de Física</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="startQuiz('basic')">
+                    <h3>Nivel Básico</h3>
+                    <p>Conceptos fundamentales de movimiento y fuerzas</p>
+                    <p><span class="badge">10 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('intermediate')">
+                    <h3>Nivel Intermedio</h3>
+                    <p>Energía, trabajo y principios de conservación</p>
+                    <p><span class="badge">15 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('advanced')">
+                    <h3>Nivel Avanzado</h3>
+                    <p>Electricidad, magnetismo y ondas</p>
+                    <p><span class="badge">20 preguntas</span></p>
+                </div>
+            </div>
+            
+            <div id="quiz-container" style="display: none;">
+                <div class="quiz-header">
+                    <button class="btn btn-exit" onclick="exitQuiz()">Salir del Cuestionario</button>
+                    <div class="timer" id="quiz-timer">Tiempo: 00:00</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="quiz-question">¿Cuál es la unidad de fuerza en el Sistema Internacional?</div>
+                    
+                    <div class="options" id="quiz-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                    
+                    <div class="feedback" id="quiz-feedback">
+                        <!-- La retroalimentación se mostrará aquí -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Siguiente Pregunta</button>
+                    <button class="btn" id="submit-btn" onclick="submitAnswer()">Enviar Respuesta</button>
+                </div>
+            </div>
+            
+            <div id="quiz-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Cuestionario</h2>
+                    <div class="score-display" id="final-score">Puntuación: 0/10</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="time-taken">0:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="restartQuiz()">Realizar Otro Cuestionario</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Glosario -->
+        <div id="glossary-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Glosario de Términos Físicos</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Consulta definiciones de términos importantes en física.</p>
+                
+                <input type="text" class="search-box" id="glossary-search" placeholder="Buscar término..." onkeyup="searchGlossary()">
+                
+                <ul class="glossary-list" id="glossary-list">
+                    <!-- Los términos del glosario se generarán con JavaScript -->
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Estadísticas -->
+        <div id="stats-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Estadísticas de Progreso</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Revisa tu progreso en los cuestionarios y exámenes.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-quizzes">0</div>
+                        <div class="stat-label">Cuestionarios Completados</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="average-score">0%</div>
+                        <div class="stat-label">Puntuación Promedio</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-questions">0</div>
+                        <div class="stat-label">Preguntas Respondidas</div>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Recomendaciones de Estudio</h4>
+                    <p id="study-recommendations">Basado en tu desempeño, te recomendamos repasar los temas que se muestran a continuación.</p>
+                    <ul id="recommendations-list">
+                        <!-- Las recomendaciones se generarán con JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Examen Simulador -->
+        <div id="exam-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Examen Simulador</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Instrucciones del Examen</h4>
+                <p>Este examen simulado consta de 50 preguntas de opción múltiple con un tiempo límite de 60 minutos. Una vez que comiences, el temporizador iniciará y no podrás pausar el examen.</p>
+                <p>Tu puntuación se calculará basándose en el número de respuestas correctas. No hay penalización por respuestas incorrectas.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="startExam()">Comenzar Examen</button>
+            </div>
+
+            <!-- Contenedor del examen (inicialmente oculto) -->
+            <div id="exam-container" style="display: none;">
+                <div class="exam-controls">
+                    <button class="btn btn-exit" onclick="showConfirmExitExam()">Salir del Examen</button>
+                    <div class="exam-timer" id="exam-timer">Tiempo restante: 60:00</div>
+                </div>
+                
+                <div class="exam-info">
+                    <div class="question-counter" id="exam-question-counter">Pregunta 1 de 50</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="exam-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="exam-question">¿Cuál es la pregunta?</div>
+                    
+                    <div class="options" id="exam-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="exam-next-btn" onclick="nextExamQuestion()">Siguiente Pregunta</button>
+                    <button class="btn btn-secondary" id="exam-finish-btn" onclick="finishExam()" style="display: none;">Finalizar Examen</button>
+                </div>
+            </div>
+
+            <!-- Resultados del examen (inicialmente oculto) -->
+            <div id="exam-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Examen Simulador</h2>
+                    <div class="score-display" id="exam-final-score">Puntuación: 0/50</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-time-taken">60:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card" style="text-align: left; margin-top: 20px;">
+                        <h4>Análisis de Resultados</h4>
+                        <p id="exam-analysis">Aquí aparecerá un análisis de tu desempeño en el examen.</p>
+                    </div>
+                    
+                    <button class="btn" onclick="restartExam()">Realizar Otro Examen</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla Acerca de -->
+        <div id="about-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Acerca de BioReto: Física</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>¿Qué es BioReto: Física?</h4>
+                <p>BioReto: Física es una aplicación educativa diseñada para ayudar a estudiantes a prepararse para exámenes de ingreso a educación media superior. Ofrece un temario completo de física, cuestionarios interactivos y herramientas de estudio como fórmulas y conceptos organizados.</p>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Características Principales</h4>
+                <ul>
+                    <li><strong>Temario Completo:</strong> Cubre todos los temas fundamentales de física</li>
+                    <li><strong>Fórmulas y Conceptos:</strong> Consulta organizada de las principales fórmulas físicas</li>
+                    <li><strong>Cuestionarios Interactivos:</strong> Preguntas de opción múltiple con retroalimentación inmediata</li>
+                    <li><strong>Examen Simulador:</strong> Simulación de examen con tiempo limitado</li>
+                    <li><strong>Glosario:</strong> Definiciones de términos físicos importantes</li>
+                    <li><strong>Seguimiento de Progreso:</strong> Estadísticas de desempeño y recomendaciones</li>
+                </ul>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Desarrollado con Tecnología DeepSeek</h4>
+                <p>Esta aplicación fue desarrollada utilizando inteligencia artificial avanzada para garantizar contenido educativo de calidad y una experiencia de usuario optimizada.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación de Salida del Examen -->
+    <div id="confirmExitExamModal" class="modal">
+        <div class="modal-content">
+            <h3>¿Estás seguro de que quieres salir?</h3>
+            <p>Se perderá todo tu progreso actual del examen.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideConfirmExitExam()">Cancelar</button>
+                <button class="btn btn-confirm" onclick="confirmExitExam()">Sí, Salir</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>BioReto: Física - El Estudio de la Materia y Energía - © 2025 | Desarrollado por CyberEdu MX con DeepSeek</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales para la aplicación
+        let currentScreen = 'home-screen';
+        let currentTopic = 'topic-1';
+        let quizData = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+        let timeElapsed = 0;
+        let selectedOption = null;
+        let totalQuizzesCompleted = 0;
+        let totalScore = 0;
+        let currentQuizType = '';
+
+        // Variables específicas para el examen
+        let examData = [];
+        let currentExamQuestion = 0;
+        let examScore = 0;
+        let examTimerInterval;
+        let examTimeRemaining = 60 * 60;
+        let examSelectedOptions = {};
+
+        // Datos del glosario
+        const glossaryTerms = [
+            { term: "Aceleración", definition: "Tasa de cambio de la velocidad con respecto al tiempo. Se mide en m/s²." },
+            { term: "Energía", definition: "Capacidad para realizar trabajo. Se mide en julios (J)." },
+            { term: "Fuerza", definition: "Toda causa capaz de modificar el estado de movimiento o de reposo de un cuerpo. Se mide en newtons (N)." },
+            { term: "Gravedad", definition: "Fuerza de atracción entre dos masas. En la Tierra, produce una aceleración de aproximadamente 9.8 m/s²." },
+            { term: "Inercia", definition: "Propiedad de los cuerpos de resistir cambios en su estado de movimiento." },
+            { term: "Movimiento", definition: "Cambio de posición de un cuerpo con respecto a un sistema de referencia." },
+            { term: "Potencia", definition: "Rapidez con que se realiza trabajo. Se mide en vatios (W)." },
+            { term: "Trabajo", definition: "Producto de la fuerza aplicada por la distancia recorrida. Se mide en julios (J)." },
+            { term: "Velocidad", definition: "Rapidez con que cambia la posición de un objeto. Es una magnitud vectorial." },
+            { term: "Voltaje", definition: "Diferencia de potencial eléctrico entre dos puntos. Se mide en voltios (V)." }
+        ];
+
+        // Función para mostrar una pantalla específica
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla solicitada
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Si vamos a la pantalla de inicio, resetear completamente la pantalla de cuestionarios
+            if (screenId === 'home-screen') {
+                resetQuizScreen();
+            }
+            
+            // Cargar el glosario si es necesario
+            else if (screenId === 'glossary-screen') {
+                loadGlossary();
+            }
+            // Cargar estadísticas si es necesario
+            else if (screenId === 'stats-screen') {
+                loadStats();
+            }
+            // Si vamos a la pantalla de cuestionarios, asegurarnos de que esté en estado inicial
+            else if (screenId === 'quiz-screen') {
+                resetQuizScreen();
+            }
+        }
+
+        // Función para resetear completamente la pantalla de cuestionarios
+        function resetQuizScreen() {
+            // Detener cualquier temporizador activo
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Ocultar contenedores de quiz y mostrar el menú principal
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'grid';
+            
+            // Resetear variables del quiz
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            selectedOption = null;
+            quizData = [];
+        }
+        
+        // Función para seleccionar pestaña de navegación
+        function selectNavTab(element, topicId) {
+            // Remover la clase active de todas las pestañas
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Añadir la clase active a la pestaña clickeada
+            element.classList.add('active');
+            
+            // Ocultar todos los contenidos de temas
+            const topicContents = document.querySelectorAll('.topic-content');
+            topicContents.forEach(content => content.classList.remove('active'));
+            
+            // Mostrar el contenido del tema seleccionado
+            document.getElementById(topicId).classList.add('active');
+            currentTopic = topicId;
+            
+            // En dispositivos móviles, cerrar el menú después de seleccionar
+            if (window.innerWidth <= 900) {
+                document.getElementById('nav-tabs').classList.remove('active');
+            }
+        }
+        
+        // Función para alternar menú móvil
+        function toggleMobileMenu() {
+            const navTabs = document.getElementById('nav-tabs');
+            navTabs.classList.toggle('active');
+        }
+        
+        // Función para cargar el glosario
+        function loadGlossary() {
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            glossaryTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para buscar en el glosario
+        function searchGlossary() {
+            const input = document.getElementById('glossary-search').value.toLowerCase();
+            const filteredTerms = glossaryTerms.filter(term => 
+                term.term.toLowerCase().includes(input) || term.definition.toLowerCase().includes(input)
+            );
+            
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            filteredTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para cargar estadísticas
+        function loadStats() {
+            document.getElementById('total-quizzes').textContent = totalQuizzesCompleted;
+            
+            // Calcular correctamente el porcentaje promedio
+            let average = 0;
+            if (totalQuizzesCompleted > 0) {
+                // Si tenemos datos de quizzes, calcular el promedio correctamente
+                average = Math.round((totalScore / (totalQuizzesCompleted * 10)) * 100);
+                // Asegurarnos de que no sea mayor a 100%
+                average = Math.min(average, 100);
+            }
+            document.getElementById('average-score').textContent = `${average}%`;
+            
+            // Calcular el total de preguntas respondidas
+            const totalQuestions = totalQuizzesCompleted * 10; // Aproximación
+            document.getElementById('total-questions').textContent = totalQuestions;
+            
+            // Recomendaciones basadas en el desempeño
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            
+            if (totalQuizzesCompleted === 0) {
+                document.getElementById('study-recommendations').textContent = 'Aún no has completado ningún cuestionario. ¡Comienza por el nivel básico!';
+            } else if (average < 50) {
+                document.getElementById('study-recommendations').textContent = 'Te recomendamos repasar los temas básicos de física.';
+                addRecommendation(recommendationsList, 'Conceptos de movimiento');
+                addRecommendation(recommendationsList, 'Leyes de Newton');
+                addRecommendation(recommendationsList, 'Fuerzas fundamentales');
+            } else if (average < 70) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un conocimiento básico. Te recomendamos repasar energía y trabajo.';
+                addRecommendation(recommendationsList, 'Energía cinética y potencial');
+                addRecommendation(recommendationsList, 'Trabajo y potencia');
+                addRecommendation(recommendationsList, 'Conservación de la energía');
+            } else if (average < 90) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un buen conocimiento. Repasa electricidad y magnetismo.';
+                addRecommendation(recommendationsList, 'Ley de Coulomb');
+                addRecommendation(recommendationsList, 'Circuitos eléctricos');
+                addRecommendation(recommendationsList, 'Campos magnéticos');
+            } else {
+                document.getElementById('study-recommendations').textContent = '¡Excelente! Tu conocimiento de física es sobresaliente.';
+                addRecommendation(recommendationsList, 'Ondas y óptica');
+                addRecommendation(recommendationsList, 'Física moderna');
+                addRecommendation(recommendationsList, 'Aplicaciones tecnológicas');
+            }
+        }
+
+        function addRecommendation(list, topic) {
+            const li = document.createElement('li');
+            li.textContent = topic;
+            list.appendChild(li);
+        }
+        
+        // Funciones para cuestionarios
+        function startQuiz(level) {
+            currentQuizType = 'level';
+            quizData = getQuizQuestions(level);
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            
+            // Mostrar el contenedor del cuestionario
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            
+            // Iniciar temporizador
+            startTimer();
+            
+            // Mostrar la primera pregunta
+            showQuestion();
+        }
+
+        // Función para obtener preguntas según el nivel
+        function getQuizQuestions(level) {
+            // Preguntas básicas (10 preguntas) - Movimiento y fuerzas
+            if (level === 'basic') {
+                return [
+                    {
+                        question: "¿Cuál es la unidad de fuerza en el Sistema Internacional?",
+                        options: ["Newton", "Joule", "Pascal", "Watt"],
+                        correct: 0,
+                        explanation: "La unidad de fuerza en el Sistema Internacional es el Newton (N), llamado así en honor a Isaac Newton."
+                    },
+                    {
+                        question: "¿Qué ley de Newton establece que a toda acción corresponde una reacción de igual magnitud pero en sentido contrario?",
+                        options: ["Primera ley", "Segunda ley", "Tercera ley", "Ley de gravitación"],
+                        correct: 2,
+                        explanation: "La tercera ley de Newton, también conocida como principio de acción y reacción, establece que las fuerzas siempre ocurren en pares iguales y opuestos."
+                    },
+                    {
+                        question: "Un objeto en movimiento rectilíneo uniforme tiene:",
+                        options: ["Aceleración constante", "Velocidad constante", "Posición constante", "Aceleración cero"],
+                        correct: 1,
+                        explanation: "En el movimiento rectilíneo uniforme (MRU), la velocidad permanece constante, por lo que la aceleración es cero."
+                    },
+                    {
+                        question: "¿Qué representa la pendiente en una gráfica de posición-tiempo?",
+                        options: ["Aceleración", "Velocidad", "Tiempo", "Distancia"],
+                        correct: 1,
+                        explanation: "En una gráfica de posición-tiempo, la pendiente de la curva representa la velocidad del objeto."
+                    },
+                    {
+                        question: "La aceleración de la gravedad en la superficie terrestre es aproximadamente:",
+                        options: ["9.8 m/s", "9.8 m/s²", "6.67 m/s²", "3×10⁸ m/s"],
+                        correct: 1,
+                        explanation: "La aceleración debida a la gravedad en la superficie terrestre es aproximadamente 9.8 m/s² hacia el centro de la Tierra."
+                    },
+                    {
+                        question: "¿Cuál es la fórmula de la segunda ley de Newton?",
+                        options: ["F = m/a", "F = m·a", "F = m·v", "F = v/t"],
+                        correct: 1,
+                        explanation: "La segunda ley de Newton establece que F = m·a, donde F es la fuerza neta, m es la masa y a es la aceleración."
+                    },
+                    {
+                        question: "Un cuerpo en caída libre experimenta:",
+                        options: ["Movimiento circular", "Movimiento con aceleración constante", "Movimiento con velocidad constante", "Reposo"],
+                        correct: 1,
+                        explanation: "En caída libre, los cuerpos experimentan un movimiento con aceleración constante igual a la aceleración de la gravedad (9.8 m/s²)."
+                    },
+                    {
+                        question: "¿Qué tipo de movimiento describe un péndulo simple?",
+                        options: ["Movimiento rectilíneo uniforme", "Movimiento armónico simple", "Movimiento circular uniforme", "Movimiento parabólico"],
+                        correct: 1,
+                        explanation: "Un péndulo simple describe un movimiento armónico simple para pequeñas amplitudes de oscilación."
+                    },
+                    {
+                        question: "La inercia de un cuerpo está relacionada con su:",
+                        options: ["Velocidad", "Aceleración", "Masa", "Energía"],
+                        correct: 2,
+                        explanation: "La inercia es la resistencia de un cuerpo a cambiar su estado de movimiento y está directamente relacionada con su masa."
+                    },
+                    {
+                        question: "¿Qué fuerza mantiene a los planetas en órbita alrededor del Sol?",
+                        options: ["Fuerza electromagnética", "Fuerza gravitatoria", "Fuerza nuclear fuerte", "Fuerza de fricción"],
+                        correct: 1,
+                        explanation: "La fuerza gravitatoria, descrita por la Ley de Gravitación Universal de Newton, es la que mantiene a los planetas en órbita alrededor del Sol."
+                    }
+                ];
+            }
+            // Preguntas intermedias (15 preguntas) - Energía y trabajo
+            else if (level === 'intermediate') {
+                return [
+                    {
+                        question: "¿Cuál es la unidad de energía en el Sistema Internacional?",
+                        options: ["Newton", "Joule", "Watt", "Pascal"],
+                        correct: 1,
+                        explanation: "La unidad de energía en el Sistema Internacional es el Joule (J), llamado así en honor a James Prescott Joule."
+                    },
+                    {
+                        question: "La energía cinética de un objeto depende de:",
+                        options: ["Su masa y velocidad", "Su masa y altura", "Su volumen y densidad", "Su temperatura y presión"],
+                        correct: 0,
+                        explanation: "La energía cinética se calcula como Ec = ½mv², por lo que depende de la masa (m) y la velocidad (v) del objeto."
+                    },
+                    {
+                        question: "¿Qué principio establece que la energía no se crea ni se destruye, solo se transforma?",
+                        options: ["Principio de Pascal", "Principio de Arquímedes", "Principio de conservación de la energía", "Principio de incertidumbre"],
+                        correct: 2,
+                        explanation: "El principio de conservación de la energía establece que la energía total de un sistema aislado permanece constante."
+                    },
+                    {
+                        question: "Un objeto a mayor altura tiene mayor:",
+                        options: ["Energía cinética", "Energía potencial gravitatoria", "Temperatura", "Velocidad"],
+                        correct: 1,
+                        explanation: "La energía potencial gravitatoria se calcula como Ep = mgh, por lo que aumenta con la altura (h)."
+                    },
+                    {
+                        question: "La potencia se define como:",
+                        options: ["Fuerza por distancia", "Trabajo por tiempo", "Trabajo dividido por tiempo", "Fuerza dividida por área"],
+                        correct: 2,
+                        explanation: "La potencia es la rapidez con que se realiza trabajo, por lo que se calcula como P = W/t (trabajo dividido por tiempo)."
+                    },
+                    {
+                        question: "¿En qué unidad se mide la potencia?",
+                        options: ["Joule", "Newton", "Watt", "Pascal"],
+                        correct: 2,
+                        explanation: "La unidad de potencia en el Sistema Internacional es el Watt (W), llamado así en honor a James Watt."
+                    },
+                    {
+                        question: "Cuando se estira un resorte, almacena energía en forma de:",
+                        options: ["Energía cinética", "Energía potencial elástica", "Energía térmica", "Energía radiante"],
+                        correct: 1,
+                        explanation: "Un resorte estirado o comprimido almacena energía potencial elástica, dada por E = ½kx²."
+                    },
+                    {
+                        question: "La eficiencia de una máquina se define como:",
+                        options: ["Trabajo de entrada / trabajo de salida", "Trabajo de salida / trabajo de entrada", "Potencia de entrada / potencia de salida", "Energía perdida / energía total"],
+                        correct: 1,
+                        explanation: "La eficiencia de una máquina es la relación entre el trabajo útil de salida y el trabajo total de entrada."
+                    },
+                    {
+                        question: "¿Qué tipo de energía posee el agua almacenada en una presa?",
+                        options: ["Energía cinética", "Energía potencial gravitatoria", "Energía térmica", "Energía química"],
+                        correct: 1,
+                        explanation: "El agua almacenada en una presa tiene energía potencial gravitatoria debido a su altura sobre el nivel de salida."
+                    },
+                    {
+                        question: "La ley de conservación de la energía mecánica se aplica cuando:",
+                        options: ["Solo actúan fuerzas conservativas", "Solo actúan fuerzas no conservativas", "Hay fricción", "La aceleración es cero"],
+                        correct: 0,
+                        explanation: "La energía mecánica total se conserva solo cuando actúan fuerzas conservativas, como la gravedad o la fuerza elástica."
+                    },
+                    {
+                        question: "¿Qué representa el área bajo la curva en una gráfica de fuerza versus distancia?",
+                        options: ["Aceleración", "Velocidad", "Trabajo", "Potencia"],
+                        correct: 2,
+                        explanation: "El área bajo la curva en una gráfica de fuerza versus distancia representa el trabajo realizado."
+                    },
+                    {
+                        question: "Un objeto que se mueve con velocidad constante tiene energía cinética:",
+                        options: ["Creciente", "Decreciente", "Constante", "Cero"],
+                        correct: 2,
+                        explanation: "Si la velocidad es constante, la energía cinética (Ec = ½mv²) también es constante."
+                    },
+                    {
+                        question: "La energía potencial gravitatoria de un objeto es cero cuando:",
+                        options: ["Está en reposo", "Tiene velocidad cero", "Está en el punto de referencia", "Tiene masa cero"],
+                        correct: 2,
+                        explanation: "La energía potencial gravitatoria se define en relación con un punto de referencia, siendo cero en ese punto."
+                    },
+                    {
+                        question: "¿Cuál es la fórmula del trabajo realizado por una fuerza constante?",
+                        options: ["W = F·v", "W = F·a", "W = F·d·cosθ", "W = m·a·d"],
+                        correct: 2,
+                        explanation: "El trabajo realizado por una fuerza constante es W = F·d·cosθ, donde θ es el ángulo entre la fuerza y el desplazamiento."
+                    },
+                    {
+                        question: "La energía cinética de un objeto se duplica cuando su velocidad:",
+                        options: ["Se duplica", "Se reduce a la mitad", "Se cuadruplica", "Aumenta en un factor de √2"],
+                        correct: 3,
+                        explanation: "Dado que Ec ∝ v², para duplicar la energía cinética, la velocidad debe aumentar en un factor de √2."
+                    }
+                ];
+            }
+            // Preguntas avanzadas (20 preguntas) - Electricidad, magnetismo y ondas
+            else if (level === 'advanced') {
+                return [
+                    {
+                        question: "¿Cuál es la unidad de carga eléctrica en el Sistema Internacional?",
+                        options: ["Voltio", "Amperio", "Culombio", "Ohmio"],
+                        correct: 2,
+                        explanation: "La unidad de carga eléctrica en el Sistema Internacional es el Culombio (C), llamado así en honor a Charles-Augustin de Coulomb."
+                    },
+                    {
+                        question: "La ley de Ohm establece que:",
+                        options: ["V = I/R", "I = V·R", "V = I·R", "R = I/V"],
+                        correct: 2,
+                        explanation: "La ley de Ohm establece que el voltaje (V) es igual a la corriente (I) multiplicada por la resistencia (R): V = I·R."
+                    },
+                    {
+                        question: "¿Qué partícula subatómica tiene carga negativa?",
+                        options: ["Protón", "Neutrón", "Electrón", "Positrón"],
+                        correct: 2,
+                        explanation: "El electrón tiene carga eléctrica negativa, mientras que el protón tiene carga positiva y el neutrón no tiene carga."
+                    },
+                    {
+                        question: "Un transformador funciona basándose en:",
+                        options: ["La ley de Ohm", "La ley de Coulomb", "La inducción electromagnética", "El efecto fotoeléctrico"],
+                        correct: 2,
+                        explanation: "Los transformadores funcionan basándose en el principio de inducción electromagnética descubierto por Faraday."
+                    },
+                    {
+                        question: "La velocidad de la luz en el vacío es aproximadamente:",
+                        options: ["3×10⁶ m/s", "3×10⁸ m/s", "3×10¹⁰ m/s", "3×10¹² m/s"],
+                        correct: 1,
+                        explanation: "La velocidad de la luz en el vacío es aproximadamente 3×10⁸ m/s, una constante fundamental en física."
+                    },
+                    {
+                        question: "¿Qué ley establece que la fuerza entre dos cargas es proporcional al producto de sus cargas e inversamente proporcional al cuadrado de la distancia?",
+                        options: ["Ley de Ohm", "Ley de Coulomb", "Ley de Faraday", "Ley de Lenz"],
+                        correct: 1,
+                        explanation: "La ley de Coulomb describe la fuerza electrostática entre dos cargas puntuales."
+                    },
+                    {
+                        question: "El campo magnético terrestre protege al planeta de:",
+                        options: ["Los meteoritos", "La radiación solar", "Los terremotos", "Las erupciones volcánicas"],
+                        correct: 1,
+                        explanation: "El campo magnético terrestre desvía las partículas cargadas del viento solar, protegiendo la atmósfera y la vida en la Tierra."
+                    },
+                    {
+                        question: "¿Qué tipo de onda no requiere un medio material para propagarse?",
+                        options: ["Ondas sonoras", "Ondas en una cuerda", "Ondas electromagnéticas", "Ondas sísmicas"],
+                        correct: 2,
+                        explanation: "Las ondas electromagnéticas, como la luz, pueden propagarse en el vacío, a diferencia de las ondas mecánicas."
+                    },
+                    {
+                        question: "La frecuencia de una onda es:",
+                        options: ["La distancia entre dos crestas", "El tiempo entre dos crestas", "El número de oscilaciones por segundo", "La altura de la cresta"],
+                        correct: 2,
+                        explanation: "La frecuencia de una onda es el número de oscilaciones completas que ocurren por unidad de tiempo, medida en hertz (Hz)."
+                    },
+                    {
+                        question: "¿Qué fenómeno ocurre cuando una onda cambia de dirección al pasar de un medio a otro?",
+                        options: ["Reflexión", "Refracción", "Difracción", "Interferencia"],
+                        correct: 1,
+                        explanation: "La refracción es el cambio de dirección que experimenta una onda al pasar de un medio a otro con diferente densidad."
+                    },
+                    {
+                        question: "La ley de Lenz establece que:",
+                        options: ["La corriente inducida se opone al cambio que la produce", "La fuerza es proporcional a la aceleración", "La energía se conserva", "Los polos iguales se repelen"],
+                        correct: 0,
+                        explanation: "La ley de Lenz establece que la dirección de la corriente inducida en un circuito es tal que se opone al cambio de flujo magnético que la produce."
+                    },
+                    {
+                        question: "¿Qué instrumento se utiliza para medir la corriente eléctrica?",
+                        options: ["Voltímetro", "Amperímetro", "Ohmímetro", "Multímetro"],
+                        correct: 1,
+                        explanation: "El amperímetro se utiliza para medir la corriente eléctrica y se conecta en serie en el circuito."
+                    },
+                    {
+                        question: "La resistencia de un conductor depende de:",
+                        options: ["Su longitud, sección transversal y material", "Solo de su longitud", "Solo de su material", "Solo de su sección transversal"],
+                        correct: 0,
+                        explanation: "La resistencia de un conductor depende de su longitud (L), su área de sección transversal (A) y la resistividad del material (ρ): R = ρL/A."
+                    },
+                    {
+                        question: "¿Qué fenómeno explica por qué el cielo es azul?",
+                        options: ["Refracción", "Reflexión", "Dispersión", "Difracción"],
+                        correct: 2,
+                        explanation: "La dispersión de Rayleigh hace que la luz azul se disperse más que otros colores en la atmósfera, por eso el cielo se ve azul."
+                    },
+                    {
+                        question: "En un circuito en serie, la corriente que pasa por cada resistencia es:",
+                        options: ["Diferente", "La misma", "Proporcional a la resistencia", "Inversamente proporcional a la resistencia"],
+                        correct: 1,
+                        explanation: "En un circuito en serie, la corriente es la misma en todos los componentes del circuito."
+                    },
+                    {
+                        question: "La energía de un fotón es proporcional a su:",
+                        options: ["Longitud de onda", "Frecuencia", "Amplitud", "Velocidad"],
+                        correct: 1,
+                        explanation: "La energía de un fotón viene dada por E = hf, donde h es la constante de Planck y f es la frecuencia, por lo que es proporcional a la frecuencia."
+                    },
+                    {
+                        question: "¿Qué principio establece que la presión aplicada a un fluido encerrado se transmite por igual en todas direcciones?",
+                        options: ["Principio de Arquímedes", "Principio de Pascal", "Principio de Bernoulli", "Principio de Torricelli"],
+                        correct: 1,
+                        explanation: "El principio de Pascal establece que la presión aplicada a un fluido encerrado se transmite sin disminución a todos los puntos del fluido."
+                    },
+                    {
+                        question: "La fuerza que experimenta una carga en movimiento en un campo magnético es:",
+                        options: ["Paralela al campo", "Paralela a la velocidad", "Perpendicular al plano formado por v y B", "Nula si la carga está en reposo"],
+                        correct: 2,
+                        explanation: "La fuerza magnética sobre una carga en movimiento es perpendicular al plano formado por el vector velocidad y el vector campo magnético."
+                    },
+                    {
+                        question: "¿Qué tipo de lente converge los rayos de luz?",
+                        options: ["Lente divergente", "Lente convexa", "Lente cóncava", "Lente plana"],
+                        correct: 1,
+                        explanation: "Las lentes convexas (convergentes) hacen que los rayos de luz paralelos converjan en un punto focal."
+                    },
+                    {
+                        question: "El efecto Doppler se observa cuando:",
+                        options: ["La fuente de ondas y el observador están en reposo", "La fuente de ondas se mueve respecto al observador", "La amplitud de la onda cambia", "La frecuencia de la onda es constante"],
+                        correct: 1,
+                        explanation: "El efecto Doppler ocurre cuando hay movimiento relativo entre la fuente de ondas y el observador, causando un cambio en la frecuencia percibida."
+                    }
+                ];
+            }
+            
+            return [];
+        }
+        
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            document.getElementById('quiz-question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentQuestion) / quizData.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progress}%`;
+            
+            // Reiniciar estado de botones
+            document.getElementById('submit-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-feedback').className = 'feedback';
+            
+            selectedOption = null;
+        }
+        
+        function selectOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            selectedOption = parseInt(element.getAttribute('data-index'));
+        }
+        
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('Por favor, selecciona una respuesta.');
+                return;
+            }
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('quiz-feedback');
+            
+            // Mostrar retroalimentación
+            if (selectedOption === question.correct) {
+                feedback.textContent = `¡Correcto! ${question.explanation}`;
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}. ${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            
+            // Resaltar opciones correctas e incorrectas
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedOption && index !== question.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            // Cambiar botones
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizData.length) {
+                showQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+        
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            
+            // Actualizar estadísticas
+            totalQuizzesCompleted++;
+            totalScore += score;
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('final-score').textContent = `Puntuación: ${score}/${quizData.length}`;
+            document.getElementById('correct-answers').textContent = score;
+            document.getElementById('incorrect-answers').textContent = quizData.length - score;
+            
+            // Formatear tiempo
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function exitQuiz() {
+            if (confirm("¿Estás seguro de que quieres salir? Se perderá tu progreso actual.")) {
+                resetQuizScreen();
+            }
+        }
+        
+        function restartQuiz() {
+            resetQuizScreen();
+        }
+        
+        function startTimer() {
+            timeElapsed = 0;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('quiz-timer').textContent = `Tiempo: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // FUNCIONES PARA EL EXAMEN SIMULADOR
+        function startExam() {
+            examData = getExamQuestions();
+            currentExamQuestion = 0;
+            examScore = 0;
+            examTimeRemaining = 60 * 60;
+            examSelectedOptions = {};
+            
+            // Ocultar la pantalla de inicio del examen y mostrar el contenedor del examen
+            document.querySelector('#exam-screen .concept-card').style.display = 'none';
+            document.querySelector('#exam-screen .btn').style.display = 'none';
+            document.getElementById('exam-container').style.display = 'block';
+            document.getElementById('exam-results').style.display = 'none';
+            
+            // Iniciar temporizador del examen
+            startExamTimer();
+            
+            // Mostrar la primera pregunta
+            showExamQuestion();
+        }
+
+        // Función para obtener preguntas del examen (50 preguntas)
+        function getExamQuestions() {
+            const basicQuestions = getQuizQuestions('basic');
+            const intermediateQuestions = getQuizQuestions('intermediate');
+            const advancedQuestions = getQuizQuestions('advanced');
+            
+            // Combinar preguntas y asegurar 50
+            const allQuestions = [
+                ...basicQuestions,
+                ...intermediateQuestions,
+                ...advancedQuestions
+            ];
+            
+            // Si no hay suficientes preguntas, duplicar algunas
+            while (allQuestions.length < 50) {
+                allQuestions.push(...basicQuestions);
+            }
+            
+            return allQuestions.slice(0, 50);
+        }
+
+        function startExamTimer() {
+            updateExamTimerDisplay();
+            
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                updateExamTimerDisplay();
+                
+                // Si se acaba el tiempo, finalizar el examen
+                if (examTimeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimerDisplay() {
+            const minutes = Math.floor(examTimeRemaining / 60);
+            const seconds = examTimeRemaining % 60;
+            document.getElementById('exam-timer').textContent = `Tiempo restante: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showExamQuestion() {
+            const question = examData[currentExamQuestion];
+            document.getElementById('exam-question').textContent = question.question;
+            document.getElementById('exam-question-counter').textContent = `Pregunta ${currentExamQuestion + 1} de ${examData.length}`;
+            
+            const optionsContainer = document.getElementById('exam-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (examSelectedOptions[currentExamQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectExamOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentExamQuestion) / examData.length) * 100;
+            document.getElementById('exam-progress').style.width = `${progress}%`;
+            
+            // Mostrar u ocultar botones según corresponda
+            document.getElementById('exam-next-btn').style.display = 'inline-block';
+            if (currentExamQuestion === examData.length - 1) {
+                document.getElementById('exam-next-btn').style.display = 'none';
+                document.getElementById('exam-finish-btn').style.display = 'inline-block';
+            }
+        }
+
+        function selectExamOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('#exam-options .option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            examSelectedOptions[currentExamQuestion] = parseInt(element.getAttribute('data-index'));
+        }
+
+        function nextExamQuestion() {
+            if (currentExamQuestion < examData.length - 1) {
+                currentExamQuestion++;
+                showExamQuestion();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(examTimerInterval);
+            
+            // Calcular puntuación
+            examScore = 0;
+            for (let i = 0; i < examData.length; i++) {
+                if (examSelectedOptions[i] === examData[i].correct) {
+                    examScore++;
+                }
+            }
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('exam-final-score').textContent = `Puntuación: ${examScore}/${examData.length}`;
+            document.getElementById('exam-correct-answers').textContent = examScore;
+            document.getElementById('exam-incorrect-answers').textContent = examData.length - examScore;
+            
+            // Calcular tiempo utilizado
+            const timeUsed = 60 * 60 - examTimeRemaining;
+            const minutes = Math.floor(timeUsed / 60);
+            const seconds = timeUsed % 60;
+            document.getElementById('exam-time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Mostrar análisis de resultados
+            const analysisElement = document.getElementById('exam-analysis');
+            let analysis = '';
+            if (examScore >= 45) {
+                analysis = '¡Excelente! Tu conocimiento de física es sobresaliente.';
+            } else if (examScore >= 35) {
+                analysis = 'Buen trabajo. Tienes un buen conocimiento de física.';
+            } else if (examScore >= 25) {
+                analysis = 'Tienes conocimientos básicos de física.';
+            } else {
+                analysis = 'Es necesario que dediques más tiempo al estudio de la física.';
+            }
+            analysisElement.textContent = analysis;
+        }
+
+        function restartExam() {
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Sistema de confirmación de salida del examen
+        function showConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.add('active');
+        }
+
+        function hideConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.remove('active');
+        }
+
+        function confirmExitExam() {
+            clearInterval(examTimerInterval);
+            hideConfirmExitExam();
+            
+            // Restaurar la vista inicial del examen
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Inicialización cuando se carga la página
+        window.onload = function() {
+            console.log("BioReto Física cargado correctamente");
+        };
+    </script>
+</body>
+</html>

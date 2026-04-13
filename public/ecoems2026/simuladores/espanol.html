@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioReto: Español - Lengua y Literatura</title>
+    <style>
+        :root {
+            --primary: #5D4037;
+            --primary-light: #795548;
+            --primary-dark: #3E2723;
+            --secondary: #00695C;
+            --secondary-light: #00796B;
+            --accent: #FF8F00;
+            --accent-light: #FFB74D;
+            --text: #333;
+            --light: #f5f5f5;
+            --white: #fff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M20,20 Q40,5 60,20 T100,20 Q85,40 100,60 T100,100 Q60,85 20,100 T0,100 Q5,60 0,20 T20,20 Z" fill="white"/></svg>');
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00695C;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #E65100;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-tab {
+            padding: 10px 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .nav-tab:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content-area {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .topic-content {
+            display: none;
+        }
+        
+        .topic-content.active {
+            display: block;
+        }
+        
+        .concept-card {
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .concept-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .menu-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .menu-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-light);
+            color: var(--white);
+        }
+        
+        .option.correct {
+            background-color: #4caf50;
+            color: var(--white);
+        }
+        
+        .option.incorrect {
+            background-color: #f44336;
+            color: var(--white);
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+            display: block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .results {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0 5px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 10px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .glossary-list {
+            list-style-type: none;
+        }
+        
+        .glossary-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .topic-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @media (max-width: 900px) {
+            .nav-tabs {
+                flex-direction: column;
+                display: none;
+            }
+            
+            .nav-tabs.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-tab {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .exam-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .exam-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            background-color: #fff3e0;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin: 15px 0;
+        }
+
+        .question-counter {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .developer-info {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #fff;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-confirm {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exam-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-exit {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-exit:hover {
+            background: #c82333;
+        }
+
+        .literature-card {
+            background-color: #f0f4f8;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .literature-card h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .author-card {
+            background-color: #e8f5e9;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .example-box {
+            background-color: #fff8e1;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .rule-box {
+            background-color: #e3f2fd;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>BioReto: Español - Lengua y Literatura</h1>
+            <p class="subtitle">Temario completo de Español para el examen de ingreso a educación media superior</p>
+            <div class="developer-info">Desarrollado por CyberEdu MX con tecnología DeepSeek</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <div id="home-screen" class="screen active">
+            <h2>¡Bienvenido a BioReto: Español!</h2>
+            <p>Explora el temario completo de Español, pon a prueba tus conocimientos y prepárate para tu examen de ingreso.</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="showScreen('topics-screen')">
+                    <div class="topic-icon">📚</div>
+                    <h3>Temario Completo</h3>
+                    <p>Estudia todos los temas de Español organizados por áreas</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('quiz-screen')">
+                    <div class="topic-icon">🧠</div>
+                    <h3>Cuestionarios</h3>
+                    <p>Pon a prueba tus conocimientos con cuestionarios de diferentes niveles</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('glossary-screen')">
+                    <div class="topic-icon">📖</div>
+                    <h3>Glosario</h3>
+                    <p>Consulta términos importantes de Español con definiciones claras</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('stats-screen')">
+                    <div class="topic-icon">📊</div>
+                    <h3>Estadísticas</h3>
+                    <p>Revisa tu progreso y tus resultados en los cuestionarios</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('exam-screen')">
+                    <div class="topic-icon">🎯</div>
+                    <h3>Examen Simulador</h3>
+                    <p>Realiza un examen completo con tiempo limitado como preparación</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline" onclick="showScreen('about-screen')">Acerca de BioReto Español</button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Temario -->
+        <div id="topics-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Temario Completo de Español</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="nav-container">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰ Menú de Temas</button>
+                <div class="nav-tabs" id="nav-tabs">
+                    <div class="nav-tab active" onclick="selectNavTab(this, 'topic-1')">Ortografía</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-2')">Gramática</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-3')">Redacción</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-4')">Comprensión Lectora</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-5')">Literatura Básica</div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <!-- Tema 1: Ortografía -->
+                <div id="topic-1" class="topic-content active">
+                    <h3>Ortografía</h3>
+                    <p>Estudio de las normas de escritura correcta de las palabras.</p>
+                    
+                    <div class="concept-card">
+                        <h4>1.1 Uso de mayúsculas y minúsculas</h4>
+                        <p><strong>Mayúsculas:</strong> Se utilizan al inicio de oraciones, nombres propios, títulos, después de punto, etc.</p>
+                        <div class="example-box">
+                            <p><strong>Ejemplos:</strong> "María vive en Madrid.", "El Dr. Pérez atiende los lunes."</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.2 Acentuación</h4>
+                        <p><strong>Palabras agudas:</strong> Llevan tilde cuando terminan en n, s o vocal. Ej: camión, jamás.</p>
+                        <p><strong>Palabras graves:</strong> Llevan tilde cuando NO terminan en n, s o vocal. Ej: árbol, lápiz.</p>
+                        <p><strong>Palabras esdrújulas:</strong> Siempre llevan tilde. Ej: pájaro, esdrújula.</p>
+                        <p><strong>Palabras sobresdrújulas:</strong> Siempre llevan tilde. Ej: fácilmente, devuélvemelo.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.3 Reglas de acentuación de diptongos, triptongos e hiatos</h4>
+                        <p><strong>Diptongos:</strong> Unión de dos vocales en una misma sílaba. Ej: aire, peine.</p>
+                        <p><strong>Triptongos:</strong> Unión de tres vocales en una misma sílaba. Ej: estudiáis, buey.</p>
+                        <p><strong>Hiatos:</strong> Separación de dos vocales en sílabas distintas. Ej: po-e-ta, ca-os.</p>
+                        <div class="rule-box">
+                            <p><strong>Regla:</strong> Los hiatos formados por vocal abierta (a, e, o) + vocal cerrada (i, u) tónica llevan tilde en la vocal cerrada.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.4 Uso de la b/v, g/j, ll/y, h, c/s/z</h4>
+                        <p><strong>B/V:</strong> Se escribe b después de m (cambio) y antes de consonante (obtener).</p>
+                        <p><strong>G/J:</strong> Se escribe j antes de e, i (ejemplo, jirafa).</p>
+                        <p><strong>LL/Y:</strong> Se escribe ll en la mayoría de palabras (llave, calle).</p>
+                        <p><strong>H:</strong> Se escribe en palabras como hoy, hacer, hablar.</p>
+                        <p><strong>C/S/Z:</strong> Se escribe z antes de a, o, u (zapato, zona).</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.5 Signos de puntuación</h4>
+                        <p><strong>Punto:</strong> Separa oraciones y párrafos.</p>
+                        <p><strong>Coma:</strong> Separa elementos en una lista o ideas relacionadas.</p>
+                        <p><strong>Punto y coma:</strong> Une oraciones relacionadas.</p>
+                        <p><strong>Dos puntos:</strong> Introducen enumeraciones o explicaciones.</p>
+                        <p><strong>Signos de interrogación y exclamación:</strong> Encierran preguntas y exclamaciones.</p>
+                        <p><strong>Paréntesis:</strong> Incluyen información adicional.</p>
+                        <p><strong>Guion:</strong> Une palabras compuestas o separa sílabas.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 2: Gramática -->
+                <div id="topic-2" class="topic-content">
+                    <h3>Gramática</h3>
+                    <p>Estudio de la estructura de las palabras y oraciones.</p>
+                    
+                    <div class="concept-card">
+                        <h4>2.1 Clases de palabras</h4>
+                        <p><strong>Sustantivo:</strong> Nombra seres, objetos, ideas. Tiene género (masculino/femenino) y número (singular/plural).</p>
+                        <p><strong>Adjetivo:</strong> Califica al sustantivo. Debe concordar en género y número.</p>
+                        <p><strong>Artículo:</strong> Determina al sustantivo (el, la, los, las, un, una).</p>
+                        <p><strong>Pronombre:</strong> Sustituye al sustantivo (yo, tú, él, nosotros, etc.).</p>
+                        <p><strong>Verbo:</strong> Expresa acción, estado o proceso. Tiene tiempos (presente, pasado, futuro) y modos (indicativo, subjuntivo, imperativo).</p>
+                        <p><strong>Adverbio:</strong> Modifica al verbo, adjetivo u otro adverbio (rápidamente, muy, aquí).</p>
+                        <p><strong>Preposición:</strong> Relaciona palabras (a, ante, bajo, con, contra, de, desde, en, entre, hacia, hasta, para, por, según, sin, sobre, tras).</p>
+                        <p><strong>Conjunción:</strong> Une palabras u oraciones (y, o, pero, porque).</p>
+                        <p><strong>Interjección:</strong> Expresa emociones (¡ay!, ¡oh!, ¡eh!).</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.2 Estructura de la oración</h4>
+                        <p><strong>Sujeto:</strong> Quien realiza la acción o de quien se habla.</p>
+                        <p><strong>Predicado:</strong> Lo que se dice del sujeto.</p>
+                        <p><strong>Complemento directo:</strong> Recibe directamente la acción del verbo.</p>
+                        <p><strong>Complemento indirecto:</strong> Indica a quién va dirigida la acción.</p>
+                        <p><strong>Complemento circunstancial:</strong> Indica tiempo, lugar, modo, etc.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.3 Oraciones simples y compuestas</h4>
+                        <p><strong>Oración simple:</strong> Tiene un solo verbo conjugado.</p>
+                        <p><strong>Oración compuesta:</strong> Tiene dos o más verbos conjugados.</p>
+                        <p><strong>Coordinadas:</strong> Oraciones independientes unidas por conjunciones.</p>
+                        <p><strong>Subordinadas:</strong> Una oración depende de la otra.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.4 Concordancia verbal y nominal</h4>
+                        <p><strong>Concordancia nominal:</strong> El artículo y adjetivo concuerdan en género y número con el sustantivo.</p>
+                        <p><strong>Concordancia verbal:</strong> El verbo concuerda en persona y número con el sujeto.</p>
+                        <div class="example-box">
+                            <p><strong>Ejemplos:</strong> "Las casas blancas" (concordancia nominal), "Ellos estudian" (concordancia verbal).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.5 Uso correcto de tiempos verbales en narración</h4>
+                        <p><strong>Presente:</strong> Acciones actuales o habituales.</p>
+                        <p><strong>Pretérito:</strong> Acciones pasadas terminadas.</p>
+                        <p><strong>Imperfecto:</strong> Acciones pasadas sin límite temporal definido.</p>
+                        <p><strong>Futuro:</strong> Acciones venideras.</p>
+                        <p><strong>Condicional:</strong> Acciones hipotéticas o de cortesía.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 3: Redacción -->
+                <div id="topic-3" class="topic-content">
+                    <h3>Redacción</h3>
+                    <p>Estudio de la organización y expresión escrita de ideas.</p>
+                    
+                    <div class="concept-card">
+                        <h4>3.1 Coherencia y cohesión textual</h4>
+                        <p><strong>Coherencia:</strong> Unidad temática y lógica en el texto.</p>
+                        <p><strong>Cohesión:</strong> Conexión gramatical y léxica entre las partes del texto.</p>
+                        <div class="example-box">
+                            <p><strong>Ejemplo coherente:</strong> "El cambio climático afecta al planeta. Las temperaturas aumentan y los glaciares se derriten."</p>
+                            <p><strong>Ejemplo incoherente:</strong> "El cambio climático afecta al planeta. Ayer comí pizza para la cena."</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.2 Tipos de párrafos</h4>
+                        <p><strong>Narrativo:</strong> Relata sucesos en orden cronológico.</p>
+                        <p><strong>Descriptivo:</strong> Presenta características de personas, lugares u objetos.</p>
+                        <p><strong>Expositivo:</strong> Explica o informa sobre un tema.</p>
+                        <p><strong>Argumentativo:</strong> Presenta razones para persuadir al lector.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.3 Uso de conectores</h4>
+                        <p><strong>Adición:</strong> y, además, también, asimismo.</p>
+                        <p><strong>Oposición:</strong> pero, sin embargo, no obstante, aunque.</p>
+                        <p><strong>Causa:</strong> porque, puesto que, ya que, debido a.</p>
+                        <p><strong>Consecuencia:</strong> por tanto, así que, por consiguiente, de modo que.</p>
+                        <p><strong>Orden:</strong> primero, luego, después, finalmente.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.4 Evitar redundancias, ambigüedades y vicios de lenguaje</h4>
+                        <p><strong>Redundancia:</strong> Repetición innecesaria de ideas (subir arriba, bajar abajo).</p>
+                        <p><strong>Ambigüedad:</strong> Expresión con más de una interpretación.</p>
+                        <p><strong>Pleonasmo:</strong> Redundancia innecesaria (lo vi con mis propios ojos).</p>
+                        <p><strong>Cacofonía:</strong> Sonido desagradable por repetición de sílabas.</p>
+                        <p><strong>Barbarismo:</strong> Uso incorrecto de palabras extranjeras.</p>
+                        <p><strong>Solecismo:</strong> Error gramatical en la construcción de oraciones.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 4: Comprensión lectora -->
+                <div id="topic-4" class="topic-content">
+                    <h3>Comprensión lectora</h3>
+                    <p>Habilidades para interpretar y analizar textos escritos.</p>
+                    
+                    <div class="concept-card">
+                        <h4>4.1 Identificación de ideas principales y secundarias</h4>
+                        <p><strong>Idea principal:</strong> Concepto central alrededor del cual gira el texto.</p>
+                        <p><strong>Ideas secundarias:</strong> Amplían, ejemplifican o demuestran la idea principal.</p>
+                        <div class="example-box">
+                            <p><strong>Texto:</strong> "La contaminación ambiental es un problema grave en las ciudades. Los vehículos emiten gases tóxicos que afectan la salud. Además, las fábricas liberan sustancias contaminantes al aire y al agua."</p>
+                            <p><strong>Idea principal:</strong> La contaminación ambiental es un problema grave en las ciudades.</p>
+                            <p><strong>Ideas secundarias:</strong> Los vehículos emiten gases tóxicos; las fábricas liberan sustancias contaminantes.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.2 Inferencia de información implícita</h4>
+                        <p><strong>Inferencia:</strong> Sacar conclusiones a partir de información no explícita en el texto.</p>
+                        <div class="example-box">
+                            <p><strong>Texto:</strong> "María salió sin paraguas y regresó completamente mojada."</p>
+                            <p><strong>Inferencia:</strong> Estaba lloviendo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.3 Reconocimiento del propósito del autor</h4>
+                        <p><strong>Informar:</strong> Presentar datos, hechos o conceptos.</p>
+                        <p><strong>Persuadir:</strong> Convencer al lector de una postura.</p>
+                        <p><strong>Entretener:</strong> Proporcionar diversión o placer estético.</p>
+                        <p><strong>Instruir:</strong> Enseñar cómo realizar algo.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.4 Análisis de recursos literarios básicos</h4>
+                        <p><strong>Metáfora:</strong> Identificación de un término con otro (sus ojos son dos luceros).</p>
+                        <p><strong>Comparación:</strong> Establece semejanza entre dos elementos (blanco como la nieve).</p>
+                        <p><strong>Personificación:</strong> Atribuir cualidades humanas a seres inanimados (el viento susurraba).</p>
+                        <p><strong>Hipérbole:</strong> Exageración (te lo he dicho mil veces).</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 5: Literatura básica -->
+                <div id="topic-5" class="topic-content">
+                    <h3>Literatura básica</h3>
+                    <p>Introducción a los géneros literarios y autores representativos.</p>
+                    
+                    <div class="concept-card">
+                        <h4>5.1 Géneros literarios</h4>
+                        <p><strong>Lírico:</strong> Expresa sentimientos y emociones (poesía).</p>
+                        <p><strong>Narrativo:</strong> Relata historias y sucesos (novela, cuento).</p>
+                        <p><strong>Dramático:</strong> Representa conflictos mediante diálogos (teatro).</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.2 Elementos de la narrativa</h4>
+                        <p><strong>Narrador:</strong> Voz que cuenta la historia (primera o tercera persona).</p>
+                        <p><strong>Personajes:</strong> Protagonista, antagonista, secundarios.</p>
+                        <p><strong>Tiempo:</strong> Época en que ocurre la historia y duración.</p>
+                        <p><strong>Espacio:</strong> Lugar donde se desarrolla la acción.</p>
+                        <p><strong>Trama:</strong> Secuencia de eventos que constituyen la historia.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.3 Autores y obras representativas</h4>
+                        <div class="author-card">
+                            <h4>Miguel de Cervantes</h4>
+                            <p><strong>Obra:</strong> Don Quijote de la Mancha</p>
+                            <p><strong>Importancia:</strong> Considerada la primera novela moderna</p>
+                        </div>
+                        
+                        <div class="author-card">
+                            <h4>Sor Juana Inés de la Cruz</h4>
+                            <p><strong>Obra:</strong> Primero sueño, Respuesta a Sor Filotea</p>
+                            <p><strong>Importancia:</strong> Figura cumbre de la literatura novohispana</p>
+                        </div>
+                        
+                        <div class="author-card">
+                            <h4>Pablo Neruda</h4>
+                            <p><strong>Obra:</strong> Veinte poemas de amor y una canción desesperada</p>
+                            <p><strong>Importancia:</strong> Premio Nobel de Literatura 1971</p>
+                        </div>
+                        
+                        <div class="author-card">
+                            <h4>Gabriel García Márquez</h4>
+                            <p><strong>Obra:</strong> Cien años de soledad</p>
+                            <p><strong>Importancia:</strong> Máximo exponente del realismo mágico</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="showScreen('quiz-screen')">Realizar Cuestionario sobre este Tema</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Cuestionarios -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Cuestionarios de Español</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="startQuiz('basic')">
+                    <h3>Nivel Básico</h3>
+                    <p>Ortografía y gramática fundamental</p>
+                    <p><span class="badge">10 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('intermediate')">
+                    <h3>Nivel Intermedio</h3>
+                    <p>Redacción y comprensión lectora</p>
+                    <p><span class="badge">15 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('advanced')">
+                    <h3>Nivel Avanzado</h3>
+                    <p>Literatura y análisis textual</p>
+                    <p><span class="badge">20 preguntas</span></p>
+                </div>
+            </div>
+            
+            <div id="quiz-container" style="display: none;">
+                <div class="quiz-header">
+                    <button class="btn btn-exit" onclick="exitQuiz()">Salir del Cuestionario</button>
+                    <div class="timer" id="quiz-timer">Tiempo: 00:00</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="quiz-question">¿Cuál es la pregunta?</div>
+                    
+                    <div class="options" id="quiz-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                    
+                    <div class="feedback" id="quiz-feedback">
+                        <!-- La retroalimentación se mostrará aquí -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Siguiente Pregunta</button>
+                    <button class="btn" id="submit-btn" onclick="submitAnswer()">Enviar Respuesta</button>
+                </div>
+            </div>
+            
+            <div id="quiz-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Cuestionario</h2>
+                    <div class="score-display" id="final-score">Puntuación: 0/10</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="time-taken">0:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="restartQuiz()">Realizar Otro Cuestionario</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Glosario -->
+        <div id="glossary-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Glosario de Términos de Español</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Consulta definiciones de términos importantes en español.</p>
+                
+                <input type="text" class="search-box" id="glossary-search" placeholder="Buscar término..." onkeyup="searchGlossary()">
+                
+                <ul class="glossary-list" id="glossary-list">
+                    <!-- Los términos del glosario se generarán con JavaScript -->
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Estadísticas -->
+        <div id="stats-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Estadísticas de Progreso</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Revisa tu progreso en los cuestionarios y exámenes.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-quizzes">0</div>
+                        <div class="stat-label">Cuestionarios Completados</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="average-score">0%</div>
+                        <div class="stat-label">Puntuación Promedio</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-questions">0</div>
+                        <div class="stat-label">Preguntas Respondidas</div>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Recomendaciones de Estudio</h4>
+                    <p id="study-recommendations">Basado en tu desempeño, te recomendamos repasar los temas que se muestran a continuación.</p>
+                    <ul id="recommendations-list">
+                        <!-- Las recomendaciones se generarán con JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Examen Simulador -->
+        <div id="exam-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Examen Simulador de Español</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Instrucciones del Examen</h4>
+                <p>Este examen simulado consta de 50 preguntas de opción múltiple con un tiempo límite de 60 minutos. Una vez que comiences, el temporizador iniciará y no podrás pausar el examen.</p>
+                <p>Tu puntuación se calculará basándose en el número de respuestas correctas. No hay penalización por respuestas incorrectas.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="startExam()">Comenzar Examen</button>
+            </div>
+
+            <!-- Contenedor del examen (inicialmente oculto) -->
+            <div id="exam-container" style="display: none;">
+                <div class="exam-controls">
+                    <button class="btn btn-exit" onclick="showConfirmExitExam()">Salir del Examen</button>
+                    <div class="exam-timer" id="exam-timer">Tiempo restante: 60:00</div>
+                </div>
+                
+                <div class="exam-info">
+                    <div class="question-counter" id="exam-question-counter">Pregunta 1 de 50</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="exam-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="exam-question">¿Cuál es la pregunta?</div>
+                    
+                    <div class="options" id="exam-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="exam-next-btn" onclick="nextExamQuestion()">Siguiente Pregunta</button>
+                    <button class="btn btn-secondary" id="exam-finish-btn" onclick="finishExam()" style="display: none;">Finalizar Examen</button>
+                </div>
+            </div>
+
+            <!-- Resultados del examen (inicialmente oculto) -->
+            <div id="exam-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Examen Simulador</h2>
+                    <div class="score-display" id="exam-final-score">Puntuación: 0/50</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-time-taken">60:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card" style="text-align: left; margin-top: 20px;">
+                        <h4>Análisis de Resultados</h4>
+                        <p id="exam-analysis">Aquí aparecerá un análisis de tu desempeño en el examen.</p>
+                    </div>
+                    
+                    <button class="btn" onclick="restartExam()">Realizar Otro Examen</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla Acerca de -->
+        <div id="about-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Acerca de BioReto: Español</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>¿Qué es BioReto: Español?</h4>
+                <p>BioReto: Español es una aplicación educativa diseñada para ayudar a estudiantes a prepararse para exámenes de ingreso a educación media superior. Ofrece un temario completo de español, cuestionarios interactivos y herramientas de estudio.</p>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Características Principales</h4>
+                <ul>
+                    <li><strong>Temario Completo:</strong> Cubre todos los temas fundamentales de español</li>
+                    <li><strong>Cuestionarios Interactivos:</strong> Preguntas de opción múltiple con retroalimentación inmediata</li>
+                    <li><strong>Examen Simulador:</strong> Simulación de examen con tiempo limitado</li>
+                    <li><strong>Glosario:</strong> Definiciones de términos lingüísticos y literarios</li>
+                    <li><strong>Seguimiento de Progreso:</strong> Estadísticas de desempeño y recomendaciones</li>
+                </ul>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Desarrollado con Tecnología DeepSeek</h4>
+                <p>Esta aplicación fue desarrollada utilizando inteligencia artificial avanzada para garantizar contenido educativo de calidad y una experiencia de usuario optimizada.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación de Salida del Examen -->
+    <div id="confirmExitExamModal" class="modal">
+        <div class="modal-content">
+            <h3>¿Estás seguro de que quieres salir?</h3>
+            <p>Se perderá todo tu progreso actual del examen.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideConfirmExitExam()">Cancelar</button>
+                <button class="btn btn-confirm" onclick="confirmExitExam()">Sí, Salir</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>BioReto: Español - Lengua y Literatura - © 2025 | Desarrollado por CyberEdu MX con DeepSeek</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales para la aplicación
+        let currentScreen = 'home-screen';
+        let currentTopic = 'topic-1';
+        let quizData = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+        let timeElapsed = 0;
+        let selectedOption = null;
+        let totalQuizzesCompleted = 0;
+        let totalScore = 0;
+        let currentQuizType = '';
+
+        // Variables específicas para el examen
+        let examData = [];
+        let currentExamQuestion = 0;
+        let examScore = 0;
+        let examTimerInterval;
+        let examTimeRemaining = 60 * 60;
+        let examSelectedOptions = {};
+
+        // Datos del glosario
+        const glossaryTerms = [
+            { term: "Sustantivo", definition: "Palabra que nombra seres, objetos, ideas o conceptos." },
+            { term: "Adjetivo", definition: "Palabra que califica o determina al sustantivo." },
+            { term: "Verbo", definition: "Palabra que expresa acción, estado o proceso." },
+            { term: "Metáfora", definition: "Figura retórica que identifica un término con otro." },
+            { term: "Hipérbole", definition: "Figura retórica que consiste en exagerar para dar mayor fuerza expresiva." },
+            { term: "Sinónimo", definition: "Palabra que tiene significado igual o parecido a otra." },
+            { term: "Antónimo", definition: "Palabra que tiene significado opuesto a otra." },
+            { term: "Paráfrasis", definition: "Explicación o interpretación de un texto con otras palabras." },
+            { term: "Narrador", definition: "Voz que relata los hechos en una obra literaria." },
+            { term: "Protagonista", definition: "Personaje principal de una obra literaria." }
+        ];
+
+        // Función para mostrar una pantalla específica
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla solicitada
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Si vamos a la pantalla de inicio, resetear completamente la pantalla de cuestionarios
+            if (screenId === 'home-screen') {
+                resetQuizScreen();
+            }
+            
+            // Cargar el glosario si es necesario
+            else if (screenId === 'glossary-screen') {
+                loadGlossary();
+            }
+            // Cargar estadísticas si es necesario
+            else if (screenId === 'stats-screen') {
+                loadStats();
+            }
+            // Si vamos a la pantalla de cuestionarios, asegurarnos de que esté en estado inicial
+            else if (screenId === 'quiz-screen') {
+                resetQuizScreen();
+            }
+        }
+
+        // Función para resetear completamente la pantalla de cuestionarios
+        function resetQuizScreen() {
+            // Detener cualquier temporizador activo
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Ocultar contenedores de quiz y mostrar el menú principal
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'grid';
+            
+            // Resetear variables del quiz
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            selectedOption = null;
+            quizData = [];
+        }
+        
+        // Función para seleccionar pestaña de navegación
+        function selectNavTab(element, topicId) {
+            // Remover la clase active de todas las pestañas
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Añadir la clase active a la pestaña clickeada
+            element.classList.add('active');
+            
+            // Ocultar todos los contenidos de temas
+            const topicContents = document.querySelectorAll('.topic-content');
+            topicContents.forEach(content => content.classList.remove('active'));
+            
+            // Mostrar el contenido del tema seleccionado
+            document.getElementById(topicId).classList.add('active');
+            currentTopic = topicId;
+            
+            // En dispositivos móviles, cerrar el menú después de seleccionar
+            if (window.innerWidth <= 900) {
+                document.getElementById('nav-tabs').classList.remove('active');
+            }
+        }
+        
+        // Función para alternar menú móvil
+        function toggleMobileMenu() {
+            const navTabs = document.getElementById('nav-tabs');
+            navTabs.classList.toggle('active');
+        }
+        
+        // Función para cargar el glosario
+        function loadGlossary() {
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            glossaryTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para buscar en el glosario
+        function searchGlossary() {
+            const input = document.getElementById('glossary-search').value.toLowerCase();
+            const filteredTerms = glossaryTerms.filter(term => 
+                term.term.toLowerCase().includes(input) || term.definition.toLowerCase().includes(input)
+            );
+            
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            filteredTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para cargar estadísticas
+        function loadStats() {
+            document.getElementById('total-quizzes').textContent = totalQuizzesCompleted;
+            
+            // Calcular correctamente el porcentaje promedio
+            let average = 0;
+            if (totalQuizzesCompleted > 0) {
+                // Si tenemos datos de quizzes, calcular el promedio correctamente
+                average = Math.round((totalScore / (totalQuizzesCompleted * 10)) * 100);
+                // Asegurarnos de que no sea mayor a 100%
+                average = Math.min(average, 100);
+            }
+            document.getElementById('average-score').textContent = `${average}%`;
+            
+            // Calcular el total de preguntas respondidas
+            const totalQuestions = totalQuizzesCompleted * 10; // Aproximación
+            document.getElementById('total-questions').textContent = totalQuestions;
+            
+            // Recomendaciones basadas en el desempeño
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            
+            if (totalQuizzesCompleted === 0) {
+                document.getElementById('study-recommendations').textContent = 'Aún no has completado ningún cuestionario. ¡Comienza por el nivel básico!';
+            } else if (average < 50) {
+                document.getElementById('study-recommendations').textContent = 'Te recomendamos repasar los temas básicos de español.';
+                addRecommendation(recommendationsList, 'Ortografía');
+                addRecommendation(recommendationsList, 'Uso de mayúsculas');
+                addRecommendation(recommendationsList, 'Acentuación');
+            } else if (average < 70) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un conocimiento básico. Te recomendamos repasar la gramática.';
+                addRecommendation(recommendationsList, 'Clases de palabras');
+                addRecommendation(recommendationsList, 'Estructura de la oración');
+                addRecommendation(recommendationsList, 'Concordancia');
+            } else if (average < 90) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un buen conocimiento. Repasa la redacción y comprensión lectora.';
+                addRecommendation(recommendationsList, 'Coherencia y cohesión');
+                addRecommendation(recommendationsList, 'Tipos de párrafos');
+                addRecommendation(recommendationsList, 'Comprensión lectora');
+            } else {
+                document.getElementById('study-recommendations').textContent = '¡Excelente! Tu conocimiento de español es sobresaliente.';
+                addRecommendation(recommendationsList, 'Literatura');
+                addRecommendation(recommendationsList, 'Análisis textual');
+                addRecommendation(recommendationsList, 'Recursos literarios');
+            }
+        }
+
+        function addRecommendation(list, topic) {
+            const li = document.createElement('li');
+            li.textContent = topic;
+            list.appendChild(li);
+        }
+        
+        // Funciones para cuestionarios
+        function startQuiz(level) {
+            currentQuizType = 'level';
+            quizData = getQuizQuestions(level);
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            
+            // Mostrar el contenedor del cuestionario
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            
+            // Iniciar temporizador
+            startTimer();
+            
+            // Mostrar la primera pregunta
+            showQuestion();
+        }
+
+        // Función para obtener preguntas según el nivel
+        function getQuizQuestions(level) {
+            // Preguntas básicas (10 preguntas) - Ortografía y gramática
+            if (level === 'basic') {
+                return [
+                    {
+                        question: "¿Cuál de las siguientes palabras lleva tilde?",
+                        options: ["camion", "arbol", "lapiz", "revés"],
+                        correct: 3,
+                        explanation: "'revés' es una palabra aguda que termina en 's', por lo tanto lleva tilde."
+                    },
+                    {
+                        question: "¿Cuál es la forma correcta?",
+                        options: ["Haber muchas personas", "A ver muchas personas", "Habér muchas personas", "Haber muchas personas"],
+                        correct: 0,
+                        explanation: "La forma correcta es 'haber' como verbo impersonal que indica existencia."
+                    },
+                    {
+                        question: "¿Qué palabra está escrita correctamente?",
+                        options: ["Bailarina", "Vailarina", "Bailarrina", "Vailarrina"],
+                        correct: 0,
+                        explanation: "'Bailarina' se escribe con 'b' y con una 'r'."
+                    },
+                    {
+                        question: "¿Cuál de estas oraciones tiene correcta concordancia?",
+                        options: ["Las casas son grandes", "Las casas es grande", "La casas son grandes", "Las casa son grandes"],
+                        correct: 0,
+                        explanation: "'Las casas son grandes' tiene concordancia correcta en número y género."
+                    },
+                    {
+                        question: "¿Qué signo de puntuación se usa para separar oraciones relacionadas?",
+                        options: ["La coma", "El punto y coma", "Los dos puntos", "El punto"],
+                        correct: 1,
+                        explanation: "El punto y coma se usa para separar oraciones relacionadas entre sí."
+                    },
+                    {
+                        question: "¿Cuál es el sujeto en la oración: 'Los niños juegan en el parque'?",
+                        options: ["juegan", "en el parque", "Los niños", "juegan en el parque"],
+                        correct: 2,
+                        explanation: "'Los niños' es el sujeto porque realizan la acción de jugar."
+                    },
+                    {
+                        question: "¿Qué tipo de palabra es 'rápidamente'?",
+                        options: ["Sustantivo", "Adjetivo", "Adverbio", "Verbo"],
+                        correct: 2,
+                        explanation: "'Rápidamente' es un adverbio de modo."
+                    },
+                    {
+                        question: "¿Cuál de estas palabras es un sustantivo?",
+                        options: ["correr", "feliz", "casa", "muy"],
+                        correct: 2,
+                        explanation: "'Casa' es un sustantivo porque nombra un objeto."
+                    },
+                    {
+                        question: "¿Cómo se clasifica la palabra 'canté'?",
+                        options: ["Sustantivo", "Adjetivo", "Verbo", "Adverbio"],
+                        correct: 2,
+                        explanation: "'Canté' es un verbo en pretérito perfecto simple."
+                    },
+                    {
+                        question: "¿Qué palabra necesita tilde?",
+                        options: ["examen", "joven", "album", "ácido"],
+                        correct: 3,
+                        explanation: "'Ácido' es una palabra esdrújula y todas las esdrújulas llevan tilde."
+                    }
+                ];
+            }
+            // Preguntas intermedias (15 preguntas) - Redacción y comprensión lectora
+            else if (level === 'intermediate') {
+                return [
+                    {
+                        question: "¿Qué conector indica oposición?",
+                        options: ["y", "además", "pero", "porque"],
+                        correct: 2,
+                        explanation: "'Pero' es un conector que indica oposición o contraste."
+                    },
+                    {
+                        question: "¿Cuál es la idea principal del texto: 'La contaminación es un problema grave. Los coches emiten gases. Las fábricas también contaminan.'?",
+                        options: ["Los coches emiten gases", "Las fábricas contaminan", "La contaminación es un problema grave", "Todas las anteriores"],
+                        correct: 2,
+                        explanation: "La idea principal es 'La contaminación es un problema grave', las otras son ideas secundarias."
+                    },
+                    {
+                        question: "¿Qué tipo de párrafo describe características?",
+                        options: ["Narrativo", "Descriptivo", "Expositivo", "Argumentativo"],
+                        correct: 1,
+                        explanation: "El párrafo descriptivo presenta características de personas, lugares u objetos."
+                    },
+                    {
+                        question: "¿Cuál de estas oraciones es coherente?",
+                        options: ["Estudio para el examen. Los pájaros cantan.", "Estudio para el examen. Necesito repasar los temas.", "Estudio para el examen. La pizza tiene pepperoni.", "Estudio para el examen. El fútbol es divertido."],
+                        correct: 1,
+                        explanation: "Solo la segunda opción mantiene coherencia temática."
+                    },
+                    {
+                        question: "¿Qué figura literaria es: 'Sus ojos son dos luceros'?",
+                        options: ["Comparación", "Metáfora", "Hipérbole", "Personificación"],
+                        correct: 1,
+                        explanation: "Es una metáfora porque identifica los ojos con luceros."
+                    },
+                    {
+                        question: "¿Qué significa inferir?",
+                        options: ["Copiar textualmente", "Sacar conclusiones de información implícita", "Resumir un texto", "Subrayar ideas importantes"],
+                        correct: 1,
+                        explanation: "Inferir significa sacar conclusiones a partir de información no explícita."
+                    },
+                    {
+                        question: "¿Cuál es un ejemplo de redundancia?",
+                        options: ["Subir arriba", "Caminar rápido", "Estudiar mucho", "Comer saludable"],
+                        correct: 0,
+                        explanation: "'Subir arriba' es redundante porque 'subir' ya implica dirección hacia arriba."
+                    },
+                    {
+                        question: "¿Qué conectores indican causa?",
+                        options: ["pero, sin embargo", "y, además", "porque, puesto que", "finalmente, luego"],
+                        correct: 2,
+                        explanation: "'Porque' y 'puesto que' son conectores que indican causa."
+                    },
+                    {
+                        question: "¿Cuál es el propósito de un texto instructivo?",
+                        options: ["Entretener", "Persuadir", "Informar", "Enseñar cómo hacer algo"],
+                        correct: 3,
+                        explanation: "Un texto instructivo tiene como propósito enseñar cómo realizar algo."
+                    },
+                    {
+                        question: "¿Qué tipo de párrafo relata sucesos en orden cronológico?",
+                        options: ["Narrativo", "Descriptivo", "Expositivo", "Argumentativo"],
+                        correct: 0,
+                        explanation: "El párrafo narrativo relata sucesos en orden cronológico."
+                    },
+                    {
+                        question: "¿Cuál es un ejemplo de personificación?",
+                        options: ["Blanco como la nieve", "El viento susurraba", "Te lo dije mil veces", "Rápido como el rayo"],
+                        correct: 1,
+                        explanation: "'El viento susurraba' es personificación porque atribuye cualidad humana al viento."
+                    },
+                    {
+                        question: "¿Qué vicio de lenguaje es: 'Lo vi con mis propios ojos'?",
+                        options: ["Cacofonía", "Barbarismo", "Solecismo", "Pleonasmo"],
+                        correct: 3,
+                        explanation: "Es un pleonasmo porque repite innecesariamente la idea (si lo vio, fue con sus ojos)."
+                    },
+                    {
+                        question: "¿Qué indica un texto con muchos datos y estadísticas?",
+                        options: ["Propósito de entretener", "Propósito de informar", "Propósito de persuadir", "Propósito de instruir"],
+                        correct: 1,
+                        explanation: "Un texto con muchos datos y estadísticas tiene propósito de informar."
+                    },
+                    {
+                        question: "¿Cuál es un conector de consecuencia?",
+                        options: ["porque", "pero", "por tanto", "y"],
+                        correct: 2,
+                        explanation: "'Por tanto' es un conector que indica consecuencia."
+                    },
+                    {
+                        question: "¿Qué figura literaria es: 'Te lo he dicho mil veces'?",
+                        options: ["Comparación", "Metáfora", "Hipérbole", "Personificación"],
+                        correct: 2,
+                        explanation: "Es una hipérbole porque exagera el número de veces que lo ha dicho."
+                    }
+                ];
+            }
+            // Preguntas avanzadas (20 preguntas) - Literatura y análisis textual
+            else if (level === 'advanced') {
+                return [
+                    {
+                        question: "¿Quién escribió 'Don Quijote de la Mancha'?",
+                        options: ["Gabriel García Márquez", "Miguel de Cervantes", "Pablo Neruda", "Sor Juana Inés de la Cruz"],
+                        correct: 1,
+                        explanation: "Miguel de Cervantes es el autor de 'Don Quijote de la Mancha'."
+                    },
+                    {
+                        question: "¿Qué género literario representa la poesía?",
+                        options: ["Lírico", "Narrativo", "Dramático", "Épico"],
+                        correct: 0,
+                        explanation: "La poesía pertenece al género lírico."
+                    },
+                    {
+                        question: "¿Qué elemento de la narrativa es la voz que cuenta la historia?",
+                        options: ["Personaje", "Narrador", "Trama", "Espacio"],
+                        correct: 1,
+                        explanation: "El narrador es la voz que cuenta la historia."
+                    },
+                    {
+                        question: "¿Qué obra es de Gabriel García Márquez?",
+                        options: ["Veinte poemas de amor y una canción desesperada", "Primero sueño", "Cien años de soledad", "Don Quijote de la Mancha"],
+                        correct: 2,
+                        explanation: "'Cien años de soledad' es la obra más conocida de Gabriel García Márquez."
+                    },
+                    {
+                        question: "¿Qué tipo de narrador usa 'yo'?",
+                        options: ["Narrador en primera persona", "Narrador en segunda persona", "Narrador en tercera persona", "Narrador omnisciente"],
+                        correct: 0,
+                        explanation: "El narrador en primera persona usa 'yo' para contar la historia."
+                    },
+                    {
+                        question: "¿Qué poeta chileno ganó el Premio Nobel de Literatura en 1971?",
+                        options: ["Gabriel García Márquez", "Pablo Neruda", "Octavio Paz", "Mario Vargas Llosa"],
+                        correct: 1,
+                        explanation: "Pablo Neruda, poeta chileno, ganó el Premio Nobel de Literatura en 1971."
+                    },
+                    {
+                        question: "¿Qué figura literaria es: 'El río murmuraba entre las piedras'?",
+                        options: ["Metáfora", "Comparación", "Hipérbole", "Personificación"],
+                        correct: 3,
+                        explanation: "Es personificación porque atribuye cualidad humana (murmurar) al río."
+                    },
+                    {
+                        question: "¿Qué elemento de la narrativa se refiere al lugar donde ocurre la acción?",
+                        options: ["Tiempo", "Espacio", "Trama", "Narrador"],
+                        correct: 1,
+                        explanation: "El espacio es el lugar donde se desarrolla la acción."
+                    },
+                    {
+                        question: "¿Qué obra es de Sor Juana Inés de la Cruz?",
+                        options: ["Cien años de soledad", "Don Quijote de la Mancha", "Primero sueño", "Veinte poemas de amor y una canción desesperada"],
+                        correct: 2,
+                        explanation: "'Primero sueño' es un poema filosófico de Sor Juana Inés de la Cruz."
+                    },
+                    {
+                        question: "¿Qué género literario se representa en el teatro?",
+                        options: ["Lírico", "Narrativo", "Dramático", "Épico"],
+                        correct: 2,
+                        explanation: "El teatro pertenece al género dramático."
+                    },
+                    {
+                        question: "¿Qué personaje se opone al protagonista?",
+                        options: ["Personaje secundario", "Antagonista", "Narrador", "Personaje terciario"],
+                        correct: 1,
+                        explanation: "El antagonista es el personaje que se opone al protagonista."
+                    },
+                    {
+                        question: "¿Qué autor es representante del realismo mágico?",
+                        options: ["Miguel de Cervantes", "Sor Juana Inés de la Cruz", "Pablo Neruda", "Gabriel García Márquez"],
+                        correct: 3,
+                        explanation: "Gabriel García Márquez es el máximo representante del realismo mágico."
+                    },
+                    {
+                        question: "¿Qué elemento de la narrativa es la secuencia de eventos?",
+                        options: ["Personajes", "Espacio", "Trama", "Narrador"],
+                        correct: 2,
+                        explanation: "La trama es la secuencia de eventos que constituyen la historia."
+                    },
+                    {
+                        question: "¿Qué obra pertenece al género dramático?",
+                        options: ["Un poema", "Una novela", "Una obra de teatro", "Un cuento"],
+                        correct: 2,
+                        explanation: "Una obra de teatro pertenece al género dramático."
+                    },
+                    {
+                        question: "¿Qué figura literaria es: 'Eres fuerte como un roble'?",
+                        options: ["Metáfora", "Comparación", "Hipérbole", "Personificación"],
+                        correct: 1,
+                        explanation: "Es una comparación porque establece semejanza usando 'como'."
+                    },
+                    {
+                        question: "¿Qué autor escribió principalmente sonetos?",
+                        options: ["Gabriel García Márquez", "Miguel de Cervantes", "Sor Juana Inés de la Cruz", "Pablo Neruda"],
+                        correct: 2,
+                        explanation: "Sor Juana Inés de la Cruz escribió numerosos sonetos."
+                    },
+                    {
+                        question: "¿Qué elemento de la narrativa indica cuándo ocurre la historia?",
+                        options: ["Espacio", "Tiempo", "Trama", "Personajes"],
+                        correct: 1,
+                        explanation: "El tiempo indica cuándo ocurre la historia."
+                    },
+                    {
+                        question: "¿Qué obra de Pablo Neruda es una colección de poemas de amor?",
+                        options: ["Cien años de soledad", "Don Quijote de la Mancha", "Veinte poemas de amor y una canción desesperada", "Primero sueño"],
+                        correct: 2,
+                        explanation: "'Veinte poemas de amor y una canción desesperada' es una famosa colección de Pablo Neruda."
+                    },
+                    {
+                        question: "¿Qué tipo de narrador conoce los pensamientos de todos los personajes?",
+                        options: ["Narrador en primera persona", "Narrador en segunda persona", "Narrador en tercera persona limitado", "Narrador omnisciente"],
+                        correct: 3,
+                        explanation: "El narrador omnisciente conoce los pensamientos de todos los personajes."
+                    },
+                    {
+                        question: "¿Qué figura literaria es: 'Me muero de hambre'?",
+                        options: ["Metáfora", "Comparación", "Hipérbole", "Personificación"],
+                        correct: 2,
+                        explanation: "Es una hipérbole porque exagera el hambre que siente."
+                    }
+                ];
+            }
+            
+            return [];
+        }
+        
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            document.getElementById('quiz-question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentQuestion) / quizData.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progress}%`;
+            
+            // Reiniciar estado de botones
+            document.getElementById('submit-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-feedback').className = 'feedback';
+            
+            selectedOption = null;
+        }
+        
+        function selectOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            selectedOption = parseInt(element.getAttribute('data-index'));
+        }
+        
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('Por favor, selecciona una respuesta.');
+                return;
+            }
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('quiz-feedback');
+            
+            // Mostrar retroalimentación
+            if (selectedOption === question.correct) {
+                feedback.textContent = `¡Correcto! ${question.explanation}`;
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}. ${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            
+            // Resaltar opciones correctas e incorrectas
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedOption && index !== question.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            // Cambiar botones
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizData.length) {
+                showQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+        
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            
+            // Actualizar estadísticas
+            totalQuizzesCompleted++;
+            totalScore += score;
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('final-score').textContent = `Puntuación: ${score}/${quizData.length}`;
+            document.getElementById('correct-answers').textContent = score;
+            document.getElementById('incorrect-answers').textContent = quizData.length - score;
+            
+            // Formatear tiempo
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function exitQuiz() {
+            if (confirm("¿Estás seguro de que quieres salir? Se perderá tu progreso actual.")) {
+                resetQuizScreen();
+            }
+        }
+        
+        function restartQuiz() {
+            resetQuizScreen();
+        }
+        
+        function startTimer() {
+            timeElapsed = 0;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('quiz-timer').textContent = `Tiempo: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // FUNCIONES PARA EL EXAMEN SIMULADOR
+        function startExam() {
+            examData = getExamQuestions();
+            currentExamQuestion = 0;
+            examScore = 0;
+            examTimeRemaining = 60 * 60;
+            examSelectedOptions = {};
+            
+            // Ocultar la pantalla de inicio del examen y mostrar el contenedor del examen
+            document.querySelector('#exam-screen .concept-card').style.display = 'none';
+            document.querySelector('#exam-screen .btn').style.display = 'none';
+            document.getElementById('exam-container').style.display = 'block';
+            document.getElementById('exam-results').style.display = 'none';
+            
+            // Iniciar temporizador del examen
+            startExamTimer();
+            
+            // Mostrar la primera pregunta
+            showExamQuestion();
+        }
+
+        // Función para obtener preguntas del examen (50 preguntas)
+        function getExamQuestions() {
+            const basicQuestions = getQuizQuestions('basic');
+            const intermediateQuestions = getQuizQuestions('intermediate');
+            const advancedQuestions = getQuizQuestions('advanced');
+            
+            // Combinar preguntas y asegurar 50
+            const allQuestions = [
+                ...basicQuestions,
+                ...intermediateQuestions,
+                ...advancedQuestions
+            ];
+            
+            // Si no hay suficientes preguntas, duplicar algunas
+            while (allQuestions.length < 50) {
+                allQuestions.push(...basicQuestions);
+            }
+            
+            return allQuestions.slice(0, 50);
+        }
+
+        function startExamTimer() {
+            updateExamTimerDisplay();
+            
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                updateExamTimerDisplay();
+                
+                // Si se acaba el tiempo, finalizar el examen
+                if (examTimeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimerDisplay() {
+            const minutes = Math.floor(examTimeRemaining / 60);
+            const seconds = examTimeRemaining % 60;
+            document.getElementById('exam-timer').textContent = `Tiempo restante: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showExamQuestion() {
+            const question = examData[currentExamQuestion];
+            document.getElementById('exam-question').textContent = question.question;
+            document.getElementById('exam-question-counter').textContent = `Pregunta ${currentExamQuestion + 1} de ${examData.length}`;
+            
+            const optionsContainer = document.getElementById('exam-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (examSelectedOptions[currentExamQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectExamOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentExamQuestion) / examData.length) * 100;
+            document.getElementById('exam-progress').style.width = `${progress}%`;
+            
+            // Mostrar u ocultar botones según corresponda
+            document.getElementById('exam-next-btn').style.display = 'inline-block';
+            if (currentExamQuestion === examData.length - 1) {
+                document.getElementById('exam-next-btn').style.display = 'none';
+                document.getElementById('exam-finish-btn').style.display = 'inline-block';
+            }
+        }
+
+        function selectExamOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('#exam-options .option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            examSelectedOptions[currentExamQuestion] = parseInt(element.getAttribute('data-index'));
+        }
+
+        function nextExamQuestion() {
+            if (currentExamQuestion < examData.length - 1) {
+                currentExamQuestion++;
+                showExamQuestion();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(examTimerInterval);
+            
+            // Calcular puntuación
+            examScore = 0;
+            for (let i = 0; i < examData.length; i++) {
+                if (examSelectedOptions[i] === examData[i].correct) {
+                    examScore++;
+                }
+            }
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('exam-final-score').textContent = `Puntuación: ${examScore}/${examData.length}`;
+            document.getElementById('exam-correct-answers').textContent = examScore;
+            document.getElementById('exam-incorrect-answers').textContent = examData.length - examScore;
+            
+            // Calcular tiempo utilizado
+            const timeUsed = 60 * 60 - examTimeRemaining;
+            const minutes = Math.floor(timeUsed / 60);
+            const seconds = timeUsed % 60;
+            document.getElementById('exam-time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Mostrar análisis de resultados
+            const analysisElement = document.getElementById('exam-analysis');
+            let analysis = '';
+            if (examScore >= 45) {
+                analysis = '¡Excelente! Tu conocimiento de español es sobresaliente.';
+            } else if (examScore >= 35) {
+                analysis = 'Buen trabajo. Tienes un buen conocimiento de español.';
+            } else if (examScore >= 25) {
+                analysis = 'Tienes conocimientos básicos de español.';
+            } else {
+                analysis = 'Es necesario que dediques más tiempo al estudio del español.';
+            }
+            analysisElement.textContent = analysis;
+        }
+
+        function restartExam() {
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Sistema de confirmación de salida del examen
+        function showConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.add('active');
+        }
+
+        function hideConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.remove('active');
+        }
+
+        function confirmExitExam() {
+            clearInterval(examTimerInterval);
+            hideConfirmExitExam();
+            
+            // Restaurar la vista inicial del examen
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Inicialización cuando se carga la página
+        window.onload = function() {
+            console.log("BioReto Español cargado correctamente");
+        };
+    </script>
+</body>
+</html>

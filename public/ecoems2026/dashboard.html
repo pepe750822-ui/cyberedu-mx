@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberEdu MX - Simulador Pro</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container animate-in">
+        <header>
+            <div class="logo-container">
+                <i class="fas fa-atom logo-icon"></i>
+                <h1>IPN SIMULADOR 2025</h1>
+            </div>
+            <p class="subtitle">Estrategia inteligente para tu ingreso a educación media superior</p>
+        </header>
+
+        <main>
+            <div id="subjects-grid" class="subjects-grid">
+                <!-- Subjects will be injected here -->
+            </div>
+        </main>
+
+        <footer style="margin-top: 5rem; text-align: center; color: var(--text-muted); opacity: 0.6;">
+            <p>&copy; 2026 CyberEdu MX | Desarrollado con tecnología de vanguardia</p>
+        </footer>
+    </div>
+
+    <script src="js/subjects_data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('subjects-grid');
+
+            Object.entries(subjectsData).forEach(([id, data]) => {
+                const card = document.createElement('a');
+                card.href = `quiz.html?subject=${id}`;
+                card.className = 'subject-card';
+                card.style.borderColor = data.color + '44'; // Semi-transparent border
+
+                card.innerHTML = `
+                    <div>
+                        <div class="subject-icon" style="color: ${data.color}">
+                            <i class="fas ${data.icon}"></i>
+                        </div>
+                        <h2 class="subject-name">${data.name}</h2>
+                        <p class="subject-desc">${data.desc}</p>
+                    </div>
+                    <div class="subject-stats">
+                        <span class="stat-tag" style="color: ${data.color}; border-color: ${data.color}33; background: ${data.color}11">
+                            ${data.quiz.length} Preguntas
+                        </span>
+                        <span class="stat-tag" style="color: var(--accent); border-color: var(--accent)33; background: var(--accent)11">
+                            IPN 2025
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        });
+    </script>
+</body>
+
+</html>

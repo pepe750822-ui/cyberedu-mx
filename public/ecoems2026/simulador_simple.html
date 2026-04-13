@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador ECOEMS 1000 - Guía Super Perrona</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_simple.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-content">
+            <h1><i class="fas fa-rocket"></i> SIMULADOR ECOEMS 1000</h1>
+            <div class="header-stats">
+                <span class="stat-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="global-completed">0/1060</span> Completadas
+                </span>
+                <span class="stat-badge">
+                    <i class="fas fa-percentage"></i>
+                    <span id="global-accuracy">0%</span> Precisión
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD -->
+    <main id="dashboard" class="dashboard">
+        <div class="dashboard-controls">
+            <button class="cyber-btn" onclick="resetAllProgress()">
+                <i class="fas fa-redo"></i> Reiniciar Todo
+            </button>
+            <button class="cyber-btn secondary" onclick="showOnlyIncomplete()">
+                <i class="fas fa-filter"></i> Solo Pendientes
+            </button>
+        </div>
+
+        <!-- MATERIAS CON SUBÍNDICES -->
+        <div id="subjects-list" class="subjects-list">
+            <!-- Se genera dinámicamente con JavaScript -->
+        </div>
+    </main>
+
+    <!-- QUIZ MODAL -->
+    <div id="quiz-modal" class="quiz-modal hidden">
+        <div class="quiz-container">
+            <!-- Header -->
+            <div class="quiz-header">
+                <button class="back-btn" onclick="closeQuiz()">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </button>
+                <div class="quiz-title">
+                    <h2 id="quiz-subject-title">HABILIDAD VERBAL</h2>
+                    <p id="quiz-subindex-title">1.1 Sinónimos y antónimos</p>
+                </div>
+                <div class="quiz-progress-info">
+                    <span id="quiz-counter">1/10</span>
+                    <span id="quiz-timer">02:00</span>
+                    <span id="quiz-score">✓ 0/10</span>
+                </div>
+            </div>
+
+            <!-- Pregunta -->
+            <div class="quiz-body">
+                <div class="question-number">Pregunta <span id="current-q-num">1</span></div>
+                <h3 class="question-text" id="question-text">¿Cuál es el sinónimo de "feliz"?</h3>
+
+                <!-- Opciones -->
+                <div class="options" id="options-container">
+                    <!-- Se generan dinámicamente -->
+                </div>
+
+                <!-- Retroalimentación -->
+                <div class="feedback hidden" id="feedback">
+                    <div class="feedback-content">
+                        <div class="feedback-icon" id="feedback-icon">✓</div>
+                        <div class="feedback-text" id="feedback-text">
+                            ¡Correcto! Alegre es sinónimo de feliz...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="quiz-actions">
+                    <button class="cyber-btn" id="submit-btn" onclick="submitAnswer()">
+                        <i class="fas fa-check"></i> Responder
+                    </button>
+                    <button class="cyber-btn secondary hidden" id="next-btn" onclick="nextQuestion()">
+                        Siguiente <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confeti Container -->
+    <div id="particles-container"></div>
+
+    <!-- Scripts -->
+    <script src="questions_data.js"></script>
+    <script src="confetti_simple.js"></script>
+    <script src="script_simple.js"></script>
+</body>
+
+</html>

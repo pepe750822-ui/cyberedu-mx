@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOEMS 1000 - Simulador v2 (Super Perrona)</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style_v2.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="animate-fade">
+            <div class="logo">
+                <i class="fas fa-rocket gradient-text"></i>
+                <h1 class="gradient-text">ECOEMS 1000 <span
+                        style="font-size: 0.6rem; vertical-align: middle;">v2.0</span></h1>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i class="fas fa-check-double"></i>
+                    <span id="global-progress">0/1060</span> <span class="text-muted"
+                        style="margin-left: 5px;">Completado</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-bullseye"></i>
+                    <span id="global-accuracy">0%</span> <span class="text-muted"
+                        style="margin-left: 5px;">Precisión</span>
+                </div>
+                <button class="btn-primary" onclick="window.location.reload()" title="Reiniciar sesión">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main id="dashboard" class="animate-fade">
+            <div style="margin-bottom: 2.5rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Simulador Integral</h2>
+                <p class="text-muted">Selecciona una materia para ver sus temas y comenzar a practicar.</p>
+            </div>
+
+            <!-- Subject Cards Container -->
+            <div id="subjects-grid" class="subjects-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Overlay / Modal for Subindices & Quiz -->
+    <div id="modal-overlay" class="overlay">
+        <div id="modal-content" class="modal-content">
+            <button class="close-btn" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div id="modal-view">
+                <!-- Content injected here (Subindices List or Quiz) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="canvas-container" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2000;"></div>
+
+    <!-- Scripts -->
+    <script src="questions_data.js"></script>
+    <script src="confetti_simple.js"></script>
+    <script src="script_v2.js"></script>
+</body>
+
+</html>

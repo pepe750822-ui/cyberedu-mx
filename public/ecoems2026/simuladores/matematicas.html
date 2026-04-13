@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioReto: Matemáticas</title>
+    <style>
+        :root {
+            --primary: #1565C0;
+            --primary-light: #1976D2;
+            --primary-dark: #0D47A1;
+            --secondary: #00897B;
+            --secondary-light: #009688;
+            --accent: #FF8F00;
+            --accent-light: #FFB74D;
+            --text: #333;
+            --light: #f5f5f5;
+            --white: #fff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M10,10 L90,10 L90,90 L10,90 Z M30,30 L70,30 L70,70 L30,70 Z M40,40 L60,40 L60,60 L40,60 Z" fill="white"/></svg>');
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00695C;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #E65100;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-tab {
+            padding: 10px 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .nav-tab:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content-area {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .topic-content {
+            display: none;
+        }
+        
+        .topic-content.active {
+            display: block;
+        }
+        
+        .concept-card {
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .concept-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .menu-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .menu-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-light);
+            color: var(--white);
+        }
+        
+        .option.correct {
+            background-color: #4caf50;
+            color: var(--white);
+        }
+        
+        .option.incorrect {
+            background-color: #f44336;
+            color: var(--white);
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+            display: block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .results {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0 5px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 10px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .glossary-list {
+            list-style-type: none;
+        }
+        
+        .glossary-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .topic-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @media (max-width: 900px) {
+            .nav-tabs {
+                flex-direction: column;
+                display: none;
+            }
+            
+            .nav-tabs.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-tab {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .exam-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .exam-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            background-color: #fff3e0;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin: 15px 0;
+        }
+
+        .question-counter {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .developer-info {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #fff;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-confirm {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exam-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-exit {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-exit:hover {
+            background: #c82333;
+        }
+
+        .math-card {
+            background-color: #f0f4f8;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .math-card h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .formula-card {
+            background-color: #e8f5e9;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .example-box {
+            background-color: #fff8e1;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .rule-box {
+            background-color: #e3f2fd;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .math-expression {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>BioReto: Matemáticas</h1>
+            <p class="subtitle">Temario completo de Matemáticas para el examen de ingreso a educación media superior</p>
+            <div class="developer-info">Desarrollado por CyberEdu MX con tecnología DeepSeek</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <div id="home-screen" class="screen active">
+            <h2>¡Bienvenido a BioReto: Matemáticas!</h2>
+            <p>Explora el temario completo de Matemáticas, pon a prueba tus conocimientos y prepárate para tu examen de ingreso.</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="showScreen('topics-screen')">
+                    <div class="topic-icon">📚</div>
+                    <h3>Temario Completo</h3>
+                    <p>Estudia todos los temas de Matemáticas organizados por áreas</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('quiz-screen')">
+                    <div class="topic-icon">🧠</div>
+                    <h3>Cuestionarios</h3>
+                    <p>Pon a prueba tus conocimientos con cuestionarios de diferentes niveles</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('glossary-screen')">
+                    <div class="topic-icon">📖</div>
+                    <h3>Glosario</h3>
+                    <p>Consulta términos importantes de Matemáticas con definiciones claras</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('stats-screen')">
+                    <div class="topic-icon">📊</div>
+                    <h3>Estadísticas</h3>
+                    <p>Revisa tu progreso y tus resultados en los cuestionarios</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('exam-screen')">
+                    <div class="topic-icon">🎯</div>
+                    <h3>Examen Simulador</h3>
+                    <p>Realiza un examen completo con tiempo limitado como preparación</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline" onclick="showScreen('about-screen')">Acerca de BioReto Matemáticas</button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Temario -->
+        <div id="topics-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Temario Completo de Matemáticas</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="nav-container">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰ Menú de Temas</button>
+                <div class="nav-tabs" id="nav-tabs">
+                    <div class="nav-tab active" onclick="selectNavTab(this, 'topic-1')">Aritmética</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-2')">Álgebra</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-3')">Geometría</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-4')">Trigonometría</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-5')">Funciones</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-6')">Estadística</div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <!-- Tema 1: Aritmética -->
+                <div id="topic-1" class="topic-content active">
+                    <h3>Aritmética</h3>
+                    <p>Estudio de los números y las operaciones básicas.</p>
+                    
+                    <div class="concept-card">
+                        <h4>1.1 Números naturales, enteros, racionales, irracionales</h4>
+                        <p><strong>Números naturales (N):</strong> 1, 2, 3, 4, ...</p>
+                        <p><strong>Números enteros (Z):</strong> ..., -3, -2, -1, 0, 1, 2, 3, ...</p>
+                        <p><strong>Números racionales (Q):</strong> Se pueden expresar como fracción a/b, donde a y b son enteros y b ≠ 0.</p>
+                        <p><strong>Números irracionales (I):</strong> No se pueden expresar como fracción. Ej: √2, π, e.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.2 Operaciones básicas: suma, resta, multiplicación, división</h4>
+                        <p><strong>Suma:</strong> Operación de adición. Ej: 5 + 3 = 8</p>
+                        <p><strong>Resta:</strong> Operación de sustracción. Ej: 8 - 3 = 5</p>
+                        <p><strong>Multiplicación:</strong> Operación de producto. Ej: 4 × 3 = 12</p>
+                        <p><strong>División:</strong> Operación de cociente. Ej: 12 ÷ 3 = 4</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.3 Fracciones: equivalentes, simplificación, operaciones</h4>
+                        <p><strong>Fracciones equivalentes:</strong> Representan el mismo valor. Ej: 1/2 = 2/4 = 3/6</p>
+                        <p><strong>Simplificación:</strong> Reducir a su mínima expresión. Ej: 4/8 = 1/2</p>
+                        <p><strong>Suma y resta:</strong> Mismo denominador: sumar/restar numeradores. Diferente denominador: encontrar común denominador.</p>
+                        <p><strong>Multiplicación:</strong> Multiplicar numeradores y denominadores. Ej: 1/2 × 2/3 = 2/6 = 1/3</p>
+                        <p><strong>División:</strong> Multiplicar por el recíproco. Ej: 1/2 ÷ 2/3 = 1/2 × 3/2 = 3/4</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.4 Porcentajes, proporciones, regla de tres simple y compuesta</h4>
+                        <p><strong>Porcentajes:</strong> Representar una fracción de 100. Ej: 25% = 25/100 = 1/4</p>
+                        <p><strong>Proporciones:</strong> Igualdad entre dos razones. Ej: a/b = c/d</p>
+                        <p><strong>Regla de tres simple:</strong> Resolver problemas de proporcionalidad directa o inversa.</p>
+                        <p><strong>Regla de tres compuesta:</strong> Resolver problemas con más de dos magnitudes relacionadas.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.5 Potencias y raíces (índices enteros positivos)</h4>
+                        <p><strong>Potencias:</strong> aⁿ = a × a × ... × a (n veces)</p>
+                        <p><strong>Propiedades:</strong> aᵐ × aⁿ = aᵐ⁺ⁿ, aᵐ ÷ aⁿ = aᵐ⁻ⁿ, (aᵐ)ⁿ = aᵐⁿ</p>
+                        <p><strong>Raíces:</strong> √a = b significa que b² = a</p>
+                        <p><strong>Propiedades:</strong> √(a×b) = √a × √b, √(a/b) = √a / √b</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 2: Álgebra -->
+                <div id="topic-2" class="topic-content">
+                    <h3>Álgebra</h3>
+                    <p>Estudio de las estructuras, relaciones y cantidades.</p>
+                    
+                    <div class="concept-card">
+                        <h4>2.1 Expresiones algebraicas: términos, coeficientes, simplificación</h4>
+                        <p><strong>Expresión algebraica:</strong> Combinación de números y letras mediante operaciones. Ej: 3x² + 2x - 5</p>
+                        <p><strong>Términos:</strong> Partes de la expresión separadas por + o -. Ej: 3x², 2x, -5</p>
+                        <p><strong>Coeficientes:</strong> Números que multiplican a las variables. Ej: En 3x², 3 es el coeficiente.</p>
+                        <p><strong>Simplificación:</strong> Reducir términos semejantes. Ej: 2x + 3x = 5x</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.2 Ecuaciones lineales de primer grado (una y dos variables)</h4>
+                        <p><strong>Ecuación lineal:</strong> ax + b = 0, donde a ≠ 0</p>
+                        <p><strong>Solución:</strong> x = -b/a</p>
+                        <p><strong>Ecuación con dos variables:</strong> ax + by = c</p>
+                        <p><strong>Solución:</strong> Par ordenado (x, y) que satisface la ecuación.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.3 Sistemas de ecuaciones 2×2: sustitución, igualación, eliminación</h4>
+                        <p><strong>Sistema de ecuaciones:</strong> Dos ecuaciones con dos incógnitas.</p>
+                        <p><strong>Sustitución:</strong> Despejar una variable y sustituir en la otra ecuación.</p>
+                        <p><strong>Igualación:</strong> Despejar la misma variable en ambas ecuaciones e igualar.</p>
+                        <p><strong>Eliminación:</strong> Sumar o restar ecuaciones para eliminar una variable.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.4 Factorización: común, trinomio cuadrado perfecto, diferencia de cuadrados</h4>
+                        <p><strong>Factor común:</strong> ab + ac = a(b + c)</p>
+                        <p><strong>Trinomio cuadrado perfecto:</strong> a² ± 2ab + b² = (a ± b)²</p>
+                        <p><strong>Diferencia de cuadrados:</strong> a² - b² = (a + b)(a - b)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.5 Productos notables: binomio al cuadrado, binomio con término común</h4>
+                        <p><strong>Binomio al cuadrado:</strong> (a + b)² = a² + 2ab + b², (a - b)² = a² - 2ab + b²</p>
+                        <p><strong>Binomio con término común:</strong> (x + a)(x + b) = x² + (a + b)x + ab</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.6 Desigualdades lineales</h4>
+                        <p><strong>Desigualdad:</strong> Expresión que indica que una cantidad es mayor o menor que otra.</p>
+                        <p><strong>Propiedades:</strong> Si a > b, entonces a + c > b + c; si a > b y c > 0, entonces ac > bc</p>
+                        <p><strong>Solución:</strong> Intervalo de valores que satisfacen la desigualdad.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 3: Geometría -->
+                <div id="topic-3" class="topic-content">
+                    <h3>Geometría</h3>
+                    <p>Estudio de las propiedades y medidas de figuras en el plano y el espacio.</p>
+                    
+                    <div class="concept-card">
+                        <h4>3.1 Figuras planas: triángulo, cuadrilátero, círculo</h4>
+                        <p><strong>Triángulo:</strong> Polígono de tres lados. Clasificación: equilátero, isósceles, escaleno.</p>
+                        <p><strong>Cuadrilátero:</strong> Polígono de cuatro lados. Tipos: paralelogramo, rectángulo, rombo, trapecio.</p>
+                        <p><strong>Círculo:</strong> Conjunto de puntos equidistantes de un centro.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.2 Teorema de Pitágoras</h4>
+                        <p><strong>Teorema:</strong> En un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.</p>
+                        <div class="math-expression">a² + b² = c²</div>
+                        <p>Donde c es la hipotenusa y a, b son los catetos.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.3 Semejanza de triángulos (criterios AA, LLL, LAL)</h4>
+                        <p><strong>Criterio AA (Ángulo-Ángulo):</strong> Dos triángulos son semejantes si tienen dos ángulos iguales.</p>
+                        <p><strong>Criterio LLL (Lado-Lado-Lado):</strong> Dos triángulos son semejantes si sus lados son proporcionales.</p>
+                        <p><strong>Criterio LAL (Lado-Ángulo-Lado):</strong> Dos triángulos son semejantes si tienen un ángulo igual y los lados que lo forman son proporcionales.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.4 Polígonos regulares: perímetro y área</h4>
+                        <p><strong>Polígono regular:</strong> Todos sus lados y ángulos son iguales.</p>
+                        <p><strong>Perímetro:</strong> Suma de las longitudes de todos los lados.</p>
+                        <p><strong>Área:</strong> Medida de la superficie encerrada por el polígono.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.5 Cuerpos geométricos: prisma, pirámide, cilindro, cono, esfera</h4>
+                        <p><strong>Prisma:</strong> Poliedro con dos bases paralelas e iguales.</p>
+                        <p><strong>Pirámide:</strong> Poliedro con una base y caras triangulares que convergen en un vértice.</p>
+                        <p><strong>Cilindro:</strong> Cuerpo con dos bases circulares paralelas.</p>
+                        <p><strong>Cono:</strong> Cuerpo con una base circular y un vértice.</p>
+                        <p><strong>Esfera:</strong> Conjunto de puntos equidistantes de un centro.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 4: Trigonometría -->
+                <div id="topic-4" class="topic-content">
+                    <h3>Trigonometría básica</h3>
+                    <p>Estudio de las relaciones entre los ángulos y lados de los triángulos.</p>
+                    
+                    <div class="concept-card">
+                        <h4>4.1 Razones trigonométricas en triángulo rectángulo: seno, coseno, tangente</h4>
+                        <p><strong>Seno (sen):</strong> cateto opuesto / hipotenusa</p>
+                        <p><strong>Coseno (cos):</strong> cateto adyacente / hipotenusa</p>
+                        <p><strong>Tangente (tan):</strong> cateto opuesto / cateto adyacente</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.2 Resolución de triángulos rectángulos (ángulos y lados)</h4>
+                        <p><strong>Conociendo dos lados:</strong> Usar el teorema de Pitágoras para encontrar el tercer lado y las razones trigonométricas para los ángulos.</p>
+                        <p><strong>Conociendo un lado y un ángulo:</strong> Usar las razones trigonométricas para encontrar los otros lados.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 5: Funciones -->
+                <div id="topic-5" class="topic-content">
+                    <h3>Funciones</h3>
+                    <p>Estudio de las relaciones entre variables.</p>
+                    
+                    <div class="concept-card">
+                        <h4>5.1 Función lineal: pendiente, ordenada al origen, gráfica</h4>
+                        <p><strong>Función lineal:</strong> f(x) = mx + b</p>
+                        <p><strong>Pendiente (m):</strong> Indica la inclinación de la recta.</p>
+                        <p><strong>Ordenada al origen (b):</strong> Punto donde la recta corta al eje y.</p>
+                        <p><strong>Gráfica:</strong> Línea recta.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.2 Función cuadrática: vértice, eje de simetría, gráfica (parábola)</h4>
+                        <p><strong>Función cuadrática:</strong> f(x) = ax² + bx + c</p>
+                        <p><strong>Vértice:</strong> Punto máximo o mínimo de la parábola.</p>
+                        <p><strong>Eje de simetría:</strong> Línea vertical que pasa por el vértice.</p>
+                        <p><strong>Gráfica:</strong> Parábola.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.3 Lectura e interpretación de gráficas cartesianas</h4>
+                        <p><strong>Coordenadas cartesianas:</strong> Sistema de ejes x e y para representar puntos.</p>
+                        <p><strong>Interpretación:</strong> Analizar el comportamiento de una función a partir de su gráfica: dominio, rango, crecimiento, decrecimiento, máximos, mínimos.</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 6: Estadística y probabilidad -->
+                <div id="topic-6" class="topic-content">
+                    <h3>Estadística y probabilidad</h3>
+                    <p>Estudio de la recolección, análisis e interpretación de datos.</p>
+                    
+                    <div class="concept-card">
+                        <h4>6.1 Medidas de tendencia central: media, mediana, moda</h4>
+                        <p><strong>Media:</strong> Suma de todos los valores dividida entre el número de valores.</p>
+                        <p><strong>Mediana:</strong> Valor central cuando los datos están ordenados.</p>
+                        <p><strong>Moda:</strong> Valor que aparece con mayor frecuencia.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.2 Gráficas: barras, circular, histograma</h4>
+                        <p><strong>Gráfica de barras:</strong> Compara categorías usando barras de diferentes alturas.</p>
+                        <p><strong>Gráfica circular:</strong> Muestra proporciones de un todo usando sectores circulares.</p>
+                        <p><strong>Histograma:</strong> Muestra la distribución de datos continuos usando barras adyacentes.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.3 Probabilidad básica: espacio muestral, eventos, regla de Laplace</h4>
+                        <p><strong>Espacio muestral:</strong> Conjunto de todos los resultados posibles de un experimento.</p>
+                        <p><strong>Evento:</strong> Subconjunto del espacio muestral.</p>
+                        <p><strong>Regla de Laplace:</strong> P(A) = número de casos favorables / número de casos posibles</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="showScreen('quiz-screen')">Realizar Cuestionario sobre este Tema</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Cuestionarios -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Cuestionarios de Matemáticas</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="startQuiz('basic')">
+                    <h3>Nivel Básico</h3>
+                    <p>Aritmética y álgebra fundamental</p>
+                    <p><span class="badge">10 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('intermediate')">
+                    <h3>Nivel Intermedio</h3>
+                    <p>Geometría y trigonometría</p>
+                    <p><span class="badge">15 preguntas</span></p>
+                </div>
+                
+                <div class="menu-card" onclick="startQuiz('advanced')">
+                    <h3>Nivel Avanzado</h3>
+                    <p>Funciones y estadística</p>
+                    <p><span class="badge">20 preguntas</span></p>
+                </div>
+            </div>
+            
+            <div id="quiz-container" style="display: none;">
+                <div class="quiz-header">
+                    <button class="btn btn-exit" onclick="exitQuiz()">Salir del Cuestionario</button>
+                    <div class="timer" id="quiz-timer">Tiempo: 00:00</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="quiz-question">¿Cuál es la pregunta?</div>
+                    
+                    <div class="options" id="quiz-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                    
+                    <div class="feedback" id="quiz-feedback">
+                        <!-- La retroalimentación se mostrará aquí -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Siguiente Pregunta</button>
+                    <button class="btn" id="submit-btn" onclick="submitAnswer()">Enviar Respuesta</button>
+                </div>
+            </div>
+            
+            <div id="quiz-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Cuestionario</h2>
+                    <div class="score-display" id="final-score">Puntuación: 0/10</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="time-taken">0:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" onclick="restartQuiz()">Realizar Otro Cuestionario</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Glosario -->
+        <div id="glossary-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Glosario de Términos de Matemáticas</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Consulta definiciones de términos importantes en matemáticas.</p>
+                
+                <input type="text" class="search-box" id="glossary-search" placeholder="Buscar término..." onkeyup="searchGlossary()">
+                
+                <ul class="glossary-list" id="glossary-list">
+                    <!-- Los términos del glosario se generarán con JavaScript -->
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Estadísticas -->
+        <div id="stats-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Estadísticas de Progreso</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <p>Revisa tu progreso en los cuestionarios y exámenes.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-quizzes">0</div>
+                        <div class="stat-label">Cuestionarios Completados</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="average-score">0%</div>
+                        <div class="stat-label">Puntuación Promedio</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-questions">0</div>
+                        <div class="stat-label">Preguntas Respondidas</div>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Recomendaciones de Estudio</h4>
+                    <p id="study-recommendations">Basado en tu desempeño, te recomendamos repasar los temas que se muestran a continuación.</p>
+                    <ul id="recommendations-list">
+                        <!-- Las recomendaciones se generarán con JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Examen Simulador -->
+        <div id="exam-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Examen Simulador de Matemáticas</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Instrucciones del Examen</h4>
+                <p>Este examen simulado consta de 50 preguntas de opción múltiple con un tiempo límite de 60 minutos. Una vez que comiences, el temporizador iniciará y no podrás pausar el examen.</p>
+                <p>Tu puntuación se calculará basándose en el número de respuestas correctas. No hay penalización por respuestas incorrectas.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="startExam()">Comenzar Examen</button>
+            </div>
+
+            <!-- Contenedor del examen (inicialmente oculto) -->
+            <div id="exam-container" style="display: none;">
+                <div class="exam-controls">
+                    <button class="btn btn-exit" onclick="showConfirmExitExam()">Salir del Examen</button>
+                    <div class="exam-timer" id="exam-timer">Tiempo restante: 60:00</div>
+                </div>
+                
+                <div class="exam-info">
+                    <div class="question-counter" id="exam-question-counter">Pregunta 1 de 50</div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="exam-progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question" id="exam-question">¿Cuál es la pregunta?</div>
+                    
+                    <div class="options" id="exam-options">
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="exam-next-btn" onclick="nextExamQuestion()">Siguiente Pregunta</button>
+                    <button class="btn btn-secondary" id="exam-finish-btn" onclick="finishExam()" style="display: none;">Finalizar Examen</button>
+                </div>
+            </div>
+
+            <!-- Resultados del examen (inicialmente oculto) -->
+            <div id="exam-results" style="display: none;">
+                <div class="results">
+                    <h2>Resultados del Examen Simulador</h2>
+                    <div class="score-display" id="exam-final-score">Puntuación: 0/50</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-correct-answers">0</div>
+                            <div class="stat-label">Correctas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-incorrect-answers">0</div>
+                            <div class="stat-label">Incorrectas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="exam-time-taken">60:00</div>
+                            <div class="stat-label">Tiempo</div>
+                        </div>
+                    </div>
+
+                    <div class="concept-card" style="text-align: left; margin-top: 20px;">
+                        <h4>Análisis de Resultados</h4>
+                        <p id="exam-analysis">Aquí aparecerá un análisis de tu desempeño en el examen.</p>
+                    </div>
+                    
+                    <button class="btn" onclick="restartExam()">Realizar Otro Examen</button>
+                    <button class="btn btn-outline" onclick="showScreen('home-screen')">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla Acerca de -->
+        <div id="about-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Acerca de BioReto: Matemáticas</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="concept-card">
+                <h4>¿Qué es BioReto: Matemáticas?</h4>
+                <p>BioReto: Matemáticas es una aplicación educativa diseñada para ayudar a estudiantes a prepararse para exámenes de ingreso a educación media superior. Ofrece un temario completo de matemáticas, cuestionarios interactivos y herramientas de estudio.</p>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Características Principales</h4>
+                <ul>
+                    <li><strong>Temario Completo:</strong> Cubre todos los temas fundamentales de matemáticas</li>
+                    <li><strong>Cuestionarios Interactivos:</strong> Preguntas de opción múltiple con retroalimentación inmediata</li>
+                    <li><strong>Examen Simulador:</strong> Simulación de examen con tiempo limitado</li>
+                    <li><strong>Glosario:</strong> Definiciones de términos matemáticos</li>
+                    <li><strong>Seguimiento de Progreso:</strong> Estadísticas de desempeño y recomendaciones</li>
+                </ul>
+            </div>
+            
+            <div class="concept-card">
+                <h4>Desarrollado con Tecnología DeepSeek</h4>
+                <p>Esta aplicación fue desarrollada utilizando inteligencia artificial avanzada para garantizar contenido educativo de calidad y una experiencia de usuario optimizada.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmación de Salida del Examen -->
+    <div id="confirmExitExamModal" class="modal">
+        <div class="modal-content">
+            <h3>¿Estás seguro de que quieres salir?</h3>
+            <p>Se perderá todo tu progreso actual del examen.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideConfirmExitExam()">Cancelar</button>
+                <button class="btn btn-confirm" onclick="confirmExitExam()">Sí, Salir</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>BioReto: Matemáticas - © 2025 | Desarrollado por CyberEdu MX con DeepSeek</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales para la aplicación
+        let currentScreen = 'home-screen';
+        let currentTopic = 'topic-1';
+        let quizData = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+        let timeElapsed = 0;
+        let selectedOption = null;
+        let totalQuizzesCompleted = 0;
+        let totalScore = 0;
+        let currentQuizType = '';
+
+        // Variables específicas para el examen
+        let examData = [];
+        let currentExamQuestion = 0;
+        let examScore = 0;
+        let examTimerInterval;
+        let examTimeRemaining = 60 * 60;
+        let examSelectedOptions = {};
+
+        // Datos del glosario
+        const glossaryTerms = [
+            { term: "Número natural", definition: "Número entero positivo: 1, 2, 3, ..." },
+            { term: "Número entero", definition: "Números positivos, negativos y cero: ..., -2, -1, 0, 1, 2, ..." },
+            { term: "Número racional", definition: "Número que puede expresarse como fracción a/b, donde a y b son enteros y b ≠ 0." },
+            { term: "Número irracional", definition: "Número que no puede expresarse como fracción. Ej: √2, π." },
+            { term: "Ecuación", definition: "Igualdad entre dos expresiones que contiene una o más incógnitas." },
+            { term: "Variable", definition: "Símbolo que representa un número desconocido." },
+            { term: "Función", definition: "Relación entre dos conjuntos donde a cada elemento del primer conjunto le corresponde un único elemento del segundo." },
+            { term: "Triángulo", definition: "Polígono de tres lados." },
+            { term: "Teorema de Pitágoras", definition: "En un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos." },
+            { term: "Probabilidad", definition: "Medida de la posibilidad de que ocurra un evento." }
+        ];
+
+        // Función para mostrar una pantalla específica
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla solicitada
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Si vamos a la pantalla de inicio, resetear completamente la pantalla de cuestionarios
+            if (screenId === 'home-screen') {
+                resetQuizScreen();
+            }
+            
+            // Cargar el glosario si es necesario
+            else if (screenId === 'glossary-screen') {
+                loadGlossary();
+            }
+            // Cargar estadísticas si es necesario
+            else if (screenId === 'stats-screen') {
+                loadStats();
+            }
+            // Si vamos a la pantalla de cuestionarios, asegurarnos de que esté en estado inicial
+            else if (screenId === 'quiz-screen') {
+                resetQuizScreen();
+            }
+        }
+
+        // Función para resetear completamente la pantalla de cuestionarios
+        function resetQuizScreen() {
+            // Detener cualquier temporizador activo
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // Ocultar contenedores de quiz y mostrar el menú principal
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'grid';
+            
+            // Resetear variables del quiz
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            selectedOption = null;
+            quizData = [];
+        }
+        
+        // Función para seleccionar pestaña de navegación
+        function selectNavTab(element, topicId) {
+            // Remover la clase active de todas las pestañas
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Añadir la clase active a la pestaña clickeada
+            element.classList.add('active');
+            
+            // Ocultar todos los contenidos de temas
+            const topicContents = document.querySelectorAll('.topic-content');
+            topicContents.forEach(content => content.classList.remove('active'));
+            
+            // Mostrar el contenido del tema seleccionado
+            document.getElementById(topicId).classList.add('active');
+            currentTopic = topicId;
+            
+            // En dispositivos móviles, cerrar el menú después de seleccionar
+            if (window.innerWidth <= 900) {
+                document.getElementById('nav-tabs').classList.remove('active');
+            }
+        }
+        
+        // Función para alternar menú móvil
+        function toggleMobileMenu() {
+            const navTabs = document.getElementById('nav-tabs');
+            navTabs.classList.toggle('active');
+        }
+        
+        // Función para cargar el glosario
+        function loadGlossary() {
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            glossaryTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para buscar en el glosario
+        function searchGlossary() {
+            const input = document.getElementById('glossary-search').value.toLowerCase();
+            const filteredTerms = glossaryTerms.filter(term => 
+                term.term.toLowerCase().includes(input) || term.definition.toLowerCase().includes(input)
+            );
+            
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            filteredTerms.forEach(term => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="term">${term.term}:</span> ${term.definition}`;
+                glossaryList.appendChild(li);
+            });
+        }
+        
+        // Función para cargar estadísticas
+        function loadStats() {
+            document.getElementById('total-quizzes').textContent = totalQuizzesCompleted;
+            
+            // Calcular correctamente el porcentaje promedio
+            let average = 0;
+            if (totalQuizzesCompleted > 0) {
+                // Si tenemos datos de quizzes, calcular el promedio correctamente
+                average = Math.round((totalScore / (totalQuizzesCompleted * 10)) * 100);
+                // Asegurarnos de que no sea mayor a 100%
+                average = Math.min(average, 100);
+            }
+            document.getElementById('average-score').textContent = `${average}%`;
+            
+            // Calcular el total de preguntas respondidas
+            const totalQuestions = totalQuizzesCompleted * 10; // Aproximación
+            document.getElementById('total-questions').textContent = totalQuestions;
+            
+            // Recomendaciones basadas en el desempeño
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            
+            if (totalQuizzesCompleted === 0) {
+                document.getElementById('study-recommendations').textContent = 'Aún no has completado ningún cuestionario. ¡Comienza por el nivel básico!';
+            } else if (average < 50) {
+                document.getElementById('study-recommendations').textContent = 'Te recomendamos repasar los temas básicos de matemáticas.';
+                addRecommendation(recommendationsList, 'Aritmética');
+                addRecommendation(recommendationsList, 'Operaciones básicas');
+                addRecommendation(recommendationsList, 'Fracciones');
+            } else if (average < 70) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un conocimiento básico. Te recomendamos repasar el álgebra.';
+                addRecommendation(recommendationsList, 'Ecuaciones lineales');
+                addRecommendation(recommendationsList, 'Sistemas de ecuaciones');
+                addRecommendation(recommendationsList, 'Factorización');
+            } else if (average < 90) {
+                document.getElementById('study-recommendations').textContent = 'Tienes un buen conocimiento. Repasa la geometría y trigonometría.';
+                addRecommendation(recommendationsList, 'Teorema de Pitágoras');
+                addRecommendation(recommendationsList, 'Semejanza de triángulos');
+                addRecommendation(recommendationsList, 'Razones trigonométricas');
+            } else {
+                document.getElementById('study-recommendations').textContent = '¡Excelente! Tu conocimiento de matemáticas es sobresaliente.';
+                addRecommendation(recommendationsList, 'Funciones');
+                addRecommendation(recommendationsList, 'Estadística');
+                addRecommendation(recommendationsList, 'Probabilidad');
+            }
+        }
+
+        function addRecommendation(list, topic) {
+            const li = document.createElement('li');
+            li.textContent = topic;
+            list.appendChild(li);
+        }
+        
+        // Funciones para cuestionarios
+        function startQuiz(level) {
+            currentQuizType = 'level';
+            quizData = getQuizQuestions(level);
+            currentQuestion = 0;
+            score = 0;
+            timeElapsed = 0;
+            
+            // Mostrar el contenedor del cuestionario
+            document.getElementById('quiz-container').style.display = 'block';
+            document.querySelector('#quiz-screen .menu-grid').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'none';
+            
+            // Iniciar temporizador
+            startTimer();
+            
+            // Mostrar la primera pregunta
+            showQuestion();
+        }
+
+        // Función para obtener preguntas según el nivel
+        function getQuizQuestions(level) {
+            // Preguntas básicas (10 preguntas) - Aritmética y álgebra
+            if (level === 'basic') {
+                return [
+                    {
+                        question: "¿Cuál es el resultado de 15 + 8 × 2?",
+                        options: ["46", "31", "38", "23"],
+                        correct: 1,
+                        explanation: "Primero se realiza la multiplicación: 8 × 2 = 16, luego la suma: 15 + 16 = 31."
+                    },
+                    {
+                        question: "¿Cuál es el valor de x en la ecuación 2x + 5 = 15?",
+                        options: ["5", "10", "7.5", "8"],
+                        correct: 0,
+                        explanation: "2x + 5 = 15 → 2x = 15 - 5 → 2x = 10 → x = 10/2 = 5"
+                    },
+                    {
+                        question: "¿Cuál es la fracción equivalente a 0.75?",
+                        options: ["1/4", "3/4", "2/3", "4/5"],
+                        correct: 1,
+                        explanation: "0.75 = 75/100 = 3/4"
+                    },
+                    {
+                        question: "¿Cuál es el 20% de 150?",
+                        options: ["30", "20", "15", "25"],
+                        correct: 0,
+                        explanation: "20% de 150 = 20/100 × 150 = 0.2 × 150 = 30"
+                    },
+                    {
+                        question: "¿Cuál es el resultado de (3 + 4)²?",
+                        options: ["25", "49", "14", "9"],
+                        correct: 1,
+                        explanation: "(3 + 4)² = 7² = 49"
+                    },
+                    {
+                        question: "¿Cuál es la solución del sistema: x + y = 10, x - y = 2?",
+                        options: ["x=6, y=4", "x=5, y=5", "x=8, y=2", "x=7, y=3"],
+                        correct: 0,
+                        explanation: "Sumando las ecuaciones: 2x = 12 → x = 6, sustituyendo: 6 + y = 10 → y = 4"
+                    },
+                    {
+                        question: "¿Cuál es la factorización de x² - 9?",
+                        options: ["(x-3)(x+3)", "(x-9)(x+1)", "(x-3)²", "(x+3)²"],
+                        correct: 0,
+                        explanation: "x² - 9 es una diferencia de cuadrados: (x-3)(x+3)"
+                    },
+                    {
+                        question: "¿Cuál es el desarrollo de (x+2)²?",
+                        options: ["x²+4", "x²+4x+4", "x²+2x+4", "x²+4x+2"],
+                        correct: 1,
+                        explanation: "(x+2)² = x² + 2·x·2 + 2² = x² + 4x + 4"
+                    },
+                    {
+                        question: "¿Cuál es la solución de la desigualdad 3x - 5 > 10?",
+                        options: ["x > 5", "x < 5", "x > 15", "x < 15"],
+                        correct: 0,
+                        explanation: "3x - 5 > 10 → 3x > 15 → x > 5"
+                    },
+                    {
+                        question: "¿Cuál es el resultado de √64?",
+                        options: ["6", "7", "8", "9"],
+                        correct: 2,
+                        explanation: "√64 = 8 porque 8² = 64"
+                    }
+                ];
+            }
+            // Preguntas intermedias (15 preguntas) - Geometría y trigonometría
+            else if (level === 'intermediate') {
+                return [
+                    {
+                        question: "¿Cuál es el área de un triángulo con base 10 cm y altura 5 cm?",
+                        options: ["25 cm²", "50 cm²", "15 cm²", "30 cm²"],
+                        correct: 0,
+                        explanation: "Área = (base × altura)/2 = (10 × 5)/2 = 50/2 = 25 cm²"
+                    },
+                    {
+                        question: "¿Cuál es la longitud de la hipotenusa de un triángulo rectángulo con catetos de 3 cm y 4 cm?",
+                        options: ["5 cm", "6 cm", "7 cm", "8 cm"],
+                        correct: 0,
+                        explanation: "Teorema de Pitágoras: h² = 3² + 4² = 9 + 16 = 25 → h = √25 = 5 cm"
+                    },
+                    {
+                        question: "¿Cuál es el perímetro de un cuadrado de lado 6 cm?",
+                        options: ["12 cm", "24 cm", "36 cm", "18 cm"],
+                        correct: 1,
+                        explanation: "Perímetro = 4 × lado = 4 × 6 = 24 cm"
+                    },
+                    {
+                        question: "¿Cuál es el área de un círculo con radio 5 cm? (π ≈ 3.14)",
+                        options: ["15.7 cm²", "31.4 cm²", "78.5 cm²", "157 cm²"],
+                        correct: 2,
+                        explanation: "Área = π × r² = 3.14 × 5² = 3.14 × 25 = 78.5 cm²"
+                    },
+                    {
+                        question: "¿Cuál es el volumen de un cubo de arista 3 cm?",
+                        options: ["9 cm³", "18 cm³", "27 cm³", "36 cm³"],
+                        correct: 2,
+                        explanation: "Volumen = arista³ = 3³ = 27 cm³"
+                    },
+                    {
+                        question: "¿Cuál es el seno de 30°?",
+                        options: ["1/2", "√3/2", "1", "0"],
+                        correct: 0,
+                        explanation: "sen(30°) = 1/2"
+                    },
+                    {
+                        question: "¿Cuál es el coseno de 60°?",
+                        options: ["1/2", "√3/2", "1", "0"],
+                        correct: 0,
+                        explanation: "cos(60°) = 1/2"
+                    },
+                    {
+                        question: "¿Cuál es la tangente de 45°?",
+                        options: ["1", "√3", "1/2", "0"],
+                        correct: 0,
+                        explanation: "tan(45°) = 1"
+                    },
+                    {
+                        question: "Si en un triángulo rectángulo, la hipotenusa mide 10 cm y un ángulo mide 30°, ¿cuánto mide el cateto opuesto a ese ángulo?",
+                        options: ["5 cm", "8.66 cm", "10 cm", "7.5 cm"],
+                        correct: 0,
+                        explanation: "sen(30°) = cateto opuesto/hipotenusa → 1/2 = cateto opuesto/10 → cateto opuesto = 5 cm"
+                    },
+                    {
+                        question: "¿Cuál es el área de un trapecio con bases de 8 cm y 12 cm, y altura de 5 cm?",
+                        options: ["40 cm²", "50 cm²", "60 cm²", "100 cm²"],
+                        correct: 1,
+                        explanation: "Área = ((base mayor + base menor) × altura)/2 = ((12+8)×5)/2 = (20×5)/2 = 100/2 = 50 cm²"
+                    },
+                    {
+                        question: "¿Cuál es el volumen de un cilindro con radio 4 cm y altura 10 cm? (π ≈ 3.14)",
+                        options: ["125.6 cm³", "251.2 cm³", "502.4 cm³", "1004.8 cm³"],
+                        correct: 2,
+                        explanation: "Volumen = π × r² × h = 3.14 × 4² × 10 = 3.14 × 16 × 10 = 502.4 cm³"
+                    },
+                    {
+                        question: "¿Cuál es la longitud de la circunferencia de un círculo con radio 7 cm? (π ≈ 3.14)",
+                        options: ["21.98 cm", "43.96 cm", "153.86 cm", "14 cm"],
+                        correct: 1,
+                        explanation: "Longitud = 2 × π × r = 2 × 3.14 × 7 = 43.96 cm"
+                    },
+                    {
+                        question: "¿Cuál es el área superficial de un cubo de arista 4 cm?",
+                        options: ["16 cm²", "64 cm²", "96 cm²", "48 cm²"],
+                        correct: 2,
+                        explanation: "Área superficial = 6 × arista² = 6 × 4² = 6 × 16 = 96 cm²"
+                    },
+                    {
+                        question: "Si dos triángulos son semejantes con razón de semejanza 2:3, y el lado del triángulo más pequeño mide 6 cm, ¿cuánto mide el lado correspondiente del triángulo mayor?",
+                        options: ["4 cm", "9 cm", "12 cm", "18 cm"],
+                        correct: 1,
+                        explanation: "Razón de semejanza = 2:3 → 6/x = 2/3 → 2x = 18 → x = 9 cm"
+                    },
+                    {
+                        question: "¿Cuál es el valor de x en un triángulo rectángulo si los catetos miden 5 cm y 12 cm?",
+                        options: ["13 cm", "17 cm", "7 cm", "10 cm"],
+                        correct: 0,
+                        explanation: "Teorema de Pitágoras: x² = 5² + 12² = 25 + 144 = 169 → x = √169 = 13 cm"
+                    }
+                ];
+            }
+            // Preguntas avanzadas (20 preguntas) - Funciones y estadística
+            else if (level === 'advanced') {
+                return [
+                    {
+                        question: "¿Cuál es la pendiente de la recta que pasa por los puntos (2,3) y (4,7)?",
+                        options: ["1", "2", "3", "4"],
+                        correct: 1,
+                        explanation: "Pendiente = (y₂ - y₁)/(x₂ - x₁) = (7-3)/(4-2) = 4/2 = 2"
+                    },
+                    {
+                        question: "¿Cuál es la ecuación de la recta con pendiente 3 y que pasa por el punto (1,2)?",
+                        options: ["y=3x-1", "y=3x+1", "y=3x-5", "y=3x+5"],
+                        correct: 0,
+                        explanation: "y - y₁ = m(x - x₁) → y - 2 = 3(x - 1) → y - 2 = 3x - 3 → y = 3x - 1"
+                    },
+                    {
+                        question: "¿Cuál es el vértice de la parábola y = x² - 4x + 3?",
+                        options: ["(2,-1)", "(1,0)", "(4,3)", "(-2,15)"],
+                        correct: 0,
+                        explanation: "x_vértice = -b/(2a) = -(-4)/(2×1) = 4/2 = 2, y_vértice = 2² - 4×2 + 3 = 4 - 8 + 3 = -1"
+                    },
+                    {
+                        question: "¿Cuál es el eje de simetría de la parábola y = 2x² - 8x + 5?",
+                        options: ["x=1", "x=2", "x=3", "x=4"],
+                        correct: 1,
+                        explanation: "Eje de simetría: x = -b/(2a) = -(-8)/(2×2) = 8/4 = 2"
+                    },
+                    {
+                        question: "En el conjunto de datos {3, 5, 7, 7, 9}, ¿cuál es la media?",
+                        options: ["5", "6", "6.2", "7"],
+                        correct: 2,
+                        explanation: "Media = (3+5+7+7+9)/5 = 31/5 = 6.2"
+                    },
+                    {
+                        question: "En el conjunto de datos {2, 4, 6, 8, 10}, ¿cuál es la mediana?",
+                        options: ["4", "5", "6", "7"],
+                        correct: 2,
+                        explanation: "Los datos están ordenados y la mediana es el valor central: 6"
+                    },
+                    {
+                        question: "En el conjunto de datos {1, 2, 2, 3, 4, 4, 4}, ¿cuál es la moda?",
+                        options: ["2", "3", "4", "No hay moda"],
+                        correct: 2,
+                        explanation: "El valor que más se repite es 4 (tres veces)"
+                    },
+                    {
+                        question: "Si se lanza un dado, ¿cuál es la probabilidad de obtener un número par?",
+                        options: ["1/6", "1/3", "1/2", "2/3"],
+                        correct: 2,
+                        explanation: "Números pares: 2, 4, 6 (3 casos favorables de 6 posibles) → P = 3/6 = 1/2"
+                    },
+                    {
+                        question: "Si se lanzan dos monedas, ¿cuál es la probabilidad de obtener al menos una cara?",
+                        options: ["1/4", "1/2", "3/4", "1"],
+                        correct: 2,
+                        explanation: "Espacio muestral: {CC, CS, SC, SS}. Casos con al menos una cara: CC, CS, SC (3 de 4) → P = 3/4"
+                    },
+                    {
+                        question: "¿Cuál es el dominio de la función f(x) = √(x-2)?",
+                        options: ["x ≥ 0", "x ≥ 2", "x > 2", "Todos los reales"],
+                        correct: 1,
+                        explanation: "El radicando debe ser ≥ 0: x - 2 ≥ 0 → x ≥ 2"
+                    },
+                    {
+                        question: "¿Cuál es el rango de la función f(x) = x² + 1?",
+                        options: ["y ≥ 0", "y ≥ 1", "y > 1", "Todos los reales"],
+                        correct: 1,
+                        explanation: "x² ≥ 0 para todo x → x² + 1 ≥ 1 → y ≥ 1"
+                    },
+                    {
+                        question: "¿Cuál es la función inversa de f(x) = 2x + 3?",
+                        options: ["f⁻¹(x) = (x-3)/2", "f⁻¹(x) = (x+3)/2", "f⁻¹(x) = 2x-3", "f⁻¹(x) = 3-2x"],
+                        correct: 0,
+                        explanation: "y = 2x + 3 → intercambiar x e y: x = 2y + 3 → x - 3 = 2y → y = (x-3)/2"
+                    },
+                    {
+                        question: "Si f(x) = x² y g(x) = x+1, ¿cuál es (f∘g)(x)?",
+                        options: ["x²+1", "x²+2x+1", "x²+x+1", "x³+x²"],
+                        correct: 1,
+                        explanation: "(f∘g)(x) = f(g(x)) = f(x+1) = (x+1)² = x² + 2x + 1"
+                    },
+                    {
+                        question: "¿Cuál es la desviación media del conjunto {2, 4, 6}?",
+                        options: ["0", "4/3", "2", "4"],
+                        correct: 1,
+                        explanation: "Media = (2+4+6)/3 = 12/3 = 4. Desviaciones: |2-4|=2, |4-4|=0, |6-4|=2. Desviación media = (2+0+2)/3 = 4/3"
+                    },
+                    {
+                        question: "En una encuesta a 100 personas, 60 prefieren el color azul. ¿Qué porcentaje prefiere el color azul?",
+                        options: ["40%", "50%", "60%", "70%"],
+                        correct: 2,
+                        explanation: "60 de 100 = 60/100 = 60%"
+                    },
+                    {
+                        question: "Si la probabilidad de que llueva es 0.3, ¿cuál es la probabilidad de que no llueva?",
+                        options: ["0.3", "0.5", "0.7", "1"],
+                        correct: 2,
+                        explanation: "P(no llueva) = 1 - P(llueva) = 1 - 0.3 = 0.7"
+                    },
+                    {
+                        question: "¿Cuál es la media de los números 10, 20, 30, 40, 50?",
+                        options: ["25", "30", "35", "40"],
+                        correct: 1,
+                        explanation: "Media = (10+20+30+40+50)/5 = 150/5 = 30"
+                    },
+                    {
+                        question: "¿Cuál es la mediana de los números 5, 7, 9, 11, 13, 15?",
+                        options: ["9", "10", "11", "12"],
+                        correct: 1,
+                        explanation: "Con número par de datos, mediana = promedio de los dos centrales: (9+11)/2 = 20/2 = 10"
+                    },
+                    {
+                        question: "En un histograma, ¿qué representa el área de cada barra?",
+                        options: ["La frecuencia absoluta", "La frecuencia relativa", "El valor de la variable", "La media"],
+                        correct: 0,
+                        explanation: "En un histograma, el área de cada barra representa la frecuencia absoluta de ese intervalo."
+                    },
+                    {
+                        question: "¿Cuál es la probabilidad de obtener un número mayor que 4 al lanzar un dado?",
+                        options: ["1/6", "1/3", "1/2", "2/3"],
+                        correct: 1,
+                        explanation: "Números mayores que 4: 5, 6 (2 casos favorables de 6 posibles) → P = 2/6 = 1/3"
+                    }
+                ];
+            }
+            
+            return [];
+        }
+        
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            document.getElementById('quiz-question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentQuestion) / quizData.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progress}%`;
+            
+            // Reiniciar estado de botones
+            document.getElementById('submit-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-feedback').className = 'feedback';
+            
+            selectedOption = null;
+        }
+        
+        function selectOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            selectedOption = parseInt(element.getAttribute('data-index'));
+        }
+        
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('Por favor, selecciona una respuesta.');
+                return;
+            }
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('quiz-feedback');
+            
+            // Mostrar retroalimentación
+            if (selectedOption === question.correct) {
+                feedback.textContent = `¡Correcto! ${question.explanation}`;
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}. ${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            
+            // Resaltar opciones correctas e incorrectas
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedOption && index !== question.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            // Cambiar botones
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizData.length) {
+                showQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+        
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            
+            // Actualizar estadísticas
+            totalQuizzesCompleted++;
+            totalScore += score;
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('final-score').textContent = `Puntuación: ${score}/${quizData.length}`;
+            document.getElementById('correct-answers').textContent = score;
+            document.getElementById('incorrect-answers').textContent = quizData.length - score;
+            
+            // Formatear tiempo
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function exitQuiz() {
+            if (confirm("¿Estás seguro de que quieres salir? Se perderá tu progreso actual.")) {
+                resetQuizScreen();
+            }
+        }
+        
+        function restartQuiz() {
+            resetQuizScreen();
+        }
+        
+        function startTimer() {
+            timeElapsed = 0;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('quiz-timer').textContent = `Tiempo: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // FUNCIONES PARA EL EXAMEN SIMULADOR
+        function startExam() {
+            examData = getExamQuestions();
+            currentExamQuestion = 0;
+            examScore = 0;
+            examTimeRemaining = 60 * 60;
+            examSelectedOptions = {};
+            
+            // Ocultar la pantalla de inicio del examen y mostrar el contenedor del examen
+            document.querySelector('#exam-screen .concept-card').style.display = 'none';
+            document.querySelector('#exam-screen .btn').style.display = 'none';
+            document.getElementById('exam-container').style.display = 'block';
+            document.getElementById('exam-results').style.display = 'none';
+            
+            // Iniciar temporizador del examen
+            startExamTimer();
+            
+            // Mostrar la primera pregunta
+            showExamQuestion();
+        }
+
+        // Función para obtener preguntas del examen (50 preguntas)
+        function getExamQuestions() {
+            const basicQuestions = getQuizQuestions('basic');
+            const intermediateQuestions = getQuizQuestions('intermediate');
+            const advancedQuestions = getQuizQuestions('advanced');
+            
+            // Combinar preguntas y asegurar 50
+            const allQuestions = [
+                ...basicQuestions,
+                ...intermediateQuestions,
+                ...advancedQuestions
+            ];
+            
+            // Si no hay suficientes preguntas, duplicar algunas
+            while (allQuestions.length < 50) {
+                allQuestions.push(...basicQuestions);
+            }
+            
+            return allQuestions.slice(0, 50);
+        }
+
+        function startExamTimer() {
+            updateExamTimerDisplay();
+            
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                updateExamTimerDisplay();
+                
+                // Si se acaba el tiempo, finalizar el examen
+                if (examTimeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimerDisplay() {
+            const minutes = Math.floor(examTimeRemaining / 60);
+            const seconds = examTimeRemaining % 60;
+            document.getElementById('exam-timer').textContent = `Tiempo restante: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showExamQuestion() {
+            const question = examData[currentExamQuestion];
+            document.getElementById('exam-question').textContent = question.question;
+            document.getElementById('exam-question-counter').textContent = `Pregunta ${currentExamQuestion + 1} de ${examData.length}`;
+            
+            const optionsContainer = document.getElementById('exam-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (examSelectedOptions[currentExamQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                optionElement.addEventListener('click', function() {
+                    selectExamOption(this);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar la barra de progreso
+            const progress = ((currentExamQuestion) / examData.length) * 100;
+            document.getElementById('exam-progress').style.width = `${progress}%`;
+            
+            // Mostrar u ocultar botones según corresponda
+            document.getElementById('exam-next-btn').style.display = 'inline-block';
+            if (currentExamQuestion === examData.length - 1) {
+                document.getElementById('exam-next-btn').style.display = 'none';
+                document.getElementById('exam-finish-btn').style.display = 'inline-block';
+            }
+        }
+
+        function selectExamOption(element) {
+            // Remover selección previa
+            const options = document.querySelectorAll('#exam-options .option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la nueva opción
+            element.classList.add('selected');
+            examSelectedOptions[currentExamQuestion] = parseInt(element.getAttribute('data-index'));
+        }
+
+        function nextExamQuestion() {
+            if (currentExamQuestion < examData.length - 1) {
+                currentExamQuestion++;
+                showExamQuestion();
+            }
+        }
+
+        function finishExam() {
+            clearInterval(examTimerInterval);
+            
+            // Calcular puntuación
+            examScore = 0;
+            for (let i = 0; i < examData.length; i++) {
+                if (examSelectedOptions[i] === examData[i].correct) {
+                    examScore++;
+                }
+            }
+            
+            // Ocultar contenedor de preguntas y mostrar resultados
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'block';
+            
+            // Mostrar resultados
+            document.getElementById('exam-final-score').textContent = `Puntuación: ${examScore}/${examData.length}`;
+            document.getElementById('exam-correct-answers').textContent = examScore;
+            document.getElementById('exam-incorrect-answers').textContent = examData.length - examScore;
+            
+            // Calcular tiempo utilizado
+            const timeUsed = 60 * 60 - examTimeRemaining;
+            const minutes = Math.floor(timeUsed / 60);
+            const seconds = timeUsed % 60;
+            document.getElementById('exam-time-taken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Mostrar análisis de resultados
+            const analysisElement = document.getElementById('exam-analysis');
+            let analysis = '';
+            if (examScore >= 45) {
+                analysis = '¡Excelente! Tu conocimiento de matemáticas es sobresaliente.';
+            } else if (examScore >= 35) {
+                analysis = 'Buen trabajo. Tienes un buen conocimiento de matemáticas.';
+            } else if (examScore >= 25) {
+                analysis = 'Tienes conocimientos básicos de matemáticas.';
+            } else {
+                analysis = 'Es necesario que dediques más tiempo al estudio de las matemáticas.';
+            }
+            analysisElement.textContent = analysis;
+        }
+
+        function restartExam() {
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Sistema de confirmación de salida del examen
+        function showConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.add('active');
+        }
+
+        function hideConfirmExitExam() {
+            document.getElementById('confirmExitExamModal').classList.remove('active');
+        }
+
+        function confirmExitExam() {
+            clearInterval(examTimerInterval);
+            hideConfirmExitExam();
+            
+            // Restaurar la vista inicial del examen
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('exam-results').style.display = 'none';
+            document.querySelector('#exam-screen .concept-card').style.display = 'block';
+            document.querySelector('#exam-screen .btn').style.display = 'block';
+        }
+
+        // Inicialización cuando se carga la página
+        window.onload = function() {
+            console.log("BioReto Matemáticas cargado correctamente");
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,3760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioReto: Biología - El Juego de la Vida</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --secondary-light: #ffb74d;
+            --accent: #2196f3;
+            --accent-light: #64b5f6;
+            --text: #333;
+            --light: #f5f5f5;
+            --white: #fff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M20,20 Q40,5 60,20 T100,20 Q85,40 100,60 T100,100 Q60,85 20,100 T0,100 Q5,60 0,20 T20,20 Z" fill="white"/></svg>');
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ef6c00;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #1976d2;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-tab {
+            padding: 10px 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .nav-tab:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content-area {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .topic-content {
+            display: none;
+        }
+        
+        .topic-content.active {
+            display: block;
+        }
+        
+        .concept-card {
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .concept-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .menu-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .menu-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: var(--primary-light);
+            color: var(--white);
+        }
+        
+        .option.correct {
+            background-color: #4caf50;
+            color: var(--white);
+        }
+        
+        .option.incorrect {
+            background-color: #f44336;
+            color: var(--white);
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+            display: block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .results {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0 5px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 10px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .timeline-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--white);
+            border: 4px solid var(--primary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .timeline-item:hover .timeline-content {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .timeline-info {
+            display: none;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .timeline-info.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .initial-message {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f3e9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent);
+        }
+        
+        .timeline-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .glossary-list {
+            list-style-type: none;
+        }
+        
+        .glossary-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .term {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .topic-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0.3); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @media (max-width: 900px) {
+            .nav-tabs {
+                flex-direction: column;
+                display: none;
+            }
+            
+            .nav-tabs.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-tab {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .exam-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .exam-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            background-color: #fff3e0;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin: 15px 0;
+        }
+
+        .question-counter {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .developer-info {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #fff;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-confirm {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exam-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-exit {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-exit:hover {
+            background: #c82333;
+        }
+
+        /* Estilos específicos para el simulador de célula */
+        .cell-simulator-container {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            color: #333;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+        
+        .cell-simulator-content {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .cell-diagram-container {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .cell-diagram {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            position: relative;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            overflow: visible;
+        }
+        
+        .organelle {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            padding: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
+            border: 2px solid white;
+        }
+        
+        .organelle:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Tamaños y posiciones específicas para cada orgánulo */
+        .membrana { 
+            width: 95%; 
+            height: 95%; 
+            top: 2.5%; 
+            left: 2.5%; 
+            background-color: rgba(76, 175, 80, 0.3); 
+            border-radius: 50%;
+            z-index: 1; 
+            border: 2px dashed #4caf50;
+        }
+        
+        .citoplasma { 
+            width: 85%; 
+            height: 85%; 
+            top: 7.5%; 
+            left: 7.5%; 
+            background-color: rgba(0, 188, 212, 0.2); 
+            border-radius: 50%;
+            z-index: 1; 
+        }
+        
+        .nucleo { 
+            width: 25%; 
+            height: 25%; 
+            top: 35%; 
+            left: 35%; 
+            background-color: #2196f3; 
+            border-radius: 50%;
+        }
+        
+        .mitocondria { 
+            width: 12%; 
+            height: 12%; 
+            top: 60%; 
+            left: 65%; 
+            background-color: #ff9800; 
+            border-radius: 50%;
+        }
+        
+        .re { 
+            width: 20%; 
+            height: 20%; 
+            top: 55%; 
+            left: 20%; 
+            background-color: #9c27b0; 
+            border-radius: 10px;
+        }
+        
+        .golgi { 
+            width: 15%; 
+            height: 15%; 
+            top: 20%; 
+            left: 65%; 
+            background-color: #f44336; 
+            border-radius: 5px;
+        }
+        
+        .lisosoma { 
+            width: 8%; 
+            height: 8%; 
+            top: 70%; 
+            left: 30%; 
+            background-color: #795548; 
+            border-radius: 50%;
+        }
+        
+        .ribosoma { 
+            width: 6%; 
+            height: 6%; 
+            top: 45%; 
+            left: 55%; 
+            background-color: #607d8b; 
+            border-radius: 50%;
+            font-size: 10px;
+        }
+        
+        .centriolos { 
+            width: 7%; 
+            height: 7%; 
+            top: 65%; 
+            left: 50%; 
+            background-color: #ff5722; 
+            border-radius: 5px;
+        }
+        
+        .vacuola { 
+            width: 10%; 
+            height: 10%; 
+            top: 25%; 
+            left: 25%; 
+            background-color: #8bc34a; 
+            border-radius: 50%;
+        }
+        
+        .cell-info-panel {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            margin-left: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 900px) {
+            .cell-info-panel {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+        
+        .organelle-info {
+            display: none;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .organelle-info.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .organelle-info h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        
+        .cell-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .cell-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .cell-legend-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .cell-legend-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .cell-color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .cell-instructions {
+            text-align: center;
+            margin: 15px 0;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .cell-zoom-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .cell-zoom-btn {
+            background-color: #607d8b;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cell-highlight {
+            animation: pulse 1.5s infinite;
+        }
+        
+        .cell-initial-message {
+            text-align: center;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>BioReto: Biología - El Juego de la Vida</h1>
+            <p class="subtitle">Temario completo de Biología para el examen de ingreso a educación media superior</p>
+            <div class="developer-info">Desarrollado por CyberEdu MX con tecnología DeepSeek</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <div id="home-screen" class="screen active">
+            <h2>¡Bienvenido a BioReto: Biología!</h2>
+            <p>Explora el temario completo de Biología, pon a prueba tus conocimientos y prepárate para tu examen de ingreso.</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="showScreen('topics-screen')">
+                    <div class="topic-icon">📚</div>
+                    <h3>Temario Completo</h3>
+                    <p>Estudia todos los temas de Biología organizados sistemáticamente</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('timeline-screen')">
+                    <div class="topic-icon">⏳</div>
+                    <h3>Línea de Tiempo</h3>
+                    <p>Explora los hitos de la biología a través de una línea de tiempo interactiva</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('quiz-screen')">
+                    <div class="topic-icon">🧪</div>
+                    <h3>Cuestionarios</h3>
+                    <p>Pon a prueba tus conocimientos con cuestionarios de diferentes niveles</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('glossary-screen')">
+                    <div class="topic-icon">📖</div>
+                    <h3>Glosario</h3>
+                    <p>Consulta términos importantes de Biología con definiciones claras</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('stats-screen')">
+                    <div class="topic-icon">📊</div>
+                    <h3>Estadísticas</h3>
+                    <p>Revisa tu progreso y resultados en los cuestionarios</p>
+                </div>
+                
+                <div class="menu-card" onclick="showScreen('exam-screen')">
+                    <div class="topic-icon">🎯</div>
+                    <h3>Examen Simulador</h3>
+                    <p>Realiza un examen completo con tiempo limitado como preparación</p>
+                </div>
+                
+                <!-- Enlace para el simulador de célula integrado -->
+                <div class="menu-card" onclick="showScreen('cell-simulator-screen')">
+                    <div class="topic-icon">🔬</div>
+                    <h3>Simulador de Célula</h3>
+                    <p>Explora un diagrama interactivo de la célula animal y sus orgánulos</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline" onclick="showScreen('about-screen')">Acerca de BioReto Biología</button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Temario -->
+        <div id="topics-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Temario Completo de Biología</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="nav-container">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰ Menú de Temas</button>
+                <div class="nav-tabs" id="nav-tabs">
+                    <div class="nav-tab active" onclick="selectNavTab(this, 'topic-1')">Características de los seres vivos</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-2')">La célula</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-3')">Nutrición y respiración</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-4')">Genética</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-5')">Evolución</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-6')">Biodiversidad y taxonomía</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-7')">Ecología</div>
+                    <div class="nav-tab" onclick="selectNavTab(this, 'topic-8')">Fisiología humana</div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <!-- Tema 1: Características de los seres vivos -->
+                <div id="topic-1" class="topic-content active">
+                    <h3>1. Características de los seres vivos</h3>
+                    
+                    <div class="concept-card">
+                        <h4>1.1 Organización celular (procariota/eucariota)</h4>
+                        <p><strong>Procariotas:</strong> Células sin núcleo definido, más simples (bacterias)</p>
+                        <p><strong>Eucariotas:</strong> Células con núcleo definido, más complejas (plantas, animales, hongos, protistas)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.2 Niveles de organización</h4>
+                        <p><strong>Célula:</strong> Unidad básica de la vida</p>
+                        <p><strong>Tejido:</strong> Grupo de células similares que realizan una función específica</p>
+                        <p><strong>Órgano:</strong> Estructura compuesta por diferentes tejidos que realizan una función</p>
+                        <p><strong>Sistema:</strong> Conjunto de órganos que trabajan juntos</p>
+                        <p><strong>Organismo:</strong> Ser vivo individual</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.3 Metabolismo: anabolismo y catabolismo</h4>
+                        <p><strong>Anabolismo:</strong> Procesos de síntesis que consumen energía</p>
+                        <p><strong>Catabolismo:</strong> Procesos de descomposición que liberan energía</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.4 Homeostasis</h4>
+                        <p>Capacidad de los organismos para mantener un ambiente interno estable a pesar de los cambios externos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.5 Reproducción: asexual y sexual</h4>
+                        <p><strong>Asexual:</strong> Un solo progenitor, descendencia genéticamente idéntica</p>
+                        <p><strong>Sexual:</strong> Dos progenitores, descendencia con variación genética</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.6 Crecimiento y desarrollo</h4>
+                        <p>Aumento de tamaño y especialización de células</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.7 Respuesta a estímulos</h4>
+                        <p>Capacidad de reaccionar a cambios en el ambiente</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>1.8 Evolución y adaptación</h4>
+                        <p>Cambio en las poblaciones a lo largo del tiempo para adaptarse al ambiente</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 2: La célula -->
+                <div id="topic-2" class="topic-content">
+                    <h3>2. La célula</h3>
+                    
+                    <div class="concept-card">
+                        <h4>2.1 Teoría celular</h4>
+                        <ul>
+                            <li>Todos los seres vivos están compuestos por una o más células</li>
+                            <li>La célula es la unidad básica de estructura y función en los organismos</li>
+                            <li>Todas las células provienen de células preexistentes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.2 Estructura y función de organelos</h4>
+                        <p><strong>Núcleo:</strong> Contiene el ADN y controla las actividades celulares</p>
+                        <p><strong>Mitocondria:</strong> Produce energía (ATP) mediante respiración celular</p>
+                        <p><strong>Cloroplastos (en plantas):</strong> Realizan la fotosíntesis</p>
+                        <p><strong>Ribosomas:</strong> Síntesis de proteínas</p>
+                        <p><strong>Retículo endoplásmico (RE):</strong> Síntesis y transporte de proteínas y lípidos</p>
+                        <p><strong>Aparato de Golgi:</strong> Modificación, clasificación y empaquetado de proteínas</p>
+                        <p><strong>Lisosomas:</strong> Digestión intracelular</p>
+                        <p><strong>Centriolos:</strong> Participan en la división celular</p>
+                        <p><strong>Membrana plasmática:</strong> Regula el paso de sustancias</p>
+                        <p><strong>Pared celular (en plantas):</strong> Proporciona soporte y protección</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.3 Transporte</h4>
+                        <p><strong>Difusión:</strong> Movimiento de partículas de alta a baja concentración</p>
+                        <p><strong>Ósmosis:</strong> Difusión de agua a través de una membrana semipermeable</p>
+                        <p><strong>Transporte activo:</strong> Movimiento de sustancias contra gradiente de concentración, requiere energía</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>2.4 División celular: mitosis y meiosis</h4>
+                        <p><strong>Mitosis:</strong> División celular que produce dos células hijas idénticas</p>
+                        <p><strong>Meiosis:</strong> División celular que produce gametos con la mitad del material genético</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 3: Nutrición y respiración -->
+                <div id="topic-3" class="topic-content">
+                    <h3>3. Nutrición y respiración</h3>
+                    
+                    <div class="concept-card">
+                        <h4>3.1 Tipos de nutrición</h4>
+                        <p><strong>Autótrofa:</strong> Los organismos producen su propio alimento (plantas)</p>
+                        <p><strong>Heterótrofa:</strong> Los organismos consumen otros seres vivos para alimentarse (animales)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.2 Fotosíntesis</h4>
+                        <p>Proceso mediante el cual las plantas convierten la energía solar en energía química (glucosa)</p>
+                        <p><strong>Ecuación:</strong> 6CO₂ + 6H₂O + energía luminosa → C₆H₁₂O₆ + 6O₂</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.3 Respiración celular</h4>
+                        <p>Proceso mediante el cual las células obtienen energía de los nutrientes</p>
+                        <p><strong>Ecuación:</strong> C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energía (ATP)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>3.4 Fermentación</h4>
+                        <p>Proceso anaeróbico que produce energía sin oxígeno</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 4: Genética -->
+                <div id="topic-4" class="topic-content">
+                    <h3>4. Genética</h3>
+                    
+                    <div class="concept-card">
+                        <h4>4.1 ADN y ARN</h4>
+                        <p><strong>ADN:</strong> Ácido desoxirribonucleico, almacena la información genética</p>
+                        <p><strong>ARN:</strong> Ácido ribonucleico, participa en la síntesis de proteínas</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.2 Genes y cromosomas</h4>
+                        <p><strong>Gen:</strong> Segmento de ADN que codifica una proteína</p>
+                        <p><strong>Cromosoma:</strong> Estructura que contiene el ADN empaquetado</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.3 Herencia mendeliana</h4>
+                        <p><strong>Leyes de Mendel:</strong> Principios que rigen la transmisión de caracteres hereditarios</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>4.4 Mutaciones</h4>
+                        <p>Cambios en la secuencia de ADN que pueden ser beneficiosos, neutros o perjudiciales</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 5: Evolución -->
+                <div id="topic-5" class="topic-content">
+                    <h3>5. Evolución</h3>
+                    
+                    <div class="concept-card">
+                        <h4>5.1 Teoría de la evolución</h4>
+                        <p><strong>Charles Darwin:</strong> Propuso la selección natural como mecanismo evolutivo</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.2 Evidencias de la evolución</h4>
+                        <p><strong>Fósiles:</strong> Restos de organismos del pasado</p>
+                        <p><strong>Anatomía comparada:</strong> Estructuras homólogas y análogas</p>
+                        <p><strong>Biología molecular:</strong> Similitudes en ADN y proteínas</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>5.3 Mecanismos de evolución</h4>
+                        <p><strong>Selección natural:</strong> Supervivencia de los mejor adaptados</p>
+                        <p><strong>Deriva génica:</strong> Cambios aleatorios en las frecuencias génicas</p>
+                        <p><strong>Flujo génico:</strong> Intercambio de genes entre poblaciones</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 6: Biodiversidad y taxonomía -->
+                <div id="topic-6" class="topic-content">
+                    <h3>6. Biodiversidad y taxonomía</h3>
+                    
+                    <div class="concept-card">
+                        <h4>6.1 Clasificación de los seres vivos</h4>
+                        <p><strong>Reinos:</strong> Animalia, Plantae, Fungi, Protista, Monera</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.2 Virus</h4>
+                        <p>Entidades acelulares que requieren un huésped para replicarse</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.3 Bacterias</h4>
+                        <p>Organismos procariotas, algunos beneficiosos y otros patógenos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.4 Protistas</h4>
+                        <p>Organismos eucariotas generalmente unicelulares</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.5 Hongos</h4>
+                        <p>Organismos heterótrofos con pared celular de quitina</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.6 Plantas</h4>
+                        <p>Organismos autótrofos con clorofila</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>6.7 Animales</h4>
+                        <p>Organismos heterótrofos con capacidad de movimiento</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 7: Ecología -->
+                <div id="topic-7" class="topic-content">
+                    <h3>7. Ecología</h3>
+                    
+                    <div class="concept-card">
+                        <h4>7.1 Ecosistemas</h4>
+                        <p><strong>Componentes bióticos:</strong> Seres vivos</p>
+                        <p><strong>Componentes abióticos:</strong> Factores físicos y químicos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>7.2 Cadenas y redes alimentarias</h4>
+                        <p><strong>Productores:</strong> Organismos autótrofos</p>
+                        <p><strong>Consumidores:</strong> Organismos heterótrofos</p>
+                        <p><strong>Descomponedores:</strong> Descomponen materia orgánica</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>7.3 Ciclos biogeoquímicos</h4>
+                        <p><strong>Ciclo del carbono:</strong> Intercambio de carbono entre seres vivos y ambiente</p>
+                        <p><strong>Ciclo del nitrógeno:</strong> Transformación del nitrógeno en formas utilizables</p>
+                        <p><strong>Ciclo del agua:</strong> Movimiento del agua entre la tierra, atmósfera y océanos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>7.4 Poblaciones y comunidades</h4>
+                        <p><strong>Población:</strong> Grupo de individuos de la misma especie</p>
+                        <p><strong>Comunidad:</strong> Conjunto de poblaciones que interactúan</p>
+                    </div>
+                </div>
+                
+                <!-- Tema 8: Fisiología humana -->
+                <div id="topic-8" class="topic-content">
+                    <h3>8. Fisiología humana</h3>
+                    
+                    <div class="concept-card">
+                        <h4>8.1 Sistema digestivo</h4>
+                        <p>Proceso de digestión y absorción de nutrientes</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>8.2 Sistema respiratorio</h4>
+                        <p>Intercambio de gases (oxígeno y dióxido de carbono)</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>8.3 Sistema circulatorio</h4>
+                        <p>Transporte de nutrientes, oxígeno y desechos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>8.4 Sistema nervioso</h4>
+                        <p>Coordinación y respuesta a estímulos</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>8.5 Sistema endocrino</h4>
+                        <p>Regulación hormonal del organismo</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>8.6 Sistema inmunológico</h4>
+                        <p>Defensa contra patógenos y enfermedades</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="showScreen('quiz-screen')">Realizar Cuestionario sobre este Tema</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Línea de Tiempo -->
+        <div id="timeline-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Línea de Tiempo de la Biología</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <div class="initial-message">
+                    <h3>Descubre los hitos más importantes en la historia de la Biología</h3>
+                    <p>Haz clic en cualquier evento para conocer más detalles</p>
+                </div>
+                
+                <div class="timeline-container">
+                    <div class="timeline">
+                        <div class="timeline-item" onclick="showTimelineInfo(0)">
+                            <div class="timeline-content">
+                                <h4>1665 - Descubrimiento de la célula</h4>
+                                <p>Robert Hooke observa por primera vez células en un corcho</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(1)">
+                            <div class="timeline-content">
+                                <h4>1683 - Observación de bacterias</h4>
+                                <p>Antonie van Leeuwenhoek describe bacterias por primera vez</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(2)">
+                            <div class="timeline-content">
+                                <h4>1859 - El origen de las especies</h4>
+                                <p>Charles Darwin publica su teoría de la evolución por selección natural</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(3)">
+                            <div class="timeline-content">
+                                <h4>1865 - Leyes de la herencia</h4>
+                                <p>Gregor Mendel establece las bases de la genética</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(4)">
+                            <div class="timeline-content">
+                                <h4>1953 - Estructura del ADN</h4>
+                                <p>Watson y Crick descubren la estructura de doble hélice del ADN</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(5)">
+                            <div class="timeline-content">
+                                <h4>1973 - Ingeniería genética</h4>
+                                <p>Primer experimento de ADN recombinante</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(6)">
+                            <div class="timeline-content">
+                                <h4>1990 - Proyecto Genoma Humano</h4>
+                                <p>Inicio del proyecto para secuenciar el genoma humano completo</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" onclick="showTimelineInfo(7)">
+                            <div class="timeline-content">
+                                <h4>2003 - CRISPR</h4>
+                                <p>Descubrimiento del sistema de edición genética CRISPR-Cas9</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="timeline-info-container">
+                    <!-- La información detallada se cargará aquí -->
+                </div>
+                
+                <div class="timeline-controls">
+                    <button class="btn" onclick="showAllTimelineInfo()">Mostrar Toda la Información</button>
+                    <button class="btn btn-secondary" onclick="hideAllTimelineInfo()">Ocultar Toda la Información</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Cuestionarios -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Cuestionarios de Biología</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <h3>Selecciona un tipo de cuestionario:</h3>
+                
+                <div class="menu-grid">
+                    <div class="menu-card" onclick="startQuiz('basico')">
+                        <div class="topic-icon">📝</div>
+                        <h3>Cuestionario Básico</h3>
+                        <p>10 preguntas fundamentales sobre biología celular</p>
+                    </div>
+                    
+                    <div class="menu-card" onclick="startQuiz('intermedio')">
+                        <div class="topic-icon">🧬</div>
+                        <h3>Cuestionario Intermedio</h3>
+                        <p>15 preguntas sobre genética y evolución</p>
+                    </div>
+                    
+                    <div class="menu-card" onclick="startQuiz('avanzado')">
+                        <div class="topic-icon">🔍</div>
+                        <h3>Cuestionario Avanzado</h3>
+                        <p>20 preguntas desafiantes sobre fisiología y ecología</p>
+                    </div>
+                </div>
+                
+                <div id="quiz-content" style="display: none;">
+                    <div class="question-container">
+                        <div class="question" id="question-text">¿Cuál es la unidad básica de la vida?</div>
+                        <div class="options" id="options-container">
+                            <!-- Las opciones se cargarán aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="feedback" id="feedback">
+                        <!-- El feedback se mostrará aquí -->
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" id="quiz-progress"></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Siguiente Pregunta</button>
+                        <button class="btn" id="finish-btn" onclick="finishQuiz()" style="display: none;">Finalizar Cuestionario</button>
+                    </div>
+                </div>
+                
+                <div id="quiz-results" style="display: none;">
+                    <div class="results">
+                        <h2>Resultados del Cuestionario</h2>
+                        <div class="score-display" id="final-score">Puntuación: 0/0</div>
+                        <div id="performance-message"></div>
+                        <button class="btn" onclick="resetQuizScreen()">Realizar otro cuestionario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Glosario -->
+        <div id="glossary-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Glosario de Términos Biológicos</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <input type="text" class="search-box" id="glossary-search" placeholder="Buscar término..." onkeyup="searchGlossary()">
+                
+                <div class="glossary-list" id="glossary-list">
+                    <!-- Los términos se cargarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Estadísticas -->
+        <div id="stats-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Estadísticas de Progreso</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <h3>Tu Progreso en BioReto</h3>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-questions">0</div>
+                        <div class="stat-label">Preguntas Respondidas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="correct-answers">0</div>
+                        <div class="stat-label">Respuestas Correctas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Precisión</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="quizzes-completed">0</div>
+                        <div class="stat-label">Cuestionarios Completados</div>
+                    </div>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Recomendaciones de Estudio</h4>
+                    <p id="study-recommendation">Basado en tu progreso, te recomendamos repasar los temas básicos de biología celular.</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="resetStats()">Reiniciar Estadísticas</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Examen Simulador -->
+        <div id="exam-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Examen Simulador</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <div class="exam-info">
+                    <h3>Simulador de Examen de Biología</h3>
+                    <p>Completa este examen simulado para evaluar tu preparación. Tienes 60 minutos para responder 50 preguntas.</p>
+                    
+                    <div class="exam-timer" id="exam-timer">60:00</div>
+                    
+                    <button class="btn" onclick="startExam()">Comenzar Examen</button>
+                </div>
+                
+                <div id="exam-content" style="display: none;">
+                    <div class="exam-controls">
+                        <div class="question-counter" id="exam-question-counter">Pregunta 1 de 50</div>
+                        <button class="btn btn-exit" onclick="confirmExitExam()">Salir del Examen</button>
+                    </div>
+                    
+                    <div class="question-container">
+                        <div class="question" id="exam-question-text">¿Cuál es la unidad básica de la vida?</div>
+                        <div class="options" id="exam-options-container">
+                            <!-- Las opciones se cargarán aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" id="exam-progress"></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn" id="exam-prev-btn" onclick="prevExamQuestion()" style="display: none;">Anterior</button>
+                        <button class="btn" id="exam-next-btn" onclick="nextExamQuestion()">Siguiente</button>
+                        <button class="btn" id="exam-finish-btn" onclick="finishExam()" style="display: none;">Finalizar Examen</button>
+                    </div>
+                </div>
+                
+                <div id="exam-results" style="display: none;">
+                    <div class="results">
+                        <h2>Resultados del Examen Simulado</h2>
+                        <div class="score-display" id="exam-final-score">Puntuación: 0/50</div>
+                        <div id="exam-performance-message"></div>
+                        <div class="concept-card">
+                            <h4>Áreas para Mejorar</h4>
+                            <p id="exam-recommendations">Basado en tus resultados, te recomendamos repasar los siguientes temas...</p>
+                        </div>
+                        <button class="btn" onclick="resetExamScreen()">Realizar otro examen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla de Simulador de Célula -->
+        <div id="cell-simulator-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Simulador de Célula Animal</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="cell-simulator-container">
+                <div class="cell-simulator-content">
+                    <div class="cell-diagram-container">
+                        <div class="cell-instructions">Haz clic en cualquier orgánulo para explorar sus componentes. Todos los elementos son clickeables.</div>
+                        <div class="cell-diagram" id="cell-diagram">
+                            <!-- Los orgánulos se agregarán mediante JavaScript -->
+                        </div>
+                        
+                        <div class="cell-zoom-controls">
+                            <button class="cell-zoom-btn" onclick="cellZoomIn()">+</button>
+                            <button class="cell-zoom-btn" onclick="cellZoomOut()">-</button>
+                            <button class="cell-zoom-btn" onclick="cellResetZoom()">⟳</button>
+                        </div>
+                        
+                        <div class="cell-legend" id="cell-legend">
+                            <!-- La leyenda se generará dinámicamente -->
+                        </div>
+                        
+                        <div class="cell-controls">
+                            <button class="btn" onclick="cellResetDiagram()">Reiniciar Diagrama</button>
+                            <button class="btn btn-secondary" onclick="cellShowAllInfo()">Mostrar Toda la Información</button>
+                            <button class="btn" onclick="cellHighlightAll()">Destacar Todos los Orgánulos</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cell-info-panel">
+                        <h2>Información de los Orgánulos</h2>
+                        <p>Selecciona un orgánulo en el diagrama o en la leyenda para ver su descripción detallada.</p>
+                        
+                        <div class="cell-initial-message" id="cell-initial-message">
+                            <h3>¡Bienvenido al diagrama interactivo!</h3>
+                            <p>Haz clic en cualquier orgánulo de la célula para comenzar a explorar. Cada orgánulo tiene una función específica que mantiene a la célula funcionando correctamente.</p>
+                        </div>
+                        
+                        <div id="cell-organelle-info-container">
+                            <!-- La información de los orgánulos se cargará aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pantalla Acerca de -->
+        <div id="about-screen" class="screen">
+            <div class="quiz-header">
+                <h2>Acerca de BioReto Biología</h2>
+                <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver al Inicio</button>
+            </div>
+            
+            <div class="content-area">
+                <h3>BioReto: Biología - El Juego de la Vida</h3>
+                <p>Esta aplicación educativa está diseñada para ayudar a los estudiantes a prepararse para sus exámenes de biología de educación media superior.</p>
+                
+                <div class="concept-card">
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Temario completo de biología organizado por temas</li>
+                        <li>Cuestionarios interactivos con diferentes niveles de dificultad</li>
+                        <li>Examen simulador con tiempo limitado</li>
+                        <li>Línea de tiempo interactiva de hitos biológicos</li>
+                        <li>Glosario de términos biológicos con función de búsqueda</li>
+                        <li>Estadísticas de progreso y recomendaciones de estudio</li>
+                        <li>Simulador de célula interactivo para explorar los orgánulos</li>
+                        <li>Diseño responsive que funciona en dispositivos móviles y desktop</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-card">
+                    <h4>Desarrollado por:</h4>
+                    <p>CyberEdu MX con tecnología DeepSeek</p>
+                    <p>Versión 2.0 - 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para confirmar salida del examen -->
+    <div class="modal" id="exit-exam-modal">
+        <div class="modal-content">
+            <h3>¿Salir del examen?</h3>
+            <p>Si sales del examen, perderás todo tu progreso actual.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeExitModal()">Cancelar</button>
+                <button class="btn btn-confirm" onclick="exitExam()">Salir</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>BioReto: Biología - El Juego de la Vida - © 2025 | Desarrollado por CyberEdu MX con DeepSeek</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales para la aplicación
+        let currentScreen = 'home-screen';
+        let currentTopic = 'topic-1';
+        let quizData = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+        let timeElapsed = 0;
+        let selectedOption = null;
+        let totalQuizzesCompleted = 0;
+        let totalScore = 0;
+        let currentQuizType = '';
+
+        // Variables específicas para el examen
+        let examData = [];
+        let currentExamQuestion = 0;
+        let examScore = 0;
+        let examTimerInterval;
+        let examTimeRemaining = 60 * 60;
+        let examSelectedOptions = {};
+
+        // Variables para estadísticas de usuario
+        let userStats = {
+            totalQuestions: 0,
+            correctAnswers: 0,
+            topicsStudied: 0,
+            gamesPlayed: 0,
+            studyTime: 0
+        };
+
+        // Variables para el simulador de célula
+        let cellCurrentZoom = 1;
+        let cellInitialized = false;
+
+        // Datos para la línea de tiempo
+        const timelineData = [
+            {
+                title: "1665 - Descubrimiento de la célula",
+                description: "Robert Hooke observa por primera vez células en un corcho utilizando un microscopio primitivo. Acuñó el término 'célula' al comparar las estructuras que veía con las celdas de un panal de abejas.",
+                image: ""
+            },
+            {
+                title: "1683 - Observación de bacterias",
+                description: "Antonie van Leeuwenhoek, utilizando microscopios de su propia fabricación, describe por primera vez bacterias y otros microorganismos, a los que llamó 'animálculos'.",
+                image: ""
+            },
+            {
+                title: "1859 - El origen de las especies",
+                description: "Charles Darwin publica 'El origen de las especies', donde presenta su teoría de la evolución por selección natural, revolucionando la comprensión de la diversidad biológica.",
+                image: ""
+            },
+            {
+                title: "1865 - Leyes de la herencia",
+                description: "Gregor Mendel establece las bases de la genética mediante sus experimentos con guisantes, formulando las leyes de la herencia que llevan su nombre.",
+                image: ""
+            },
+            {
+                title: "1953 - Estructura del ADN",
+                description: "James Watson y Francis Crick, con contribuciones de Rosalind Franklin, descubren la estructura de doble hélice del ADN, sentando las bases de la biología molecular.",
+                image: ""
+            },
+            {
+                title: "1973 - Ingeniería genética",
+                description: "Stanley Cohen y Herbert Boyer realizan el primer experimento de ADN recombinante, marcando el inicio de la ingeniería genética y la biotecnología moderna.",
+                image: ""
+            },
+            {
+                title: "1990 - Proyecto Genoma Humano",
+                description: "Se inicia el Proyecto Genoma Humano, un esfuerzo internacional para secuenciar y mapear todos los genes del genoma humano. El proyecto se completó en 2003.",
+                image: ""
+            },
+            {
+                title: "2003 - CRISPR",
+                description: "Se descubre el sistema de edición genética CRISPR-Cas9, una herramienta revolucionaria que permite modificar genes con una precisión sin precedentes.",
+                image: ""
+            }
+        ];
+
+        // Datos para el glosario
+        const glossaryTerms = [
+            { term: "ADN", definition: "Ácido desoxirribonucleico, molécula que contiene la información genética de los seres vivos." },
+            { term: "ARN", definition: "Ácido ribonucleico, molécula que participa en la síntesis de proteínas y en la expresión génica." },
+            { term: "Célula", definition: "Unidad básica estructural y funcional de todos los seres vivos." },
+            { term: "Mitosis", definition: "Proceso de división celular que produce dos células hijas genéticamente idénticas." },
+            { term: "Meiosis", definition: "Proceso de división celular que produce gametos con la mitad del material genético." },
+            { term: "Fotosíntesis", definition: "Proceso mediante el cual las plantas convierten la energía solar en energía química." },
+            { term: "Respiración celular", definition: "Proceso mediante el cual las células obtienen energía de los nutrientes." },
+            { term: "Homeostasis", definition: "Capacidad de los organismos para mantener un ambiente interno estable." },
+            { term: "Evolución", definition: "Proceso de cambio en las poblaciones a lo largo del tiempo." },
+            { term: "Gen", definition: "Segmento de ADN que codifica una proteína o característica específica." },
+            { term: "Ecosistema", definition: "Comunidad de organismos y su ambiente físico que interactúan como un sistema." },
+            { term: "Biodiversidad", definition: "Variedad de seres vivos en un ecosistema, bioma o en todo el planeta." },
+            { term: "Taxonomía", definition: "Ciencia de la clasificación de los organismos." },
+            { term: "Metabolismo", definition: "Conjunto de reacciones químicas que ocurren en las células para mantener la vida." },
+            { term: "Hábitat", definition: "Lugar donde vive una especie, caracterizado por condiciones físicas y biológicas específicas." }
+        ];
+
+        // Datos de los orgánulos de la célula animal
+        const cellOrganelles = [
+            {
+                id: 'membrana',
+                name: 'Membrana Celular',
+                color: '#4caf50',
+                class: 'membrana',
+                description: `
+                    <h3>Membrana Celular</h3>
+                    <p><strong>Función:</strong> La membrana celular es una barrera selectiva que controla el paso de sustancias hacia el interior y exterior de la célula. Está compuesta por una bicapa lipídica con proteínas incrustadas.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Regula el intercambio de nutrientes y desechos</li>
+                        <li>Protege el contenido celular</li>
+                        <li>Permite la comunicación entre células</li>
+                        <li>Mantiene la forma de la célula</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Formada por una bicapa de fosfolípidos con proteínas integrales y periféricas, y moléculas de colesterol que proporcionan estabilidad.</p>
+                `
+            },
+            {
+                id: 'citoplasma',
+                name: 'Citoplasma',
+                color: '#00bcd4',
+                class: 'citoplasma',
+                description: `
+                    <h3>Citoplasma</h3>
+                    <p><strong>Función:</strong> El citoplasma es el medio acuoso que llena el interior de la célula, donde se encuentran los orgánulos y ocurren la mayoría de las reacciones metabólicas.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Contiene el citosol (parte líquida)</li>
+                        <li>Alberga los orgánulos celulares</li>
+                        <li>Es el sitio de muchas reacciones metabólicas</li>
+                        <li>Proporciona soporte estructural</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Compuesto por el citosol (agua, sales, iones y moléculas orgánicas) y el citoesqueleto (red de filamentos proteicos).</p>
+                `
+            },
+            {
+                id: 'nucleo',
+                name: 'Núcleo',
+                color: '#2196f3',
+                class: 'nucleo',
+                description: `
+                    <h3>Núcleo</h3>
+                    <p><strong>Función:</strong> El núcleo es el centro de control de la célula que almacena el material genético (ADN) y dirige las actividades celulares como el crecimiento, el metabolismo y la reproducción.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Contiene la información genética (ADN)</li>
+                        <li>Controla la síntesis de proteínas</li>
+                        <li>Dirige la división celular</li>
+                        <li>Está rodeado por una envoltura nuclear</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Compuesto por la envoltura nuclear, nucleoplasma, cromatina (ADN y proteínas) y nucleolo (donde se producen los ribosomas).</p>
+                `
+            },
+            {
+                id: 'mitocondria',
+                name: 'Mitocondria',
+                color: '#ff9800',
+                class: 'mitocondria',
+                description: `
+                    <h3>Mitocondria</h3>
+                    <p><strong>Función:</strong> Las mitocondrias son las centrales energéticas de la célula, donde se produce la mayor parte del ATP (adenosín trifosfato) mediante el proceso de respiración celular.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Producen energía en forma de ATP</li>
+                        <li>Tienen su propio ADN mitocondrial</li>
+                        <li>Realizan la respiración celular aeróbica</li>
+                        <li>Presentan una doble membrana</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Tienen una membrana externa lisa y una membrana interna plegada (crestas mitocondriales) que aumenta la superficie para las reacciones químicas.</p>
+                `
+            },
+            {
+                id: 're',
+                name: 'Retículo Endoplásmico',
+                color: '#9c27b0',
+                class: 're',
+                description: `
+                    <h3>Retículo Endoplásmico</h3>
+                    <p><strong>Función:</strong> El retículo endoplásmico es un sistema de membranas interconectadas que participa en la síntesis, plegamiento y transporte de proteínas y lípidos.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li><strong>RE Rugoso:</strong> Tiene ribosomas adheridos y sintetiza proteínas</li>
+                        <li><strong>RE Liso:</strong> Carece de ribosomas y sintetiza lípidos</li>
+                        <li>Transporta sustancias dentro de la célula</li>
+                        <li>Está conectado con la envoltura nuclear</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Red de túbulos y sacos membranosos que se extienden por todo el citoplasma.</p>
+                `
+            },
+            {
+                id: 'golgi',
+                name: 'Aparato de Golgi',
+                color: '#f44336',
+                class: 'golgi',
+                description: `
+                    <h3>Aparato de Golgi</h3>
+                    <p><strong>Función:</strong> El aparato de Golgi modifica, clasifica, empaqueta y distribuye proteínas y lípidos hacia sus destinos dentro o fuera de la célula.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Modifica proteínas añadiendo carbohidratos</li>
+                        <li>Forma lisosomas y vesículas secretoras</li>
+                        <li>Empaqueta sustancias para su exportación</li>
+                        <li>Está formado por dictiosomas (pilas de sacos)</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Conjunto de sacos membranosos aplanados y apilados (cisternas) con vesículas asociadas.</p>
+                `
+            },
+            {
+                id: 'lisosoma',
+                name: 'Lisosoma',
+                color: '#795548',
+                class: 'lisosoma',
+                description: `
+                    <h3>Lisosoma</h3>
+                    <p><strong>Función:</strong> Los lisosomas son vesículas que contienen enzimas digestivas para descomponer macromoléculas, bacterias y componentes celulares dañados.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Contienen enzimas hidrolíticas</li>
+                        <li>Digieren partículas alimenticias</li>
+                        <li>Destruyen bacterias y virus</li>
+                        <li>Reciclan componentes celulares dañados</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Vesículas esféricas rodeadas por una membrana que contiene enzimas digestivas en su interior.</p>
+                `
+            },
+            {
+                id: 'ribosoma',
+                name: 'Ribosomas',
+                color: '#607d8b',
+                class: 'ribosoma',
+                description: `
+                    <h3>Ribosomas</h3>
+                    <p><strong>Función:</strong> Los ribosomas son estructuras donde se sintetizan las proteínas según las instrucciones del ARN mensajero (traducción).</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Sintetizan proteínas</li>
+                        <li>Están formados por ARN y proteínas</li>
+                        <li>Pueden estar libres en el citoplasma o unidos al RE</li>
+                        <li>No están rodeados por membrana</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Pequeñas partículas compuestas por dos subunidades (mayor y menor) de ARNr y proteínas.</p>
+                `
+            },
+            {
+                id: 'centriolos',
+                name: 'Centriolos',
+                color: '#ff5722',
+                class: 'centriolos',
+                description: `
+                    <h3>Centriolos</h3>
+                    <p><strong>Función:</strong> Los centriolos son estructuras cilíndricas que participan en la división celular, formando el huso mitótico que separa los cromosomas.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Intervienen en la división celular</li>
+                        <li>Forman el centrosoma y el huso mitótico</li>
+                        <li>Están compuestos por microtúbulos</li>
+                        <li>Se encuentran en pares perpendiculares</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Pequeños cilindros formados por nueve tripletes de microtúbulos dispuestos en círculo.</p>
+                `
+            },
+            {
+                id: 'vacuola',
+                name: 'Vacuola',
+                color: '#8bc34a',
+                class: 'vacuola',
+                description: `
+                    <h3>Vacuola</h3>
+                    <p><strong>Función:</strong> Las vacuolas son orgánulos que almacenan agua, nutrientes y desechos. En células animales son pequeñas y numerosas.</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Almacenan agua, iones y nutrientes</li>
+                        <li>Regulan la presión osmótica</li>
+                        <li>Almacenan productos de desecho</li>
+                        <li>En células vegetales son mucho más grandes</li>
+                    </ul>
+                    <p><strong>Estructura:</strong> Vesículas membranosas que contienen fluidos y diversos materiales.</p>
+                `
+            }
+        ];
+
+        // Función para mostrar una pantalla específica
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Mostrar la pantalla solicitada
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Si vamos a la pantalla de inicio, resetear completamente la pantalla de cuestionarios
+            if (screenId === 'home-screen') {
+                resetQuizScreen();
+            }
+            
+            // Inicializar la línea de tiempo si es necesario
+            if (screenId === 'timeline-screen') {
+                initializeTimeline();
+            }
+            // Cargar el glosario si es necesario
+            else if (screenId === 'glossary-screen') {
+                loadGlossary();
+            }
+            // Cargar estadísticas si es necesario
+            else if (screenId === 'stats-screen') {
+                loadStats();
+            }
+            // Si vamos a la pantalla de cuestionarios, asegurarnos de que esté en estado inicial
+            else if (screenId === 'quiz-screen') {
+                resetQuizScreen();
+            }
+            // Inicializar el simulador de célula si es necesario
+            else if (screenId === 'cell-simulator-screen' && !cellInitialized) {
+                initializeCellSimulator();
+                cellInitialized = true;
+            }
+        }
+
+        // Función para alternar el menú móvil
+        function toggleMobileMenu() {
+            const navTabs = document.getElementById('nav-tabs');
+            navTabs.classList.toggle('active');
+        }
+
+        // Función para seleccionar una pestaña de navegación
+        function selectNavTab(tabElement, topicId) {
+            // Remover la clase activa de todas las pestañas
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Añadir la clase activa a la pestaña seleccionada
+            tabElement.classList.add('active');
+            
+            // Ocultar todos los contenidos de temas
+            document.querySelectorAll('.topic-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Mostrar el contenido del tema seleccionado
+            document.getElementById(topicId).classList.add('active');
+            
+            // Cerrar el menú móvil si está abierto
+            const navTabs = document.getElementById('nav-tabs');
+            if (navTabs.classList.contains('active')) {
+                navTabs.classList.remove('active');
+            }
+        }
+
+        // Función para inicializar la línea de tiempo
+        function initializeTimeline() {
+            // La línea de tiempo ya está definida en el HTML
+        }
+
+        // Función para mostrar información de la línea de tiempo
+        function showTimelineInfo(index) {
+            const infoContainer = document.getElementById('timeline-info-container');
+            const timelineItem = timelineData[index];
+            
+            // Crear elemento de información si no existe
+            let infoElement = document.getElementById(`timeline-info-${index}`);
+            if (!infoElement) {
+                infoElement = document.createElement('div');
+                infoElement.className = 'timeline-info';
+                infoElement.id = `timeline-info-${index}`;
+                infoElement.innerHTML = `
+                    <h3>${timelineItem.title}</h3>
+                    <p>${timelineItem.description}</p>
+                `;
+                infoContainer.appendChild(infoElement);
+            }
+            
+            // Alternar la visibilidad
+            infoElement.classList.toggle('active');
+        }
+
+        // Función para mostrar toda la información de la línea de tiempo
+        function showAllTimelineInfo() {
+            for (let i = 0; i < timelineData.length; i++) {
+                let infoElement = document.getElementById(`timeline-info-${i}`);
+                if (!infoElement) {
+                    const timelineItem = timelineData[i];
+                    infoElement = document.createElement('div');
+                    infoElement.className = 'timeline-info active';
+                    infoElement.id = `timeline-info-${i}`;
+                    infoElement.innerHTML = `
+                        <h3>${timelineItem.title}</h3>
+                        <p>${timelineItem.description}</p>
+                    `;
+                    document.getElementById('timeline-info-container').appendChild(infoElement);
+                } else {
+                    infoElement.classList.add('active');
+                }
+            }
+        }
+
+        // Función para ocultar toda la información de la línea de tiempo
+        function hideAllTimelineInfo() {
+            document.querySelectorAll('.timeline-info').forEach(info => {
+                info.classList.remove('active');
+            });
+        }
+
+        // Función para cargar el glosario
+        function loadGlossary() {
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            glossaryTerms.forEach(term => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span class="term">${term.term}:</span> ${term.definition}
+                `;
+                glossaryList.appendChild(listItem);
+            });
+        }
+
+        // Función para buscar en el glosario
+        function searchGlossary() {
+            const searchTerm = document.getElementById('glossary-search').value.toLowerCase();
+            const glossaryList = document.getElementById('glossary-list');
+            glossaryList.innerHTML = '';
+            
+            const filteredTerms = glossaryTerms.filter(term => 
+                term.term.toLowerCase().includes(searchTerm) || 
+                term.definition.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredTerms.length === 0) {
+                glossaryList.innerHTML = '<li>No se encontraron términos que coincidan con la búsqueda.</li>';
+            } else {
+                filteredTerms.forEach(term => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <span class="term">${term.term}:</span> ${term.definition}
+                    `;
+                    glossaryList.appendChild(listItem);
+                });
+            }
+        }
+
+        // Función para cargar estadísticas
+        function loadStats() {
+            // Cargar estadísticas desde localStorage si existen
+            const savedStats = localStorage.getItem('userStats');
+            if (savedStats) {
+                userStats = JSON.parse(savedStats);
+            }
+            
+            // Actualizar la interfaz con las estadísticas
+            document.getElementById('total-questions').textContent = userStats.totalQuestions;
+            document.getElementById('correct-answers').textContent = userStats.correctAnswers;
+            
+            const accuracy = userStats.totalQuestions > 0 ? 
+                Math.round((userStats.correctAnswers / userStats.totalQuestions) * 100) : 0;
+            document.getElementById('accuracy').textContent = `${accuracy}%`;
+            
+            document.getElementById('quizzes-completed').textContent = userStats.gamesPlayed;
+            
+            // Generar recomendación de estudio
+            let recommendation = "";
+            if (accuracy >= 80) {
+                recommendation = "¡Excelente trabajo! Tienes un buen dominio de los conceptos. Te recomendamos explorar temas más avanzados.";
+            } else if (accuracy >= 60) {
+                recommendation = "Buen progreso. Te recomendamos repasar los temas donde has tenido más dificultades.";
+            } else {
+                recommendation = "Te recomendamos comenzar con los conceptos básicos y practicar regularmente con los cuestionarios.";
+            }
+            document.getElementById('study-recommendation').textContent = recommendation;
+        }
+
+        // Función para guardar estadísticas
+        function saveStats() {
+            localStorage.setItem('userStats', JSON.stringify(userStats));
+        }
+
+        // Función para reiniciar estadísticas
+        function resetStats() {
+            if (confirm('¿Estás seguro de que quieres reiniciar todas tus estadísticas? Esta acción no se puede deshacer.')) {
+                userStats = {
+                    totalQuestions: 0,
+                    correctAnswers: 0,
+                    topicsStudied: 0,
+                    gamesPlayed: 0,
+                    studyTime: 0
+                };
+                saveStats();
+                loadStats();
+            }
+        }
+
+        // Funciones para los cuestionarios
+        function startQuiz(level) {
+            // Ocultar la selección de cuestionarios
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // Mostrar el contenido del cuestionario
+            document.getElementById('quiz-content').style.display = 'block';
+            
+            // Cargar preguntas según el nivel
+            loadQuizQuestions(level);
+            
+            // Mostrar la primera pregunta
+            showQuestion();
+            
+            // Actualizar estadísticas
+            userStats.gamesPlayed++;
+            saveStats();
+        }
+
+        function loadQuizQuestions(level) {
+            // Datos de ejemplo para los cuestionarios
+            if (level === 'basico') {
+                quizData = [
+                    {
+                        question: "¿Cuál es la unidad básica de la vida?",
+                        options: [
+                            "Átomo",
+                            "Célula", 
+                            "Molécula",
+                            "Tejido"
+                        ],
+                        correct: 1,
+                        explanation: "La célula es considerada la unidad básica de la vida porque todos los seres vivos están compuestos por una o más células."
+                    },
+                    {
+                        question: "¿Qué orgánulo es conocido como la 'central energética' de la célula?",
+                        options: [
+                            "Núcleo",
+                            "Mitocondria",
+                            "Cloroplasto",
+                            "Ribosoma"
+                        ],
+                        correct: 1,
+                        explanation: "Las mitocondrias son responsables de producir la mayor parte de la energía química que necesita la célula."
+                    },
+                    {
+                        question: "¿Qué tipo de células tienen un núcleo definido?",
+                        options: [
+                            "Procariotas",
+                            "Eucariotas",
+                            "Ambas",
+                            "Ninguna"
+                        ],
+                        correct: 1,
+                        explanation: "Las células eucariotas tienen un núcleo definido, a diferencia de las procariotas que no lo tienen."
+                    },
+                    {
+                        question: "¿Qué proceso convierte la energía solar en energía química?",
+                        options: [
+                            "Respiración celular",
+                            "Fotosíntesis",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La fotosíntesis es el proceso mediante el cual las plantas convierten la energía solar en energía química."
+                    },
+                    {
+                        question: "¿Qué orgánulo contiene el material genético de la célula?",
+                        options: [
+                            "Mitocondria",
+                            "Núcleo",
+                            "Retículo endoplásmico",
+                            "Aparato de Golgi"
+                        ],
+                        correct: 1,
+                        explanation: "El núcleo celular contiene el ADN, que es el material genético de la célula."
+                    },
+                    {
+                        question: "¿Qué orgánulo se encarga de la síntesis de proteínas?",
+                        options: [
+                            "Mitocondria",
+                            "Núcleo",
+                            "Ribosoma",
+                            "Lisosoma"
+                        ],
+                        correct: 2,
+                        explanation: "Los ribosomas son los orgánulos donde se sintetizan las proteínas según las instrucciones del ARN mensajero."
+                    },
+                    {
+                        question: "¿Qué estructura celular regula el paso de sustancias?",
+                        options: [
+                            "Núcleo",
+                            "Membrana plasmática",
+                            "Pared celular",
+                            "Citoplasma"
+                        ],
+                        correct: 1,
+                        explanation: "La membrana plasmática es una barrera selectiva que regula el paso de sustancias hacia el interior y exterior de la célula."
+                    },
+                    {
+                        question: "¿Qué orgánulo contiene enzimas digestivas?",
+                        options: [
+                            "Ribosoma",
+                            "Lisosoma",
+                            "Mitocondria",
+                            "Retículo endoplásmico"
+                        ],
+                        correct: 1,
+                        explanation: "Los lisosomas son vesículas que contienen enzimas digestivas para descomponer macromoléculas."
+                    },
+                    {
+                        question: "¿Qué proceso permite a las plantas producir su propio alimento?",
+                        options: [
+                            "Respiración celular",
+                            "Fotosíntesis",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La fotosíntesis es el proceso mediante el cual las plantas producen su propio alimento utilizando energía solar."
+                    },
+                    {
+                        question: "¿Qué tipo de organismo es capaz de realizar la fotosíntesis?",
+                        options: [
+                            "Autótrofo",
+                            "Heterótrofo",
+                            "Saprófito",
+                            "Parásito"
+                        ],
+                        correct: 0,
+                        explanation: "Los organismos autótrofos, como las plantas, son capaces de realizar la fotosíntesis para producir su propio alimento."
+                    }
+                ];
+                currentQuizType = 'basico';
+            } else if (level === 'intermedio') {
+                quizData = [
+                    {
+                        question: "¿Qué orgánulo se encarga de la síntesis de proteínas?",
+                        options: [
+                            "Mitocondria",
+                            "Núcleo",
+                            "Ribosoma",
+                            "Lisosoma"
+                        ],
+                        correct: 2,
+                        explanation: "Los ribosomas son los orgánulos donde se sintetizan las proteínas según las instrucciones del ARN mensajero."
+                    },
+                    {
+                        question: "¿Cuál es la función principal del aparato de Golgi?",
+                        options: [
+                            "Producción de energía",
+                            "Síntesis de proteínas",
+                            "Modificación y empaquetado de proteínas",
+                            "Digestión intracelular"
+                        ],
+                        correct: 2,
+                        explanation: "El aparato de Golgi modifica, clasifica y empaqueta proteínas para su distribución dentro o fuera de la célula."
+                    },
+                    {
+                        question: "¿Qué proceso produce gametos con la mitad del material genético?",
+                        options: [
+                            "Mitosis",
+                            "Meiosis",
+                            "Fotosíntesis",
+                            "Respiración celular"
+                        ],
+                        correct: 1,
+                        explanation: "La meiosis es el proceso de división celular que produce gametos con la mitad del material genético."
+                    },
+                    {
+                        question: "¿Qué científico propuso la teoría de la evolución por selección natural?",
+                        options: [
+                            "Gregor Mendel",
+                            "Charles Darwin",
+                            "Louis Pasteur",
+                            "Robert Hooke"
+                        ],
+                        correct: 1,
+                        explanation: "Charles Darwin propuso la teoría de la evolución por selección natural en su libro 'El origen de las especies'."
+                    },
+                    {
+                        question: "¿Qué molécula almacena la información genética?",
+                        options: [
+                            "ARN",
+                            "ADN",
+                            "Proteína",
+                            "Lípido"
+                        ],
+                        correct: 1,
+                        explanation: "El ADN (ácido desoxirribonucleico) es la molécula que almacena la información genética en los seres vivos."
+                    },
+                    {
+                        question: "¿Qué proceso ocurre en las mitocondrias?",
+                        options: [
+                            "Fotosíntesis",
+                            "Respiración celular",
+                            "Síntesis de proteínas",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La respiración celular ocurre en las mitocondrias, donde se produce ATP a partir de nutrientes."
+                    },
+                    {
+                        question: "¿Qué es un gen?",
+                        options: [
+                            "Un tipo de célula",
+                            "Una proteína",
+                            "Un segmento de ADN",
+                            "Un orgánulo celular"
+                        ],
+                        correct: 2,
+                        explanation: "Un gen es un segmento de ADN que contiene la información para sintetizar una proteína o ARN específico."
+                    },
+                    {
+                        question: "¿Qué proceso implica el movimiento de partículas de alta a baja concentración?",
+                        options: [
+                            "Transporte activo",
+                            "Difusión",
+                            "Ósmosis",
+                            "Fagocitosis"
+                        ],
+                        correct: 1,
+                        explanation: "La difusión es el movimiento de partículas de una zona de alta concentración a una de baja concentración."
+                    },
+                    {
+                        question: "¿Qué orgánulo está presente en células vegetales pero no en animales?",
+                        options: [
+                            "Mitocondria",
+                            "Cloroplasto",
+                            "Núcleo",
+                            "Ribosoma"
+                        ],
+                        correct: 1,
+                        explanation: "Los cloroplastos son orgánulos presentes en células vegetales donde ocurre la fotosíntesis."
+                    },
+                    {
+                        question: "¿Qué proceso celular consume oxígeno y produce dióxido de carbono?",
+                        options: [
+                            "Fotosíntesis",
+                            "Respiración celular",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La respiración celular aeróbica consume oxígeno y produce dióxido de carbono como producto de desecho."
+                    },
+                    {
+                        question: "¿Qué estructura celular proporciona soporte y protección en plantas?",
+                        options: [
+                            "Membrana plasmática",
+                            "Pared celular",
+                            "Citoesqueleto",
+                            "Núcleo"
+                        ],
+                        correct: 1,
+                        explanation: "La pared celular es una estructura rígida que proporciona soporte y protección a las células vegetales."
+                    },
+                    {
+                        question: "¿Qué proceso implica el movimiento de agua a través de una membrana semipermeable?",
+                        options: [
+                            "Difusión",
+                            "Ósmosis",
+                            "Transporte activo",
+                            "Exocitosis"
+                        ],
+                        correct: 1,
+                        explanation: "La ósmosis es el movimiento de agua a través de una membrana semipermeable desde una zona de alta concentración de agua a una de baja."
+                    },
+                    {
+                        question: "¿Qué orgánulo está involucrado en la división celular?",
+                        options: [
+                            "Mitocondria",
+                            "Centriolos",
+                            "Retículo endoplásmico",
+                            "Aparato de Golgi"
+                        ],
+                        correct: 1,
+                        explanation: "Los centriolos participan en la formación del huso mitótico durante la división celular."
+                    },
+                    {
+                        question: "¿Qué tipo de transporte celular requiere energía?",
+                        options: [
+                            "Difusión",
+                            "Ósmosis",
+                            "Transporte activo",
+                            "Difusión facilitada"
+                        ],
+                        correct: 2,
+                        explanation: "El transporte activo requiere energía (ATP) para mover sustancias contra su gradiente de concentración."
+                    },
+                    {
+                        question: "¿Qué orgánulo modifica y empaqueta proteínas para su exportación?",
+                        options: [
+                            "Retículo endoplásmico rugoso",
+                            "Aparato de Golgi",
+                            "Mitocondria",
+                            "Núcleo"
+                        ],
+                        correct: 1,
+                        explanation: "El aparato de Golgi modifica, clasifica y empaqueta proteínas para su distribución dentro o fuera de la célula."
+                    }
+                ];
+                currentQuizType = 'intermedio';
+            } else {
+                quizData = [
+                    {
+                        question: "¿Qué proceso ocurre en las mitocondrias?",
+                        options: [
+                            "Fotosíntesis",
+                            "Respiración celular",
+                            "Síntesis de proteínas",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La respiración celular ocurre en las mitocondrias, donde se produce ATP a partir de nutrientes."
+                    },
+                    {
+                        question: "¿Qué estructura celular regula el paso de sustancias?",
+                        options: [
+                            "Núcleo",
+                            "Membrana plasmática",
+                            "Pared celular",
+                            "Citoplasma"
+                        ],
+                        correct: 1,
+                        explanation: "La membrana plasmática es una barrera selectiva que regula el paso de sustancias hacia el interior y exterior de la célula."
+                    },
+                    {
+                        question: "¿Qué orgánulo contiene enzimas digestivas?",
+                        options: [
+                            "Ribosoma",
+                            "Lisosoma",
+                            "Mitocondria",
+                            "Retículo endoplásmico"
+                        ],
+                        correct: 1,
+                        explanation: "Los lisosomas son vesículas que contienen enzimas digestivas para descomponer macromoléculas."
+                    },
+                    {
+                        question: "¿Qué proceso permite a las plantas producir su propio alimento?",
+                        options: [
+                            "Respiración celular",
+                            "Fotosíntesis",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La fotosíntesis es el proceso mediante el cual las plantas producen su propio alimento utilizando energía solar."
+                    },
+                    {
+                        question: "¿Qué tipo de organismo es capaz de realizar la fotosíntesis?",
+                        options: [
+                            "Autótrofo",
+                            "Heterótrofo",
+                            "Saprófito",
+                            "Parásito"
+                        ],
+                        correct: 0,
+                        explanation: "Los organismos autótrofos, como las plantas, son capaces de realizar la fotosíntesis para producir su propio alimento."
+                    },
+                    {
+                        question: "¿Qué es la homeostasis?",
+                        options: [
+                            "La capacidad de reproducirse",
+                            "La capacidad de crecer",
+                            "La capacidad de mantener un ambiente interno estable",
+                            "La capacidad de moverse"
+                        ],
+                        correct: 2,
+                        explanation: "La homeostasis es la capacidad de los organismos para mantener un ambiente interno estable a pesar de los cambios externos."
+                    },
+                    {
+                        question: "¿Qué proceso produce variación genética en la reproducción sexual?",
+                        options: [
+                            "Mitosis",
+                            "Meiosis",
+                            "Fotosíntesis",
+                            "Respiración celular"
+                        ],
+                        correct: 1,
+                        explanation: "La meiosis produce gametos con combinaciones genéticas únicas, lo que resulta en variación genética en la descendencia."
+                    },
+                    {
+                        question: "¿Qué orgánulo contiene el material genético de la célula?",
+                        options: [
+                            "Mitocondria",
+                            "Núcleo",
+                            "Ribosoma",
+                            "Aparato de Golgi"
+                        ],
+                        correct: 1,
+                        explanation: "El núcleo contiene el ADN, que es el material genético de la célula."
+                    },
+                    {
+                        question: "¿Qué proceso implica el movimiento de partículas de alta a baja concentración?",
+                        options: [
+                            "Transporte activo",
+                            "Difusión",
+                            "Ósmosis",
+                            "Fagocitosis"
+                        ],
+                        correct: 1,
+                        explanation: "La difusión es el movimiento de partículas de una zona de alta concentración a una de baja concentración."
+                    },
+                    {
+                        question: "¿Qué orgánulo está presente en células vegetales pero no en animales?",
+                        options: [
+                            "Mitocondria",
+                            "Cloroplasto",
+                            "Núcleo",
+                            "Ribosoma"
+                        ],
+                        correct: 1,
+                        explanation: "Los cloroplastos son orgánulos presentes en células vegetales donde ocurre la fotosíntesis."
+                    },
+                    {
+                        question: "¿Qué proceso celular consume oxígeno y produce dióxido de carbono?",
+                        options: [
+                            "Fotosíntesis",
+                            "Respiración celular",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La respiración celular aeróbica consume oxígeno y produce dióxido de carbono como producto de desecho."
+                    },
+                    {
+                        question: "¿Qué estructura celular proporciona soporte y protección en plantas?",
+                        options: [
+                            "Membrana plasmática",
+                            "Pared celular",
+                            "Citoesqueleto",
+                            "Núcleo"
+                        ],
+                        correct: 1,
+                        explanation: "La pared celular es una estructura rígida que proporciona soporte y protección a las células vegetales."
+                    },
+                    {
+                        question: "¿Qué proceso implica el movimiento de agua a través de una membrana semipermeable?",
+                        options: [
+                            "Difusión",
+                            "Ósmosis",
+                            "Transporte activo",
+                            "Exocitosis"
+                        ],
+                        correct: 1,
+                        explanation: "La ósmosis es el movimiento de agua a través de una membrana semipermeable desde una zona de alta concentración de agua a una de baja."
+                    },
+                    {
+                        question: "¿Qué orgánulo está involucrado en la división celular?",
+                        options: [
+                            "Mitocondria",
+                            "Centriolos",
+                            "Retículo endoplásmico",
+                            "Aparato de Golgi"
+                        ],
+                        correct: 1,
+                        explanation: "Los centriolos participan en la formación del huso mitótico durante la división celular."
+                    },
+                    {
+                        question: "¿Qué tipo de transporte celular requiere energía?",
+                        options: [
+                            "Difusión",
+                            "Ósmosis",
+                            "Transporte activo",
+                            "Difusión facilitada"
+                        ],
+                        correct: 2,
+                        explanation: "El transporte activo requiere energía (ATP) para mover sustancias contra su gradiente de concentración."
+                    },
+                    {
+                        question: "¿Qué orgánulo modifica y empaqueta proteínas para su exportación?",
+                        options: [
+                            "Retículo endoplásmico rugoso",
+                            "Aparato de Golgi",
+                            "Mitocondria",
+                            "Núcleo"
+                        ],
+                        correct: 1,
+                        explanation: "El aparato de Golgi modifica, clasifica y empaqueta proteínas para su distribución dentro o fuera de la célula."
+                    },
+                    {
+                        question: "¿Qué proceso produce dos células hijas idénticas?",
+                        options: [
+                            "Meiosis",
+                            "Mitosis",
+                            "Fotosíntesis",
+                            "Respiración celular"
+                        ],
+                        correct: 1,
+                        explanation: "La mitosis es el proceso de división celular que produce dos células hijas genéticamente idénticas."
+                    },
+                    {
+                        question: "¿Qué orgánulo contiene su propio ADN?",
+                        options: [
+                            "Ribosoma",
+                            "Mitocondria",
+                            "Aparato de Golgi",
+                            "Retículo endoplásmico"
+                        ],
+                        correct: 1,
+                        explanation: "Las mitocondrias contienen su propio ADN mitocondrial, diferente del ADN nuclear."
+                    },
+                    {
+                        question: "¿Qué proceso convierte la glucosa en ATP?",
+                        options: [
+                            "Fotosíntesis",
+                            "Respiración celular",
+                            "Fermentación",
+                            "Digestión"
+                        ],
+                        correct: 1,
+                        explanation: "La respiración celular convierte la glucosa en ATP, la moneda energética de la célula."
+                    },
+                    {
+                        question: "¿Qué orgánulo está involucrado en la síntesis de lípidos?",
+                        options: [
+                            "Retículo endoplásmico rugoso",
+                            "Retículo endoplásmico liso",
+                            "Aparato de Golgi",
+                            "Ribosoma"
+                        ],
+                        correct: 1,
+                        explanation: "El retículo endoplásmico liso está involucrado en la síntesis de lípidos y detoxificación."
+                    }
+                ];
+                currentQuizType = 'avanzado';
+            }
+            
+            currentQuestion = 0;
+            score = 0;
+        }
+
+        function showQuestion() {
+            if (currentQuestion < quizData.length) {
+                const questionData = quizData[currentQuestion];
+                document.getElementById('question-text').textContent = questionData.question;
+                
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = '';
+                
+                questionData.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.textContent = option;
+                    optionElement.onclick = () => selectOption(index, optionElement);
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Actualizar barra de progreso
+                const progress = ((currentQuestion) / quizData.length) * 100;
+                document.getElementById('quiz-progress').style.width = `${progress}%`;
+                
+                // Ocultar botones
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('finish-btn').style.display = 'none';
+                document.getElementById('feedback').style.display = 'none';
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function selectOption(optionIndex, optionElement) {
+            // Remover selección previa
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Marcar opción seleccionada
+            optionElement.classList.add('selected');
+            selectedOption = optionIndex;
+            
+            // Mostrar botón de siguiente
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            if (selectedOption !== null) {
+                // Verificar respuesta
+                const isCorrect = selectedOption === quizData[currentQuestion].correct;
+                
+                // Mostrar feedback
+                const feedback = document.getElementById('feedback');
+                feedback.textContent = isCorrect ? 
+                    '¡Correcto! ' + quizData[currentQuestion].explanation : 
+                    'Incorrecto. ' + quizData[currentQuestion].explanation;
+                feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+                feedback.style.display = 'block';
+                
+                // Actualizar puntuación
+                if (isCorrect) {
+                    score++;
+                }
+                
+                // Actualizar estadísticas
+                userStats.totalQuestions++;
+                if (isCorrect) userStats.correctAnswers++;
+                saveStats();
+                
+                // Preparar para siguiente pregunta
+                currentQuestion++;
+                selectedOption = null;
+                
+                // Cambiar botón si es la última pregunta
+                if (currentQuestion >= quizData.length) {
+                    document.getElementById('next-btn').style.display = 'none';
+                    document.getElementById('finish-btn').style.display = 'inline-block';
+                } else {
+                    setTimeout(showQuestion, 2000);
+                }
+            }
+        }
+
+        function finishQuiz() {
+            // Ocultar contenido del cuestionario
+            document.getElementById('quiz-content').style.display = 'none';
+            
+            // Mostrar resultados
+            document.getElementById('quiz-results').style.display = 'block';
+            document.getElementById('final-score').textContent = `Puntuación: ${score}/${quizData.length}`;
+            
+            // Mensaje de desempeño
+            const percentage = (score / quizData.length) * 100;
+            let message = "";
+            if (percentage >= 80) {
+                message = "¡Excelente! Dominas este nivel de biología.";
+            } else if (percentage >= 60) {
+                message = "Buen trabajo, pero puedes mejorar. Sigue practicando.";
+            } else {
+                message = "Sigue estudiando, ¡puedes hacerlo mejor! Te recomendamos repasar los conceptos básicos.";
+            }
+            document.getElementById('performance-message').textContent = message;
+        }
+
+        function resetQuizScreen() {
+            // Ocultar resultados
+            document.getElementById('quiz-results').style.display = 'none';
+            
+            // Mostrar nuevamente la selección de cuestionarios
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.style.display = 'block';
+            });
+        }
+
+        // Funciones para el examen simulador
+        function startExam() {
+            // Ocultar la información inicial del examen
+            document.querySelector('.exam-info').style.display = 'none';
+            
+            // Mostrar el contenido del examen
+            document.getElementById('exam-content').style.display = 'block';
+            
+            // Cargar preguntas del examen
+            loadExamQuestions();
+            
+            // Mostrar la primera pregunta
+            showExamQuestion();
+            
+            // Iniciar temporizador
+            startExamTimer();
+        }
+
+        function loadExamQuestions() {
+            // Combinar preguntas de todos los niveles para el examen
+            examData = [
+                // Preguntas básicas (15)
+                {
+                    question: "¿Cuál es la unidad básica de la vida?",
+                    options: [
+                        "Átomo",
+                        "Célula", 
+                        "Molécula",
+                        "Tejido"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo es conocido como la 'central energética' de la célula?",
+                    options: [
+                        "Núcleo",
+                        "Mitocondria",
+                        "Cloroplasto",
+                        "Ribosoma"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué tipo de células tienen un núcleo definido?",
+                    options: [
+                        "Procariotas",
+                        "Eucariotas",
+                        "Ambas",
+                        "Ninguna"
+                    ],
+                    correct: 1,
+                    topic: "Características de los seres vivos"
+                },
+                {
+                    question: "¿Qué proceso convierte la energía solar en energía química?",
+                    options: [
+                        "Respiración celular",
+                        "Fotosíntesis",
+                        "Fermentación",
+                        "Digestión"
+                    ],
+                    correct: 1,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué orgánulo contiene el material genético de la célula?",
+                    options: [
+                        "Mitocondria",
+                        "Núcleo",
+                        "Retículo endoplásmico",
+                        "Aparato de Golgi"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo se encarga de la síntesis de proteínas?",
+                    options: [
+                        "Mitocondria",
+                        "Núcleo",
+                        "Ribosoma",
+                        "Lisosoma"
+                    ],
+                    correct: 2,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué estructura celular regula el paso de sustancias?",
+                    options: [
+                        "Núcleo",
+                        "Membrana plasmática",
+                        "Pared celular",
+                        "Citoplasma"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo contiene enzimas digestivas?",
+                    options: [
+                        "Ribosoma",
+                        "Lisosoma",
+                        "Mitocondria",
+                        "Retículo endoplásmico"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué proceso permite a las plantas producir su propio alimento?",
+                    options: [
+                        "Respiración celular",
+                        "Fotosíntesis",
+                        "Fermentación",
+                        "Digestión"
+                    ],
+                    correct: 1,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué tipo de organismo es capaz de realizar la fotosíntesis?",
+                    options: [
+                        "Autótrofo",
+                        "Heterótrofo",
+                        "Saprófito",
+                        "Parásito"
+                    ],
+                    correct: 0,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué es la homeostasis?",
+                    options: [
+                        "La capacidad de reproducirse",
+                        "La capacidad de crecer",
+                        "La capacidad de mantener un ambiente interno estable",
+                        "La capacidad de moverse"
+                    ],
+                    correct: 2,
+                    topic: "Características de los seres vivos"
+                },
+                {
+                    question: "¿Qué proceso produce variación genética en la reproducción sexual?",
+                    options: [
+                        "Mitosis",
+                        "Meiosis",
+                        "Fotosíntesis",
+                        "Respiración celular"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo contiene el material genético de la célula?",
+                    options: [
+                        "Mitocondria",
+                        "Núcleo",
+                        "Ribosoma",
+                        "Aparato de Golgi"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué proceso implica el movimiento de partículas de alta a baja concentración?",
+                    options: [
+                        "Transporte activo",
+                        "Difusión",
+                        "Ósmosis",
+                        "Fagocitosis"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo está presente en células vegetales pero no en animales?",
+                    options: [
+                        "Mitocondria",
+                        "Cloroplasto",
+                        "Núcleo",
+                        "Ribosoma"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                // Preguntas intermedias (15)
+                {
+                    question: "¿Qué proceso celular consume oxígeno y produce dióxido de carbono?",
+                    options: [
+                        "Fotosíntesis",
+                        "Respiración celular",
+                        "Fermentación",
+                        "Digestión"
+                    ],
+                    correct: 1,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué estructura celular proporciona soporte y protección en plantas?",
+                    options: [
+                        "Membrana plasmática",
+                        "Pared celular",
+                        "Citoesqueleto",
+                        "Núcleo"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué proceso implica el movimiento de agua a través de una membrana semipermeable?",
+                    options: [
+                        "Difusión",
+                        "Ósmosis",
+                        "Transporte activo",
+                        "Exocitosis"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo está involucrado en la división celular?",
+                    options: [
+                        "Mitocondria",
+                        "Centriolos",
+                        "Retículo endoplásmico",
+                        "Aparato de Golgi"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué tipo de transporte celular requiere energía?",
+                    options: [
+                        "Difusión",
+                        "Ósmosis",
+                        "Transporte activo",
+                        "Difusión facilitada"
+                    ],
+                    correct: 2,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo modifica y empaqueta proteínas para su exportación?",
+                    options: [
+                        "Retículo endoplásmico rugoso",
+                        "Aparato de Golgi",
+                        "Mitocondria",
+                        "Núcleo"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué proceso produce dos células hijas idénticas?",
+                    options: [
+                        "Meiosis",
+                        "Mitosis",
+                        "Fotosíntesis",
+                        "Respiración celular"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué orgánulo contiene su propio ADN?",
+                    options: [
+                        "Ribosoma",
+                        "Mitocondria",
+                        "Aparato de Golgi",
+                        "Retículo endoplásmico"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué proceso convierte la glucosa en ATP?",
+                    options: [
+                        "Fotosíntesis",
+                        "Respiración celular",
+                        "Fermentación",
+                        "Digestión"
+                    ],
+                    correct: 1,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué orgánulo está involucrado en la síntesis de lípidos?",
+                    options: [
+                        "Retículo endoplásmico rugoso",
+                        "Retículo endoplásmico liso",
+                        "Aparato de Golgi",
+                        "Ribosoma"
+                    ],
+                    correct: 1,
+                    topic: "La célula"
+                },
+                {
+                    question: "¿Qué científico es conocido como el padre de la genética?",
+                    options: [
+                        "Charles Darwin",
+                        "Gregor Mendel",
+                        "Louis Pasteur",
+                        "Robert Hooke"
+                    ],
+                    correct: 1,
+                    topic: "Genética"
+                },
+                {
+                    question: "¿Qué molécula transporta información genética del núcleo al citoplasma?",
+                    options: [
+                        "ADN",
+                        "ARN mensajero",
+                        "Proteína",
+                        "Lípido"
+                    ],
+                    correct: 1,
+                    topic: "Genética"
+                },
+                {
+                    question: "¿Qué proceso implica cambios en las frecuencias génicas a lo largo del tiempo?",
+                    options: [
+                        "Homeostasis",
+                        "Evolución",
+                        "Metabolismo",
+                        "Desarrollo"
+                    ],
+                    correct: 1,
+                    topic: "Evolución"
+                },
+                {
+                    question: "¿Qué teoría explica el mecanismo de la evolución?",
+                    options: [
+                        "Teoría celular",
+                        "Selección natural",
+                        "Heredabilidad",
+                        "Mutación"
+                    ],
+                    correct: 1,
+                    topic: "Evolución"
+                },
+                {
+                    question: "¿Qué reino incluye organismos como hongos y levaduras?",
+                    options: [
+                        "Plantae",
+                        "Animalia",
+                        "Fungi",
+                        "Protista"
+                    ],
+                    correct: 2,
+                    topic: "Biodiversidad y taxonomía"
+                },
+                // Preguntas avanzadas (20)
+                {
+                    question: "¿Qué proceso metabólico produce energía sin oxígeno?",
+                    options: [
+                        "Respiración aeróbica",
+                        "Fotosíntesis",
+                        "Fermentación",
+                        "Digestión"
+                    ],
+                    correct: 2,
+                    topic: "Nutrición y respiración"
+                },
+                {
+                    question: "¿Qué estructura del sistema nervioso transmite impulsos nerviosos?",
+                    options: [
+                        "Neurona",
+                        "Hematíe",
+                        "Osteocito",
+                        "Adipocito"
+                    ],
+                    correct: 0,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué órgano del sistema digestivo produce bilis?",
+                    options: [
+                        "Estómago",
+                        "Hígado",
+                        "Páncreas",
+                        "Intestino delgado"
+                    ],
+                    correct: 1,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué estructura del corazón bombea sangre a los pulmones?",
+                    options: [
+                        "Aurícula izquierda",
+                        "Ventrículo izquierdo",
+                        "Aurícula derecha",
+                        "Ventrículo derecho"
+                    ],
+                    correct: 3,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué hormona regula los niveles de glucosa en sangre?",
+                    options: [
+                        "Adrenalina",
+                        "Insulina",
+                        "Tiroxina",
+                        "Estrógeno"
+                    ],
+                    correct: 1,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué tipo de célula sanguírea transporta oxígeno?",
+                    options: [
+                        "Leucocito",
+                        "Plaqueta",
+                        "Eritrocito",
+                        "Linfocito"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué estructura del ojo detecta la luz?",
+                    options: [
+                        "Córnea",
+                        "Iris",
+                        "Retina",
+                        "Cristalino"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué tipo de articulación permite el mayor rango de movimiento?",
+                    options: [
+                        "Fibrosa",
+                        "Cartilaginosa",
+                        "Sinovial",
+                        "Sutura"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué órgano del sistema excretor filtra la sangre?",
+                    options: [
+                        "Hígado",
+                        "Pulmón",
+                        "Riñón",
+                        "Piel"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué tipo de músculo es involuntario y se encuentra en órganos internos?",
+                    options: [
+                        "Esquelético",
+                        "Cardíaco",
+                        "Liso",
+                        "Estriado"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué vitamina se sintetiza en la piel con exposición solar?",
+                    options: [
+                        "Vitamina A",
+                        "Vitamina C",
+                        "Vitamina D",
+                        "Vitamina K"
+                    ],
+                    correct: 2,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué estructura del sistema reproductor femenino produce óvulos?",
+                    options: [
+                        "Útero",
+                        "Ovario",
+                        "Trompa de Falopio",
+                        "Vagina"
+                    ],
+                    correct: 1,
+                    topic: "Fisiología humana"
+                },
+                {
+                    question: "¿Qué tipo de relación ecológica beneficia a ambas especies?",
+                    options: [
+                        "Competencia",
+                        "Depredación",
+                        "Mutualismo",
+                        "Parasitismo"
+                    ],
+                    correct: 2,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué nivel trófico ocupan los productores en una cadena alimentaria?",
+                    options: [
+                        "Primer nivel",
+                        "Segundo nivel",
+                        "Tercer nivel",
+                        "Cuarto nivel"
+                    ],
+                    correct: 0,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué proceso del ciclo del carbono libera CO2 a la atmósfera?",
+                    options: [
+                        "Fotosíntesis",
+                        "Respiración",
+                        "Sedimentación",
+                        "Fijación"
+                    ],
+                    correct: 1,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué factor abiótico afecta más la distribución de organismos en un ecosistema?",
+                    options: [
+                        "Temperatura",
+                        "Presión atmosférica",
+                        "Salinidad",
+                        "Viento"
+                    ],
+                    correct: 0,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué tipo de sucesión ecológica ocurre después de un disturbio severo?",
+                    options: [
+                        "Sucesión primaria",
+                        "Sucesión secundaria",
+                        "Sucesión terciaria",
+                        "Sucesión cuaternaria"
+                    ],
+                    correct: 0,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué proceso del ciclo del nitrógeno convierte amonio en nitrito?",
+                    options: [
+                        "Fijación",
+                        "Nitrificación",
+                        "Desnitrificación",
+                        "Ammonificación"
+                    ],
+                    correct: 1,
+                    topic: "Ecología"
+                },
+                {
+                    question: "¿Qué tipo de adaptación ayuda a los organismos a sobrevivir en su ambiente?",
+                    options: [
+                        "Estructural",
+                        "Fisiológica",
+                        "Conductual",
+                        "Todas las anteriores"
+                    ],
+                    correct: 3,
+                    topic: "Evolución"
+                },
+                {
+                    question: "¿Qué mecanismo evolutivo implica cambios aleatorios en las frecuencias génicas?",
+                    options: [
+                        "Selección natural",
+                        "Deriva génica",
+                        "Flujo génico",
+                        "Mutación"
+                    ],
+                    correct: 1,
+                    topic: "Evolución"
+                }
+            ];
+            
+            // Mezclar las preguntas para el examen
+            examData = shuffleArray(examData);
+            currentExamQuestion = 0;
+            examScore = 0;
+            examSelectedOptions = {};
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function showExamQuestion() {
+            if (currentExamQuestion < examData.length) {
+                const questionData = examData[currentExamQuestion];
+                document.getElementById('exam-question-text').textContent = questionData.question;
+                document.getElementById('exam-question-counter').textContent = `Pregunta ${currentExamQuestion + 1} de ${examData.length}`;
+                
+                const optionsContainer = document.getElementById('exam-options-container');
+                optionsContainer.innerHTML = '';
+                
+                questionData.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    if (examSelectedOptions[currentExamQuestion] === index) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    optionElement.onclick = () => selectExamOption(index, optionElement);
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Actualizar barra de progreso
+                const progress = ((currentExamQuestion) / examData.length) * 100;
+                document.getElementById('exam-progress').style.width = `${progress}%`;
+                
+                // Actualizar botones de navegación
+                document.getElementById('exam-prev-btn').style.display = currentExamQuestion > 0 ? 'inline-block' : 'none';
+                document.getElementById('exam-next-btn').style.display = currentExamQuestion < examData.length - 1 ? 'inline-block' : 'none';
+                document.getElementById('exam-finish-btn').style.display = currentExamQuestion === examData.length - 1 ? 'inline-block' : 'none';
+            }
+        }
+
+        function selectExamOption(optionIndex, optionElement) {
+            // Remover selección previa
+            const options = document.querySelectorAll('#exam-options-container .option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Marcar opción seleccionada
+            optionElement.classList.add('selected');
+            examSelectedOptions[currentExamQuestion] = optionIndex;
+        }
+
+        function prevExamQuestion() {
+            if (currentExamQuestion > 0) {
+                currentExamQuestion--;
+                showExamQuestion();
+            }
+        }
+
+        function nextExamQuestion() {
+            if (currentExamQuestion < examData.length - 1) {
+                currentExamQuestion++;
+                showExamQuestion();
+            }
+        }
+
+        function startExamTimer() {
+            examTimeRemaining = 60 * 60; // 60 minutos en segundos
+            updateExamTimer();
+            
+            examTimerInterval = setInterval(() => {
+                examTimeRemaining--;
+                updateExamTimer();
+                
+                if (examTimeRemaining <= 0) {
+                    clearInterval(examTimerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateExamTimer() {
+            const minutes = Math.floor(examTimeRemaining / 60);
+            const seconds = examTimeRemaining % 60;
+            document.getElementById('exam-timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function confirmExitExam() {
+            document.getElementById('exit-exam-modal').classList.add('active');
+        }
+
+        function closeExitModal() {
+            document.getElementById('exit-exam-modal').classList.remove('active');
+        }
+
+        function exitExam() {
+            clearInterval(examTimerInterval);
+            closeExitModal();
+            resetExamScreen();
+        }
+
+        function finishExam() {
+            clearInterval(examTimerInterval);
+            
+            // Calcular puntuación
+            examScore = 0;
+            const topicPerformance = {};
+            
+            for (let i = 0; i < examData.length; i++) {
+                const question = examData[i];
+                const selectedOption = examSelectedOptions[i];
+                
+                if (selectedOption === question.correct) {
+                    examScore++;
+                }
+                
+                // Registrar rendimiento por tema
+                if (!topicPerformance[question.topic]) {
+                    topicPerformance[question.topic] = { correct: 0, total: 0 };
+                }
+                topicPerformance[question.topic].total++;
+                if (selectedOption === question.correct) {
+                    topicPerformance[question.topic].correct++;
+                }
+            }
+            
+            // Ocultar contenido del examen
+            document.getElementById('exam-content').style.display = 'none';
+            
+            // Mostrar resultados
+            document.getElementById('exam-results').style.display = 'block';
+            document.getElementById('exam-final-score').textContent = `Puntuación: ${examScore}/${examData.length}`;
+            
+            // Mensaje de desempeño
+            const percentage = (examScore / examData.length) * 100;
+            let message = "";
+            if (percentage >= 80) {
+                message = "¡Excelente! Estás bien preparado para el examen real.";
+            } else if (percentage >= 60) {
+                message = "Buen trabajo, pero hay áreas que necesitan mejora.";
+            } else {
+                message = "Necesitas más preparación. Te recomendamos estudiar más antes del examen real.";
+            }
+            document.getElementById('exam-performance-message').textContent = message;
+            
+            // Generar recomendaciones basadas en el rendimiento por tema
+            let recommendations = "Basado en tus resultados, te recomendamos repasar los siguientes temas:";
+            for (const topic in topicPerformance) {
+                const performance = topicPerformance[topic];
+                const topicPercentage = (performance.correct / performance.total) * 100;
+                if (topicPercentage < 70) {
+                    recommendations += `\n• ${topic}`;
+                }
+            }
+            
+            if (recommendations === "Basado en tus resultados, te recomendamos repasar los siguientes temas:") {
+                recommendations += "\n¡Felicidades! Tienes un buen dominio de todos los temas.";
+            }
+            
+            document.getElementById('exam-recommendations').textContent = recommendations;
+            
+            // Actualizar estadísticas
+            userStats.totalQuestions += examData.length;
+            userStats.correctAnswers += examScore;
+            userStats.gamesPlayed++;
+            saveStats();
+        }
+
+        function resetExamScreen() {
+            // Ocultar resultados
+            document.getElementById('exam-results').style.display = 'none';
+            
+            // Mostrar nuevamente la información inicial
+            document.querySelector('.exam-info').style.display = 'block';
+        }
+
+        // Función para inicializar el simulador de célula
+        function initializeCellSimulator() {
+            const diagram = document.getElementById('cell-diagram');
+            const infoContainer = document.getElementById('cell-organelle-info-container');
+            const legend = document.getElementById('cell-legend');
+            
+            // Crear elementos para cada orgánulo
+            cellOrganelles.forEach(organelle => {
+                // Crear el orgánulo en el diagrama
+                const organelleElement = document.createElement('div');
+                organelleElement.className = `organelle ${organelle.class}`;
+                organelleElement.id = `cell-organelle-${organelle.id}`;
+                organelleElement.style.backgroundColor = organelle.color;
+                organelleElement.innerHTML = `<span>${organelle.name}</span>`;
+                
+                // Añadir evento de clic
+                organelleElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cellShowOrganelleInfo(organelle.id);
+                });
+                
+                diagram.appendChild(organelleElement);
+                
+                // Crear elemento de información
+                const infoElement = document.createElement('div');
+                infoElement.className = 'organelle-info';
+                infoElement.id = `cell-info-${organelle.id}`;
+                infoElement.innerHTML = organelle.description;
+                infoContainer.appendChild(infoElement);
+                
+                // Crear elemento en la leyenda
+                const legendItem = document.createElement('div');
+                legendItem.className = 'cell-legend-item';
+                legendItem.innerHTML = `
+                    <div class="cell-color-box" style="background-color: ${organelle.color};"></div>
+                    <span>${organelle.name}</span>
+                `;
+                legendItem.addEventListener('click', () => {
+                    cellShowOrganelleInfo(organelle.id);
+                });
+                legend.appendChild(legendItem);
+            });
+            
+            // Añadir evento de clic al diagrama para resetear
+            diagram.addEventListener('click', (e) => {
+                if (e.target === diagram) {
+                    cellResetDiagram();
+                }
+            });
+        }
+
+        // Funciones del simulador de célula
+        function cellShowOrganelleInfo(organelleId) {
+            // Ocultar mensaje inicial
+            document.getElementById('cell-initial-message').style.display = 'none';
+            
+            // Ocultar toda la información primero
+            document.querySelectorAll('#cell-organelle-info-container .organelle-info').forEach(info => {
+                info.classList.remove('active');
+            });
+            
+            // Mostrar la información del orgánulo seleccionado
+            const infoElement = document.getElementById(`cell-info-${organelleId}`);
+            if (infoElement) {
+                infoElement.classList.add('active');
+                
+                // Resaltar el orgánulo en el diagrama
+                document.querySelectorAll('#cell-diagram .organelle').forEach(org => {
+                    org.style.opacity = '0.7';
+                    org.style.transform = 'scale(1)';
+                    org.classList.remove('cell-highlight');
+                });
+                
+                const organelleElement = document.getElementById(`cell-organelle-${organelleId}`);
+                organelleElement.style.opacity = '1';
+                organelleElement.style.transform = 'scale(1.2)';
+                organelleElement.style.zIndex = '10';
+                organelleElement.classList.add('cell-highlight');
+                
+                // Desplazar el panel de información hacia el elemento activo
+                infoElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function cellShowAllInfo() {
+            // Ocultar mensaje inicial
+            document.getElementById('cell-initial-message').style.display = 'none';
+            
+            document.querySelectorAll('#cell-organelle-info-container .organelle-info').forEach(info => {
+                info.classList.add('active');
+            });
+            
+            // Restablecer apariencia de todos los orgánulos
+            document.querySelectorAll('#cell-diagram .organelle').forEach(org => {
+                org.style.opacity = '1';
+                org.style.transform = 'scale(1)';
+                org.style.zIndex = '2';
+                org.classList.remove('cell-highlight');
+            });
+        }
+
+        function cellHighlightAll() {
+            document.querySelectorAll('#cell-diagram .organelle').forEach(org => {
+                org.classList.add('cell-highlight');
+            });
+        }
+
+        function cellResetDiagram() {
+            // Mostrar mensaje inicial
+            document.getElementById('cell-initial-message').style.display = 'block';
+            
+            document.querySelectorAll('#cell-organelle-info-container .organelle-info').forEach(info => {
+                info.classList.remove('active');
+            });
+            
+            document.querySelectorAll('#cell-diagram .organelle').forEach(org => {
+                org.style.opacity = '1';
+                org.style.transform = 'scale(1)';
+                org.style.zIndex = '2';
+                org.classList.remove('cell-highlight');
+            });
+            
+            // Desplazar hacia el mensaje inicial
+            document.getElementById('cell-initial-message').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Funciones de zoom para el simulador de célula
+        function cellZoomIn() {
+            if (cellCurrentZoom < 1.5) {
+                cellCurrentZoom += 0.1;
+                cellApplyZoom();
+            }
+        }
+
+        function cellZoomOut() {
+            if (cellCurrentZoom > 0.7) {
+                cellCurrentZoom -= 0.1;
+                cellApplyZoom();
+            }
+        }
+
+        function cellResetZoom() {
+            cellCurrentZoom = 1;
+            cellApplyZoom();
+        }
+
+        function cellApplyZoom() {
+            const diagram = document.getElementById('cell-diagram');
+            diagram.style.transform = `scale(${cellCurrentZoom})`;
+        }
+
+        // Inicializar la aplicación
+        window.onload = function() {
+            // Cargar estadísticas al inicio
+            loadStats();
+        };
+    </script>
+</body>
+</html>

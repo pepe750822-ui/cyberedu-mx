@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador IPN 2025 - PRO Final</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #050510;
+            --bg-card: rgba(15, 15, 35, 0.7);
+            --cyber-primary: #ffcc00;
+            --cyber-secondary: #ff00ff;
+            --cyber-accent: #00ff9d;
+            --cyber-warning: #ffcc00;
+            --cyber-danger: #ff3366;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --ipn-maroon: #800000;
+            --ipn-gold: #c5b358;
+            --transition-norm: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 20% 20%, rgba(128, 0, 0, 0.1) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(197, 179, 88, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .ipn-header {
+            background: linear-gradient(135deg, var(--ipn-maroon) 0%, #4a0000 100%);
+            padding: 2rem;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--ipn-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #fff, var(--ipn-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .subject-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: var(--transition-norm);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--ipn-gold);
+            box-shadow: 0 0 20px rgba(197, 179, 88, 0.2);
+        }
+
+        .subject-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--subject-color);
+        }
+
+        .subject-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .q-count {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--subject-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--subject-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0a0a1a;
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            padding: 2.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 0.8rem;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--ipn-gold);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 255, 157, 0.15);
+            border-color: var(--cyber-accent);
+        }
+
+        .option-btn.incorrect {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: var(--cyber-danger);
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            font-weight: 800;
+            color: var(--ipn-gold);
+        }
+
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+            border-left: 6px solid var(--ipn-gold);
+        }
+
+        .feedback-card p {
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background: var(--ipn-gold);
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(197, 179, 88, 0.4);
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header class="ipn-header animate-fade">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="color: var(--ipn-gold); font-size: 2.5rem;"></i>
+                <div>
+                    <h1 class="gradient-text" style="font-family: 'Outfit', sans-serif; font-size: 1.8rem;">SIMULADOR
+                        IPN 2025</h1>
+                    <p style="font-size: 0.75rem; color: var(--ipn-gold); letter-spacing: 3px; font-weight: 800;">
+                        VERSIÓN PROFESIONAL</p>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item"><i class="fas fa-check-double"></i> 10 Materias Activas</div>
+            </div>
+        </header>
+
+        <main id="dashboard" class="animate-fade">
+            <div id="subjects-grid" class="subjects-grid"></div>
+        </main>
+    </div>
+
+    <div id="modal-overlay" class="overlay">
+        <div id="modal-content" class="modal-content">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modal-view"></div>
+        </div>
+    </div>
+
+    <script>
+        const subjects = {
+            'matematicas': {
+                name: "Matemáticas", icon: "fa-calculator", color: "#00ff9d",
+                quiz: [
+                    {
+                        q: "Una persona caminó durante media hora y luego consiguió un aventón que duró la tercera parte de una hora. ¿Qué parte de una hora duró el viaje completo?", options: ["3/2", "5/6", "4/3", "8/6"], correct: 1,
+                        rationale: "PASO A PASO: Media hora equivale a 1/2. La tercera parte de una hora es 1/3. Sumamos ambas fracciones: 1/2 + 1/3. Buscamos el común denominador (6): 3/6 + 2/6 = 5/6. En minutos: 30 min + 20 min = 50 min. Como la hora tiene 60 min, la fracción es 50/60, que simplificada es 5/6 de una hora."
+                    },
+                    {
+                        q: "Es el polígono que se forma por la intersección de tres segmentos y la suma de sus ángulos interiores es de 180º.", options: ["Cuadrilátero", "Pentágono", "Heptágono", "Triángulo"], correct: 3,
+                        rationale: "EXPLICACIÓN: Por definición geométrica, un triángulo es la figura formada por 3 lados. Además, existe un teorema fundamental que establece que la suma de los ángulos internos de cualquier triángulo en geometría euclidiana es siempre exactamente 180º."
+                    },
+                    {
+                        q: "Es el teorema que enuncia: El cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos.", options: ["Arquímedes", "Euclides", "Pitágoras", "Tales"], correct: 2,
+                        rationale: "DETALLE: El Teorema de Pitágoras es una relación fundamental. Se expresa como c² = a² + b², donde 'c' es la hipotenusa (el lado más largo opuesto al ángulo recto) y 'a', 'b' son los catetos de un triángulo rectángulo."
+                    },
+                    {
+                        q: "¿Cuál es el valor de 'x' en la ecuación 3x - 11 = x - 7?", options: ["x = 2", "x = 1", "x = 4/7", "x = 1/2"], correct: 0,
+                        rationale: "RESOLUCIÓN: Agrupamos términos con 'x' de un lado y constantes del otro: 3x - x = -7 + 11. Esto resulta en 2x = 4. Al despejar la incógnita dividiendo entre 2, obtenemos x = 4 / 2, por lo tanto, x = 2."
+                    },
+                    {
+                        q: "Si la arista de un cubo mide 3m, ¿cuál es su área total?", options: ["9m²", "18m²", "54m²", "27m²"], correct: 2,
+                        rationale: "CÁLCULO: Un cubo tiene 6 caras cuadradas iguales. El área de una cara es arista² = 3m * 3m = 9m². El área total es la suma de las 6 caras: 6 * 9m² = 54m². No confundir con el volumen, que sería 3³ = 27m³."
+                    },
+                    {
+                        q: "En un hexágono regular, ¿cuánto suman sus ángulos interiores?", options: ["180°", "360°", "540°", "720°"], correct: 3,
+                        rationale: "FÓRMULA: La suma de los ángulos internos de un polígono de 'n' lados es S = (n - 2) * 180°. Para un hexágono (n=6): S = (6 - 2) * 180° = 4 * 180° = 720°. Cada ángulo interno mide 720/6 = 120°."
+                    },
+                    {
+                        q: "¿Cuál es el resultado de la operación: 3/4 + 1/2 - 1/8?", options: ["9/8", "7/8", "5/8", "3/8"], correct: 0,
+                        rationale: "OPERACIÓN: Convertimos todo a octavos (mínimo común múltiplo). 3/4 = 6/8. 1/2 = 4/8. Entonces: 6/8 + 4/8 - 1/8. Sumamos los positivos: 10/8. Restamos el negativo: 10/8 - 1/8 = 9/8."
+                    },
+                    {
+                        q: "Si el 20% de un número es 40, ¿cuál es el número?", options: ["100", "150", "200", "250"], correct: 2,
+                        rationale: "REGLA DE TRES: Si el 20% es 40, el 100% es 'x'. x = (40 * 100) / 20. x = 4000 / 20 = 200. También se puede calcular dividiendo 40 entre el decimal 0.20, lo cual da directamente 200."
+                    },
+                    {
+                        q: "Simplifica la expresión: 5x + 3(x - 2)", options: ["8x - 2", "8x - 6", "5x + 3x - 2", "2x - 6"], correct: 1,
+                        rationale: "ÁLGEBRA: Primero aplicamos la propiedad distributiva al paréntesis: 3 * x = 3x y 3 * (-2) = -6. La expresión queda 5x + 3x - 6. Sumamos los términos semejantes: 5x + 3x = 8x. Resultado final: 8x - 6."
+                    },
+                    {
+                        q: "Un ángulo que mide 120° se clasifica como:", options: ["Agudo", "Recto", "Obtuso", "Llano"], correct: 2,
+                        rationale: "CLASIFICACIÓN: Los ángulos se nombran según su apertura. Agudo (<90°), Recto (=90°), Obtuso (>90° y <180°) y Llano (=180°). Como 120° está entre 90 y 180, es un ángulo obtuso."
+                    },
+                    {
+                        q: "¿Cuál es el área de un círculo con radio de 5cm? (Usa π ≈ 3.14)", options: ["15.7 cm²", "31.4 cm²", "78.5 cm²", "100 cm²"], correct: 2,
+                        rationale: "GEOMETRÍA: La fórmula del área es A = π * r². Sustituyendo los valores: A = 3.14 * (5cm)². Primero elevamos al cuadrado: 5 * 5 = 25. Luego multiplicamos por pi: 3.14 * 25 = 78.5 cm²."
+                    },
+                    {
+                        q: "Calcula la pendiente de la recta que pasa por (1, 2) y (3, 6):", options: ["2", "4", "3", "1/2"], correct: 0,
+                        rationale: "PENDIENTE: La fórmula es m = (y2 - y1) / (x2 - x1). Sustituimos los puntos: m = (6 - 2) / (3 - 1). m = 4 / 2. La inclinación o pendiente resultante es m = 2."
+                    },
+                    {
+                        q: "¿Cuál es el resultado de 2⁴?", options: ["8", "12", "16", "32"], correct: 2,
+                        rationale: "POTENCIACIÓN: La potencia indica cuántas veces multiplicamos la base por sí misma. 2⁴ = 2 * 2 * 2 * 2. 2 * 2 = 4; 4 * 2 = 8; 8 * 2 = 16. No confundir con 2 * 4 = 8."
+                    },
+                    {
+                        q: "En la sucesión 2, 5, 10, 17, ..., ¿cuál es el siguiente término?", options: ["24", "26", "28", "30"], correct: 1,
+                        rationale: "LÓGICA: Analizamos la diferencia entre términos consecutivos. Del 2 al 5 hay +3. Del 5 al 10 hay +5. Del 10 al 17 hay +7. Las diferencias son números impares crecientes (3, 5, 7). El siguiente salto debe ser +9. 17 + 9 = 26."
+                    },
+                    {
+                        q: "Resuelve para 'y': 2y/5 = 10", options: ["y = 4", "y = 25", "y = 20", "y = 50"], correct: 1,
+                        rationale: "DESPEJE: Para dejar sola a la 'y', pasamos el 5 multiplicando al otro lado: 2y = 10 * 5, es decir, 2y = 50. Luego pasamos el 2 dividiendo: y = 50 / 2, lo que resulta en y = 25."
+                    },
+                    {
+                        q: "El valor absoluto de -15 es:", options: ["15", "-15", "0", "1"], correct: 0,
+                        rationale: "CONCEPTO: El valor absoluto representa la distancia de un número al cero en la recta numérica, sin tener en cuenta su signo. Es por definición siempre un valor no negativo. |-15| = 15."
+                    },
+                    {
+                        q: "¿Cuántos segundos hay en 1.5 horas?", options: ["3600", "5400", "7200", "9000"], correct: 1,
+                        rationale: "CONVERSIÓN: Una hora tiene 3600 segundos (60 min * 60 seg). Media hora (0.5) tiene 1800 segundos. Sumamos 3600 + 1800 = 5400 segundos. También se puede multiplicar directamente 1.5 * 3600."
+                    },
+                    {
+                        q: "Si compro 3 cuadernos por $45, ¿cuánto pagaré por 7 cuadernos?", options: ["$90", "$105", "$115", "$120"], correct: 1,
+                        rationale: "PROPORCIÓN: Primero hallamos el precio unitario dividiendo el costo total entre la cantidad: 45 / 3 = $15 por cuaderno. Luego multiplicamos este precio por la nueva cantidad: 15 * 7 = $105."
+                    },
+                    {
+                        q: "El complemento de un ángulo de 35° es:", options: ["55°", "65°", "145°", "155°"], correct: 0,
+                        rationale: "ÁNGULOS: Dos ángulos son complementarios si su suma es 90°. Para hallar el complemento de 35°, restamos este valor a 90°: 90° - 35° = 55°."
+                    },
+                    {
+                        q: "¿Cuál es la raíz cuadrada de 144?", options: ["10", "11", "12", "14"], correct: 2,
+                        rationale: "RADICACIÓN: Buscamos un número que multiplicado por sí mismo nos dé 144. Al verificar 12 * 12 obtenemos 144, por lo tanto la raíz cuadrada es 12."
+                    },
+                    {
+                        q: "Un triángulo isósceles tiene:", options: ["3 lados iguales", "2 lados iguales", "0 lados iguales", "Un ángulo de 90°"], correct: 1,
+                        rationale: "PROPIEDAD: Según la longitud de sus lados, un triángulo es Equilátero (3 iguales), Isósceles (al menos 2 iguales) o Escaleno (ningún lado igual). Por definición, el isósceles posee 2 lados de igual medida."
+                    },
+                    {
+                        q: "Resuelve: (x + 3)²", options: ["x² + 9", "x² + 3x + 9", "x² + 6x + 9", "2x + 6"], correct: 2,
+                        rationale: "PRODUCTOS NOTABLES: Es un binomio al cuadrado. La regla es: el cuadrado del primero (x²) más el doble producto del primero por el segundo (2 * x * 3 = 6x) más el cuadrado del segundo (3² = 9). Resultado: x² + 6x + 9."
+                    },
+                    {
+                        q: "¿Cuál es el MCD de 12 y 18?", options: ["2", "3", "6", "12"], correct: 2,
+                        rationale: "ARITMÉTICA: El Máximo Común Divisor (MCD) es el número más grande que divide exactamente a ambos. Divisores de 12: {1,2,3,4,6,12}. Divisores de 18: {1,2,3,6,9,18}. El mayor común es el 6."
+                    },
+                    {
+                        q: "En el sistema de coordenadas, el eje horizontal se llama:", options: ["Eje de las ordenadas", "Eje de las abscisas", "Origen", "Cuadrante"], correct: 1,
+                        rationale: "NOMENCLATURA: En un plano cartesiano, el eje X (horizontal) se denomina eje de las abscisas, mientras que el eje Y (vertical) se conoce como eje de las ordenadas."
+                    },
+                    {
+                        q: "Observa la figura (imagina un ángulo de 180° dividido en x y 150°) y determina el valor de 'x':", options: ["10°", "20°", "30°", "45°"], image: "img/mate_q25.png", correct: 2,
+                        rationale: "DEDUCCIÓN: Los ángulos sobre una línea recta suman 180° (suplementarios). Si un ángulo es de 150°, su suplemento 'x' debe ser 180° - 150° = 30°. (Recuerda subir la imagen como img/mate_q25.png)."
+                    },
+                    {
+                        q: "Simplifica: (2x³)²", options: ["4x⁵", "4x⁶", "2x⁶", "4x⁹"], correct: 1,
+                        rationale: "LEYES DE EXPONENTES: Elevamos cada factor al cuadrado. 2² = 4. Para (x³)², multiplicamos los exponentes (potencia de una potencia): 3 * 2 = 6. Por lo tanto, queda 4x⁶."
+                    },
+                    {
+                        q: "¿Cuál es el suplemento de un ángulo de 80°?", options: ["10°", "100°", "110°", "280°"], correct: 1,
+                        rationale: "GEOMETRÍA: Dos ángulos son suplementarios cuando su suma es 180°. El suplemento de 80° es el valor faltante para llegar a 180°: 180° - 80° = 100°."
+                    },
+                    {
+                        q: "¿Cuál de estos números es primo?", options: ["9", "15", "17", "21"], correct: 2,
+                        rationale: "TEORÍA DE NÚMEROS: Un número primo es aquel que solo tiene dos divisores: el 1 y él mismo. 9 (divisible por 3), 15 (por 3 y 5), 21 (por 3 y 7) son compuestos. 17 solo tiene a 1 y 17 como divisores."
+                    },
+                    {
+                        q: "Resuelve la proporción 2/x = 6/15", options: ["x = 5", "x = 4", "x = 3", "x = 10"], correct: 0,
+                        rationale: "PROPORCIONES: Aplicamos productos cruzados: 2 * 15 = 6 * x. 30 = 6x. Despejamos 'x' dividiendo: x = 30 / 6 = 5. También se observa que 6 es el triple de 2, por lo que 15 debe ser el triple de 'x'."
+                    },
+                    {
+                        q: "El área de un rectángulo con base 10 y altura 4 es:", options: ["14", "20", "28", "40"], correct: 3,
+                        rationale: "CÁLCULO DE ÁREA: La superficie plana de un rectángulo se obtiene con la fórmula A = Base * Altura. Multiplicando los valores dados tenemos 10 * 4 = 40 unidades cuadradas."
+                    }
+                ]
+            },
+            'fisica': {
+                name: "Física", icon: "fa-atom", color: "#9900ff",
+                quiz: [
+                    { q: "¿Cuál es el principio en el que se basa el funcionamiento del gato hidráulico?", options: ["Bernoulli", "Torricelli", "Arquímedes", "Pascal"], correct: 3, rationale: "El Principio de Pascal establece que la presión ejercida en un fluido encerrado se transmite con la misma intensidad en todas las direcciones. Gracias a esto, una fuerza pequeña en un área reducida puede levantar un peso grande en un área mayor." },
+                    { q: "El proceso por el que se transfiere la energía térmica mediante colisiones moleculares.", options: ["Convección", "Conducción", "Radiación", "Reflexión"], correct: 1, rationale: "La conducción es el mecanismo de transferencia de calor en sólidos donde la vibración de los átomos se transmite a los vecinos por contacto directo, sin desplazamiento macroscópico de materia." }
+                ]
+            },
+            'biologia': {
+                name: "Biología", icon: "fa-dna", color: "#ff9900",
+                quiz: [
+                    { q: "Nombre que recibe la variedad de seres vivos y sus relaciones.", options: ["Diversidad", "Ecosistema", "Biodiversidad", "Ambiente"], correct: 2, rationale: "La biodiversidad o diversidad biológica incluye no solo la cantidad de especies, sino también la variedad genética y la diversidad de ecosistemas en los que habitan." }
+                ]
+            },
+            'quimica': {
+                name: "Química", icon: "fa-flask", color: "#ff3366",
+                quiz: [
+                    { q: "Es la unidad química que mide la cantidad de sustancia:", options: ["Ion", "Mol", "Molécula", "Partícula"], correct: 1, rationale: "El mol es una de las unidades básicas del Sistema Internacional. Define una cantidad fija de partículas (6.022 x 10²³) llamada número de Avogadro." }
+                ]
+            },
+            'espanol': {
+                name: "Español", icon: "fa-language", color: "#9966ff",
+                quiz: [
+                    { q: "Los artículos de opinión son textos ________ breves.", options: ["descriptivos", "expositivos", "comparativos", "argumentativos"], correct: 3, rationale: "Son argumentativos porque el autor presenta su juicio crítico y argumentos sólidos sobre un suceso reciente para orientar o influir en la opinión del lector." }
+                ]
+            },
+            'historia': {
+                name: "Historia", icon: "fa-landmark", color: "#ffcc00",
+                quiz: [
+                    { q: "¿En qué fecha se conmemora el Día Internacional de la Mujer?", options: ["8 de marzo", "6 de mayo", "18 de marzo", "15 de mayo"], correct: 0, rationale: "Institucionalizado por la ONU en 1975, el 8 de marzo recuerda la lucha de las mujeres por su participación en la sociedad y su desarrollo íntegro." }
+                ]
+            },
+            'geografia': {
+                name: "Geografía", icon: "fa-globe-americas", color: "#00cc99",
+                quiz: [
+                    { q: "¿Qué anuncia la teoría de la deriva continental?", options: ["Pangea", "Sismos", "Mareas", "Climas"], correct: 0, rationale: "Propuesta por Alfred Wegener, afirma que hace millones de años existió un súper continente único llamado Pangea que se fragmentó en los actuales continentes." }
+                ]
+            },
+            'civica': {
+                name: "Cívica", icon: "fa-balance-scale", color: "#ff6666",
+                quiz: [
+                    { q: "¿Cuál es la disciplina filosófica que estudia los valores?", options: ["Filosofía", "Axiología", "Ética", "Moral"], correct: 1, rationale: "La axiología es la rama de la filosofía que se encarga de analizar la naturaleza y esencia de los valores, tanto positivos como negativos (antivalores)." }
+                ]
+            },
+            'hab_mat': {
+                name: "H. Matemática", icon: "fa-brain", color: "#ff00ff",
+                quiz: [
+                    { q: "Si 50 latas de aceite valen $300, ¿cuántas compras con $4200?", options: ["670", "680", "690", "700"], correct: 3, rationale: "Dividimos 4200 entre el costo de una lata (300/50 = 6). 4200 / 6 = 700 latas." }
+                ]
+            },
+            'hab_verb': {
+                name: "H. Verbal", icon: "fa-comments", color: "#00f3ff",
+                quiz: [
+                    { q: "¿Cuál es el antónimo de 'Prevenido'?", options: ["Desprevenido", "Atento", "Rápido", "Lento"], correct: 0, rationale: "El antónimo busca el significado opuesto. Prevenido significa preparado; desprevenido es alguien a quien le falta esa preparación." }
+                ]
+            }
+        };
+
+        let currentQ = 0; let score = 0; let activeQuiz = []; let activeSub = '';
+
+        function renderDashboard() {
+            const grid = document.getElementById('subjects-grid'); grid.innerHTML = '';
+            for (const key in subjects) {
+                const s = subjects[key];
+                const card = document.createElement('div');
+                card.className = 'subject-card animate-fade';
+                card.style.setProperty('--subject-color', s.color);
+                card.innerHTML = `
+                    <div class="subject-icon"><i class="fas ${s.icon}"></i></div>
+                    <h3>${s.name}</h3>
+                    <div class="q-count">${s.quiz.length} PREGUNTAS</div>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                `;
+                card.onclick = () => startSubject(key);
+                grid.appendChild(card);
+            }
+        }
+
+        function startSubject(key) {
+            activeSub = key; activeQuiz = subjects[key].quiz; currentQ = 0; score = 0;
+            showQuestion(); document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function showQuestion() {
+            const q = activeQuiz[currentQ]; const view = document.getElementById('modal-view');
+            view.innerHTML = `
+                <div class="animate-fade">
+                    <p style="text-transform:uppercase; font-size:0.75rem; font-weight:800; color:var(--ipn-gold); margin-bottom:1.5rem; letter-spacing:1px;">
+                        <i class="fas fa-book-open"></i> ${subjects[activeSub].name} • Pregunta ${currentQ + 1} de ${activeQuiz.length}
+                    </p>
+                    <h2 style="font-size:1.35rem; margin-bottom:2rem; line-height:1.4;">${q.q}</h2>
+                    ${q.image ? `<div style="text-align:center; margin-bottom:1.5rem; background:rgba(255,255,255,0.05); padding:1rem; border-radius:12px;"><img src="${q.image}" alt="Imagen de soporte" style="max-width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.1);"></div>` : ''}
+                    <div id="options-container">
+                        ${q.options.map((opt, i) => `<button class="option-btn" onclick="checkAns(${i}, this)"><span class="option-letter">${String.fromCharCode(65 + i)}</span><span>${opt}</span></button>`).join('')}
+                    </div>
+                    <div id="feedback" style="display:none;" class="animate-fade"></div>
+                </div>
+            `;
+        }
+
+        function checkAns(idx, btn) {
+            if (document.getElementById('feedback').style.display === 'block') return;
+            const q = activeQuiz[currentQ]; const isCorrect = idx === q.correct; if (isCorrect) score++;
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach((b, i) => { if (i === q.correct) b.classList.add('correct'); else if (i === idx) b.classList.add('incorrect'); b.style.pointerEvents = 'none'; });
+            const fed = document.getElementById('feedback'); fed.style.display = 'block';
+            fed.innerHTML = `
+                <div class="feedback-card">
+                    <p style="font-weight:900; color:${isCorrect ? 'var(--cyber-accent)' : 'var(--cyber-danger)'}; margin-bottom:0.8rem; text-transform:uppercase; letter-spacing:1px;">
+                        <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> 
+                        ${isCorrect ? '¡Excelente! Respuesta Correcta' : 'Lo sentimos, es Incorrecto'}
+                    </p>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; font-weight:700;">JUSTIFICACIÓN PROFESIONAL:</p>
+                    <p style="font-size:1rem; color:#fff;">${q.rationale}</p>
+                    <div style="margin-top:1.5rem; text-align:right;">
+                        <button class="btn-primary" onclick="nextQ()">${currentQ === activeQuiz.length - 1 ? 'Ver Resultados' : 'Continuar <i class="fas fa-arrow-right"></i>'}</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function nextQ() { currentQ++; if (currentQ < activeQuiz.length) showQuestion(); else showFinalResults(); }
+
+        function showFinalResults() {
+            const view = document.getElementById('modal-view'); const pct = (score / activeQuiz.length) * 100;
+            view.innerHTML = `
+                <div style="text-align:center;" class="animate-fade">
+                    <i class="fas fa-trophy" style="font-size:4rem; color:var(--ipn-gold); margin-bottom:1.5rem;"></i>
+                    <h2 style="font-size:2rem; margin-bottom:1rem;">Simulacro Finalizado</h2>
+                    <div style="font-size:4rem; font-weight:900; color:var(--ipn-gold); margin-bottom:0.5rem;">${pct.toFixed(0)}%</div>
+                    <p style="font-size:1.2rem; margin-bottom:2.5rem; color:var(--text-muted);">Has logrado obtener <strong>${score} de ${activeQuiz.length}</strong> aciertos correctos en esta materia.</p>
+                    <button class="btn-primary" onclick="closeModal()">REGRESAR AL PANEL</button>
+                </div>
+            `;
+        }
+
+        function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); }
+        window.onload = renderDashboard;
+    </script>
+</body>
+
+</html>

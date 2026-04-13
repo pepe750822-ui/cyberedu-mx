@@ -1,5 +1,6 @@
 {
   "buildCommand": "NODE_OPTIONS=--max-old-space-size=4096 npm run build",
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/sw.js",
@@ -21,11 +22,19 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/(ingles|imagenes|assets|ecoems2026|guiaspolitecnico|libro|studio|material|videos|quiz)/(.*)",
+      "destination": "/$1/$2"
+    },
+    {
+      "source": "/(guias|contacto|ingles|curso-udemy|preguntas-frecuentes-ecoems|quienes-somos|INSTRUCTIVO-2026\\.pdf)",
+      "destination": "/$1"
+    },
+    {
       "source": "/(google[a-z0-9]+\\.html|sitemap\\.xml|robots\\.txt|favicon\\.ico|.well-known/.*)",
       "destination": "/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
