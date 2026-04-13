@@ -2715,7 +2715,7 @@ const AITutor = () => {
     // /diagnostico - System diagnostics
     if (trimmed === '/diagnostico' || trimmed === '/diagnóstico') {
       setInput("");
-      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      const userMsg: Message = { role: "user", content: finalChatText, id: Date.now().toString() };
       const loadingId = (Date.now() + 1).toString();
       setMessages(prev => [...prev, userMsg, {
         role: "assistant" as const,
@@ -2889,7 +2889,7 @@ const AITutor = () => {
       // Inject context into the prompt and let AI handle it
       const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen ECOEMS.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
       // Fall through to normal AI processing with enriched prompt
-      const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+      const userMsg: Message = { role: "user", content: finalChatText, id: Date.now().toString() };
       setMessages(prev => [...prev, userMsg].slice(-20));
       setInput("");
       setIsStreaming(true);
@@ -2987,7 +2987,7 @@ const AITutor = () => {
     }
 
 
-    const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+    const userMsg: Message = { role: "user", content: finalChatText, id: Date.now().toString() };
     setMessages(prev => [...prev, userMsg].slice(-20));
     setInput("");
     setIsStreaming(true);
@@ -3185,8 +3185,8 @@ const AITutor = () => {
           addMetric({
             id: assistantId,
             timestamp: new Date().toISOString(),
-            question: text.trim().slice(0, 200),
-            questionTopic: extractTopic(text),
+            question: finalChatText.slice(0, 200),
+            questionTopic: extractTopic(finalChatText),
             responseTime,
             tokensInput: inputTokens,
             tokensOutput: outputTokens,
@@ -3247,7 +3247,7 @@ const AITutor = () => {
         }
 
         localStorage.setItem('cyberedu_pending_question', JSON.stringify({
-          question: text.trim(),
+          question: finalChatText,
           timestamp: Date.now()
         }));
         toast.info("Sin tokens disponibles. Tu pregunta está guardada — responderemos en cuanto recargues.");
