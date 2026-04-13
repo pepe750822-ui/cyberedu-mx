@@ -693,15 +693,15 @@ function parseSimulatorsFromContent(content: string): { simulators: any[]; clean
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
-  const regex = /\[IMG:([a-z0-9-]+)\]/g;
+  const regex = /\[IMG:([a-zA-Z0-9-_]+)\]/gi;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const key = m[1];
+    const key = m[1].toLowerCase();
     const img = imageByKey[key];
     if (img && !found.find((f) => f.key === key)) found.push(img);
   }
   // Elimina los tokens del contenido visible
-  const cleanContent = content.replace(/\[IMG:[a-z0-9-]+\]/g, "").trim();
+  const cleanContent = content.replace(/\[IMG:[a-zA-Z0-9-_]+\]/gi, "").trim();
   return { eduImages: found, cleanContent };
 }
 
@@ -757,6 +757,11 @@ function stripStreamingBlocks(content: string): string {
   cleaned = cleaned.replace(/!\[.*?\]\((.*?)\)?/g, (match) => {
     if (match.endsWith(')')) return match;
     return `\n\n> 🖼️ *Cargando imagen...*\n\n`;
+  });
+
+  // Ocultar tags de imagen interactiva [IMG:clave] 
+  cleaned = cleaned.replace(/\[IMG:[a-zA-Z0-9-_]*\]?/gi, () => {
+    return `\n\n> 🖼️ *Procesando imagen inteligente...*\n\n`;
   });
 
   return cleaned.trim();

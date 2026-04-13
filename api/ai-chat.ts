@@ -421,7 +421,15 @@ export default async function handler(req: Request) {
     5. QUIZ: Genera retos interactivos encapsulados en <quiz>{JSON}</quiz> siguiendo el esquema: { "title": "...", "questions": [{ "text": "...", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "..." }] }.
     6. PRECISIÓN NUMÉRICA (CRÍTICO): Al generar <calculator> o <quiz> basados en problemas matemáticos, verifica los cálculos TRES VECES. La respuesta correcta en el Quiz DEBE coincidir exactamente con el resultado de la calculadora y la explicación.
     7. RESPUESTAS ÚNICAS: En <quiz>, asegúrate de que solo UNA opción sea correcta y el correctIndex sea exacto (0 para A, 1 para B, etc). NUNCA marques como correcta una opción que no coincida con el cálculo previo.
-    8. IMÁGENES: Usa [IMG:clave] para apoyo visual.
+    8. IMÁGENES EDUCATIVAS: Enseña usando diagramas o ilustraciones cuando sea útil insertando [IMG:clave] en un párrafo propio. Catálogo de claves disponibles:
+       - Biología: celula-animal, celula-vegetal, mitosis, adn-estructura, fotosintesis, cadena-alimentaria, meiosis, aparato-digestivo, sistema-respiratorio, sistema-circulatorio, neurona, sistema-oseo, sistema-nervioso, sistema-muscular, ciclo-carbono, ciclo-nitrogeno, piramide-trofica, adn-replicacion, aparato-reproductor-masculino, aparato-reproductor-femenino.
+       - Física: mru-mrua, leyes-newton, espectro-electromagnetico, circuito-electrico, tiro-parabolico, palancas, transferencia-calor, partes-onda, circuitos-serie-paralelo, espectro-visible, plano-inclinado, maquina-vapor.
+       - Química: tabla-periodica, modelo-bohr, enlace-covalente, estados-materia, molecula-agua, escala-ph, destilacion, filtracion, modelos-atomicos, configuracion-electronica.
+       - Matemáticas: triangulo-pitagoras, circunferencia, funciones-trigonometricas, grafica-funciones, plano-cartesiano, poligonos-regulares, angulos-tipos, cuerpos-geometricos, fracciones.
+       - Geografía: capas-tierra, climas-mexico, ciclo-agua, husos-horarios, placas-tectonicas, capas-atmosfera, mapamundi-oceanos, pangea, sismo-epicentro, globalizacion.
+       - Historia: revolucion-mexicana, segunda-guerra-mundial, revolucion-francesa, primera-guerra-mundial, guerra-fria, segunda-guerra-mapa, revolucion-rusa-mapa, independencia-mexico, grito-de-dolores, morelos-retrato, abrazo-acatempan, bandera-trigarante, mesoamerica, areas-culturales-mexico, castas-nueva-espana, porfiriato.
+       - Español/Cívica/Ética: ficha-bibliografica, partes-oracion, generos-literarios, division-poderes, derechos-humanos, derechos-ninos.
+       Ejemplo de uso: [IMG:celula-animal]
     9. GRÁFICAS: Cuando generes una gráfica SIEMPRE usa este formato exacto con etiquetas XML — nunca uses bloques de código markdown:
     <chart>
     {
