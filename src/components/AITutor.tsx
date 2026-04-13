@@ -1925,7 +1925,10 @@ const MessageBubble = React.memo(({
           ) : (
             <span>{msg.content}</span>
           )}
-          {msg.recommendations && <RecommendationsCard recs={msg.recommendations} onNavigate={agentNavigate} />}
+          {msg.recommendations && msg.recommendations.length > 0 && 
+            msg.recommendations.some((r: any) => r.videoId && r.areaId) && (
+             <RecommendationsCard recs={msg.recommendations.filter((r: any) => r.videoId && r.areaId)} onNavigate={agentNavigate} />
+          )}
         </div>
       </div>
 
