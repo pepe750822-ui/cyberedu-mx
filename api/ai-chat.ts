@@ -1,7 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
-
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 // ─── Upstash Redis helpers (REST API, no package needed) ───────
@@ -235,16 +233,38 @@ export default async function handler(req: Request) {
     });
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  // Helper instead of SDK for Edge compatibility
+  const supabaseRequest = async (path: string, options: any = {}) => {
+    const url = `${SUPABASE_URL}/rest/v1/${path}`;
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        'apikey': SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation',
+        ...options.headers,
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return { data: null, error: err };
+    }
+    const data = await res.json();
+    return { data, error: null };
+  };
+
   const today = new Date().toISOString().split('T')[0];
 
   // 1. Fetch profile and check rate limit
+  const profileUrl = `profiles?id=eq.${userId}&select=*`;
   const [profileResult, rateLimit] = await Promise.all([
-    supabase.from('profiles').select('*').eq('id', userId).single(),
+    supabaseRequest(profileUrl),
     checkRateLimit(userId)
   ]);
 
-  const { data: profile, error: profileErr } = profileResult;
+  const profile = profileResult.data?.[0];
+  const profileErr = profileResult.error;
 
   if (profileErr || !profile) {
     return new Response(JSON.stringify({ error: 'Perfil no encontrado' }), {
@@ -276,29 +296,31 @@ export default async function handler(req: Request) {
   }
   // Rule 2: hasTokens -> descuenta 1 token y pasa
   else if ((profile.tokens || 0) > 0) {
-    await supabase.from('profiles').update({ 
-      tokens: Math.max(0, profile.tokens - 1),
-      updated_at: new Date().toISOString()
-    }).eq('id', userId);
+    await supabaseRequest(`profiles?id=eq.${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ 
+        tokens: Math.max(0, profile.tokens - 1),
+        updated_at: new Date().toISOString()
+      })
+    });
   } 
   // Rule 3: Límite diario (5 max)
   else {
-    const { data: usageData } = await supabase
-      .from('daily_usage')
-      .select('count')
-      .eq('user_id', userId)
-      .eq('date', localToday)
-      .single();
+    const { data: usageData } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
 
-    const currentCount = usageData?.count || 0;
+    const currentCount = usageData?.[0]?.count || 0;
     const dailyLimit = 5;
 
     if (currentCount < dailyLimit) {
-      await supabase.from('daily_usage').upsert({
-        user_id: userId,
-        date: localToday,
-        count: currentCount + 1
-      }, { onConflict: 'user_id, date' });
+      await supabaseRequest(`daily_usage`, {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({
+          user_id: userId,
+          date: localToday,
+          count: currentCount + 1
+        })
+      });
     } else {
       const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.`;
         
