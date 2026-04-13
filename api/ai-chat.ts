@@ -643,7 +643,7 @@ export default async function handler(req: Request) {
         'anthropic-beta': 'prompt-caching-2024-07-31',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: (() => {
@@ -653,6 +653,12 @@ export default async function handler(req: Request) {
             if (lastUserIdx !== -1) {
               const textContent = anthropicMessages[lastUserIdx].content;
               const isImage = file.type.startsWith('image/');
+              
+              // Map common types to Anthropic supported ones
+              let mediaType = file.type;
+              if (mediaType === 'image/jpg') mediaType = 'image/jpeg';
+              if (!isImage && mediaType.includes('pdf')) mediaType = 'application/pdf';
+
               anthropicMessages[lastUserIdx].content = [
                 { type: "text", text: textContent },
                 isImage 
@@ -660,7 +666,7 @@ export default async function handler(req: Request) {
                       type: "image", 
                       source: { 
                         type: "base64", 
-                        media_type: file.type, 
+                        media_type: mediaType as any, 
                         data: file.data 
                       } 
                     }
