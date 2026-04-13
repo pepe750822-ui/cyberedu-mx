@@ -145,36 +145,43 @@ const Lightbox: React.FC<{
 const ImageCard: React.FC<{
   image: EduImage;
   onClick: () => void;
-}> = ({ image, onClick }) => {
+  featured?: boolean;
+}> = ({ image, onClick, featured }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const areaColor = AREA_COLORS[image.area] || "text-primary bg-primary/10 border-primary/20";
 
   return (
     <div
-      className="group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/5 bg-slate-900/40 hover:border-white/20 transition-all duration-300"
+      className={cn(
+        "group relative cursor-zoom-in overflow-hidden rounded-2xl border transition-all duration-300 flex flex-col",
+        featured 
+          ? "border-primary/20 bg-slate-900/60 shadow-lg shadow-black/40 hover:border-primary/40 hover:shadow-primary/10" 
+          : "border-white/5 bg-slate-900/40 hover:border-white/20"
+      )}
       onClick={onClick}
     >
       {/* Loading skeleton */}
       {!loaded && !error && (
-        <div className="absolute inset-0 bg-slate-800/50 animate-pulse rounded-2xl" />
+        <div className="absolute inset-0 bg-slate-800/50 animate-pulse" />
       )}
 
       {/* Image */}
       {!error ? (
-        <img
-          src={getProxiedUrl(image.url)}
-          alt={image.title}
-          className={cn(
-            "w-full object-cover transition-all duration-500 h-44 bg-white",
-            loaded ? "opacity-100 group-hover:scale-105" : "opacity-0"
-          )}
-          style={{ objectPosition: "top" }}
-          onLoad={() => setLoaded(true)}
-          onError={() => { setError(true); setLoaded(true); }}
-        />
+        <div className={cn("w-full relative flex items-center justify-center p-3", featured ? "h-56 sm:h-64 bg-slate-100" : "h-44 bg-slate-100")}>
+          <img
+            src={getProxiedUrl(image.url)}
+            alt={image.title}
+            className={cn(
+              "max-w-full max-h-full object-contain transition-all duration-500 drop-shadow-sm",
+              loaded ? "opacity-100 group-hover:scale-105" : "opacity-0"
+            )}
+            onLoad={() => setLoaded(true)}
+            onError={() => { setError(true); setLoaded(true); }}
+          />
+        </div>
       ) : (
-        <div className="h-44 flex items-center justify-center bg-slate-800/50">
+        <div className={cn("flex items-center justify-center bg-slate-800/50", featured ? "h-56 sm:h-64" : "h-44")}>
           <p className="text-xs text-slate-500 text-center px-4">Imagen no disponible</p>
         </div>
       )}
@@ -188,16 +195,18 @@ const ImageCard: React.FC<{
       </div>
 
       {/* Footer */}
-      <div className="p-3 bg-slate-900/50 border-t border-white/5">
-        <div className="flex items-start justify-between gap-2">
-          <p className="text-xs font-bold text-white truncate">{image.title}</p>
-          <span className={cn("shrink-0 px-1.5 py-0.5 rounded text-[8px] font-black uppercase border", areaColor)}>
-            {image.area.split(" ")[0]}
-          </span>
+      <div className="p-3.5 bg-slate-900/80 border-t border-white/5 flex-1 flex flex-col justify-between backdrop-blur-sm z-10">
+        <div>
+          <div className="flex items-start justify-between gap-2 mb-1.5">
+            <p className="text-sm font-bold text-slate-200 line-clamp-1">{image.title}</p>
+            <span className={cn("shrink-0 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider border", areaColor)}>
+              {image.area.split(" ")[0]}
+            </span>
+          </div>
+          <p className={cn("text-slate-400 leading-relaxed", featured ? "text-xs line-clamp-3" : "text-[10px] line-clamp-2")}>
+            {image.description}
+          </p>
         </div>
-        <p className="text-[10px] text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">
-          {image.description}
-        </p>
       </div>
     </div>
   );
@@ -218,8 +227,9 @@ const EduImageViewer: React.FC<EduImageViewerProps> = ({ images, gallery = false
   if (images.length === 1) {
     return (
       <>
-        <div className="my-4 max-w-sm">
-          <ImageCard image={images[0]} onClick={() => openLightbox(0)} />
+        <div className="my-6 max-w-lg mx-auto w-full relative group/wrapper">
+          <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-violet-500/10 rounded-[22px] blur-sm opacity-50 group-hover/wrapper:opacity-100 transition-opacity duration-500" />
+          <ImageCard image={images[0]} onClick={() => openLightbox(0)} featured />
         </div>
         {lightboxIndex !== null && (
           <Lightbox

@@ -700,8 +700,8 @@ function parseImagesFromContent(content: string): { eduImages: EduImage[]; clean
     const img = imageByKey[key];
     if (img && !found.find((f) => f.key === key)) found.push(img);
   }
-  // Elimina los tokens del contenido visible
-  const cleanContent = content.replace(/\[IMG:[a-zA-Z0-9-_]+\]/gi, "").trim();
+  // Transforma los tokens en markdown images compatibles para rendereado en linea
+  const cleanContent = content.replace(/\[IMG:([a-zA-Z0-9-_]+)\]/gi, "![edu-image]($1)").trim();
   return { eduImages: found, cleanContent };
 }
 
@@ -760,9 +760,8 @@ function stripStreamingBlocks(content: string): string {
   });
 
   // Ocultar tags de imagen interactiva [IMG:clave] 
-  cleaned = cleaned.replace(/\[IMG:[a-zA-Z0-9-_]*\]?/gi, () => {
-    return `\n\n> 🖼️ *Procesando imagen inteligente...*\n\n`;
-  });
+  cleaned = cleaned.replace(/\[IMG:([a-zA-Z0-9-_]+)\]/gi, (match, key) => `![edu-image](${key})`);
+  cleaned = cleaned.replace(/\[IMG:[a-zA-Z0-9-_]*$/gi, () => `\n\n> 🖼️ *Procesando imagen inteligente...*\n\n`);
 
   return cleaned.trim();
 }
@@ -1859,9 +1858,6 @@ const MessageBubble = React.memo(({
             <span>{msg.content}</span>
           )}
 
-          {/* Imágenes Educativas */}
-          {msg.eduImages && msg.eduImages.length > 0 && <EduImageViewer images={msg.eduImages} />}
-
           {/* 2. Gráficas (ChartRenderer) */}
           {msg.charts?.map((chart: any, i: number) => (
             <div key={i} className="max-w-full overflow-hidden my-4">
@@ -2658,6 +2654,14 @@ const AITutor = () => {
     },
 
     img({ src, alt }: any) {
+      if (alt === 'edu-image') {
+        const key = String(src).toLowerCase();
+        const image = imageByKey[key];
+        if (image) {
+          return <EduImageViewer images={[image]} />;
+        }
+        return null;
+      }
       return (
         <div className="my-4 group relative cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 max-w-sm sm:max-w-md mx-auto shadow-2xl" onClick={() => window.open(src, '_blank')}>
           <img src={src} loading="lazy" alt={alt} className="w-full h-auto transition-transform duration-500 group-hover:scale-105" />
