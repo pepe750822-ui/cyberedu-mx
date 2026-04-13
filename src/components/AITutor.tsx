@@ -3036,8 +3036,6 @@ const AITutor = () => {
       });
     };
 
-    const assistantId = (Date.now() + 1).toString();
-
     try {
       const detailedSyllabus = {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
