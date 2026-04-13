@@ -305,7 +305,7 @@ const SimuladorPro = () => {
                     </Button>
                     <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
                         <Zap className="h-3 w-3 text-amber-500" />
-                        Simulación generada por CyberEdu Mx v2.0
+                        Simulación generada por CyberEdu Mx v3.0
                     </p>
                 </div>
             </div>
