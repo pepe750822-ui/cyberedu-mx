@@ -54,13 +54,17 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
     const formulaStr = calculator.formula.toLowerCase();
 
     // Heuristics for common educational formulas
-    if (formulaStr.includes('π') || formulaStr.includes('pi') || formulaStr.includes('radio')) {
+    if (formulaStr.includes('-') && nums.length >= 4) {
+      // Shaded area (Rectangle - Triangle or similar)
+      const rectArea = nums[0] * nums[1];
+      const triArea = formulaStr.includes('/ 2') || formulaStr.includes('0.5') ? (nums[2] * nums[3]) / 2 : nums[2] * nums[3];
+      calculated = rectArea - triArea;
+    } else if (formulaStr.includes('π') || formulaStr.includes('pi') || formulaStr.includes('radio')) {
       // Area or Perimeter of a circle
       const radius = nums[0];
       if (formulaStr.includes('²') || formulaStr.includes('r2') || formulaStr.includes('area')) {
         calculated = Math.PI * Math.pow(radius, 2);
       } else {
-        // Assume perimeter if 2*pi*r or similar
         calculated = 2 * Math.PI * radius;
       }
     } else if (formulaStr.includes('base') && formulaStr.includes('altura') && (formulaStr.includes('/ 2') || formulaStr.includes('0.5'))) {
@@ -74,7 +78,6 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
     } else if (formulaStr.includes('distancia') && formulaStr.includes('tiempo')) {
       calculated = nums[0] / nums[1];
     } else {
-      // Fallback: try to see if AI specified a simple multiplier
       calculated = nums.reduce((acc, curr) => acc * curr, 1);
     }
 
