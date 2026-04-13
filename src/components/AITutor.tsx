@@ -3544,16 +3544,14 @@ const AITutor = () => {
                        )}
                        {usageStats && !usageStats.isSubscriber && (
                          <>
-                           {usageStats.tokens > 0 ? (
+                           {usageStats.tokens > 0 && (
                              <div className="flex flex-col items-end gap-1">
                                <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 flex items-center gap-1.5">
                                  <Ticket className="h-3 w-3" /> {usageStats.tokens} tokens disponibles
                                </span>
-                               <span className="text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
-                                 Límite gratuito: {usageStats.used}/{usageStats.limit} hoy
-                               </span>
                              </div>
-                           ) : (
+                           )}
+                           {usageStats.tokens <= 0 && (
                              <span className={cn(
                                "text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5",
                                usageStats.used >= usageStats.limit ? "text-rose-500 border-rose-500/30" : 
