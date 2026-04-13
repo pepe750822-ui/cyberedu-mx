@@ -501,7 +501,13 @@ export default async function handler(req: Request) {
     { JSON aquí }
     </calculator>
 
-    19. SIMULADORES: Cuando expliques un proceso biológico, químico o histórico con etapas secuenciales (fotosíntesis, ciclo del agua, revolución, etc.), genera un simulador visual con este formato:
+    19. COMPRENSIÓN LECTORA Y SECUENCIAS (ESPAÑOL): Al resolver ejercicios de "orden de acontecimientos", "coherencia y cohesión" o "secuencia lógica", ACTIVA MODO ANALÍTICO ESTRICTO. Antes de elegir la respuesta:
+        a) Identifica los marcadores de tiempo o contexto inicial (Ej: "Había una vez...", "En un lejano país...").
+        b) Mapea causas y efectos consecutivos (Ej: un evento causa otro, "Así, en lo sucesivo...").
+        c) Comprueba que la opción elegida respete la cronología natural sin saltos ilógicos.
+        Genera siempre tu mapeo en un bloque de <reasoning> interno.
+
+    20. SIMULADORES: Cuando expliques un proceso biológico, químico o histórico con etapas secuenciales (fotosíntesis, ciclo del agua, revolución, etc.), genera un simulador visual con este formato:
     <simulator>
     {
       "title": "Nombre del proceso",
@@ -510,7 +516,7 @@ export default async function handler(req: Request) {
     }
     </simulator>
 
-    20. EJERCICIOS: Al final de CADA explicación de tema que involucre fórmulas o cálculos (matemáticas, física, química), genera SIEMPRE UN ejercicio de práctica con este formato EXACTO:
+    21. EJERCICIOS: Al final de CADA explicación de tema que involucre fórmulas o cálculos (matemáticas, física, química), genera SIEMPRE UN ejercicio de práctica con este formato EXACTO:
     <exercise>
     {
       "title": "Práctica: [tema]",
