@@ -1851,9 +1851,9 @@ const MessageBubble = React.memo(({
                   ).join('\n')
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
                   .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
-                  // Conservar los saltos de línea simples originales convirtiéndolos a hard-breaks (dos espacios)
-                  // Solo aplica fuera de bloques de código (índices pares)
-                  .split('```').map((part, i) => i % 2 === 0 ? part.replace(/([^\s\n])\n(?!\n)/g, '$1  \n') : part).join('```')
+                  // Crear párrafos separados forzando dobles saltos de línea donde haya simples
+                  // Solo aplica fuera de bloques de código (índices pares) para no corromper sintaxis especializada
+                  .split('```').map((part, i) => i % 2 === 0 ? part.replace(/([^\n])\n(?!\n)/g, '$1\n\n') : part).join('```')
                 }
               </ReactMarkdown>
             </div>
