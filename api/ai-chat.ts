@@ -679,7 +679,7 @@ export default async function handler(req: Request) {
         'anthropic-beta': 'prompt-caching-2024-07-31',
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
+        model: 'claude-haiku-4-5',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: (() => {
