@@ -1,8 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-// Removed resend SDK to use raw fetch for better Edge compatibility
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
 
 // ─── Upstash Redis helpers (REST API, no package needed) ───────
@@ -396,7 +395,7 @@ export default async function handler(req: Request) {
     - Estado mexicano y poderes → [FCE 6.1] o [FCE 6.2]
     - Constitución de 1917 → [HIS-M 9.3]
     - Revolución Mexicana → [HIS-M 9.1], NUNCA [HIS-M 8.2]
-    4. DIAGRAMAS: Genera EXACTAMENTE UN solo diagrama por respuesta usando ```mermaid``` con flowchart TD. PROHIBIDO generar un segundo diagrama bajo cualquier circunstancia. Si necesitas más información visual usa tablas markdown. NUNCA uses acentos, eñes, paréntesis, signos de interrogación, exclamación, comas, dos puntos ni símbolos matemáticos dentro de los nodos.
+    4. DIAGRAMAS: Genera EXACTAMENTE UN solo diagrama por respuesta usando \`\`\`mermaid\`\`\` con flowchart TD. PROHIBIDO generar un segundo diagrama bajo cualquier circunstancia. Si necesitas más información visual usa tablas markdown. NUNCA uses acentos, eñes, paréntesis, signos de interrogación, exclamación, comas, dos puntos ni símbolos matemáticos dentro de los nodos.
     5. QUIZ: Genera retos interactivos encapsulados en <quiz>{JSON}</quiz> siguiendo el esquema: { "title": "...", "questions": [{ "text": "...", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "..." }] }.
     6. PRECISIÓN NUMÉRICA (CRÍTICO): Al generar <calculator> o <quiz> basados en problemas matemáticos, verifica los cálculos TRES VECES. La respuesta correcta en el Quiz DEBE coincidir exactamente con el resultado de la calculadora y la explicación.
     7. RESPUESTAS ÚNICAS: En <quiz>, asegúrate de que solo UNA opción sea correcta y el correctIndex sea exacto (0 para A, 1 para B, etc). NUNCA marques como correcta una opción que no coincida con el cálculo previo.
@@ -650,7 +649,13 @@ export default async function handler(req: Request) {
         messages: (() => {
           const anthropicMessages = [...cleanMessages];
           if (file && anthropicMessages.length > 0) {
-            const lastUserIdx = anthropicMessages.findLastIndex(m => m.role === 'user');
+            let lastUserIdx = -1;
+            for (let i = anthropicMessages.length - 1; i >= 0; i--) {
+              if (anthropicMessages[i].role === 'user') {
+                lastUserIdx = i;
+                break;
+              }
+            }
             if (lastUserIdx !== -1) {
               const textContent = anthropicMessages[lastUserIdx].content;
               const isImage = file.type.startsWith('image/');
