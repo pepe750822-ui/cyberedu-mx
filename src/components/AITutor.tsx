@@ -3176,10 +3176,10 @@ const AITutor = () => {
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
 
-          // Claude 3.5 Haiku pricing (USD per million tokens, as of Feb 2025)
-          const INPUT_PRICE = 0.80 / 1_000_000;
-          const OUTPUT_PRICE = 4.00 / 1_000_000;
-          const CACHE_READ_PRICE = 0.08 / 1_000_000;
+          // Claude 3 Haiku pricing (USD per million tokens, as of early 2024)
+          const INPUT_PRICE = 0.25 / 1_000_000;
+          const OUTPUT_PRICE = 1.25 / 1_000_000;
+          const CACHE_READ_PRICE = 0.025 / 1_000_000;
           const inputTokens = usage.input_tokens || 0;
           const outputTokens = usage.output_tokens || 0;
           const cachedTokens = usage.cache_read_input_tokens || 0;
