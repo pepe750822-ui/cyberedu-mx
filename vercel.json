@@ -34,6 +34,10 @@
       "destination": "/$1"
     },
     {
+      "source": "/(auth|login|tokens|reportes|certificaciones|blog|simulador-pro|modalidades|sugerencias)",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -240,9 +240,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Traqueo opcional (si falla no importa)
     try { trackLogout(); } catch (_) { }
 
-    // 4. Redirección final garantizada
-    console.log('[signOut] Redirigiendo a /auth...');
-    window.location.href = "/auth";
+    // 4. Redirección final garantizada a la raíz
+    console.log('[signOut] Redirigiendo a home...');
+    window.location.href = "/";
   };
 
   const isSubscriber = profile?.subscription_status === 'active' || profile?.is_premium === true;
