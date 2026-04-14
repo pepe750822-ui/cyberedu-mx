@@ -142,11 +142,11 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
     if (context) {
       systemContent += `\n\n## CONTEXTO ACTUAL DEL USUARIO\n`;
       if (context.currentPage) systemContent += `- Página actual: ${context.currentPage}\n`;
-      if (context.progress)    systemContent += `- Progreso global: ${context.progress}%\n`;
+      if (context.progress) systemContent += `- Progreso global: ${context.progress}%\n`;
       if (context.isRegistered !== undefined) systemContent += `- Usuario registrado: ${context.isRegistered ? "SÍ" : "NO"}\n`;
       if (context.isSubscriber !== undefined) systemContent += `- Tiene suscripción: ${context.isSubscriber ? "SÍ" : "NO"}\n`;
       if (context.weakAreas?.length) systemContent += `- Áreas débiles: ${context.weakAreas.join(", ")}\n`;
-      if (context.streak)      systemContent += `- Racha de estudio: ${context.streak} días\n`;
+      if (context.streak) systemContent += `- Racha de estudio: ${context.streak} días\n`;
     }
 
     // Solo roles permitidos por Anthropic: user y assistant
@@ -162,7 +162,7 @@ Para mantener el rigor académico, DEBES citar el temario oficial ECOEMS 2026 us
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 4096,
         system: systemContent,
         messages: cleanMessages,
