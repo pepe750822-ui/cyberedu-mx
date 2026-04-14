@@ -1814,14 +1814,14 @@ const MessageBubble = React.memo(({
         )}
 
         <div className={cn(
-          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-x-auto min-w-0 break-words scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent",
+          "px-4 py-3 text-sm md:text-base font-medium leading-relaxed max-w-full overflow-x-hidden min-w-0 break-words scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent",
           !isAssistant
             ? "bg-primary rounded-2xl rounded-tr-none text-primary-foreground shadow-xl font-bold"
             : "bg-white/5 border border-white/10 rounded-2xl rounded-tl-none text-slate-200"
         )}>
           {/* 1. Texto (ReactMarkdown) */}
           {isAssistant ? (
-            <div className={cn("prose prose-invert max-w-none prose-p:my-2 prose-headings:mt-6 prose-headings:mb-3 prose-li:my-1 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-auto min-w-0 break-words", isExpanded ? "prose-base leading-relaxed" : "prose-sm leading-relaxed")}>
+            <div className={cn("prose prose-invert max-w-none prose-p:my-2 prose-headings:mt-6 prose-headings:mb-3 prose-li:my-1 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-hidden min-w-0 break-words", isExpanded ? "prose-base leading-relaxed" : "prose-sm leading-relaxed")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -2553,15 +2553,36 @@ const AITutor = () => {
         const rawContent = String(children).replace(/\n$/, '');
         const sanitized = sanitizeMermaidContent(rawContent);
         return (
-          <div className="max-w-[calc(100vw-2rem)] overflow-x-auto my-4 custom-scrollbar">
+          <div className="max-w-full overflow-x-auto my-4 custom-scrollbar" style={{ overflow: 'auto', maxWidth: '100%' }}>
             <Mermaid chart={sanitized} />
           </div>
         );
       }
       return (
-        <code className={className} {...props}>
+        <code className={className} style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }} {...props}>
           {children}
         </code>
+      );
+    },
+    pre({ children }: any) {
+      return (
+        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowX: 'hidden', maxWidth: '100%' }}>
+          {children}
+        </pre>
+      );
+    },
+    ul({ children }: any) {
+      return (
+        <ul className="list-disc mb-4" style={{ paddingLeft: '1.5rem', overflowX: 'hidden' }}>
+          {children}
+        </ul>
+      );
+    },
+    ol({ children }: any) {
+      return (
+        <ol className="list-decimal mb-4" style={{ paddingLeft: '1.5rem', overflowX: 'hidden' }}>
+          {children}
+        </ol>
       );
     },
     a({ href, children }: any) {
