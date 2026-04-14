@@ -6,9 +6,9 @@ export const config = {
 // These env vars are automatically set when you connect an Upstash Redis
 // integration from the Vercel dashboard (Integrations → Marketplace → Redis).
 // @ts-ignore
-const UPSTASH_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 // @ts-ignore
-const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
+const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 // @ts-ignore
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
@@ -54,9 +54,9 @@ async function cacheSet(key: string, value: string, ttlSeconds = 86400): Promise
     try {
       await fetch(`${UPSTASH_URL}`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Authorization': `Bearer ${UPSTASH_TOKEN}`,
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(['SET', key, value, 'EX', ttlSeconds])
       });
@@ -130,11 +130,11 @@ function isCacheable(message: string, history: any[]): { shouldCache: boolean; c
   const contextual = ['mi avance', 'mis notas', 'mi progreso', 'cuánto llevo',
     'cuándo', 'recuerda', 'dijiste', 'antes', 'mi plan', 'explícame más',
     'continúa', 'siguiente', 'sigue', 'quiz', 'examen a mí'];
-    
+
   if (contextual.some(w => lower.includes(w)) || message.length <= 20) {
     return { shouldCache: false, cacheType: null };
   }
-  
+
   const isComplex = isComplexQuery(message);
   return { shouldCache: true, cacheType: isComplex ? 'complex' : 'simple' };
 }
@@ -142,7 +142,7 @@ function isCacheable(message: string, history: any[]): { shouldCache: boolean; c
 // ─── Redis Rate Limiting (Safety Layer) ───────────────────────
 async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remaining: number }> {
   if (!UPSTASH_URL || !UPSTASH_TOKEN) return { allowed: true, remaining: 999 };
-  
+
   const today = new Date().toISOString().split('T')[0];
   const rateLimitKey = `ratelimit:${userId}:${today}`;
   const LIMIT = 200;
@@ -151,44 +151,44 @@ async function checkRateLimit(userId: string): Promise<{ allowed: boolean; remai
     // Increment the count in Redis
     const res = await fetch(`${UPSTASH_URL}`, {
       method: 'POST',
-      headers: { 
+      headers: {
         'Authorization': `Bearer ${UPSTASH_TOKEN}`,
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(['INCR', rateLimitKey])
     });
-    
+
     if (res.ok) {
       const data = await res.json() as { result: number };
       const currentCount = data.result;
-      
+
       // Set expiration only on the first request of the day
       if (currentCount === 1) {
         await fetch(`${UPSTASH_URL}`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${UPSTASH_TOKEN}`,
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(['EXPIRE', rateLimitKey, '86400']) // 24 hours
         });
       }
-      
-      return { 
-        allowed: currentCount <= LIMIT, 
-        remaining: Math.max(0, LIMIT - currentCount) 
+
+      return {
+        allowed: currentCount <= LIMIT,
+        remaining: Math.max(0, LIMIT - currentCount)
       };
     }
   } catch (e) {
     console.error('Redis Rate Limit Error:', e);
   }
-  
+
   return { allowed: true, remaining: 999 }; // Fallback to allow if Redis is down
 }
 
 // ─── Main handler ─────────────────────────────────────────────
 export default async function handler(req: Request) {
-// @ts-ignore
+  // @ts-ignore
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
   if (!ANTHROPIC_API_KEY) {
@@ -198,7 +198,7 @@ export default async function handler(req: Request) {
     });
   }
 
-// @ts-ignore
+  // @ts-ignore
   const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
     'https://cyberedumx.lovable.app',
@@ -221,11 +221,11 @@ export default async function handler(req: Request) {
   // ─── Token/Trial Monitoring (Access Control) ───────────────────────
   const authHeader = req.headers.get('Authorization');
   const userId = getUserIdFromToken(authHeader);
-// @ts-ignore
+  // @ts-ignore
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
-// @ts-ignore
+  // @ts-ignore
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
+
   if (!userId || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return new Response(JSON.stringify({ error: 'Sesión inválida o configuración faltante' }), {
       status: 401,
@@ -275,7 +275,7 @@ export default async function handler(req: Request) {
 
   // Safety check: Global Daily Limit (Redis)
   if (!rateLimit.allowed) {
-    return new Response(JSON.stringify({ 
+    return new Response(JSON.stringify({
       error: '⚠️ Límite de seguridad diario excedido (200 consultas). Por favor contacta a soporte si crees que es un error.',
       isAccessDenied: true,
       reason: 'global_rate_limit'
@@ -298,12 +298,12 @@ export default async function handler(req: Request) {
   else if ((profile.tokens || 0) > 0) {
     await supabaseRequest(`profiles?id=eq.${userId}`, {
       method: 'PATCH',
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         tokens: Math.max(0, profile.tokens - 1),
         updated_at: new Date().toISOString()
       })
     });
-  } 
+  }
   // Rule 3: Límite diario (5 max)
   else {
     const { data: usageData } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
@@ -323,11 +323,11 @@ export default async function handler(req: Request) {
       });
     } else {
       const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.`;
-        
-      return new Response(JSON.stringify({ 
+
+      return new Response(JSON.stringify({
         error: msg,
-        isAccessDenied: true, 
-        reason: "daily_limit", 
+        isAccessDenied: true,
+        reason: "daily_limit",
         message: msg
       }), {
         status: 403,
@@ -679,7 +679,7 @@ export default async function handler(req: Request) {
         'anthropic-beta': 'prompt-caching-2024-07-31',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 4096,
         system: finalSystemPrompt,
         messages: (() => {
@@ -695,7 +695,7 @@ export default async function handler(req: Request) {
             if (lastUserIdx !== -1) {
               const textContent = anthropicMessages[lastUserIdx].content;
               const isImage = file.type.startsWith('image/');
-              
+
               // Map common types to Anthropic supported ones
               let mediaType = file.type;
               if (mediaType === 'image/jpg') mediaType = 'image/jpeg';
@@ -703,23 +703,23 @@ export default async function handler(req: Request) {
 
               anthropicMessages[lastUserIdx].content = [
                 { type: "text", text: textContent },
-                isImage 
-                  ? { 
-                      type: "image", 
-                      source: { 
-                        type: "base64", 
-                        media_type: mediaType as any, 
-                        data: file.data 
-                      } 
+                isImage
+                  ? {
+                    type: "image",
+                    source: {
+                      type: "base64",
+                      media_type: mediaType as any,
+                      data: file.data
                     }
-                  : { 
-                      type: "document", 
-                      source: { 
-                        type: "base64", 
-                        media_type: "application/pdf", 
-                        data: file.data 
-                      } 
+                  }
+                  : {
+                    type: "document",
+                    source: {
+                      type: "base64",
+                      media_type: "application/pdf",
+                      data: file.data
                     }
+                  }
               ];
             }
           }
@@ -730,51 +730,51 @@ export default async function handler(req: Request) {
     });
 
     if (!apiResponse.ok) {
-       const rawText = await apiResponse.text();
-       const isInsufficient = rawText.includes('insufficient_credits') || 
-                            rawText.includes('credit_balance') || 
-                            apiResponse.status === 529;
+      const rawText = await apiResponse.text();
+      const isInsufficient = rawText.includes('insufficient_credits') ||
+        rawText.includes('credit_balance') ||
+        apiResponse.status === 529;
 
-       if (isInsufficient && RESEND_API_KEY) {
-          // Send urgent email to admin using raw fetch
-          await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${RESEND_API_KEY}`
-            },
-            body: JSON.stringify({
-              from: 'CyberEdu Alertas <alerts@cyberedumx.com>',
-              to: ['pepe750822@gmail.com'],
-              subject: 'CyberEdu MX — URGENTE: Recargar API Key Anthropic',
-              text: 'Se agotaron los créditos de Anthropic. Recargar en console.anthropic.com'
-            })
-          }).catch(e => console.error("Error enviando email:", e));
+      if (isInsufficient && RESEND_API_KEY) {
+        // Send urgent email to admin using raw fetch
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${RESEND_API_KEY}`
+          },
+          body: JSON.stringify({
+            from: 'CyberEdu Alertas <alerts@cyberedumx.com>',
+            to: ['pepe750822@gmail.com'],
+            subject: 'CyberEdu MX — URGENTE: Recargar API Key Anthropic',
+            text: 'Se agotaron los créditos de Anthropic. Recargar en console.anthropic.com'
+          })
+        }).catch(e => console.error("Error enviando email:", e));
 
-          return new Response(JSON.stringify({ 
-            error: '⚠️ El servicio de IA está temporalmente en mantenimiento. Por favor intenta más tarde.' 
-          }), { 
-            status: 503,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-          });
-       }
+        return new Response(JSON.stringify({
+          error: '⚠️ El servicio de IA está temporalmente en mantenimiento. Por favor intenta más tarde.'
+        }), {
+          status: 503,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
 
-       return new Response(JSON.stringify({ error: rawText }), { 
-         status: apiResponse.status,
-         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-       });
+      return new Response(JSON.stringify({ error: rawText }), {
+        status: apiResponse.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
-    
+
     // Accumulate full response text for caching
     let fullResponseText = '';
 
     // ─── Usage / Cost Tracking Helpers ─────────────────────────
     let totalInputTokens = 0;
     let totalOutputTokens = 0;
-    
+
     function trackUsage(usage: any) {
       if (!usage) return;
       if (usage.input_tokens) totalInputTokens += usage.input_tokens;
@@ -783,20 +783,20 @@ export default async function handler(req: Request) {
 
     async function saveDailyCost() {
       if (!UPSTASH_URL || !UPSTASH_TOKEN) return;
-      
+
       // Haiku 4.5 pricing
       const INPUT_PRICE = 0.80 / 1000000;
       const OUTPUT_PRICE = 4.00 / 1000000;
       const cost = (totalInputTokens * INPUT_PRICE) + (totalOutputTokens * OUTPUT_PRICE);
-      
+
       const dayCostKey = `daily_cost:${today}`;
       try {
         // We use INCRBYFLOAT in Redis
         await fetch(`${UPSTASH_URL}`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${UPSTASH_TOKEN}`,
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(['INCRBYFLOAT', dayCostKey, cost.toString()])
         });
@@ -804,9 +804,9 @@ export default async function handler(req: Request) {
         // Some Redis providers use different syntax for floats, for Upstash REST:
         await fetch(`${UPSTASH_URL}`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${UPSTASH_TOKEN}`,
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(['EXPIRE', dayCostKey, '2678400'])
         });
@@ -854,7 +854,7 @@ export default async function handler(req: Request) {
                 } else if (parsed.type === 'message_stop') {
                   if (shouldCache && fullResponseText.length > 50) {
                     const ttl = cacheType === 'complex' ? 604800 : 86400;
-                    await cacheSet(cacheKey, fullResponseText, ttl).catch(() => {});
+                    await cacheSet(cacheKey, fullResponseText, ttl).catch(() => { });
                   }
                   await saveDailyCost();
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
