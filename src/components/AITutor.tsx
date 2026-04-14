@@ -2571,20 +2571,6 @@ const AITutor = () => {
         </pre>
       );
     },
-    ul({ children }: any) {
-      return (
-        <ul className="list-disc mb-4" style={{ paddingLeft: '1.5rem', overflowX: 'hidden' }}>
-          {children}
-        </ul>
-      );
-    },
-    ol({ children }: any) {
-      return (
-        <ol className="list-decimal mb-4" style={{ paddingLeft: '1.5rem', overflowX: 'hidden' }}>
-          {children}
-        </ol>
-      );
-    },
     a({ href, children }: any) {
       const isInternalScheme = href?.startsWith('citation://');
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
