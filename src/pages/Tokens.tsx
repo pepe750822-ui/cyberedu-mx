@@ -21,8 +21,8 @@ const tokenPackages = [
   {
     id: "basico",
     name: "Básico",
-    tokens: 10,
-    price: 10,
+    tokens: 20,
+    price: 20,
     pricePerToken: 1.00,
     badge: "Lanzamiento",
     icon: <Ticket className="h-6 w-6 text-slate-400" />,
@@ -31,9 +31,9 @@ const tokenPackages = [
   {
     id: "popular",
     name: "Popular",
-    tokens: 30,
-    price: 60,
-    pricePerToken: 2.00,
+    tokens: 60,
+    price: 50,
+    pricePerToken: 0.83,
     highlight: true,
     badge: "Más vendido",
     icon: <Star className="h-6 w-6 text-amber-500" />,
@@ -42,9 +42,9 @@ const tokenPackages = [
   {
     id: "pro",
     name: "Pro",
-    tokens: 100,
-    price: 150,
-    pricePerToken: 1.50,
+    tokens: 160,
+    price: 120,
+    pricePerToken: 0.75,
     icon: <Rocket className="h-6 w-6 text-primary" />,
     description: "Para estudiantes intensivos."
   }
@@ -54,8 +54,8 @@ const unlimitedPackage = {
     id: "ilimitado",
     name: "Ilimitado",
     tokens: 1000,
-    price: 200,
-    pricePerToken: 0.20,
+    price: 250,
+    pricePerToken: 0.25,
     description: "1,000 tokens al mes · Se renueva automáticamente",
     icon: <Crown className="h-8 w-8 text-amber-500" />
 };
@@ -214,7 +214,7 @@ const TokensPage = () => {
             <div className="bg-amber-500/10 p-6 rounded-2xl border border-amber-500/20 flex flex-col gap-2 transition-transform hover:-translate-y-1">
               <div className="text-4xl mb-2">👑</div>
               <h3 className="font-bold text-lg text-amber-500">Maestro Ilimitado</h3>
-              <p className="text-sm text-amber-100/70 font-medium">Preguntas ilimitadas por $200/mes.</p>
+              <p className="text-sm text-amber-100/70 font-medium">Preguntas ilimitadas por $250/mes.</p>
             </div>
           </div>
         </div>
@@ -311,11 +311,11 @@ const TokensPage = () => {
                          </p>
                          <div className="flex flex-wrap items-end justify-center md:justify-start gap-4 pt-4">
                              <div className="flex items-baseline gap-1">
-                                <span className="text-5xl font-black text-white">$200</span>
+                                <span className="text-5xl font-black text-white">$250</span>
                                 <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">MXN / mes</span>
                              </div>
                              <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase">
-                                $0.20 por token
+                                $0.25 por token
                              </div>
                          </div>
                       </div>
