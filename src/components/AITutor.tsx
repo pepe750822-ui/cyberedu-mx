@@ -2697,7 +2697,64 @@ const AITutor = () => {
     },
     tr({ children }: any) {
       return <tr className="hover:bg-white/5 transition-colors odd:bg-white/[0.02]">{children}</tr>;
-    }
+    },
+    h1({ children }: any) {
+      return (
+        <h1 className="text-xl sm:text-2xl font-black mt-6 mb-3 text-white border-b border-primary/30 pb-2 leading-tight">
+          {children}
+        </h1>
+      );
+    },
+    h2({ children }: any) {
+      return (
+        <h2 className="text-base sm:text-lg font-black mt-5 mb-2 text-violet-300 flex items-center gap-2 leading-tight">
+          <span className="inline-block w-1 h-4 rounded-full bg-violet-400 shrink-0" />
+          {children}
+        </h2>
+      );
+    },
+    h3({ children }: any) {
+      return (
+        <h3 className="text-sm sm:text-base font-bold mt-4 mb-1.5 text-cyan-300 leading-tight">
+          {children}
+        </h3>
+      );
+    },
+    h4({ children }: any) {
+      return <h4 className="text-sm font-bold mt-3 mb-1 text-indigo-300 leading-tight">{children}</h4>;
+    },
+    ul({ children }: any) {
+      return <ul className="my-2 space-y-1.5 pl-5 list-disc list-outside">{children}</ul>;
+    },
+    ol({ children }: any) {
+      return <ol className="my-2 space-y-1.5 pl-5 list-decimal list-outside">{children}</ol>;
+    },
+    li({ children }: any) {
+      return (
+        <li className="text-sm text-slate-200 leading-relaxed marker:text-primary marker:font-bold pl-1">
+          {children}
+        </li>
+      );
+    },
+    strong({ children }: any) {
+      return <strong className="font-black text-white">{children}</strong>;
+    },
+    em({ children }: any) {
+      return <em className="italic text-slate-300 not-italic font-medium text-violet-200">{children}</em>;
+    },
+    blockquote({ children }: any) {
+      return (
+        <blockquote className="my-3 pl-4 border-l-2 border-primary/60 bg-white/5 rounded-r-lg py-2 pr-3 text-slate-300 italic text-sm">
+          {children}
+        </blockquote>
+      );
+    },
+    p({ children }: any) {
+      return <p className="text-sm sm:text-base text-slate-200 leading-relaxed my-2">{children}</p>;
+    },
+    hr() {
+      return <hr className="my-4 border-white/10" />;
+    },
   }), [agentNavigate, handleCitationClick]);
 
   const sendMessage = async (text: string) => {
