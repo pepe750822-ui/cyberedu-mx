@@ -41,8 +41,8 @@ export default async function handler(req: Request) {
 
     // Leer rate limit headers si los hay
     const rateLimitRequests = modelsRes.headers.get('anthropic-ratelimit-requests-remaining');
-    const rateLimitTokens   = modelsRes.headers.get('anthropic-ratelimit-tokens-remaining');
-    const rateLimitReset    = modelsRes.headers.get('anthropic-ratelimit-requests-reset');
+    const rateLimitTokens = modelsRes.headers.get('anthropic-ratelimit-tokens-remaining');
+    const rateLimitReset = modelsRes.headers.get('anthropic-ratelimit-requests-reset');
 
     if (!modelsRes.ok) {
       const errBody = await modelsRes.json().catch(() => ({}));
