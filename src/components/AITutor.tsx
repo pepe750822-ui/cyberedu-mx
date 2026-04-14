@@ -3035,7 +3035,7 @@ const AITutor = () => {
               const usedFree = localStorage.getItem('cyberedu_used_free_message');
               if (!usedFree) {
                 localStorage.setItem('cyberedu_used_free_message', 'true');
-                finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $10 pesos en cyberedumx.com/tokens';
+                finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $20 pesos en cyberedumx.com/tokens';
               }
             }
 
@@ -3221,8 +3221,8 @@ const AITutor = () => {
                 ✅ Sin tarjeta de crédito
               - Si context.isRegistered && !context.isSubscriber:
                 💡 **¿Quieres seguir chateando con el Tutor IA?**
-                ✅ Paquetes desde $10 pesos (10 tokens)
-                ✅ Plan Maestro Ilimitado por $200/mes
+                ✅ Paquetes desde $20 pesos (20 tokens)
+                ✅ Plan Maestro Ilimitado por $250/mes
                 ✅ Todo el contenido multimedia siempre GRATIS
                 🔗 Comprar tokens: /tokens`
       };
@@ -3307,7 +3307,7 @@ const AITutor = () => {
             const usedFree = localStorage.getItem('cyberedu_used_free_message');
             if (!usedFree) {
               localStorage.setItem('cyberedu_used_free_message', 'true');
-              finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $10 pesos en cyberedumx.com/tokens';
+              finalCleanContent += '\n\n---\n💡 ¿Te ayudé? Con tokens puedo explicarte más a fondo — desde $20 pesos en cyberedumx.com/tokens';
             }
           }
 

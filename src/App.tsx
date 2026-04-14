@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import AreaDetail from "./pages/AreaDetail";
 import Auth from "./pages/Auth";
 import Tokens from "./pages/Tokens";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import SimuladorPro from "./pages/SimuladorPro";
 import Marketing from "./pages/Marketing";
@@ -141,6 +142,7 @@ const App = () => (
             <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
             <Route path="/tokens" element={<Tokens />} />
             <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
+            <Route path="/master-admin" element={<Admin />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

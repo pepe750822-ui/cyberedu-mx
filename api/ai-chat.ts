@@ -322,7 +322,7 @@ export default async function handler(req: Request) {
         })
       });
     } else {
-      const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $10 pesos.`;
+      const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $20 pesos.`;
 
       return new Response(JSON.stringify({
         error: msg,
@@ -478,8 +478,8 @@ export default async function handler(req: Request) {
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:
       💡 **¿Quieres seguir chateando con el Tutor IA?**
-      ✅ Paquetes desde $10 pesos (10 tokens)
-      ✅ Plan Maestro Ilimitado por $200/mes
+      ✅ Paquetes desde $20 pesos (20 tokens)
+      ✅ Plan Maestro Ilimitado por $250/mes
       ✅ Todo el contenido multimedia siempre GRATIS
       🔗 Comprar tokens: /tokens
 

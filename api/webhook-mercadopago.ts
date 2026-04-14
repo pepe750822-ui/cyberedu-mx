@@ -49,24 +49,32 @@ export default async function handler(req: Request) {
         const tokenAmount = metadata?.token_amount || metadata?.tokenAmount || 0;
 
         if (isTokenPurchase && tokenAmount > 0) {
-           // 1. Obtener balance actual
-           const { data: profile } = await supabase.from('profiles').select('tokens, subscription_status').eq('id', external_reference).single();
-           const currentTokens = profile?.tokens || 0;
+            // 1. Intentar obtener balance por ID (external_reference) o por Email (como respaldo)
+            let { data: profile } = await supabase.from('profiles').select('id, tokens, subscription_status').eq('id', external_reference).single();
+            
+            // Si no lo encuentra por ID, intentar por el email que viene en el pago de MP
+            if (!profile && paymentData.payer?.email) {
+              console.log(`Buscando por email de respaldo: ${paymentData.payer.email}`);
+              const { data: profileByEmail } = await supabase.from('profiles').select('id, tokens, subscription_status').eq('email', paymentData.payer.email).single();
+              profile = profileByEmail;
+            }
 
-           // 2. Sumar tokens
-           const { error } = await supabase
-            .from('profiles')
-            .update({ 
-               tokens: currentTokens + Number(tokenAmount),
-               updated_at: new Date().toISOString(),
-               // Si es el plan ilimitado, también podemos marcar is_premium si lo deseamos, 
-               // pero el usuario pidió que el plan ilimitado de 1000 tokens se renueve mensual.
-               subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile?.subscription_status
-            })
-            .eq('id', external_reference);
+            if (profile) {
+              const currentTokens = profile.tokens || 0;
+              const { error } = await supabase
+                .from('profiles')
+                .update({ 
+                    tokens: currentTokens + Number(tokenAmount),
+                    updated_at: new Date().toISOString(),
+                    subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile.subscription_status
+                })
+                .eq('id', profile.id);
 
-           if (error) throw error;
-           console.log(`TOKENS AGREGADOS: ${tokenAmount} tokens al usuario ${external_reference}`);
+              if (error) throw error;
+              console.log(`TOKENS AGREGADOS: ${tokenAmount} tokens al usuario ${profile.id} (${paymentData.payer?.email})`);
+            } else {
+              console.error(`PAGO RECIBIDO PERO USUARIO NO ENCONTRADO. ID: ${external_reference}, Email: ${paymentData.payer?.email}`);
+            }
         } else {
           // Lógica anterior de suscripción fija
           const { error } = await supabase
