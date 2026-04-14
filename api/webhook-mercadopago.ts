@@ -76,9 +76,8 @@ export default async function handler(req: Request) {
                 .from('profiles')
                 .update({ 
                     tokens: newTokens,
-                    subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile.subscription_status,
-                    subscription_plan: currentPkgName || profile.subscription_plan,
-                    updated_at: new Date().toISOString()
+                    updated_at: new Date().toISOString(),
+                    subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile.subscription_status
                 })
                 .eq('id', profile.id);
 
