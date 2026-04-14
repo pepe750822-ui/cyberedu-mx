@@ -28,7 +28,7 @@ export default async function handler(req: Request) {
     // 1. Buscar al usuario por email
     const { data: profile, error: findError } = await supabase
       .from('profiles')
-      .select('id, email, tokens, subscription_status, subscription_plan')
+      .select('id, email, tokens')
       .eq('email', email)
       .single();
 
