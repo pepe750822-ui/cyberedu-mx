@@ -64,13 +64,13 @@ const Header = () => {
               Áreas
             </Link>
             <a
-              href="https://cyberedumx.com/libro/manual_digital_ECOEMS.html"
+              href="/manual.html"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
             >
-              <BookOpen className="h-3.5 w-3.5" />
-              Manual
+              <BookOpen className="h-3.5 w-3.5 text-amber-500" />
+              Manual de Uso
             </a>
             <Link
               to="/certificaciones"
@@ -286,14 +286,14 @@ const Header = () => {
                     Áreas de Estudio
                   </Link>
                   <a
-                    href="https://cyberedumx.com/libro/manual_digital_ECOEMS.html"
+                    href="/manual.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <BookOpen className="h-5 w-5 text-amber-500" />
-                    Manual Digital ECOEMS
+                    Manual de Uso App
                   </a>
                   <Link
                     to="/certificaciones"
