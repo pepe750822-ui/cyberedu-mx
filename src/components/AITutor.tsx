@@ -1850,10 +1850,11 @@ const MessageBubble = React.memo(({
                     line.startsWith('    ') || line.startsWith('\t') ? line : autoLinkVideoMentions(line)
                   ).join('\n')
                   .replace(/([^\n])\n\|/g, '$1\n\n|')
-                  .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
                   // Crear párrafos separados forzando dobles saltos de línea donde haya simples
                   // Solo aplica fuera de bloques de código (índices pares) para no corromper sintaxis especializada
                   .split('```').map((part, i) => i % 2 === 0 ? part.replace(/([^\n])\n(?!\n)/g, '$1\n\n') : part).join('```')
+                  // Eliminar líneas en blanco dentro de tablas (debe correr DESPUÉS del doble-salto)
+                  .replace(/\|\s*\n\s*\n\s*\|/g, '|\n|')
                 }
               </ReactMarkdown>
             </div>
