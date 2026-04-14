@@ -246,13 +246,13 @@ export const materiales: Record<string, MaterialVideo> = {
     videoId: "qui-5",
     infografia: { url: "/videos/video29/infografia.png", descripcion: "Reacciones Químicas" },
     pdf: { url: "/videos/video29/presentacion.pdf", titulo: "Guía: Reacciones" },
-    podcast: { url: "/videos/video29/podcast.mp4", duracion: "3:00" }
+    podcast: { url: "/videos/video29/podcast.m4a", duracion: "3:00" }
   },
   "qui-6": {
     videoId: "qui-6",
     infografia: { url: "/videos/video30/infografia.png", descripcion: "Ácidos y Redox" },
     pdf: { url: "/videos/video30/presentacion.pdf", titulo: "Guía: Ácidos" },
-    podcast: { url: "/videos/video30/podcast.mp4", duracion: "3:00" }
+    podcast: { url: "/videos/video30/podcast.m4a", duracion: "3:00" }
   },
 
   // ============================================
