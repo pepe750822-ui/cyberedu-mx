@@ -61,12 +61,24 @@ export default async function handler(req: Request) {
 
             if (profile) {
               const currentTokens = profile.tokens || 0;
+              const newTokens = currentTokens + Number(tokenAmount);
+              
+              // Map package ID to human readable names
+              const packageNames: Record<string, string> = {
+                'basico': 'Paquete Básico (20 tokens)',
+                'popular': 'Paquete Popular (60 tokens)',
+                'pro': 'Paquete Pro (160 tokens)',
+                'ilimitado': 'Plan Maestro Ilimitado'
+              };
+              const currentPkgName = metadata?.packageId ? packageNames[metadata.packageId] : null;
+
               const { error } = await supabase
                 .from('profiles')
                 .update({ 
-                    tokens: currentTokens + Number(tokenAmount),
-                    updated_at: new Date().toISOString(),
-                    subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile.subscription_status
+                    tokens: newTokens,
+                    subscription_status: metadata?.packageId === 'ilimitado' ? 'active' : profile.subscription_status,
+                    subscription_plan: currentPkgName || profile.subscription_plan,
+                    updated_at: new Date().toISOString()
                 })
                 .eq('id', profile.id);
 

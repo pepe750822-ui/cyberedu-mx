@@ -103,7 +103,15 @@ const AdminPage = () => {
                  <div>
                     <h3 className="text-sm font-bold text-primary uppercase tracking-widest mb-1">Usuario Encontrado</h3>
                     <p className="text-2xl font-black">{userProfile.email}</p>
-                    <p className="text-white/50 text-sm mt-1">ID: {userProfile.id}</p>
+                    <div className="flex gap-2 mt-2">
+                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest ${userProfile.subscription_status === 'active' ? 'bg-emerald-500 text-white' : 'bg-white/10 text-white/50'}`}>
+                          {userProfile.subscription_status || 'no status'}
+                       </span>
+                       <span className="px-2 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest border border-primary/30">
+                          {userProfile.subscription_plan || 'Sin Paquete'}
+                       </span>
+                    </div>
+                    <p className="text-white/50 text-xs mt-2 uppercase tracking-tighter">ID: {userProfile.id}</p>
                  </div>
                  <div className="p-6 rounded-3xl bg-white/5 border border-white/10 flex flex-col items-center">
                     <span className="text-xs font-bold text-white/50 uppercase mb-1">Saldo Actual</span>
