@@ -185,6 +185,17 @@ const Header = () => {
             <TooltipContent>Marketing y Notificaciones</TooltipContent>
           </Tooltip>
 
+          {profile?.email === 'pepe750822@gmail.com' && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={() => navigate("/master-admin")} className="text-amber-500 hover:text-amber-400 animate-pulse">
+                  <ShieldCheck className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Panel Maestro de Tokens</TooltipContent>
+            </Tooltip>
+          )}
+
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
               <ProfileDialog>
@@ -336,6 +347,17 @@ const Header = () => {
                     <Mail className="h-5 w-5 text-indigo-400" />
                     Notificaciones y Marketing
                   </Link>
+
+                  {profile?.email === 'pepe750822@gmail.com' && (
+                    <Link
+                      to="/master-admin"
+                      className="flex items-center gap-3 px-3 py-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-colors text-amber-500 font-black border border-amber-500/30"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <ShieldCheck className="h-5 w-5" />
+                      PANEL MAESTRO (ADMIN)
+                    </Link>
+                  )}
                   <a
                     href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
                     target="_blank"
