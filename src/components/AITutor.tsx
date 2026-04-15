@@ -32,6 +32,7 @@ import EduImageViewer from "./EduImageViewer";
 import CalculatorArtifact from "./CalculatorArtifact";
 import SimulatorArtifact from "./SimulatorArtifact";
 import ExerciseArtifact from "./ExerciseArtifact";
+import ChemistryArtifact from "./ChemistryArtifact";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -297,6 +298,7 @@ interface Message {
   calculators?: any[];
   simulators?: any[];
   exercises?: any[];
+  chemistryElements?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -679,6 +681,17 @@ function parseCalculatorsFromContent(content: string): { calculators: any[]; cle
   return { calculators, cleanContent: content.replace(/<calculator>[\s\S]*?<\/calculator>/g, "").trim() };
 }
 
+function parseChemistryFromContent(content: string): { chemistryElements: any[]; cleanContent: string } {
+  const chemistryElements: any[] = [];
+  const regex = /<chemistry>([\s\S]*?)<\/chemistry>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) chemistryElements.push(parsed);
+  }
+  return { chemistryElements, cleanContent: content.replace(/<chemistry>[\s\S]*?<\/chemistry>/g, "").trim() };
+}
+
 function parseSimulatorsFromContent(content: string): { simulators: any[]; cleanContent: string } {
   const simulators: any[] = [];
   const regex = /<simulator>([\s\S]*?)<\/simulator>/g;
@@ -725,9 +738,10 @@ function parseAllBlocks(content: string) {
   const { calculators, cleanContent: c55 } = parseCalculatorsFromContent(c5);
   const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c56);
-  const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c57);
+  const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
+  const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -742,7 +756,8 @@ function stripStreamingBlocks(content: string): string {
         chart: "gráfica",
         calculator: "calculadora",
         simulator: "simulador",
-        exercise: "ejercicio práctico"
+        exercise: "ejercicio práctico",
+        chemistry: "ficha química"
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -1882,6 +1897,11 @@ const MessageBubble = React.memo(({
           {/* 5. Ejercicio (ExerciseArtifact) */}
           {msg.exercises?.map((ex: any, i: number) => (
             <ExerciseArtifact key={`ex-${i}`} exercise={ex} />
+          ))}
+
+          {/* 5.5 Química (ChemistryArtifact) */}
+          {msg.chemistryElements?.map((elem: any, i: number) => (
+            <ChemistryArtifact key={`chem-${i}`} element={elem} />
           ))}
 
           {/* 6. Quiz (AITutorQuiz) */}
@@ -3199,18 +3219,25 @@ const AITutor = () => {
               🚀 Entrenamiento Studio
 
               Todo completamente GRATIS con registro.
-          12. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
-              - Si !context.isRegistered:
-                💡 **¿Quieres acceder a todo este material?**
-                ✅ Regístrate GRATIS en /
-                ✅ 7 días de acceso completo al Tutor IA incluidos
-                ✅ Sin tarjeta de crédito
-              - Si context.isRegistered && !context.isSubscriber:
-                💡 **¿Quieres seguir chateando con el Tutor IA?**
-                ✅ Paquetes desde $20 pesos (20 tokens)
-                ✅ Plan Maestro Ilimitado por $250/mes
-                ✅ Todo el contenido multimedia siempre GRATIS
-                🔗 Comprar tokens: /tokens`
+           12. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):
+               Cuando el tema lo permita, despliega bloques interactivos usando JSON dentro de los siguientes tags:
+               - <calculator>: Para problemas de matemáticas o física que requieran cálculos (área, volumen, fuerza, etc.).
+               - <chemistry>: Para mostrar propiedades de elementos químicos. 
+                 Estructura: {"name": "Oro", "symbol": "Au", "atomic_number": 79, "atomic_mass": 196.9, "category": "Metales de transición", "properties": {"density": "19.3 g/cm³", "melting_point": "1064 °C", "boiling_point": "2856 °C", "electron_config": "[Xe] 4f14 5d10 6s1"}, "description": "Resumen breve..."}
+               - <exercise>: Para plantear problemas prácticos con opciones múltiples o desarrollo.
+               - <simulator>: Para simulaciones de procesos.
+           13. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
+               - Si !context.isRegistered:
+                 💡 **¿Quieres acceder a todo este material?**
+                 ✅ Regístrate GRATIS en /
+                 ✅ 7 días de acceso completo al Tutor IA incluidos
+                 ✅ Sin tarjeta de crédito
+               - Si context.isRegistered && !context.isSubscriber:
+                 💡 **¿Quieres seguir chateando con el Tutor IA?**
+                 ✅ Paquetes desde $20 pesos (20 tokens)
+                 ✅ Plan Maestro Ilimitado por $250/mes
+                 ✅ Todo el contenido multimedia siempre GRATIS
+                 🔗 Comprar tokens: /tokens`
       };
 
       // Always include the system message at the start, then the last N messages
@@ -3299,7 +3326,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, exercises, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
