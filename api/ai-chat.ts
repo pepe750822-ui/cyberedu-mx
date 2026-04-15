@@ -536,6 +536,29 @@ export default async function handler(req: Request) {
     </exercise>
     CRÍTICO: El ejercicio DEBE ser de opción múltiple con 4 opciones. El "correct_index" es 0-based. El tag <exercise> y </exercise> deben estar PERFECTAMENTE cerrados. Genera EXACTAMENTE UN <exercise> por respuesta.
 
+    22. FICHA QUÍMICA INTERACTIVA (OBLIGATORIO para preguntas de Química): Cuando el usuario pregunte sobre propiedades, características o estructura de un elemento de la tabla periódica (ej: Oro, Carbono, Oxígeno, Hierro, etc.), DEBES incluir OBLIGATORIAMENTE una ficha visual interactiva usando este formato EXACTO — NO uses tablas markdown ni diagramas Mermaid para este caso:
+    <chemistry>
+    {
+      "name": "Oro",
+      "symbol": "Au",
+      "atomic_number": 79,
+      "atomic_mass": 196.97,
+      "category": "Metales de transición",
+      "properties": {
+        "density": "19.3 g/cm³",
+        "melting_point": "1064 °C",
+        "boiling_point": "2856 °C",
+        "electron_config": "[Xe] 4f14 5d10 6s1"
+      },
+      "description": "Metal noble de color amarillo brillante, extremadamente maleable y dúctil. No se oxida ni corroe."
+    }
+    </chemistry>
+    REGLAS CRÍTICAS del tag <chemistry>:
+    - Los campos "name", "symbol", "atomic_number", "atomic_mass", "category" son OBLIGATORIOS.
+    - El campo "properties" DEBE incluir al menos "melting_point" y "electron_config".
+    - "category" DEBE ser uno de: "Metales de transición", "No metales", "Gases nobles", "Alcalinos", "Metales Alcalinotérreos", "Halógenos", "Metaloides", "Otros metales".
+    - ¡NUNCA sustituyas este tag por una tabla Markdown o diagrama cuando el usuario pida propiedades de un elemento!
+
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
 
