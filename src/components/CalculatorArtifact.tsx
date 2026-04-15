@@ -45,7 +45,25 @@ const guessOperation = (formula: string): string => {
 };
 
 export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) => {
-  const defaultOpId = guessOperation(calculator.formula);
+  // --- Safety Guard: prevent crash if data is malformed/incomplete ---
+  if (!calculator || typeof calculator !== 'object') {
+    return (
+      <div className="my-4 p-4 rounded-2xl border border-white/10 bg-slate-900/50 text-slate-400 text-sm text-center">
+        <Calculator className="h-5 w-5 mx-auto mb-2 text-primary animate-pulse" />
+        Cargando calculadora...
+      </div>
+    );
+  }
+
+  const safeCalc = {
+    title: calculator.title || "Calculadora de Geometría",
+    formula: calculator.formula || "",
+    variables: Array.isArray(calculator.variables) ? calculator.variables : [],
+    result_unit: calculator.result_unit || "",
+    explanation: calculator.explanation || "",
+  };
+
+  const defaultOpId = guessOperation(safeCalc.formula);
   const [selectedOpId, setSelectedOpId] = useState(defaultOpId);
   const [values, setValues] = useState<Record<string, string>>({});
   const [result, setResult] = useState<number | null>(null);
