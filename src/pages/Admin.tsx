@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
 import { Search, User, Database, Plus, Minus, ShieldCheck, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminPage = () => {
+  const { profile, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [amount, setAmount] = useState(1);
   const [message, setMessage] = useState('');
+
+  // Candado de Seguridad: Solo pepe750822@gmail.com puede entrar
+  if (!isLoading && (!profile || profile.email !== 'pepe750822@gmail.com')) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   const searchUser = async (e?: React.FormEvent) => {
     e?.preventDefault();
