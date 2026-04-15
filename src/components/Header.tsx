@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays, Crown, Sparkles, Clock, Ticket } from "lucide-react";
+import { GraduationCap, LogOut, UserCircle, Sun, Moon, Menu, Search, BookOpen, ShoppingCart, ExternalLink, Mail, Award, Newspaper, BarChart3, CalendarDays, Crown, Sparkles, Clock, Ticket, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -185,7 +185,7 @@ const Header = () => {
             <TooltipContent>Marketing y Notificaciones</TooltipContent>
           </Tooltip>
 
-          {profile?.email === 'pepe750822@gmail.com' && (
+          {(profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" onClick={() => navigate("/master-admin")} className="text-amber-500 hover:text-amber-400 animate-pulse">
@@ -348,7 +348,7 @@ const Header = () => {
                     Notificaciones y Marketing
                   </Link>
 
-                  {profile?.email === 'pepe750822@gmail.com' && (
+                  {(profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
                     <Link
                       to="/master-admin"
                       className="flex items-center gap-3 px-3 py-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-colors text-amber-500 font-black border border-amber-500/30"
