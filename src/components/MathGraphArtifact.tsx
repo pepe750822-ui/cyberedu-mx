@@ -179,7 +179,7 @@ export const MathGraphArtifact: React.FC<MathGraphProps> = ({ graph }) => {
              <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Interpretación Gráfica</p>
            </div>
            <p className="text-xs text-slate-300 italic leading-relaxed">
-             {graph.description}
+             {graph.description || "Gráfica interactiva cargada exitosamente."}
            </p>
         </div>
       </div>
