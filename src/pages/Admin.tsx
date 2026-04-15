@@ -16,18 +16,24 @@ const AdminPage = () => {
     if (!isLoading) {
       const isAdmin = profile?.email?.toLowerCase() === 'pepe750822@gmail.com';
       if (!profile || !isAdmin) {
+        console.log("Acceso denegado o no logeado. Redirigiendo...");
         navigate('/', { replace: true });
       }
     }
   }, [profile, isLoading, navigate]);
 
-  if (isLoading || !profile) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-4">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+        <p className="text-white/50 animate-pulse font-bold uppercase tracking-widest text-[10px]">Verificando Identidad Maestra...</p>
       </div>
     );
   }
+
+  // Si no hay perfil después de cargar, el useEffect te sacará. 
+  // Mientras tanto, no mostramos nada para evitar parpadeos.
+  if (!profile) return null;
 
   const searchUser = async (e?: React.FormEvent) => {
     e?.preventDefault();
