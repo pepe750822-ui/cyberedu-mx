@@ -775,7 +775,7 @@ function parseAllBlocks(content: string) {
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -1869,7 +1869,7 @@ const MessageBubble = React.memo(({
             <div className={cn("prose prose-invert max-w-none prose-p:my-2 prose-headings:mt-6 prose-headings:mb-3 prose-li:my-1 prose-strong:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:text-cyan-300 w-full overflow-x-hidden min-w-0 break-words", isExpanded ? "prose-base leading-relaxed" : "prose-sm leading-relaxed")}>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
-                rehypePlugins={[rehypeKatex]}
+                rehypePlugins={[[rehypeKatex, { strict: false }]]}
                 components={markdownComponents}
                 urlTransform={(url) => url}
               >
