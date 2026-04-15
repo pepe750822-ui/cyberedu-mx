@@ -12,7 +12,9 @@ const AdminPage = () => {
   const [message, setMessage] = useState('');
 
   // Candado de Seguridad: Solo pepe750822@gmail.com puede entrar
-  if (!isLoading && (!profile || profile.email !== 'pepe750822@gmail.com')) {
+  const isAdmin = profile?.email?.toLowerCase() === 'pepe750822@gmail.com';
+
+  if (!isLoading && (!profile || !isAdmin)) {
     return <Navigate to="/" replace />;
   }
 
