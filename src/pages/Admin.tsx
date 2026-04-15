@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, User, Database, Plus, Minus, ShieldCheck, ArrowLeft } from 'lucide-react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 const AdminPage = () => {
   const { profile, isLoading } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [amount, setAmount] = useState(1);
   const [message, setMessage] = useState('');
 
-  // Candado de Seguridad: Solo pepe750822@gmail.com puede entrar
-  const isAdmin = profile?.email?.toLowerCase() === 'pepe750822@gmail.com';
+  useEffect(() => {
+    if (!isLoading) {
+      const isAdmin = profile?.email?.toLowerCase() === 'pepe750822@gmail.com';
+      if (!profile || !isAdmin) {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [profile, isLoading, navigate]);
 
-  if (!isLoading && (!profile || !isAdmin)) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (isLoading) {
+  if (isLoading || !profile) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
