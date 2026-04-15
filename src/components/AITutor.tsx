@@ -35,6 +35,7 @@ import ExerciseArtifact from "./ExerciseArtifact";
 import ChemistryArtifact from "./ChemistryArtifact";
 import PhysicsArtifact from "./PhysicsArtifact";
 import MathGraphArtifact from "./MathGraphArtifact";
+import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -1909,40 +1910,55 @@ const MessageBubble = React.memo(({
 
           {/* 2. Gráficas (ChartRenderer) */}
           {msg.charts?.map((chart: any, i: number) => (
-            <div key={i} className="max-w-full overflow-hidden my-4">
-              <ChartRenderer chart={chart} />
-            </div>
+            <SafeBlockErrorBoundary key={`chart-err-${i}`}>
+              <div className="max-w-full overflow-hidden my-4">
+                <ChartRenderer chart={chart} />
+              </div>
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 3. Calculadora (CalculatorArtifact) */}
           {msg.calculators?.map((calc: any, i: number) => (
-            <CalculatorArtifact key={`calc-${i}`} calculator={calc} />
+            <SafeBlockErrorBoundary key={`calc-err-${i}`}>
+              <CalculatorArtifact calculator={calc} />
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 4. Simulador (SimulatorArtifact) */}
           {msg.simulators?.map((sim: any, i: number) => (
-            <SimulatorArtifact key={`sim-${i}`} simulator={sim} />
+            <SafeBlockErrorBoundary key={`sim-err-${i}`}>
+              <SimulatorArtifact simulator={sim} />
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 4.5 Simulador de Física (PhysicsArtifact) */}
           {msg.physics?.map((phys: any, i: number) => (
-            <PhysicsArtifact key={`phys-${i}`} simulation={phys} />
+            <SafeBlockErrorBoundary key={`phys-err-${i}`}>
+              <PhysicsArtifact simulation={phys} />
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 4.6 Graficador Matemático (MathGraphArtifact) */}
           {msg.mathGraphs?.map((graph: any, i: number) => (
-            <MathGraphArtifact key={`math-${i}`} graph={graph} />
+            <SafeBlockErrorBoundary key={`math-err-${i}`}>
+              <MathGraphArtifact graph={graph} />
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 5. Ejercicio (ExerciseArtifact) */}
           {msg.exercises?.map((ex: any, i: number) => (
-            <ExerciseArtifact key={`ex-${i}`} exercise={ex} />
+            <SafeBlockErrorBoundary key={`ex-err-${i}`}>
+              <ExerciseArtifact exercise={ex} />
+            </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.5 Química (ChemistryArtifact) */}
           {msg.chemistryElements?.map((elem: any, i: number) => (
-            <ChemistryArtifact key={`chem-${i}`} element={elem} />
+            <SafeBlockErrorBoundary key={`chem-err-${i}`} fallbackMessage="La información del elemento químico está incompleta o tiene un formato inválido.">
+              <ChemistryArtifact element={elem} />
+            </SafeBlockErrorBoundary>
           ))}
+
 
           {/* 6. Quiz (AITutorQuiz) */}
           {msg.quiz && <QuizCard quiz={msg.quiz} />}
