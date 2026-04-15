@@ -3278,12 +3278,12 @@ const AITutor = () => {
            12. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):
                Cuando el tema lo permita, despliega bloques interactivos usando JSON dentro de los siguientes tags:
                - <calculator>: Para matemáticas algebraicas/aritméticas o geométricas básica.
-               - <math_graph>: Para graficar ecuaciones algebraicas en un Plano Cartesiano Interactivo (Lineal o Cuadrática). Usa EXACTAMENTE esta estructura:
-                 {"title": "Función Lineal (o Cuadrática)", "type": "lineal" | "cuadratica", "default_values": {"m": 2, "b": -1} (o {"a": 1, "b": 0, "c": -4}), "description": "Explicación breve de la gráfica"}
-               - <chemistry>: Para mostrar propiedades de elementos químicos. 
-                 Estructura: {"name": "Oro", "symbol": "Au", "atomic_number": 79, "atomic_mass": 196.9, "category": "Metales de transición", "properties": {"density": "19.3 g/cm³", "melting_point": "1064 °C", "boiling_point": "2856 °C", "electron_config": "[Xe] 4f14 5d10 6s1"}, "description": "Resumen breve..."}
-               - <physics>: Para simuladores interactivos de física. Usa EXACTAMENTE esta estructura:
-                 {"title": "Caída Libre (o MRU, o Segunda Ley de Newton)", "type": "free_fall" | "mru" | "fma", "default_values": {"height": 100, "gravity": 9.81} (o {"distance": 100, "time": 10} o {"mass": 10, "acceleration": 9.81}), "description": "Explicación breve de la fórmula"}
+               - <math_graph>: Para graficar ecuaciones en un Plano Cartesiano Interactivo (Lineal o Cuadrática). OBLIGATORIO usar esta estructura exacta:
+                 <math_graph>{"title": "Función Lineal", "type": "lineal", "default_values": {"m": 2, "b": -1}, "description": "Explicación"}</math_graph>
+               - <chemistry>: OBLIGATORIO al explicar propiedades de elementos químicos (ej. Oro, Carbono). ¡NO expliques con texto normal o diagramas, usa SOLO este tag! 
+                 Ejemplo de Estructura: <chemistry>{"name": "Oro", "symbol": "Au", "atomic_number": 79, "atomic_mass": 196.9, "category": "Metales de transición", "properties": {"density": "19.3 g/cm³", "melting_point": "1064 °C", "boiling_point": "2856 °C", "electron_config": "[Xe] 4f14 5d10 6s1"}, "description": "Resumen breve..."}</chemistry>
+               - <physics>: Para simuladores interactivos de física. OBLIGATORIO usar esta estructura exacta:
+                 <physics>{"title": "Caída Libre", "type": "free_fall", "default_values": {"height": 100, "gravity": 9.81}, "description": "Explicación breve de la fórmula"}</physics>
                - <exercise>: Para plantear problemas prácticos con opciones múltiples o desarrollo.
            13. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
                - Si !context.isRegistered:
