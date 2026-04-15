@@ -33,6 +33,7 @@ import CalculatorArtifact from "./CalculatorArtifact";
 import SimulatorArtifact from "./SimulatorArtifact";
 import ExerciseArtifact from "./ExerciseArtifact";
 import ChemistryArtifact from "./ChemistryArtifact";
+import PhysicsArtifact from "./PhysicsArtifact";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -297,6 +298,7 @@ interface Message {
   charts?: ChartData[];
   calculators?: any[];
   simulators?: any[];
+  physics?: any[];
   exercises?: any[];
   chemistryElements?: any[];
   eduImages?: EduImage[];
@@ -703,6 +705,17 @@ function parseSimulatorsFromContent(content: string): { simulators: any[]; clean
   return { simulators, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/g, "").trim() };
 }
 
+function parsePhysicsFromContent(content: string): { physics: any[]; cleanContent: string } {
+  const physics: any[] = [];
+  const regex = /<physics>([\s\S]*?)<\/physics>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) physics.push(parsed);
+  }
+  return { physics, cleanContent: content.replace(/<physics>[\s\S]*?<\/physics>/g, "").trim() };
+}
+
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
@@ -737,11 +750,12 @@ function parseAllBlocks(content: string) {
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
   const { calculators, cleanContent: c55 } = parseCalculatorsFromContent(c5);
   const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
-  const { exercises, cleanContent: c57 } = parseExercisesFromContent(c56);
+  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c56);
+  const { exercises, cleanContent: c57 } = parseExercisesFromContent(c565);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, physics, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -756,6 +770,7 @@ function stripStreamingBlocks(content: string): string {
         chart: "gráfica",
         calculator: "calculadora",
         simulator: "simulador",
+        physics: "simulador de física",
         exercise: "ejercicio práctico",
         chemistry: "ficha química"
       };
@@ -1892,6 +1907,11 @@ const MessageBubble = React.memo(({
           {/* 4. Simulador (SimulatorArtifact) */}
           {msg.simulators?.map((sim: any, i: number) => (
             <SimulatorArtifact key={`sim-${i}`} simulator={sim} />
+          ))}
+
+          {/* 4.5 Simulador de Física (PhysicsArtifact) */}
+          {msg.physics?.map((phys: any, i: number) => (
+            <PhysicsArtifact key={`phys-${i}`} simulation={phys} />
           ))}
 
           {/* 5. Ejercicio (ExerciseArtifact) */}
@@ -3221,11 +3241,12 @@ const AITutor = () => {
               Todo completamente GRATIS con registro.
            12. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):
                Cuando el tema lo permita, despliega bloques interactivos usando JSON dentro de los siguientes tags:
-               - <calculator>: Para problemas de matemáticas o física que requieran cálculos (área, volumen, fuerza, etc.).
+               - <calculator>: Para matemáticas algebraicas/aritméticas o geométricas básica.
                - <chemistry>: Para mostrar propiedades de elementos químicos. 
                  Estructura: {"name": "Oro", "symbol": "Au", "atomic_number": 79, "atomic_mass": 196.9, "category": "Metales de transición", "properties": {"density": "19.3 g/cm³", "melting_point": "1064 °C", "boiling_point": "2856 °C", "electron_config": "[Xe] 4f14 5d10 6s1"}, "description": "Resumen breve..."}
+               - <physics>: Para simuladores interactivos de física. Usa EXACTAMENTE esta estructura:
+                 {"title": "Caída Libre (o MRU, o Segunda Ley de Newton)", "type": "free_fall" | "mru" | "fma", "default_values": {"height": 100, "gravity": 9.81} (o {"distance": 100, "time": 10} o {"mass": 10, "acceleration": 9.81}), "description": "Explicación breve de la fórmula"}
                - <exercise>: Para plantear problemas prácticos con opciones múltiples o desarrollo.
-               - <simulator>: Para simulaciones de procesos.
            13. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
                - Si !context.isRegistered:
                  💡 **¿Quieres acceder a todo este material?**
@@ -3326,7 +3347,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, physics, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
