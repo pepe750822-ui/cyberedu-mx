@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 const AdminPage = () => {
-  const { profile, isLoading } = useAuth();
+  const { user, profile, isLoading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,13 +14,16 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (!isLoading) {
-      const isAdmin = profile?.email?.toLowerCase() === 'pepe750822@gmail.com';
-      if (!profile || !isAdmin) {
-        console.log("Acceso denegado o no logeado. Redirigiendo...");
+      const adminEmail = 'pepe750822@gmail.com';
+      const isAdmin = profile?.email?.toLowerCase() === adminEmail || 
+                      user?.email?.toLowerCase() === adminEmail;
+                      
+      if (!isAdmin) {
+        console.log("Acceso denegado. Redirigiendo...");
         navigate('/', { replace: true });
       }
     }
-  }, [profile, isLoading, navigate]);
+  }, [profile, user, isLoading, navigate]);
 
   if (isLoading) {
     return (
