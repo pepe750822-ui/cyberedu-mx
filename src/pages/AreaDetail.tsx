@@ -400,8 +400,7 @@ const AreaDetail = () => {
                           {areaVideos.map((video) => {
                             const globalIdx = allVideos.findIndex(v => v.id === video.id);
                             const isActive = globalIdx === activeGlobalIndex;
-                            const vKey = getNotebookKey(video.id);
-                            const viewed = vKey ? isViewed(vKey) : false;
+                            const viewed = isViewed(`video-${video.id}`);
 
                             return (
                               <button

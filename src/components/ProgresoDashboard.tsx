@@ -60,9 +60,8 @@ const ProgresoDashboard = () => {
   // 1. Calculate Progress per Area
   const areaData = useMemo(() => {
     return areas.map((area) => {
-      const keys = getAreaNotebookKeys(area.id);
-      const viewedCount = keys.filter((k) => isViewed(k)).length;
-      const totalCount = keys.length || 1;
+      const viewedCount = area.videos.filter((v) => isViewed(`video-${v.id}`)).length;
+      const totalCount = area.videos.length || 1;
       const percentage = Math.round((viewedCount / totalCount) * 100);
 
       return {
@@ -95,8 +94,7 @@ const ProgresoDashboard = () => {
         const durationInSecs = (mins || 0) * 60 + (secs || 0);
         totalSeconds += durationInSecs;
 
-        const vKey = getNotebookKey(video.id);
-        if (vKey && isViewed(vKey)) {
+        if (isViewed(`video-${video.id}`)) {
           investedSeconds += durationInSecs;
         }
       });
@@ -121,7 +119,7 @@ const ProgresoDashboard = () => {
     let viewedTotal = 0;
     areas.forEach(area => {
       area.videos.forEach(v => {
-        if (isViewed(getNotebookKey(v.id) || "")) viewedTotal++;
+        if (isViewed(`video-${v.id}`)) viewedTotal++;
       });
     });
     return Math.round((viewedTotal / (totalVideos || 1)) * 100);
