@@ -110,12 +110,12 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center">
               <Weight className="h-4 w-4 text-slate-500 mb-1" />
-              <p className="text-xs font-black text-slate-200">{element.atomic_mass} u</p>
+              <p className="text-xs font-black text-slate-200">{element.atomic_mass || "-"} u</p>
               <p className="text-[9px] text-slate-500 uppercase font-black">Masa Atómica</p>
             </div>
             <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center">
               <Atom className="h-4 w-4 text-slate-500 mb-1" />
-              <p className="text-xs font-black text-slate-200">{element.atomic_number}</p>
+              <p className="text-xs font-black text-slate-200">{element.atomic_number || "-"}</p>
               <p className="text-[9px] text-slate-500 uppercase font-black">Protones/Electrones</p>
             </div>
           </div>
@@ -127,14 +127,14 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                   <Thermometer className="h-3.5 w-3.5 text-amber-400" />
                   <span className="text-xs text-slate-400 font-bold">Punto de Fusión</span>
                 </div>
-                <span className="text-xs font-black text-white">{element.properties.melting_point}</span>
+                <span className="text-xs font-black text-white">{element.properties?.melting_point || "ND"}</span>
              </div>
              <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] border border-white/5">
                 <div className="flex items-center gap-2">
                   <Beaker className="h-3.5 w-3.5 text-cyan-400" />
                   <span className="text-xs text-slate-400 font-bold">Config. Electrónica</span>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-white">{element.properties.electron_config}</span>
+                <span className="text-[10px] font-mono font-bold text-white">{element.properties?.electron_config || "ND"}</span>
              </div>
           </div>
 
@@ -145,7 +145,7 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                <p className="text-[10px] font-black text-primary uppercase tracking-widest">Dato del Tutor</p>
              </div>
              <p className="text-xs text-slate-300 italic leading-relaxed">
-               {element.description}
+               {element.description || "Información en análisis..."}
              </p>
           </div>
         </div>
