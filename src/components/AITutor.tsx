@@ -2559,14 +2559,14 @@ const AITutor = () => {
         );
       }
       return (
-        <code className={className} style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }} {...props}>
+        <code className={className} style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', maxWidth: '100%', display: 'inline-block' }} {...props}>
           {children}
         </code>
       );
     },
     pre({ children }: any) {
       return (
-        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowX: 'hidden', maxWidth: '100%' }}>
+        <pre className="custom-scrollbar" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowX: 'auto', maxWidth: '100%', margin: '1rem 0' }}>
           {children}
         </pre>
       );
@@ -3511,9 +3511,9 @@ const AITutor = () => {
           {/* Chat Column */}
           <div className="flex-1 flex flex-col min-w-0 bg-white/[0.02]">
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-6 custom-scrollbar relative bg-slate-950/20 shadow-inner">
                 <div className={cn(
-                  "space-y-6 transition-all duration-500 pb-4",
+                  "space-y-6 transition-all duration-500 pb-4 min-w-0 w-full",
                   isExpanded
                     ? (showAgentSidebar ? "max-w-3xl mx-auto px-6 lg:px-10" : "max-w-5xl mx-auto px-6 lg:px-12")
                     : "max-w-4xl mx-auto w-full px-4"
