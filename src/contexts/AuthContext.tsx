@@ -156,27 +156,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         console.log("[Auth] Evento de Auth:", event, session?.user?.email);
         
-        // Sesión inicial nula, detenemos carga
+        // Sesión inicial nula -> desbloquear inmediatamente
         if (event === 'INITIAL_SESSION' && !session) {
            setIsLoading(false);
            return;
         }
 
+        // Actualizar user/session INMEDIATAMENTE (no esperar perfil)
         setSession(session);
         setUser(session?.user ?? null);
+        setIsLoading(false); // <-- Liberar la app de inmediato
         
+        // Cargar perfil en BACKGROUND (no bloqueante)
         if (session?.user) {
-          // fetchProfile ya maneja la de-duplicación con el ref
-          await fetchProfile(session.user.id);
+          fetchProfile(session.user.id); // sin await
         } else if (event === 'SIGNED_OUT') {
           setProfile(null);
         }
-        
-        setIsLoading(false);
       }
     );
 
-    // Initial session check
+    // Initial session check — desbloquear UI tan pronto como se conozca la sesión
     const checkSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -185,13 +185,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (mounted && session) {
           setSession(session);
           setUser(session.user);
-          await fetchProfile(session.user.id);
+          // Liberar loading ANTES de cargar el perfil
+          if (!isAuthRedirect) setIsLoading(false);
+          // Perfil en background
+          fetchProfile(session.user.id); // sin await
         }
       } catch (error) {
         console.error("[Auth] Error inicial en checkSession:", error);
       } finally {
         if (mounted && !isAuthRedirect) {
-          setIsLoading(false);
+          setIsLoading(false); // garantizar que siempre se desbloquee
         }
       }
     };
@@ -199,14 +202,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     checkSession();
 
-    // Safety timeout: if after 15 seconds we're still loading, something went wrong
-    // ESPECIALLY important for OAuth redirects that might hang.
+    // Safety timeout reducido a 5s — solo para el caso de OAuth redirect
     const safetyTimeoutId = setTimeout(() => {
       if (mounted && isLoading) {
-        console.warn("Auth sync safety timeout reached (15s) - forcing stop loading. Auth state might be inconsistent.");
+        console.warn("[Auth] Safety timeout (5s) - forcing stop loading.");
         setIsLoading(false);
       }
-    }, 15000);
+    }, 5000);
 
     return () => {
       mounted = false;
