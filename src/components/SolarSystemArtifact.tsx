@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Sun, Star, Info, RotateCcw, ZoomIn, ZoomOut, Play, Pause } from 'lucide-react';
+import { Sun, Info, RotateCcw, ZoomIn, ZoomOut, Play, Pause } from 'lucide-react';
 
 interface Planet {
   name: string;
@@ -28,8 +28,47 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [hoveredPlanet, setHoveredPlanet] = useState<Planet | null>(null);
+
   const angleRef = useRef<number[]>(PLANETS.map(() => Math.random() * Math.PI * 2));
   const animFrameRef = useRef<number>(0);
+
+  // Refs so draw() never needs to be recreated
+  const scaleRef = useRef(scale);
+  const isPlayingRef = useRef(isPlaying);
+  const selectedPlanetRef = useRef<Planet | null>(selectedPlanet);
+  const hoveredRef = useRef<Planet | null>(null);
+  const mousePosRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
+
+  useEffect(() => { scaleRef.current = scale; }, [scale]);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+  useEffect(() => { selectedPlanetRef.current = selectedPlanet; }, [selectedPlanet]);
+
+  // Convert client coords → canvas logical coords (accounts for CSS scaling)
+  const toCanvasCoords = useCallback((clientX: number, clientY: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left) * (canvas.width / rect.width),
+      y: (clientY - rect.top) * (canvas.height / rect.height),
+    };
+  }, []);
+
+  // Find which planet is at the given canvas-logical position
+  const getPlanetAt = useCallback((lx: number, ly: number, s: number): Planet | null => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    for (let i = 0; i < PLANETS.length; i++) {
+      const p = PLANETS[i];
+      const angle = angleRef.current[i];
+      const px = cx + Math.cos(angle) * p.distance * s;
+      const py = cy + Math.sin(angle) * p.distance * 0.6 * s;
+      if (Math.hypot(px - lx, py - ly) < (p.size + 8) * s) return p;
+    }
+    return null;
+  }, []);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -37,94 +76,98 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const s = scaleRef.current;
     const W = canvas.width;
     const H = canvas.height;
     const cx = W / 2;
     const cy = H / 2;
 
     ctx.clearRect(0, 0, W, H);
-
-    // Starfield
     ctx.fillStyle = '#020617';
     ctx.fillRect(0, 0, W, H);
-    
-    // Draw some static stars
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    for(let i=0; i<100; i++) {
-        const x = (Math.sin(i * 123.45) * 0.5 + 0.5) * W;
-        const y = (Math.cos(i * 456.78) * 0.5 + 0.5) * H;
-        ctx.beginPath();
-        ctx.arc(x, y, 0.5, 0, Math.PI * 2);
-        ctx.fill();
+
+    // Stars
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    for (let i = 0; i < 100; i++) {
+      ctx.beginPath();
+      ctx.arc(
+        (Math.sin(i * 123.45) * 0.5 + 0.5) * W,
+        (Math.cos(i * 456.78) * 0.5 + 0.5) * H,
+        0.5, 0, Math.PI * 2
+      );
+      ctx.fill();
     }
 
-    // Draw Orbits
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    // Orbits
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
     ctx.lineWidth = 1;
     PLANETS.forEach(p => {
       ctx.beginPath();
-      ctx.ellipse(cx, cy, p.distance * scale, p.distance * 0.6 * scale, 0, 0, Math.PI * 2);
+      ctx.ellipse(cx, cy, p.distance * s, p.distance * 0.6 * s, 0, 0, Math.PI * 2);
       ctx.stroke();
     });
 
-    // Draw Sun
-    const sunGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 25 * scale);
+    // Sun
+    const sunGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 25 * s);
     sunGlow.addColorStop(0, '#fef08a');
     sunGlow.addColorStop(0.4, '#eab308');
-    sunGlow.addColorStop(1, 'rgba(234, 179, 8, 0)');
+    sunGlow.addColorStop(1, 'rgba(234,179,8,0)');
     ctx.fillStyle = sunGlow;
     ctx.beginPath();
-    ctx.arc(cx, cy, 30 * scale, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 30 * s, 0, Math.PI * 2);
     ctx.fill();
 
-    // Draw Planets
+    // Hover detection — use properly scaled coords
+    const { x: lx, y: ly } = toCanvasCoords(mousePosRef.current.x, mousePosRef.current.y);
+    let newHovered: Planet | null = null;
+
     PLANETS.forEach((p, i) => {
       const angle = angleRef.current[i];
-      const x = cx + Math.cos(angle) * p.distance * scale;
-      const y = cy + Math.sin(angle) * p.distance * 0.6 * scale;
+      const px = cx + Math.cos(angle) * p.distance * s;
+      const py = cy + Math.sin(angle) * p.distance * 0.6 * s;
 
-      // Interaction check
-      const mx = (window as any).__mouseX || 0;
-      const my = (window as any).__mouseY || 0;
-      const rect = canvas.getBoundingClientRect();
-      const localX = mx - rect.left;
-      const localY = my - rect.top;
-      const dist = Math.hypot(x - localX, y - localY);
-
-      if (dist < (p.size + 5) * scale) {
-        setHoveredPlanet(p);
+      if (Math.hypot(px - lx, py - ly) < (p.size + 8) * s) {
+        newHovered = p;
       }
 
-      // Planet Glow / Shadow
-      const grad = ctx.createRadialGradient(x - p.size * 0.3, y - p.size * 0.3, 0, x, y, p.size * scale);
+      const selected = selectedPlanetRef.current;
+      const isHovered = hoveredRef.current === p;
+      const isSelected = selected === p;
+
+      const grad = ctx.createRadialGradient(
+        px - p.size * 0.3, py - p.size * 0.3, 0,
+        px, py, p.size * s
+      );
       grad.addColorStop(0, p.color);
       grad.addColorStop(1, '#000');
-      
       ctx.fillStyle = grad;
-      ctx.shadowBlur = (hoveredPlanet === p || selectedPlanet === p) ? 15 : 0;
+      ctx.shadowBlur = (isHovered || isSelected) ? 15 : 0;
       ctx.shadowColor = p.color;
-      
       ctx.beginPath();
-      ctx.arc(x, y, p.size * scale, 0, Math.PI * 2);
+      ctx.arc(px, py, p.size * s, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // Names if selected
-      if (selectedPlanet === p) {
+      if (isSelected) {
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 12px Inter';
         ctx.textAlign = 'center';
-        ctx.fillText(p.name, x, y - p.size * scale - 10);
+        ctx.fillText(p.name, px, py - p.size * s - 10);
       }
 
-      // Update position
-      if (isPlaying) {
+      if (isPlayingRef.current) {
         angleRef.current[i] += p.speed;
       }
     });
 
+    // Only update React state when hovered planet actually changes
+    if (hoveredRef.current !== newHovered) {
+      hoveredRef.current = newHovered;
+      setHoveredPlanet(newHovered);
+    }
+
     animFrameRef.current = requestAnimationFrame(draw);
-  }, [scale, isPlaying, selectedPlanet, hoveredPlanet]);
+  }, [toCanvasCoords]); // stable — toCanvasCoords is also stable (useCallback + [])
 
   useEffect(() => {
     animFrameRef.current = requestAnimationFrame(draw);
@@ -132,16 +175,21 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
   }, [draw]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    (window as any).__mouseX = e.clientX;
-    (window as any).__mouseY = e.clientY;
+    mousePosRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  const handleClick = () => {
-    if (hoveredPlanet) {
-      setSelectedPlanet(hoveredPlanet);
-    } else {
-      setSelectedPlanet(null);
-    }
+  const handleMouseLeave = () => {
+    mousePosRef.current = { x: -9999, y: -9999 };
+    hoveredRef.current = null;
+    setHoveredPlanet(null);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    const { x, y } = toCanvasCoords(e.clientX, e.clientY);
+    const clicked = getPlanetAt(x, y, scaleRef.current);
+    setSelectedPlanet(prev =>
+      clicked ? (prev?.name === clicked.name ? null : clicked) : null
+    );
   };
 
   return (
@@ -156,18 +204,22 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
           <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">{topic || "Física y Astronomía — Interactivo"}</p>
         </div>
         <div className="ml-auto flex gap-2">
-            <button 
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white transition-all"
-            >
-                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </button>
-            <button 
-                onClick={() => { angleRef.current = PLANETS.map(() => Math.random() * Math.PI * 2); setScale(1); setSelectedPlanet(null); }}
-                className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white transition-all"
-            >
-                <RotateCcw className="h-4 w-4" />
-            </button>
+          <button
+            onClick={() => setIsPlaying(p => !p)}
+            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white transition-all"
+          >
+            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          </button>
+          <button
+            onClick={() => {
+              angleRef.current = PLANETS.map(() => Math.random() * Math.PI * 2);
+              setScale(1);
+              setSelectedPlanet(null);
+            }}
+            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white transition-all"
+          >
+            <RotateCcw className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
@@ -178,43 +230,49 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
           height={400}
           className="w-full h-auto cursor-crosshair"
           onMouseMove={handleMouseMove}
-          onMouseLeave={() => setHoveredPlanet(null)}
+          onMouseLeave={handleMouseLeave}
           onClick={handleClick}
         />
 
-        {/* Info Card Overlay */}
+        {/* Planet info card */}
         {selectedPlanet && (
-            <div className="absolute top-4 right-4 w-48 p-4 rounded-2xl bg-slate-900/90 border border-white/10 backdrop-blur-md animate-in fade-in zoom-in duration-300">
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="h-3 w-3 rounded-full" style={{ backgroundColor: selectedPlanet.color }} />
-                    <span className="font-black text-white text-xs uppercase">{selectedPlanet.name}</span>
-                </div>
-                <p className="text-white/60 text-[11px] leading-relaxed mb-3">{selectedPlanet.info}</p>
-                <button 
-                    onClick={() => setSelectedPlanet(null)}
-                    className="w-full py-2 rounded-lg bg-white/5 text-[10px] font-black uppercase text-white/40 hover:text-white transition-all"
-                >
-                    Cerrar
-                </button>
+          <div className="absolute top-4 right-4 w-48 p-4 rounded-2xl bg-slate-900/90 border border-white/10 backdrop-blur-md animate-in fade-in zoom-in duration-300">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-3 w-3 rounded-full" style={{ backgroundColor: selectedPlanet.color }} />
+              <span className="font-black text-white text-xs uppercase">{selectedPlanet.name}</span>
             </div>
+            <p className="text-white/60 text-[11px] leading-relaxed mb-3">{selectedPlanet.info}</p>
+            <button
+              onClick={() => setSelectedPlanet(null)}
+              className="w-full py-2 rounded-lg bg-white/5 text-[10px] font-black uppercase text-white/40 hover:text-white transition-all"
+            >
+              Cerrar
+            </button>
+          </div>
         )}
 
-        {/* Legend / Hover Hint */}
+        {/* Hint */}
         {!selectedPlanet && (
-            <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-white/40">
-                <Info className="h-3 w-3" />
-                {hoveredPlanet ? `Planeta: ${hoveredPlanet.name} (Clic para info)` : 'Haz clic en un planeta para explorar'}
-            </div>
+          <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-white/40">
+            <Info className="h-3 w-3" />
+            {hoveredPlanet ? `Planeta: ${hoveredPlanet.name} — Clic para info` : 'Haz clic en un planeta para explorar'}
+          </div>
         )}
 
-        {/* Zoom Controls */}
+        {/* Zoom */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2">
-            <button onClick={() => setScale(s => Math.min(2, s + 0.1))} className="p-2 rounded-xl bg-black/60 border border-white/10 text-white/40 hover:text-white transition-all">
-                <ZoomIn className="h-4 w-4" />
-            </button>
-            <button onClick={() => setScale(s => Math.max(0.5, s - 0.1))} className="p-2 rounded-xl bg-black/60 border border-white/10 text-white/40 hover:text-white transition-all">
-                <ZoomOut className="h-4 w-4" />
-            </button>
+          <button
+            onClick={() => setScale(s => Math.min(2, s + 0.1))}
+            className="p-2 rounded-xl bg-black/60 border border-white/10 text-white/40 hover:text-white transition-all"
+          >
+            <ZoomIn className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setScale(s => Math.max(0.5, s - 0.1))}
+            className="p-2 rounded-xl bg-black/60 border border-white/10 text-white/40 hover:text-white transition-all"
+          >
+            <ZoomOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>
