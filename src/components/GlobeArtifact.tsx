@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search, Loader2, AlertTriangle, RefreshCw, X } from 'lucide-react';
+import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search, Loader2, AlertTriangle, RefreshCw, X, Navigation } from 'lucide-react';
 
 interface GlobeArtifactProps {
   highlightCountry?: string;
@@ -118,6 +118,8 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   const [loading, setLoading] = useState(!CACHED_GEO_DATA);
   const [error, setError] = useState<boolean>(false);
   const [autoRotate, setAutoRotate] = useState(true);
+  const [coordLat, setCoordLat] = useState('');
+  const [coordLon, setCoordLon] = useState('');
   const canvasSize = 420;
 
   // ── Data loading ──────────────────────────────────────────────
@@ -395,6 +397,17 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     centerOn(name, 230);
   };
 
+  const handleGoToCoords = () => {
+    const lat = parseFloat(coordLat);
+    const lon = parseFloat(coordLon);
+    if (isNaN(lat) || isNaN(lon)) return;
+    const clampedLat = Math.max(-90, Math.min(90, lat));
+    const clampedLon = Math.max(-180, Math.min(180, lon));
+    setRotLat(clampedLat);
+    setRotLon(clampedLon);
+    setAutoRotate(false);
+  };
+
   // ── Selected country info ─────────────────────────────────────
   const selectedInfo = geoData?.features?.find(
     (f: any) => f.properties?.name?.toLowerCase() === selectedCountry?.toLowerCase()
@@ -537,6 +550,48 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             >
               <RotateCcw className="h-4 w-4" />
             </button>
+          </div>
+
+          {/* Navegación por coordenadas */}
+          <div className="rounded-xl bg-white/5 border border-white/10 p-3 space-y-2">
+            <p className="text-[9px] font-black text-white/30 uppercase tracking-widest flex items-center gap-1.5">
+              <Navigation className="h-3 w-3" /> Ir a coordenadas
+            </p>
+            <div className="flex gap-2">
+              <div className="flex-1 relative">
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-white/30 font-black pointer-events-none">LAT</span>
+                <input
+                  type="number"
+                  min="-90" max="90"
+                  placeholder="0"
+                  value={coordLat}
+                  onChange={e => setCoordLat(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleGoToCoords()}
+                  className="w-full pl-8 pr-2 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs font-bold focus:outline-none focus:border-blue-500/40 transition-all"
+                />
+              </div>
+              <div className="flex-1 relative">
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-white/30 font-black pointer-events-none">LON</span>
+                <input
+                  type="number"
+                  min="-180" max="180"
+                  placeholder="0"
+                  value={coordLon}
+                  onChange={e => setCoordLon(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleGoToCoords()}
+                  className="w-full pl-9 pr-2 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs font-bold focus:outline-none focus:border-blue-500/40 transition-all"
+                />
+              </div>
+              <button
+                onClick={handleGoToCoords}
+                className="px-3 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[10px] font-black hover:bg-blue-500/30 transition-all flex-shrink-0"
+              >
+                Ir
+              </button>
+            </div>
+            <p className="text-[9px] text-white/20">
+              Lat: {rotLat.toFixed(1)}° &nbsp; Lon: {rotLon.toFixed(1)}°
+            </p>
           </div>
 
           {/* Información del país seleccionado */}
