@@ -27,9 +27,13 @@ const AdminMonitoring = () => {
 
   const isAdminCheck = () => {
     const adminEmail = 'pepe750822@gmail.com';
-    return profile?.is_admin === true || 
-           profile?.email?.toLowerCase() === adminEmail || 
-           user?.email?.toLowerCase() === adminEmail;
+    // Priorizar el email del usuario (user) sobre el perfil para mayor velocidad
+    const userEmail = user?.email?.toLowerCase();
+    const profileEmail = profile?.email?.toLowerCase();
+    
+    return userEmail === adminEmail || 
+           profileEmail === adminEmail || 
+           profile?.is_admin === true;
   };
 
   useEffect(() => {

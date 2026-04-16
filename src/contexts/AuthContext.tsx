@@ -57,8 +57,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const isSigningOut = useRef(false);
+  const fetchingProfileForId = useRef<string | null>(null);
 
   const fetchProfile = async (userId: string) => {
+    if (fetchingProfileForId.current === userId) {
+      console.log("[Auth] fetchProfile ya en curso para:", userId, "- ignorando duplicado");
+      return;
+    }
+    
+    fetchingProfileForId.current = userId;
+    console.log("[Auth] Iniciando fetchProfile para:", userId);
+    
     try {
       const { data, error } = await supabase
         .from("profiles")
@@ -67,10 +76,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .single();
       
       if (data) {
+        console.log("[Auth] Perfil cargado con éxito para:", userId);
         setProfile(data as UserProfile);
       } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
-        console.log("Perfil no encontrado, creando uno nuevo para el usuario:", userId);
-        // Intentar crear perfil si falta (común en OAuth)
+        console.log("[Auth] Perfil no encontrado, creando uno nuevo...");
+        // Usar la sesión ya disponible si es posible
         const { data: { session } } = await supabase.auth.getSession();
         const currentUser = session?.user;
         
@@ -87,21 +97,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             .single();
           
           if (insertError) {
-            console.error("Error al crear perfil automático:", insertError);
+            console.error("[Auth] Error al crear perfil:", insertError);
           } else if (newProfile) {
+            console.log("[Auth] Perfil creado con éxito");
             setProfile(newProfile as UserProfile);
           }
         }
       } else if (error) {
-        console.error("Error al cargar perfil:", error);
+        console.error("[Auth] Error al cargar perfil:", error);
       }
     } catch (e) {
-      console.error("Error inesperado en fetchProfile:", e);
+      console.error("[Auth] Error inesperado en fetchProfile:", e);
+    } finally {
+      // No reseteamos inmediatamente para evitar ráfagas en el mismo ciclo, 
+      // pero permitimos futuras recargas si es necesario (ej. refreshProfile)
+      setTimeout(() => {
+        if (fetchingProfileForId.current === userId) {
+          fetchingProfileForId.current = null;
+        }
+      }, 2000);
     }
   };
 
   const refreshProfile = async () => {
     if (user?.id) {
+      fetchingProfileForId.current = null; // Forzar recarga
       await fetchProfile(user.id);
     }
   };
@@ -114,21 +134,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                            window.location.hash.includes('type=recovery') ||
                            window.location.search.includes('code=');
 
-    console.log("Auth Context Mount - Redirect detected:", isAuthRedirect);
-
-    if (isAuthRedirect) {
-      console.log("Auth redirect detected - waiting for session processing...");
-    }
+    console.log("[Auth] Context Mount - Redirect detected:", isAuthRedirect);
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
-        if (isSigningOut.current) return; // Ignorar eventos de auth si estamos cerrando sesión activamente
+        if (isSigningOut.current) return;
         
-        console.log("Auth event:", event, session?.user?.email);
+        console.log("[Auth] Evento de Auth:", event, session?.user?.email);
         
-        // Evitarnos relogueos innecesarios si la sesión no ha cambiado realmente (prevención de loops)
+        // Sesión inicial nula, detenemos carga
         if (event === 'INITIAL_SESSION' && !session) {
            setIsLoading(false);
            return;
@@ -138,12 +154,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
+          // fetchProfile ya maneja la de-duplicación con el ref
           await fetchProfile(session.user.id);
         } else if (event === 'SIGNED_OUT') {
           setProfile(null);
         }
         
-        console.log("Auth event processed - stopping loading");
         setIsLoading(false);
       }
     );
@@ -154,23 +170,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
         
-        if (!mounted) return;
-        
-        if (session) {
+        if (mounted && session) {
           setSession(session);
           setUser(session.user);
           await fetchProfile(session.user.id);
         }
       } catch (error) {
-        console.error("Error checking session:", error);
+        console.error("[Auth] Error inicial en checkSession:", error);
       } finally {
-        // If we're in a redirect, wait a bit longer for the onAuthStateChange event
-        // which is more reliable for OAuth hash processing.
         if (mounted && !isAuthRedirect) {
           setIsLoading(false);
         }
       }
     };
+ };
 
     // Initial session check
     checkSession();
