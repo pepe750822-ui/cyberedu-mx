@@ -1,9 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-export const config = {
-  runtime: 'edge',
-};
-
 export default async function handler(req: Request) {
   if (req.method !== 'GET') {
     return new Response('Method Not Allowed', { status: 405 });
@@ -19,19 +15,20 @@ export default async function handler(req: Request) {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   try {
-    // Obtener los 20 perfiles más activos recientemente
+    // Obtener los 30 perfiles más activos recientemente para mayor visibilidad
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
       .select('id, email, name, tokens, updated_at, is_premium, subscription_status')
       .order('updated_at', { ascending: false })
-      .limit(20);
+      .limit(30);
 
     if (profilesError) throw profilesError;
 
-    // Obtener el uso diario de estos usuarios para hoy (con manejo de errores suave)
-    const today = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
-    const tzDate = new Date(today);
-    const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
+    // Calcular fecha de hoy en CDMX sin depender de Edge Runtime ICU
+    const now = new Date();
+    // Offset para CDMX (UTC-6)
+    const mexicoTime = new Date(now.getTime() - (6 * 60 * 60 * 1000));
+    const localToday = mexicoTime.toISOString().split('T')[0];
 
     let usage: any[] | null = null;
     try {

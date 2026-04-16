@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, ArrowLeft, RefreshCw, User, Ticket, Zap, Clock } from 'lucide-react';
+import { ShieldCheck, ArrowLeft, RefreshCw, Ticket, Zap } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
