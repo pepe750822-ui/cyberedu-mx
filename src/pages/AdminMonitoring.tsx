@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, ArrowLeft, RefreshCw, Ticket, Zap } from 'lucide-react';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
+import RefreshCw from 'lucide-react/dist/esm/icons/refresh-cw';
+import Ticket from 'lucide-react/dist/esm/icons/ticket';
+import Zap from 'lucide-react/dist/esm/icons/zap';
+import Crown from 'lucide-react/dist/esm/icons/crown';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -159,7 +165,7 @@ const AdminMonitoring = () => {
                   <div className="col-span-2 flex justify-center">
                     {(u.is_premium || u.subscription_status === 'active') ? (
                       <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-widest border border-amber-500/20 flex items-center gap-1">
-                        <Zap className="h-2.5 w-2.5 fill-amber-500" /> Premium
+                        <Crown className="h-2.5 w-2.5 fill-amber-500" /> Premium
                       </span>
                     ) : (
                       <span className="px-3 py-1 rounded-full bg-slate-800 text-white/40 text-[10px] font-black uppercase tracking-widest border border-white/5">
