@@ -120,20 +120,25 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
       return;
     }
     
-    if (IS_FETCHING) return;
-    IS_FETCHING = true;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-    fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
+    fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson', { signal: controller.signal })
       .then(r => r.json())
       .then(data => { 
+        clearTimeout(timeoutId);
         CACHED_GEO_DATA = data;
         setGeoData(data); 
         setLoading(false); 
       })
-      .catch(() => {
+      .catch((err) => {
+        clearTimeout(timeoutId);
+        console.error("Globe data fetch error:", err);
         setLoading(false);
         IS_FETCHING = false;
       });
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // If highlightCountry given, center on it

@@ -745,9 +745,15 @@ function parseGeographyFromContent(content: string): { geography: any[]; cleanCo
   const regex = /<geography>([\s\S]*?)(?:<\/geography>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    if (m[1].trim()) {
-      const parsed = safeParseJSON(m[1]);
-      if (parsed) geography.push(parsed);
+    const raw = m[1].trim();
+    if (raw) {
+      const parsed = safeParseJSON(raw);
+      if (parsed) {
+        geography.push(parsed);
+      } else if (raw.length < 100 && !raw.includes('{')) {
+        // Fallback: Si no es JSON pero es corto, asumimos que es el nombre del país/tema
+        geography.push({ country: raw, topic: raw });
+      }
     }
   }
   return { geography, cleanContent: content.replace(/<geography>[\s\S]*?(?:<\/geography>|$)/g, "").trim() };
