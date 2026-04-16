@@ -59,17 +59,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isSigningOut = useRef(false);
   const fetchingProfileForId = useRef<string | null>(null);
 
-  const fetchProfile = async (userId: string) => {
-    if (fetchingProfileForId.current === userId) {
+  const fetchProfile = async (userId: string, retryCount = 0) => {
+    if (fetchingProfileForId.current === userId && retryCount === 0) {
       console.log("[Auth] fetchProfile ya en curso para:", userId, "- ignorando duplicado");
       return;
     }
     
     fetchingProfileForId.current = userId;
-    console.log("[Auth] Iniciando fetchProfile para:", userId);
+    console.log(`[Auth] Iniciando fetchProfile (intento ${retryCount + 1}) para:`, userId);
     
     try {
-      // Timeout de 5s para la consulta a Supabase
+      // Timeout de 8s para la consulta a Supabase
       const supabaseQuery = supabase
         .from("profiles")
         .select("*")
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .single();
         
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("Supabase Timeout")), 5000)
+        setTimeout(() => reject(new Error("Supabase Timeout")), 8000)
       );
 
       const { data, error } = await Promise.race([supabaseQuery, timeoutPromise]) as any;
@@ -87,7 +87,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setProfile(data as UserProfile);
       } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
         console.log("[Auth] Perfil no encontrado, creando uno nuevo...");
-        // Intentar obtener sesión sin que bloquee
         const { data: sessionData } = await supabase.auth.getSession();
         const currentUser = sessionData?.session?.user;
         
@@ -106,7 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (insertError) {
             console.error("[Auth] Error al crear perfil:", insertError);
           } else if (newProfile) {
-            console.log("[Auth] Perfil creado con éxito");
             setProfile(newProfile as UserProfile);
           }
         }
@@ -114,8 +112,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error("[Auth] Error al cargar perfil:", error);
       }
     } catch (e: any) {
-      console.error("[Auth] Catch en fetchProfile:", e.message);
-      // Si hay timeout, permitimos que continúe con perfil null para no bloquear la app
+      console.error(`[Auth] Error en fetchProfile (intento ${retryCount + 1}):`, e.message);
+      
+      if (e.message === "Supabase Timeout" && retryCount < 1) {
+        console.log("[Auth] Reintentando fetchProfile...");
+        fetchingProfileForId.current = null; // Limpiar para permitir el reintento
+        return fetchProfile(userId, retryCount + 1);
+      }
+      // Si falla después del reintento, permitimos que continúe con perfil null
     } finally {
       // No reseteamos inmediatamente para evitar ráfagas en el mismo ciclo, 
       // pero permitimos futuras recargas si es necesario (ej. refreshProfile)
