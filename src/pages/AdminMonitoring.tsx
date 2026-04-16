@@ -127,7 +127,7 @@ const AdminMonitoring = () => {
           <div className="grid grid-cols-12 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-white/30">
              <div className="col-span-4">Usuario</div>
              <div className="col-span-2 text-center">Status</div>
-             <div className="col-span-2 text-center">Interacciones Hoy</div>
+             <div className="col-span-2 text-center">Total Histórico</div>
              <div className="col-span-2 text-center">Tokens</div>
              <div className="col-span-2 text-right">Última Actividad</div>
           </div>
@@ -175,12 +175,17 @@ const AdminMonitoring = () => {
                   </div>
 
                   <div className="col-span-2 text-center">
-                    <span className={cn(
-                      "text-sm font-black",
-                      (u.todayCount || 0) > 0 ? "text-emerald-400" : "text-white/20"
-                    )}>
-                      {u.todayCount || 0}
-                    </span>
+                    <div className="flex flex-col items-center gap-0.5">
+                      <span className={cn(
+                        "text-sm font-black",
+                        (u.totalCount || 0) > 0 ? "text-emerald-400" : "text-white/20"
+                      )}>
+                        {u.totalCount || 0}
+                      </span>
+                      {(u.todayCount || 0) > 0 && (
+                        <span className="text-[9px] text-primary font-bold">+{u.todayCount} hoy</span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="col-span-2 text-center">

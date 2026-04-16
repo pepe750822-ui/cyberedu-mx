@@ -19,45 +19,66 @@ export default async function handler(req: Request) {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   try {
-    // Obtener los 30 perfiles más activos recientemente para mayor visibilidad
+    // Obtener todos los perfiles
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
       .select('id, email, name, tokens, updated_at, is_premium, subscription_status')
       .order('updated_at', { ascending: false })
-      .limit(30);
+      .limit(100);
 
     if (profilesError) throw profilesError;
 
-    // Calcular fecha de hoy en CDMX sin depender de Edge Runtime ICU
+    // Calcular fecha de hoy en CDMX (UTC-6)
     const now = new Date();
-    // Offset para CDMX (UTC-6)
     const mexicoTime = new Date(now.getTime() - (6 * 60 * 60 * 1000));
     const localToday = mexicoTime.toISOString().split('T')[0];
 
-    let usage: any[] | null = null;
+    // Uso de hoy
+    let todayUsage: any[] = [];
     try {
-      const { data: usageData, error: usageError } = await supabase
+      const { data, error } = await supabase
         .from('daily_usage')
         .select('user_id, count')
         .eq('date', localToday);
-      
-      if (!usageError) usage = usageData;
+      if (!error && data) todayUsage = data;
     } catch (e) {
-      console.warn('Silent error fetching usage:', e);
+      console.warn('Error fetching today usage:', e);
     }
 
-    // Combinar datos
-    const activeUsers = profiles.map(p => {
-      const userUsage = usage?.find(u => u.user_id === p.id);
-      return {
+    // Uso histórico TOTAL agrupado por usuario (toda la tabla daily_usage)
+    let allTimeUsage: any[] = [];
+    try {
+      const { data, error } = await supabase
+        .from('daily_usage')
+        .select('user_id, count');
+      if (!error && data) allTimeUsage = data;
+    } catch (e) {
+      console.warn('Error fetching all-time usage:', e);
+    }
+
+    // Agrupar uso histórico por user_id
+    const totalByUser: Record<string, number> = {};
+    for (const row of allTimeUsage) {
+      if (!row.user_id) continue;
+      totalByUser[row.user_id] = (totalByUser[row.user_id] || 0) + (row.count || 0);
+    }
+
+    // Combinar con perfiles
+    const activeUsers = profiles
+      .map(p => ({
         ...p,
-        todayCount: userUsage?.count || 0
-      };
-    });
+        todayCount: todayUsage.find(u => u.user_id === p.id)?.count || 0,
+        totalCount: totalByUser[p.id] || 0,
+      }))
+      // Ordenar: primero los que tienen uso histórico, luego por fecha
+      .sort((a, b) => {
+        if (b.totalCount !== a.totalCount) return b.totalCount - a.totalCount;
+        return new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime();
+      });
 
     return new Response(JSON.stringify({ users: activeUsers }), {
       status: 200,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache, no-store, must-revalidate'
       },
