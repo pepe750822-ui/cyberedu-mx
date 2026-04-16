@@ -3403,6 +3403,12 @@ const AITutor = () => {
                - <physics>: Para simuladores interactivos de física. OBLIGATORIO usar esta estructura exacta:
                  <physics>{"title": "Caída Libre", "type": "free_fall", "default_values": {"height": 100, "gravity": 9.81}, "description": "Explicación breve de la fórmula"}</physics>
                - <exercise>: Para plantear problemas prácticos con opciones múltiples o desarrollo.
+               - <geography>: OBLIGATORIO cuando el usuario pregunte sobre países, continentes, geografía, mapas, México, o pida ver un globo terráqueo. Usa esta estructura exacta:
+                 <geography>{"country": "México", "topic": "Geografía de México"}</geography>
+                 Si menciona continente, agrega "continent": "América del Norte". NUNCA uses texto normal para temas geográficos, usa SIEMPRE este tag.
+               - <solar_system>: OBLIGATORIO cuando el usuario pregunte sobre el sistema solar, planetas, Plutón, órbitas o astronomía. Usa esta estructura exacta:
+                 <solar_system>{"topic": "Sistema Solar", "focus": "Plutón"}</solar_system>
+                 NUNCA uses texto normal para temas del sistema solar, usa SIEMPRE este tag.
            13. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
                - Si !context.isRegistered:
                  💡 **¿Quieres acceder a todo este material?**
@@ -3454,7 +3460,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3503,7 +3509,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
