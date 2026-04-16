@@ -465,6 +465,8 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <recommendation> al final con areaId y videoId del catálogo (Punto 16). NUNCA solo texto plano.
     - SIEMPRE incluye <chemistry> para temas de elementos químicos (Punto 0). NUNCA diagramas Mermaid para esto.
     - SIEMPRE incluye <calculator> cuando expliques fórmulas matemáticas o físicas (Punto 18).
+    - SIEMPRE incluye <geography> cuando expliques ubicación de países, continentes o coordenadas (Punto 22).
+    - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
@@ -597,6 +599,14 @@ export default async function handler(req: Request) {
         - ESQUEMA OBLIGATORIO: { "title": "Práctica: [tema]", "problem": "Enunciado del problema (EJ: ¿Fuerza para acelerar 5kg a 2m/s²?)", "options": ["A", "B", "C", "D"], "correct_index": 1, "explanation": "Solución paso a paso" }
         - REGLA DE ORO: El "correct_index" es un NÚMERO (0 para A, 1 para B, etc.). NUNCA uses letras en este campo.
         - Verifica los cálculos 3 veces antes de poner la respuesta correcta.
+
+    22. GLOBO TERRÁQUEO (OBLIGATORIO PARA GEOGRAFÍA): 
+        - Cuando hables de países o continentes, usa: <geography>{ "country": "México", "continent": "América", "topic": "Relieve" }</geography>.
+        - Esto activará un globo 3D interactivo en la pantalla del usuario.
+
+    23. SISTEMA SOLAR (OBLIGATORIO PARA ASTRONOMÍA):
+        - Cuando expliques los planetas, usa: <solar_system>{ "topic": "Los Planetas" }</solar_system>.
+        - Esto activará un simulador 3D del espacio.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
