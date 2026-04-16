@@ -69,20 +69,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     console.log("[Auth] Iniciando fetchProfile para:", userId);
     
     try {
-      const { data, error } = await supabase
+      // Timeout de 5s para la consulta a Supabase
+      const supabaseQuery = supabase
         .from("profiles")
         .select("*")
         .eq("id", userId)
         .single();
+        
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Supabase Timeout")), 5000)
+      );
+
+      const { data, error } = await Promise.race([supabaseQuery, timeoutPromise]) as any;
       
       if (data) {
         console.log("[Auth] Perfil cargado con éxito para:", userId);
         setProfile(data as UserProfile);
       } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
         console.log("[Auth] Perfil no encontrado, creando uno nuevo...");
-        // Usar la sesión ya disponible si es posible
-        const { data: { session } } = await supabase.auth.getSession();
-        const currentUser = session?.user;
+        // Intentar obtener sesión sin que bloquee
+        const { data: sessionData } = await supabase.auth.getSession();
+        const currentUser = sessionData?.session?.user;
         
         if (currentUser && currentUser.id === userId) {
           const { data: newProfile, error: insertError } = await supabase
@@ -106,8 +113,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else if (error) {
         console.error("[Auth] Error al cargar perfil:", error);
       }
-    } catch (e) {
-      console.error("[Auth] Error inesperado en fetchProfile:", e);
+    } catch (e: any) {
+      console.error("[Auth] Catch en fetchProfile:", e.message);
+      // Si hay timeout, permitimos que continúe con perfil null para no bloquear la app
     } finally {
       // No reseteamos inmediatamente para evitar ráfagas en el mismo ciclo, 
       // pero permitimos futuras recargas si es necesario (ej. refreshProfile)
