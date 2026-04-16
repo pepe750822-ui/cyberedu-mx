@@ -703,57 +703,67 @@ function parseChemistryFromContent(content: string): { chemistryElements: any[];
 
 function parseSimulatorsFromContent(content: string): { simulators: any[]; cleanContent: string } {
   const simulators: any[] = [];
-  const regex = /<simulator>([\s\S]*?)<\/simulator>/g;
+  const regex = /<simulator>([\s\S]*?)(?:<\/simulator>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) simulators.push(parsed);
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) simulators.push(parsed);
+    }
   }
-  return { simulators, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/g, "").trim() };
-}
-
-function parseGeographyFromContent(content: string): { geography: any[]; cleanContent: string } {
-  const geography: any[] = [];
-  const regex = /<geography>([\s\S]*?)<\/geography>/g;
-  let m;
-  while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) geography.push(parsed);
-  }
-  return { geography, cleanContent: content.replace(/<geography>[\s\S]*?<\/geography>/g, "").trim() };
-}
-
-function parseSolarSystemFromContent(content: string): { solarSystem: any[]; cleanContent: string } {
-  const solarSystem: any[] = [];
-  const regex = /<solar_system>([\s\S]*?)<\/solar_system>/g;
-  let m;
-  while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) solarSystem.push(parsed);
-  }
-  return { solarSystem, cleanContent: content.replace(/<solar_system>[\s\S]*?<\/solar_system>/g, "").trim() };
+  return { simulators, cleanContent: content.replace(/<simulator>[\s\S]*?(?:<\/simulator>|$)/g, "").trim() };
 }
 
 function parsePhysicsFromContent(content: string): { physics: any[]; cleanContent: string } {
   const physics: any[] = [];
-  const regex = /<physics>([\s\S]*?)<\/physics>/g;
+  const regex = /<physics>([\s\S]*?)(?:<\/physics>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) physics.push(parsed);
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) physics.push(parsed);
+    }
   }
-  return { physics, cleanContent: content.replace(/<physics>[\s\S]*?<\/physics>/g, "").trim() };
+  return { physics, cleanContent: content.replace(/<physics>[\s\S]*?(?:<\/physics>|$)/g, "").trim() };
 }
 
 function parseMathGraphsFromContent(content: string): { mathGraphs: any[]; cleanContent: string } {
   const mathGraphs: any[] = [];
-  const regex = /<math_graph>([\s\S]*?)<\/math_graph>/g;
+  const regex = /<math_graph>([\s\S]*?)(?:<\/math_graph>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) mathGraphs.push(parsed);
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) mathGraphs.push(parsed);
+    }
   }
-  return { mathGraphs, cleanContent: content.replace(/<math_graph>[\s\S]*?<\/math_graph>/g, "").trim() };
+  return { mathGraphs, cleanContent: content.replace(/<math_graph>[\s\S]*?(?:<\/math_graph>|$)/g, "").trim() };
+}
+
+function parseGeographyFromContent(content: string): { geography: any[]; cleanContent: string } {
+  const geography: any[] = [];
+  const regex = /<geography>([\s\S]*?)(?:<\/geography>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) geography.push(parsed);
+    }
+  }
+  return { geography, cleanContent: content.replace(/<geography>[\s\S]*?(?:<\/geography>|$)/g, "").trim() };
+}
+
+function parseSolarSystemFromContent(content: string): { solarSystem: any[]; cleanContent: string } {
+  const solarSystem: any[] = [];
+  const regex = /<solar_system>([\s\S]*?)(?:<\/solar_system>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) solarSystem.push(parsed);
+    }
+  }
+  return { solarSystem, cleanContent: content.replace(/<solar_system>[\s\S]*?(?:<\/solar_system>|$)/g, "").trim() };
 }
 
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {

@@ -84,13 +84,17 @@ const CONTINENT_COLORS: Record<string, string> = {
   'default': '#6366f1',
 };
 
+// Global cache to avoid re-fetching on every message
+let CACHED_GEO_DATA: any = null;
+let IS_FETCHING = false;
+
 const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   highlightCountry,
   highlightContinent,
   topic,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [geoData, setGeoData] = useState<any>(null);
+  const [geoData, setGeoData] = useState<any>(CACHED_GEO_DATA);
   const [rotLon, setRotLon] = useState(-90);
   const [rotLat, setRotLat] = useState(20);
   const [scale, setScale] = useState(180);
@@ -99,7 +103,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!CACHED_GEO_DATA);
   const [autoRotate, setAutoRotate] = useState(true);
   const autoRotateRef = useRef(autoRotate);
   const rotLonRef = useRef(rotLon);
@@ -110,10 +114,26 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
 
   // Load GeoJSON
   useEffect(() => {
+    if (CACHED_GEO_DATA) {
+      setGeoData(CACHED_GEO_DATA);
+      setLoading(false);
+      return;
+    }
+    
+    if (IS_FETCHING) return;
+    IS_FETCHING = true;
+
     fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
       .then(r => r.json())
-      .then(data => { setGeoData(data); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then(data => { 
+        CACHED_GEO_DATA = data;
+        setGeoData(data); 
+        setLoading(false); 
+      })
+      .catch(() => {
+        setLoading(false);
+        IS_FETCHING = false;
+      });
   }, []);
 
   // If highlightCountry given, center on it
