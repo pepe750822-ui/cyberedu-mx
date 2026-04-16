@@ -19,6 +19,7 @@ const PLANETS: Planet[] = [
   { name: 'Saturno', color: '#eab308', size: 10, distance: 190, speed: 0.003, info: 'Famoso por sus espectaculares anillos de hielo.' },
   { name: 'Urano', color: '#22d3ee', size: 7, distance: 230, speed: 0.002, info: 'Un gigante de hielo que gira de lado.' },
   { name: 'Neptuno', color: '#4f46e5', size: 7, distance: 260, speed: 0.001, info: 'El planeta más lejano y ventoso.' },
+  { name: 'Plutón', color: '#a8a29e', size: 2.5, distance: 290, speed: 0.0007, info: 'Planeta enano. El corazón del cinturón de Kuiper.' },
 ];
 
 const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {

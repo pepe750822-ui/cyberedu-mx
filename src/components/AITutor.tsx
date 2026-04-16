@@ -767,9 +767,14 @@ function parseSolarSystemFromContent(content: string): { solarSystem: any[]; cle
   const regex = /<solar_system>([\s\S]*?)(?:<\/solar_system>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    if (m[1].trim()) {
-      const parsed = safeParseJSON(m[1]);
-      if (parsed) solarSystem.push(parsed);
+    const raw = m[1].trim();
+    if (raw) {
+      const parsed = safeParseJSON(raw);
+      if (parsed) {
+        solarSystem.push(parsed);
+      } else if (raw.length < 50) {
+        solarSystem.push({ topic: raw });
+      }
     }
   }
   return { solarSystem, cleanContent: content.replace(/<solar_system>[\s\S]*?(?:<\/solar_system>|$)/g, "").trim() };
