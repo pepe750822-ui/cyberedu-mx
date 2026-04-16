@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, User, Database, Plus, Minus, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Search, User, Database, Plus, Minus, ShieldCheck, ArrowLeft, Zap } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
