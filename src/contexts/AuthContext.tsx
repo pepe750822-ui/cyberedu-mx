@@ -202,13 +202,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     checkSession();
 
-    // Safety timeout reducido a 5s — solo para el caso de OAuth redirect
+    // Safety timeout aumentado a 12s para dar margen a la carga del perfil en redes lentas
     const safetyTimeoutId = setTimeout(() => {
       if (mounted && isLoading) {
-        console.warn("[Auth] Safety timeout (5s) - forcing stop loading.");
+        console.warn("[Auth] Safety timeout (12s) - forcing stop loading.");
         setIsLoading(false);
       }
-    }, 5000);
+    }, 12000);
 
     return () => {
       mounted = false;
