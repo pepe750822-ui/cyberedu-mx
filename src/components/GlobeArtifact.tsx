@@ -84,9 +84,9 @@ const CONTINENT_COLORS: Record<string, string> = {
   'default': '#6366f1',
 };
 
-// Global cache to avoid re-fetching on every message
+// Global state to manage shared GeoJSON loading
 let CACHED_GEO_DATA: any = null;
-let IS_FETCHING = false;
+let DATA_PROMISE: Promise<any> | null = null;
 
 const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   highlightCountry,
@@ -112,33 +112,43 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   autoRotateRef.current = autoRotate;
   rotLonRef.current = rotLon;
 
-  // Load GeoJSON
+  // Load GeoJSON with shared promise to avoid race conditions
   useEffect(() => {
+    let mounted = true;
     if (CACHED_GEO_DATA) {
       setGeoData(CACHED_GEO_DATA);
       setLoading(false);
       return;
     }
-    
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-    fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson', { signal: controller.signal })
-      .then(r => r.json())
-      .then(data => { 
-        clearTimeout(timeoutId);
-        CACHED_GEO_DATA = data;
-        setGeoData(data); 
-        setLoading(false); 
-      })
-      .catch((err) => {
-        clearTimeout(timeoutId);
-        console.error("Globe data fetch error:", err);
+    if (!DATA_PROMISE) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      
+      DATA_PROMISE = fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson', { signal: controller.signal })
+        .then(r => r.json())
+        .then(data => {
+          clearTimeout(timeoutId);
+          CACHED_GEO_DATA = data;
+          return data;
+        })
+        .catch(err => {
+          clearTimeout(timeoutId);
+          DATA_PROMISE = null; // allow retry
+          throw err;
+        });
+    }
+
+    DATA_PROMISE.then(data => {
+      if (mounted) {
+        setGeoData(data);
         setLoading(false);
-        IS_FETCHING = false;
-      });
+      }
+    }).catch(() => {
+      if (mounted) setLoading(false);
+    });
 
-    return () => clearTimeout(timeoutId);
+    return () => { mounted = false; };
   }, []);
 
   // Coordinate lookup for centering
