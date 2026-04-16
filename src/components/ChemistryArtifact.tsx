@@ -156,12 +156,26 @@ const PT_PLACEHOLDERS = [
   { s:"Ac-Lr", n:0, name:"Actínidos",  mass:0, r:7, c:3, cat:"Actínidos" },
 ];
 
+const CATEGORY_INFO: Record<string, string> = {
+  "Alcalinos": "Metales muy reactivos del Grupo 1. Tienen un solo electrón en su capa externa, lo que los hace altamente reactivos, especialmente con el agua.",
+  "Metales Alcalinotérreos": "Metales del Grupo 2. Son reactivos pero menos que los alcalinos. Tienen dos electrones en su capa de valencia.",
+  "Metales de transición": "El grupo más grande de metales. Tienen electrones en orbitales d y son conocidos por su dureza, brillo y buena conductividad.",
+  "Otros metales": "Metales del bloque p. Suelen ser blandos y tienen puntos de fusión más bajos que los metales de transición.",
+  "Metaloides": "Elementos con propiedades intermedias entre metales y no metales. Son semiconductores clave para la electrónica.",
+  "No metales": "Esenciales para la vida orgánica. No conducen bien el calor ni la electricidad y suelen ser gases o sólidos quebradizos.",
+  "Halógenos": "Grupo 17. Altamente reactivos y electro-negativos. Reaccionan con metales para formar sales (haluros).",
+  "Gases nobles": "Grupo 18. Extremadamente estables e inertes porque tienen su capa de valencia completa. No suelen formar enlaces.",
+  "Lantánidos": "Metales de 'tierras raras' del periodo 6. Tienen propiedades magnéticas y ópticas únicas utilizadas en tecnología.",
+  "Actínidos": "Elementos radiactivos del periodo 7. Muchos son sintéticos y se utilizan en medicina nuclear y energía nuclear."
+};
+
 // ── Utilidades ────────────────────────────────────────────────────────────
 const getPeriod = (row: number) => row <= 7 ? row : row === 8 ? 6 : 7;
 
 export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
   const [showTable, setShowTable] = useState(false);
   const [selectedInModal, setSelectedInModal] = useState<any>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   if (!element || !element.symbol) return null;
 
@@ -188,6 +202,15 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
     "Alcalinos", "Metales Alcalinotérreos", "Metales de transición", "Otros metales",
     "Metaloides", "No metales", "Halógenos", "Gases nobles", "Lantánidos", "Actínidos"
   ];
+
+  const handleCategoryClick = (cat: string) => {
+    if (activeCategory === cat) {
+      setActiveCategory(null);
+    } else {
+      setActiveCategory(cat);
+      setSelectedInModal(null);
+    }
+  };
 
   return (
     <>
@@ -308,12 +331,12 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                   <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-tight italic">Tabla Periódica Interactiva</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                    <p className="text-[10px] font-black text-indigo-400/80 uppercase tracking-[0.2em]">118 Elementos — IUPAC Master V1.2</p>
+                    <p className="text-[10px] font-black text-indigo-400/80 uppercase tracking-[0.2em]">Filtros Inteligentes de Categoría Disponibles</p>
                   </div>
                 </div>
               </div>
               <button
-                onClick={() => { setShowTable(false); setSelectedInModal(null); }}
+                onClick={() => { setShowTable(false); setSelectedInModal(null); setActiveCategory(null); }}
                 className="group relative p-3 bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 rounded-2xl transition-all duration-300 active:scale-90"
               >
                 <X className="h-6 w-6" />
@@ -321,16 +344,29 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
               </button>
             </div>
 
-            {/* Leyenda Inteligente */}
+            {/* Leyenda Inteligente con Filtro */}
             <div className="px-6 pt-4 pb-2 flex flex-wrap gap-2 shrink-0 bg-slate-900/50">
               {LEGEND_CATS.map(cat => (
-                <span key={cat} className={cn(
-                  "px-3 py-1 rounded-full text-[9px] font-black uppercase border transition-all hover:scale-105 cursor-default",
-                  getCategoryColor(cat).split(' hover:')[0].replace('/20', '/10')
-                )}>
+                <button 
+                  key={cat} 
+                  onClick={() => handleCategoryClick(cat)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-[9px] font-black uppercase border transition-all hover:scale-105 active:scale-95",
+                    getCategoryColor(cat).split(' hover:')[0].replace('/20', activeCategory === cat ? '/40' : '/10'),
+                    activeCategory === cat ? "border-white ring-2 ring-white/20" : "border-white/5"
+                  )}
+                >
                   {cat}
-                </span>
+                </button>
               ))}
+              {activeCategory && (
+                <button 
+                  onClick={() => setActiveCategory(null)}
+                  className="px-3 py-1.5 rounded-full text-[9px] font-black uppercase bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  Limpiar Filtro
+                </button>
+              )}
             </div>
 
             {/* Tabla con Scroll Custom Ultra-Smooth */}
@@ -346,29 +382,30 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                 {/* Elementos principales (filas 1-7) */}
                 {PT_FULL.filter(el => el.r <= 7).map(el => {
                   const isHighlighted = el.s === element.symbol;
+                  const isDimmed = activeCategory && el.cat !== activeCategory;
+                  
                   return (
                     <button
                       key={el.n}
-                      onClick={() => setSelectedInModal(el)}
+                      onClick={() => !isDimmed && setSelectedInModal(el)}
                       style={{ gridRow: el.r, gridColumn: el.c }}
                       className={cn(
-                        "relative flex flex-col justify-between items-center rounded-xl border transition-all cursor-pointer p-1 md:p-2 overflow-hidden group hover:z-20",
+                        "relative flex flex-col justify-between items-center rounded-xl border transition-all p-1 md:p-2 overflow-hidden group hover:z-20",
                         "w-full aspect-square shadow-lg",
                         getCategoryColor(el.cat),
-                        isHighlighted 
+                        isDimmed ? "opacity-10 grayscale-[0.8] cursor-not-allowed scale-[0.85]" : "",
+                        isHighlighted && !isDimmed
                           ? "ring-4 ring-white/30 scale-110 shadow-[0_0_30px_rgba(255,255,255,0.3)] z-10 bg-white/20 select-none" 
                           : "hover:scale-110 hover:shadow-2xl"
                       )}
-                      title={`${el.name} (${el.s}) — Z=${el.n}, ${el.mass} u`}
                     >
-                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none">{el.n}</span>
-                      <span className="text-xs md:text-xl font-black leading-none group-hover:scale-110 transition-transform">{el.s}</span>
+                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none uppercase tracking-tighter">{el.n}</span>
+                      <span className="text-xs md:text-xl font-black">{el.s}</span>
                       <div className="hidden md:flex flex-col items-center w-full">
                         <span className="text-[7px] font-bold opacity-60 leading-none truncate w-full text-center uppercase tracking-tighter">{el.name}</span>
-                        <span className="text-[6px] opacity-40 leading-none mt-1 font-mono">{el.mass.toFixed(2)}</span>
+                        <span className="text-[6px] opacity-40 leading-none mt-1 font-mono">{Number(el.mass).toFixed(1)}</span>
                       </div>
                       
-                      {/* Indicador de Seleccionado */}
                       {isHighlighted && <div className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_8px_white]" />}
                     </button>
                   );
@@ -381,34 +418,32 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                     style={{ gridRow: ph.r, gridColumn: ph.c }}
                     className={cn(
                       "flex items-center justify-center rounded-xl border text-[8px] md:text-[10px] font-black opacity-30 aspect-square bg-white/5",
-                      getCategoryColor(ph.cat).split(' hover:')[0]
+                      getCategoryColor(ph.cat).split(' hover:')[0],
+                      activeCategory && ph.cat !== activeCategory ? "opacity-0" : ""
                     )}
                   >
                     {ph.s}
                   </div>
                 ))}
 
-                {/* Separador visual para lantánidos/actínidos */}
-                <div style={{ gridRow: 7, gridColumn: '1 / span 3' }} className="flex items-end justify-end pr-3 pb-2">
-                  <span className="text-[9px] text-slate-700 font-black italic tracking-widest hidden md:block">RANK 57-71 ↳</span>
-                </div>
-
                 {/* Lantánidos (fila 8) */}
                 {PT_FULL.filter(el => el.r === 8).map(el => {
                   const col = el.c + 1;
+                  const isDimmed = activeCategory && el.cat !== activeCategory;
                   return (
                     <button
                       key={el.n}
-                      onClick={() => setSelectedInModal(el)}
+                      onClick={() => !isDimmed && setSelectedInModal(el)}
                       style={{ gridRow: 8, gridColumn: col }}
                       className={cn(
-                        "relative flex flex-col justify-between items-center rounded-xl border transition-all cursor-pointer p-1 md:p-2 overflow-hidden group hover:scale-110 hover:z-20 hover:shadow-2xl",
+                        "relative flex flex-col justify-between items-center rounded-xl border transition-all p-1 md:p-2 overflow-hidden group hover:z-20",
                         "w-full aspect-square",
-                        getCategoryColor(el.cat)
+                        getCategoryColor(el.cat),
+                        isDimmed ? "opacity-10 grayscale-[0.8] cursor-not-allowed scale-[0.85]" : "hover:scale-110 hover:shadow-2xl"
                       )}
                     >
-                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none">{el.n}</span>
-                      <span className="text-xs md:text-xl font-black leading-none">{el.s}</span>
+                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none uppercase tracking-tighter">{el.n}</span>
+                      <span className="text-xs md:text-xl font-black">{el.s}</span>
                       <span className="hidden md:block text-[7px] font-bold opacity-60 leading-none truncate w-full text-center uppercase tracking-tighter">{el.name}</span>
                     </button>
                   );
@@ -417,19 +452,21 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                 {/* Actínidos (fila 9) */}
                 {PT_FULL.filter(el => el.r === 9).map(el => {
                   const col = el.c + 1;
+                  const isDimmed = activeCategory && el.cat !== activeCategory;
                   return (
                     <button
                       key={el.n}
-                      onClick={() => setSelectedInModal(el)}
+                      onClick={() => !isDimmed && setSelectedInModal(el)}
                       style={{ gridRow: 9, gridColumn: col }}
                       className={cn(
-                        "relative flex flex-col justify-between items-center rounded-xl border transition-all cursor-pointer p-1 md:p-2 overflow-hidden group hover:scale-110 hover:z-20 hover:shadow-2xl",
+                        "relative flex flex-col justify-between items-center rounded-xl border transition-all p-1 md:p-2 overflow-hidden group hover:z-20",
                         "w-full aspect-square",
-                        getCategoryColor(el.cat)
+                        getCategoryColor(el.cat),
+                        isDimmed ? "opacity-10 grayscale-[0.8] cursor-not-allowed scale-[0.85]" : "hover:scale-110 hover:shadow-2xl"
                       )}
                     >
-                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none">{el.n}</span>
-                      <span className="text-xs md:text-xl font-black leading-none">{el.s}</span>
+                      <span className="text-[6px] md:text-[10px] font-black opacity-40 self-start leading-none uppercase tracking-tighter">{el.n}</span>
+                      <span className="text-xs md:text-xl font-black">{el.s}</span>
                       <span className="hidden md:block text-[7px] font-bold opacity-60 leading-none truncate w-full text-center uppercase tracking-tighter">{el.name}</span>
                     </button>
                   );
@@ -437,7 +474,7 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
               </div>
             </div>
 
-            {/* Panel de Detalle Inferior: Floating Glass Card */}
+            {/* Panel de Detalle Inferior: Floating Glass Card o Información de Categoría */}
             <div className="p-4 md:p-6 bg-slate-950/40 border-t border-white/5 shrink-0 flex items-center justify-center">
               {selectedInModal ? (
                 <div className={cn(
@@ -447,9 +484,9 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                   <div className="absolute inset-0 bg-black/40 -z-10" />
                   
                   <div className="h-20 w-20 md:h-24 md:w-24 bg-black/40 rounded-[20px] border border-white/10 flex flex-col items-center justify-center shrink-0 shadow-inner group">
-                    <span className="text-xs font-bold opacity-60 group-hover:scale-110 transition-transform">{selectedInModal.n}</span>
-                    <span className="text-3xl md:text-4xl font-black leading-none tracking-tighter shadow-white">{selectedInModal.s}</span>
-                    <span className="text-[10px] font-black opacity-40 mt-1 uppercase">{selectedInModal.mass?.toFixed?.(2) ?? selectedInModal.mass}</span>
+                    <span className="text-xs font-bold opacity-60">{selectedInModal.n}</span>
+                    <span className="text-3xl md:text-4xl font-black leading-none tracking-tighter">{selectedInModal.s}</span>
+                    <span className="text-[10px] font-black opacity-40 mt-1 uppercase">{Number(selectedInModal.mass).toFixed(2)}</span>
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -486,11 +523,30 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
                     <X className="h-5 w-5 text-slate-500" />
                   </button>
                 </div>
+              ) : activeCategory ? (
+                <div className={cn(
+                  "w-full max-w-2xl px-8 py-5 rounded-[24px] border border-white/10 animate-in slide-in-from-bottom-4 duration-500 shadow-2xl relative",
+                  getCategoryColor(activeCategory).split(' hover:')[0]
+                )}>
+                  <div className="absolute inset-0 bg-black/60 -z-10" />
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="p-3 bg-white/10 rounded-2xl border border-white/20">
+                      <Info className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-black text-white uppercase tracking-tighter">Propiedades: {activeCategory}</h4>
+                      <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Filtro de Categoría Activo</p>
+                    </div>
+                  </div>
+                  <p className="text-sm md:text-base text-slate-200 leading-relaxed font-medium italic">
+                    "{CATEGORY_INFO[activeCategory]}"
+                  </p>
+                </div>
               ) : (
                 <div className="py-2 px-8 rounded-full bg-white/5 border border-white/5 backdrop-blur-md">
-                  <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
-                    <span className="animate-pulse h-1.5 w-1.5 rounded-full bg-indigo-500" />
-                    Selecciona un elemento para analizar sus propiedades cuánticas
+                  <p className="text-[11px] md:text-sm text-slate-400 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
+                    <span className="animate-bounce h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                    Selecciona una categoría o elemento para explorar
                   </p>
                 </div>
               )}
