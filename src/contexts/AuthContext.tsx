@@ -175,14 +175,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     checkSession();
 
-    // Safety timeout: if after 7 seconds we're still loading, something went wrong
+    // Safety timeout: if after 15 seconds we're still loading, something went wrong
     // ESPECIALLY important for OAuth redirects that might hang.
     const safetyTimeoutId = setTimeout(() => {
       if (mounted && isLoading) {
-        console.warn("Auth sync safety timeout reached - forcing stop loading");
+        console.warn("Auth sync safety timeout reached (15s) - forcing stop loading. Auth state might be inconsistent.");
         setIsLoading(false);
       }
-    }, 7000);
+    }, 15000);
 
     return () => {
       mounted = false;
