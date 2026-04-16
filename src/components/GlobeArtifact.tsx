@@ -141,13 +141,37 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
     return () => clearTimeout(timeoutId);
   }, []);
 
+  // Coordinate lookup for centering
+  const centerOn = useCallback((countryName: string) => {
+    if (!geoData) return;
+    const feature = geoData.features.find((f: any) => 
+      f.properties?.name?.toLowerCase() === countryName.toLowerCase() ||
+      f.properties?.formal_en?.toLowerCase() === countryName.toLowerCase()
+    );
+    if (feature) {
+      // Very simple centroid calc: average of some points
+      const coords = feature.geometry.type === 'Polygon' 
+        ? feature.geometry.coordinates[0] 
+        : feature.geometry.coordinates[0][0];
+      
+      let avgLon = 0, avgLat = 0;
+      const sample = coords.slice(0, 50); // limit sample for speed
+      sample.forEach((p: number[]) => { avgLon += p[0]; avgLat += p[1]; });
+      
+      setRotLon(avgLon / sample.length);
+      setRotLat(avgLat / sample.length);
+      setAutoRotate(false);
+    }
+  }, [geoData]);
+
   // If highlightCountry given, center on it
   useEffect(() => {
-    if (highlightCountry) {
-      setAutoRotate(false);
+    if (highlightCountry && geoData) {
+      centerOn(highlightCountry);
       setSelectedCountry(highlightCountry);
+      setAutoRotate(false);
     }
-  }, [highlightCountry]);
+  }, [highlightCountry, geoData, centerOn]);
 
   // Auto-rotate animation
   useEffect(() => {

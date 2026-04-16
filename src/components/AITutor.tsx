@@ -789,13 +789,15 @@ function parseImagesFromContent(content: string): { eduImages: EduImage[]; clean
 
 function parseRecommendationsFromContent(content: string): { recommendations: ContentRecommendation[]; cleanContent: string } {
   const recommendations: ContentRecommendation[] = [];
-  const regex = /<recommendation>([\s\S]*?)<\/recommendation>/g;
+  const regex = /<recommendation>([\s\S]*?)(?:<\/recommendation>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) recommendations.push(parsed as ContentRecommendation);
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) recommendations.push(parsed as ContentRecommendation);
+    }
   }
-  return { recommendations, cleanContent: content.replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "").trim() };
+  return { recommendations, cleanContent: content.replace(/<recommendation>[\s\S]*?(?:<\/recommendation>|$)/g, "").trim() };
 }
 
 function parseAllBlocks(content: string) {
