@@ -6,6 +6,9 @@ import Ticket from 'lucide-react/dist/esm/icons/ticket';
 import Zap from 'lucide-react/dist/esm/icons/zap';
 import Crown from 'lucide-react/dist/esm/icons/crown';
 import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
+import Megaphone from 'lucide-react/dist/esm/icons/megaphone';
+import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
+import Bell from 'lucide-react/dist/esm/icons/bell';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -16,6 +19,12 @@ const AdminMonitoring = () => {
   const [activeUsers, setActiveUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Announcements state
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+  const [newAnnouncement, setNewAnnouncement] = useState('');
+  const [announcementType, setAnnouncementType] = useState('info');
+  const [isSavingAnn, setIsSavingAnn] = useState(false);
 
   const fetchActiveUsers = async () => {
     setLoading(true);
@@ -28,6 +37,57 @@ const AdminMonitoring = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAnnouncements = async () => {
+    try {
+        const resp = await fetch('/api/admin/announcements');
+        const data = await resp.json();
+        setAnnouncements(data.announcements || []);
+    } catch (e) {
+        console.error("Error fetching announcements", e);
+    }
+  };
+
+  const saveAnnouncement = async () => {
+    if (!newAnnouncement.trim()) return;
+    setIsSavingAnn(true);
+    try {
+        await fetch('/api/admin/announcements', {
+            method: 'POST',
+            body: JSON.stringify({ content: newAnnouncement, type: announcementType }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        setNewAnnouncement('');
+        fetchAnnouncements();
+    } catch (e) {
+        console.error(e);
+    } finally {
+        setIsSavingAnn(false);
+    }
+  };
+
+  const deleteAnnouncement = async (id: string) => {
+    if (!confirm('¿Borrar anuncio?')) return;
+    try {
+        await fetch(`/api/admin/announcements?id=${id}`, { method: 'DELETE' });
+        fetchAnnouncements();
+    } catch (e) {
+        console.error(e);
+    }
+  };
+
+  const toggleAnnouncement = async (ann: any) => {
+    try {
+        await fetch('/api/admin/announcements', {
+            method: 'POST',
+            body: JSON.stringify({ ...ann, is_active: !ann.is_active }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        fetchAnnouncements();
+    } catch (e) {
+        console.error(e);
     }
   };
 
@@ -46,6 +106,7 @@ const AdminMonitoring = () => {
     if (!isLoading) {
       if (isAdminCheck()) {
         fetchActiveUsers();
+        fetchAnnouncements();
         const timer = setInterval(fetchActiveUsers, 30000);
         return () => clearInterval(timer);
       }
@@ -211,6 +272,105 @@ const AdminMonitoring = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Sección de Anuncios Globales */}
+        <div className="mt-12 bg-slate-900/40 rounded-3xl border border-white/5 overflow-hidden">
+            <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                        <Megaphone className="h-5 w-5 text-amber-500" />
+                    </div>
+                    <div>
+                        <h2 className="text-sm font-black uppercase tracking-widest text-white">Anuncios Globales</h2>
+                        <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Enviar avisos a todos los alumnos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="p-8">
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
+                    <div className="flex-1 space-y-2">
+                        <label className="text-[10px] font-black uppercase text-white/30 tracking-widest ml-1">Nuevo Mensaje</label>
+                        <textarea 
+                            value={newAnnouncement}
+                            onChange={(e) => setNewAnnouncement(e.target.value)}
+                            placeholder="Ej: ¡Nuevo video de Historia disponible!"
+                            className="w-full h-24 px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:border-amber-500/50 transition-all placeholder:text-white/10"
+                        />
+                    </div>
+                    <div className="w-full md:w-64 space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-white/30 tracking-widest ml-1">Tipo de Alerta</label>
+                            <select 
+                                value={announcementType}
+                                onChange={(e) => setAnnouncementType(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-wider focus:outline-none"
+                            >
+                                <option value="info">ℹ️ Información (Azul)</option>
+                                <option value="warning">⚠️ Advertencia (Naranja)</option>
+                                <option value="success">✅ Éxito (Verde)</option>
+                            </select>
+                        </div>
+                        <button 
+                            onClick={saveAnnouncement}
+                            disabled={isSavingAnn || !newAnnouncement.trim()}
+                            className="w-full py-3.5 rounded-xl bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-widest hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-amber-500/20"
+                        >
+                            {isSavingAnn ? 'Publicando...' : 'Publicar Anuncio'}
+                        </button>
+                    </div>
+                </div>
+
+                <div className="space-y-3">
+                    <h3 className="text-[10px] font-black uppercase text-white/20 tracking-widest ml-1 mb-2">Historial de Anuncios</h3>
+                    {announcements.length === 0 ? (
+                        <div className="p-12 text-center rounded-2xl bg-white/[0.02] border border-dashed border-white/5">
+                            <Bell className="h-8 w-8 text-white/5 mx-auto mb-3" />
+                            <p className="text-xs font-bold text-white/20 uppercase tracking-widest">No hay anuncios registrados</p>
+                        </div>
+                    ) : (
+                        announcements.map((ann) => (
+                            <div key={ann.id} className={cn(
+                                "p-4 rounded-2xl border transition-all flex items-center gap-4",
+                                ann.is_active ? "bg-white/[0.03] border-white/10" : "bg-white/[0.01] border-white/5 opacity-50"
+                            )}>
+                                <div className={cn(
+                                    "p-2 rounded-xl border",
+                                    ann.type === 'warning' ? "bg-amber-500/10 border-amber-500/20 text-amber-500" :
+                                    ann.type === 'success' ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500" :
+                                    "bg-blue-500/10 border-blue-500/20 text-blue-500"
+                                )}>
+                                    <Bell className="h-4 w-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm font-bold text-white mb-0.5">{ann.content}</p>
+                                    <p className="text-[9px] font-black uppercase tracking-widest text-white/30">
+                                        {new Date(ann.created_at).toLocaleDateString()} • {ann.type}
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button 
+                                        onClick={() => toggleAnnouncement(ann)}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border transition-all",
+                                            ann.is_active ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400" : "bg-white/5 border-white/10 text-white/30"
+                                        )}
+                                    >
+                                        {ann.is_active ? 'Activo' : 'Inactivo'}
+                                    </button>
+                                    <button 
+                                        onClick={() => deleteAnnouncement(ann.id)}
+                                        className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500/20 transition-all"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
         </div>
       </main>
     </div>

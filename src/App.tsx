@@ -30,6 +30,7 @@ import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
+import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 /**
@@ -124,6 +125,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <GlobalAnnouncementBanner />
           <PageViewTracker />
           <AuthenticatedStudyTools />
           <PWAInstallBanner />
