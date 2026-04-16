@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search } from 'lucide-react';
+import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search, Loader2 } from 'lucide-react';
 
 interface GlobeArtifactProps {
   highlightCountry?: string;
