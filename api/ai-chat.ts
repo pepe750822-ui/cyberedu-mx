@@ -311,7 +311,7 @@ export default async function handler(req: Request) {
 
   const currentTokens = Number(profile.tokens || 0);
 
-  // Rule 1: Subscriber -> pasa sin límite (pero actualizamos timestamp para monitoreo)
+  // Rule 1: Subscriber -> pasa sin límite (pero actualizamos timestamp + tracking)
   if (profile.subscription_status === 'active' || profile.is_premium === true) {
     console.log(`[AI-CHAT] Access GRANTED (Subscriber/Premium). skipping token deduction.`);
     await supabaseRequest(`profiles?id=eq.${userId}`, {
@@ -319,6 +319,14 @@ export default async function handler(req: Request) {
       body: JSON.stringify({
         updated_at: new Date().toISOString()
       })
+    });
+    // Registrar interacción en daily_usage para monitoreo
+    const { data: premUsage } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
+    const premCount = premUsage?.[0]?.count || 0;
+    await supabaseRequest(`daily_usage`, {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ user_id: userId, date: localToday, count: premCount + 1 })
     });
   }
   // Rule 2: hasTokens -> descuenta 1 token y pasa
@@ -336,9 +344,16 @@ export default async function handler(req: Request) {
 
     if (patchError) {
       console.error(`[AI-CHAT] Token deduction FAILED:`, patchError);
-      // We still allow the chat but log the error
     } else {
       console.log(`[AI-CHAT] Token deduction SUCCESS.`);
+      // Registrar interacción en daily_usage para monitoreo
+      const { data: tokUsage } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
+      const tokCount = tokUsage?.[0]?.count || 0;
+      await supabaseRequest(`daily_usage`, {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({ user_id: userId, date: localToday, count: tokCount + 1 })
+      });
     }
   }
   // Rule 3: Límite diario (5 max)
