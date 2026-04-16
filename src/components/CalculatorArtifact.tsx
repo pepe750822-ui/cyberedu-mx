@@ -56,32 +56,41 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
     }
 
     try {
-      // Basic heuristic-based calculators for common formulas
+      // Clean formula: remove "Result =" or "ΣF =" if present
+      let cleanFormula = formula;
+      if (formula.includes("=")) {
+        cleanFormula = formula.split("=")[1].trim();
+      }
+      
+      // Auto-sum heuristic: if formula has "+" or "Σ"
+      if (cleanFormula.includes("+") || formula.includes("Σ")) {
+        return vars.reduce((acc, v) => acc + (params[v.name] || 0), 0);
+      }
+
       // 1. Newton's Second Law: F = m * a
-      if (formula.includes("m * a") || (vars.some(v => v.name === 'm') && vars.some(v => v.name === 'a'))) {
-        return params.m * params.a;
+      if (cleanFormula.includes("m * a") || cleanFormula.includes("m*a") || (vars.some(v => v.name === 'm') && vars.some(v => v.name === 'a'))) {
+        return (params.m || params.masa || 0) * (params.a || params.aceleracion || 0);
       }
       
       // 2. Linear Function: y = mx + b
-      if (formula.includes("m * x + b") || formula.includes("mx + b")) {
+      if (cleanFormula.includes("mx + b") || cleanFormula.includes("m * x + b")) {
         return (params.m || 0) * (params.x || 0) + (params.b || 0);
       }
 
       // 3. Area of Triangle: (b * h) / 2
-      if (formula.includes("/ 2") && (formula.includes("base") || formula.includes("height") || formula.includes("altura"))) {
+      if (cleanFormula.includes("/ 2") && (cleanFormula.includes("base") || cleanFormula.includes("altura"))) {
         const b = params.base || params.b || 0;
-        const h = params.altura || params.h || params.height || 0;
+        const h = params.altura || params.h || 0;
         return (b * h) / 2;
       }
 
-      // 4. Volume or area simple multiplication
-      if (formula.includes("*") && !formula.includes("/") && !formula.includes("+")) {
+      // 4. Multi-variable multiplication
+      if (cleanFormula.includes("*") && !cleanFormula.includes("/") && !cleanFormula.includes("+")) {
         return vars.reduce((acc, v) => acc * (params[v.name] || 0), 1);
       }
 
-      // 5. Fallback: JS Evaluation (Sandboxed-ish for security)
-      // This is a last resort if we don't have a specific heuristic
-      let evalFormula = formula.replace(/[a-z_]+/g, (match) => {
+      // 5. Fallback: JS Evaluation
+      let evalFormula = cleanFormula.replace(/[a-z_0-9]+/g, (match) => {
         return params[match] !== undefined ? params[match].toString() : match;
       });
       // Safety: only allow numbers and basic math operators
