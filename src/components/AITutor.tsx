@@ -804,8 +804,13 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 }
 
 function parseAllBlocks(content: string) {
-  const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+  try {
+    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
+    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+  } catch (err) {
+    console.error("Critical error in parseAllBlocks:", err);
+    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
+  }
 }
 
 function parseAllBlocksHelper(content: string) {
@@ -3153,7 +3158,16 @@ const AITutor = () => {
         });
       };
 
-      try {
+        const memory = loadMemory();
+        
+        // Safety timeout de 45s para evitar que se quede "pensando" para siempre
+        const safetyTimeout = setTimeout(() => {
+          if (isStreaming) {
+            console.warn("[AITutor] Stream safety timeout (45s) - forcing onDone.");
+            setIsStreaming(false);
+          }
+        }, 45000);
+
         await streamChat({
           messages: [{ role: "user", content: enrichedPrompt }],
           context: buildContext(),
@@ -3163,6 +3177,7 @@ const AITutor = () => {
           token: session?.access_token,
           file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
           onDone: () => {
+            if (safetyTimeout) clearTimeout(safetyTimeout);
             const { 
               reasoning, decisions, plan, quiz, charts, 
               calculators, simulators, geography, solarSystem, 

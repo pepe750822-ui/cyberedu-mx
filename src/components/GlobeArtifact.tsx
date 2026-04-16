@@ -104,17 +104,13 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(!CACHED_GEO_DATA);
+  const [error, setError] = useState<boolean>(false);
   const [autoRotate, setAutoRotate] = useState(true);
-  const autoRotateRef = useRef(autoRotate);
-  const rotLonRef = useRef(rotLon);
-  const animFrameRef = useRef<number>(0);
-
-  autoRotateRef.current = autoRotate;
-  rotLonRef.current = rotLon;
-
+  
   // Load GeoJSON with shared promise to avoid race conditions
-  useEffect(() => {
+  const loadData = useCallback(() => {
     let mounted = true;
+    setError(false);
     if (CACHED_GEO_DATA) {
       setGeoData(CACHED_GEO_DATA);
       setLoading(false);
@@ -123,7 +119,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
 
     if (!DATA_PROMISE) {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s
       
       DATA_PROMISE = fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson', { signal: controller.signal })
         .then(r => r.json())
@@ -139,17 +135,27 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
         });
     }
 
+    setLoading(true);
     DATA_PROMISE.then(data => {
       if (mounted) {
         setGeoData(data);
         setLoading(false);
       }
-    }).catch(() => {
-      if (mounted) setLoading(false);
+    }).catch((err) => {
+      console.error("Globe loading error:", err);
+      if (mounted) {
+        setLoading(false);
+        setError(true);
+        DATA_PROMISE = null;
+      }
     });
 
     return () => { mounted = false; };
   }, []);
+
+  useEffect(() => {
+    return loadData();
+  }, [loadData]);
 
   // Coordinate lookup for centering
   const centerOn = useCallback((countryName: string) => {
@@ -469,8 +475,25 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
               <p className="text-xs font-black text-white uppercase tracking-[0.2em] animate-pulse">Generando Globo 3D...</p>
             </div>
           )}
+
+          {error && !loading && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 z-20 p-6 text-center">
+              <AlertTriangle className="h-12 w-12 text-amber-500 mb-4" />
+              <p className="text-sm font-bold text-white mb-2">No se pudo cargar el mapa</p>
+              <p className="text-xs text-slate-400 mb-6 max-w-[200px]">Hubo un problema al descargar los datos geográficos.</p>
+              <Button 
+                onClick={() => loadData()}
+                size="sm"
+                variant="outline"
+                className="border-primary/30 hover:bg-primary/10"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Reintentar carga
+              </Button>
+            </div>
+          )}
           
-          {!loading && !autoRotate && highlightCountry && (
+          {!loading && !error && !autoRotate && highlightCountry && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 px-4 py-2 bg-slate-950/80 border border-white/10 rounded-full backdrop-blur-md">
               <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
