@@ -1585,6 +1585,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
         })();
       })}
     </div>
+  </div>
   );
 };
 
