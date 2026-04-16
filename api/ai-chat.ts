@@ -538,8 +538,9 @@ export default async function handler(req: Request) {
     }
     </simulator>
 
-    21. EJERCICIOS DE PRÁCTICA: Al final de cada explicación de ciencias/mate, genera EXACTAMENTE UN <exercise>{JSON}</exercise>. 
-        - REGLA DE ORO: El "correct_index" es un NÚMERO (0 para A, 1 para B, etc.). NUNCA uses letras como "A" o "B" en el correct_index.
+    21. EJERCICIOS DE PRÁCTICA (OBLIGATORIO): Al final de cada explicación de ciencias/mate, genera EXACTAMENTE UN <exercise>{JSON}</exercise>. 
+        - ESQUEMA OBLIGATORIO: { "title": "Práctica: [tema]", "problem": "Enunciado del problema (EJ: ¿Fuerza para acelerar 5kg a 2m/s²?)", "options": ["A", "B", "C", "D"], "correct_index": 1, "explanation": "Solución paso a paso" }
+        - REGLA DE ORO: El "correct_index" es un NÚMERO (0 para A, 1 para B, etc.). NUNCA uses letras en este campo.
         - Verifica los cálculos 3 veces antes de poner la respuesta correcta.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
