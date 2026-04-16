@@ -94,6 +94,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
   topic,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animFrameRef = useRef<number>(0);
   const [geoData, setGeoData] = useState<any>(CACHED_GEO_DATA);
   const [rotLon, setRotLon] = useState(-90);
   const [rotLat, setRotLat] = useState(20);
