@@ -536,7 +536,12 @@ export default async function handler(req: Request) {
     </exercise>
     CRÍTICO: El ejercicio DEBE ser de opción múltiple con 4 opciones. El "correct_index" es 0-based. El tag <exercise> y </exercise> deben estar PERFECTAMENTE cerrados. Genera EXACTAMENTE UN <exercise> por respuesta.
 
-    22. FICHA QUÍMICA INTERACTIVA (OBLIGATORIO para preguntas de Química): Cuando el usuario pregunte sobre propiedades, características o estructura de un elemento de la tabla periódica (ej: Oro, Carbono, Oxígeno, Hierro, etc.), DEBES incluir OBLIGATORIAMENTE una ficha visual interactiva usando este formato EXACTO — NO uses tablas markdown ni diagramas Mermaid para este caso:
+    22. FICHA QUÍMICA INTERACTIVA (OBLIGATORIO Y PRIORITARIO): Cuando el usuario pregunte sobre LA TABLA PERIÓDICA EN GENERAL, o sobre las propiedades, características o estructura de CUALQUIER ELEMENTO QUÍMICO (ej: Oro, Carbono, Oxígeno, etc.), DEBES incluir OBLIGATORIAMENTE el tag <chemistry> generándolo así:
+    - Si la pregunta es GENERAL (ej: "¿Cómo es la tabla periódica?", "¿Qué es la tabla periódica?"), genera el tag <chemistry> usando el "Hidrógeno" (H) como elemento ancla. Esto permite que se abra la tabla interactiva completa.
+    - Si la pregunta menciona un ELEMENTO ESPECÍFICO, genera el tag <chemistry> con los datos de ese elemento.
+    - ¡PROHIBICIÓN ABSOLUTA!: Está TOTALMENTE PROHIBIDO responder con tablas Markdown (\`| Elemento | Masa |\`) o diagramas Mermaid para describir elementos químicos o la tabla periódica. Si lo haces, la interfaz fallará. Usa ÚNICAMENTE el formato <chemistry>.
+    
+    Formato EXACTO del tag <chemistry>:
     <chemistry>
     {
       "name": "Oro",
@@ -553,11 +558,12 @@ export default async function handler(req: Request) {
       "description": "Metal noble de color amarillo brillante, extremadamente maleable y dúctil. No se oxida ni corroe."
     }
     </chemistry>
-    REGLAS CRÍTICAS del tag <chemistry>:
+    
+    REGLAS DE VALIDACIÓN <chemistry>:
     - Los campos "name", "symbol", "atomic_number", "atomic_mass", "category" son OBLIGATORIOS.
-    - El campo "properties" DEBE incluir al menos "melting_point" y "electron_config".
-    - "category" DEBE ser uno de: "Metales de transición", "No metales", "Gases nobles", "Alcalinos", "Metales Alcalinotérreos", "Halógenos", "Metaloides", "Otros metales".
-    - ¡NUNCA sustituyas este tag por una tabla Markdown o diagrama cuando el usuario pida propiedades de un elemento!
+    - El campo "properties" DEBE incluir al menos "melting_point", "boiling_point" y "electron_config".
+    - "category" DEBE ser uno de los oficiales: "Metales de transición", "No metales", "Gases nobles", "Alcalinos", "Metales Alcalinotérreos", "Halógenos", "Metaloides", "Otros metales".
+    - Si el usuario pregunta: "¿Qué elemento es el Au?", debes responder con texto Y el tag <chemistry> de ese elemento.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:

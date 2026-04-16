@@ -1,21 +1,54 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X } from "lucide-react";
+import { Search, X, Grid, Calculator } from "lucide-react";
 import { areas } from "@/data/areas";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 interface SearchResult {
-  videoId: string;
+  videoId?: string;
   videoTitle: string;
   areaId: string;
   areaName: string;
-  AreaIcon: typeof import("lucide-react").BookOpen;
+  AreaIcon: any;
   gradientClass: string;
+  type: "video" | "tool";
+  path: string;
+}
+
+function normalize(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
 }
 
 function buildIndex(): SearchResult[] {
   const results: SearchResult[] = [];
+  
+  // 1. Herramientas Inteligentes
+  results.push({
+    videoTitle: "Tabla Periódica Interactiva",
+    areaId: "quimica",
+    areaName: "Herramienta Inteligente",
+    AreaIcon: Grid as any,
+    gradientClass: "bg-indigo-600",
+    type: "tool",
+    path: "/area/quimica?video=qui-3"
+  });
+
+  results.push({
+    videoTitle: "Calculadora Científica",
+    areaId: "matematicas",
+    areaName: "Herramienta Inteligente",
+    AreaIcon: Calculator as any,
+    gradientClass: "bg-rose-600",
+    type: "tool",
+    path: "/area/matematicas?video=mat-1"
+  });
+
+  // 2. Videos de áreas
   for (const area of areas) {
     for (const video of area.videos) {
       results.push({
@@ -25,6 +58,8 @@ function buildIndex(): SearchResult[] {
         areaName: area.name,
         AreaIcon: area.icon,
         gradientClass: area.gradientClass,
+        type: "video",
+        path: `/area/${area.id}?video=${video.id}`
       });
     }
   }
@@ -60,16 +95,28 @@ const GlobalSearch = ({ className }: { className?: string }) => {
   const results = useMemo(() => {
     if (!debouncedQuery) return [];
     const words = debouncedQuery.split(/\s+/);
+    const denseQuery = normalize(debouncedQuery);
+
     return index.filter((r) => {
-      const haystack = `${r.videoTitle} ${r.areaName}`.toLowerCase();
-      return words.every((w) => haystack.includes(w));
+      const titleLower = r.videoTitle.toLowerCase();
+      const areaLower = r.areaName.toLowerCase();
+      const haystack = `${titleLower} ${areaLower}`;
+      
+      // 1. Match por palabras (estándar)
+      if (words.every((w) => haystack.includes(w))) return true;
+      
+      // 2. Match denso (sin espacios ni acentos, ej: "tablaperiodica")
+      const denseHaystack = normalize(haystack);
+      if (denseHaystack.includes(denseQuery)) return true;
+      
+      return false;
     }).slice(0, 8);
   }, [debouncedQuery, index]);
 
   const handleSelect = (r: SearchResult) => {
     setOpen(false);
     setQuery("");
-    navigate(`/area/${r.areaId}?video=${r.videoId}`);
+    navigate(r.path);
   };
 
   return (
