@@ -3163,6 +3163,7 @@ const AITutor = () => {
         });
       };
 
+      try {
         const memory = loadMemory();
         
         // Safety timeout de 45s para evitar que se quede "pensando" para siempre
