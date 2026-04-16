@@ -506,31 +506,34 @@ function safeParseJSON(str: string): any {
   }
 }
 
-function parseReasoningFromContent(content: string): { reasoning: Reasoning | null; cleanContent: string } {
-  const match = content.match(/<reasoning>([\s\S]*?)<\/reasoning>/);
-  if (!match) return { reasoning: null, cleanContent: content };
-  return { reasoning: safeParseJSON(match[1]), cleanContent: content.replace(/<reasoning>[\s\S]*?<\/reasoning>/, "").trim() };
+function parseReasoningFromContent(content: string): { reasoning: any | null; cleanContent: string } {
+  const regex = /<reasoning>([\s\S]*?)(?:<\/reasoning>|$)/g;
+  const m = regex.exec(content);
+  const reasoning = m ? safeParseJSON(m[1]) : null;
+  return { reasoning, cleanContent: content.replace(/<reasoning>[\s\S]*?(?:<\/reasoning>|$)/g, "").trim() };
 }
 
 function parseDecisionsFromContent(content: string): { decisions: Decision[]; cleanContent: string } {
   const decisions: Decision[] = [];
-  let cleaned = content;
-  const regex = /<decision>([\s\S]*?)<\/decision>/g;
+  const regex = /<decision>([\s\S]*?)(?:<\/decision>|$)/g;
   let m;
   while ((m = regex.exec(content)) !== null) {
-    const parsed = safeParseJSON(m[1]);
-    if (parsed) decisions.push(parsed);
+    if (m[1].trim()) {
+      const parsed = safeParseJSON(m[1]);
+      if (parsed) decisions.push(parsed);
+    }
   }
-  cleaned = content.replace(/<decision>[\s\S]*?<\/decision>/g, "").trim();
-  return { decisions, cleanContent: cleaned };
+  return { decisions, cleanContent: content.replace(/<decision>[\s\S]*?(?:<\/decision>|$)/g, "").trim() };
 }
 
 function parsePlanFromContent(content: string): { plan: Plan | null; cleanContent: string } {
-  const planMatch = content.match(/<plan>([\s\S]*?)<\/plan>/);
-  if (!planMatch) return { plan: null, cleanContent: content };
-  const parsed = safeParseJSON(planMatch[1]);
+  const regex = /<plan>([\s\S]*?)(?:<\/plan>|$)/g;
+  const m = regex.exec(content);
+  if (!m) return { plan: null, cleanContent: content };
+  
+  const parsed = safeParseJSON(m[1]);
   if (!parsed) {
-    return { plan: null, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "\n\n> ⚠️ *Error de sistema: Intenté generar un Plan de Estudio aquí pero falló el formato (JSON inválido).*").trim() };
+    return { plan: null, cleanContent: content.replace(/<plan>[\s\S]*?(?:<\/plan>|$)/g, "").trim() };
   }
   
   const plan: Plan = {
@@ -544,19 +547,19 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
     })),
     status: "pending",
   };
-  return { plan, cleanContent: content.replace(/<plan>[\s\S]*?<\/plan>/, "").trim() };
+  return { plan, cleanContent: content.replace(/<plan>[\s\S]*?(?:<\/plan>|$)/g, "").trim() };
 }
 
 function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null; cleanContent: string } {
-  const quizMatch = content.match(/<quiz>([\s\S]*?)<\/quiz>/);
+  const regex = /<quiz>([\s\S]*?)(?:<\/quiz>|$)/g;
+  const quizMatch = regex.exec(content);
   if (!quizMatch) return { quiz: null, cleanContent: content };
   
   const parsed = safeParseJSON(quizMatch[1]);
   if (!parsed) {
-    // Si la IA generó el tag <quiz> pero el JSON está corrupto/ilegible, advertimos al usuario
     return { 
       quiz: null, 
-      cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "\n\n> ⚠️ *Error de sistema: CyberAgent intentó generar un reto interactivo aquí pero hubo un problema de formato interno (JSON inválido). Por favor pídele: 'Vuelve a generar el quiz, asegúrate de enviar un formato JSON perfecto'.*\n\n").trim() 
+      cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
     };
   }
   
@@ -565,7 +568,7 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   if (!quizObj || !Array.isArray(quizObj.questions)) {
     return { 
       quiz: null, 
-      cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "\n\n> ⚠️ *El Agente intentó generar un Quiz, pero el formato interno fue inválido (faltaron las preguntas). Dile que lo vuelva a intentar.*\n\n").trim() 
+      cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
     };
   }
 
@@ -651,7 +654,7 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
 
   return { 
     quiz: quizObj, 
-    cleanContent: content.replace(/<quiz>[\s\S]*?<\/quiz>/, "").trim() 
+    cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
   };
 }
 
@@ -882,7 +885,7 @@ async function streamChat({
   context?: any;
   memory?: AgentMemory;
   onDelta: (text: string) => void;
-  onDone: (fromCache?: boolean) => void;
+  onDone: () => void;
   onUsage?: (usage: any) => void;
   onCache?: (cacheType?: 'simple' | 'complex') => void;
   signal?: AbortSignal;
@@ -1582,7 +1585,6 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
         })();
       })}
     </div>
-  </div>
   );
 };
 
@@ -3160,7 +3162,12 @@ const AITutor = () => {
           token: session?.access_token,
           file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
           onDone: () => {
-            const { reasoning, decisions, plan, quiz, charts, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+            const { 
+              reasoning, decisions, plan, quiz, charts, 
+              calculators, simulators, geography, solarSystem, 
+              physics, mathGraphs, exercises, chemistryElements, 
+              recommendations, eduImages, cleanContent 
+            } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
             let finalCleanContent = cleanContent;
@@ -3180,12 +3187,15 @@ const AITutor = () => {
               plan, 
               quiz, 
               charts: charts.length > 0 ? charts : undefined, 
+              calculators: calculators.length > 0 ? calculators : undefined,
+              simulators: simulators.length > 0 ? simulators : undefined,
               geography: geography.length > 0 ? geography : undefined,
               solarSystem: solarSystem.length > 0 ? solarSystem : undefined,
               physics: physics.length > 0 ? physics : undefined,
               mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
               exercises: exercises.length > 0 ? exercises : undefined,
               chemistryElements: chemistryElements.length > 0 ? chemistryElements : undefined,
+              recommendations: recommendations.length > 0 ? recommendations : undefined,
               eduImages: eduImages.length > 0 ? eduImages : undefined 
             } : m));
             setIsStreaming(false);
