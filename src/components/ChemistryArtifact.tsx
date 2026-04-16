@@ -194,25 +194,25 @@ export const ChemistryArtifact: React.FC<ChemistryProps> = ({ element }) => {
       {/* ── Tarjeta del elemento ── */}
       <div className="my-6 rounded-3xl border border-white/10 bg-slate-900/50 backdrop-blur-xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 max-w-sm mx-auto">
         {/* Header */}
-        <div className={cn("p-4 border-b border-white/10 flex items-center justify-between", colorStyle.split(' hover:')[0])}>
-          <div className="flex items-center gap-3">
+        <div className={cn("p-5 border-b border-white/10 flex items-center justify-between gap-3", colorStyle.split(' hover:')[0])}>
+          <div className="flex items-center gap-4 min-w-0">
             <div
-              className="h-14 w-14 rounded-2xl bg-black/30 border border-white/10 flex items-center justify-center relative shadow-inner hover:scale-105 transition-transform cursor-pointer"
+              className="h-[72px] w-[72px] shrink-0 rounded-2xl bg-black/30 border border-white/10 flex items-center justify-center relative shadow-inner hover:scale-105 transition-transform cursor-pointer"
               onClick={() => setShowTable(true)}
               title="Ver en Tabla Periódica completa"
             >
-              <span className="text-2xl font-black">{element.symbol}</span>
-              <span className="absolute top-1 right-1.5 text-[10px] font-bold opacity-60">{element.atomic_number}</span>
-              <span className="absolute bottom-1 left-0 right-0 text-center text-[8px] font-bold opacity-50">{element.atomic_mass}</span>
+              <span className="text-3xl font-black tracking-tight">{element.symbol}</span>
+              <span className="absolute top-1.5 right-2 text-[11px] font-bold opacity-60">{element.atomic_number}</span>
+              <span className="absolute bottom-1.5 left-0 right-0 text-center text-[9px] font-bold opacity-50">{element.atomic_mass}</span>
             </div>
-            <div>
-              <h3 className="text-lg font-black uppercase tracking-tight leading-none text-white">{element.name}</h3>
-              <p className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-70">{element.category}</p>
+            <div className="min-w-0">
+              <h3 className="text-xl font-black uppercase tracking-tight leading-none text-white">{element.name}</h3>
+              <p className="text-xs font-bold uppercase tracking-widest mt-1.5 opacity-75">{element.category}</p>
             </div>
           </div>
           <button
             onClick={() => setShowTable(!showTable)}
-            className="p-2.5 rounded-xl bg-black/20 hover:bg-black/40 border border-white/10 hover:border-white/30 transition-all ml-2"
+            className="p-2.5 shrink-0 rounded-xl bg-black/20 hover:bg-black/40 border border-white/10 hover:border-white/30 transition-all"
             title="Ver Tabla Periódica Completa"
           >
             <Grid className="h-5 w-5" />
