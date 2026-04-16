@@ -103,26 +103,30 @@ const AdminMonitoring = () => {
             )}
 
             {activeUsers.map((u) => {
-              const lastActive = new Date(u.updated_at);
-              const isRecent = (Date.now() - lastActive.getTime()) < 300000; // < 5 min
+              if (!u || !u.id) return null;
+              
+              const updated_at = u.updated_at || new Date().toISOString();
+              const lastActive = new Date(updated_at);
+              const isValidDate = !isNaN(lastActive.getTime());
+              const isRecent = isValidDate && (Date.now() - lastActive.getTime()) < 300000; // < 5 min
 
               return (
                 <div key={u.id} className={cn(
                   "grid grid-cols-12 items-center px-6 py-5 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-all group",
-                  isRecent && "bg-primary/5 border-primary/20 shadow-[0_0_20px_rgba(var(--primary),0.05)]"
+                  isRecent && "bg-primary/5 border-primary/20 shadow-lg"
                 )}>
                   <div className="col-span-4 flex items-center gap-3">
                      <div className="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center font-black text-xs text-primary">
-                        {u.name?.charAt(0) || u.email?.charAt(0) || '?'}
+                        {(u.name?.charAt(0) || u.email?.charAt(0) || '?').toUpperCase()}
                      </div>
-                     <div className="min-w-0">
+                     <div className="min-w-0 pr-2">
                         <p className="font-bold text-sm truncate">{u.name || 'Sin nombre'}</p>
-                        <p className="text-[10px] text-white/40 truncate">{u.email}</p>
+                        <p className="text-[10px] text-white/40 truncate">{u.email || 'Sin email'}</p>
                      </div>
                   </div>
 
                   <div className="col-span-2 flex justify-center">
-                    {u.is_premium || u.subscription_status === 'active' ? (
+                    {(u.is_premium || u.subscription_status === 'active') ? (
                       <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-widest border border-amber-500/20 flex items-center gap-1">
                         <Zap className="h-2.5 w-2.5 fill-amber-500" /> Premium
                       </span>
@@ -136,9 +140,9 @@ const AdminMonitoring = () => {
                   <div className="col-span-2 text-center">
                     <span className={cn(
                       "text-sm font-black",
-                      u.todayCount > 0 ? "text-emerald-400" : "text-white/20"
+                      (u.todayCount || 0) > 0 ? "text-emerald-400" : "text-white/20"
                     )}>
-                      {u.todayCount}
+                      {u.todayCount || 0}
                     </span>
                   </div>
 
@@ -154,10 +158,10 @@ const AdminMonitoring = () => {
                          "text-xs font-bold",
                          isRecent ? "text-emerald-400" : "text-white/60"
                        )}>
-                         {isRecent ? 'Ahora mismo' : lastActive.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
+                         {isRecent ? 'Ahora mismo' : (isValidDate ? lastActive.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '--:--')}
                        </span>
-                       <span className="text-[10px] text-white/20 font-medium">
-                         {lastActive.toLocaleDateString('es-MX')}
+                       <span className="text-[10px] text-white/20 font-medium whitespace-nowrap">
+                         {isValidDate ? lastActive.toLocaleDateString('es-MX') : 'Desconocida'}
                        </span>
                     </div>
                   </div>
