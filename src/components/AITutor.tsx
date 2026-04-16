@@ -35,6 +35,7 @@ import ExerciseArtifact from "./ExerciseArtifact";
 import ChemistryArtifact from "./ChemistryArtifact";
 import PhysicsArtifact from "./PhysicsArtifact";
 import MathGraphArtifact from "./MathGraphArtifact";
+import GlobeArtifact from "./GlobeArtifact";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
@@ -304,6 +305,7 @@ interface Message {
   mathGraphs?: any[];
   exercises?: any[];
   chemistryElements?: any[];
+  geography?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -708,6 +710,17 @@ function parseSimulatorsFromContent(content: string): { simulators: any[]; clean
   return { simulators, cleanContent: content.replace(/<simulator>[\s\S]*?<\/simulator>/g, "").trim() };
 }
 
+function parseGeographyFromContent(content: string): { geography: any[]; cleanContent: string } {
+  const geography: any[] = [];
+  const regex = /<geography>([\s\S]*?)<\/geography>/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) geography.push(parsed);
+  }
+  return { geography, cleanContent: content.replace(/<geography>[\s\S]*?<\/geography>/g, "").trim() };
+}
+
 function parsePhysicsFromContent(content: string): { physics: any[]; cleanContent: string } {
   const physics: any[] = [];
   const regex = /<physics>([\s\S]*?)<\/physics>/g;
@@ -764,19 +777,20 @@ function parseAllBlocks(content: string) {
   const { charts, cleanContent: c5 } = parseChartsFromContent(c4);
   const { calculators, cleanContent: c55 } = parseCalculatorsFromContent(c5);
   const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
-  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c56);
+  const { geography, cleanContent: c564 } = parseGeographyFromContent(c56);
+  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c564);
   const { mathGraphs, cleanContent: c567 } = parseMathGraphsFromContent(c565);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c567);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -788,7 +802,8 @@ function stripStreamingBlocks(content: string): string {
         physics: "simulador de física",
         math_graph: "gráfico matemático",
         exercise: "ejercicio práctico",
-        chemistry: "ficha química"
+        chemistry: "ficha química",
+        geography: "globo terráqueo"
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -1959,6 +1974,17 @@ const MessageBubble = React.memo(({
             </SafeBlockErrorBoundary>
           ))}
 
+          {/* 5.6 Geografía (GlobeArtifact) */}
+          {msg.geography?.map((geo: any, i: number) => (
+            <SafeBlockErrorBoundary key={`geo-err-${i}`} fallbackMessage="No se pudo cargar el globo terráqueo interactivo.">
+              <GlobeArtifact 
+                highlightCountry={geo.country} 
+                highlightContinent={geo.continent} 
+                topic={geo.topic} 
+              />
+            </SafeBlockErrorBoundary>
+          ))}
+
 
           {/* 6. Quiz (AITutorQuiz) */}
           {msg.quiz && <QuizCard quiz={msg.quiz} />}
@@ -3089,7 +3115,7 @@ const AITutor = () => {
           token: session?.access_token,
           file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
           onDone: () => {
-            const { reasoning, decisions, plan, quiz, charts, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+            const { reasoning, decisions, plan, quiz, charts, geography, physics, mathGraphs, exercises, chemistryElements, eduImages, cleanContent } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
             let finalCleanContent = cleanContent;
@@ -3101,7 +3127,21 @@ const AITutor = () => {
               }
             }
 
-            setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, eduImages: eduImages.length > 0 ? eduImages : undefined } : m));
+            setMessages(prev => prev.map(m => m.id === assistantId ? { 
+              ...m, 
+              content: finalCleanContent, 
+              reasoning, 
+              decisions: decisions.length > 0 ? decisions : undefined, 
+              plan, 
+              quiz, 
+              charts: charts.length > 0 ? charts : undefined, 
+              geography: geography.length > 0 ? geography : undefined,
+              physics: physics.length > 0 ? physics : undefined,
+              mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
+              exercises: exercises.length > 0 ? exercises : undefined,
+              chemistryElements: chemistryElements.length > 0 ? chemistryElements : undefined,
+              eduImages: eduImages.length > 0 ? eduImages : undefined 
+            } : m));
             setIsStreaming(false);
             fetchUsageStats();
           },
