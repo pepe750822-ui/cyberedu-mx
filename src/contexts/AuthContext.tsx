@@ -183,7 +183,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     };
- };
 
     // Initial session check
     checkSession();
