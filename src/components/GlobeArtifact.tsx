@@ -153,23 +153,36 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
 
   // Coordinate lookup for centering
   const centerOn = useCallback((countryName: string) => {
-    if (!geoData) return;
+    if (!geoData || !countryName) return;
+    
+    // Normalize string to remove accents
+    const normalize = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const target = normalize(countryName);
+
     const feature = geoData.features.find((f: any) => 
-      f.properties?.name?.toLowerCase() === countryName.toLowerCase() ||
-      f.properties?.formal_en?.toLowerCase() === countryName.toLowerCase()
+      normalize(f.properties?.name || "") === target ||
+      normalize(f.properties?.formal_en || "") === target ||
+      normalize(f.properties?.formal_es || "") === target
     );
+
     if (feature) {
-      // Very simple centroid calc: average of some points
-      const coords = feature.geometry.type === 'Polygon' 
+      // Very simple centroid calc
+      let coords = feature.geometry.type === 'Polygon' 
         ? feature.geometry.coordinates[0] 
         : feature.geometry.coordinates[0][0];
       
+      // Safety for deep nested polygons
+      if (Array.isArray(coords[0]) && Array.isArray(coords[0][0])) coords = coords[0];
+
       let avgLon = 0, avgLat = 0;
-      const sample = coords.slice(0, 50); // limit sample for speed
-      sample.forEach((p: number[]) => { avgLon += p[0]; avgLat += p[1]; });
+      const sampleSize = Math.min(coords.length, 50);
+      for (let i = 0; i < sampleSize; i++) {
+        avgLon += coords[i][0];
+        avgLat += coords[i][1];
+      }
       
-      setRotLon(avgLon / sample.length);
-      setRotLat(avgLat / sample.length);
+      setRotLon(avgLon / sampleSize);
+      setRotLat(avgLat / sampleSize);
       setAutoRotate(false);
     }
   }, [geoData]);
@@ -448,14 +461,27 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({
       </div>
 
       <div className="flex flex-col md:flex-row">
-        {/* Globe Canvas */}
-        <div className="relative flex-shrink-0 flex items-center justify-center p-4">
+        {/* 3D Canvas */}
+        <div className="relative flex-1 min-h-[350px] bg-slate-900/50">
           {loading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-              <div className="h-10 w-10 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
-              <p className="text-white/40 text-xs font-bold uppercase tracking-widest animate-pulse">Cargando mapa...</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 z-20 backdrop-blur-sm">
+              <Loader2 className="h-10 w-10 text-primary animate-spin mb-3" />
+              <p className="text-xs font-black text-white uppercase tracking-[0.2em] animate-pulse">Generando Globo 3D...</p>
             </div>
           )}
+          
+          {!loading && !autoRotate && highlightCountry && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 px-4 py-2 bg-slate-950/80 border border-white/10 rounded-full backdrop-blur-md">
+              <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Localizando: {highlightCountry}
+              </p>
+            </div>
+          )}
+
           <canvas
             ref={canvasRef}
             width={canvasSize}
