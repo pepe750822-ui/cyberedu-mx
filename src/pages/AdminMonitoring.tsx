@@ -27,27 +27,46 @@ const AdminMonitoring = () => {
 
   useEffect(() => {
     if (!isLoading) {
+      // Solo cargar si es admin
       const adminEmail = 'pepe750822@gmail.com';
       const isAdmin = profile?.is_admin === true || 
                       profile?.email?.toLowerCase() === adminEmail || 
                       user?.email?.toLowerCase() === adminEmail;
-                      
-      if (!isAdmin) {
-        navigate('/', { replace: true });
-      } else {
+      
+      if (isAdmin) {
         fetchActiveUsers();
-        // Auto refresh cada 30 segundos
         const timer = setInterval(fetchActiveUsers, 30000);
         return () => clearInterval(timer);
       }
     }
-  }, [profile, user, isLoading, navigate]);
+  }, [profile, user, isLoading]);
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-4">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-        <p className="text-white/50 animate-pulse font-bold uppercase tracking-widest text-[10px]">Cargando Monitor de Actividad...</p>
+        <p className="text-white/50 animate-pulse font-bold uppercase tracking-widest text-[10px]">Cargando Monitor...</p>
+      </div>
+    );
+  }
+
+  // Verificar admin después de cargar
+  const adminEmail = 'pepe750822@gmail.com';
+  const isAdmin = profile?.is_admin === true || 
+                  profile?.email?.toLowerCase() === adminEmail || 
+                  user?.email?.toLowerCase() === adminEmail;
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+         <div className="p-4 rounded-full bg-rose-500/10 border border-rose-500/20 mb-4">
+            <ShieldCheck className="h-8 w-8 text-rose-500" />
+         </div>
+         <h1 className="text-xl font-black text-white mb-2 uppercase tracking-tighter">Acceso Denegado</h1>
+         <p className="text-white/40 text-sm max-w-xs mb-6 font-medium">No tienes permisos para acceder al Monitor de Actividad con la cuenta actual ({user?.email}).</p>
+         <Link to="/" className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+            Volver al Inicio
+         </Link>
       </div>
     );
   }

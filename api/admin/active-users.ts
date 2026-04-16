@@ -28,18 +28,21 @@ export default async function handler(req: Request) {
 
     if (profilesError) throw profilesError;
 
-    // Obtener el uso diario de estos usuarios para hoy
+    // Obtener el uso diario de estos usuarios para hoy (con manejo de errores suave)
     const today = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
     const tzDate = new Date(today);
     const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
 
-    const { data: usage, error: usageError } = await supabase
-      .from('daily_usage')
-      .select('user_id, count')
-      .eq('date', localToday);
-
-    if (usageError) {
-        console.warn('Error fetching usage data (maybe table is empty):', usageError);
+    let usage: any[] | null = null;
+    try {
+      const { data: usageData, error: usageError } = await supabase
+        .from('daily_usage')
+        .select('user_id, count')
+        .eq('date', localToday);
+      
+      if (!usageError) usage = usageData;
+    } catch (e) {
+      console.warn('Silent error fetching usage:', e);
     }
 
     // Combinar datos
