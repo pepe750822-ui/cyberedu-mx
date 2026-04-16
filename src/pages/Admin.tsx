@@ -15,7 +15,8 @@ const AdminPage = () => {
   useEffect(() => {
     if (!isLoading) {
       const adminEmail = 'pepe750822@gmail.com';
-      const isAdmin = profile?.email?.toLowerCase() === adminEmail || 
+      const isAdmin = profile?.is_admin === true || 
+                      profile?.email?.toLowerCase() === adminEmail || 
                       user?.email?.toLowerCase() === adminEmail;
                       
       if (!isAdmin) {

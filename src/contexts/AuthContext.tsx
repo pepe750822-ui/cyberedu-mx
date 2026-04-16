@@ -18,6 +18,7 @@ interface UserProfile {
   subscription_plan?: string | null;
   subscription_expires_at?: string | null;
   is_premium?: boolean;
+  is_admin?: boolean;
   tokens?: number;
   trial_used?: boolean;
   last_daily_free?: string | null;

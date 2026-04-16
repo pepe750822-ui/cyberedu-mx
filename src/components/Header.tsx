@@ -141,17 +141,7 @@ const Header = () => {
           )}
 
           <div className="hidden lg:flex items-center gap-2">
-            {isSubscriber ? (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => navigate("/tokens")}
-                className="h-9 px-4 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 font-black text-[10px] uppercase tracking-widest animate-pulse transition-all shadow-sm"
-              >
-                <Crown className="h-3.5 w-3.5 mr-1.5" />
-                PREMIUM
-              </Button>
-            ) : (
+            {!isSubscriber && (
               <Button 
                 variant="default" 
                 size="sm" 
@@ -185,7 +175,7 @@ const Header = () => {
             <TooltipContent>Marketing y Notificaciones</TooltipContent>
           </Tooltip>
 
-          {(profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
+          {(profile?.is_admin === true || profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" onClick={() => navigate("/master-admin")} className="text-amber-500 hover:text-amber-400 animate-pulse">
@@ -348,7 +338,7 @@ const Header = () => {
                     Notificaciones y Marketing
                   </Link>
 
-                  {(profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
+                  {(profile?.is_admin === true || profile?.email?.toLowerCase() === 'pepe750822@gmail.com' || user?.email?.toLowerCase() === 'pepe750822@gmail.com') && (
                     <Link
                       to="/master-admin"
                       className="flex items-center gap-3 px-3 py-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-colors text-amber-500 font-black border border-amber-500/30"
