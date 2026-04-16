@@ -85,16 +85,24 @@ const AdminPage = () => {
       <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-50" />
       
       <main className="relative z-10 max-w-4xl mx-auto px-6 py-12">
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <div className="flex items-center gap-3">
-             <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-                <ShieldCheck className="h-6 w-6 text-amber-500" />
-             </div>
-             <h1 className="text-3xl font-black tracking-tight">Panel de Control Maestro</h1>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <Link to="/" className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+            <div className="flex items-center gap-3">
+               <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                  <ShieldCheck className="h-6 w-6 text-amber-500" />
+               </div>
+               <h1 className="text-3xl font-black tracking-tight">Panel de Control Maestro</h1>
+            </div>
           </div>
+          <Link 
+            to="/admin/monitoring"
+            className="px-6 py-3 rounded-2xl bg-primary/10 border border-primary/30 text-primary font-black uppercase text-[10px] tracking-widest hover:bg-primary hover:text-white transition-all flex items-center gap-2"
+          >
+            <Zap className="h-3.5 w-3.5" /> Monitor en Vivo
+          </Link>
         </div>
 
         <div className="grid gap-8">

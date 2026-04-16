@@ -425,6 +425,47 @@ const Modalidades = () => {
   const toggleFaq = (i: number) => setOpenFaq((p) => (p === i ? null : i));
   const toggleEtapa = (i: number) => setOpenEtapa((p) => (p === i ? null : i));
 
+  useEffect(() => {
+    document.title = "Modalidades ECOEMS 2026 - Guía Oficial de Registro | CyberEdu MX";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "Conoce las 3 modalidades del proceso de asignación ECOEMS 2026. Fechas oficiales, requisitos, LLAVE MX y cómo elegir entre IPN, UNAM o escuelas sin examen.");
+    }
+
+    // Structured Data for FAQ
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuándo es el registro ECOEMS 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El registro es del 17 de marzo al 14 de abril de 2026 vía internet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es la LLAVE MX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es el sistema de identidad digital obligatorio para iniciar el registro en miderechomilugar.gob.mx."
+          }
+        }
+      ]
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.innerHTML = JSON.stringify(faqSchema);
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

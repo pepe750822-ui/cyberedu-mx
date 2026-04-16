@@ -64,6 +64,34 @@ const Index = () => {
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
   useEffect(() => {
+    // SEO Dynamic Tags
+    document.title = "BioReto Pro v3.0 - Simulador ECOEMS 2026 & Guía UNAM | CyberEdu MX";
+    
+    // Update Meta Description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "Estudia para el ECOEMS 2026 y UNAM con BioReto Pro v3.0. Simuladores inteligentes, 90+ videos y seguimiento de progreso. ¡Acceso 100% gratuito!");
+    }
+
+    // Structured Data (JSON-LD)
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "CyberEdu MX",
+      "url": "https://cyberedumx.com",
+      "logo": "https://cyberedumx.com/icons/icon-512x512.png",
+      "description": "Plataforma educativa líder en preparación para exámenes de ingreso a media superior en México.",
+      "sameAs": [
+        "https://www.facebook.com/CyberEduMX",
+        "https://twitter.com/CyberEduMX"
+      ]
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.innerHTML = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
     if (location.hash === "#areas") {
       const element = document.getElementById("areas");
       if (element) {
@@ -72,6 +100,10 @@ const Index = () => {
         }, 100);
       }
     }
+
+    return () => {
+      document.head.removeChild(script);
+    };
   }, [location]);
 
   const areaProgress = useMemo(() => {

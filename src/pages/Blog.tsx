@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Calendar, User, ChevronRight, Search, Newspaper } from "lucide-react";
 import Header from "@/components/Header";
@@ -9,6 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { blogPosts } from "@/data/blogData";
 
 const Blog = () => {
+    useEffect(() => {
+        document.title = "Blog de Noticias ECOEMS & UNAM 2026 | CyberEdu MX";
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute("content", "Mantente informado con las últimas noticias sobre el examen ECOEMS 2026 y UNAM. Guías de estudio, fechas importantes y consejos para ingresar a media superior.");
+        }
+    }, []);
+
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 

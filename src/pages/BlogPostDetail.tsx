@@ -1,5 +1,5 @@
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useMemo } from "react";
 import { ArrowLeft, Calendar, User, Tag, Share2, Facebook, Twitter, Link as LinkIcon, ChevronRight } from "lucide-react";
 import DOMPurify from "dompurify";
 import { blogPosts } from "@/data/blogData";
@@ -12,6 +12,39 @@ import { Separator } from "@/components/ui/separator";
 const BlogPostDetail = () => {
     const { slug } = useParams<{ slug: string }>();
     const post = blogPosts.find((p) => p.slug === slug);
+
+    useEffect(() => {
+        if (post) {
+            document.title = `${post.title} | Blog CyberEdu MX 2026`;
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+                metaDescription.setAttribute("content", post.excerpt);
+            }
+
+            // Article Structured Data
+            const articleSchema = {
+                "@context": "https://schema.org",
+                "@type": "BlogPosting",
+                "headline": post.title,
+                "image": [post.image],
+                "datePublished": "2026-02-13T08:00:00+08:00", // Using a recent date
+                "author": [{
+                    "@type": "Person",
+                    "name": post.author,
+                    "url": "https://cyberedumx.com/quienes-somos.html"
+                }]
+            };
+
+            const script = document.createElement("script");
+            script.type = "application/ld+json";
+            script.innerHTML = JSON.stringify(articleSchema);
+            document.head.appendChild(script);
+
+            return () => {
+                document.head.removeChild(script);
+            };
+        }
+    }, [post]);
 
     if (!post) {
         return (

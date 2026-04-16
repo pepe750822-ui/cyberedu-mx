@@ -54,6 +54,42 @@ const SimuladorPro = () => {
     const [showRestoreModal, setShowRestoreModal] = useState(false);
     const [savedState, setSavedState] = useState<SimuladorState | null>(null);
 
+    // SEO Dynamic Tags for Simulador
+    useEffect(() => {
+        document.title = "Simulador Pro ECOEMS 2026 - 128 Reactivos | CyberEdu MX";
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            metaDescription.setAttribute("content", "Realiza el simulador pro más avanzado para el ECOEMS 2026. 128 reactivos integrales, tiempo real de 3 horas y predicción de resultados con IA.");
+        }
+
+        // Structured Data for the Exam
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "Quiz",
+            "name": "Simulador Pro ECOEMS 2026",
+            "description": "Réplica exacta del examen oficial ECOEMS con 128 reactivos y cronómetro de 3 horas.",
+            "educationalAlignment": {
+                "@type": "AlignmentObject",
+                "alignmentType": "educationalLevel",
+                "educationalFramework": "ECOEMS",
+                "targetName": "Educación Media Superior"
+            },
+            "author": {
+                "@type": "Organization",
+                "name": "CyberEdu MX"
+            }
+        };
+
+        const script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.innerHTML = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, []);
+
     // Load saved state on mount
     useEffect(() => {
         const saved = localStorage.getItem('simulador_estado');

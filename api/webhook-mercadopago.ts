@@ -86,8 +86,8 @@ export default async function handler(req: Request) {
             } else {
               console.error(`PAGO RECIBIDO PERO USUARIO NO ENCONTRADO. ID: ${external_reference}, Email: ${paymentData.payer?.email}`);
             }
-        } else {
-          // Lógica anterior de suscripción fija
+        } else if (metadata?.type === 'subscription' || metadata?.packageId === 'ilimitado') {
+          // Lógica de suscripción (Maestro o Ilimitado)
           const { error } = await supabase
             .from('profiles')
             .update({ 
@@ -99,6 +99,8 @@ export default async function handler(req: Request) {
 
           if (error) throw error;
           console.log(`SUSCRIPCIÓN ACTIVADA: Usuario ${external_reference}`);
+        } else {
+          console.warn(`PAGO RECIBIDO PERO TIPO DESCONOCIDO. Metadata:`, metadata);
         }
       } else {
         console.log(`Estado del pago ${paymentId}: ${status}`);

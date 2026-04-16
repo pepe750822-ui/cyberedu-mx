@@ -3714,11 +3714,25 @@ const AITutor = () => {
                   </div>
 
                     <div className="text-right mb-2">
-                       {!usageStats && !isSubscriber && (
+                       {!usageStats && (
                          <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">
                            Sincronizando uso...
                          </span>
                        )}
+                       
+                       {usageStats && usageStats.isSubscriber && (
+                         <div className="flex flex-col items-end gap-1">
+                           <span className="text-[10px] font-black uppercase text-amber-400 tracking-widest bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/20 flex items-center gap-1.5">
+                             <Zap className="h-3 w-3 fill-amber-400" /> Acceso Ilimitado (Premium)
+                           </span>
+                           {usageStats.tokens > 0 && (
+                             <span className="text-[9px] font-bold text-slate-500 pr-2">
+                               Saldo: {usageStats.tokens} tokens (estacionados)
+                             </span>
+                           )}
+                         </div>
+                       )}
+
                        {usageStats && !usageStats.isSubscriber && (
                          <>
                            {usageStats.tokens > 0 && (

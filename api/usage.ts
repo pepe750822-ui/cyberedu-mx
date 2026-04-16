@@ -75,6 +75,10 @@ export default async function handler(req: Request) {
     isSubscriber
   }), {
     status: 200,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    headers: { 
+      ...corsHeaders, 
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache, no-store, must-revalidate'
+    },
   });
 }

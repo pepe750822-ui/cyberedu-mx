@@ -236,22 +236,38 @@ export default async function handler(req: Request) {
   // Helper instead of SDK for Edge compatibility
   const supabaseRequest = async (path: string, options: any = {}) => {
     const url = `${SUPABASE_URL}/rest/v1/${path}`;
-    const res = await fetch(url, {
-      ...options,
-      headers: {
-        'apikey': SUPABASE_SERVICE_ROLE_KEY,
-        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
-        ...options.headers,
+    try {
+      const res = await fetch(url, {
+        ...options,
+        headers: {
+          'apikey': SUPABASE_SERVICE_ROLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+          ...options.headers,
+        }
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        let err = {};
+        try { err = JSON.parse(text); } catch { err = { message: text }; }
+        return { data: null, error: err };
       }
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      return { data: null, error: err };
+
+      // Handle 204 No Content or empty bodies
+      const text = await res.text().catch(() => '');
+      if (!text) return { data: null, error: null };
+      
+      try {
+        const data = JSON.parse(text);
+        return { data, error: null };
+      } catch {
+        return { data: text, error: null };
+      }
+    } catch (e: any) {
+      return { data: null, error: { message: e.message } };
     }
-    const data = await res.json();
-    return { data, error: null };
   };
 
   const today = new Date().toISOString().split('T')[0];
@@ -266,7 +282,10 @@ export default async function handler(req: Request) {
   const profile = profileResult.data?.[0];
   const profileErr = profileResult.error;
 
+  console.log(`[AI-CHAT] User: ${userId} | Tokens: ${profile?.tokens} | Premium: ${profile?.is_premium} | Status: ${profile?.subscription_status}`);
+
   if (profileErr || !profile) {
+    console.error(`[AI-CHAT] Profile Error:`, profileErr);
     return new Response(JSON.stringify({ error: 'Perfil no encontrado' }), {
       status: 404,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -290,28 +309,48 @@ export default async function handler(req: Request) {
   const tzDate = new Date(todayInMexico);
   const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
 
-  // Rule 1: Subscriber -> pasa sin límite
+  const currentTokens = Number(profile.tokens || 0);
+
+  // Rule 1: Subscriber -> pasa sin límite (pero actualizamos timestamp para monitoreo)
   if (profile.subscription_status === 'active' || profile.is_premium === true) {
-    // No consume tokens ni límite diario
-  }
-  // Rule 2: hasTokens -> descuenta 1 token y pasa
-  else if ((profile.tokens || 0) > 0) {
+    console.log(`[AI-CHAT] Access GRANTED (Subscriber/Premium). skipping token deduction.`);
     await supabaseRequest(`profiles?id=eq.${userId}`, {
       method: 'PATCH',
       body: JSON.stringify({
-        tokens: Math.max(0, profile.tokens - 1),
         updated_at: new Date().toISOString()
       })
     });
   }
+  // Rule 2: hasTokens -> descuenta 1 token y pasa
+  else if (currentTokens > 0) {
+    const newTokenBalance = Math.max(0, currentTokens - 1);
+    console.log(`[AI-CHAT] Deducting token: ${currentTokens} -> ${newTokenBalance}`);
+    
+    const { error: patchError } = await supabaseRequest(`profiles?id=eq.${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        tokens: newTokenBalance,
+        updated_at: new Date().toISOString()
+      })
+    });
+
+    if (patchError) {
+      console.error(`[AI-CHAT] Token deduction FAILED:`, patchError);
+      // We still allow the chat but log the error
+    } else {
+      console.log(`[AI-CHAT] Token deduction SUCCESS.`);
+    }
+  }
   // Rule 3: Límite diario (5 max)
   else {
+    console.log(`[AI-CHAT] Check daily limit for free user.`);
     const { data: usageData } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
 
     const currentCount = usageData?.[0]?.count || 0;
     const dailyLimit = 5;
 
     if (currentCount < dailyLimit) {
+      console.log(`[AI-CHAT] Daily usage: ${currentCount} / ${dailyLimit}. Incrementing.`);
       await supabaseRequest(`daily_usage`, {
         method: 'POST',
         headers: { 'Prefer': 'resolution=merge-duplicates' },
@@ -322,6 +361,7 @@ export default async function handler(req: Request) {
         })
       });
     } else {
+      console.log(`[AI-CHAT] Daily limit REACHED.`);
       const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $20 pesos.`;
 
       return new Response(JSON.stringify({
