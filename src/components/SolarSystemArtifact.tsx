@@ -27,15 +27,30 @@ const PLANETS: Planet[] = [
   { name: 'Plutón',   color: '#c4b5a0', size: 3.5, distance: 295, speed: 0.0007, type: 'Planeta enano', distSun: '5,906 M km', moons: 5,   diameter: '2,376 km',   temp: '−230 °C', info: 'Reclasificado como planeta enano en 2006. Tiene una luna gigante: Caronte.' },
 ];
 
+const SUN_INFO = {
+  name: 'El Sol',
+  color: '#fbbf24',
+  type: 'Estrella — Tipo G (Secuencia principal)',
+  diameter: '1,392,700 km (≈ 109 × Tierra)',
+  mass: '1.989 × 10³⁰ kg (≈ 333,000 × Tierra)',
+  surfaceTemp: '~5,778 K / 5,505 °C',
+  galacticDist: '~26,000 años luz del centro',
+  age: '~4,600 millones de años',
+  info: 'Concentra el 99.86% de la masa del sistema solar. Su energía proviene de la fusión nuclear de hidrógeno en helio.',
+};
+
 // Hit radius: at least 20 logical px, even for tiny planets
 const HIT_RADIUS = (p: Planet, s: number) => Math.max(20, (p.size + 12) * s);
+const SUN_HIT_RADIUS = (s: number) => Math.max(24, 30 * s);
 
 const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scale, setScale] = useState(1);
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
+  const [sunSelected, setSunSelected] = useState(false);
   const [hoveredPlanet, setHoveredPlanet] = useState<Planet | null>(null);
+  const [hoveredSun, setHoveredSun] = useState(false);
 
   const angleRef       = useRef<number[]>(PLANETS.map(() => Math.random() * Math.PI * 2));
   const animFrameRef   = useRef<number>(0);
@@ -45,12 +60,15 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
   const scaleRef           = useRef(scale);
   const isPlayingRef       = useRef(isPlaying);
   const selectedPlanetRef  = useRef<Planet | null>(selectedPlanet);
+  const sunSelectedRef     = useRef(false);
   const hoveredRef         = useRef<Planet | null>(null);
+  const hoveredSunRef      = useRef(false);
   const mousePosRef        = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
 
   useEffect(() => { scaleRef.current = scale; }, [scale]);
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
   useEffect(() => { selectedPlanetRef.current = selectedPlanet; }, [selectedPlanet]);
+  useEffect(() => { sunSelectedRef.current = sunSelected; }, [sunSelected]);
 
   const toCanvasCoords = useCallback((clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
@@ -109,18 +127,48 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
       ctx.stroke();
     });
 
+    // Hover detection using scaled coordinates
+    const { x: lx, y: ly } = toCanvasCoords(mousePosRef.current.x, mousePosRef.current.y);
+
+    // Sun hover detection
+    const isHoveringSun = Math.hypot(cx - lx, cy - ly) < SUN_HIT_RADIUS(s);
+    if (hoveredSunRef.current !== isHoveringSun) {
+      hoveredSunRef.current = isHoveringSun;
+      setHoveredSun(isHoveringSun);
+    }
+
     // Sun
     const sunGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 28 * s);
     sunGlow.addColorStop(0, '#fef9c3');
     sunGlow.addColorStop(0.4, '#fbbf24');
     sunGlow.addColorStop(1, 'rgba(251,191,36,0)');
     ctx.fillStyle = sunGlow;
+    ctx.shadowBlur = isHoveringSun || sunSelectedRef.current ? 30 : 0;
+    ctx.shadowColor = '#fbbf24';
     ctx.beginPath();
     ctx.arc(cx, cy, 32 * s, 0, Math.PI * 2);
     ctx.fill();
-
-    // Hover detection using scaled coordinates
-    const { x: lx, y: ly } = toCanvasCoords(mousePosRef.current.x, mousePosRef.current.y);
+    ctx.shadowBlur = 0;
+    // Selection / hover ring around Sun
+    if (sunSelectedRef.current) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, 34 * s + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = '#fbbf24cc';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    } else if (isHoveringSun) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, SUN_HIT_RADIUS(s), 0, Math.PI * 2);
+      ctx.strokeStyle = '#fbbf2455';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    if (isHoveringSun || sunSelectedRef.current) {
+      ctx.fillStyle = '#fef9c3';
+      ctx.font = `bold ${Math.max(10, 11 * s)}px Inter, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('Sol', cx, cy - 34 * s - 8);
+    }
     let newHovered: Planet | null = null;
 
     PLANETS.forEach((p, i) => {
@@ -216,8 +264,18 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
 
   const handleClick = (e: React.MouseEvent) => {
     const { x, y } = toCanvasCoords(e.clientX, e.clientY);
-    // Uses LAST DRAWN positions — not recomputed angles
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    // Check Sun first (center of canvas)
+    if (Math.hypot(cx - x, cy - y) < SUN_HIT_RADIUS(scaleRef.current)) {
+      setSunSelected(prev => !prev);
+      setSelectedPlanet(null);
+      return;
+    }
+    // Check planets
     const clicked = getPlanetAt(x, y, scaleRef.current);
+    setSunSelected(false);
     setSelectedPlanet(prev =>
       clicked ? (prev?.name === clicked.name ? null : clicked) : null
     );
@@ -270,11 +328,15 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
           {/* Hint bar */}
           <div className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-bold text-white/40 pointer-events-none">
             <Info className="h-3 w-3 flex-shrink-0" />
-            {hoveredPlanet
+            {hoveredSun
+              ? 'Sol — clic para info'
+              : hoveredPlanet
               ? `${hoveredPlanet.name} — clic para info`
+              : sunSelected
+              ? 'Sol seleccionado'
               : selectedPlanet
               ? `${selectedPlanet.name} seleccionado`
-              : 'Haz clic en un planeta para explorar'}
+              : 'Haz clic en el Sol o un planeta para explorar'}
           </div>
 
           {/* Zoom */}
@@ -285,7 +347,39 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
         </div>
 
         {/* Info panel */}
-        {selectedPlanet ? (
+        {sunSelected ? (
+          <div className="md:w-52 p-4 border-t md:border-t-0 md:border-l border-white/10 bg-black/30 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Sun className="h-4 w-4 text-amber-400 fill-amber-400 flex-shrink-0" />
+              <h4 className="font-black text-amber-300 text-sm">El Sol</h4>
+            </div>
+
+            <p className="text-white/50 text-[11px] leading-relaxed">{SUN_INFO.info}</p>
+
+            <div className="space-y-2 border-t border-white/5 pt-3">
+              {[
+                ['Tipo',             SUN_INFO.type],
+                ['Diámetro',         SUN_INFO.diameter],
+                ['Masa',             SUN_INFO.mass],
+                ['Temp. superficie', SUN_INFO.surfaceTemp],
+                ['Dist. galaxia',    SUN_INFO.galacticDist],
+                ['Edad aprox.',      SUN_INFO.age],
+              ].map(([label, value]) => (
+                <div key={label} className="flex justify-between items-start gap-2">
+                  <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest flex-shrink-0">{label}</span>
+                  <span className="text-[11px] text-white font-bold text-right leading-tight">{value}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setSunSelected(false)}
+              className="mt-auto py-2 rounded-xl bg-white/5 border border-white/10 text-white/30 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
+            >
+              Cerrar
+            </button>
+          </div>
+        ) : selectedPlanet ? (
           <div className="md:w-52 p-4 border-t md:border-t-0 md:border-l border-white/10 bg-black/30 flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 rounded-full flex-shrink-0" style={{ backgroundColor: selectedPlanet.color }} />
@@ -320,10 +414,10 @@ const SolarSystemArtifact: React.FC<{ topic?: string }> = ({ topic }) => {
           <div className="md:w-52 p-4 border-t md:border-t-0 md:border-l border-white/10 bg-black/30 flex flex-col items-center justify-center gap-2 text-center">
             <Sun className="h-8 w-8 text-amber-500/20 fill-amber-500/10" />
             <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-              Haz clic en un planeta para ver sus características
+              Haz clic en el Sol o un planeta para ver sus características
             </p>
             <p className="text-white/10 text-[9px]">
-              {PLANETS.length} cuerpos • incluyendo Plutón
+              {PLANETS.length} planetas • 1 estrella
             </p>
           </div>
         )}
