@@ -467,6 +467,7 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <calculator> cuando expliques fórmulas matemáticas o físicas (Punto 18).
     - SIEMPRE incluye <geography> cuando expliques ubicación de países, continentes o coordenadas (Punto 22).
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
+    - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía (Punto 24).
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
@@ -607,6 +608,11 @@ export default async function handler(req: Request) {
     23. SISTEMA SOLAR (OBLIGATORIO PARA ASTRONOMÍA):
         - Cuando expliques los planetas, usa: <solar_system>{ "topic": "Los Planetas" }</solar_system>.
         - Esto activará un simulador 3D del espacio.
+
+    24. CUERPO HUMANO (OBLIGATORIO PARA BIOLOGÍA - SISTEMAS CORPORALES):
+        - Cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía/fisiología, usa: <human_body>{ "topic": "Sistemas del Cuerpo Humano" }</human_body>.
+        - NUNCA uses solo texto para explicar sistemas corporales; SIEMPRE incluye este tag.
+        - Esto activará un diagrama interactivo del cuerpo humano.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
