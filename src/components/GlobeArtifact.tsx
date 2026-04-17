@@ -255,6 +255,14 @@ function computeCountryCenter(countryName: string, geoData: any): { lon: number;
   return { lon: avgLon / n, lat: avgLat / n, geoName };
 }
 
+// Compact cell used in the 2-col country info grid
+const DataCell: React.FC<{ label: string; value: string; wide?: boolean }> = ({ label, value, wide }) => (
+  <div className={wide ? 'col-span-2' : ''}>
+    <p className="text-[9px] text-white/35 font-bold uppercase tracking-widest mb-0.5">{label}</p>
+    <p className="text-[11px] font-bold text-white leading-snug">{value}</p>
+  </div>
+);
+
 let CACHED_GEO_DATA: any = null;
 let DATA_PROMISE: Promise<any> | null = null;
 
@@ -763,120 +771,81 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
 
           {/* País seleccionado — panel de características */}
           {selectedCountry && selectedInfo ? (
-            <div className="flex-1 p-4 rounded-2xl bg-white/5 border border-white/10 overflow-y-auto">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-amber-400 flex-shrink-0" />
-                  <h4 className="font-black text-white text-sm leading-tight">{selectedCountry}</h4>
+            <div className="flex-1 rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <MapPin className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
+                  <h4 className="font-black text-white text-sm truncate leading-tight">{selectedCountry}</h4>
+                  {geoProps.continent && (
+                    <span
+                      className="flex-shrink-0 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md"
+                      style={{ backgroundColor: CONTINENT_COLORS[geoProps.continent] + '30', color: CONTINENT_COLORS[geoProps.continent] }}
+                    >
+                      {geoProps.continent}
+                    </span>
+                  )}
                 </div>
-                <button onClick={() => setSelectedCountry(null)} className="text-white/20 hover:text-white/60 transition-all ml-2 flex-shrink-0">
+                <button onClick={() => setSelectedCountry(null)} className="text-white/20 hover:text-white/60 transition-all ml-1 flex-shrink-0">
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
 
-              <div className="space-y-3">
-                {/* Continente */}
-                {geoProps.continent && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Continente</span>
-                    <span className="text-xs font-bold flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full inline-block" style={{ backgroundColor: CONTINENT_COLORS[geoProps.continent] }} />
-                      <span style={{ color: CONTINENT_COLORS[geoProps.continent] }}>{geoProps.continent}</span>
-                    </span>
-                  </div>
-                )}
-
-                {/* Capital */}
-                {extraInfo?.capital && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Capital</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.capital}</span>
-                  </div>
-                )}
-
-                {/* Población */}
+              {/* Grid 2 columnas — datos cortos */}
+              <div className="px-3 pt-2.5 pb-1 grid grid-cols-2 gap-x-3 gap-y-2">
                 {geoProps.pop_est && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Población</span>
-                    <span className="text-xs font-bold text-white">{formatPop(Number(geoProps.pop_est))}</span>
-                  </div>
+                  <DataCell label="Población" value={formatPop(Number(geoProps.pop_est))} />
                 )}
-
-                {/* Idioma */}
-                {extraInfo?.languages && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Idioma(s)</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.languages}</span>
-                  </div>
+                {extraInfo?.capital && (
+                  <DataCell label="Capital" value={extraInfo.capital} />
                 )}
-
-                {/* Gentilicio */}
                 {extraInfo?.demonym && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Gentilicio</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.demonym}</span>
-                  </div>
+                  <DataCell label="Gentilicio" value={extraInfo.demonym} />
                 )}
-
-                {/* Moneda */}
-                {extraInfo?.currency && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Moneda</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.currency}</span>
-                  </div>
-                )}
-
-                {/* Extensión territorial */}
-                {extraInfo?.area && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Extensión</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.area}</span>
-                  </div>
-                )}
-
-                {/* PIB */}
-                {extraInfo?.gdp && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">PIB aprox.</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.gdp}</span>
-                  </div>
-                )}
-
-                {/* Zona horaria */}
                 {extraInfo?.timezone && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Zona horaria</span>
-                    <span className="text-xs font-bold text-white text-right">{extraInfo.timezone}</span>
-                  </div>
+                  <DataCell label="Zona horaria" value={extraInfo.timezone} />
                 )}
-
-                {/* Subregión */}
+                {extraInfo?.area && (
+                  <DataCell label="Extensión" value={extraInfo.area} />
+                )}
                 {geoProps.subregion && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Subregión</span>
-                    <span className="text-xs font-bold text-white text-right">{geoProps.subregion}</span>
-                  </div>
+                  <DataCell label="Subregión" value={geoProps.subregion} />
+                )}
+              </div>
+
+              {/* Ancho completo — datos largos */}
+              <div className="px-3 pb-2.5 space-y-1.5">
+                {extraInfo?.languages && (
+                  <DataCell label="Idioma(s)" value={extraInfo.languages} wide />
+                )}
+                {extraInfo?.currency && (
+                  <DataCell label="Moneda" value={extraInfo.currency} wide />
+                )}
+                {extraInfo?.gdp && (
+                  <DataCell label="PIB aprox." value={extraInfo.gdp} wide />
                 )}
               </div>
 
               {/* Ir al continente */}
               {geoProps.continent && CONTINENT_CENTERS[geoProps.continent] && (
-                <button
-                  onClick={() => centerOnContinent(geoProps.continent)}
-                  className="mt-4 w-full py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
-                  style={{
-                    backgroundColor: CONTINENT_COLORS[geoProps.continent] + '22',
-                    borderColor: CONTINENT_COLORS[geoProps.continent] + '44',
-                    color: CONTINENT_COLORS[geoProps.continent],
-                  }}
-                >
-                  Ver todo {geoProps.continent}
-                </button>
+                <div className="px-3 pb-3">
+                  <button
+                    onClick={() => centerOnContinent(geoProps.continent)}
+                    className="w-full py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
+                    style={{
+                      backgroundColor: CONTINENT_COLORS[geoProps.continent] + '22',
+                      borderColor: CONTINENT_COLORS[geoProps.continent] + '44',
+                      color: CONTINENT_COLORS[geoProps.continent],
+                    }}
+                  >
+                    Ver todo {geoProps.continent}
+                  </button>
+                </div>
               )}
             </div>
           ) : (
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-2 text-center py-6">
-              <Globe className="h-7 w-7 text-white/10" />
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-2 text-center py-5">
+              <Globe className="h-6 w-6 text-white/10" />
               <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest">
                 Clic en un país para ver sus características
               </p>
