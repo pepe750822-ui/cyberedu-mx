@@ -37,6 +37,7 @@ import PhysicsArtifact from "./PhysicsArtifact";
 import MathGraphArtifact from "./MathGraphArtifact";
 import GlobeArtifact from "./GlobeArtifact";
 import SolarSystemArtifact from "./SolarSystemArtifact";
+import HumanBodyArtifact from "./HumanBodyArtifact";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
@@ -308,6 +309,7 @@ interface Message {
   chemistryElements?: any[];
   geography?: any[];
   solarSystem?: any[];
+  humanBody?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -780,6 +782,20 @@ function parseSolarSystemFromContent(content: string): { solarSystem: any[]; cle
   return { solarSystem, cleanContent: content.replace(/<solar_system>[\s\S]*?(?:<\/solar_system>|$)/g, "").trim() };
 }
 
+function parseHumanBodyFromContent(content: string): { humanBody: any[]; cleanContent: string } {
+  const humanBody: any[] = [];
+  const regex = /<human_body>([\s\S]*?)(?:<\/human_body>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    if (raw) {
+      const parsed = safeParseJSON(raw);
+      humanBody.push(parsed ?? { topic: raw.length < 80 ? raw : 'Cuerpo Humano' });
+    }
+  }
+  return { humanBody, cleanContent: content.replace(/<human_body>[\s\S]*?(?:<\/human_body>|$)/g, '').trim() };
+}
+
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
@@ -810,11 +826,11 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 
 function parseAllBlocks(content: string) {
   try {
-    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
-    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
+    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
   } catch (err) {
     console.error("Critical error in parseAllBlocks:", err);
-    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
+    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
   }
 }
 
@@ -828,19 +844,20 @@ function parseAllBlocksHelper(content: string) {
   const { simulators, cleanContent: c56 } = parseSimulatorsFromContent(c55);
   const { geography, cleanContent: c564 } = parseGeographyFromContent(c56);
   const { solarSystem, cleanContent: c5645 } = parseSolarSystemFromContent(c564);
-  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5645);
+  const { humanBody, cleanContent: c5646 } = parseHumanBodyFromContent(c5645);
+  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5646);
   const { mathGraphs, cleanContent: c567 } = parseMathGraphsFromContent(c565);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c567);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -854,7 +871,8 @@ function stripStreamingBlocks(content: string): string {
         exercise: "ejercicio práctico",
         chemistry: "ficha química",
         geography: "globo terráqueo",
-        solar_system: "sistema solar"
+        solar_system: "sistema solar",
+        human_body: "cuerpo humano",
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -2043,6 +2061,12 @@ const MessageBubble = React.memo(({
             </SafeBlockErrorBoundary>
           ))}
 
+          {/* 5.8 Cuerpo Humano (HumanBodyArtifact) */}
+          {msg.humanBody?.map((hb: any, i: number) => (
+            <SafeBlockErrorBoundary key={`hb-err-${i}`} fallbackMessage="No se pudo cargar el artefacto del cuerpo humano.">
+              <HumanBodyArtifact topic={hb?.topic} />
+            </SafeBlockErrorBoundary>
+          ))}
 
           {/* 6. Quiz (AITutorQuiz) */}
           {msg.quiz && <QuizCard quiz={msg.quiz} />}
@@ -3201,17 +3225,18 @@ const AITutor = () => {
               }
             }
 
-            setMessages(prev => prev.map(m => m.id === assistantId ? { 
-              ...m, 
-              content: finalCleanContent, 
-              reasoning, 
-              decisions: decisions.length > 0 ? decisions : undefined, 
-              plan, 
-              quiz, 
-              charts: charts.length > 0 ? charts : undefined, 
+            setMessages(prev => prev.map(m => m.id === assistantId ? {
+              ...m,
+              content: finalCleanContent,
+              reasoning,
+              decisions: decisions.length > 0 ? decisions : undefined,
+              plan,
+              quiz,
+              charts: charts.length > 0 ? charts : undefined,
               calculators: calculators.length > 0 ? calculators : undefined,
               simulators: simulators.length > 0 ? simulators : undefined,
               geography: geography.length > 0 ? geography : undefined,
+              humanBody: humanBody.length > 0 ? humanBody : undefined,
               solarSystem: solarSystem.length > 0 ? solarSystem : undefined,
               physics: physics.length > 0 ? physics : undefined,
               mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
@@ -3409,6 +3434,9 @@ const AITutor = () => {
                - <solar_system>: OBLIGATORIO cuando el usuario pregunte sobre el sistema solar, planetas, Plutón, órbitas o astronomía. Usa esta estructura exacta:
                  <solar_system>{"topic": "Sistema Solar", "focus": "Plutón"}</solar_system>
                  NUNCA uses texto normal para temas del sistema solar, usa SIEMPRE este tag.
+               - <human_body>: OBLIGATORIO cuando el usuario pregunte sobre sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino), anatomía humana o fisiología. Usa esta estructura exacta:
+                 <human_body>{"topic": "Sistemas del Cuerpo Humano"}</human_body>
+                 NUNCA uses texto normal para temas de sistemas corporales, usa SIEMPRE este tag.
            13. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO):
                - Si !context.isRegistered:
                  💡 **¿Quieres acceder a todo este material?**
@@ -3509,7 +3537,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
