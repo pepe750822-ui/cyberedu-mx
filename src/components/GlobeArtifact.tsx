@@ -118,7 +118,8 @@ const COUNTRY_INFO: Record<string, CountryExtra> = {
   'Chile': { capital: 'Santiago', languages: 'Español', currency: 'Peso chileno (CLP)', area: '756,102 km²', gdp: '~317 mil millones USD', demonym: 'Chileno/a', timezone: 'UTC−3/−4' },
   'China': { capital: 'Pekín', languages: 'Mandarín', currency: 'Yuan renminbi (CNY)', area: '9,596,960 km²', gdp: '~17.7 billones USD', demonym: 'Chino/a', timezone: 'UTC+8' },
   'Colombia': { capital: 'Bogotá', languages: 'Español', currency: 'Peso colombiano (COP)', area: '1,141,748 km²', gdp: '~343 mil millones USD', demonym: 'Colombiano/a', timezone: 'UTC−5' },
-  'Congo': { capital: 'Brazzaville', languages: 'Francés', currency: 'Franco CFA (XAF)', area: '342,000 km²', gdp: '~15 mil millones USD', demonym: 'Congoleño/a', timezone: 'UTC+1' },
+  'Republic of the Congo': { capital: 'Brazzaville', languages: 'Francés', currency: 'Franco CFA (XAF)', area: '342,000 km²', gdp: '~15 mil millones USD', demonym: 'Congoleño/a', timezone: 'UTC+1' },
+  'Democratic Republic of the Congo': { capital: 'Kinshasa', languages: 'Francés, Suajili, Lingala', currency: 'Franco congoleño (CDF)', area: '2,344,858 km²', gdp: '~66 mil millones USD', demonym: 'Congoleño/a', timezone: 'UTC+1/+2' },
   'Costa Rica': { capital: 'San José', languages: 'Español', currency: 'Colón costarricense (CRC)', area: '51,100 km²', gdp: '~68 mil millones USD', demonym: 'Costarricense', timezone: 'UTC−6' },
   'Cuba': { capital: 'La Habana', languages: 'Español', currency: 'Peso cubano (CUP)', area: '109,884 km²', gdp: '~107 mil millones USD', demonym: 'Cubano/a', timezone: 'UTC−5' },
   'Czech Republic': { capital: 'Praga', languages: 'Checo', currency: 'Corona checa (CZK)', area: '78,866 km²', gdp: '~290 mil millones USD', demonym: 'Checo/a', timezone: 'UTC+1/+2' },
@@ -184,15 +185,15 @@ const COUNTRY_INFO: Record<string, CountryExtra> = {
   'Sweden': { capital: 'Estocolmo', languages: 'Sueco', currency: 'Corona sueca (SEK)', area: '450,295 km²', gdp: '~593 mil millones USD', demonym: 'Sueco/a', timezone: 'UTC+1/+2' },
   'Switzerland': { capital: 'Berna', languages: 'Alemán, Francés, Italiano', currency: 'Franco suizo (CHF)', area: '41,285 km²', gdp: '~869 mil millones USD', demonym: 'Suizo/a', timezone: 'UTC+1/+2' },
   'Syria': { capital: 'Damasco', languages: 'Árabe', currency: 'Libra siria (SYP)', area: '185,180 km²', gdp: '~22 mil millones USD', demonym: 'Sirio/a', timezone: 'UTC+3' },
-  'Tanzania': { capital: 'Dodoma', languages: 'Suajili, Inglés', currency: 'Chelín tanzano (TZS)', area: '945,087 km²', gdp: '~75 mil millones USD', demonym: 'Tanzano/a', timezone: 'UTC+3' },
+  'United Republic of Tanzania': { capital: 'Dodoma', languages: 'Suajili, Inglés', currency: 'Chelín tanzano (TZS)', area: '945,087 km²', gdp: '~75 mil millones USD', demonym: 'Tanzano/a', timezone: 'UTC+3' },
   'Thailand': { capital: 'Bangkok', languages: 'Tailandés', currency: 'Baht (THB)', area: '513,120 km²', gdp: '~545 mil millones USD', demonym: 'Tailandés/a', timezone: 'UTC+7' },
   'Turkey': { capital: 'Ankara', languages: 'Turco', currency: 'Lira turca (TRY)', area: '783,562 km²', gdp: '~1.03 billones USD', demonym: 'Turco/a', timezone: 'UTC+3' },
   'Turkmenistan': { capital: 'Asjabad', languages: 'Turcomano', currency: 'Manat (TMT)', area: '488,100 km²', gdp: '~48 mil millones USD', demonym: 'Turcomano/a', timezone: 'UTC+5' },
   'Uganda': { capital: 'Kampala', languages: 'Inglés, Suajili', currency: 'Chelín ugandés (UGX)', area: '241,038 km²', gdp: '~49 mil millones USD', demonym: 'Ugandés/a', timezone: 'UTC+3' },
   'Ukraine': { capital: 'Kiev', languages: 'Ucraniano', currency: 'Grivna (UAH)', area: '603,550 km²', gdp: '~160 mil millones USD', demonym: 'Ucraniano/a', timezone: 'UTC+2/+3' },
   'United Arab Emirates': { capital: 'Abu Dabi', languages: 'Árabe', currency: 'Dírham emiratí (AED)', area: '83,600 km²', gdp: '~507 mil millones USD', demonym: 'Emiratí', timezone: 'UTC+4' },
-  'United Kingdom': { capital: 'Londres', languages: 'Inglés', currency: 'Libra esterlina (GBP)', area: '243,610 km²', gdp: '~3.07 billones USD', demonym: 'Británico/a', timezone: 'UTC+0/+1' },
-  'United States of America': { capital: 'Washington D.C.', languages: 'Inglés', currency: 'Dólar estadounidense (USD)', area: '9,833,517 km²', gdp: '~27.4 billones USD', demonym: 'Estadounidense', timezone: 'UTC−5/−10' },
+  'England': { capital: 'Londres', languages: 'Inglés', currency: 'Libra esterlina (GBP)', area: '243,610 km²', gdp: '~3.07 billones USD', demonym: 'Británico/a', timezone: 'UTC+0/+1' },
+  'USA': { capital: 'Washington D.C.', languages: 'Inglés', currency: 'Dólar estadounidense (USD)', area: '9,833,517 km²', gdp: '~27.4 billones USD', demonym: 'Estadounidense', timezone: 'UTC−5/−10' },
   'Uruguay': { capital: 'Montevideo', languages: 'Español', currency: 'Peso uruguayo (UYU)', area: '176,215 km²', gdp: '~74 mil millones USD', demonym: 'Uruguayo/a', timezone: 'UTC−3' },
   'Uzbekistan': { capital: 'Taskent', languages: 'Uzbeko', currency: 'Som uzbeko (UZS)', area: '448,978 km²', gdp: '~90 mil millones USD', demonym: 'Uzbeko/a', timezone: 'UTC+5' },
   'Venezuela': { capital: 'Caracas', languages: 'Español', currency: 'Bolívar venezolano (VES)', area: '916,445 km²', gdp: '~95 mil millones USD', demonym: 'Venezolano/a', timezone: 'UTC−4' },
@@ -202,6 +203,28 @@ const COUNTRY_INFO: Record<string, CountryExtra> = {
   'Zimbabwe': { capital: 'Harare', languages: 'Inglés, Shona, Ndebele', currency: 'Dólar zimbabuense (ZWL)', area: '390,757 km²', gdp: '~24 mil millones USD', demonym: 'Zimbabuense', timezone: 'UTC+2' },
 };
 
+// Alternate names (from AI props) → exact GeoJSON feature names
+const COUNTRY_ALIASES: Record<string, string> = {
+  'united states of america': 'USA',
+  'united states': 'USA',
+  'estados unidos': 'USA',
+  'us': 'USA',
+  'u.s.': 'USA',
+  'u.s.a.': 'USA',
+  'tanzania': 'United Republic of Tanzania',
+  'united kingdom': 'England',
+  'great britain': 'England',
+  'uk': 'England',
+  'britain': 'England',
+  'reino unido': 'England',
+  'dr congo': 'Democratic Republic of the Congo',
+  'drc': 'Democratic Republic of the Congo',
+  'congo dr': 'Democratic Republic of the Congo',
+  'congo, dem. rep.': 'Democratic Republic of the Congo',
+  'congo': 'Republic of the Congo',
+  'republic of congo': 'Republic of the Congo',
+};
+
 function formatPop(n: number): string {
   if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + ' mil millones';
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + ' millones';
@@ -209,16 +232,19 @@ function formatPop(n: number): string {
   return n.toString();
 }
 
-// Compute lon/lat center of a country from GeoJSON data (standalone, no state)
-function computeCountryCenter(countryName: string, geoData: any): { lon: number; lat: number } | null {
+// Compute lon/lat center of a country. Returns geoName (exact GeoJSON name) alongside coords.
+function computeCountryCenter(countryName: string, geoData: any): { lon: number; lat: number; geoName: string } | null {
   if (!geoData || !countryName) return null;
   const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const target = norm(countryName);
+  // Resolve alias first (e.g. "United States of America" → "USA")
+  const resolved = COUNTRY_ALIASES[norm(countryName)] ?? countryName;
+  const target = norm(resolved);
   const feature = geoData.features.find((f: any) =>
     norm(f.properties?.name || '') === target ||
     norm(f.properties?.formal_en || '') === target
   );
   if (!feature) return null;
+  const geoName: string = feature.properties.name;
   let coords = feature.geometry.type === 'Polygon'
     ? feature.geometry.coordinates[0]
     : feature.geometry.coordinates[0][0];
@@ -226,7 +252,7 @@ function computeCountryCenter(countryName: string, geoData: any): { lon: number;
   let avgLon = 0, avgLat = 0;
   const n = Math.min(coords.length, 50);
   for (let i = 0; i < n; i++) { avgLon += coords[i][0]; avgLat += coords[i][1]; }
-  return { lon: avgLon / n, lat: avgLat / n };
+  return { lon: avgLon / n, lat: avgLat / n, geoName };
 }
 
 let CACHED_GEO_DATA: any = null;
@@ -256,9 +282,13 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   const [dragging, setDragging] = useState(false);
   const [dragOrigin, setDragOrigin] = useState({ x: 0, y: 0, lon: 0, lat: 0 });
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(() =>
-    highlightCountry && CACHED_GEO_DATA ? highlightCountry : null
-  );
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(() => {
+    if (highlightCountry && CACHED_GEO_DATA) {
+      const c = computeCountryCenter(highlightCountry, CACHED_GEO_DATA);
+      return c ? c.geoName : null;
+    }
+    return null;
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(!CACHED_GEO_DATA);
@@ -314,10 +344,16 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   // ── Auto-center on prop (runs when data loads asynchronously) ─
   useEffect(() => {
     if (highlightCountry && geoData) {
-      centerOn(highlightCountry, 220);
-      setSelectedCountry(highlightCountry);
+      const result = computeCountryCenter(highlightCountry, geoData);
+      if (result) {
+        setRotLon(result.lon);
+        setRotLat(result.lat);
+        setScale(220);
+        setAutoRotate(false);
+        setSelectedCountry(result.geoName);
+      }
     }
-  }, [highlightCountry, geoData, centerOn]);
+  }, [highlightCountry, geoData]);
 
   // ── Auto-rotate ───────────────────────────────────────────────
   useEffect(() => {
