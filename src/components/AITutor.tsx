@@ -3488,7 +3488,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
