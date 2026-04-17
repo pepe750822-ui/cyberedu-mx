@@ -623,9 +623,9 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row">
-        {/* Canvas */}
-        <div className="relative flex-1 min-h-[350px] bg-slate-900/50 flex items-center justify-center">
+      <div className="flex flex-row min-h-[320px]">
+        {/* Canvas — 60% */}
+        <div className="relative flex-[3] min-w-0 bg-slate-900/50 flex items-center justify-center p-3">
           {loading && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 z-20 backdrop-blur-sm">
               <Loader2 className="h-10 w-10 text-blue-400 animate-spin mb-3" />
@@ -662,8 +662,8 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             ref={canvasRef}
             width={canvasSize}
             height={canvasSize}
-            className="rounded-2xl"
-            style={{ cursor: dragging ? 'grabbing' : hoveredCountry ? 'pointer' : 'grab' }}
+            className="rounded-xl w-full"
+            style={{ aspectRatio: '1 / 1', maxWidth: canvasSize, cursor: dragging ? 'grabbing' : hoveredCountry ? 'pointer' : 'grab' }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -682,18 +682,18 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
           )}
         </div>
 
-        {/* Panel lateral */}
-        <div className="flex-1 p-4 flex flex-col gap-3 min-w-0 max-w-xs">
+        {/* Panel — 40% */}
+        <div className="flex-[2] min-w-0 p-3 flex flex-col gap-2 border-l border-white/10 overflow-y-auto">
 
           {/* Búsqueda con autocomplete */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30 pointer-events-none" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-white/30 pointer-events-none" />
             <input
               type="text"
               placeholder="Buscar país..."
               value={searchQuery}
               onChange={e => handleSearchInput(e.target.value)}
-              className="w-full pl-9 pr-8 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-medium placeholder:text-white/20 focus:outline-none focus:border-blue-500/40 transition-all"
+              className="w-full pl-8 pr-7 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-medium placeholder:text-white/20 focus:outline-none focus:border-blue-500/40 transition-all"
             />
             {searchQuery && (
               <button
@@ -720,51 +720,47 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
           </div>
 
           {/* Zoom + Reset */}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <button onClick={() => setScale(p => Math.min(400, p + 30))}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all text-xs font-black">
-              <ZoomIn className="h-3.5 w-3.5" /> +
+              className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all text-[10px] font-black">
+              <ZoomIn className="h-3 w-3" /> +
             </button>
             <button onClick={() => setScale(p => Math.max(100, p - 30))}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all text-xs font-black">
-              <ZoomOut className="h-3.5 w-3.5" /> −
+              className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all text-[10px] font-black">
+              <ZoomOut className="h-3 w-3" /> −
             </button>
             <button
               onClick={() => { setRotLon(-90); setRotLat(20); setScale(180); setSelectedCountry(null); setAutoRotate(true); setSearchQuery(''); setSearchResults([]); }}
-              className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all"
+              className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all"
               title="Resetear vista"
             >
-              <RotateCcw className="h-4 w-4" />
+              <RotateCcw className="h-3.5 w-3.5" />
             </button>
           </div>
 
-          {/* Sliders de posición — sincronizados con drag/touch */}
-          <div className="rounded-xl bg-white/5 border border-white/10 p-3 space-y-3">
+          {/* Sliders de posición */}
+          <div className="rounded-xl bg-white/5 border border-white/10 p-2.5 space-y-2">
             <p className="text-[9px] font-black text-white/30 uppercase tracking-widest">Posición manual</p>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Latitud</span>
-                <span className="text-[10px] font-bold text-white/50">{Math.max(-90, Math.min(90, rotLat)).toFixed(1)}°</span>
+                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Lat</span>
+                <span className="text-[9px] font-bold text-white/50">{Math.max(-90, Math.min(90, rotLat)).toFixed(1)}°</span>
               </div>
-              <input
-                type="range"
-                min="-90" max="90" step="0.5"
+              <input type="range" min="-90" max="90" step="0.5"
                 value={Math.max(-90, Math.min(90, rotLat))}
                 onChange={e => { setRotLat(parseFloat(e.target.value)); setAutoRotate(false); }}
-                className="w-full h-1.5 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
+                className="w-full h-1 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
               />
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Longitud</span>
-                <span className="text-[10px] font-bold text-white/50">{displayLon.toFixed(1)}°</span>
+                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Lon</span>
+                <span className="text-[9px] font-bold text-white/50">{displayLon.toFixed(1)}°</span>
               </div>
-              <input
-                type="range"
-                min="-180" max="180" step="1"
+              <input type="range" min="-180" max="180" step="1"
                 value={displayLon}
                 onChange={e => { setRotLon(parseFloat(e.target.value)); setAutoRotate(false); }}
-                className="w-full h-1.5 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
+                className="w-full h-1 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
               />
             </div>
           </div>
@@ -852,18 +848,18 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             </div>
           )}
 
-          {/* Leyenda de continentes — clickeable */}
-          <div className="space-y-1">
-            <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-2">Navegar por continente</p>
-            <div className="grid grid-cols-2 gap-1.5">
+          {/* Continentes */}
+          <div>
+            <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1.5">Continentes</p>
+            <div className="grid grid-cols-2 gap-1">
               {Object.entries(CONTINENT_CENTERS).map(([cont]) => (
                 <button
                   key={cont}
                   onClick={() => centerOnContinent(cont)}
-                  className="flex items-center gap-1.5 text-[10px] font-bold text-white/40 hover:text-white transition-all px-2 py-1.5 rounded-lg hover:bg-white/5 text-left"
+                  className="flex items-center gap-1.5 text-[9px] font-bold text-white/40 hover:text-white transition-all px-1.5 py-1 rounded-lg hover:bg-white/5 text-left"
                 >
-                  <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: CONTINENT_COLORS[cont] }} />
-                  {cont}
+                  <div className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: CONTINENT_COLORS[cont] }} />
+                  <span className="truncate">{cont}</span>
                 </button>
               ))}
             </div>
