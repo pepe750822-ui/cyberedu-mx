@@ -3208,11 +3208,11 @@ const AITutor = () => {
           file: currentFile ? { type: currentFile.type, data: currentFile.data } : undefined,
           onDone: () => {
             if (safetyTimeout) clearTimeout(safetyTimeout);
-            const { 
-              reasoning, decisions, plan, quiz, charts, 
-              calculators, simulators, geography, solarSystem, 
-              physics, mathGraphs, exercises, chemistryElements, 
-              recommendations, eduImages, cleanContent 
+            const {
+              reasoning, decisions, plan, quiz, charts,
+              calculators, simulators, geography, solarSystem, humanBody,
+              physics, mathGraphs, exercises, chemistryElements,
+              recommendations, eduImages, cleanContent
             } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
