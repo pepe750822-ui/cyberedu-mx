@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search, Loader2, AlertTriangle, RefreshCw, X, Navigation } from 'lucide-react';
+import { Globe, RotateCcw, ZoomIn, ZoomOut, MapPin, Search, Loader2, AlertTriangle, RefreshCw, X } from 'lucide-react';
 
 interface GlobeArtifactProps {
   highlightCountry?: string;
@@ -80,7 +80,6 @@ const CONTINENT_COLORS: Record<string, string> = {
   'default': '#6366f1',
 };
 
-// Center coordinates for each continent
 const CONTINENT_CENTERS: Record<string, { lon: number; lat: number; zoom: number }> = {
   'Africa':        { lon:  20,  lat:   2, zoom: 160 },
   'Asia':          { lon:  90,  lat:  35, zoom: 155 },
@@ -91,12 +90,133 @@ const CONTINENT_CENTERS: Record<string, { lon: number; lat: number; zoom: number
   'Antarctica':    { lon:   0,  lat: -80, zoom: 175 },
 };
 
-// Format large numbers
+// Static enrichment: capital + main language(s) per country
+const COUNTRY_INFO: Record<string, { capital: string; languages: string }> = {
+  'Afghanistan': { capital: 'Kabul', languages: 'Dari, Pastún' },
+  'Albania': { capital: 'Tirana', languages: 'Albanés' },
+  'Algeria': { capital: 'Argel', languages: 'Árabe, Bereber' },
+  'Angola': { capital: 'Luanda', languages: 'Portugués' },
+  'Argentina': { capital: 'Buenos Aires', languages: 'Español' },
+  'Australia': { capital: 'Canberra', languages: 'Inglés' },
+  'Austria': { capital: 'Viena', languages: 'Alemán' },
+  'Belgium': { capital: 'Bruselas', languages: 'Neerlandés, Francés, Alemán' },
+  'Bolivia': { capital: 'Sucre / La Paz', languages: 'Español, Quechua, Aymara' },
+  'Brazil': { capital: 'Brasilia', languages: 'Portugués' },
+  'Cambodia': { capital: 'Nom Pen', languages: 'Jemer' },
+  'Cameroon': { capital: 'Yaundé', languages: 'Francés, Inglés' },
+  'Canada': { capital: 'Ottawa', languages: 'Inglés, Francés' },
+  'Chile': { capital: 'Santiago', languages: 'Español' },
+  'China': { capital: 'Pekín', languages: 'Mandarín' },
+  'Colombia': { capital: 'Bogotá', languages: 'Español' },
+  'Congo': { capital: 'Brazzaville', languages: 'Francés' },
+  'Costa Rica': { capital: 'San José', languages: 'Español' },
+  'Cuba': { capital: 'La Habana', languages: 'Español' },
+  'Czech Republic': { capital: 'Praga', languages: 'Checo' },
+  'Denmark': { capital: 'Copenhague', languages: 'Danés' },
+  'Dominican Republic': { capital: 'Santo Domingo', languages: 'Español' },
+  'Ecuador': { capital: 'Quito', languages: 'Español' },
+  'Egypt': { capital: 'El Cairo', languages: 'Árabe' },
+  'El Salvador': { capital: 'San Salvador', languages: 'Español' },
+  'Ethiopia': { capital: 'Adís Abeba', languages: 'Amhárico' },
+  'Finland': { capital: 'Helsinki', languages: 'Finés, Sueco' },
+  'France': { capital: 'París', languages: 'Francés' },
+  'Germany': { capital: 'Berlín', languages: 'Alemán' },
+  'Ghana': { capital: 'Acra', languages: 'Inglés' },
+  'Greece': { capital: 'Atenas', languages: 'Griego' },
+  'Guatemala': { capital: 'Ciudad de Guatemala', languages: 'Español' },
+  'Honduras': { capital: 'Tegucigalpa', languages: 'Español' },
+  'Hungary': { capital: 'Budapest', languages: 'Húngaro' },
+  'India': { capital: 'Nueva Delhi', languages: 'Hindi, Inglés' },
+  'Indonesia': { capital: 'Yakarta', languages: 'Indonesio' },
+  'Iran': { capital: 'Teherán', languages: 'Persa' },
+  'Iraq': { capital: 'Bagdad', languages: 'Árabe, Kurdo' },
+  'Ireland': { capital: 'Dublín', languages: 'Inglés, Irlandés' },
+  'Israel': { capital: 'Jerusalén', languages: 'Hebreo, Árabe' },
+  'Italy': { capital: 'Roma', languages: 'Italiano' },
+  'Japan': { capital: 'Tokio', languages: 'Japonés' },
+  'Jordan': { capital: 'Amán', languages: 'Árabe' },
+  'Kazakhstan': { capital: 'Astana', languages: 'Kazajo, Ruso' },
+  'Kenya': { capital: 'Nairobi', languages: 'Suajili, Inglés' },
+  'Libya': { capital: 'Trípoli', languages: 'Árabe' },
+  'Madagascar': { capital: 'Antananarivo', languages: 'Malgache, Francés' },
+  'Malaysia': { capital: 'Kuala Lumpur', languages: 'Malayo' },
+  'Mali': { capital: 'Bamako', languages: 'Francés' },
+  'Mexico': { capital: 'Ciudad de México', languages: 'Español' },
+  'Mongolia': { capital: 'Ulán Bator', languages: 'Mongol' },
+  'Morocco': { capital: 'Rabat', languages: 'Árabe, Bereber' },
+  'Mozambique': { capital: 'Maputo', languages: 'Portugués' },
+  'Myanmar': { capital: 'Naipyidó', languages: 'Birmano' },
+  'Nepal': { capital: 'Katmandú', languages: 'Nepalés' },
+  'Netherlands': { capital: 'Ámsterdam', languages: 'Neerlandés' },
+  'New Zealand': { capital: 'Wellington', languages: 'Inglés, Maorí' },
+  'Nicaragua': { capital: 'Managua', languages: 'Español' },
+  'Niger': { capital: 'Niamey', languages: 'Francés' },
+  'Nigeria': { capital: 'Abuja', languages: 'Inglés' },
+  'North Korea': { capital: 'Pyongyang', languages: 'Coreano' },
+  'Norway': { capital: 'Oslo', languages: 'Noruego' },
+  'Pakistan': { capital: 'Islamabad', languages: 'Urdu, Inglés' },
+  'Panama': { capital: 'Ciudad de Panamá', languages: 'Español' },
+  'Paraguay': { capital: 'Asunción', languages: 'Español, Guaraní' },
+  'Peru': { capital: 'Lima', languages: 'Español, Quechua' },
+  'Philippines': { capital: 'Manila', languages: 'Filipino, Inglés' },
+  'Poland': { capital: 'Varsovia', languages: 'Polaco' },
+  'Portugal': { capital: 'Lisboa', languages: 'Portugués' },
+  'Romania': { capital: 'Bucarest', languages: 'Rumano' },
+  'Russia': { capital: 'Moscú', languages: 'Ruso' },
+  'Saudi Arabia': { capital: 'Riad', languages: 'Árabe' },
+  'Senegal': { capital: 'Dakar', languages: 'Francés' },
+  'Somalia': { capital: 'Mogadishu', languages: 'Somalí, Árabe' },
+  'South Africa': { capital: 'Pretoria', languages: 'Zulú, Xhosa, Afrikáans, Inglés' },
+  'South Korea': { capital: 'Seúl', languages: 'Coreano' },
+  'South Sudan': { capital: 'Yuba', languages: 'Inglés' },
+  'Spain': { capital: 'Madrid', languages: 'Español' },
+  'Sudan': { capital: 'Jartum', languages: 'Árabe, Inglés' },
+  'Sweden': { capital: 'Estocolmo', languages: 'Sueco' },
+  'Switzerland': { capital: 'Berna', languages: 'Alemán, Francés, Italiano' },
+  'Syria': { capital: 'Damasco', languages: 'Árabe' },
+  'Tanzania': { capital: 'Dodoma', languages: 'Suajili, Inglés' },
+  'Thailand': { capital: 'Bangkok', languages: 'Tailandés' },
+  'Turkey': { capital: 'Ankara', languages: 'Turco' },
+  'Turkmenistan': { capital: 'Asjabad', languages: 'Turcomano' },
+  'Uganda': { capital: 'Kampala', languages: 'Inglés, Suajili' },
+  'Ukraine': { capital: 'Kiev', languages: 'Ucraniano' },
+  'United Arab Emirates': { capital: 'Abu Dhabi', languages: 'Árabe' },
+  'United Kingdom': { capital: 'Londres', languages: 'Inglés' },
+  'United States of America': { capital: 'Washington D.C.', languages: 'Inglés' },
+  'Uruguay': { capital: 'Montevideo', languages: 'Español' },
+  'Uzbekistan': { capital: 'Taskent', languages: 'Uzbeko' },
+  'Venezuela': { capital: 'Caracas', languages: 'Español' },
+  'Vietnam': { capital: 'Hanói', languages: 'Vietnamita' },
+  'Yemen': { capital: 'Saná', languages: 'Árabe' },
+  'Zambia': { capital: 'Lusaka', languages: 'Inglés' },
+  'Zimbabwe': { capital: 'Harare', languages: 'Inglés, Shona, Ndebele' },
+};
+
 function formatPop(n: number): string {
   if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + ' mil millones';
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + ' millones';
   if (n >= 1_000) return (n / 1_000).toFixed(0) + ' mil';
   return n.toString();
+}
+
+// Compute lon/lat center of a country from GeoJSON data (standalone, no state)
+function computeCountryCenter(countryName: string, geoData: any): { lon: number; lat: number } | null {
+  if (!geoData || !countryName) return null;
+  const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const target = norm(countryName);
+  const feature = geoData.features.find((f: any) =>
+    norm(f.properties?.name || '') === target ||
+    norm(f.properties?.formal_en || '') === target
+  );
+  if (!feature) return null;
+  let coords = feature.geometry.type === 'Polygon'
+    ? feature.geometry.coordinates[0]
+    : feature.geometry.coordinates[0][0];
+  if (Array.isArray(coords[0]) && Array.isArray(coords[0][0])) coords = coords[0];
+  let avgLon = 0, avgLat = 0;
+  const n = Math.min(coords.length, 50);
+  for (let i = 0; i < n; i++) { avgLon += coords[i][0]; avgLat += coords[i][1]; }
+  return { lon: avgLon / n, lat: avgLat / n };
 }
 
 let CACHED_GEO_DATA: any = null;
@@ -106,20 +226,34 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number>(0);
   const [geoData, setGeoData] = useState<any>(CACHED_GEO_DATA);
-  const [rotLon, setRotLon] = useState(-90);
-  const [rotLat, setRotLat] = useState(20);
-  const [scale, setScale] = useState(180);
+
+  // Initialize rotation/zoom centered on the highlight country if data is already cached
+  const [rotLon, setRotLon] = useState(() => {
+    if (highlightCountry && CACHED_GEO_DATA) {
+      const c = computeCountryCenter(highlightCountry, CACHED_GEO_DATA);
+      if (c) return c.lon;
+    }
+    return -90;
+  });
+  const [rotLat, setRotLat] = useState(() => {
+    if (highlightCountry && CACHED_GEO_DATA) {
+      const c = computeCountryCenter(highlightCountry, CACHED_GEO_DATA);
+      if (c) return c.lat;
+    }
+    return 20;
+  });
+  const [scale, setScale] = useState(() => (highlightCountry && CACHED_GEO_DATA ? 220 : 180));
   const [dragging, setDragging] = useState(false);
   const [dragOrigin, setDragOrigin] = useState({ x: 0, y: 0, lon: 0, lat: 0 });
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(() =>
+    highlightCountry && CACHED_GEO_DATA ? highlightCountry : null
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(!CACHED_GEO_DATA);
   const [error, setError] = useState<boolean>(false);
-  const [autoRotate, setAutoRotate] = useState(true);
-  const [coordLat, setCoordLat] = useState('');
-  const [coordLon, setCoordLon] = useState('');
+  const [autoRotate, setAutoRotate] = useState(() => !(highlightCountry && CACHED_GEO_DATA));
   const canvasSize = 420;
 
   // ── Data loading ──────────────────────────────────────────────
@@ -147,22 +281,10 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   // ── Center on country/continent ───────────────────────────────
   const centerOn = useCallback((countryName: string, targetScale?: number) => {
     if (!geoData || !countryName) return;
-    const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const target = norm(countryName);
-    const feature = geoData.features.find((f: any) =>
-      norm(f.properties?.name || '') === target ||
-      norm(f.properties?.formal_en || '') === target
-    );
-    if (!feature) return;
-    let coords = feature.geometry.type === 'Polygon'
-      ? feature.geometry.coordinates[0]
-      : feature.geometry.coordinates[0][0];
-    if (Array.isArray(coords[0]) && Array.isArray(coords[0][0])) coords = coords[0];
-    let avgLon = 0, avgLat = 0;
-    const n = Math.min(coords.length, 50);
-    for (let i = 0; i < n; i++) { avgLon += coords[i][0]; avgLat += coords[i][1]; }
-    setRotLon(avgLon / n);
-    setRotLat(avgLat / n);
+    const c = computeCountryCenter(countryName, geoData);
+    if (!c) return;
+    setRotLon(c.lon);
+    setRotLat(c.lat);
     if (targetScale) setScale(targetScale);
     setAutoRotate(false);
   }, [geoData]);
@@ -179,7 +301,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     setSearchResults([]);
   }, []);
 
-  // ── Auto-center on prop ───────────────────────────────────────
+  // ── Auto-center on prop (runs when data loads asynchronously) ─
   useEffect(() => {
     if (highlightCountry && geoData) {
       centerOn(highlightCountry, 220);
@@ -205,7 +327,6 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     const cx = W / 2, cy = H / 2;
     ctx.clearRect(0, 0, W, H);
 
-    // Ocean
     const grad = ctx.createRadialGradient(cx - scale * 0.2, cy - scale * 0.2, 0, cx, cy, scale);
     grad.addColorStop(0, '#1e3a5f');
     grad.addColorStop(1, '#0f172a');
@@ -215,7 +336,6 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
 
     if (!geoData?.features) return;
 
-    // Graticule
     ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 0.5;
     for (let lon = -180; lon <= 180; lon += 30) {
       ctx.beginPath(); let f = true;
@@ -235,7 +355,6 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
       }
       ctx.stroke();
     }
-    // Equator
     ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
     ctx.beginPath(); let eq = true;
     for (let lon = -180; lon <= 181; lon += 1) {
@@ -245,7 +364,6 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     }
     ctx.stroke();
 
-    // Countries
     for (const feature of geoData.features) {
       const name: string = feature.properties?.name || '';
       const continent: string = feature.properties?.continent || 'default';
@@ -272,7 +390,6 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
       }
     }
 
-    // Selected label + pin
     if (selectedCountry) {
       const feat = geoData.features.find((f: any) => f.properties?.name?.toLowerCase() === selectedCountry.toLowerCase());
       if (feat) {
@@ -321,7 +438,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     return { lon, lat };
   }, [rotLon, rotLat, scale]);
 
-  // ── Mouse handlers ────────────────────────────────────────────
+  // ── Mouse drag to rotate ──────────────────────────────────────
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setAutoRotate(false);
     setDragging(true);
@@ -347,6 +464,8 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
   const handleMouseUp = useCallback(() => setDragging(false), []);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
+    // Ignore tiny drags misidentified as clicks
+    if (Math.abs(e.clientX - dragOrigin.x) > 5 || Math.abs(e.clientY - dragOrigin.y) > 5) return;
     if (!geoData) return;
     const { x, y } = toCanvas(e.clientX, e.clientY);
     const pos = unproject(x, y);
@@ -355,21 +474,41 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     if (found) {
       setSelectedCountry(found.properties.name);
     }
-  }, [geoData, toCanvas, unproject]);
+  }, [geoData, toCanvas, unproject, dragOrigin]);
 
+  // ── Scroll to zoom ────────────────────────────────────────────
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
     setScale(p => Math.max(100, Math.min(400, p - e.deltaY * 0.3)));
   }, []);
 
-  // ── Touch ─────────────────────────────────────────────────────
+  // ── Touch drag to rotate ──────────────────────────────────────
   const touchStart = useRef<{ x: number; y: number; lon: number; lat: number } | null>(null);
+  const pinchStart = useRef<{ dist: number; scale: number } | null>(null);
+
   const handleTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0];
     setAutoRotate(false);
-    touchStart.current = { x: t.clientX, y: t.clientY, lon: rotLon, lat: rotLat };
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchStart.current = { dist: Math.hypot(dx, dy), scale };
+      touchStart.current = null;
+    } else {
+      const t = e.touches[0];
+      touchStart.current = { x: t.clientX, y: t.clientY, lon: rotLon, lat: rotLat };
+      pinchStart.current = null;
+    }
   };
+
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && pinchStart.current) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const ratio = dist / pinchStart.current.dist;
+      setScale(Math.max(100, Math.min(400, pinchStart.current.scale * ratio)));
+      return;
+    }
     if (!touchStart.current) return;
     const t = e.touches[0];
     const dx = t.clientX - touchStart.current.x;
@@ -397,22 +536,12 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     centerOn(name, 230);
   };
 
-  const handleGoToCoords = () => {
-    const lat = parseFloat(coordLat);
-    const lon = parseFloat(coordLon);
-    if (isNaN(lat) || isNaN(lon)) return;
-    const clampedLat = Math.max(-90, Math.min(90, lat));
-    const clampedLon = Math.max(-180, Math.min(180, lon));
-    setRotLat(clampedLat);
-    setRotLon(clampedLon);
-    setAutoRotate(false);
-  };
-
-  // ── Selected country info ─────────────────────────────────────
+  // ── Country data for panel ────────────────────────────────────
   const selectedInfo = geoData?.features?.find(
     (f: any) => f.properties?.name?.toLowerCase() === selectedCountry?.toLowerCase()
   );
-  const props = selectedInfo?.properties || {};
+  const geoProps = selectedInfo?.properties || {};
+  const extraInfo = selectedCountry ? COUNTRY_INFO[selectedCountry] : undefined;
 
   return (
     <div className="bg-slate-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl my-4">
@@ -424,7 +553,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
         <div>
           <h3 className="font-black text-white text-sm uppercase tracking-tighter">Globo Terráqueo Interactivo</h3>
           <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">
-            {topic || 'Geografía Mundial — Arrastra, gira y explora'}
+            {topic || 'Arrastra para rotar · Scroll para zoom · Clic en un país'}
           </p>
         </div>
         <button
@@ -486,7 +615,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             onWheel={handleWheel}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
-            onTouchEnd={() => { touchStart.current = null; }}
+            onTouchEnd={() => { touchStart.current = null; pinchStart.current = null; }}
           />
 
           {hoveredCountry && !dragging && (
@@ -552,52 +681,10 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             </button>
           </div>
 
-          {/* Navegación por coordenadas */}
-          <div className="rounded-xl bg-white/5 border border-white/10 p-3 space-y-2">
-            <p className="text-[9px] font-black text-white/30 uppercase tracking-widest flex items-center gap-1.5">
-              <Navigation className="h-3 w-3" /> Ir a coordenadas
-            </p>
-            <div className="flex gap-2">
-              <div className="flex-1 relative">
-                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-white/30 font-black pointer-events-none">LAT</span>
-                <input
-                  type="number"
-                  min="-90" max="90"
-                  placeholder="0"
-                  value={coordLat}
-                  onChange={e => setCoordLat(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleGoToCoords()}
-                  className="w-full pl-8 pr-2 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs font-bold focus:outline-none focus:border-blue-500/40 transition-all"
-                />
-              </div>
-              <div className="flex-1 relative">
-                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] text-white/30 font-black pointer-events-none">LON</span>
-                <input
-                  type="number"
-                  min="-180" max="180"
-                  placeholder="0"
-                  value={coordLon}
-                  onChange={e => setCoordLon(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleGoToCoords()}
-                  className="w-full pl-9 pr-2 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs font-bold focus:outline-none focus:border-blue-500/40 transition-all"
-                />
-              </div>
-              <button
-                onClick={handleGoToCoords}
-                className="px-3 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[10px] font-black hover:bg-blue-500/30 transition-all flex-shrink-0"
-              >
-                Ir
-              </button>
-            </div>
-            <p className="text-[9px] text-white/20">
-              Lat: {rotLat.toFixed(1)}° &nbsp; Lon: {rotLon.toFixed(1)}°
-            </p>
-          </div>
-
-          {/* Información del país seleccionado */}
+          {/* País seleccionado — panel de características */}
           {selectedCountry && selectedInfo ? (
             <div className="flex-1 p-4 rounded-2xl bg-white/5 border border-white/10 overflow-y-auto">
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-amber-400 flex-shrink-0" />
                   <h4 className="font-black text-white text-sm leading-tight">{selectedCountry}</h4>
@@ -607,60 +694,71 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
                 </button>
               </div>
 
-              <div className="space-y-2.5">
-                {props.continent && (
+              <div className="space-y-3">
+                {/* Continente */}
+                {geoProps.continent && (
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Continente</span>
                     <span className="text-xs font-bold flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full inline-block" style={{ backgroundColor: CONTINENT_COLORS[props.continent] }} />
-                      <span style={{ color: CONTINENT_COLORS[props.continent] }}>{props.continent}</span>
+                      <span className="h-2 w-2 rounded-full inline-block" style={{ backgroundColor: CONTINENT_COLORS[geoProps.continent] }} />
+                      <span style={{ color: CONTINENT_COLORS[geoProps.continent] }}>{geoProps.continent}</span>
                     </span>
                   </div>
                 )}
-                {props.subregion && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Subregión</span>
-                    <span className="text-xs font-bold text-white">{props.subregion}</span>
+
+                {/* Capital */}
+                {extraInfo?.capital && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Capital</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.capital}</span>
                   </div>
                 )}
-                {props.pop_est && (
+
+                {/* Población */}
+                {geoProps.pop_est && (
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Población</span>
-                    <span className="text-xs font-bold text-white">{formatPop(Number(props.pop_est))}</span>
+                    <span className="text-xs font-bold text-white">{formatPop(Number(geoProps.pop_est))}</span>
                   </div>
                 )}
-                {props.economy && (
+
+                {/* Idioma */}
+                {extraInfo?.languages && (
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Economía</span>
-                    <span className="text-xs font-bold text-white text-right">{props.economy}</span>
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Idioma(s)</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.languages}</span>
                   </div>
                 )}
-                {props.income_grp && (
+
+                {/* Subregión */}
+                {geoProps.subregion && (
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Nivel ingreso</span>
-                    <span className="text-xs font-bold text-white text-right">{props.income_grp}</span>
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Subregión</span>
+                    <span className="text-xs font-bold text-white text-right">{geoProps.subregion}</span>
                   </div>
                 )}
-                {props.region_wb && (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Región</span>
-                    <span className="text-xs font-bold text-white text-right">{props.region_wb}</span>
+
+                {/* Nivel de ingreso */}
+                {geoProps.income_grp && (
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Ingreso</span>
+                    <span className="text-xs font-bold text-white text-right leading-tight">{geoProps.income_grp}</span>
                   </div>
                 )}
               </div>
 
               {/* Ir al continente */}
-              {props.continent && CONTINENT_CENTERS[props.continent] && (
+              {geoProps.continent && CONTINENT_CENTERS[geoProps.continent] && (
                 <button
-                  onClick={() => centerOnContinent(props.continent)}
+                  onClick={() => centerOnContinent(geoProps.continent)}
                   className="mt-4 w-full py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border"
                   style={{
-                    backgroundColor: CONTINENT_COLORS[props.continent] + '22',
-                    borderColor: CONTINENT_COLORS[props.continent] + '44',
-                    color: CONTINENT_COLORS[props.continent],
+                    backgroundColor: CONTINENT_COLORS[geoProps.continent] + '22',
+                    borderColor: CONTINENT_COLORS[geoProps.continent] + '44',
+                    color: CONTINENT_COLORS[geoProps.continent],
                   }}
                 >
-                  Ver todo {props.continent}
+                  Ver todo {geoProps.continent}
                 </button>
               )}
             </div>
@@ -668,7 +766,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-2 text-center py-6">
               <Globe className="h-7 w-7 text-white/10" />
               <p className="text-white/30 text-[10px] font-bold uppercase tracking-widest">
-                Clic en un país para ver características
+                Clic en un país para ver sus características
               </p>
             </div>
           )}
@@ -677,7 +775,7 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
           <div className="space-y-1">
             <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-2">Navegar por continente</p>
             <div className="grid grid-cols-2 gap-1.5">
-              {Object.entries(CONTINENT_CENTERS).map(([cont, _]) => (
+              {Object.entries(CONTINENT_CENTERS).map(([cont]) => (
                 <button
                   key={cont}
                   onClick={() => centerOnContinent(cont)}
