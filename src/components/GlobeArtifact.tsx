@@ -90,106 +90,116 @@ const CONTINENT_CENTERS: Record<string, { lon: number; lat: number; zoom: number
   'Antarctica':    { lon:   0,  lat: -80, zoom: 175 },
 };
 
-// Static enrichment: capital + main language(s) per country
-const COUNTRY_INFO: Record<string, { capital: string; languages: string }> = {
-  'Afghanistan': { capital: 'Kabul', languages: 'Dari, Pastún' },
-  'Albania': { capital: 'Tirana', languages: 'Albanés' },
-  'Algeria': { capital: 'Argel', languages: 'Árabe, Bereber' },
-  'Angola': { capital: 'Luanda', languages: 'Portugués' },
-  'Argentina': { capital: 'Buenos Aires', languages: 'Español' },
-  'Australia': { capital: 'Canberra', languages: 'Inglés' },
-  'Austria': { capital: 'Viena', languages: 'Alemán' },
-  'Belgium': { capital: 'Bruselas', languages: 'Neerlandés, Francés, Alemán' },
-  'Bolivia': { capital: 'Sucre / La Paz', languages: 'Español, Quechua, Aymara' },
-  'Brazil': { capital: 'Brasilia', languages: 'Portugués' },
-  'Cambodia': { capital: 'Nom Pen', languages: 'Jemer' },
-  'Cameroon': { capital: 'Yaundé', languages: 'Francés, Inglés' },
-  'Canada': { capital: 'Ottawa', languages: 'Inglés, Francés' },
-  'Chile': { capital: 'Santiago', languages: 'Español' },
-  'China': { capital: 'Pekín', languages: 'Mandarín' },
-  'Colombia': { capital: 'Bogotá', languages: 'Español' },
-  'Congo': { capital: 'Brazzaville', languages: 'Francés' },
-  'Costa Rica': { capital: 'San José', languages: 'Español' },
-  'Cuba': { capital: 'La Habana', languages: 'Español' },
-  'Czech Republic': { capital: 'Praga', languages: 'Checo' },
-  'Denmark': { capital: 'Copenhague', languages: 'Danés' },
-  'Dominican Republic': { capital: 'Santo Domingo', languages: 'Español' },
-  'Ecuador': { capital: 'Quito', languages: 'Español' },
-  'Egypt': { capital: 'El Cairo', languages: 'Árabe' },
-  'El Salvador': { capital: 'San Salvador', languages: 'Español' },
-  'Ethiopia': { capital: 'Adís Abeba', languages: 'Amhárico' },
-  'Finland': { capital: 'Helsinki', languages: 'Finés, Sueco' },
-  'France': { capital: 'París', languages: 'Francés' },
-  'Germany': { capital: 'Berlín', languages: 'Alemán' },
-  'Ghana': { capital: 'Acra', languages: 'Inglés' },
-  'Greece': { capital: 'Atenas', languages: 'Griego' },
-  'Guatemala': { capital: 'Ciudad de Guatemala', languages: 'Español' },
-  'Honduras': { capital: 'Tegucigalpa', languages: 'Español' },
-  'Hungary': { capital: 'Budapest', languages: 'Húngaro' },
-  'India': { capital: 'Nueva Delhi', languages: 'Hindi, Inglés' },
-  'Indonesia': { capital: 'Yakarta', languages: 'Indonesio' },
-  'Iran': { capital: 'Teherán', languages: 'Persa' },
-  'Iraq': { capital: 'Bagdad', languages: 'Árabe, Kurdo' },
-  'Ireland': { capital: 'Dublín', languages: 'Inglés, Irlandés' },
-  'Israel': { capital: 'Jerusalén', languages: 'Hebreo, Árabe' },
-  'Italy': { capital: 'Roma', languages: 'Italiano' },
-  'Japan': { capital: 'Tokio', languages: 'Japonés' },
-  'Jordan': { capital: 'Amán', languages: 'Árabe' },
-  'Kazakhstan': { capital: 'Astana', languages: 'Kazajo, Ruso' },
-  'Kenya': { capital: 'Nairobi', languages: 'Suajili, Inglés' },
-  'Libya': { capital: 'Trípoli', languages: 'Árabe' },
-  'Madagascar': { capital: 'Antananarivo', languages: 'Malgache, Francés' },
-  'Malaysia': { capital: 'Kuala Lumpur', languages: 'Malayo' },
-  'Mali': { capital: 'Bamako', languages: 'Francés' },
-  'Mexico': { capital: 'Ciudad de México', languages: 'Español' },
-  'Mongolia': { capital: 'Ulán Bator', languages: 'Mongol' },
-  'Morocco': { capital: 'Rabat', languages: 'Árabe, Bereber' },
-  'Mozambique': { capital: 'Maputo', languages: 'Portugués' },
-  'Myanmar': { capital: 'Naipyidó', languages: 'Birmano' },
-  'Nepal': { capital: 'Katmandú', languages: 'Nepalés' },
-  'Netherlands': { capital: 'Ámsterdam', languages: 'Neerlandés' },
-  'New Zealand': { capital: 'Wellington', languages: 'Inglés, Maorí' },
-  'Nicaragua': { capital: 'Managua', languages: 'Español' },
-  'Niger': { capital: 'Niamey', languages: 'Francés' },
-  'Nigeria': { capital: 'Abuja', languages: 'Inglés' },
-  'North Korea': { capital: 'Pyongyang', languages: 'Coreano' },
-  'Norway': { capital: 'Oslo', languages: 'Noruego' },
-  'Pakistan': { capital: 'Islamabad', languages: 'Urdu, Inglés' },
-  'Panama': { capital: 'Ciudad de Panamá', languages: 'Español' },
-  'Paraguay': { capital: 'Asunción', languages: 'Español, Guaraní' },
-  'Peru': { capital: 'Lima', languages: 'Español, Quechua' },
-  'Philippines': { capital: 'Manila', languages: 'Filipino, Inglés' },
-  'Poland': { capital: 'Varsovia', languages: 'Polaco' },
-  'Portugal': { capital: 'Lisboa', languages: 'Portugués' },
-  'Romania': { capital: 'Bucarest', languages: 'Rumano' },
-  'Russia': { capital: 'Moscú', languages: 'Ruso' },
-  'Saudi Arabia': { capital: 'Riad', languages: 'Árabe' },
-  'Senegal': { capital: 'Dakar', languages: 'Francés' },
-  'Somalia': { capital: 'Mogadishu', languages: 'Somalí, Árabe' },
-  'South Africa': { capital: 'Pretoria', languages: 'Zulú, Xhosa, Afrikáans, Inglés' },
-  'South Korea': { capital: 'Seúl', languages: 'Coreano' },
-  'South Sudan': { capital: 'Yuba', languages: 'Inglés' },
-  'Spain': { capital: 'Madrid', languages: 'Español' },
-  'Sudan': { capital: 'Jartum', languages: 'Árabe, Inglés' },
-  'Sweden': { capital: 'Estocolmo', languages: 'Sueco' },
-  'Switzerland': { capital: 'Berna', languages: 'Alemán, Francés, Italiano' },
-  'Syria': { capital: 'Damasco', languages: 'Árabe' },
-  'Tanzania': { capital: 'Dodoma', languages: 'Suajili, Inglés' },
-  'Thailand': { capital: 'Bangkok', languages: 'Tailandés' },
-  'Turkey': { capital: 'Ankara', languages: 'Turco' },
-  'Turkmenistan': { capital: 'Asjabad', languages: 'Turcomano' },
-  'Uganda': { capital: 'Kampala', languages: 'Inglés, Suajili' },
-  'Ukraine': { capital: 'Kiev', languages: 'Ucraniano' },
-  'United Arab Emirates': { capital: 'Abu Dhabi', languages: 'Árabe' },
-  'United Kingdom': { capital: 'Londres', languages: 'Inglés' },
-  'United States of America': { capital: 'Washington D.C.', languages: 'Inglés' },
-  'Uruguay': { capital: 'Montevideo', languages: 'Español' },
-  'Uzbekistan': { capital: 'Taskent', languages: 'Uzbeko' },
-  'Venezuela': { capital: 'Caracas', languages: 'Español' },
-  'Vietnam': { capital: 'Hanói', languages: 'Vietnamita' },
-  'Yemen': { capital: 'Saná', languages: 'Árabe' },
-  'Zambia': { capital: 'Lusaka', languages: 'Inglés' },
-  'Zimbabwe': { capital: 'Harare', languages: 'Inglés, Shona, Ndebele' },
+interface CountryExtra {
+  capital: string;
+  languages: string;
+  currency?: string;
+  area?: string;
+  gdp?: string;
+  demonym?: string;
+  timezone?: string;
+}
+
+// Static enrichment: capital, languages, currency, area, GDP, demonym, timezone
+const COUNTRY_INFO: Record<string, CountryExtra> = {
+  'Afghanistan': { capital: 'Kabul', languages: 'Dari, Pastún', currency: 'Afgani (AFN)', area: '652,230 km²', gdp: '~14 mil millones USD', demonym: 'Afgano/a', timezone: 'UTC+4:30' },
+  'Albania': { capital: 'Tirana', languages: 'Albanés', currency: 'Lek (ALL)', area: '28,748 km²', gdp: '~22 mil millones USD', demonym: 'Albanés/a', timezone: 'UTC+1/+2' },
+  'Algeria': { capital: 'Argel', languages: 'Árabe, Bereber', currency: 'Dinar argelino (DZD)', area: '2,381,741 km²', gdp: '~167 mil millones USD', demonym: 'Argelino/a', timezone: 'UTC+1' },
+  'Angola': { capital: 'Luanda', languages: 'Portugués', currency: 'Kwanza (AOA)', area: '1,246,700 km²', gdp: '~75 mil millones USD', demonym: 'Angoleño/a', timezone: 'UTC+1' },
+  'Argentina': { capital: 'Buenos Aires', languages: 'Español', currency: 'Peso argentino (ARS)', area: '2,780,400 km²', gdp: '~632 mil millones USD', demonym: 'Argentino/a', timezone: 'UTC−3' },
+  'Australia': { capital: 'Canberra', languages: 'Inglés', currency: 'Dólar australiano (AUD)', area: '7,692,024 km²', gdp: '~1.69 billones USD', demonym: 'Australiano/a', timezone: 'UTC+8/+11' },
+  'Austria': { capital: 'Viena', languages: 'Alemán', currency: 'Euro (EUR)', area: '83,871 km²', gdp: '~480 mil millones USD', demonym: 'Austriaco/a', timezone: 'UTC+1/+2' },
+  'Belgium': { capital: 'Bruselas', languages: 'Neerlandés, Francés, Alemán', currency: 'Euro (EUR)', area: '30,528 km²', gdp: '~590 mil millones USD', demonym: 'Belga', timezone: 'UTC+1/+2' },
+  'Bolivia': { capital: 'Sucre / La Paz', languages: 'Español, Quechua, Aymara', currency: 'Boliviano (BOB)', area: '1,098,581 km²', gdp: '~44 mil millones USD', demonym: 'Boliviano/a', timezone: 'UTC−4' },
+  'Brazil': { capital: 'Brasilia', languages: 'Portugués', currency: 'Real brasileño (BRL)', area: '8,515,767 km²', gdp: '~2.08 billones USD', demonym: 'Brasileño/a', timezone: 'UTC−2/−5' },
+  'Cambodia': { capital: 'Nom Pen', languages: 'Jemer', currency: 'Riel (KHR)', area: '181,035 km²', gdp: '~28 mil millones USD', demonym: 'Camboyano/a', timezone: 'UTC+7' },
+  'Cameroon': { capital: 'Yaundé', languages: 'Francés, Inglés', currency: 'Franco CFA (XAF)', area: '475,442 km²', gdp: '~44 mil millones USD', demonym: 'Camerunés/a', timezone: 'UTC+1' },
+  'Canada': { capital: 'Ottawa', languages: 'Inglés, Francés', currency: 'Dólar canadiense (CAD)', area: '9,984,670 km²', gdp: '~2.14 billones USD', demonym: 'Canadiense', timezone: 'UTC−3.5/−8' },
+  'Chile': { capital: 'Santiago', languages: 'Español', currency: 'Peso chileno (CLP)', area: '756,102 km²', gdp: '~317 mil millones USD', demonym: 'Chileno/a', timezone: 'UTC−3/−4' },
+  'China': { capital: 'Pekín', languages: 'Mandarín', currency: 'Yuan renminbi (CNY)', area: '9,596,960 km²', gdp: '~17.7 billones USD', demonym: 'Chino/a', timezone: 'UTC+8' },
+  'Colombia': { capital: 'Bogotá', languages: 'Español', currency: 'Peso colombiano (COP)', area: '1,141,748 km²', gdp: '~343 mil millones USD', demonym: 'Colombiano/a', timezone: 'UTC−5' },
+  'Congo': { capital: 'Brazzaville', languages: 'Francés', currency: 'Franco CFA (XAF)', area: '342,000 km²', gdp: '~15 mil millones USD', demonym: 'Congoleño/a', timezone: 'UTC+1' },
+  'Costa Rica': { capital: 'San José', languages: 'Español', currency: 'Colón costarricense (CRC)', area: '51,100 km²', gdp: '~68 mil millones USD', demonym: 'Costarricense', timezone: 'UTC−6' },
+  'Cuba': { capital: 'La Habana', languages: 'Español', currency: 'Peso cubano (CUP)', area: '109,884 km²', gdp: '~107 mil millones USD', demonym: 'Cubano/a', timezone: 'UTC−5' },
+  'Czech Republic': { capital: 'Praga', languages: 'Checo', currency: 'Corona checa (CZK)', area: '78,866 km²', gdp: '~290 mil millones USD', demonym: 'Checo/a', timezone: 'UTC+1/+2' },
+  'Denmark': { capital: 'Copenhague', languages: 'Danés', currency: 'Corona danesa (DKK)', area: '43,094 km²', gdp: '~395 mil millones USD', demonym: 'Danés/a', timezone: 'UTC+1/+2' },
+  'Dominican Republic': { capital: 'Santo Domingo', languages: 'Español', currency: 'Peso dominicano (DOP)', area: '48,671 km²', gdp: '~94 mil millones USD', demonym: 'Dominicano/a', timezone: 'UTC−4' },
+  'Ecuador': { capital: 'Quito', languages: 'Español', currency: 'Dólar estadounidense (USD)', area: '283,561 km²', gdp: '~115 mil millones USD', demonym: 'Ecuatoriano/a', timezone: 'UTC−5' },
+  'Egypt': { capital: 'El Cairo', languages: 'Árabe', currency: 'Libra egipcia (EGP)', area: '1,001,450 km²', gdp: '~389 mil millones USD', demonym: 'Egipcio/a', timezone: 'UTC+2' },
+  'El Salvador': { capital: 'San Salvador', languages: 'Español', currency: 'Dólar estadounidense (USD)', area: '21,041 km²', gdp: '~32 mil millones USD', demonym: 'Salvadoreño/a', timezone: 'UTC−6' },
+  'Ethiopia': { capital: 'Adís Abeba', languages: 'Amhárico', currency: 'Birr etíope (ETB)', area: '1,104,300 km²', gdp: '~126 mil millones USD', demonym: 'Etíope', timezone: 'UTC+3' },
+  'Finland': { capital: 'Helsinki', languages: 'Finés, Sueco', currency: 'Euro (EUR)', area: '338,145 km²', gdp: '~303 mil millones USD', demonym: 'Finlandés/a', timezone: 'UTC+2/+3' },
+  'France': { capital: 'París', languages: 'Francés', currency: 'Euro (EUR)', area: '551,695 km²', gdp: '~2.94 billones USD', demonym: 'Francés/a', timezone: 'UTC+1/+2' },
+  'Germany': { capital: 'Berlín', languages: 'Alemán', currency: 'Euro (EUR)', area: '357,114 km²', gdp: '~4.07 billones USD', demonym: 'Alemán/a', timezone: 'UTC+1/+2' },
+  'Ghana': { capital: 'Acra', languages: 'Inglés', currency: 'Cedi ghanés (GHS)', area: '238,533 km²', gdp: '~77 mil millones USD', demonym: 'Ghanés/a', timezone: 'UTC+0' },
+  'Greece': { capital: 'Atenas', languages: 'Griego', currency: 'Euro (EUR)', area: '131,957 km²', gdp: '~218 mil millones USD', demonym: 'Griego/a', timezone: 'UTC+2/+3' },
+  'Guatemala': { capital: 'Ciudad de Guatemala', languages: 'Español', currency: 'Quetzal (GTQ)', area: '108,889 km²', gdp: '~89 mil millones USD', demonym: 'Guatemalteco/a', timezone: 'UTC−6' },
+  'Honduras': { capital: 'Tegucigalpa', languages: 'Español', currency: 'Lempira (HNL)', area: '112,492 km²', gdp: '~33 mil millones USD', demonym: 'Hondureño/a', timezone: 'UTC−6' },
+  'Hungary': { capital: 'Budapest', languages: 'Húngaro', currency: 'Forinto (HUF)', area: '93,028 km²', gdp: '~187 mil millones USD', demonym: 'Húngaro/a', timezone: 'UTC+1/+2' },
+  'India': { capital: 'Nueva Delhi', languages: 'Hindi, Inglés', currency: 'Rupia india (INR)', area: '3,287,263 km²', gdp: '~3.73 billones USD', demonym: 'Indio/a', timezone: 'UTC+5:30' },
+  'Indonesia': { capital: 'Yakarta', languages: 'Indonesio', currency: 'Rupia indonesia (IDR)', area: '1,904,569 km²', gdp: '~1.42 billones USD', demonym: 'Indonesio/a', timezone: 'UTC+7/+9' },
+  'Iran': { capital: 'Teherán', languages: 'Persa', currency: 'Rial iraní (IRR)', area: '1,648,195 km²', gdp: '~366 mil millones USD', demonym: 'Iraní', timezone: 'UTC+3:30' },
+  'Iraq': { capital: 'Bagdad', languages: 'Árabe, Kurdo', currency: 'Dinar iraquí (IQD)', area: '438,317 km²', gdp: '~265 mil millones USD', demonym: 'Iraquí', timezone: 'UTC+3' },
+  'Ireland': { capital: 'Dublín', languages: 'Inglés, Irlandés', currency: 'Euro (EUR)', area: '70,273 km²', gdp: '~533 mil millones USD', demonym: 'Irlandés/a', timezone: 'UTC+0/+1' },
+  'Israel': { capital: 'Jerusalén', languages: 'Hebreo, Árabe', currency: 'Séquel nuevo (ILS)', area: '20,770 km²', gdp: '~480 mil millones USD', demonym: 'Israelí', timezone: 'UTC+2/+3' },
+  'Italy': { capital: 'Roma', languages: 'Italiano', currency: 'Euro (EUR)', area: '301,340 km²', gdp: '~2.10 billones USD', demonym: 'Italiano/a', timezone: 'UTC+1/+2' },
+  'Japan': { capital: 'Tokio', languages: 'Japonés', currency: 'Yen (JPY)', area: '377,975 km²', gdp: '~4.23 billones USD', demonym: 'Japonés/a', timezone: 'UTC+9' },
+  'Jordan': { capital: 'Amán', languages: 'Árabe', currency: 'Dinar jordano (JOD)', area: '89,342 km²', gdp: '~46 mil millones USD', demonym: 'Jordano/a', timezone: 'UTC+3' },
+  'Kazakhstan': { capital: 'Astana', languages: 'Kazajo, Ruso', currency: 'Tenge (KZT)', area: '2,724,900 km²', gdp: '~225 mil millones USD', demonym: 'Kazajo/a', timezone: 'UTC+5/+6' },
+  'Kenya': { capital: 'Nairobi', languages: 'Suajili, Inglés', currency: 'Chelín keniano (KES)', area: '580,367 km²', gdp: '~110 mil millones USD', demonym: 'Keniano/a', timezone: 'UTC+3' },
+  'Libya': { capital: 'Trípoli', languages: 'Árabe', currency: 'Dinar libio (LYD)', area: '1,759,541 km²', gdp: '~37 mil millones USD', demonym: 'Libio/a', timezone: 'UTC+2' },
+  'Madagascar': { capital: 'Antananarivo', languages: 'Malgache, Francés', currency: 'Ariary (MGA)', area: '587,041 km²', gdp: '~15 mil millones USD', demonym: 'Malgache', timezone: 'UTC+3' },
+  'Malaysia': { capital: 'Kuala Lumpur', languages: 'Malayo', currency: 'Ringgit (MYR)', area: '329,847 km²', gdp: '~415 mil millones USD', demonym: 'Malayo/a', timezone: 'UTC+8' },
+  'Mali': { capital: 'Bamako', languages: 'Francés', currency: 'Franco CFA (XOF)', area: '1,240,192 km²', gdp: '~18 mil millones USD', demonym: 'Maliense', timezone: 'UTC+0' },
+  'Mexico': { capital: 'Ciudad de México', languages: 'Español', currency: 'Peso mexicano (MXN)', area: '1,964,375 km²', gdp: '~1.32 billones USD', demonym: 'Mexicano/a', timezone: 'UTC−6/−8' },
+  'Mongolia': { capital: 'Ulán Bator', languages: 'Mongol', currency: 'Tögrög (MNT)', area: '1,564,116 km²', gdp: '~16 mil millones USD', demonym: 'Mongol', timezone: 'UTC+7/+8' },
+  'Morocco': { capital: 'Rabat', languages: 'Árabe, Bereber', currency: 'Dírham marroquí (MAD)', area: '446,550 km²', gdp: '~142 mil millones USD', demonym: 'Marroquí', timezone: 'UTC+1' },
+  'Mozambique': { capital: 'Maputo', languages: 'Portugués', currency: 'Metical (MZN)', area: '801,590 km²', gdp: '~17 mil millones USD', demonym: 'Mozambiqueño/a', timezone: 'UTC+2' },
+  'Myanmar': { capital: 'Naipyidó', languages: 'Birmano', currency: 'Kyat (MMK)', area: '676,578 km²', gdp: '~65 mil millones USD', demonym: 'Birmano/a', timezone: 'UTC+6:30' },
+  'Nepal': { capital: 'Katmandú', languages: 'Nepalés', currency: 'Rupia nepalesa (NPR)', area: '147,181 km²', gdp: '~36 mil millones USD', demonym: 'Nepalés/a', timezone: 'UTC+5:45' },
+  'Netherlands': { capital: 'Ámsterdam', languages: 'Neerlandés', currency: 'Euro (EUR)', area: '41,543 km²', gdp: '~1.01 billones USD', demonym: 'Neerlandés/a', timezone: 'UTC+1/+2' },
+  'New Zealand': { capital: 'Wellington', languages: 'Inglés, Maorí', currency: 'Dólar neozelandés (NZD)', area: '268,021 km²', gdp: '~247 mil millones USD', demonym: 'Neozelandés/a', timezone: 'UTC+12/+13' },
+  'Nicaragua': { capital: 'Managua', languages: 'Español', currency: 'Córdoba (NIO)', area: '130,375 km²', gdp: '~16 mil millones USD', demonym: 'Nicaragüense', timezone: 'UTC−6' },
+  'Niger': { capital: 'Niamey', languages: 'Francés', currency: 'Franco CFA (XOF)', area: '1,267,000 km²', gdp: '~14 mil millones USD', demonym: 'Nigerino/a', timezone: 'UTC+1' },
+  'Nigeria': { capital: 'Abuja', languages: 'Inglés', currency: 'Naira (NGN)', area: '923,768 km²', gdp: '~473 mil millones USD', demonym: 'Nigeriano/a', timezone: 'UTC+1' },
+  'North Korea': { capital: 'Pyongyang', languages: 'Coreano', currency: 'Won norcoreano (KPW)', area: '120,538 km²', gdp: '~28 mil millones USD', demonym: 'Norcoreano/a', timezone: 'UTC+9' },
+  'Norway': { capital: 'Oslo', languages: 'Noruego', currency: 'Corona noruega (NOK)', area: '385,207 km²', gdp: '~579 mil millones USD', demonym: 'Noruego/a', timezone: 'UTC+1/+2' },
+  'Pakistan': { capital: 'Islamabad', languages: 'Urdu, Inglés', currency: 'Rupia pakistaní (PKR)', area: '881,913 km²', gdp: '~376 mil millones USD', demonym: 'Pakistaní', timezone: 'UTC+5' },
+  'Panama': { capital: 'Ciudad de Panamá', languages: 'Español', currency: 'Balboa / Dólar USD', area: '75,417 km²', gdp: '~71 mil millones USD', demonym: 'Panameño/a', timezone: 'UTC−5' },
+  'Paraguay': { capital: 'Asunción', languages: 'Español, Guaraní', currency: 'Guaraní (PYG)', area: '406,752 km²', gdp: '~43 mil millones USD', demonym: 'Paraguayo/a', timezone: 'UTC−4' },
+  'Peru': { capital: 'Lima', languages: 'Español, Quechua', currency: 'Sol (PEN)', area: '1,285,216 km²', gdp: '~242 mil millones USD', demonym: 'Peruano/a', timezone: 'UTC−5' },
+  'Philippines': { capital: 'Manila', languages: 'Filipino, Inglés', currency: 'Peso filipino (PHP)', area: '300,000 km²', gdp: '~404 mil millones USD', demonym: 'Filipino/a', timezone: 'UTC+8' },
+  'Poland': { capital: 'Varsovia', languages: 'Polaco', currency: 'Esloti (PLN)', area: '312,679 km²', gdp: '~748 mil millones USD', demonym: 'Polaco/a', timezone: 'UTC+1/+2' },
+  'Portugal': { capital: 'Lisboa', languages: 'Portugués', currency: 'Euro (EUR)', area: '92,212 km²', gdp: '~255 mil millones USD', demonym: 'Portugués/a', timezone: 'UTC+0/+1' },
+  'Romania': { capital: 'Bucarest', languages: 'Rumano', currency: 'Leu (RON)', area: '238,397 km²', gdp: '~284 mil millones USD', demonym: 'Rumano/a', timezone: 'UTC+2/+3' },
+  'Russia': { capital: 'Moscú', languages: 'Ruso', currency: 'Rublo (RUB)', area: '17,098,242 km²', gdp: '~1.86 billones USD', demonym: 'Ruso/a', timezone: 'UTC+2/+12' },
+  'Saudi Arabia': { capital: 'Riad', languages: 'Árabe', currency: 'Riyal saudí (SAR)', area: '2,149,690 km²', gdp: '~1.06 billones USD', demonym: 'Saudí', timezone: 'UTC+3' },
+  'Senegal': { capital: 'Dakar', languages: 'Francés', currency: 'Franco CFA (XOF)', area: '196,722 km²', gdp: '~28 mil millones USD', demonym: 'Senegalés/a', timezone: 'UTC+0' },
+  'Somalia': { capital: 'Mogadiscio', languages: 'Somalí, Árabe', currency: 'Chelín somalí (SOS)', area: '637,657 km²', gdp: '~8 mil millones USD', demonym: 'Somalí', timezone: 'UTC+3' },
+  'South Africa': { capital: 'Pretoria', languages: 'Zulú, Xhosa, Afrikáans, Inglés', currency: 'Rand (ZAR)', area: '1,219,090 km²', gdp: '~400 mil millones USD', demonym: 'Sudafricano/a', timezone: 'UTC+2' },
+  'South Korea': { capital: 'Seúl', languages: 'Coreano', currency: 'Won (KRW)', area: '100,210 km²', gdp: '~1.71 billones USD', demonym: 'Surcoreano/a', timezone: 'UTC+9' },
+  'South Sudan': { capital: 'Yuba', languages: 'Inglés', currency: 'Libra sursudanesa (SSP)', area: '644,329 km²', gdp: '~5 mil millones USD', demonym: 'Sursudanés/a', timezone: 'UTC+3' },
+  'Spain': { capital: 'Madrid', languages: 'Español', currency: 'Euro (EUR)', area: '505,990 km²', gdp: '~1.58 billones USD', demonym: 'Español/a', timezone: 'UTC+1/+2' },
+  'Sudan': { capital: 'Jartum', languages: 'Árabe, Inglés', currency: 'Libra sudanesa (SDG)', area: '1,861,484 km²', gdp: '~35 mil millones USD', demonym: 'Sudanés/a', timezone: 'UTC+3' },
+  'Sweden': { capital: 'Estocolmo', languages: 'Sueco', currency: 'Corona sueca (SEK)', area: '450,295 km²', gdp: '~593 mil millones USD', demonym: 'Sueco/a', timezone: 'UTC+1/+2' },
+  'Switzerland': { capital: 'Berna', languages: 'Alemán, Francés, Italiano', currency: 'Franco suizo (CHF)', area: '41,285 km²', gdp: '~869 mil millones USD', demonym: 'Suizo/a', timezone: 'UTC+1/+2' },
+  'Syria': { capital: 'Damasco', languages: 'Árabe', currency: 'Libra siria (SYP)', area: '185,180 km²', gdp: '~22 mil millones USD', demonym: 'Sirio/a', timezone: 'UTC+3' },
+  'Tanzania': { capital: 'Dodoma', languages: 'Suajili, Inglés', currency: 'Chelín tanzano (TZS)', area: '945,087 km²', gdp: '~75 mil millones USD', demonym: 'Tanzano/a', timezone: 'UTC+3' },
+  'Thailand': { capital: 'Bangkok', languages: 'Tailandés', currency: 'Baht (THB)', area: '513,120 km²', gdp: '~545 mil millones USD', demonym: 'Tailandés/a', timezone: 'UTC+7' },
+  'Turkey': { capital: 'Ankara', languages: 'Turco', currency: 'Lira turca (TRY)', area: '783,562 km²', gdp: '~1.03 billones USD', demonym: 'Turco/a', timezone: 'UTC+3' },
+  'Turkmenistan': { capital: 'Asjabad', languages: 'Turcomano', currency: 'Manat (TMT)', area: '488,100 km²', gdp: '~48 mil millones USD', demonym: 'Turcomano/a', timezone: 'UTC+5' },
+  'Uganda': { capital: 'Kampala', languages: 'Inglés, Suajili', currency: 'Chelín ugandés (UGX)', area: '241,038 km²', gdp: '~49 mil millones USD', demonym: 'Ugandés/a', timezone: 'UTC+3' },
+  'Ukraine': { capital: 'Kiev', languages: 'Ucraniano', currency: 'Grivna (UAH)', area: '603,550 km²', gdp: '~160 mil millones USD', demonym: 'Ucraniano/a', timezone: 'UTC+2/+3' },
+  'United Arab Emirates': { capital: 'Abu Dabi', languages: 'Árabe', currency: 'Dírham emiratí (AED)', area: '83,600 km²', gdp: '~507 mil millones USD', demonym: 'Emiratí', timezone: 'UTC+4' },
+  'United Kingdom': { capital: 'Londres', languages: 'Inglés', currency: 'Libra esterlina (GBP)', area: '243,610 km²', gdp: '~3.07 billones USD', demonym: 'Británico/a', timezone: 'UTC+0/+1' },
+  'United States of America': { capital: 'Washington D.C.', languages: 'Inglés', currency: 'Dólar estadounidense (USD)', area: '9,833,517 km²', gdp: '~27.4 billones USD', demonym: 'Estadounidense', timezone: 'UTC−5/−10' },
+  'Uruguay': { capital: 'Montevideo', languages: 'Español', currency: 'Peso uruguayo (UYU)', area: '176,215 km²', gdp: '~74 mil millones USD', demonym: 'Uruguayo/a', timezone: 'UTC−3' },
+  'Uzbekistan': { capital: 'Taskent', languages: 'Uzbeko', currency: 'Som uzbeko (UZS)', area: '448,978 km²', gdp: '~90 mil millones USD', demonym: 'Uzbeko/a', timezone: 'UTC+5' },
+  'Venezuela': { capital: 'Caracas', languages: 'Español', currency: 'Bolívar venezolano (VES)', area: '916,445 km²', gdp: '~95 mil millones USD', demonym: 'Venezolano/a', timezone: 'UTC−4' },
+  'Vietnam': { capital: 'Hanói', languages: 'Vietnamita', currency: 'Dong (VND)', area: '331,212 km²', gdp: '~449 mil millones USD', demonym: 'Vietnamita', timezone: 'UTC+7' },
+  'Yemen': { capital: 'Saná', languages: 'Árabe', currency: 'Rial yemení (YER)', area: '527,968 km²', gdp: '~21 mil millones USD', demonym: 'Yemení', timezone: 'UTC+3' },
+  'Zambia': { capital: 'Lusaka', languages: 'Inglés', currency: 'Kwacha (ZMW)', area: '752,618 km²', gdp: '~29 mil millones USD', demonym: 'Zambiano/a', timezone: 'UTC+2' },
+  'Zimbabwe': { capital: 'Harare', languages: 'Inglés, Shona, Ndebele', currency: 'Dólar zimbabuense (ZWL)', area: '390,757 km²', gdp: '~24 mil millones USD', demonym: 'Zimbabuense', timezone: 'UTC+2' },
 };
 
 function formatPop(n: number): string {
@@ -536,6 +546,9 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
     centerOn(name, 230);
   };
 
+  // Normalize rotLon to [-180, 180] for slider display
+  const displayLon = ((rotLon % 360) + 540) % 360 - 180;
+
   // ── Country data for panel ────────────────────────────────────
   const selectedInfo = geoData?.features?.find(
     (f: any) => f.properties?.name?.toLowerCase() === selectedCountry?.toLowerCase()
@@ -681,6 +694,37 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
             </button>
           </div>
 
+          {/* Sliders de posición — sincronizados con drag/touch */}
+          <div className="rounded-xl bg-white/5 border border-white/10 p-3 space-y-3">
+            <p className="text-[9px] font-black text-white/30 uppercase tracking-widest">Posición manual</p>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Latitud</span>
+                <span className="text-[10px] font-bold text-white/50">{Math.max(-90, Math.min(90, rotLat)).toFixed(1)}°</span>
+              </div>
+              <input
+                type="range"
+                min="-90" max="90" step="0.5"
+                value={Math.max(-90, Math.min(90, rotLat))}
+                onChange={e => { setRotLat(parseFloat(e.target.value)); setAutoRotate(false); }}
+                className="w-full h-1.5 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Longitud</span>
+                <span className="text-[10px] font-bold text-white/50">{displayLon.toFixed(1)}°</span>
+              </div>
+              <input
+                type="range"
+                min="-180" max="180" step="1"
+                value={displayLon}
+                onChange={e => { setRotLon(parseFloat(e.target.value)); setAutoRotate(false); }}
+                className="w-full h-1.5 rounded-full appearance-none bg-white/10 accent-blue-500 cursor-pointer"
+              />
+            </div>
+          </div>
+
           {/* País seleccionado — panel de características */}
           {selectedCountry && selectedInfo ? (
             <div className="flex-1 p-4 rounded-2xl bg-white/5 border border-white/10 overflow-y-auto">
@@ -730,19 +774,51 @@ const GlobeArtifact: React.FC<GlobeArtifactProps> = ({ highlightCountry, highlig
                   </div>
                 )}
 
+                {/* Gentilicio */}
+                {extraInfo?.demonym && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Gentilicio</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.demonym}</span>
+                  </div>
+                )}
+
+                {/* Moneda */}
+                {extraInfo?.currency && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Moneda</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.currency}</span>
+                  </div>
+                )}
+
+                {/* Extensión territorial */}
+                {extraInfo?.area && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Extensión</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.area}</span>
+                  </div>
+                )}
+
+                {/* PIB */}
+                {extraInfo?.gdp && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">PIB aprox.</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.gdp}</span>
+                  </div>
+                )}
+
+                {/* Zona horaria */}
+                {extraInfo?.timezone && (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Zona horaria</span>
+                    <span className="text-xs font-bold text-white text-right">{extraInfo.timezone}</span>
+                  </div>
+                )}
+
                 {/* Subregión */}
                 {geoProps.subregion && (
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Subregión</span>
                     <span className="text-xs font-bold text-white text-right">{geoProps.subregion}</span>
-                  </div>
-                )}
-
-                {/* Nivel de ingreso */}
-                {geoProps.income_grp && (
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest flex-shrink-0">Ingreso</span>
-                    <span className="text-xs font-bold text-white text-right leading-tight">{geoProps.income_grp}</span>
                   </div>
                 )}
               </div>
