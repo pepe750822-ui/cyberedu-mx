@@ -61,19 +61,24 @@ serve(async (req) => {
             });
         }
 
-        // 3. Admin check
-        const { data: callerProfile, error: profileError } = await supabase
-            .from("profiles")
-            .select("email")
-            .eq("id", user.id)
-            .single();
+        // 3. Admin check — first try auth.users email (most reliable),
+        //    fall back to profiles table query
+        const authEmail = user.email?.toLowerCase() ?? "";
+        const isAdminByAuth = ADMIN_EMAILS.includes(authEmail);
+        console.log("[3] auth email:", authEmail, "| isAdminByAuth:", isAdminByAuth);
 
-        console.log("[3] profiles query — email:", callerProfile?.email ?? "null", "| error:", profileError?.message ?? "none");
+        let isAdmin = isAdminByAuth;
 
-        const isAdmin =
-            !profileError &&
-            callerProfile &&
-            ADMIN_EMAILS.includes(callerProfile.email?.toLowerCase() ?? "");
+        if (!isAdmin) {
+            const { data: callerProfile, error: profileError } = await supabase
+                .from("profiles")
+                .select("email")
+                .eq("id", user.id)
+                .single();
+            console.log("[3] profiles query — email:", callerProfile?.email ?? "null", "| error:", profileError?.message ?? "none");
+            isAdmin = !profileError && callerProfile &&
+                ADMIN_EMAILS.includes(callerProfile.email?.toLowerCase() ?? "");
+        }
 
         console.log("[3] isAdmin:", isAdmin);
 
