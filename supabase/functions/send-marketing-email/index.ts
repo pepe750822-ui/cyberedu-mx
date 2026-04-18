@@ -139,6 +139,7 @@ Deno.serve(async (req) => {
                 });
             }
         } else {
+            // Test send — deliver directly to the provided address, no opt-in filter
             if (!to) {
                 return new Response(JSON.stringify({ error: "Missing required field: to" }), {
                     status: 400,
@@ -146,6 +147,7 @@ Deno.serve(async (req) => {
                 });
             }
             recipients = Array.isArray(to) ? to : [to];
+            console.log("[5] test send to:", recipients[0]);
         }
 
         console.log("[5] final recipients count:", recipients.length);
