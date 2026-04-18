@@ -22,7 +22,7 @@ const AdminMonitoring = () => {
   const [activeUsers, setActiveUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState<'all' | 'week' | 'premium' | 'sessions'>('all');
+  const [filter, setFilter] = useState<'all' | 'week' | 'premium' | 'sessions' | 'ai'>('all');
   
   // Announcements state
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -171,7 +171,8 @@ const AdminMonitoring = () => {
       return now - t < ONE_WEEK;
     }
     if (filter === 'premium') return u.is_premium || u.subscription_status === 'active';
-    if (filter === 'sessions') return (u.totalCount || 0) > 0;
+    if (filter === 'sessions') return !!u.last_sign_in_at;
+    if (filter === 'ai') return (u.totalCount || 0) > 0;
     return true;
   });
 
@@ -233,11 +234,12 @@ const AdminMonitoring = () => {
         {/* Quick filters */}
         <div className="flex gap-2 mb-6 flex-wrap">
           {([
-            { key: 'all',      label: 'Todos' },
-            { key: 'week',     label: 'Activos esta semana' },
-            { key: 'premium',  label: 'Premium' },
-            { key: 'sessions', label: 'Con sesiones' },
-          ] as const).map(({ key, label }) => (
+            { key: 'all',      label: 'Todos',                count: null },
+            { key: 'week',     label: 'Activos esta semana',   count: activeUsers.filter(u => now - (u.last_sign_in_at ? new Date(u.last_sign_in_at).getTime() : 0) < ONE_WEEK).length },
+            { key: 'premium',  label: 'Premium',               count: stats.premium },
+            { key: 'sessions', label: 'Con sesiones',          count: activeUsers.filter(u => !!u.last_sign_in_at).length },
+            { key: 'ai',       label: 'Usaron AITutor',        count: activeUsers.filter(u => (u.totalCount || 0) > 0).length },
+          ] as const).map(({ key, label, count }) => (
             <button
               key={key}
               onClick={() => setFilter(key)}
@@ -249,13 +251,8 @@ const AdminMonitoring = () => {
               )}
             >
               {label}
-              {key !== 'all' && (
-                <span className="ml-1.5 opacity-60">
-                  ({key === 'week'
-                    ? activeUsers.filter(u => now - (u.last_sign_in_at ? new Date(u.last_sign_in_at).getTime() : 0) < ONE_WEEK).length
-                    : key === 'premium' ? stats.premium
-                    : activeUsers.filter(u => (u.totalCount || 0) > 0).length})
-                </span>
+              {count !== null && (
+                <span className="ml-1.5 opacity-60">({count})</span>
               )}
             </button>
           ))}
