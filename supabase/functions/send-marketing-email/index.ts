@@ -182,9 +182,12 @@ serve(async (req) => {
                     });
 
                     const rawBody = await res.text();
-                    console.log(`[6] batch[${batchIdx}] Resend status:`, res.status, "| body:", rawBody.slice(0, 300));
+                    console.log(`[6] batch[${batchIdx}] Resend status:`, res.status);
 
                     if (!res.ok) {
+                        let resendBody: unknown;
+                        try { resendBody = JSON.parse(rawBody); } catch { resendBody = rawBody; }
+                        console.log("[resend error]", JSON.stringify(resendBody));
                         results.failed += batch.length;
                         results.failed_recipients.push(...batch);
                         return;
