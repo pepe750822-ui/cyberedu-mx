@@ -15,6 +15,40 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/ecoems2026.php",                                          "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/ecoems20261.php",                                         "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/ecoemsvol1.php",                                          "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/ecoems1.php",                                             "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/ecoems2026/simuladores/simulador_completo.php",           "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/simulador_completo.html",                                 "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/simulador-ecoems-completo",                               "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/curso/ecoems-2026-estrategia-inteligente",                "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/curso/ecoems-2026/:path*",                                "destination": "/simulador-pro",    "permanent": true },
+    { "source": "/ingles.html",                                             "destination": "/area/habilidades", "permanent": true },
+    { "source": "/curso/ingles",                                            "destination": "/area/habilidades", "permanent": true },
+    { "source": "/habmat.html",                                             "destination": "/area/matematicas", "permanent": true },
+    { "source": "/hverbal.html",                                            "destination": "/area/habilidades", "permanent": true },
+    { "source": "/espacial.html",                                           "destination": "/area/habilidades", "permanent": true },
+    { "source": "/espaciales.html",                                         "destination": "/area/habilidades", "permanent": true },
+    { "source": "/sucesiones.html",                                         "destination": "/area/matematicas", "permanent": true },
+    { "source": "/math.html",                                               "destination": "/area/matematicas", "permanent": true },
+    { "source": "/guias.html",                                              "destination": "/",                 "permanent": true },
+    { "source": "/guia.html",                                               "destination": "/",                 "permanent": true },
+    { "source": "/newguia.html",                                            "destination": "/",                 "permanent": true },
+    { "source": "/newguia1.html",                                           "destination": "/",                 "permanent": true },
+    { "source": "/nguia.html",                                              "destination": "/",                 "permanent": true },
+    { "source": "/quienes-somos.html",                                      "destination": "/",                 "permanent": true },
+    { "source": "/contacto.html",                                           "destination": "/",                 "permanent": true },
+    { "source": "/curso-udemy.html",                                        "destination": "/",                 "permanent": true },
+    { "source": "/prepara.html",                                            "destination": "/",                 "permanent": true },
+    { "source": "/preguntas-frecuentes-ecoems.html",                        "destination": "/",                 "permanent": true },
+    { "source": "/preguntas-frecuentes-ecoems",                             "destination": "/",                 "permanent": true },
+    { "source": "/manual_de_uso_cyberedumx.html",                           "destination": "/",                 "permanent": true },
+    { "source": "/INSTRUCTIVO-2026.pdf",                                    "destination": "/",                 "permanent": true },
+    { "source": "/agentesinteligentes.html",                                "destination": "/",                 "permanent": true },
+    { "source": "/incade.html",                                             "destination": "/",                 "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -23,10 +57,6 @@
     {
       "source": "/(ingles|imagenes|assets|ecoems2026|guiaspolitecnico|libro|studio|material|videos|quiz)/(.*)",
       "destination": "/$1/$2"
-    },
-    {
-      "source": "/(guias|contacto|ingles|curso-udemy|preguntas-frecuentes-ecoems|quienes-somos|INSTRUCTIVO-2026\\.pdf)",
-      "destination": "/$1"
     },
     {
       "source": "/(google[a-z0-9]+\\.html|sitemap\\.xml|robots\\.txt|favicon\\.ico|.well-known/.*)",
