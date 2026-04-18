@@ -113,13 +113,12 @@ Deno.serve(async (req) => {
         let recipients: string[] = [];
 
         if (bulk) {
-            const { data: optedInUsers, error: fetchError } = await supabase
+            const { data: allUsers, error: fetchError } = await supabase
                 .from("profiles")
                 .select("email")
-                .eq("marketing_opt_in", true)
                 .not("email", "is", null);
 
-            console.log("[5] bulk recipients fetched:", optedInUsers?.length ?? 0, "| error:", fetchError?.message ?? "none");
+            console.log("[5] bulk recipients fetched:", allUsers?.length ?? 0, "| error:", fetchError?.message ?? "none");
 
             if (fetchError) {
                 return new Response(JSON.stringify({ error: "Failed to fetch recipients" }), {
@@ -128,12 +127,12 @@ Deno.serve(async (req) => {
                 });
             }
 
-            recipients = (optedInUsers ?? [])
+            recipients = (allUsers ?? [])
                 .map((u: { email: string | null }) => u.email)
                 .filter((e): e is string => !!e);
 
             if (recipients.length === 0) {
-                return new Response(JSON.stringify({ error: "No recipients with marketing_opt_in found" }), {
+                return new Response(JSON.stringify({ error: "No users with email found" }), {
                     status: 400,
                     headers: { ...corsHeaders, "Content-Type": "application/json" },
                 });
