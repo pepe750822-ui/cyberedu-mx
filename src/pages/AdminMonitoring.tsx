@@ -9,6 +9,9 @@ import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import Megaphone from 'lucide-react/dist/esm/icons/megaphone';
 import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
 import Bell from 'lucide-react/dist/esm/icons/bell';
+import Users from 'lucide-react/dist/esm/icons/users';
+import Activity from 'lucide-react/dist/esm/icons/activity';
+import CalendarCheck from 'lucide-react/dist/esm/icons/calendar-check';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -19,6 +22,7 @@ const AdminMonitoring = () => {
   const [activeUsers, setActiveUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [filter, setFilter] = useState<'all' | 'week' | 'premium' | 'sessions'>('all');
   
   // Announcements state
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -151,6 +155,26 @@ const AdminMonitoring = () => {
     );
   }
 
+  const now = Date.now();
+  const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+
+  const stats = {
+    total: activeUsers.length,
+    activeToday: activeUsers.filter(u => (u.todayCount || 0) > 0).length,
+    premium: activeUsers.filter(u => u.is_premium || u.subscription_status === 'active').length,
+    totalSessions: activeUsers.reduce((acc, u) => acc + (u.totalCount || 0), 0),
+  };
+
+  const filteredUsers = activeUsers.filter(u => {
+    if (filter === 'week') {
+      const t = u.last_sign_in_at ? new Date(u.last_sign_in_at).getTime() : 0;
+      return now - t < ONE_WEEK;
+    }
+    if (filter === 'premium') return u.is_premium || u.subscription_status === 'active';
+    if (filter === 'sessions') return (u.totalCount || 0) > 0;
+    return true;
+  });
+
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-primary/30">
       <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-50" />
@@ -186,6 +210,57 @@ const AdminMonitoring = () => {
           </div>
         )}
 
+        {/* Summary cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          {[
+            { label: 'Total usuarios',    value: stats.total,        icon: Users,         color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
+            { label: 'Activos hoy',       value: stats.activeToday,  icon: Activity,      color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+            { label: 'Total premium',     value: stats.premium,      icon: Crown,         color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
+            { label: 'Sesiones totales',  value: stats.totalSessions, icon: CalendarCheck, color: 'text-primary',     bg: 'bg-primary/10 border-primary/20' },
+          ].map(({ label, value, icon: Icon, color, bg }) => (
+            <div key={label} className={`flex items-center gap-4 p-5 rounded-2xl border ${bg} bg-white/[0.03]`}>
+              <div className={`p-2.5 rounded-xl border ${bg}`}>
+                <Icon className={`h-5 w-5 ${color}`} />
+              </div>
+              <div>
+                <p className={`text-2xl font-black ${color}`}>{value.toLocaleString('es-MX')}</p>
+                <p className="text-[9px] font-black uppercase tracking-widest text-white/30 mt-0.5">{label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Quick filters */}
+        <div className="flex gap-2 mb-6 flex-wrap">
+          {([
+            { key: 'all',      label: 'Todos' },
+            { key: 'week',     label: 'Activos esta semana' },
+            { key: 'premium',  label: 'Premium' },
+            { key: 'sessions', label: 'Con sesiones' },
+          ] as const).map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={cn(
+                "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
+                filter === key
+                  ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                  : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/70"
+              )}
+            >
+              {label}
+              {key !== 'all' && (
+                <span className="ml-1.5 opacity-60">
+                  ({key === 'week'
+                    ? activeUsers.filter(u => now - (u.last_sign_in_at ? new Date(u.last_sign_in_at).getTime() : 0) < ONE_WEEK).length
+                    : key === 'premium' ? stats.premium
+                    : activeUsers.filter(u => (u.totalCount || 0) > 0).length})
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-4">
           <div className="grid grid-cols-12 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-white/30">
              <div className="col-span-3">Usuario</div>
@@ -197,13 +272,13 @@ const AdminMonitoring = () => {
           </div>
 
           <div className="flex flex-col gap-3">
-            {activeUsers.length === 0 && !loading && (
+            {filteredUsers.length === 0 && !loading && (
               <div className="p-12 text-center bg-white/5 rounded-3xl border border-white/10">
-                <p className="text-white/40 font-bold">No se detectó actividad reciente.</p>
+                <p className="text-white/40 font-bold">No hay usuarios para este filtro.</p>
               </div>
             )}
 
-            {activeUsers.map((u) => {
+            {filteredUsers.map((u) => {
               if (!u || !u.id) return null;
               
               const lastSignIn = u.last_sign_in_at ? new Date(u.last_sign_in_at) : null;
