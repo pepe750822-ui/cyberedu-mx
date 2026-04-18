@@ -54,17 +54,17 @@ serve(async (req) => {
         }
 
         // 3. Admin check: query profiles directly (no rpc dependency)
+        // is_admin column does not exist in profiles table — check by email only
         const { data: callerProfile, error: profileError } = await supabase
             .from("profiles")
-            .select("email, is_admin")
+            .select("email")
             .eq("id", user.id)
             .single();
 
         const isAdmin =
             !profileError &&
             callerProfile &&
-            (ADMIN_EMAILS.includes(callerProfile.email?.toLowerCase() ?? "") ||
-                callerProfile.is_admin === true);
+            ADMIN_EMAILS.includes(callerProfile.email?.toLowerCase() ?? "");
 
         if (!isAdmin) {
             console.warn("Forbidden attempt by user:", user.id, user.email);
