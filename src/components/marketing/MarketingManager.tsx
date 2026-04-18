@@ -91,16 +91,30 @@ const MarketingManager = () => {
                 payload.to = user!.email;
             }
 
+            console.log("[marketing] invoking send-marketing-email, payload keys:", Object.keys(payload));
             const { data, error } = await supabase.functions.invoke("send-marketing-email", {
                 body: payload,
             });
 
             if (error) {
-                logger.error("Error devuelto por la función:", error);
-                throw new Error(error.message || "La función devolvió un error.");
+                // error.context is a Response object — read the body to get the real message
+                let contextBody: unknown = null;
+                try {
+                    contextBody = await (error as any).context?.json?.();
+                } catch {
+                    try { contextBody = await (error as any).context?.text?.(); } catch { /* ignore */ }
+                }
+                console.error("[marketing] invoke error:", {
+                    message: error.message,
+                    name: (error as any).name,
+                    status: (error as any).context?.status,
+                    body: contextBody,
+                });
+                const detail = (contextBody as any)?.error ?? error.message ?? "La función devolvió un error.";
+                throw new Error(detail);
             }
 
-            logger.log("Respuesta de la función:", data);
+            console.log("[marketing] invoke success:", data);
 
             if (bulkMode) {
                 toast.success("Campaña masiva enviada", {
@@ -112,14 +126,9 @@ const MarketingManager = () => {
                 });
             }
         } catch (err: any) {
-            logger.error("Error detallado en el envío:", err);
-
-            let errorMessage = "No se pudo conectar con el servicio de correo.";
-            if (err.message) errorMessage = err.message;
-            if (err.context?.errorMessage) errorMessage = err.context.errorMessage;
-
+            console.error("[marketing] catch:", err?.message, err);
             toast.error("Fallo de envío", {
-                description: errorMessage,
+                description: err?.message ?? "No se pudo conectar con el servicio de correo.",
             });
         } finally {
             setIsBlasting(false);
