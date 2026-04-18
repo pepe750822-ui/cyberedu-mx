@@ -91,30 +91,30 @@ const MarketingManager = () => {
                 payload.to = user!.email;
             }
 
-            console.log("[marketing] invoking send-marketing-email, payload keys:", Object.keys(payload));
-            const { data, error } = await supabase.functions.invoke("send-marketing-email", {
-                body: payload,
-            });
+            const { data: { session } } = await supabase.auth.getSession();
+            console.log("[marketing] session present:", !!session, "| email:", session?.user?.email);
 
-            if (error) {
-                // error.context is a Response object — read the body to get the real message
-                let contextBody: unknown = null;
-                try {
-                    contextBody = await (error as any).context?.json?.();
-                } catch {
-                    try { contextBody = await (error as any).context?.text?.(); } catch { /* ignore */ }
+            if (!session?.access_token) throw new Error("No hay sesión activa. Inicia sesión e intenta de nuevo.");
+
+            const response = await fetch(
+                "https://lruwnuldlltwktdfrwho.supabase.co/functions/v1/send-marketing-email",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${session.access_token}`,
+                    },
+                    body: JSON.stringify(payload),
                 }
-                console.error("[marketing] invoke error:", {
-                    message: error.message,
-                    name: (error as any).name,
-                    status: (error as any).context?.status,
-                    body: contextBody,
-                });
-                const detail = (contextBody as any)?.error ?? error.message ?? "La función devolvió un error.";
-                throw new Error(detail);
-            }
+            );
 
-            console.log("[marketing] invoke success:", data);
+            console.log("[marketing] response status:", response.status);
+            const data = await response.json();
+            console.log("[marketing] response body:", data);
+
+            if (!response.ok) {
+                throw new Error(data?.error ?? `Error ${response.status}`);
+            }
 
             if (bulkMode) {
                 toast.success("Campaña masiva enviada", {
