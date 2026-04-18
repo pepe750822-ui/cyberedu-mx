@@ -49,7 +49,72 @@ const MarketingManager = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
+    // Campaign editor state
+    const [campaignSubject, setCampaignSubject] = useState("⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026");
+    const [campaignMessage, setCampaignMessage] = useState(
+        "La Llave MX es indispensable para tu registro ECOEMS 2026. Sin ella, no podrás participar en el proceso de asignación.\n\nSigue estos pasos:\n1. Crea tu cuenta en llave.gob.mx\n2. Valida tu CURP y datos personales\n3. Activa tu cuenta con el código recibido"
+    );
+
+    const buildEmailHtml = (subject: string, message: string) => {
+        const paragraphs = message
+            .split("\n")
+            .map(line => line.trim())
+            .filter(Boolean)
+            .map(line =>
+                /^\d+\./.test(line)
+                    ? `<li style="margin-bottom:8px;color:#94a3b8;font-size:13px;">${line.replace(/^\d+\.\s*/, "")}</li>`
+                    : `<p style="color:#cbd5e1;line-height:1.7;margin:0 0 12px 0;">${line}</p>`
+            );
+
+        const hasListItems = paragraphs.some(p => p.startsWith("<li"));
+        const bodyContent = hasListItems
+            ? paragraphs.map(p =>
+                p.startsWith("<li")
+                    ? p
+                    : p
+              ).join("")
+            : paragraphs.join("");
+
+        const listWrap = hasListItems
+            ? `<ol style="margin:0;padding-left:20px;">${paragraphs.filter(p => p.startsWith("<li")).join("")}</ol>`
+            : "";
+        const textParagraphs = paragraphs.filter(p => !p.startsWith("<li")).join("");
+
+        return `<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0f172a;">
+  <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:40px auto;background:#020617;border-radius:24px;overflow:hidden;border:1px solid rgba(245,158,11,0.2);">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#4f46e5);padding:40px 32px;text-align:center;">
+      <div style="display:inline-block;background:rgba(255,255,255,0.15);border-radius:16px;padding:8px 20px;margin-bottom:16px;">
+        <span style="color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:3px;">CyberEdu MX</span>
+      </div>
+      <h1 style="margin:0;color:#fff;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:1px;line-height:1.3;">${subject}</h1>
+    </div>
+    <!-- Body -->
+    <div style="padding:40px 32px;">
+      <p style="color:#94a3b8;font-size:14px;margin:0 0 24px 0;">Hola, Aspirante 👋</p>
+      ${textParagraphs}
+      ${listWrap ? `<div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;margin:24px 0;">${listWrap}</div>` : ""}
+    </div>
+    <!-- Footer -->
+    <div style="padding:24px 32px;border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
+      <p style="color:#475569;font-size:11px;margin:0;">
+        CyberEdu MX · Simulador ECOEMS 2026 ·
+        <a href="https://cyberedumx.com" style="color:#7c3aed;text-decoration:none;">cyberedumx.com</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+    };
+
     const handleEmailBlast = async (bulkMode: boolean = false) => {
+        if (!campaignSubject.trim() || !campaignMessage.trim()) {
+            toast.error("Campos requeridos", { description: "Completa el asunto y el mensaje antes de enviar." });
+            return;
+        }
         if (!bulkMode && !user?.email) {
             toast.error("Error de sesión", {
                 description: "No se encontró un correo electrónico asociado a tu cuenta.",
@@ -59,29 +124,10 @@ const MarketingManager = () => {
 
         setIsBlasting(true);
         try {
-            const emailHtml = `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; border-radius: 32px; overflow: hidden; border: 1px solid #f59e0b33;">
-                    <div style="background-color: #f59e0b; padding: 40px; text-align: center;">
-                        <h1 style="margin: 0; color: #020617; text-transform: uppercase; font-weight: 900; font-size: 24px;">Requisito Obligatorio</h1>
-                    </div>
-                    <div style="padding: 40px;">
-                        <h2 style="color: #fff; font-size: 20px;">Hola, Aspirante 👋</h2>
-                        <p style="color: #cbd5e1; line-height: 1.6;">La <b>Llave MX</b> es indispensable para tu registro ECOEMS 2026. Sin ella, no podrás participar en el proceso de asignación.</p>
-                        <div style="background-color: #ffffff0d; border: 1px solid #ffffff1a; border-radius: 16px; padding: 20px; margin: 24px 0;">
-                            <p style="margin: 0 0 12px 0; font-size: 14px; color: #e2e8f0;">Sigue estos pasos:</p>
-                            <ol style="margin: 0; padding-left: 20px; color: #94a3b8; font-size: 13px;">
-                                <li style="margin-bottom: 8px;">Crea tu cuenta en <b>llave.gob.mx</b></li>
-                                <li style="margin-bottom: 8px;">Valida tu CURP y datos personales</li>
-                                <li>Activa tu cuenta con el código recibido</li>
-                            </ol>
-                        </div>
-                        <a href="https://llave.gob.mx" style="display: block; background-color: #f59e0b; color: #020617; text-align: center; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Acceder a Llave MX</a>
-                    </div>
-                </div>
-            `;
+            const emailHtml = buildEmailHtml(campaignSubject, campaignMessage);
 
             const payload: Record<string, unknown> = {
-                subject: "⚠️ URGENTE: Requisito Llave MX - ECOEMS 2026",
+                subject: campaignSubject,
                 html: emailHtml,
             };
 
@@ -413,37 +459,63 @@ const MarketingManager = () => {
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6 relative z-10">
-                    <div className="flex flex-col md:flex-row items-center gap-8 p-6 bg-white/5 rounded-3xl border border-white/5">
-                        <div className="flex-1 space-y-4">
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <span className="h-2 w-2 rounded-full bg-amber-500 animate-ping" />
-                                    <span className="text-[10px] font-black text-amber-500 uppercase tracking-[0.2em]">Última Noticia Detectada</span>
-                                </div>
-                                <h4 className="text-lg font-black text-white uppercase tracking-tight">Llave MX: Requisito Obligatorio 2026</h4>
-                                <p className="text-xs text-slate-400 leading-relaxed">
-                                    Esta campaña invitará a todos los usuarios registrados a completar su registro de Llave MX y volver a la plataforma para continuar con su simulador.
-                                </p>
-                            </div>
+                    {/* Editor de campaña */}
+                    <div className="space-y-4 p-6 bg-white/5 rounded-3xl border border-white/5">
+                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-[0.2em]">Redactar Campaña</p>
 
-                            <div className="flex flex-wrap gap-4 pt-2">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-10 rounded-xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest group">
-                                            <Eye className="mr-2 h-4 w-4" />
-                                            Previsualizar Email
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="max-w-2xl bg-transparent border-none p-0 outline-none shadow-none">
-                                        <LlaveMXEmailTemplate />
-                                    </DialogContent>
-                                </Dialog>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-white/30 tracking-widest ml-1">Asunto</label>
+                            <input
+                                type="text"
+                                value={campaignSubject}
+                                onChange={e => setCampaignSubject(e.target.value)}
+                                placeholder="Ej: ⚠️ Novedad importante para tu examen"
+                                className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/50 transition-all"
+                            />
+                        </div>
 
-                                <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-xl border border-white/5">
-                                    <Mail className="h-3.5 w-3.5 text-slate-500" />
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-tight">1,542 Destinatarios</span>
-                                </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-white/30 tracking-widest ml-1">Mensaje</label>
+                            <textarea
+                                value={campaignMessage}
+                                onChange={e => setCampaignMessage(e.target.value)}
+                                placeholder={"Escribe el cuerpo del correo...\n\nUsa líneas numeradas (1. 2. 3.) para listas automáticas."}
+                                rows={6}
+                                className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-amber-500/50 transition-all resize-none leading-relaxed"
+                            />
+                            <p className="text-[10px] text-white/20 ml-1">Líneas con "1. 2. 3." se convierten en lista. Cada línea en blanco separa párrafos.</p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-3 pt-1">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="h-9 rounded-xl border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest">
+                                        <Eye className="mr-2 h-3.5 w-3.5" />
+                                        Previsualizar Email
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-slate-950 border border-white/10 rounded-3xl p-0">
+                                    <div className="p-4">
+                                        <p className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-3 px-2">Vista previa — {campaignSubject || "Sin asunto"}</p>
+                                        <div
+                                            className="rounded-2xl overflow-hidden"
+                                            dangerouslySetInnerHTML={{ __html: buildEmailHtml(campaignSubject || "Sin asunto", campaignMessage || "Sin mensaje.") }}
+                                        />
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-xl border border-white/5">
+                                <Mail className="h-3.5 w-3.5 text-slate-500" />
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-tight">Usuarios con opt-in</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-white/5 rounded-3xl border border-white/5">
+                        <div className="flex-1">
+                            <p className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-1">Listo para enviar</p>
+                            <p className="text-sm font-bold text-white truncate">{campaignSubject || <span className="text-white/30 italic">Sin asunto</span>}</p>
                         </div>
 
                         <div className="shrink-0 w-full md:w-auto flex flex-col gap-3">
