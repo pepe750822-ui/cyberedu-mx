@@ -47,7 +47,13 @@
     { "source": "/manual_de_uso_cyberedumx.html",                           "destination": "/",                 "permanent": true },
     { "source": "/INSTRUCTIVO-2026.pdf",                                    "destination": "/",                 "permanent": true },
     { "source": "/agentesinteligentes.html",                                "destination": "/",                 "permanent": true },
-    { "source": "/incade.html",                                             "destination": "/",                 "permanent": true }
+    { "source": "/incade.html",                                             "destination": "/",                 "permanent": true },
+
+    {
+      "source": "/:path((?!(api|_next|icons|assets|auth|login|simulador-pro|area|blog|certificaciones|tokens|reportes|modalidades|sugerencias|admin|master-admin|subscription|marketing|offline\\.html|sw\\.js|manifest\\.json|robots\\.txt|sitemap\\.xml|favicon\\.ico|google[a-z0-9]+\\.html|\\.well-known)(/|$)).*)",
+      "destination": "https://cdn.cyberedumx.com/:path",
+      "permanent": false
+    }
   ],
   "rewrites": [
     {
