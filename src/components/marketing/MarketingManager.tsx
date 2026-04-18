@@ -113,7 +113,7 @@ const MarketingManager = () => {
             console.log("[marketing] response body:", data);
 
             if (!response.ok) {
-                throw new Error(data?.error ?? `Error ${response.status}`);
+                throw new Error(data?.error ?? `Error ${response.status} — sent:${data?.sent ?? 0} failed:${data?.failed ?? 0}`);
             }
 
             if (bulkMode) {
@@ -121,9 +121,13 @@ const MarketingManager = () => {
                     description: `Enviados: ${data.sent} · Fallidos: ${data.failed} · Total: ${data.total}`,
                 });
             } else {
-                toast.success("Campaña enviada con éxito", {
-                    description: `Se ha enviado un correo de prueba a ${user!.email}`,
-                });
+                if ((data.sent ?? 0) > 0) {
+                    toast.success("Correo enviado", {
+                        description: `Prueba enviada a ${user!.email}`,
+                    });
+                } else {
+                    throw new Error(`Resend no procesó el envío (sent=${data.sent}, failed=${data.failed}). Revisa los logs de la Edge Function.`);
+                }
             }
         } catch (err: any) {
             console.error("[marketing] catch:", err?.message, err);

@@ -159,7 +159,7 @@ serve(async (req) => {
             batches.push(recipients.slice(i, i + BATCH_SIZE));
         }
 
-        console.log("[6] batches to send:", batches.length);
+        console.log("[6] batches to send:", batches.length, "| RESEND_BATCH_URL:", RESEND_BATCH_URL);
 
         await Promise.all(
             batches.map(async (batch, batchIdx) => {
@@ -170,8 +170,8 @@ serve(async (req) => {
                     html,
                 }));
 
+                console.log(`[6] batch[${batchIdx}] PRE-FETCH — recipients:`, batch, "| payload[0].from:", payload[0]?.from);
                 try {
-                    console.log(`[6] batch[${batchIdx}] sending ${batch.length} emails to Resend...`);
                     const res = await fetch(RESEND_BATCH_URL, {
                         method: "POST",
                         headers: {
@@ -217,15 +217,17 @@ serve(async (req) => {
 
         console.log(`[7] done — sent: ${results.sent}, failed: ${results.failed}`);
 
+        const allFailed = results.sent === 0 && results.failed > 0;
         return new Response(JSON.stringify({
-            success: true,
+            success: !allFailed,
             total: recipients.length,
             batches: batches.length,
             sent: results.sent,
             failed: results.failed,
             ...(results.failed_recipients.length > 0 && { failed_recipients: results.failed_recipients }),
         }), {
-            status: 200,
+            // Return 422 when every send failed so the client can surface the error
+            status: allFailed ? 422 : 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
 
