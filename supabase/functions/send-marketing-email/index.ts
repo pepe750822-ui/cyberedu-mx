@@ -1,6 +1,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+
+const ADMIN_EMAILS = ["pepe750822@gmail.com"];
+const RESEND_BATCH_URL = "https://api.resend.com/emails/batch";
+// Resend batch API accepts up to 100 emails per request
+const BATCH_SIZE = 100;
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -8,25 +12,22 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-    // Handle CORS preflight
     if (req.method === "OPTIONS") {
         return new Response(null, { headers: corsHeaders });
     }
 
     try {
-        // 1. Get Resend API Key from Environment
-        // No hardcoded keys or fallbacks allowed for security
+        // 1. Read env vars (Deno runtime)
         const resendApiKey = Deno.env.get("RESEND_API_KEY");
         if (!resendApiKey) {
-            console.error("Critical: RESEND_API_KEY is not configured in the environment.");
+            console.error("RESEND_API_KEY not configured");
             return new Response(JSON.stringify({ error: "Server configuration error" }), {
                 status: 500,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        // 2. Validate Authentication
-        // Robust check for Authorization header
+        // 2. Verify JWT
         const authHeader = req.headers.get("Authorization");
         if (!authHeader) {
             return new Response(JSON.stringify({ error: "Missing Authorization header" }), {
@@ -35,51 +36,49 @@ serve(async (req) => {
             });
         }
 
-        const supabaseClient = createClient(
+        const supabase = createClient(
             Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "", // Use service role for internal checks if needed, but validate user
-            {
-                auth: {
-                    autoRefreshToken: false,
-                    persistSession: false,
-                },
-            }
+            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+            { auth: { autoRefreshToken: false, persistSession: false } }
         );
 
-        // Verify the user's JWT
-        const { data: { user }, error: authError } = await createClient(
-            Deno.env.get("SUPABASE_URL") ?? "",
-            Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-            { global: { headers: { Authorization: authHeader } } }
-        ).auth.getUser();
+        const { data: { user }, error: authError } = await supabase.auth.getUser(
+            authHeader.replace("Bearer ", "")
+        );
 
         if (authError || !user) {
-            console.error("Unauthorized attempt to call edge function:", authError);
             return new Response(JSON.stringify({ error: "Unauthorized" }), {
                 status: 401,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        // 3. Role-based authorization: only admins can send marketing emails
-        const { data: roleCheck, error: roleError } = await supabaseClient
-            .rpc('has_role', { _user_id: user.id, _role: 'admin' });
+        // 3. Admin check: query profiles directly (no rpc dependency)
+        const { data: callerProfile, error: profileError } = await supabase
+            .from("profiles")
+            .select("email, is_admin")
+            .eq("id", user.id)
+            .single();
 
-        if (roleError || !roleCheck) {
-            console.warn("Unauthorized email send attempt by user:", user.id);
-            return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
+        const isAdmin =
+            !profileError &&
+            callerProfile &&
+            (ADMIN_EMAILS.includes(callerProfile.email?.toLowerCase() ?? "") ||
+                callerProfile.is_admin === true);
+
+        if (!isAdmin) {
+            console.warn("Forbidden attempt by user:", user.id, user.email);
+            return new Response(JSON.stringify({ error: "Forbidden: admin required" }), {
                 status: 403,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        const resend = new Resend(resendApiKey);
-
-        // 4. Parse and Validate Request Body
-        let body;
+        // 4. Parse body
+        let body: { to?: string | string[]; subject?: string; html?: string; bulk?: boolean };
         try {
             body = await req.json();
-        } catch (e) {
+        } catch {
             return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -89,18 +88,17 @@ serve(async (req) => {
         const { to, subject, html, bulk } = body;
 
         if (!subject || !html) {
-            return new Response(JSON.stringify({ error: "Missing required fields (subject, html)" }), {
+            return new Response(JSON.stringify({ error: "Missing required fields: subject, html" }), {
                 status: 400,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
         }
 
-        // 5. Determine recipients
+        // 5. Resolve recipients
         let recipients: string[] = [];
 
         if (bulk) {
-            // Fetch all users with marketing_opt_in enabled
-            const { data: optedInUsers, error: fetchError } = await supabaseClient
+            const { data: optedInUsers, error: fetchError } = await supabase
                 .from("profiles")
                 .select("email")
                 .eq("marketing_opt_in", true)
@@ -114,18 +112,18 @@ serve(async (req) => {
                 });
             }
 
-            recipients = (optedInUsers || [])
+            recipients = (optedInUsers ?? [])
                 .map((u: { email: string | null }) => u.email)
                 .filter((e): e is string => !!e);
 
             if (recipients.length === 0) {
-                return new Response(JSON.stringify({ error: "No recipients with marketing opt-in found" }), {
+                return new Response(JSON.stringify({ error: "No recipients with marketing_opt_in found" }), {
                     status: 400,
                     headers: { ...corsHeaders, "Content-Type": "application/json" },
                 });
             }
 
-            console.log(`Bulk send: ${recipients.length} recipients found`);
+            console.log(`Bulk send: ${recipients.length} recipients`);
         } else {
             if (!to) {
                 return new Response(JSON.stringify({ error: "Missing required field: to" }), {
@@ -136,47 +134,84 @@ serve(async (req) => {
             recipients = Array.isArray(to) ? to : [to];
         }
 
-        // 6. Send emails
-        const results = { sent: 0, failed: 0, errors: [] as string[] };
+        // 6. Send via Resend batch API (up to 100 per request, parallel batches)
+        const results = { sent: 0, failed: 0, failed_recipients: [] as string[] };
 
-        for (const recipient of recipients) {
-            try {
-                const { error } = await resend.emails.send({
-                    from: "CyberEdu MX <noreply@cyberedumx.com>",
-                    to: recipient,
-                    subject: subject,
-                    html: html,
-                });
-
-                if (error) {
-                    console.error(`Failed to send to ${recipient}:`, error);
-                    results.failed++;
-                    results.errors.push(recipient);
-                } else {
-                    results.sent++;
-                }
-            } catch (sendErr: any) {
-                console.error(`Exception sending to ${recipient}:`, sendErr.message);
-                results.failed++;
-                results.errors.push(recipient);
-            }
+        // Split into chunks of BATCH_SIZE
+        const batches: string[][] = [];
+        for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
+            batches.push(recipients.slice(i, i + BATCH_SIZE));
         }
 
-        console.log(`Send complete: ${results.sent} sent, ${results.failed} failed`);
+        // Fire all batches in parallel
+        await Promise.all(
+            batches.map(async (batch) => {
+                const payload = batch.map((recipient) => ({
+                    from: "CyberEdu MX <noreply@cyberedumx.com>",
+                    to: [recipient],
+                    subject,
+                    html,
+                }));
+
+                try {
+                    const res = await fetch(RESEND_BATCH_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${resendApiKey}`,
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (!res.ok) {
+                        const errBody = await res.text();
+                        console.error(`Batch failed (${res.status}):`, errBody);
+                        results.failed += batch.length;
+                        results.failed_recipients.push(...batch);
+                        return;
+                    }
+
+                    const data = await res.json();
+                    // Resend batch returns array of { id } or { error } per item
+                    if (Array.isArray(data)) {
+                        data.forEach((item: { id?: string; error?: string }, idx: number) => {
+                            if (item.error) {
+                                results.failed++;
+                                results.failed_recipients.push(batch[idx]);
+                            } else {
+                                results.sent++;
+                            }
+                        });
+                    } else {
+                        // Fallback: treat whole batch as sent if response is 200
+                        results.sent += batch.length;
+                    }
+                } catch (e: unknown) {
+                    const msg = e instanceof Error ? e.message : String(e);
+                    console.error("Batch exception:", msg);
+                    results.failed += batch.length;
+                    results.failed_recipients.push(...batch);
+                }
+            })
+        );
+
+        console.log(`Done: ${results.sent} sent, ${results.failed} failed`);
 
         return new Response(JSON.stringify({
             success: true,
             total: recipients.length,
+            batches: batches.length,
             sent: results.sent,
             failed: results.failed,
-            ...(results.errors.length > 0 && { failed_recipients: results.errors }),
+            ...(results.failed_recipients.length > 0 && { failed_recipients: results.failed_recipients }),
         }), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
 
-    } catch (err: any) {
-        console.error("Unexpected error in Edge Function:", err.message);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error("Unexpected error:", msg);
         return new Response(JSON.stringify({ error: "Internal server error" }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
