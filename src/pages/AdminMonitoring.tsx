@@ -14,7 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
 const AdminMonitoring = () => {
-  const { user, profile, isLoading } = useAuth();
+  const { user, profile, session, isLoading } = useAuth();
   const navigate = useNavigate();
   const [activeUsers, setActiveUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,9 @@ const AdminMonitoring = () => {
   const fetchActiveUsers = async () => {
     setLoading(true);
     try {
-      const resp = await fetch('/api/admin/active-users');
+      const resp = await fetch('/api/admin/active-users', {
+        headers: { 'Authorization': `Bearer ${session?.access_token ?? ''}` },
+      });
       const data = await resp.json();
       if (data.error) throw new Error(data.error);
       setActiveUsers(data.users || []);
@@ -186,11 +188,12 @@ const AdminMonitoring = () => {
 
         <div className="grid gap-4">
           <div className="grid grid-cols-12 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-white/30">
-             <div className="col-span-4">Usuario</div>
-             <div className="col-span-2 text-center">Status</div>
-             <div className="col-span-2 text-center">Total Histórico</div>
-             <div className="col-span-2 text-center">Tokens</div>
-             <div className="col-span-2 text-right">Última Actividad</div>
+             <div className="col-span-3">Usuario</div>
+             <div className="col-span-1 text-center">Status</div>
+             <div className="col-span-2 text-center">Total</div>
+             <div className="col-span-1 text-center">Tokens</div>
+             <div className="col-span-2 text-center">Registro</div>
+             <div className="col-span-3 text-right">Última Sesión</div>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -203,18 +206,20 @@ const AdminMonitoring = () => {
             {activeUsers.map((u) => {
               if (!u || !u.id) return null;
               
-              const updated_at = u.updated_at || new Date().toISOString();
-              const lastActive = new Date(updated_at);
-              const isValidDate = !isNaN(lastActive.getTime());
-              const isRecent = isValidDate && (Date.now() - lastActive.getTime()) < 300000; // < 5 min
+              const lastSignIn = u.last_sign_in_at ? new Date(u.last_sign_in_at) : null;
+              const isLastSignInValid = lastSignIn && !isNaN(lastSignIn.getTime());
+              const isRecentLogin = isLastSignInValid && (Date.now() - lastSignIn!.getTime()) < 300000;
+
+              const createdAt = u.created_at ? new Date(u.created_at) : null;
+              const isCreatedValid = createdAt && !isNaN(createdAt.getTime());
 
               return (
                 <div key={u.id} className={cn(
                   "grid grid-cols-12 items-center px-6 py-5 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/[0.08] transition-all group",
-                  isRecent && "bg-primary/5 border-primary/20 shadow-lg"
+                  isRecentLogin && "bg-primary/5 border-primary/20 shadow-lg"
                 )}>
-                  <div className="col-span-4 flex items-center gap-3">
-                     <div className="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center font-black text-xs text-primary">
+                  <div className="col-span-3 flex items-center gap-3">
+                     <div className="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center font-black text-xs text-primary shrink-0">
                         {(u.name?.charAt(0) || u.email?.charAt(0) || '?').toUpperCase()}
                      </div>
                      <div className="min-w-0 pr-2">
@@ -223,13 +228,13 @@ const AdminMonitoring = () => {
                      </div>
                   </div>
 
-                  <div className="col-span-2 flex justify-center">
+                  <div className="col-span-1 flex justify-center">
                     {(u.is_premium || u.subscription_status === 'active') ? (
-                      <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-black uppercase tracking-widest border border-amber-500/20 flex items-center gap-1">
-                        <Crown className="h-2.5 w-2.5 fill-amber-500" /> Premium
+                      <span className="px-2 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase border border-amber-500/20 flex items-center gap-1">
+                        <Crown className="h-2.5 w-2.5 fill-amber-500" />
                       </span>
                     ) : (
-                      <span className="px-3 py-1 rounded-full bg-slate-800 text-white/40 text-[10px] font-black uppercase tracking-widest border border-white/5">
+                      <span className="px-2 py-1 rounded-full bg-slate-800 text-white/40 text-[9px] font-black uppercase border border-white/5">
                         Free
                       </span>
                     )}
@@ -249,22 +254,34 @@ const AdminMonitoring = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-2 text-center">
-                    <span className="text-sm font-black text-amber-500 flex items-center justify-center gap-1.5">
-                       <Ticket className="h-3.5 w-3.5" /> {u.tokens || 0}
+                  <div className="col-span-1 text-center">
+                    <span className="text-sm font-black text-amber-500 flex items-center justify-center gap-1">
+                       <Ticket className="h-3 w-3" /> {u.tokens || 0}
                     </span>
                   </div>
 
-                  <div className="col-span-2 text-right">
+                  <div className="col-span-2 text-center">
+                    <div className="flex flex-col items-center">
+                      <span className="text-[10px] font-bold text-white/50">
+                        {isCreatedValid ? createdAt!.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: '2-digit' }) : '—'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="col-span-3 text-right">
                     <div className="flex flex-col items-end">
                        <span className={cn(
                          "text-xs font-bold",
-                         isRecent ? "text-emerald-400" : "text-white/60"
+                         isRecentLogin ? "text-emerald-400" : "text-white/60"
                        )}>
-                         {isRecent ? 'Ahora mismo' : (isValidDate ? lastActive.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '--:--')}
+                         {isRecentLogin
+                           ? 'Ahora mismo'
+                           : isLastSignInValid
+                             ? lastSignIn!.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+                             : '--:--'}
                        </span>
                        <span className="text-[10px] text-white/20 font-medium whitespace-nowrap">
-                         {isValidDate ? lastActive.toLocaleDateString('es-MX') : 'Desconocida'}
+                         {isLastSignInValid ? lastSignIn!.toLocaleDateString('es-MX') : 'Sin sesión registrada'}
                        </span>
                     </div>
                   </div>
