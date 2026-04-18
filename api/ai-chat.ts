@@ -468,6 +468,7 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <geography> cuando expliques ubicación de países, continentes o coordenadas (Punto 22).
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
     - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía (Punto 24).
+    - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras, imaginación espacial o habilidad matemática del ECOEMS (Punto 25).
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
@@ -613,6 +614,12 @@ export default async function handler(req: Request) {
         - Cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía/fisiología, usa: <human_body>{ "topic": "Sistemas del Cuerpo Humano" }</human_body>.
         - NUNCA uses solo texto para explicar sistemas corporales; SIEMPRE incluye este tag.
         - Esto activará un diagrama interactivo del cuerpo humano.
+
+    25. SERIES ESPACIALES (OBLIGATORIO PARA HABILIDAD MATEMÁTICA):
+        - Cuando expliques sucesiones numéricas, series de figuras, imaginación espacial, razonamiento lógico o habilidad matemática del ECOEMS, usa: <spatial_series>{ "difficulty": "easy", "topic": "Sucesiones Numéricas" }</spatial_series>.
+        - Para dificultad usa: "easy" (secundaria básica), "medium" (ECOEMS promedio), "hard" (nivel avanzado).
+        - NUNCA uses solo texto para temas de series/sucesiones; SIEMPRE incluye este tag.
+        - Esto activará un simulador interactivo de series numéricas, espaciales y de figuras.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:

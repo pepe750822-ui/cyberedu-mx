@@ -38,6 +38,7 @@ import MathGraphArtifact from "./MathGraphArtifact";
 import GlobeArtifact from "./GlobeArtifact";
 import SolarSystemArtifact from "./SolarSystemArtifact";
 import HumanBodyArtifact from "./HumanBodyArtifact";
+import SpatialSeriesArtifact from "./SpatialSeriesArtifact";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
@@ -310,6 +311,7 @@ interface Message {
   geography?: any[];
   solarSystem?: any[];
   humanBody?: any[];
+  spatialSeries?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -796,6 +798,18 @@ function parseHumanBodyFromContent(content: string): { humanBody: any[]; cleanCo
   return { humanBody, cleanContent: content.replace(/<human_body>[\s\S]*?(?:<\/human_body>|$)/g, '').trim() };
 }
 
+function parseSpatialSeriesFromContent(content: string): { spatialSeries: any[]; cleanContent: string } {
+  const spatialSeries: any[] = [];
+  const regex = /<spatial_series>([\s\S]*?)(?:<\/spatial_series>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    const parsed = safeParseJSON(raw);
+    spatialSeries.push(parsed ?? { difficulty: 'easy', topic: 'Habilidad Matemática' });
+  }
+  return { spatialSeries, cleanContent: content.replace(/<spatial_series>[\s\S]*?(?:<\/spatial_series>|$)/g, '').trim() };
+}
+
 function parseImagesFromContent(content: string): { eduImages: EduImage[]; cleanContent: string } {
   const found: EduImage[] = [];
   // Busca patrones [IMG:clave] en el contenido
@@ -826,11 +840,11 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 
 function parseAllBlocks(content: string) {
   try {
-    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
-    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
+    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
   } catch (err) {
     console.error("Critical error in parseAllBlocks:", err);
-    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
+    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], spatialSeries: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
   }
 }
 
@@ -845,19 +859,20 @@ function parseAllBlocksHelper(content: string) {
   const { geography, cleanContent: c564 } = parseGeographyFromContent(c56);
   const { solarSystem, cleanContent: c5645 } = parseSolarSystemFromContent(c564);
   const { humanBody, cleanContent: c5646 } = parseHumanBodyFromContent(c5645);
-  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5646);
+  const { spatialSeries, cleanContent: c5647 } = parseSpatialSeriesFromContent(c5646);
+  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5647);
   const { mathGraphs, cleanContent: c567 } = parseMathGraphsFromContent(c565);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c567);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body|spatial_series)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -873,6 +888,7 @@ function stripStreamingBlocks(content: string): string {
         geography: "globo terráqueo",
         solar_system: "sistema solar",
         human_body: "cuerpo humano",
+        spatial_series: "series espaciales",
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -2068,6 +2084,13 @@ const MessageBubble = React.memo(({
             </SafeBlockErrorBoundary>
           ))}
 
+          {/* 5.9 Series Espaciales (SpatialSeriesArtifact) */}
+          {msg.spatialSeries?.map((ss: any, i: number) => (
+            <SafeBlockErrorBoundary key={`spat-err-${i}`} fallbackMessage="No se pudo cargar el artefacto de series espaciales.">
+              <SpatialSeriesArtifact difficulty={ss?.difficulty} topic={ss?.topic} />
+            </SafeBlockErrorBoundary>
+          ))}
+
           {/* 6. Quiz (AITutorQuiz) */}
           {msg.quiz && <QuizCard quiz={msg.quiz} />}
 
@@ -3210,7 +3233,7 @@ const AITutor = () => {
             if (safetyTimeout) clearTimeout(safetyTimeout);
             const {
               reasoning, decisions, plan, quiz, charts,
-              calculators, simulators, geography, solarSystem, humanBody,
+              calculators, simulators, geography, solarSystem, humanBody, spatialSeries,
               physics, mathGraphs, exercises, chemistryElements,
               recommendations, eduImages, cleanContent
             } = parseAllBlocks(assistantContent);
@@ -3237,13 +3260,14 @@ const AITutor = () => {
               simulators: simulators.length > 0 ? simulators : undefined,
               geography: geography.length > 0 ? geography : undefined,
               humanBody: humanBody.length > 0 ? humanBody : undefined,
+              spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined,
               solarSystem: solarSystem.length > 0 ? solarSystem : undefined,
               physics: physics.length > 0 ? physics : undefined,
               mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
               exercises: exercises.length > 0 ? exercises : undefined,
               chemistryElements: chemistryElements.length > 0 ? chemistryElements : undefined,
               recommendations: recommendations.length > 0 ? recommendations : undefined,
-              eduImages: eduImages.length > 0 ? eduImages : undefined 
+              eduImages: eduImages.length > 0 ? eduImages : undefined
             } : m));
             setIsStreaming(false);
             fetchUsageStats();
@@ -3488,7 +3512,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3537,7 +3561,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
