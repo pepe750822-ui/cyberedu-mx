@@ -49,11 +49,11 @@
     { "source": "/agentesinteligentes.html",                                "destination": "/",                 "permanent": true },
     { "source": "/incade.html",                                             "destination": "/",                 "permanent": true },
 
-    {
-      "source": "/:path((?!(api|_next|icons|assets|auth|login|simulador-pro|area|blog|certificaciones|tokens|reportes|modalidades|sugerencias|admin|master-admin|subscription|marketing|offline\\.html|sw\\.js|manifest\\.json|robots\\.txt|sitemap\\.xml|favicon\\.ico|google[a-z0-9]+\\.html|\\.well-known)(/|$)).*)",
-      "destination": "https://cdn.cyberedumx.com/:path",
-      "permanent": false
-    }
+    { "source": "/(.*\\.php)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
+    { "source": "/(.*\\.html)", "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
+    { "source": "/(.*\\.py)",   "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
+    { "source": "/(.*\\.sql)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
+    { "source": "/(.*\\.csv)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false }
   ],
   "rewrites": [
     {
