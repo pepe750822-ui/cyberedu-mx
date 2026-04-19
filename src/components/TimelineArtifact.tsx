@@ -73,23 +73,27 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
   const init = getInitialState(focus);
   const [filter, setFilter] = useState<Filter>(init.filter);
   const [keyword, setKeyword] = useState(init.keyword);
-  const [selected, setSelected] = useState<TimelineEvent | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const dragStart = useRef({ x: 0, scrollLeft: 0 });
+  const [eraFilter, setEraFilter] = useState<string | null>(null);
+
+  const displayedEras = React.useMemo(() => {
+    const baseEvents = EVENTS.filter(e => filter === 'all' || e.category === filter);
+    return [...new Set(baseEvents.map(e => e.era))];
+  }, [filter]);
 
   const events = React.useMemo(() => {
     return EVENTS
       .filter(e => filter === 'all' || e.category === filter)
+      .filter(e => !eraFilter || e.era === eraFilter)
       .filter(e => matchesKeyword(e, keyword))
       .sort((a, b) => a.year - b.year);
-  }, [filter, keyword]);
+  }, [filter, eraFilter, keyword]);
 
   // Sync state with focus prop if it changes
   useEffect(() => {
     const next = getInitialState(focus);
     setFilter(next.filter);
     setKeyword(next.keyword);
+    setEraFilter(null);
     setSelected(null);
   }, [focus]);
 
@@ -98,7 +102,7 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
     }
-  }, [filter, keyword]);
+  }, [filter, eraFilter, keyword]);
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
@@ -116,7 +120,6 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
     scrollRef.current.scrollBy({ left: dir === 'left' ? -300 : 300, behavior: 'smooth' });
   };
 
-  const eras = [...new Set(events.map(e => e.era))];
   const allEras = [...new Set(EVENTS.map(e => e.era))];
   const eraColors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6','#f97316','#a855f7','#22c55e'];
   const getEraColor = (era: string) => eraColors[allEras.indexOf(era) % eraColors.length];
@@ -135,7 +138,7 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
           ] as const).map(({ id, label, Icon, active }) => (
             <button
               key={id}
-              onClick={() => { setFilter(id); setSelected(null); }}
+              onClick={() => { setFilter(id); setEraFilter(null); setSelected(null); }}
               className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
                 filter === id ? `${active} text-white` : 'text-slate-400 hover:text-white border border-white/10'
               }`}
@@ -147,28 +150,51 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
       </div>
 
       {/* Keyword filter badge (only shown when active) */}
-      {keyword && (
-        <div className="px-4 py-2 border-b border-white/5 flex items-center gap-2">
-          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Filtro:</span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/20 border border-violet-500/30 text-[10px] font-black text-violet-300">
-            {keyword}
-            <button onClick={() => setKeyword('')} className="ml-0.5 hover:text-white transition-colors">
-              <X className="h-2.5 w-2.5" />
-            </button>
-          </span>
+      {(keyword || eraFilter) && (
+        <div className="px-4 py-2 border-b border-white/5 flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Filtros:</span>
+          {keyword && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/20 border border-violet-500/30 text-[10px] font-black text-violet-300">
+              Búsqueda: {keyword}
+              <button onClick={() => setKeyword('')} className="ml-0.5 hover:text-white transition-colors">
+                <X className="h-2.5 w-2.5" />
+              </button>
+            </span>
+          )}
+          {eraFilter && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] font-black text-white"
+              style={{ borderColor: getEraColor(eraFilter) + '50' }}>
+              Época: {eraFilter}
+              <button onClick={() => setEraFilter(null)} className="ml-0.5 hover:text-white transition-colors">
+                <X className="h-2.5 w-2.5" />
+              </button>
+            </span>
+          )}
           <span className="text-[9px] text-slate-500 ml-auto">{events.length} evento{events.length !== 1 ? 's' : ''}</span>
         </div>
       )}
 
-      {/* Era legend */}
-      <div className="flex gap-2 px-4 py-2 overflow-x-auto scrollbar-none border-b border-white/5">
-        {eras.map((era) => {
+      {/* Era legend / buttons */}
+      <div className="flex gap-2 px-4 py-2 overflow-x-auto scrollbar-none border-b border-white/5 bg-slate-900/40">
+        {displayedEras.map((era) => {
           const color = getEraColor(era);
+          const isActive = eraFilter === era;
           return (
-            <span key={era} className="text-[9px] font-black uppercase tracking-wider whitespace-nowrap px-2 py-1 rounded-full border"
-              style={{ color, borderColor: color + '40', background: color + '15' }}>
+            <button
+              key={era}
+              onClick={() => { setEraFilter(isActive ? null : era); setSelected(null); }}
+              className={`text-[9px] font-black uppercase tracking-wider whitespace-nowrap px-3 py-1.5 rounded-full border transition-all ${
+                isActive ? 'scale-105 shadow-lg' : 'opacity-60 hover:opacity-100 hover:scale-105'
+              }`}
+              style={{
+                color: isActive ? '#fff' : color,
+                borderColor: color + (isActive ? '' : '40'),
+                background: isActive ? color : color + '15',
+                boxShadow: isActive ? `0 0 10px ${color}40` : 'none'
+              }}
+            >
               {era}
-            </span>
+            </button>
           );
         })}
       </div>
