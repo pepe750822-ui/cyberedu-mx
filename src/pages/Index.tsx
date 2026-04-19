@@ -499,7 +499,7 @@ const Index = () => {
               </div>
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <Button
-                  onClick={() => window.open("https://cyberedumx.com/libro/manual_digital_ECOEMS.html", "_blank")}
+                  onClick={() => window.open("/libro-ecoems", "_blank")}
                   className="h-20 px-10 rounded-3xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 group"
                 >
                   <BookOpen className="mr-2 h-6 w-6" />

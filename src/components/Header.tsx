@@ -72,6 +72,15 @@ const Header = () => {
               <BookOpen className="h-3.5 w-3.5 text-amber-500" />
               Manual de Uso
             </a>
+            <a
+              href="/libro-ecoems"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted-foreground hover:text-amber-500 transition-colors flex items-center gap-1"
+            >
+              <BookOpen className="h-3.5 w-3.5 text-orange-500" />
+              Manual ECOEMS
+            </a>
             <Link
               to="/certificaciones"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
@@ -295,6 +304,16 @@ const Header = () => {
                   >
                     <BookOpen className="h-5 w-5 text-amber-500" />
                     Manual de Uso App
+                  </a>
+                  <a
+                    href="/libro-ecoems"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <BookOpen className="h-5 w-5 text-orange-500" />
+                    Manual Digital ECOEMS
                   </a>
                   <Link
                     to="/certificaciones"

@@ -95,13 +95,6 @@ const StreakAutoSync = () => {
 };
 
 
-const ManualRedirect = () => {
-  useEffect(() => {
-    window.location.replace("https://cdn.cyberedumx.com/manual_de_uso_cyberedumx.html");
-  }, []);
-  return null;
-};
-
 const queryClient = new QueryClient();
 
 /** Tracks page views on every route change */
@@ -148,7 +141,6 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
             <Route path="/sugerencias" element={<Sugerencias />} />
-            <Route path="/manual" element={<ManualRedirect />} />
             <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
             <Route path="/tokens" element={<Tokens />} />
             <Route path="/admin/monitoring" element={<ProtectedRoute><AdminMonitoring /></ProtectedRoute>} />

@@ -25,7 +25,6 @@
     { "source": "/simulador-ecoems-completo",                               "destination": "/simulador-pro",    "permanent": true },
     { "source": "/curso/ecoems-2026-estrategia-inteligente",                "destination": "/simulador-pro",    "permanent": true },
     { "source": "/curso/ecoems-2026/:path*",                                "destination": "/simulador-pro",    "permanent": true },
-    { "source": "/manual.html",  "destination": "/manual", "permanent": true },
     { "source": "/(.*\\.php)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.html)", "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.pdf)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
@@ -49,6 +48,8 @@
       "source": "/(google[a-z0-9]+\\.html|sitemap\\.xml|robots\\.txt|favicon\\.ico|.well-known/.*)",
       "destination": "/$1"
     },
+    { "source": "/manual", "destination": "/manual.html" },
+    { "source": "/libro-ecoems", "destination": "/libro/manual_digital_ECOEMS.html" },
     {
       "source": "/(auth|login|tokens|reportes|certificaciones|blog|simulador-pro|modalidades|sugerencias|area|admin|subscription|marketing)",
       "destination": "/index.html"
