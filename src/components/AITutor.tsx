@@ -4248,7 +4248,7 @@ const AITutor = () => {
 
                 {/* CTA */}
                 <button
-                  onClick={() => { setShowGuestModal(false); navigate('/auth'); }}
+                  onClick={() => { setShowGuestModal(false); window.location.href = '/auth'; }}
                   className="w-full py-4 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-sm hover:bg-primary/90 active:scale-95 transition-all shadow-lg shadow-primary/30 mb-3"
                 >
                   Crear cuenta gratis
