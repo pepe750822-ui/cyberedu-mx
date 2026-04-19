@@ -20,7 +20,7 @@ const Footer = () => {
                         Enviar sugerencia
                     </Link>
                     <a
-                        href="/manual.html"
+                        href="/manual"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-amber-500 transition-colors border border-white/5 hover:border-amber-500/30 px-4 py-2 rounded-full"
