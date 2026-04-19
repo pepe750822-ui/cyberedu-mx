@@ -2340,6 +2340,20 @@ const AITutor = () => {
       localStorage.setItem('cyberedu_chat_visited', 'true');
     }
   }, [user]);
+
+  // Allow external components to open the chat and optionally pre-fill a message
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { message?: string } | undefined;
+      setIsOpen(true);
+      if (detail?.message) {
+        setInput(detail.message);
+      }
+    };
+    window.addEventListener('cyberedu:open-chat', handler);
+    return () => window.removeEventListener('cyberedu:open-chat', handler);
+  }, []);
+
   const [isStreaming, setIsStreaming] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState<string | null>(null);

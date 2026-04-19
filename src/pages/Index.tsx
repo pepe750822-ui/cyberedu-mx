@@ -22,8 +22,11 @@ import {
   ShieldCheck,
   Download,
   Share2,
-  Search
+  Search,
+  X,
+  Bot
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import { areas } from "@/data/areas";
 import { studioMapping, fullSimulators } from "@/data/studioMap";
@@ -46,8 +49,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
 
+const AI_TUTOR_DISMISSED_KEY = 'cyberedu_ai_tutor_banner_dismissed';
+
 const Index = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
   const {
     isViewed,
@@ -137,6 +143,15 @@ const Index = () => {
   }, [areaProgress]);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [aiTutorDismissed, setAiTutorDismissed] = useState(
+    () => localStorage.getItem(AI_TUTOR_DISMISSED_KEY) === 'true'
+  );
+
+  const dismissAiTutor = () => {
+    localStorage.setItem(AI_TUTOR_DISMISSED_KEY, 'true');
+    setAiTutorDismissed(true);
+  };
+
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) return [];
     
@@ -284,6 +299,106 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* AI Tutor Showcase */}
+      <AnimatePresence>
+        {!aiTutorDismissed && (
+          <motion.section
+            key="ai-tutor-banner"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16, scale: 0.97 }}
+            transition={{ duration: 0.4 }}
+            className="container mx-auto px-4 mb-12"
+          >
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000" />
+              <div className="relative bg-slate-950/90 border border-violet-500/20 rounded-[2.5rem] overflow-hidden shadow-2xl">
+
+                {/* Dismiss button */}
+                <button
+                  onClick={dismissAiTutor}
+                  className="absolute top-4 right-4 z-10 p-2 rounded-full text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+                  aria-label="Cerrar"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+
+                <div className="p-8 md:p-10">
+                  {/* Header */}
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="w-12 h-12 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center shrink-0">
+                        <Bot className="h-6 w-6 text-violet-400" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+                          Tu Tutor IA para el ECOEMS 2026
+                        </h2>
+                        <p className="text-sm text-slate-400 font-medium mt-0.5">
+                          Powered by <span className="text-violet-400 font-bold">Claude AI · Anthropic</span>
+                        </p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-[10px] font-black uppercase tracking-widest text-violet-400 w-fit">
+                      <Sparkles className="h-3 w-3" /> Nuevo
+                    </span>
+                  </div>
+
+                  {/* Capabilities grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
+                    {[
+                      { emoji: '🌍', query: 'México', label: 'Escribe "México"', desc: 'aparece el globo interactivo' },
+                      { emoji: '🫀', query: 'sistema circulatorio', label: 'Escribe "sistema circulatorio"', desc: 'cuerpo humano 3D' },
+                      { emoji: '☀️', query: 'sistema solar', label: 'Escribe "sistema solar"', desc: 'navega los planetas' },
+                      { emoji: '🔢', query: 'resolver ecuaciones', label: 'Pide resolver ecuaciones', desc: 'paso a paso' },
+                      { emoji: '📅', query: 'Independencia de México', label: 'Pregunta Historia', desc: 'línea del tiempo interactiva' },
+                    ].map((item) => (
+                      <button
+                        key={item.emoji}
+                        onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message: item.query } }))}
+                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-violet-500/10 hover:border-violet-500/30 transition-all text-left group/cap"
+                      >
+                        <span className="text-2xl">{item.emoji}</span>
+                        <div>
+                          <p className="text-[11px] font-black text-white leading-snug group-hover/cap:text-violet-300 transition-colors">
+                            {item.label}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">→ {item.desc}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    {user ? (
+                      <button
+                        onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-violet-500/25"
+                      >
+                        <Bot className="h-4 w-4" />
+                        Ir al Tutor IA
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-violet-500/25"
+                      >
+                        <Zap className="h-4 w-4" />
+                        Pruébalo gratis — 3 consultas sin registro
+                      </button>
+                    )}
+                    <p className="text-[10px] text-slate-600 font-medium">
+                      Sin tarjeta de crédito · Sin registro obligatorio
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+        )}
+      </AnimatePresence>
 
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 mt-12 mb-16 space-y-12">
