@@ -78,17 +78,27 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const dragStart = useRef({ x: 0, scrollLeft: 0 });
 
-  const events = EVENTS
-    .filter(e => filter === 'all' || e.category === filter)
-    .filter(e => matchesKeyword(e, keyword))
-    .sort((a, b) => a.year - b.year);
+  const events = React.useMemo(() => {
+    return EVENTS
+      .filter(e => filter === 'all' || e.category === filter)
+      .filter(e => matchesKeyword(e, keyword))
+      .sort((a, b) => a.year - b.year);
+  }, [filter, keyword]);
 
-  // Scroll to the first matching event when keyword filter is active
+  // Sync state with focus prop if it changes
   useEffect(() => {
-    if (keyword && scrollRef.current) {
-      scrollRef.current.scrollLeft = 0;
+    const next = getInitialState(focus);
+    setFilter(next.filter);
+    setKeyword(next.keyword);
+    setSelected(null);
+  }, [focus]);
+
+  // Scroll back to start when filter changes
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
     }
-  }, [keyword, filter]);
+  }, [filter, keyword]);
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
