@@ -273,7 +273,7 @@ const Index = () => {
                   {/* Capabilities grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
                     {[
-                      { emoji: '🌍', query: 'México', label: 'Escribe "México"', desc: 'aparece el globo interactivo' },
+                      { emoji: '🌍', query: 'Muéstrame México en el globo terráqueo interactivo', label: 'Escribe "México"', desc: 'aparece el globo interactivo' },
                       { emoji: '🫀', query: 'sistema circulatorio', label: 'Escribe "sistema circulatorio"', desc: 'cuerpo humano 3D' },
                       { emoji: '☀️', query: 'sistema solar', label: 'Escribe "sistema solar"', desc: 'navega los planetas' },
                       { emoji: '🔢', query: 'resolver ecuaciones', label: 'Pide resolver ecuaciones', desc: 'paso a paso' },

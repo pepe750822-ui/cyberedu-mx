@@ -2324,6 +2324,9 @@ const AITutor = () => {
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(isMobile);
+  const [pendingAutoSend, setPendingAutoSend] = useState<string | null>(null);
+  // Ref keeps the latest sendMessage without stale-closure issues in effects
+  const sendMessageRef = useRef<((text: string) => void) | null>(null);
   const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
@@ -2344,16 +2347,26 @@ const AITutor = () => {
   // Allow external components to open the chat, optionally pre-fill a message, and force fullscreen
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail as { message?: string; fullscreen?: boolean } | undefined;
+      const detail = (e as CustomEvent).detail as { message?: string } | undefined;
       setIsOpen(true);
       setIsExpanded(true);
       if (detail?.message) {
         setInput(detail.message);
+        setPendingAutoSend(detail.message);
       }
     };
     window.addEventListener('cyberedu:open-chat', handler);
     return () => window.removeEventListener('cyberedu:open-chat', handler);
   }, []);
+
+  // Fire the auto-send once the panel is open and not already streaming
+  useEffect(() => {
+    if (!pendingAutoSend || !isOpen || isStreaming) return;
+    const msg = pendingAutoSend;
+    setPendingAutoSend(null);
+    const timer = setTimeout(() => sendMessageRef.current?.(msg), 400);
+    return () => clearTimeout(timer);
+  }, [pendingAutoSend, isOpen, isStreaming]);
 
   const [isStreaming, setIsStreaming] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -3828,6 +3841,9 @@ const AITutor = () => {
 
   const guestQueriesUsed = !user ? parseInt(localStorage.getItem('cyberedu_guest_count') || '0') : 0;
   const isGuestLimitReached = !user && guestQueriesUsed >= 3;
+
+  // Keep ref pointing at the latest sendMessage (avoids stale closure in auto-send effect)
+  sendMessageRef.current = sendMessage;
 
   return (
     <>
