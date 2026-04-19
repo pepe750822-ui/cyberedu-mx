@@ -924,6 +924,7 @@ async function streamChat({
   signal,
   token,
   file,
+  url = CHAT_URL,
 }: {
   messages: { role: string; content: string }[];
   context?: any;
@@ -935,8 +936,9 @@ async function streamChat({
   signal?: AbortSignal;
   token?: string;
   file?: { type: string; data: string };
+  url?: string;
 }) {
-  const resp = await fetch(CHAT_URL, {
+  const resp = await fetch(url, {
     method: "POST",
     signal,
     headers: {
@@ -2286,6 +2288,8 @@ const AITutor = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const [showGuestModal, setShowGuestModal] = useState(false);
+
   const [showPromoBanner, setShowPromoBanner] = useState(() => {
     if (typeof window !== "undefined") {
       return !localStorage.getItem("cyberedu_banner_ia_aviso");
@@ -2991,13 +2995,69 @@ const AITutor = () => {
     // Validaciones de Suscripción/Prueba (Solo para chat normal, los comandos son gratis)
     if (!isCommand) {
       if (!user) {
-        const assistantId = Date.now().toString();
-        setMessages(prev => [
-          ...prev, 
-          { role: "user", content: text.trim(), id: (Date.now() - 1).toString() },
-          { role: "assistant", content: "Regístrate gratis para chatear con el Tutor IA 🎓", id: assistantId }
-        ]);
+        const guestCount = parseInt(localStorage.getItem('cyberedu_guest_count') || '0');
+        if (guestCount >= 3) {
+          setShowGuestModal(true);
+          return;
+        }
+
+        // Guest mode: stream from unauthenticated endpoint
+        localStorage.setItem('cyberedu_guest_count', String(guestCount + 1));
+        const userMsg: Message = { role: "user", content: text.trim(), id: Date.now().toString() };
+        setMessages(prev => [...prev, userMsg]);
         setInput("");
+        setIsStreaming(true);
+        if (abortControllerRef.current) abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
+
+        let guestContent = "";
+        const guestAssistantId = (Date.now() + 1).toString();
+        let lastGuestUiUpdate = 0;
+        const upsertGuest = (chunk: string) => {
+          guestContent += chunk;
+          const now = Date.now();
+          if (now - lastGuestUiUpdate < 80) return;
+          lastGuestUiUpdate = now;
+          setMessages(prev => {
+            const exists = prev.find(m => m.id === guestAssistantId);
+            if (exists) return prev.map(m => m.id === guestAssistantId ? { ...m, content: guestContent } : m);
+            return [...prev, { role: "assistant" as const, content: guestContent, id: guestAssistantId }];
+          });
+        };
+
+        const guestHistory = messages
+          .filter(m => m.id !== "initial" && m.content?.trim())
+          .slice(-6)
+          .map(m => ({ role: m.role, content: m.content }));
+
+        try {
+          await streamChat({
+            url: '/api/ai-chat-guest',
+            messages: [...guestHistory, { role: userMsg.role, content: userMsg.content }],
+            onDelta: upsertGuest,
+            signal: abortControllerRef.current.signal,
+            onDone: () => {
+              const { cleanContent } = parseAllBlocks(guestContent);
+              setMessages(prev => prev.map(m =>
+                m.id === guestAssistantId ? { ...m, content: cleanContent || guestContent } : m
+              ));
+              setIsStreaming(false);
+              const newCount = parseInt(localStorage.getItem('cyberedu_guest_count') || '1');
+              if (newCount >= 3) {
+                setTimeout(() => setShowGuestModal(true), 1200);
+              }
+            },
+          });
+        } catch (err: any) {
+          if (err?.name !== 'AbortError') {
+            setMessages(prev => prev.map(m =>
+              m.id === guestAssistantId
+                ? { ...m, content: "Ocurrió un error. Intenta de nuevo." }
+                : m
+            ));
+          }
+          setIsStreaming(false);
+        }
         return;
       }
 
@@ -4092,6 +4152,81 @@ const AITutor = () => {
           )}
         </div>
       </div>
+
+      {/* Guest limit modal */}
+      <AnimatePresence>
+        {showGuestModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={(e) => { if (e.target === e.currentTarget) setShowGuestModal(false); }}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="relative w-full max-w-sm bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+            >
+              {/* Top gradient accent */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-primary" />
+
+              <div className="p-8 text-center">
+                {/* Icon */}
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-5">
+                  <Brain className="h-8 w-8 text-primary" />
+                </div>
+
+                {/* Usage indicator */}
+                <div className="flex justify-center gap-2 mb-4">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className="h-2 w-8 rounded-full bg-primary" />
+                  ))}
+                </div>
+                <p className="text-[10px] font-black text-primary/70 uppercase tracking-widest mb-5">3 / 3 consultas gratuitas</p>
+
+                <h2 className="text-2xl font-black text-white mb-2 leading-tight">
+                  ¡Regístrate gratis y sigue estudiando!
+                </h2>
+                <p className="text-white/50 text-sm mb-6">
+                  Obtén <span className="text-white font-bold">5 consultas diarias</span> con el Tutor IA, videos, quizzes e infografías — sin costo.
+                </p>
+
+                {/* Benefits */}
+                <div className="space-y-2 mb-6 text-left">
+                  {[
+                    "5 preguntas gratis al día con CyberAgent",
+                    "Videos y quizzes para cada tema del ECOEMS",
+                    "Simuladores de práctica completos",
+                    "Sin tarjeta de crédito",
+                  ].map(benefit => (
+                    <div key={benefit} className="flex items-center gap-3 text-sm text-white/70">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                      <span>{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <button
+                  onClick={() => { setShowGuestModal(false); navigate('/auth'); }}
+                  className="w-full py-4 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-sm hover:bg-primary/90 active:scale-95 transition-all shadow-lg shadow-primary/30 mb-3"
+                >
+                  Crear cuenta gratis
+                </button>
+                <button
+                  onClick={() => setShowGuestModal(false)}
+                  className="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white/40 transition-colors"
+                >
+                  Tal vez después
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

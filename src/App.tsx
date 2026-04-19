@@ -105,12 +105,11 @@ const PageViewTracker = () => {
 
 const AuthenticatedStudyTools = () => {
   const { user } = useAuth();
-  if (!user) return null;
   return (
     <>
       <AITutor />
-      <StreakAutoSync />
-      <AchievementObserver />
+      {user && <StreakAutoSync />}
+      {user && <AchievementObserver />}
     </>
   );
 };
@@ -132,9 +131,9 @@ const App = () => (
           <PWAStatusBar />
           <WhatsAppButton />
           <Routes>
-            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-            <Route path="/area/:areaId" element={<ProtectedRoute><AreaDetail /></ProtectedRoute>} />
-            <Route path="/simulador-pro" element={<ProtectedRoute><SimuladorPro /></ProtectedRoute>} />
+            <Route path="/" element={<Index />} />
+            <Route path="/area/:areaId" element={<AreaDetail />} />
+            <Route path="/simulador-pro" element={<SimuladorPro />} />
             <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
             <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
             <Route path="/reportes" element={<ProtectedRoute><Reportes /></ProtectedRoute>} />
