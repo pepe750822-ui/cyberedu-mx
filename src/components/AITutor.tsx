@@ -3893,7 +3893,7 @@ const AITutor = () => {
                       <p className="text-xs text-white font-bold mb-2 pl-2">Has usado tus 3 consultas gratuitas 🎓</p>
                       <div className="flex flex-wrap gap-2 pl-2">
                         <button
-                          onClick={() => navigate('/auth')}
+                          onClick={() => { window.location.href = '/auth'; }}
                           className="px-3 py-1.5 rounded-lg bg-primary text-white text-[10px] font-black uppercase tracking-widest hover:bg-primary/90 active:scale-95 transition-all"
                         >
                           Crear cuenta gratis
