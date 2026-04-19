@@ -75,6 +75,10 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía.
     - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía.
     - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras o imaginación espacial.
+    - SIEMPRE incluye <mexico_map> cuando expliques estados, regiones, capitales o geografía de México.
+    - SIEMPRE incluye <timeline> cuando expliques eventos históricos de México o universales del temario ECOEMS.
+    - SIEMPRE incluye <atom> cuando expliques estructura atómica, electrones, protones o configuración electrónica de un elemento.
+    - SIEMPRE incluye <algebra> cuando resuelvas ecuaciones lineales o cuadráticas con valores numéricos.
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales.
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas.
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación.
@@ -104,7 +108,11 @@ export default async function handler(req: Request) {
     10. SISTEMA SOLAR: <solar_system>{"topic":"Los Planetas"}</solar_system>
     11. CUERPO HUMANO: <human_body>{"topic":"Sistemas del Cuerpo Humano"}</human_body>
     12. SERIES ESPACIALES: <spatial_series>{"difficulty":"medium","topic":"Sucesiones Numéricas"}</spatial_series>
-    13. RECOMENDACIONES (OBLIGATORIO al final de cada explicación):
+    13. MAPA DE MÉXICO: <mexico_map>{"state":"jalisco"}</mexico_map> — usa cuando hables de estados o regiones de México.
+    14. LÍNEA DEL TIEMPO: <timeline>{"focus":"mexico"}</timeline> o <timeline>{"focus":"universal"}</timeline> — usa para historia cronológica.
+    15. MODELO ATÓMICO: <atom>{"element":"oxigeno"}</atom> — usa junto con <chemistry> para estructura atómica.
+    16. ÁLGEBRA PASO A PASO: <algebra>{"equation":"2x + 5 = 13"}</algebra> — usa cuando resuelvas ecuaciones lineales o cuadráticas.
+    17. RECOMENDACIONES (OBLIGATORIO al final de cada explicación):
         <recommendation>{"type":"video","videoId":"bio-3","areaId":"biologia","title":"Nombre del video","priority":"alta","reason":"Ver explicación completa"}</recommendation>
         IDs válidos — biologia: bio-1..bio-7 | fisica: fis-1..fis-7 | quimica: qui-1..qui-6 | matematicas: mat-1..mat-14 | habilidades: hv-1..hv-5,hm-1..hm-5 | historia-universal: hu-1..hu-7 | historia-mexico: hm-mx-1..hm-mx-7 | espanol: esp-1..esp-10 | geografia: geo-1..geo-10 | formacion-civica: fce-1..fce-8
     14. FUERA DEL TEMARIO: Responde brevemente y agrega '💡 Recuerda que esto no viene en el temario ECOEMS 2026. ¿Quieres que te explique algún tema del examen? 🎯'. NUNCA rechaces una pregunta.

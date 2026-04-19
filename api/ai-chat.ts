@@ -469,6 +469,10 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
     - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía (Punto 24).
     - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras, imaginación espacial o habilidad matemática del ECOEMS (Punto 25).
+    - SIEMPRE incluye <mexico_map> cuando expliques estados, regiones, capitales o geografía de México (Punto 26).
+    - SIEMPRE incluye <timeline> cuando expliques historia de México o historia universal con eventos cronológicos (Punto 27).
+    - SIEMPRE incluye <atom> cuando expliques estructura atómica, electrones, protones, neutrones o modelos atómicos de elementos (Punto 28).
+    - SIEMPRE incluye <algebra> cuando resuelvas ecuaciones de primer grado o cuadráticas con valores numéricos concretos (Punto 29).
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
@@ -620,6 +624,34 @@ export default async function handler(req: Request) {
         - Para dificultad usa: "easy" (secundaria básica), "medium" (ECOEMS promedio), "hard" (nivel avanzado).
         - NUNCA uses solo texto para temas de series/sucesiones; SIEMPRE incluye este tag.
         - Esto activará un simulador interactivo de series numéricas, espaciales y de figuras.
+
+    26. MAPA DE MÉXICO (OBLIGATORIO PARA GEOGRAFÍA DE MÉXICO):
+        - Cuando el usuario pregunte sobre estados, capitales, regiones, extensión o datos curiosos de estados mexicanos, usa SIEMPRE:
+          <mexico_map>{ "state": "jalisco" }</mexico_map>
+        - El campo "state" es opcional: puede ser el id del estado (ej: "jalisco", "cdmx", "yuc") o dejar vacío para mostrar todo el mapa.
+        - NUNCA uses solo texto para temas de estados o regiones de México; SIEMPRE incluye este tag.
+        - Esto activará un mapa SVG interactivo con los 32 estados de México.
+
+    27. LÍNEA DEL TIEMPO (OBLIGATORIO PARA HISTORIA):
+        - Cuando expliques eventos históricos de México o Historia Universal del temario ECOEMS, usa SIEMPRE:
+          <timeline>{ "focus": "mexico" }</timeline>  (para Historia de México)
+          <timeline>{ "focus": "universal" }</timeline>  (para Historia Universal)
+        - NUNCA uses solo texto para repasar cronologías históricas; SIEMPRE incluye este tag.
+        - Esto activará una línea del tiempo interactiva horizontal con eventos clave.
+
+    28. MODELO ATÓMICO (OBLIGATORIO PARA QUÍMICA - ESTRUCTURA ATÓMICA):
+        - Cuando expliques protones, neutrones, electrones, capas electrónicas, configuración electrónica o modelos atómicos de un elemento específico, usa SIEMPRE:
+          <atom>{ "element": "oxigeno" }</atom>
+        - El campo "element" puede ser el nombre en español o el símbolo (ej: "O", "carbono", "Fe").
+        - NUNCA uses solo texto para estructura atómica; SIEMPRE incluye este tag junto con <chemistry>.
+        - Esto activará un modelo atómico animado con electrones en órbita.
+
+    29. CALCULADORA ALGEBRAICA PASO A PASO (OBLIGATORIO PARA ECUACIONES):
+        - Cuando resuelvas una ecuación lineal (ax + b = c) o cuadrática (ax² + bx + c = 0) con valores numéricos concretos, usa SIEMPRE:
+          <algebra>{ "equation": "2x + 5 = 13" }</algebra>
+        - El campo "equation" es informativo; el usuario puede modificar los coeficientes en la interfaz.
+        - NUNCA resuelvas ecuaciones solo con texto; SIEMPRE incluye este tag además del desarrollo textual.
+        - Esto activará una calculadora que muestra cada paso con explicación.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:

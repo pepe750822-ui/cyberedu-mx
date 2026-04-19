@@ -39,6 +39,10 @@ import GlobeArtifact from "./GlobeArtifact";
 import SolarSystemArtifact from "./SolarSystemArtifact";
 import HumanBodyArtifact from "./HumanBodyArtifact";
 import SpatialSeriesArtifact from "./SpatialSeriesArtifact";
+import MexicoMapArtifact from "./MexicoMapArtifact";
+import TimelineArtifact from "./TimelineArtifact";
+import AtomArtifact from "./AtomArtifact";
+import AlgebraArtifact from "./AlgebraArtifact";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
@@ -312,6 +316,10 @@ interface Message {
   solarSystem?: any[];
   humanBody?: any[];
   spatialSeries?: any[];
+  mexicoMaps?: any[];
+  timelines?: any[];
+  atoms?: any[];
+  algebras?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -825,6 +833,50 @@ function parseImagesFromContent(content: string): { eduImages: EduImage[]; clean
   return { eduImages: found, cleanContent };
 }
 
+function parseMexicoMapsFromContent(content: string): { mexicoMaps: any[]; cleanContent: string } {
+  const mexicoMaps: any[] = [];
+  const regex = /<mexico_map>([\s\S]*?)(?:<\/mexico_map>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    mexicoMaps.push(safeParseJSON(raw) ?? { state: '' });
+  }
+  return { mexicoMaps, cleanContent: content.replace(/<mexico_map>[\s\S]*?(?:<\/mexico_map>|$)/g, '').trim() };
+}
+
+function parseTimelinesFromContent(content: string): { timelines: any[]; cleanContent: string } {
+  const timelines: any[] = [];
+  const regex = /<timeline>([\s\S]*?)(?:<\/timeline>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    timelines.push(safeParseJSON(raw) ?? { focus: 'mexico' });
+  }
+  return { timelines, cleanContent: content.replace(/<timeline>[\s\S]*?(?:<\/timeline>|$)/g, '').trim() };
+}
+
+function parseAtomsFromContent(content: string): { atoms: any[]; cleanContent: string } {
+  const atoms: any[] = [];
+  const regex = /<atom>([\s\S]*?)(?:<\/atom>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    atoms.push(safeParseJSON(raw) ?? { element: '' });
+  }
+  return { atoms, cleanContent: content.replace(/<atom>[\s\S]*?(?:<\/atom>|$)/g, '').trim() };
+}
+
+function parseAlgebrasFromContent(content: string): { algebras: any[]; cleanContent: string } {
+  const algebras: any[] = [];
+  const regex = /<algebra>([\s\S]*?)(?:<\/algebra>|$)/g;
+  let m;
+  while ((m = regex.exec(content)) !== null) {
+    const raw = m[1].trim();
+    algebras.push(safeParseJSON(raw) ?? { equation: '' });
+  }
+  return { algebras, cleanContent: content.replace(/<algebra>[\s\S]*?(?:<\/algebra>|$)/g, '').trim() };
+}
+
 function parseRecommendationsFromContent(content: string): { recommendations: ContentRecommendation[]; cleanContent: string } {
   const recommendations: ContentRecommendation[] = [];
   const regex = /<recommendation>([\s\S]*?)(?:<\/recommendation>|$)/g;
@@ -840,11 +892,11 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 
 function parseAllBlocks(content: string) {
   try {
-    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
-    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
+    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
   } catch (err) {
     console.error("Critical error in parseAllBlocks:", err);
-    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], spatialSeries: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
+    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], spatialSeries: [], mexicoMaps: [], timelines: [], atoms: [], algebras: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
   }
 }
 
@@ -860,19 +912,23 @@ function parseAllBlocksHelper(content: string) {
   const { solarSystem, cleanContent: c5645 } = parseSolarSystemFromContent(c564);
   const { humanBody, cleanContent: c5646 } = parseHumanBodyFromContent(c5645);
   const { spatialSeries, cleanContent: c5647 } = parseSpatialSeriesFromContent(c5646);
-  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5647);
+  const { mexicoMaps, cleanContent: c5648 } = parseMexicoMapsFromContent(c5647);
+  const { timelines, cleanContent: c5649 } = parseTimelinesFromContent(c5648);
+  const { atoms, cleanContent: c5650 } = parseAtomsFromContent(c5649);
+  const { algebras, cleanContent: c5651 } = parseAlgebrasFromContent(c5650);
+  const { physics, cleanContent: c565 } = parsePhysicsFromContent(c5651);
   const { mathGraphs, cleanContent: c567 } = parseMathGraphsFromContent(c565);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c567);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body|spatial_series)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body|spatial_series|mexico_map|timeline|atom|algebra)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -889,6 +945,10 @@ function stripStreamingBlocks(content: string): string {
         solar_system: "sistema solar",
         human_body: "cuerpo humano",
         spatial_series: "series espaciales",
+        mexico_map: "mapa de México",
+        timeline: "línea del tiempo",
+        atom: "modelo atómico",
+        algebra: "calculadora algebraica",
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -2090,6 +2150,34 @@ const MessageBubble = React.memo(({
           {msg.spatialSeries?.map((ss: any, i: number) => (
             <SafeBlockErrorBoundary key={`spat-err-${i}`} fallbackMessage="No se pudo cargar el artefacto de series espaciales.">
               <SpatialSeriesArtifact difficulty={ss?.difficulty} topic={ss?.topic} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.10 Mapa de México (MexicoMapArtifact) */}
+          {msg.mexicoMaps?.map((mm: any, i: number) => (
+            <SafeBlockErrorBoundary key={`mxmap-err-${i}`} fallbackMessage="No se pudo cargar el mapa de México.">
+              <MexicoMapArtifact state={mm?.state ?? ''} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.11 Línea del Tiempo (TimelineArtifact) */}
+          {msg.timelines?.map((tl: any, i: number) => (
+            <SafeBlockErrorBoundary key={`tl-err-${i}`} fallbackMessage="No se pudo cargar la línea del tiempo.">
+              <TimelineArtifact focus={tl?.focus ?? 'mexico'} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.12 Modelo Atómico (AtomArtifact) */}
+          {msg.atoms?.map((at: any, i: number) => (
+            <SafeBlockErrorBoundary key={`atom-err-${i}`} fallbackMessage="No se pudo cargar el modelo atómico.">
+              <AtomArtifact element={at?.element ?? ''} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.13 Álgebra Paso a Paso (AlgebraArtifact) */}
+          {msg.algebras?.map((alg: any, i: number) => (
+            <SafeBlockErrorBoundary key={`alg-err-${i}`} fallbackMessage="No se pudo cargar la calculadora algebraica.">
+              <AlgebraArtifact equation={alg?.equation ?? ''} />
             </SafeBlockErrorBoundary>
           ))}
 
@@ -3321,6 +3409,10 @@ const AITutor = () => {
               geography: geography.length > 0 ? geography : undefined,
               humanBody: humanBody.length > 0 ? humanBody : undefined,
               spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined,
+              mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined,
+              timelines: timelines.length > 0 ? timelines : undefined,
+              atoms: atoms.length > 0 ? atoms : undefined,
+              algebras: algebras.length > 0 ? algebras : undefined,
               solarSystem: solarSystem.length > 0 ? solarSystem : undefined,
               physics: physics.length > 0 ? physics : undefined,
               mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
@@ -3572,7 +3664,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3621,7 +3713,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined, timelines: timelines.length > 0 ? timelines : undefined, atoms: atoms.length > 0 ? atoms : undefined, algebras: algebras.length > 0 ? algebras : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);
