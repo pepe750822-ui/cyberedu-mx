@@ -25,11 +25,10 @@ function solveLinear(a: number, b: number, c: number): LinearResult {
 
   if (b !== 0) {
     const rhs = c - b;
-    const op = b > 0 ? `restar ${b}` : `sumar ${Math.abs(b)}`;
     steps.push({
       label: `2. ${b > 0 ? 'Restar' : 'Sumar'} ${Math.abs(b)} a ambos lados`,
-      expression: `${a}x = ${c} ${b > 0 ? '-' : '+'} ${Math.abs(b)} = ${rhs}`,
-      explanation: `Pasamos ${b > 0 ? `+${b}` : b} al otro lado cambiando de signo para ${op} y dejar sola la x.`,
+      expression: `${a}x = ${rhs}`,
+      explanation: `Movemos ${b > 0 ? `+${b}` : b} al lado derecho cambiando de signo: ${c} ${b > 0 ? '−' : '+'} ${Math.abs(b)} = ${rhs}. Así obtenemos ${a}x = ${rhs}.`,
     });
   }
 

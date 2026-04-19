@@ -3108,8 +3108,9 @@ const AITutor = () => {
           lastGuestUiUpdate = now;
           setMessages(prev => {
             const exists = prev.find(m => m.id === guestAssistantId);
-            if (exists) return prev.map(m => m.id === guestAssistantId ? { ...m, content: guestContent } : m);
-            return [...prev, { role: "assistant" as const, content: guestContent, id: guestAssistantId }];
+            const displayContent = stripStreamingBlocks(guestContent);
+            if (exists) return prev.map(m => m.id === guestAssistantId ? { ...m, content: displayContent } : m);
+            return [...prev, { role: "assistant" as const, content: displayContent, id: guestAssistantId }];
           });
         };
 
@@ -3125,9 +3126,30 @@ const AITutor = () => {
             onDelta: upsertGuest,
             signal: abortControllerRef.current.signal,
             onDone: () => {
-              const { cleanContent } = parseAllBlocks(guestContent);
+              const { cleanContent, algebras, atoms, timelines, mexicoMaps, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, charts, quiz, recommendations, eduImages } = parseAllBlocks(guestContent);
               setMessages(prev => prev.map(m =>
-                m.id === guestAssistantId ? { ...m, content: cleanContent || guestContent } : m
+                m.id === guestAssistantId ? {
+                  ...m,
+                  content: cleanContent || guestContent,
+                  algebras: algebras.length > 0 ? algebras : undefined,
+                  atoms: atoms.length > 0 ? atoms : undefined,
+                  timelines: timelines.length > 0 ? timelines : undefined,
+                  mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined,
+                  calculators: calculators.length > 0 ? calculators : undefined,
+                  simulators: simulators.length > 0 ? simulators : undefined,
+                  geography: geography.length > 0 ? geography : undefined,
+                  solarSystem: solarSystem.length > 0 ? solarSystem : undefined,
+                  humanBody: humanBody.length > 0 ? humanBody : undefined,
+                  spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined,
+                  physics: physics.length > 0 ? physics : undefined,
+                  mathGraphs: mathGraphs.length > 0 ? mathGraphs : undefined,
+                  exercises: exercises.length > 0 ? exercises : undefined,
+                  chemistryElements: chemistryElements.length > 0 ? chemistryElements : undefined,
+                  charts: charts.length > 0 ? charts : undefined,
+                  quiz: quiz ?? undefined,
+                  recommendations: recommendations.length > 0 ? recommendations : undefined,
+                  eduImages: eduImages.length > 0 ? eduImages : undefined,
+                } : m
               ));
               setIsStreaming(false);
               const newCount = parseInt(localStorage.getItem('cyberedu_guest_count') || '1');
