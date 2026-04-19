@@ -2341,11 +2341,12 @@ const AITutor = () => {
     }
   }, [user]);
 
-  // Allow external components to open the chat and optionally pre-fill a message
+  // Allow external components to open the chat, optionally pre-fill a message, and force fullscreen
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail as { message?: string } | undefined;
+      const detail = (e as CustomEvent).detail as { message?: string; fullscreen?: boolean } | undefined;
       setIsOpen(true);
+      setIsExpanded(true);
       if (detail?.message) {
         setInput(detail.message);
       }
