@@ -2359,6 +2359,8 @@ const AITutor = () => {
     return () => window.removeEventListener('cyberedu:open-chat', handler);
   }, []);
 
+  const [isStreaming, setIsStreaming] = useState(false);
+
   // Fire the auto-send once the panel is open and not already streaming
   useEffect(() => {
     if (!pendingAutoSend || !isOpen || isStreaming) return;
@@ -2368,7 +2370,6 @@ const AITutor = () => {
     return () => clearTimeout(timer);
   }, [pendingAutoSend, isOpen, isStreaming]);
 
-  const [isStreaming, setIsStreaming] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState<string | null>(null);
   const [memory, setMemory] = useState<AgentMemory>(loadMemory);
