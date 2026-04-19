@@ -3697,6 +3697,9 @@ const AITutor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  const guestQueriesUsed = !user ? parseInt(localStorage.getItem('cyberedu_guest_count') || '0') : 0;
+  const isGuestLimitReached = !user && guestQueriesUsed >= 3;
+
   return (
     <>
       {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
@@ -3883,6 +3886,28 @@ const AITutor = () => {
               <div className={cn("w-full mx-auto", isExpanded && "max-w-3xl")}>
 
 
+                  {/* Banner invitado — límite alcanzado */}
+                  {isGuestLimitReached && (
+                    <div className="mb-3 p-3 bg-primary/10 border border-primary/30 rounded-xl relative overflow-hidden animate-in slide-in-from-bottom-2 fade-in">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-primary rounded-l" />
+                      <p className="text-xs text-white font-bold mb-2 pl-2">Has usado tus 3 consultas gratuitas 🎓</p>
+                      <div className="flex flex-wrap gap-2 pl-2">
+                        <button
+                          onClick={() => navigate('/auth')}
+                          className="px-3 py-1.5 rounded-lg bg-primary text-white text-[10px] font-black uppercase tracking-widest hover:bg-primary/90 active:scale-95 transition-all"
+                        >
+                          Crear cuenta gratis
+                        </button>
+                        <button
+                          onClick={() => setShowGuestModal(true)}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-black text-slate-300 uppercase tracking-widest transition-all"
+                        >
+                          Ver beneficios
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Banner Límite Diario */}
                   {dailyLimitBanner.visible && (
                     <div className="mb-3 p-3 bg-red-900/20 border border-red-500/30 rounded-xl relative overflow-hidden animate-in slide-in-from-bottom-2 fade-in">
@@ -3950,7 +3975,19 @@ const AITutor = () => {
                   </div>
 
                     <div className="text-right mb-2">
-                       {!usageStats && (
+                       {/* Guest counter */}
+                       {!user && guestQueriesUsed < 3 && (
+                         <span className={cn(
+                           "text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border",
+                           guestQueriesUsed === 2
+                             ? "text-amber-400 bg-amber-400/10 border-amber-400/20 animate-pulse"
+                             : "text-slate-400 bg-slate-800/50 border-white/5"
+                         )}>
+                           {guestQueriesUsed === 0 ? "3 consultas gratis disponibles" : `Consulta ${guestQueriesUsed}/3`}
+                         </span>
+                       )}
+
+                       {!usageStats && user && (
                          <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">
                            Sincronizando uso...
                          </span>
@@ -4030,7 +4067,7 @@ const AITutor = () => {
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      disabled={isStreaming || !!pendingFile || dailyLimitBanner.visible}
+                      disabled={isStreaming || !!pendingFile || dailyLimitBanner.visible || isGuestLimitReached}
                       className="h-12 w-12 bg-white/5 border border-white/10 hover:bg-white/10 text-slate-400 hover:text-white rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 shrink-0"
                       title="Adjuntar imagen o PDF"
                     >
@@ -4042,8 +4079,8 @@ const AITutor = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-                        placeholder={isListening ? "Escuchando..." : (dailyLimitBanner.visible ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
-                        disabled={isStreaming || dailyLimitBanner.visible}
+                        placeholder={isListening ? "Escuchando..." : isGuestLimitReached ? "Regístrate para seguir" : (dailyLimitBanner.visible ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
+                        disabled={isStreaming || dailyLimitBanner.visible || isGuestLimitReached}
                         className={cn(
                           "w-full bg-slate-800/80 border border-white/10 rounded-xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-primary/50 transition-all focus:ring-2 ring-primary/10 disabled:opacity-50",
                           isListening && "border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]"
@@ -4051,7 +4088,7 @@ const AITutor = () => {
                       />
                       <button
                         onClick={toggleListening}
-                        disabled={isStreaming || dailyLimitBanner.visible}
+                        disabled={isStreaming || dailyLimitBanner.visible || isGuestLimitReached}
                         className={cn(
                           "absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-all",
                           isListening ? "text-primary animate-pulse" : "text-slate-500 hover:text-white hover:bg-white/5"
@@ -4063,7 +4100,7 @@ const AITutor = () => {
                     </div>
                     <button
                       onClick={() => sendMessage(input)}
-                      disabled={(!input.trim() && !pendingFile) || isStreaming || dailyLimitBanner.visible}
+                      disabled={(!input.trim() && !pendingFile) || isStreaming || dailyLimitBanner.visible || isGuestLimitReached}
                       className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
                     >
                       {isStreaming ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
