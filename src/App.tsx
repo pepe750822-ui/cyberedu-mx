@@ -97,7 +97,7 @@ const StreakAutoSync = () => {
 
 const ManualRedirect = () => {
   useEffect(() => {
-    window.location.replace("https://cdn.cyberedumx.com/libro/manual_digital_ECOEMS.html");
+    window.location.replace("https://cdn.cyberedumx.com/manual_de_uso_cyberedumx.html");
   }, []);
   return null;
 };
