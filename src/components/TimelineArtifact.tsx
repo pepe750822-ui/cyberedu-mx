@@ -74,6 +74,10 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
   const [filter, setFilter] = useState<Filter>(init.filter);
   const [keyword, setKeyword] = useState(init.keyword);
   const [eraFilter, setEraFilter] = useState<string | null>(null);
+  const [selected, setSelected] = useState<TimelineEvent | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const dragStart = useRef({ x: 0, scrollLeft: 0 });
 
   const displayedEras = React.useMemo(() => {
     const baseEvents = EVENTS.filter(e => filter === 'all' || e.category === filter);
