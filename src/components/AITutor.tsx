@@ -2359,6 +2359,12 @@ const AITutor = () => {
     return () => window.removeEventListener('cyberedu:open-chat', handler);
   }, []);
 
+  useEffect(() => {
+    const handler = () => { setIsOpen(false); setIsExpanded(false); };
+    window.addEventListener('cyberedu:close-chat', handler);
+    return () => window.removeEventListener('cyberedu:close-chat', handler);
+  }, []);
+
   const [isStreaming, setIsStreaming] = useState(false);
 
   // Fire the auto-send once the panel is open and not already streaming

@@ -311,8 +311,11 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
             <p className="text-[12px] text-slate-200 leading-relaxed italic">{selected.detail}</p>
             
             {(selected.videoId && selected.areaId) && (
-              <button 
-                onClick={() => navigate(`/area/${selected.areaId}`)}
+              <button
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('cyberedu:close-chat'));
+                  navigate(`/area/${selected.areaId}?video=${selected.videoId}`);
+                }}
                 className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
               >
                 <PlayCircle className="h-4 w-4" />

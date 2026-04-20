@@ -633,9 +633,18 @@ export default async function handler(req: Request) {
         - Esto activará un mapa SVG interactivo con los 32 estados de México.
 
     27. LÍNEA DEL TIEMPO (OBLIGATORIO PARA HISTORIA):
-        - Cuando expliques eventos históricos de México o Historia Universal del temario ECOEMS, usa SIEMPRE:
-          <timeline>{ "focus": "mexico" }</timeline>  (para Historia de México)
-          <timeline>{ "focus": "universal" }</timeline>  (para Historia Universal)
+        - Cuando expliques eventos históricos de México o Historia Universal del temario ECOEMS, usa SIEMPRE la etiqueta <timeline>.
+        - El campo "focus" puede ser:
+            • "mexico"      → muestra todos los eventos de Historia de México
+            • "universal"   → muestra todos los eventos de Historia Universal
+            • Una palabra clave temática (sin acentos) → filtra solo los eventos relacionados.
+              Ejemplos: "independencia", "revolucion", "conquista", "virreinato", "reforma", "prehispanico",
+                        "renacimiento", "ilustracion", "guerra mundial", "guerra fria"
+        - USA la palabra clave temática cuando el usuario pregunta por un periodo o evento específico:
+          <timeline>{ "focus": "independencia" }</timeline>
+          <timeline>{ "focus": "revolucion" }</timeline>
+          <timeline>{ "focus": "mexico" }</timeline>
+          <timeline>{ "focus": "universal" }</timeline>
         - NUNCA uses solo texto para repasar cronologías históricas; SIEMPRE incluye este tag.
         - Esto activará una línea del tiempo interactiva horizontal con eventos clave.
 
