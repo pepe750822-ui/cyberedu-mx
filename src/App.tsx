@@ -1,27 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
-import AreaDetail from "./pages/AreaDetail";
-import Auth from "./pages/Auth";
-import Tokens from "./pages/Tokens";
-import Admin from "./pages/Admin";
-import AdminMonitoring from "./pages/AdminMonitoring";
-import NotFound from "./pages/NotFound";
-import SimuladorPro from "./pages/SimuladorPro";
-import Marketing from "./pages/Marketing";
-import Certificaciones from "./pages/Certificaciones";
-import Reportes from "./pages/Reportes";
-import Blog from "./pages/Blog";
-import BlogPostDetail from "./pages/BlogPostDetail";
-import Modalidades from "./pages/Modalidades";
-import Sugerencias from "./pages/Sugerencias";
-import AITutor from "./components/AITutor";
-import AdminAnalytics from "./components/AdminAnalytics";
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// Lazy-loaded pages
+const Index = lazy(() => import("./pages/Index"));
+const AreaDetail = lazy(() => import("./pages/AreaDetail"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Tokens = lazy(() => import("./pages/Tokens"));
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const SimuladorPro = lazy(() => import("./pages/SimuladorPro"));
+const Marketing = lazy(() => import("./pages/Marketing"));
+const Certificaciones = lazy(() => import("./pages/Certificaciones"));
+const Reportes = lazy(() => import("./pages/Reportes"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPostDetail = lazy(() => import("./pages/BlogPostDetail"));
+const Modalidades = lazy(() => import("./pages/Modalidades"));
+const Sugerencias = lazy(() => import("./pages/Sugerencias"));
+const AITutor = lazy(() => import("./components/AITutor"));
+const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import PWAStatusBar from "./components/PWAStatusBar";
@@ -106,11 +109,11 @@ const PageViewTracker = () => {
 const AuthenticatedStudyTools = () => {
   const { user } = useAuth();
   return (
-    <>
+    <Suspense fallback={null}>
       <AITutor />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
-    </>
+    </Suspense>
   );
 };
 
@@ -130,24 +133,27 @@ const App = () => (
           <PWAInstallBanner />
           <PWAStatusBar />
           <WhatsAppButton />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/area/:areaId" element={<AreaDetail />} />
-            <Route path="/simulador-pro" element={<SimuladorPro />} />
-            <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
-            <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
-            <Route path="/reportes" element={<ProtectedRoute><Reportes /></ProtectedRoute>} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPostDetail />} />
-            <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
-            <Route path="/sugerencias" element={<Sugerencias />} />
-            <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
-            <Route path="/tokens" element={<Tokens />} />
-            <Route path="/admin/monitoring" element={<ProtectedRoute><AdminMonitoring /></ProtectedRoute>} />
-            <Route path="/master-admin" element={<Admin />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/area/:areaId" element={<AreaDetail />} />
+              <Route path="/simulador-pro" element={<SimuladorPro />} />
+              <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
+              <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
+              <Route path="/reportes" element={<ProtectedRoute><Reportes /></ProtectedRoute>} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPostDetail />} />
+              <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
+              <Route path="/sugerencias" element={<Sugerencias />} />
+              <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
+              <Route path="/tokens" element={<Tokens />} />
+              <Route path="/admin/monitoring" element={<ProtectedRoute><AdminMonitoring /></ProtectedRoute>} />
+              <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
+              <Route path="/master-admin" element={<Admin />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
