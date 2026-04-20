@@ -198,6 +198,13 @@ const Index = () => {
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
               Prepárate con esta plataforma de <span className="text-accent font-bold">última generación</span>. 100% gratuita y diseñada para que entres a la primera.
             </p>
+            <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
+              <div className="h-px w-8 bg-emerald-500/30 hidden md:block" />
+              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 flex items-center gap-2 drop-shadow-sm">
+                <ShieldCheck className="h-4 w-4" />
+                Sin tarjeta de crédito · Sin registro obligatorio
+              </span>
+            </div>
             <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
               <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
                 <Video className="h-5 w-5 text-secondary" />
@@ -391,7 +398,7 @@ const Index = () => {
               </div>
               
               <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> Sin registro forzoso</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> Sin tarjeta de crédito · Sin registro obligatorio</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-blue-500" /> Multimedia Premium</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-violet-500" /> Disponible 24/7</span>
               </div>
