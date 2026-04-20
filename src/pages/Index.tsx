@@ -202,7 +202,7 @@ const Index = () => {
               <div className="h-px w-8 bg-emerald-500/30 hidden md:block" />
               <span className="text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 flex items-center gap-2 drop-shadow-sm">
                 <ShieldCheck className="h-4 w-4" />
-                Sin tarjeta de crédito · Sin registro obligatorio
+                Empieza ahora
               </span>
             </div>
             <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
@@ -318,11 +318,11 @@ const Index = () => {
                         className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-violet-500/25"
                       >
                         <Zap className="h-4 w-4" />
-                        Pruébalo gratis — 3 consultas sin registro
+                        Pruébalo gratis
                       </button>
                     )}
                     <p className="text-[10px] text-muted-foreground/60 font-medium">
-                      Sin tarjeta de crédito · Sin registro obligatorio
+                      Empieza ahora
                     </p>
                   </div>
                 </div>
@@ -398,7 +398,7 @@ const Index = () => {
               </div>
               
               <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> Sin tarjeta de crédito · Sin registro obligatorio</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> 100% Gratis - Empieza ahora</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-blue-500" /> Multimedia Premium</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-violet-500" /> Disponible 24/7</span>
               </div>

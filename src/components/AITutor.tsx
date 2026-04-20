@@ -2508,7 +2508,7 @@ const AITutor = () => {
 
         📚 **Material completo en CyberEdu MX — GRATIS**
         🎬 [Ver video: {título exacto del video}](/area/{areaId}?video={videoId})
-        Todo completamente GRATIS con registro.
+        Todo completamente GRATIS - Empieza ahora.
 
         CALLS TO ACTION SEGÚN USUARIO:
         - Si !context.isRegistered: 💡 [Regístrate GRATIS](/)
@@ -3650,7 +3650,7 @@ const AITutor = () => {
               📘 Guía de estudio intensiva
               🚀 Entrenamiento Studio
 
-              Todo completamente GRATIS con registro.
+              Todo completamente GRATIS - Empieza ahora.
            12. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):
                Cuando el tema lo permita, despliega bloques interactivos usando JSON dentro de los siguientes tags:
                - <calculator>: Para matemáticas algebraicas/aritméticas o geométricas básica.
@@ -3675,7 +3675,7 @@ const AITutor = () => {
                  💡 **¿Quieres acceder a todo este material?**
                  ✅ Regístrate GRATIS en /
                  ✅ 7 días de acceso completo al Tutor IA incluidos
-                 ✅ Sin tarjeta de crédito
+                 ✅ Empieza ahora
                - Si context.isRegistered && !context.isSubscriber:
                  💡 **¿Quieres seguir chateando con el Tutor IA?**
                  ✅ Paquetes desde $20 pesos (20 tokens)
@@ -4389,7 +4389,7 @@ const AITutor = () => {
                     "5 preguntas gratis al día con CyberAgent",
                     "Videos y quizzes para cada tema del ECOEMS",
                     "Simuladores de práctica completos",
-                    "Sin tarjeta de crédito",
+                    "Totalmente Gratis",
                   ].map(benefit => (
                     <div key={benefit} className="flex items-center gap-3 text-sm text-white/70">
                       <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
