@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapPin, X, Info } from 'lucide-react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { MapPin, X, Info, Search } from 'lucide-react';
 
 interface StateInfo {
   id: string;
@@ -58,12 +58,134 @@ const STATES: StateInfo[] = [
   { id: 'zac',  name: 'Zacatecas',          abbr: 'ZAC',  region: 'norte',     capital: 'Zacatecas',            pop: '1.62 M', area: '75,539 km²',  fact: 'Su centro histórico de cantera rosa es Patrimonio de la Humanidad.', d: "M390.91,276.52L391.56,274.36L396.96,273.29L406.36,273.9L411.4,276.58L415.52,281.31L418.15,281.22L418.77,284.78L424.79,283.41L427.75,283.78L432.29,289.66L434.38,290.47L436.75,289L438.87,289.47L438.87,289.47L438.32,289.89L438.32,289.89L435.27,294.83L432.71,295.26L430.91,299.05L427.04,301.03L426.21,304.48L427.22,305.66L424.94,310.16L420.2,311.75L416.72,316.89L410.88,319.86L409.51,322.33L406.57,322.91L404.25,321.98L402.72,323.85L403.86,329.37L402.65,336.13L408.88,340.98L412.26,341.9L414.66,345.92L419.17,345.24L425.08,339.93L427.76,342.46L424.27,351.41L425.65,355.27L422.75,362.54L422.75,362.54L421.94,363.48L420.97,362.85L420.97,362.85L413.8,358.22L410.26,357.31L410.26,357.31L408.53,352.83L401.26,347.64L399.66,349.82L393.33,352.9L387.83,363.6L390.24,367.07L390.24,367.07L390.24,367.07L390.24,367.07L390.8,371.13L393.58,372.91L392.14,376.91L386.27,381.22L383.38,381.21L382.42,383.77L380.84,384.66L379.13,384.23L375.7,385.46L372.8,383.85L370.54,384.04L368.1,381.04L365.43,379.92L370.64,376.99L370.4,375.39L367.78,375.2L366.93,372.72L370.34,370.38L370.49,366.12L375.18,362.32L380.46,359.75L382.35,353.37L379.19,352.41L379.54,350.04L377.37,349.87L375.49,350.6L375.18,352.47L376.42,353.5L373.1,357.12L367.6,357.62L367.11,356.51L370.93,349.18L370.33,347.25L367.51,345.42L363.45,346.66L363.45,353.7L363.07,354.86L361.91,354.69L360.7,352.91L360.74,349.59L365.15,341.77L363.34,340.76L358.52,342.67L360.31,348.73L359.28,349.91L357.48,351.05L357.73,346.95L354.63,348.12L354.27,351.15L352.92,350.81L351.84,352.02L351.84,352.02L350.49,347.86L350.49,347.86L352.66,343.3L356.12,341.25L355.51,331.33L357.49,328.23L358.87,320.58L363.99,315.27L362.57,302.75L364.97,302.03L373.88,292.53L380.01,293.5L383.38,292.8L387.04,294.37L387.8,293.46L395.55,293.11L395.19,291.65L396.16,291.13L395.14,287.13L393.93,286.68L394.74,281.78L391.3,278.69z" }
 ];
 
+interface CityEntry { name: string; stateId: string; stateName: string; }
+
+const CITIES: CityEntry[] = [
+  { name: 'Tijuana', stateId: 'bc', stateName: 'Baja California' },
+  { name: 'Mexicali', stateId: 'bc', stateName: 'Baja California' },
+  { name: 'Ensenada', stateId: 'bc', stateName: 'Baja California' },
+  { name: 'La Paz', stateId: 'bcs', stateName: 'Baja California Sur' },
+  { name: 'Los Cabos', stateId: 'bcs', stateName: 'Baja California Sur' },
+  { name: 'Hermosillo', stateId: 'son', stateName: 'Sonora' },
+  { name: 'Nogales', stateId: 'son', stateName: 'Sonora' },
+  { name: 'Ciudad Obregón', stateId: 'son', stateName: 'Sonora' },
+  { name: 'Guaymas', stateId: 'son', stateName: 'Sonora' },
+  { name: 'Chihuahua', stateId: 'chi', stateName: 'Chihuahua' },
+  { name: 'Ciudad Juárez', stateId: 'chi', stateName: 'Chihuahua' },
+  { name: 'Delicias', stateId: 'chi', stateName: 'Chihuahua' },
+  { name: 'Parral', stateId: 'chi', stateName: 'Chihuahua' },
+  { name: 'Saltillo', stateId: 'coa', stateName: 'Coahuila' },
+  { name: 'Torreón', stateId: 'coa', stateName: 'Coahuila' },
+  { name: 'Monclova', stateId: 'coa', stateName: 'Coahuila' },
+  { name: 'Piedras Negras', stateId: 'coa', stateName: 'Coahuila' },
+  { name: 'Monterrey', stateId: 'nl', stateName: 'Nuevo León' },
+  { name: 'San Nicolás de los Garza', stateId: 'nl', stateName: 'Nuevo León' },
+  { name: 'Guadalupe', stateId: 'nl', stateName: 'Nuevo León' },
+  { name: 'Apodaca', stateId: 'nl', stateName: 'Nuevo León' },
+  { name: 'Ciudad Victoria', stateId: 'tam', stateName: 'Tamaulipas' },
+  { name: 'Tampico', stateId: 'tam', stateName: 'Tamaulipas' },
+  { name: 'Reynosa', stateId: 'tam', stateName: 'Tamaulipas' },
+  { name: 'Matamoros', stateId: 'tam', stateName: 'Tamaulipas' },
+  { name: 'Nuevo Laredo', stateId: 'tam', stateName: 'Tamaulipas' },
+  { name: 'Culiacán', stateId: 'sin', stateName: 'Sinaloa' },
+  { name: 'Mazatlán', stateId: 'sin', stateName: 'Sinaloa' },
+  { name: 'Los Mochis', stateId: 'sin', stateName: 'Sinaloa' },
+  { name: 'Durango', stateId: 'dur', stateName: 'Durango' },
+  { name: 'Zacatecas', stateId: 'zac', stateName: 'Zacatecas' },
+  { name: 'Fresnillo', stateId: 'zac', stateName: 'Zacatecas' },
+  { name: 'San Luis Potosí', stateId: 'slp', stateName: 'San Luis Potosí' },
+  { name: 'Ciudad Valles', stateId: 'slp', stateName: 'San Luis Potosí' },
+  { name: 'Tepic', stateId: 'nay', stateName: 'Nayarit' },
+  { name: 'Guadalajara', stateId: 'jal', stateName: 'Jalisco' },
+  { name: 'Puerto Vallarta', stateId: 'jal', stateName: 'Jalisco' },
+  { name: 'Zapopan', stateId: 'jal', stateName: 'Jalisco' },
+  { name: 'Tlaquepaque', stateId: 'jal', stateName: 'Jalisco' },
+  { name: 'Aguascalientes', stateId: 'ags', stateName: 'Aguascalientes' },
+  { name: 'León', stateId: 'gto', stateName: 'Guanajuato' },
+  { name: 'Guanajuato', stateId: 'gto', stateName: 'Guanajuato' },
+  { name: 'Celaya', stateId: 'gto', stateName: 'Guanajuato' },
+  { name: 'Irapuato', stateId: 'gto', stateName: 'Guanajuato' },
+  { name: 'Querétaro', stateId: 'qro', stateName: 'Querétaro' },
+  { name: 'Pachuca', stateId: 'hgo', stateName: 'Hidalgo' },
+  { name: 'Colima', stateId: 'col', stateName: 'Colima' },
+  { name: 'Manzanillo', stateId: 'col', stateName: 'Colima' },
+  { name: 'Morelia', stateId: 'mic', stateName: 'Michoacán' },
+  { name: 'Uruapan', stateId: 'mic', stateName: 'Michoacán' },
+  { name: 'Zamora', stateId: 'mic', stateName: 'Michoacán' },
+  { name: 'Toluca', stateId: 'mex', stateName: 'Estado de México' },
+  { name: 'Ecatepec', stateId: 'mex', stateName: 'Estado de México' },
+  { name: 'Naucalpan', stateId: 'mex', stateName: 'Estado de México' },
+  { name: 'Nezahualcóyotl', stateId: 'mex', stateName: 'Estado de México' },
+  { name: 'Ciudad de México', stateId: 'cdmx', stateName: 'Ciudad de México' },
+  { name: 'Tlaxcala', stateId: 'tla', stateName: 'Tlaxcala' },
+  { name: 'Cuernavaca', stateId: 'mor', stateName: 'Morelos' },
+  { name: 'Acapulco', stateId: 'gro', stateName: 'Guerrero' },
+  { name: 'Chilpancingo', stateId: 'gro', stateName: 'Guerrero' },
+  { name: 'Zihuatanejo', stateId: 'gro', stateName: 'Guerrero' },
+  { name: 'Puebla', stateId: 'pue', stateName: 'Puebla' },
+  { name: 'Tehuacán', stateId: 'pue', stateName: 'Puebla' },
+  { name: 'Veracruz', stateId: 'ver', stateName: 'Veracruz' },
+  { name: 'Xalapa', stateId: 'ver', stateName: 'Veracruz' },
+  { name: 'Coatzacoalcos', stateId: 'ver', stateName: 'Veracruz' },
+  { name: 'Poza Rica', stateId: 'ver', stateName: 'Veracruz' },
+  { name: 'Oaxaca', stateId: 'oax', stateName: 'Oaxaca' },
+  { name: 'Huatulco', stateId: 'oax', stateName: 'Oaxaca' },
+  { name: 'Tuxtla Gutiérrez', stateId: 'chis', stateName: 'Chiapas' },
+  { name: 'San Cristóbal de las Casas', stateId: 'chis', stateName: 'Chiapas' },
+  { name: 'Tapachula', stateId: 'chis', stateName: 'Chiapas' },
+  { name: 'Villahermosa', stateId: 'tab', stateName: 'Tabasco' },
+  { name: 'Campeche', stateId: 'cam', stateName: 'Campeche' },
+  { name: 'Mérida', stateId: 'yuc', stateName: 'Yucatán' },
+  { name: 'Valladolid', stateId: 'yuc', stateName: 'Yucatán' },
+  { name: 'Cancún', stateId: 'qroo', stateName: 'Quintana Roo' },
+  { name: 'Playa del Carmen', stateId: 'qroo', stateName: 'Quintana Roo' },
+  { name: 'Chetumal', stateId: 'qroo', stateName: 'Quintana Roo' },
+  { name: 'Cozumel', stateId: 'qroo', stateName: 'Quintana Roo' },
+];
+
+function nrm(s: string) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 export default function MexicoMapArtifact({ state: initState = '' }: { state?: string }) {
   const [selected, setSelected] = useState<StateInfo | null>(() =>
     initState ? STATES.find(s => s.id === initState.toLowerCase() || s.name.toLowerCase().includes(initState.toLowerCase())) ?? null : null
   );
   const [hovered, setHovered] = useState<string | null>(null);
   const [activeRegion, setActiveRegion] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowResults(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const searchResults = useMemo(() => {
+    if (!searchTerm.trim()) return [];
+    const term = nrm(searchTerm);
+    
+    const matchedStates = STATES.filter(s => nrm(s.name).includes(term) || nrm(s.abbr).includes(term))
+      .map(s => ({ type: 'state', id: s.id, label: s.name, stateName: '' }));
+      
+    const matchedCities = CITIES.filter(c => nrm(c.name).includes(term))
+      .map(c => ({ type: 'city', id: c.stateId, label: c.name, stateName: c.stateName }));
+
+    return [...matchedStates, ...matchedCities].slice(0, 8);
+  }, [searchTerm]);
+
+  const handleSelectResult = (res: { id: string }) => {
+    const state = STATES.find(s => s.id === res.id);
+    if (state) setSelected(state);
+    setSearchTerm('');
+    setShowResults(false);
+  };
 
   const visible = activeRegion ? STATES.filter(s => s.region === activeRegion) : STATES;
   const visibleIds = new Set(visible.map(s => s.id));
@@ -72,8 +194,38 @@ export default function MexicoMapArtifact({ state: initState = '' }: { state?: s
     <div className="rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden select-none">
       <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
         <MapPin className="h-4 w-4 text-emerald-400" />
-        <span className="text-sm font-black uppercase tracking-widest text-white">Mapa Interactivo de México</span>
-        <span className="ml-auto text-[10px] text-slate-500">Haz clic en un estado</span>
+        <span className="text-sm font-black uppercase tracking-widest text-white">Mapa de México</span>
+        <div className="flex-1 max-w-xs relative ml-4" ref={searchRef}>
+          <div className="relative group">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500 group-focus-within:text-emerald-400 transition-colors" />
+            <input
+              type="text"
+              placeholder="Busca ciudad o estado..."
+              value={searchTerm}
+              onChange={(e) => { setSearchTerm(e.target.value); setShowResults(true); }}
+              onFocus={() => setShowResults(true)}
+              className="w-full bg-slate-950/50 border border-white/10 rounded-lg py-1.5 pl-8 pr-4 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all font-medium"
+            />
+          </div>
+          
+          {showResults && searchResults.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-slate-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl animate-in fade-in slide-in-from-top-1 duration-200">
+              {searchResults.map((res, i) => (
+                <button
+                  key={`${res.id}-${i}`}
+                  onClick={() => handleSelectResult(res)}
+                  className="w-full px-3 py-2 text-left hover:bg-emerald-500/10 flex flex-col transition-colors border-b border-white/5 last:border-0"
+                >
+                  <span className="text-xs font-bold text-white">{res.label}</span>
+                  <span className="text-[9px] text-slate-500 font-black uppercase tracking-widest flex items-center gap-1">
+                    {res.type === 'state' ? 'Entidad Federativa' : `Ciudad · ${res.stateName}`}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <span className="ml-auto text-[10px] text-slate-500 hidden sm:inline-block">ECOEMS 2026</span>
       </div>
 
       {/* Region legend */}
