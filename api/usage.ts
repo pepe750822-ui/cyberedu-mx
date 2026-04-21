@@ -18,7 +18,7 @@ function getUserIdFromToken(token: string | null): string | null {
 
 export default async function handler(req: Request) {
 // @ts-ignore
-  const APP_URL = process.env.APP_URL || 'https://cyberedumx.com';
+  const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
     'https://cyberedumx.lovable.app',
     APP_URL,

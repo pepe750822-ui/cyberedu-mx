@@ -29,8 +29,8 @@ interface ApiStatus {
   };
 }
 
-const STATUS_URL = 'https://cyberedumx.com/api/admin/status';
-const HEALTH_URL = 'https://cyberedumx.com/api/health';
+const STATUS_URL = 'https://cyberedu-mx.vercel.app/api/admin/status';
+const HEALTH_URL = 'https://cyberedu-mx.vercel.app/api/health';
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutos
 
 // ─── API Status Banner ────────────────────────────────────────
@@ -176,7 +176,7 @@ export default function AdminAnalytics() {
   const [apiLoading, setApiLoading] = useState(false);
   
   // Cost alert state
-  const ALERTS_URL = 'https://cyberedumx.com/api/admin/alerts';
+  const ALERTS_URL = 'https://cyberedu-mx.vercel.app/api/admin/alerts';
   const [costAlert, setCostAlert] = useState<{
     current_cost: number;
     limit: number;
@@ -186,7 +186,7 @@ export default function AdminAnalytics() {
   } | null>(null);
 
   // Cache management state
-  const CACHE_URL = 'https://cyberedumx.com/api/admin/cache';
+  const CACHE_URL = 'https://cyberedu-mx.vercel.app/api/admin/cache';
   const [cacheInfo, setCacheInfo] = useState<{ count: number; keys: { key: string; preview: string }[]; upstashConfigured?: boolean; usingMemoryCache?: boolean } | null>(null);
   const [cacheLoading, setCacheLoading] = useState(false);
   const [clearingCache, setClearingCache] = useState(false);

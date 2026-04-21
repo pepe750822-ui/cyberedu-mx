@@ -45,7 +45,7 @@ export default async function handler(req: Request) {
     const isSandbox = MP_ACCESS_TOKEN.startsWith('TEST-');
     console.log(`[MP] Modo: ${isSandbox ? 'SANDBOX (TEST-)' : 'PRODUCCIÓN (APP_USR-)'}`);
 
-    const APP_URL = process.env.APP_URL || 'https://cyberedumx.com';
+    const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
 
     const preference = {
       items: [
