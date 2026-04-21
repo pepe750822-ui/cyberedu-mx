@@ -26,16 +26,12 @@
     { "source": "/curso/ecoems-2026-estrategia-inteligente",                "destination": "/simulador-pro",    "permanent": true },
     { "source": "/curso/ecoems-2026/:path*",                                "destination": "/simulador-pro",    "permanent": true },
     { "source": "/(.*\\.php)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
-    { 
-      "source": "/((?!offline|index|google).+\\.html)", 
-      "destination": "https://cdn.cyberedumx.com/$1", 
-      "permanent": false 
-    },
     { "source": "/(.*\\.pdf)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.py)",   "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.sql)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.csv)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
 
+    { "source": "/ingles.html",                                             "destination": "/area/habilidades", "permanent": true },
     { "source": "/curso/ingles",                                            "destination": "/area/habilidades", "permanent": true },
     { "source": "/preguntas-frecuentes-ecoems",                             "destination": "/",                 "permanent": true }
   ],
