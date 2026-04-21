@@ -1,116 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
-  <url>
-    <loc>https://cyberedumx.com/</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/simulador-pro</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/blog</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/certificaciones</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/modalidades</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
+  <url><loc>https://cyberedumx.com/</loc><lastmod>2026-04-21</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://cyberedumx.com/simulador-pro</loc><lastmod>2026-04-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cyberedumx.com/blog</loc><lastmod>2026-04-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://cyberedumx.com/tokens</loc><lastmod>2026-04-21</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://cyberedumx.com/sugerencias</loc><lastmod>2026-04-21</lastmod><priority>0.3</priority></url>
 
-  <!-- Course Areas -->
-  <url>
-    <loc>https://cyberedumx.com/area/habilidades</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/biologia</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/fisica</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/quimica</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/matematicas</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/historia-universal</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/historia-mexico</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/espanol</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/formacion-civica</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/geografia</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/area/repaso-final</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <!-- Blog Posts -->
+  <url><loc>https://cyberedumx.com/blog/detalles-oficiales-ecoems-2026</loc><lastmod>2026-04-21</lastmod><priority>0.7</priority></url>
+  <url><loc>https://cyberedumx.com/blog/convocatoria-ecoems-2026</loc><lastmod>2026-04-21</lastmod><priority>0.7</priority></url>
+  <url><loc>https://cyberedumx.com/blog/temario-ecoems-2026</loc><lastmod>2026-04-21</lastmod><priority>0.7</priority></url>
+  <url><loc>https://cyberedumx.com/blog/ecoems-vs-comipems</loc><lastmod>2026-04-21</lastmod><priority>0.7</priority></url>
 
-  <!-- Legacy/Static Pages -->
-  <url>
-    <loc>https://cyberedumx.com/manual.html</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://cyberedumx.com/quienes-somos.html</loc>
-    <lastmod>2026-04-16</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
+  <!-- Educational Areas & Videos -->
+  <!-- Habilidades -->
+  <url><loc>https://cyberedumx.com/area/habilidades</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-0</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hv-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hm-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hm-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hm-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hm-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/habilidades?video=hm-5</loc><priority>0.6</priority></url>
+
+  <!-- Biologia -->
+  <url><loc>https://cyberedumx.com/area/biologia</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/biologia?video=bio-7</loc><priority>0.6</priority></url>
+
+  <!-- Fisica -->
+  <url><loc>https://cyberedumx.com/area/fisica</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/fisica?video=fis-7</loc><priority>0.6</priority></url>
+
+  <!-- Quimica -->
+  <url><loc>https://cyberedumx.com/area/quimica</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/quimica?video=qui-6</loc><priority>0.6</priority></url>
+
+  <!-- Matematicas -->
+  <url><loc>https://cyberedumx.com/area/matematicas</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-7</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-8</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-9</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-10</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-11</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-12</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-13</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/matematicas?video=mat-14</loc><priority>0.6</priority></url>
+
+  <!-- Historia Universal -->
+  <url><loc>https://cyberedumx.com/area/historia-universal</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-universal?video=hu-7</loc><priority>0.6</priority></url>
+
+  <!-- Historia de Mexico -->
+  <url><loc>https://cyberedumx.com/area/historia-mexico</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/historia-mexico?video=hm-mx-7</loc><priority>0.6</priority></url>
+
+  <!-- Espanol -->
+  <url><loc>https://cyberedumx.com/area/espanol</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-7</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-8</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-9</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/espanol?video=esp-10</loc><priority>0.6</priority></url>
+
+  <!-- Formacion Civica -->
+  <url><loc>https://cyberedumx.com/area/formacion-civica</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-7</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/formacion-civica?video=fce-8</loc><priority>0.6</priority></url>
+
+  <!-- Geografia -->
+  <url><loc>https://cyberedumx.com/area/geografia</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-4</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-5</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-6</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-7</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-8</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-9</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/geografia?video=geo-10</loc><priority>0.6</priority></url>
+
+  <!-- Repaso Final -->
+  <url><loc>https://cyberedumx.com/area/repaso-final</loc><priority>0.9</priority></url>
+  <url><loc>https://cyberedumx.com/area/repaso-final?video=rep-1</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/repaso-final?video=rep-2</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/repaso-final?video=rep-3</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/area/repaso-final?video=rep-4</loc><priority>0.6</priority></url>
+
+  <!-- Static HTML Pages -->
+  <url><loc>https://cyberedumx.com/contacto.html</loc><priority>0.4</priority></url>
+  <url><loc>https://cyberedumx.com/curso-udemy.html</loc><priority>0.5</priority></url>
+  <url><loc>https://cyberedumx.com/guias.html</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/manual.html</loc><priority>0.6</priority></url>
+  <url><loc>https://cyberedumx.com/quienes-somos.html</loc><priority>0.4</priority></url>
+  <url><loc>https://cyberedumx.com/preguntas-frecuentes-ecoems.html</loc><priority>0.5</priority></url>
+
 </urlset>

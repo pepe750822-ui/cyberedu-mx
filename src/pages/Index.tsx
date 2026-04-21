@@ -35,19 +35,21 @@ import { useVideoProgress } from "@/hooks/useVideoProgress";
 import AreaCard from "@/components/AreaCard";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ProgresoDashboard from "@/components/ProgresoDashboard";
-import RecommendedVideos from "@/components/RecommendedVideos";
-import UltimoVideoCard from "@/components/UltimoVideoCard";
-import BadgeSystem from "@/components/BadgeSystem";
-import WeeklyChallenges from "@/components/WeeklyChallenges";
-import PlanEstudioDiario from "@/components/PlanEstudioDiario";
-import NewsECOEMS from "@/components/NewsECOEMS";
-import CountdownExam from "@/components/CountdownExam";
-import StudioModal from "@/components/StudioModal";
-import { PredictiveFeedback } from "@/components/PredictiveFeedback";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
+
+// Lazy loading heavy dashboard components for CWV optimization
+const ProgresoDashboard = lazy(() => import("@/components/ProgresoDashboard"));
+const RecommendedVideos = lazy(() => import("@/components/RecommendedVideos"));
+const UltimoVideoCard = lazy(() => import("@/components/UltimoVideoCard"));
+const BadgeSystem = lazy(() => import("@/components/BadgeSystem"));
+const WeeklyChallenges = lazy(() => import("@/components/WeeklyChallenges"));
+const PlanEstudioDiario = lazy(() => import("@/components/PlanEstudioDiario"));
+const NewsECOEMS = lazy(() => import("@/components/NewsECOEMS"));
+const CountdownExam = lazy(() => import("@/components/CountdownExam"));
+const StudioModal = lazy(() => import("@/components/StudioModal"));
+const PredictiveFeedback = lazy(() => import("@/components/PredictiveFeedback").then(m => ({ default: m.PredictiveFeedback })));
 
 const AI_TUTOR_DISMISSED_KEY = 'cyberedu_ai_tutor_banner_dismissed';
 
@@ -182,7 +184,13 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden mb-12 border-b border-primary/20">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="Estudiantes preparándose" className="w-full h-full object-cover" />
+          <img 
+            src={heroImage} 
+            alt="Estudiantes preparándose para el examen ECOEMS 2026" 
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+          />
           <div className="absolute inset-0 bg-background/70" />
           <div className="absolute inset-0 hero-gradient opacity-95" />
         </div>
@@ -193,16 +201,16 @@ const Index = () => {
               Examen de Educación Media Superior
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-foreground mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
-              Tu camino al <span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">éxito</span> <br /> empieza aquí
+              Domina el <span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">Temario ECOEMS 2026</span> <br /> y asegura tu lugar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-              Prepárate con esta plataforma de <span className="text-accent font-bold">última generación</span>. 100% gratuita y diseñada para que entres a la primera.
+              Prepárate con BioReto Pro v3.0, la plataforma de <span className="text-accent font-bold">última generación</span> para tu ingreso a bachillerato. 100% gratuita.
             </p>
             <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
               <div className="h-px w-8 bg-emerald-500/30 hidden md:block" />
               <span className="text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 flex items-center gap-2 drop-shadow-sm">
                 <ShieldCheck className="h-4 w-4" />
-                Empieza ahora
+                Simulador ECOEMS & UNAM Oficial
               </span>
             </div>
             <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
@@ -409,9 +417,15 @@ const Index = () => {
 
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 mt-12 mb-16 space-y-12">
-        <PredictiveFeedback />
-        <PlanEstudioDiario />
-        <UltimoVideoCard />
+        <Suspense fallback={<div className="h-24 animate-pulse bg-muted rounded-3xl" />}>
+          <PredictiveFeedback />
+        </Suspense>
+        <Suspense fallback={<div className="h-96 animate-pulse bg-muted rounded-3xl" />}>
+          <PlanEstudioDiario />
+        </Suspense>
+        <Suspense fallback={<div className="h-48 animate-pulse bg-muted rounded-3xl" />}>
+          <UltimoVideoCard />
+        </Suspense>
 
         {/* Simuladores Premium Section */}
         <div className="relative group">
@@ -714,12 +728,24 @@ const Index = () => {
           </div>
         </div>
 
-        <CountdownExam />
-        <NewsECOEMS />
-        <BadgeSystem />
-        <WeeklyChallenges />
-        <ProgresoDashboard />
-        <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
+        <Suspense fallback={<div className="h-48 animate-pulse bg-muted rounded-3xl" />}>
+          <CountdownExam />
+        </Suspense>
+        <Suspense fallback={<div className="h-96 animate-pulse bg-muted rounded-3xl" />}>
+          <NewsECOEMS />
+        </Suspense>
+        <Suspense fallback={<div className="h-32 animate-pulse bg-muted rounded-3xl" />}>
+          <BadgeSystem />
+        </Suspense>
+        <Suspense fallback={<div className="h-48 animate-pulse bg-muted rounded-3xl" />}>
+          <WeeklyChallenges />
+        </Suspense>
+        <Suspense fallback={<div className="h-96 animate-pulse bg-muted rounded-3xl" />}>
+          <ProgresoDashboard />
+        </Suspense>
+        <Suspense fallback={<div className="h-64 animate-pulse bg-muted rounded-3xl" />}>
+          <RecommendedVideos className="p-6 bg-card/20 backdrop-blur-xl border border-border/50 rounded-3xl" />
+        </Suspense>
 
         {/* Studio Simulators Section */}
         <div className="pt-16 pb-8">

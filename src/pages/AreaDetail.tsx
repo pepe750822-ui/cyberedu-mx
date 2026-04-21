@@ -167,6 +167,18 @@ const AreaDetail = () => {
         document.head.appendChild(metaDesc);
       }
 
+      // 1.1 Update Canonical Link
+      let canonicalLink = document.querySelector('link[rel="canonical"]');
+      const canonicalUrl = `https://cyberedumx.com/area/${activeVideo.areaId}?video=${activeVideo.id}`;
+      if (canonicalLink) {
+        canonicalLink.setAttribute("href", canonicalUrl);
+      } else {
+        canonicalLink = document.createElement('link');
+        canonicalLink.setAttribute("rel", "canonical");
+        canonicalLink.setAttribute("href", canonicalUrl);
+        document.head.appendChild(canonicalLink);
+      }
+
       // 2. Inject JSON-LD Schema (Course & VideoObject)
       const schemaId = `schema-course-${activeVideo.id}`;
       let script = document.getElementById(schemaId) as HTMLScriptElement;
