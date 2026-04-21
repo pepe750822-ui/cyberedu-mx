@@ -18,6 +18,7 @@ const STATIC_ASSETS = [
     '/icons/icon-512x512.png',
     '/icons/icon-72x72.png',
     '/icons/icon-maskable-192x192.png',
+    '/offline.html',
 ];
 
 // Offline fallback page

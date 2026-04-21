@@ -357,8 +357,8 @@ const Index = () => {
               
               <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground max-w-4xl text-balance">
                 📚 Busca tu tema y accede al material completo <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 italic">
-                  Videos + Infografías + PDFs + Podcasts + Quizzes — Todo GRATIS
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 italic text-2xl md:text-3xl">
+                  Guía ECOEMS 2026, UNAM y COMIPEMS: Videos + Infografías + PDFs + Podcasts — Todo GRATIS
                 </span>
               </h2>
               
