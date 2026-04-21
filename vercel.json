@@ -55,7 +55,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/(?!api/|ingles/|imagenes/|assets/|ecoems2026/|guiaspolitecnico/|libro/|studio/|material/|videos/|quiz/|.*\\.)(.*)",
       "destination": "/index.html"
     }
   ]
