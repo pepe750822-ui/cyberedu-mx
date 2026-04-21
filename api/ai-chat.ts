@@ -199,7 +199,7 @@ export default async function handler(req: Request) {
   }
 
   // @ts-ignore
-  const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
+  const APP_URL = process.env.APP_URL || 'https://cyberedumx.com';
   const allowedOrigins = [
     'https://cyberedumx.lovable.app',
     APP_URL,

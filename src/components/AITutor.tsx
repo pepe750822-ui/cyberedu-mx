@@ -2909,7 +2909,7 @@ const AITutor = () => {
       const isInternalScheme = href?.startsWith('citation://');
       const isInternalPath = href?.startsWith('/') && !href?.startsWith('//');
       // Links que incluyan el nombre de nuestra app también deben ser internos
-      const isExternalInternal = href?.includes('cyberedu-mx.vercel.app') || href?.includes('cyberedumx.com');
+      const isExternalInternal = href?.includes('cyberedumx.com') || href?.includes('cyberedu-mx.vercel.app');
       // Links internos navegan con agentNavigate para preservar la sesión
       const isAreaLink = href?.includes('/area/');
       

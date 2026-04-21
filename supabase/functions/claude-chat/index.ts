@@ -13,7 +13,7 @@ serve(async (req) => {
 
   try {
     const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    const APP_URL = Deno.env.get("APP_URL") || "https://cyberedu-mx.vercel.app";
+    const APP_URL = Deno.env.get("APP_URL") || "https://cyberedumx.com";
 
     const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026 para ingreso al bachillerato y nivel superior en México. Tu nombre es "CyberAgent".
 
