@@ -36,7 +36,7 @@
     { "source": "/preguntas-frecuentes-ecoems",                             "destination": "/",                 "permanent": true }
   ],
   "rewrites": [
-    {
+        {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
@@ -51,11 +51,7 @@
     },
     { "source": "/manual", "destination": "/manual.html" },
     {
-      "source": "/(auth|login|tokens|reportes|certificaciones|blog|simulador-pro|modalidades|sugerencias|area|admin|subscription|marketing)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(?!api/|ingles/|imagenes/|assets/|ecoems2026/|guiaspolitecnico/|libro/|studio/|material/|videos/|quiz/|libro-ecoems|.*\\.)(.*)",
+      "source": "/(?!api/|.*\\.|ingles/|imagenes/|assets/|ecoems2026/|guiaspolitecnico/|libro/|studio/|material/|videos/|quiz/)(.*)",
       "destination": "/index.html"
     }
   ]
