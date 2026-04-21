@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de Uso — CyberEdu MX</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap');
+
+    :root {
+      --primary: #6366f1;
+      --primary-light: #e0e7ff;
+      --accent: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --dark: #0f172a;
+      --slate: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: #1e293b;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body { background: white; font-size: 11px; }
+      .cover { page-break-after: always; }
+      .no-print { display: none !important; }
+      h2 { page-break-before: auto; }
+      table { page-break-inside: avoid; }
+      .alert { page-break-inside: avoid; }
+    }
+
+    /* ── COVER PAGE ── */
+    .cover {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 30%, rgba(99,102,241,0.25) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 70%, rgba(16,185,129,0.15) 0%, transparent 60%);
+    }
+    .cover-inner { position: relative; z-index: 1; max-width: 700px; }
+    .cover-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(99,102,241,0.2);
+      border: 1px solid rgba(99,102,241,0.4);
+      color: #a5b4fc;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      padding: 8px 20px; border-radius: 100px;
+      margin-bottom: 32px;
+    }
+    .cover h1 {
+      font-size: 52px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: -2px;
+      line-height: 1.1; margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .cover h2 {
+      font-size: 22px; font-weight: 400;
+      color: rgba(255,255,255,0.6); margin-bottom: 48px;
+      border: none; padding: 0;
+    }
+    .cover-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      margin-bottom: 48px;
+    }
+    .cover-stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 20px 12px;
+    }
+    .cover-stat .num {
+      font-size: 28px; font-weight: 900; color: #6366f1;
+    }
+    .cover-stat .label {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4);
+    }
+    .cover-footer {
+      font-size: 10px; color: rgba(255,255,255,0.3);
+      text-transform: uppercase; letter-spacing: 0.2em;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 40px;
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 36px;
+      margin-bottom: 48px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .toc h2 {
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      color: var(--muted); margin-bottom: 20px; border: none; padding: 0;
+    }
+    .toc ol { padding-left: 22px; }
+    .toc li {
+      padding: 5px 0;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .toc li::marker { color: var(--muted); font-weight: 400; }
+
+    /* ── HEADINGS ── */
+    h2 {
+      font-size: 22px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.5px;
+      color: var(--dark);
+      border-left: 4px solid var(--primary);
+      padding-left: 16px; margin: 48px 0 20px;
+    }
+    h3 {
+      font-size: 15px; font-weight: 700;
+      color: var(--slate); margin: 28px 0 12px;
+    }
+    h4 {
+      font-size: 13px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.1em; margin: 20px 0 8px;
+    }
+
+    /* ── PARAGRAPH ── */
+    p { margin-bottom: 12px; color: #334155; }
+
+    /* ── LISTS ── */
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+    li { margin-bottom: 5px; color: #334155; }
+    li strong { color: var(--dark); }
+
+    /* ── TABLES ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 12.5px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    thead th {
+      background: var(--dark);
+      color: white;
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 12px 16px;
+      text-align: left;
+    }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody tr:nth-child(odd) { background: white; }
+    tbody tr:hover { background: var(--primary-light); }
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
+    }
+    tbody td:first-child { font-weight: 600; color: var(--dark); }
+
+    /* ── CODE ── */
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 11.5px;
+      background: #f1f5f9;
+      color: var(--primary);
+      padding: 2px 7px;
+      border-radius: 5px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* ── ALERTS ── */
+    .alert {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+      font-size: 12.5px;
+    }
+    .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .alert-note   { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .alert-tip    { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .alert-important { background: #faf5ff; border: 1px solid #e9d5ff; color: #6b21a8; }
+
+    /* ── HR ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* ── SECTION DIVIDER ── */
+    .section-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      background: var(--primary); color: white;
+      border-radius: 8px; font-weight: 900; font-size: 14px;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    /* ── PRINT BUTTON ── */
+    .print-btn {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--primary); color: white;
+      border: none; cursor: pointer;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700; font-size: 13px;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.4);
+      transition: all 0.2s;
+      z-index: 999;
+    }
+    .print-btn:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.5);
+    }
+  </style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">📚 Documento Oficial</div>
+    <h1>Manual de Uso</h1>
+    <h2>CyberEdu MX · Plataforma ECOEMS 2026</h2>
+    <div class="cover-grid">
+      <div class="cover-stat"><div class="num">13</div><div class="label">Secciones</div></div>
+      <div class="cover-stat"><div class="num">11</div><div class="label">Áreas ECOEMS</div></div>
+      <div class="cover-stat"><div class="num">128</div><div class="label">Reactivos Simulador</div></div>
+      <div class="cover-stat"><div class="num">v3.0</div><div class="label">Versión</div></div>
+    </div>
+    <div class="cover-footer">cyberedumx.com · Abril 2026</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>Índice de Contenido</h2>
+    <ol>
+      <li>Acceso y Registro</li>
+      <li>Dashboard Principal</li>
+      <li>Buscador de Contenido</li>
+      <li>Sistemas de Aprendizaje por Área</li>
+      <li>Material Complementario</li>
+      <li>CyberAgent IA (AI Tutor)</li>
+      <li>Simulador Pro ECOEMS</li>
+      <li>Centro de Certificaciones</li>
+      <li>Dashboard de Reportes</li>
+      <li>Sistema de Tokens</li>
+      <li>Progreso y Gamificación</li>
+      <li>Funciones Avanzadas</li>
+      <li>Preguntas Frecuentes</li>
+    </ol>
+  </div>
+
+  <!-- SEC 1 -->
+  <h2><span class="section-num">1</span>Acceso y Registro</h2>
+  <p>Ve a <strong>cyberedumx.com/auth</strong> para ingresar a la plataforma.</p>
+  <h3>🚪 Opciones de acceso</h3>
+  <table>
+    <thead><tr><th>Método</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Google</td><td>Clic en "Continuar con Google" — acceso en 1 clic</td></tr>
+      <tr><td>Email + Contraseña</td><td>Ingresa tu correo y contraseña (mínimo 6 caracteres)</td></tr>
+    </tbody>
+  </table>
+  <h4>Crear una cuenta nueva</h4>
+  <ol>
+    <li>En la pantalla de login, haz clic en <strong>"Acceso al Registro"</strong></li>
+    <li>Completa: Nombre completo, Email y Contraseña (confirmada dos veces)</li>
+    <li>Revisa tu correo y confirma tu registro con el enlace enviado</li>
+    <li>Listo — serás redirigido al Dashboard</li>
+  </ol>
+  <h4>¿Olvidaste tu contraseña?</h4>
+  <ol>
+    <li>En login, clic en <strong>"¿Olvidaste tu clave?"</strong></li>
+    <li>Ingresa tu email</li>
+    <li>Recibirás un enlace para crear una nueva contraseña</li>
+  </ol>
+  <div class="alert alert-note">
+    <div class="alert-icon">ℹ️</div>
+    <div>La plataforma usa <strong>Supabase Cloud</strong> para autenticación segura. Tu sesión se mantiene activa automáticamente.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 2 -->
+  <h2><span class="section-num">2</span>Dashboard Principal</h2>
+  <p><strong>Ruta:</strong> <code>/</code> — inicio tras login. Es el centro de operaciones de la plataforma.</p>
+  <h3>🏠 Hero / Portada</h3>
+  <ul>
+    <li>Muestra tu progreso global (videos completados)</li>
+    <li>Acceso rápido a <strong>Ver Analíticos</strong> (reportes)</li>
+    <li>Estadísticas en tiempo real: videos HD disponibles, áreas críticas, videos completados</li>
+  </ul>
+  <h3>📊 Módulos del Dashboard</h3>
+  <table>
+    <thead><tr><th>Módulo</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>Feedback Predictivo</td><td>Análisis de tu rendimiento con predicciones de resultado</td></tr>
+      <tr><td>Plan de Estudio Diario</td><td>Sugerencias personalizadas de qué estudiar hoy</td></tr>
+      <tr><td>Último Video</td><td>Continúa exactamente donde lo dejaste</td></tr>
+      <tr><td>Metas del Mes</td><td>Persistencia, Maestro de Área, Simulacro</td></tr>
+      <tr><td>Countdown del Examen</td><td>Cuenta regresiva al día del ECOEMS</td></tr>
+      <tr><td>Noticias ECOEMS</td><td>Actualizaciones oficiales del examen</td></tr>
+      <tr><td>Sistema de Insignias</td><td>Logros desbloqueados</td></tr>
+      <tr><td>Retos Semanales</td><td>Desafíos de estudio gamificados</td></tr>
+      <tr><td>Progreso General</td><td>Gráficas de avance por área</td></tr>
+      <tr><td>Videos Recomendados</td><td>Sugerencias basadas en tu historial</td></tr>
+    </tbody>
+  </table>
+  <h3>🎯 Metas del Mes</h3>
+  <ul>
+    <li><strong>Persistencia:</strong> Completa 5 días seguidos de estudio</li>
+    <li><strong>Maestro de Área:</strong> Llega al 100% en al menos un área</li>
+    <li><strong>Simulacro:</strong> Realiza tu primer simulador integral</li>
+  </ul>
+
+  <hr />
+
+  <!-- SEC 3 -->
+  <h2><span class="section-num">3</span>Buscador de Contenido</h2>
+  <p><strong>Ubicado en:</strong> Sección superior del Dashboard</p>
+  <h3>Cómo usar el buscador</h3>
+  <ol>
+    <li>Escribe el tema a buscar (ej: <em>"Biología Celular"</em>, <em>"Leyes de Newton"</em>, <em>"Geometría"</em>)</li>
+    <li>Los resultados aparecen en tiempo real mostrando el área y el título del video</li>
+    <li>Haz clic en cualquier resultado para ir directamente al video</li>
+  </ol>
+  <div class="alert alert-tip">
+    <div class="alert-icon">💡</div>
+    <div>La búsqueda es <strong>sin registro forzoso</strong>, funciona incluso antes de hacer login para explorar el contenido.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 4 -->
+  <h2><span class="section-num">4</span>Sistemas de Aprendizaje por Área</h2>
+  <p><strong>Ruta:</strong> <code>/area/:areaId</code></p>
+  <h3>Áreas disponibles en el ECOEMS</h3>
+  <table>
+    <thead><tr><th>Área</th><th>Código</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td>Habilidades Verbales</td><td>HV</td><td>Comprensión lectora, vocabulario</td></tr>
+      <tr><td>Habilidades Matemáticas</td><td>HM</td><td>Razonamiento lógico-matemático</td></tr>
+      <tr><td>Biología</td><td>BIO</td><td>Célula, genética, ecosistemas</td></tr>
+      <tr><td>Química</td><td>QUI</td><td>Átomos, reacciones, materia</td></tr>
+      <tr><td>Física</td><td>FIS</td><td>Cinemática, fuerzas, energía</td></tr>
+      <tr><td>Matemáticas</td><td>MAT</td><td>Álgebra, geometría, cálculo</td></tr>
+      <tr><td>Español</td><td>ESP</td><td>Gramática, redacción, puntuación</td></tr>
+      <tr><td>Historia de México</td><td>HIS-M</td><td>Porfiriato, Revolución, modernidad</td></tr>
+      <tr><td>Historia Universal</td><td>HIS-U</td><td>Guerras mundiales, civilizaciones</td></tr>
+      <tr><td>Geografía</td><td>GEO</td><td>Mapas, población, relieves</td></tr>
+      <tr><td>Formación Cívica</td><td>FCE</td><td>Democracia, derechos, ética</td></tr>
+    </tbody>
+  </table>
+  <h3>Pantalla de Video</h3>
+  <ol>
+    <li><strong>Reproductor de YouTube HD</strong> (autoplay al seleccionar video)</li>
+    <li><strong>Título y descripción</strong> del tema</li>
+    <li><strong>Botón Notebook</strong> → abre las notas de Google NotebookLM correspondientes</li>
+    <li><strong>Material Complementario</strong> (debajo del video)</li>
+    <li><strong>Videos recomendados</strong> relacionados</li>
+  </ol>
+  <h3>Panel lateral (sidebar)</h3>
+  <ul>
+    <li><strong>Tu Ruta:</strong> Progreso global (0–90 videos completados)</li>
+    <li><strong>Zona Studio (Pro):</strong> Simuladores por subíndice del área</li>
+    <li><strong>Estructura del Curso:</strong> Lista de todas las áreas y sus videos con marcadores ✅</li>
+  </ul>
+  <div class="alert alert-important">
+    <div class="alert-icon">⚠️</div>
+    <div>Un video se marca como <strong>completado</strong> cuando abres su Notebook de NotebookLM. El progreso se guarda automáticamente en tu cuenta.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 5 -->
+  <h2><span class="section-num">5</span>Material Complementario</h2>
+  <p>Se muestra debajo del reproductor de video en cada área. Para cada video, según disponibilidad:</p>
+  <table>
+    <thead><tr><th>Tab</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td>📼 Infografía</td><td>Resumen visual del tema</td></tr>
+      <tr><td>📄 PDF</td><td>Material imprimible para estudiar offline</td></tr>
+      <tr><td>🎙️ Podcast</td><td>Audio para escuchar mientras estudias o te trasladas</td></tr>
+      <tr><td>🃏 Flashcards</td><td>Tarjetas de repaso interactivas</td></tr>
+      <tr><td>❓ Quiz</td><td>Preguntas de opción múltiple del tema</td></tr>
+      <tr><td>🎮 Studio</td><td>Simulador de reactivos específico del tema</td></tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- SEC 6 -->
+  <h2><span class="section-num">6</span>CyberAgent IA (AI Tutor)</h2>
+  <p>El <strong>CyberAgent</strong> es tu tutor personal con inteligencia artificial, disponible flotando en pantalla cuando estás logueado. Powered by Claude (Anthropic).</p>
+  <h3>Cómo acceder</h3>
+  <p>Haz clic en el <strong>botón flotante del cerebro</strong> 🧠 que aparece en la esquina inferior derecha de la pantalla.</p>
+  <h3>💬 Chat Conversacional</h3>
+  <p>Puedes preguntar cualquier cosa sobre los temas del ECOEMS:</p>
+  <ul>
+    <li><em>"Explícame la meiosis"</em></li>
+    <li><em>"¿Cómo resuelvo ecuaciones de segundo grado?"</em></li>
+    <li><em>"Hazme un resumen de la Revolución Mexicana"</em></li>
+  </ul>
+  <h3>📋 Acciones Rápidas</h3>
+  <ul>
+    <li><strong>Plan de Estudio</strong> — El AI genera un plan personalizado para ti</li>
+    <li><strong>Análisis de Progreso</strong> — Ve qué áreas dominas y cuáles reforzar</li>
+    <li><strong>Quiz Personalizado</strong> — Genera preguntas de práctica</li>
+    <li><strong>Diagnóstico completo</strong> — Auditoría total de tu preparación</li>
+  </ul>
+  <h3>🎯 Contenido Interactivo que genera el AI</h3>
+  <ul>
+    <li>Quizzes interactivos (responde dentro del chat)</li>
+    <li>Calculadoras para problemas matemáticos/físicos</li>
+    <li>Simuladores de conceptos</li>
+    <li>Ejercicios prácticos resueltos paso a paso</li>
+    <li>Gráficas de datos y conceptos</li>
+    <li>Diagramas Mermaid (flujos, mapas conceptuales)</li>
+    <li>Imágenes educativas inline con el texto</li>
+  </ul>
+  <h3>Sistema de Tokens para el AI</h3>
+  <table>
+    <thead><tr><th>Nivel</th><th>Preguntas</th></tr></thead>
+    <tbody>
+      <tr><td>Gratis</td><td>Límite diario (se renueva cada 24 horas)</td></tr>
+      <tr><td>Tokens</td><td>1 token por pregunta, sin límite diario, no expiran</td></tr>
+      <tr><td>Maestro Ilimitado</td><td>Preguntas ilimitadas por $250 MXN/mes</td></tr>
+    </tbody>
+  </table>
+  <h3>Controles del Chat</h3>
+  <table>
+    <thead><tr><th>Botón</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>➕</td><td>Nueva conversación</td></tr>
+      <tr><td>🗑️</td><td>Borrar historial</td></tr>
+      <tr><td>🔍</td><td>Buscar en historial</td></tr>
+      <tr><td>⬛ Minimizar</td><td>Ocupa menos espacio en pantalla</td></tr>
+      <tr><td>⛶ Maximizar</td><td>Pantalla completa</td></tr>
+      <tr><td>✕</td><td>Cerrar el chat</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-tip">
+    <div class="alert-icon">💡</div>
+    <div>El AI recuerda tus conversaciones pasadas durante <strong>7 días</strong>. Puedes copiar cualquier respuesta con el botón Copiar que aparece al pasar el cursor sobre el mensaje.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 7 -->
+  <h2><span class="section-num">7</span>Simulador Pro ECOEMS</h2>
+  <p><strong>Ruta:</strong> <code>/simulador-pro</code></p>
+  <p>Una réplica exacta del examen oficial ECOEMS: <strong>128 reactivos · 3 horas · cronómetro oficial</strong></p>
+  <h3>Cómo iniciar</h3>
+  <ol>
+    <li>Desde el Dashboard, haz clic en <strong>"SIMULADOR REAL"</strong></li>
+    <li>Lee las instrucciones (128 reactivos, 3 horas, lugar tranquilo)</li>
+    <li>Haz clic en <strong>"Comenzar Examen"</strong></li>
+  </ol>
+  <h3>Panel de navegación — Colores de reactivos</h3>
+  <table>
+    <thead><tr><th>Color</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>⚪ Blanco/Gris</td><td>Sin responder</td></tr>
+      <tr><td>🔵 Azul</td><td>Respondida</td></tr>
+      <tr><td>🟡 Amarillo parpadeante</td><td>Marcada para revisión</td></tr>
+      <tr><td>Borde blanco grande</td><td>Pregunta actual</td></tr>
+    </tbody>
+  </table>
+  <h3>Controles durante el examen</h3>
+  <table>
+    <thead><tr><th>Botón</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td>Anterior / Siguiente</td><td>Navegar entre preguntas</td></tr>
+      <tr><td>⏸️ Pausar</td><td>Pausa el cronómetro, guarda tu progreso</td></tr>
+      <tr><td>💾 Guardar y salir</td><td>Sale conservando el estado completo para continuar después</td></tr>
+      <tr><td>🏁 Finalizar</td><td>Envía el examen y muestra resultados inmediatos</td></tr>
+      <tr><td>Marcar para revisión</td><td>Señala preguntas dudosas en amarillo</td></tr>
+    </tbody>
+  </table>
+  <h3>Resultados</h3>
+  <ol>
+    <li><strong>Puntaje total:</strong> X / 128</li>
+    <li><strong>Predicción AI:</strong> Probabilidad de ingreso (ALTA / MEDIA / EN MEJORA) vs. promedio 74/128</li>
+    <li><strong>Mapa de desempeño:</strong> Visualización de aciertos (verde) y errores (rojo)</li>
+    <li><strong>Análisis completo:</strong> Cada reactivo con tu respuesta, la correcta y una Explicación Pro</li>
+  </ol>
+  <h3>Otros simuladores disponibles</h3>
+  <table>
+    <thead><tr><th>Simulador</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>ECOEMS Completo (PHP)</td><td>Simulador externo completo</td></tr>
+      <tr><td>Simulador POLI (IPN)</td><td>Versión para Politécnico</td></tr>
+      <tr><td>Consola Studio</td><td>630+ reactivos organizados por materia</td></tr>
+      <tr><td>Studio por materia</td><td>Simuladores específicos por subíndice</td></tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- SEC 8 -->
+  <h2><span class="section-num">8</span>Centro de Certificaciones</h2>
+  <p><strong>Ruta:</strong> <code>/certificaciones</code></p>
+  <p>Diplomas digitales que obtienes al completar módulos con excelencia. Son descargables en PDF y compartibles en redes profesionales.</p>
+  <table>
+    <thead><tr><th>Certificado</th><th>Cómo obtenerlo</th></tr></thead>
+    <tbody>
+      <tr><td>🥇 Simulador Integral ECOEMS 2026</td><td>Completa el simulador con puntaje alto</td></tr>
+      <tr><td>🥈 Módulo: Pensamiento Matemático</td><td>100% en Matemáticas</td></tr>
+      <tr><td>🥇 Racha de Estudio: 7 Días</td><td>Estudia 7 días consecutivos</td></tr>
+      <tr><td>🔵 Módulo: Lenguaje y Comunicación</td><td>Completar módulo de Español</td></tr>
+      <tr><td>🥇 Puntaje Perfecto (Biología)</td><td>100% en Biología</td></tr>
+      <tr><td>👑 Maestro del Simulador Pro</td><td>Puntaje máximo en el simulador</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-note">
+    <div class="alert-icon">ℹ️</div>
+    <div>Los certificados bloqueados (grises) muestran el requisito al pasar el cursor. Completa el simulador para desbloquearlos.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 9 -->
+  <h2><span class="section-num">9</span>Dashboard de Reportes</h2>
+  <p><strong>Ruta:</strong> <code>/reportes</code></p>
+  <h3>KPIs en tiempo real</h3>
+  <ul>
+    <li><strong>Videos vistos</strong> — Total de videos revisados</li>
+    <li><strong>Completados</strong> — Videos que incluyen quiz aprobado</li>
+    <li><strong>Quizzes aprobados</strong> — Cuántos quizzes has pasado</li>
+    <li><strong>Tiempo invertido</strong> — Total de tiempo de estudio</li>
+  </ul>
+  <h3>Gráficas incluidas</h3>
+  <table>
+    <thead><tr><th>Gráfica</th><th>Lo que muestra</th></tr></thead>
+    <tbody>
+      <tr><td>Barra por Área</td><td>Porcentaje de avance en cada materia</td></tr>
+      <tr><td>Radar (Perfil)</td><td>Tu dominio en las 11 áreas simultáneamente</td></tr>
+      <tr><td>Pastel (Pie)</td><td>Distribución: Completados / Vistos / Pendientes</td></tr>
+      <tr><td>Áreas a Reforzar</td><td>Las 3 áreas con menor progreso — clic para ir directo</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-tip">
+    <div class="alert-icon">💡</div>
+    <div>El diagrama de radar ideal es una figura <strong>grande y uniforme</strong>. Las puntas cortas indican áreas débiles que necesitas reforzar antes del examen.</div>
+  </div>
+
+  <hr />
+
+  <!-- SEC 10 -->
+  <h2><span class="section-num">10</span>Sistema de Tokens</h2>
+  <p><strong>Ruta:</strong> <code>/tokens</code></p>
+  <table>
+    <thead><tr><th>Paquete</th><th>Tokens</th><th>Precio</th><th>$ por token</th></tr></thead>
+    <tbody>
+      <tr><td>Básico</td><td>20</td><td>$20 MXN</td><td>$1.00</td></tr>
+      <tr><td>Popular ⭐</td><td>60</td><td>$50 MXN</td><td>$0.83</td></tr>
+      <tr><td>Pro</td><td>160</td><td>$120 MXN</td><td>$0.75</td></tr>
+      <tr><td>👑 Ilimitado</td><td>1,000/mes</td><td>$250 MXN/mes</td><td>$0.25</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><strong>1 pregunta al AI = 1 token</strong></li>
+    <li>Los tokens de paquetes <strong>no expiran</strong> (excepto el Plan Ilimitado mensual)</li>
+    <li>El acceso a videos, guías, PDFs, quizzes y simuladores es <strong>siempre gratuito</strong></li>
+  </ul>
+  <h3>Proceso de pago</h3>
+  <ol>
+    <li>Selecciona tu paquete y haz clic en "Comprar ahora"</li>
+    <li>Serás redirigido a <strong>Mercado Pago</strong> (pago seguro)</li>
+    <li>Al completar el pago, los tokens se acreditarán automáticamente</li>
+  </ol>
+
+  <hr />
+
+  <!-- SEC 11 -->
+  <h2><span class="section-num">11</span>Progreso y Gamificación</h2>
+  <h3>🔥 Racha de Estudio (Streak)</h3>
+  <ul>
+    <li>Se incrementa cada día que accedes y estudias</li>
+    <li><strong>Hitos:</strong> Al llegar a 3, 5, 10, 15... días, recibes notificación de felicitación</li>
+    <li>Si rompes la racha, se reinicia a 1 y recibes una alerta</li>
+  </ul>
+  <h3>🏆 Sistema de Insignias (Badges)</h3>
+  <p>Se desbloquean automáticamente al: completar un área, aprobar X quizzes, mantener racha de días, completar el simulador.</p>
+  <h3>📅 Retos Semanales</h3>
+  <p>Desafíos con fecha límite que aparecen cada semana. Completarlos suma puntos y logros.</p>
+  <h3>🔔 Notificaciones Push</h3>
+  <p>Si las activas en tu navegador, recibirás recordatorios de estudio, alertas de racha en riesgo y confirmaciones de logros.</p>
+
+  <hr />
+
+  <!-- SEC 12 -->
+  <h2><span class="section-num">12</span>Funciones Avanzadas</h2>
+  <h3>📲 Instalar como App (PWA)</h3>
+  <ol>
+    <li>En Chrome/Edge, aparece un banner "Instalar CyberEdu MX"</li>
+    <li>Al instalarlo, funciona como una app nativa en tu dispositivo</li>
+    <li>Acceso desde el ícono del escritorio, sin abrir el navegador</li>
+  </ol>
+  <h3>📴 Modo sin conexión</h3>
+  <p>Las páginas ya visitadas se guardan en caché automáticamente para acceder sin internet.</p>
+  <h3>📖 Manual Digital ECOEMS</h3>
+  <p>Guía estratégica con temario completo, tips y ejercicios resueltos. Disponible en: <code>cyberedumx.com/libro/manual_digital_ECOEMS.html</code></p>
+  <h3>🎓 Curso de Udemy (único recurso de pago)</h3>
+  <ul>
+    <li><strong>128 preguntas resueltas</strong> con Google NotebookLM</li>
+    <li>Explicaciones detalladas potenciadas por IA</li>
+    <li>Acceso de por vida: <code>udemy.com/course/ecoems2026conia/</code></li>
+  </ul>
+  <h3>🔢 Consola Studio (630+ reactivos)</h3>
+  <p>Desde el Dashboard → "Consola Studio: Por Materia" · O en cada área → Sidebar → "Zona Studio (Pro)"</p>
+
+  <hr />
+
+  <!-- SEC 13 -->
+  <h2><span class="section-num">13</span>Preguntas Frecuentes</h2>
+  <h3>¿Es necesario registrarse?</h3>
+  <p>Para la mayoría del contenido sí, pero el buscador de temas y el blog son públicos.</p>
+  <h3>¿Cómo sé que un video quedó marcado como visto?</h3>
+  <p>Al abrir el Notebook de NotebookLM del video (botón "Notebook"), se marca automáticamente como visto y aparece ✅ en el sidebar.</p>
+  <h3>¿Los tokens expiran?</h3>
+  <p>Los paquetes Básico, Popular y Pro <strong>no expiran</strong>. Solo el Plan Ilimitado mensual se renueva.</p>
+  <h3>¿Puedo pausar el simulador y continuar otro día?</h3>
+  <p>Sí. Usa "Guardar y salir" o "Pausar". La próxima vez que entres, la plataforma detecta el examen en progreso y te pregunta si quieres continuar.</p>
+  <h3>¿Qué navegador debo usar?</h3>
+  <p>Chrome o Edge son recomendados para la mejor experiencia (especialmente para la PWA y los diagramas).</p>
+  <h3>¿Funciona en móvil?</h3>
+  <p>Sí, la plataforma es completamente responsive. Para mejor experiencia, instálala como PWA desde el banner.</p>
+  <h3>¿El AI Tutor puede ver mi progreso?</h3>
+  <p>Sí. El CyberAgent tiene acceso a tu historial de videos vistos, quizzes aprobados y progreso por área para darte recomendaciones personalizadas.</p>
+  <h3>¿Cómo contactar soporte?</h3>
+  <p>Usa el botón de <strong>WhatsApp</strong> flotante en la esquina de la pantalla.</p>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    📅 Manual actualizado: Abril 2026 · CyberEdu MX v3.0 · cyberedumx.com
+  </div>
+
+</div>
+
+<!-- PRINT BUTTON -->
+<button class="print-btn no-print" onclick="window.print()">
+  🖨️ Guardar como PDF
+</button>
+
+</body>
+</html>

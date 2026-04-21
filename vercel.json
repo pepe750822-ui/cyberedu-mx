@@ -40,8 +40,6 @@
     { "source": "/ingles.html",                                             "destination": "/area/habilidades", "permanent": true },
     { "source": "/curso/ingles",                                            "destination": "/area/habilidades", "permanent": true },
     { "source": "/preguntas-frecuentes-ecoems",                             "destination": "/",                 "permanent": true },
-    { "source": "/manual.html",                                             "destination": "/libro/manual_digital_ECOEMS.html", "permanent": true },
-    { "source": "/manual",                                                  "destination": "/libro/manual_digital_ECOEMS.html", "permanent": true },
     { "source": "/dashboard.html",                                          "destination": "/master-admin",     "permanent": true },
     { "source": "/dashboard",                                               "destination": "/master-admin",     "permanent": true }
   ],
