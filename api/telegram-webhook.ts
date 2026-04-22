@@ -169,8 +169,15 @@ async function handleAICall(api: string, chatId: string, question: string, userI
     });
 
     if (!aiRes.ok) throw new Error('IA Error');
+    // Procesar respuesta (ai-chat devuelve un stream, necesitamos el texto final)
     const data = await aiRes.text();
-    const cleanText = parseSSEResponse(data);
+    
+    // Limpiar el formato SSE (data: {"choices"...}) para sacar solo el texto
+    const rawText = parseSSEResponse(data);
+    
+    // Limpiar tags XML para que no se vean en Telegram
+    const cleanText = stripXmlTags(rawText);
+
     return sendTelegramMessage(api, chatId, cleanText);
   } catch (err) {
     return sendTelegramMessage(api, chatId, "Lo siento, tuve un problema conectando con mi cerebro artificial. Reintenta en un momento. 🧠❌");
@@ -192,6 +199,29 @@ function parseSSEResponse(sseData: string): string {
     }
   }
   return fullText || "No pude generar una respuesta.";
+}
+
+function stripXmlTags(text: string): string {
+  // Eliminar bloques de etiquetas comunes que no queremos mostrar en Telegram
+  return text
+    .replace(/<reasoning>[\s\S]*?<\/reasoning>/g, '')
+    .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, '')
+    .replace(/<chart>[\s\S]*?<\/chart>/g, '')
+    .replace(/<plan>[\s\S]*?<\/plan>/g, '')
+    .replace(/<calculator>[\s\S]*?<\/calculator>/g, '')
+    .replace(/<simulator>[\s\S]*?<\/simulator>/g, '')
+    .replace(/<exercise>[\s\S]*?<\/exercise>/g, '')
+    .replace(/<quiz>[\s\S]*?<\/quiz>/g, '')
+    .replace(/<chemistry>[\s\S]*?<\/chemistry>/g, '')
+    .replace(/<geography>[\s\S]*?<\/geography>/g, '')
+    .replace(/<solar_system>[\s\S]*?<\/solar_system>/g, '')
+    .replace(/<human_body>[\s\S]*?<\/human_body>/g, '')
+    .replace(/<spatial_series>[\s\S]*?<\/spatial_series>/g, '')
+    .replace(/<mexico_map>[\s\S]*?<\/mexico_map>/g, '')
+    .replace(/<timeline>[\s\S]*?<\/timeline>/g, '')
+    .replace(/<atom>[\s\S]*?<\/atom>/g, '')
+    .replace(/<algebra>[\s\S]*?<\/algebra>/g, '')
+    .trim();
 }
 
 function getReplyForTelegram(text: string, firstName: string): { replyText: string, inlineKeyboard?: any[][] } {
