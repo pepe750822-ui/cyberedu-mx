@@ -23,6 +23,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPostDetail = lazy(() => import("./pages/BlogPostDetail"));
 const Modalidades = lazy(() => import("./pages/Modalidades"));
 const Sugerencias = lazy(() => import("./pages/Sugerencias"));
+const PromoEcoems = lazy(() => import("./pages/PromoEcoems"));
 const AITutor = lazy(() => import("./components/AITutor"));
 const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -138,6 +139,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/area/:areaId" element={<AreaDetail />} />
               <Route path="/simulador-pro" element={<SimuladorPro />} />
+              <Route path="/promo-ecoems" element={<PromoEcoems />} />
               <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
               <Route path="/certificaciones" element={<ProtectedRoute><Certificaciones /></ProtectedRoute>} />
               <Route path="/reportes" element={<ProtectedRoute><Reportes /></ProtectedRoute>} />
