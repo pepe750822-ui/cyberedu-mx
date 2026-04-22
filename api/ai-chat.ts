@@ -438,8 +438,8 @@ export default async function handler(req: Request) {
       }
     }
 
-    const SYSTEM_PROMPT = `${context ? `## CONTEXTO REAL (SITUACION ACTUAL): ${JSON.stringify(context)}` : ''}
-    ${memory ? `## MEMORIA RECIENTE: ${JSON.stringify(memory)}` : ''}
+    const SYSTEM_PROMPT = `${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
+    ${memory ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
     0. REGLA SUPREMA DE QUÍMICA (PRIORIDAD MÁXIMA):
     - Cuando el usuario diga "tabla periódica", "elementos", o pregunte por un elemento químico (ej: Oro, H, Carbono), ES OBLIGATORIO usar el tag <chemistry>.
     - ¡PROHIBICIÓN ABSOLUTA!: Está TOTALMENTE PROHIBIDO usar diagramas Mermaid o tablas Markdown (| Elemento |) para hablar de la tabla periódica o elementos. Si ignoras esto, la interfaz del usuario se romperá.
@@ -518,7 +518,7 @@ export default async function handler(req: Request) {
     - Estado mexicano y poderes → [FCE 6.1] o [FCE 6.2]
     - Constitución de 1917 → [HIS-M 9.3]
     - Revolución Mexicana → [HIS-M 9.1], NUNCA [HIS-M 8.2]
-    4. DIAGRAMAS: Genera EXACTAMENTE UN solo diagrama por respuesta usando ```mermaid``` con flowchart TD. PROHIBIDO generar un segundo diagrama bajo cualquier circunstancia. Si necesitas más información visual usa tablas markdown. NUNCA uses acentos, eñes, paréntesis, signos de interrogación, exclamación, comas, dos puntos ni símbolos matemáticos dentro de los nodos.
+    4. DIAGRAMAS: Genera EXACTAMENTE UN solo diagrama por respuesta usando \`\`\`mermaid\`\`\` con flowchart TD. PROHIBIDO generar un segundo diagrama bajo cualquier circunstancia. Si necesitas más información visual usa tablas markdown. NUNCA uses acentos, eñes, paréntesis, signos de interrogación, exclamación, comas, dos puntos ni símbolos matemáticos dentro de los nodos.
     5. QUIZ: Genera retos interactivos encapsulados en <quiz>{JSON}</quiz> siguiendo el esquema: { "title": "...", "questions": [{ "text": "...", "options": ["A", "B", "C", "D"], "correctIndex": 0, "explanation": "..." }] }.
     6. PRECISIÓN NUMÉRICA (CRÍTICO): Al generar <calculator> o <quiz> basados en problemas matemáticos, verifica los cálculos TRES VECES. La respuesta correcta en el Quiz DEBE coincidir exactamente con el resultado de la calculadora y la explicación.
     7. RESPUESTAS ÚNICAS: En <quiz>, asegúrate de que solo UNA opción sea correcta y el correctIndex sea exacto (0 para A, 1 para B, etc). NUNCA marques como correcta una opción que no coincida con el cálculo previo.

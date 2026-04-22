@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createManyChatSubscriber } from './_utils/manychat';
+import { createManyChatSubscriber } from './_utils/manychat.js';
 
 // Supabase configuration
 const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
