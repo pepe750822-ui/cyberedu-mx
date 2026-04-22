@@ -73,7 +73,7 @@ export default async function handler(req: Request) {
         return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, firstName), getMainKeyboard());
       }
 
-      if (lowerText === '/vincular') {
+      if (lowerText === '/vincular' || lowerText === '👤 vincular') {
         const code = Math.random().toString(36).substring(2, 8).toUpperCase();
         await supabase.from('telegram_users').update({ linking_code: code }).eq('chat_id', chatId);
         return sendTelegramMessage(
@@ -87,9 +87,9 @@ export default async function handler(req: Request) {
         );
       }
 
-      if (lowerText === '/mis_tokens') {
+      if (lowerText === '/mis_tokens' || lowerText === '🪙 mis tokens') {
         if (!tgUser?.user_id) {
-          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens", getMainKeyboard());
+          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
         }
         const tokens = tgUser.profiles?.tokens || 0;
         const name = tgUser.profiles?.full_name || firstName;
@@ -161,18 +161,34 @@ function getMainKeyboard() {
   ];
 }
 
-async function sendTelegramMessage(api: string, chatId: string, text: string, keyboard?: any[][]) {
-  const reply_markup = keyboard ? { inline_keyboard: keyboard } : undefined;
-  
+async function sendTelegramMessage(api: string, chatId: string, text: string, inlineKeyboard?: any[][]) {
+  const body: any = {
+    chat_id: chatId,
+    text,
+    parse_mode: 'Markdown'
+  };
+
+  if (inlineKeyboard) {
+    body.reply_markup = { inline_keyboard: inlineKeyboard };
+  }
+
+  const replyKeyboard = {
+    keyboard: [
+      [{ text: "🪙 Mis Tokens" }, { text: "🚀 Simulador Pro" }],
+      [{ text: "💎 Comprar Tokens" }, { text: "👤 Vincular" }]
+    ],
+    resize_keyboard: true,
+    one_time_keyboard: false
+  };
+
+  if (!body.reply_markup) {
+    body.reply_markup = replyKeyboard;
+  }
+
   await fetch(`${api}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text,
-      parse_mode: 'Markdown',
-      reply_markup
-    })
+    body: JSON.stringify(body)
   });
   return new Response('OK');
 }
@@ -181,7 +197,7 @@ function getWelcomeMessage(tgUser: any, firstName: string) {
   if (tgUser?.user_id) {
     return `¡Bienvenido de vuelta, ${tgUser.profiles?.full_name || firstName}! 🚀\n\nTienes *${tgUser.profiles?.tokens || 0} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
 }
 
 async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {
