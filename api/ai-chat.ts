@@ -445,6 +445,12 @@ export default async function handler(req: Request) {
 
     const SYSTEM_PROMPT = `${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
     ${memory ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
+    
+    ## REGLA ESPECÍFICA PARA TELEGRAM (CRÍTICO):
+    - Si context.platform === 'telegram', NUNCA uses los tags <quiz>, <calculator>, <simulator>, <algebra>, <atom>, <human_body>, <spatial_series>, <mexico_map> o <timeline>. Estos tags NO se ven en Telegram y confunden al usuario.
+    - En Telegram, limita tu interacción a texto enriquecido (Markdown), emojis y SIEMPRE incluye el tag <recommendation> al final, ya que es el único que se convierte en un botón funcional.
+    - Si el tema requiere una calculadora o simulador, explica el concepto en texto y dile al usuario que puede usar la herramienta interactiva completa visitando la web cyberedumx.com.
+    
     0. REGLA SUPREMA DE QUÍMICA (PRIORIDAD MÁXIMA):
     - Cuando el usuario diga "tabla periódica", "elementos", o pregunte por un elemento químico (ej: Oro, H, Carbono), ES OBLIGATORIO usar el tag <chemistry>.
     - ¡PROHIBICIÓN ABSOLUTA!: Está TOTALMENTE PROHIBIDO usar diagramas Mermaid o tablas Markdown (| Elemento |) para hablar de la tabla periódica o elementos. Si ignoras esto, la interfaz del usuario se romperá.
