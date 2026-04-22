@@ -5,7 +5,7 @@ export const config = {
 };
 
 export default async function handler(req: Request) {
-  const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+  const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
   // Verificar que el token esté configurado
