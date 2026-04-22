@@ -36,7 +36,7 @@ import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
 import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
-import WhatsAppButton from "./components/WhatsAppButton";
+import TelegramButton from "./components/TelegramButton";
 
 /**
  * StreakAutoSync — invisible component that:
@@ -134,7 +134,7 @@ const App = () => (
           <AuthenticatedStudyTools />
           <PWAInstallBanner />
           <PWAStatusBar />
-          <WhatsAppButton />
+          <TelegramButton />
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<Index />} />

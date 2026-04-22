@@ -59,7 +59,7 @@ export default async function handler(req: Request) {
         console.log(`Mensaje de Telegram recibido [${chatId}]: ${text}`);
 
         // A. Generar respuesta automática basada en palabras clave
-        const replyText = getReplyForTelegram(text, firstName);
+        const { replyText, inlineKeyboard } = getReplyForTelegram(text, firstName);
 
         // B. Enviar la respuesta vía API de Telegram
         await fetch(`${TELEGRAM_API}/sendMessage`, {
@@ -67,7 +67,8 @@ export default async function handler(req: Request) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: chatId,
-            text: replyText
+            text: replyText,
+            reply_markup: inlineKeyboard ? { inline_keyboard: inlineKeyboard } : undefined
           })
         });
 
@@ -98,27 +99,49 @@ export default async function handler(req: Request) {
 // LÓGICA DE RESPUESTAS Y BASE DE DATOS
 // ==========================================
 
-function getReplyForTelegram(text: string, firstName: string): string {
+function getReplyForTelegram(text: string, firstName: string): { replyText: string, inlineKeyboard?: any[][] } {
   const lowerMsg = text.toLowerCase();
 
+  // Menú principal de botones
+  const mainKeyboard = [
+    [{ text: "🎯 Probar Simulador", url: "https://cyberedumx.com/simulador-pro" }],
+    [{ text: "💰 Ver Precios y Tokens", url: "https://cyberedumx.com/tokens" }],
+    [{ text: "👤 Crear Cuenta Gratis", url: "https://cyberedumx.com/auth" }]
+  ];
+
   if (lowerMsg.includes('hola') || lowerMsg.includes('/start') || lowerMsg.includes('buenas')) {
-    return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nEstamos aquí para ayudarte a pasar tu examen ECOEMS 2026. Visita nuestra página principal: https://cyberedumx.com`;
+    return {
+      replyText: `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nSoy tu asistente virtual. Estoy aquí para ayudarte a pasar tu examen ECOEMS 2026.\n\n¿Qué te gustaría hacer hoy?`,
+      inlineKeyboard: mainKeyboard
+    };
   }
   
   if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('pagar')) {
-    return '¡Buenas noticias! El contenido multimedia es GRATIS 🎁.\n\nPara interactuar sin límites con nuestro Tutor IA, los tokens inician desde solo $10 MXN. Consíguelos aquí: https://cyberedumx.com/tokens';
+    return {
+      replyText: '¡Buenas noticias! El contenido multimedia es GRATIS 🎁.\n\nPara interactuar sin límites con nuestro Tutor IA, los tokens inician desde solo $10 MXN.',
+      inlineKeyboard: [[{ text: "💎 Ver Planes de Tokens", url: "https://cyberedumx.com/tokens" }]]
+    };
   }
   
   if (lowerMsg.includes('simulador')) {
-    return '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro aquí: https://cyberedumx.com/simulador-pro';
+    return {
+      replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro. Tiene el mismo formato que el examen real.',
+      inlineKeyboard: [[{ text: "🚀 Abrir Simulador", url: "https://cyberedumx.com/simulador-pro" }]]
+    };
   }
   
   if (lowerMsg.includes('registro') || lowerMsg.includes('crear cuenta') || lowerMsg.includes('apuntarme')) {
-    return '¡Excelente decisión! Regístrate gratis y accede a los recursos: https://cyberedumx.com/auth';
+    return {
+      replyText: '¡Excelente decisión! Regístrate gratis en segundos y accede a todos los videos y materiales.',
+      inlineKeyboard: [[{ text: "📝 Registrarme Ahora", url: "https://cyberedumx.com/auth" }]]
+    };
   }
   
-  // Respuesta por defecto
-  return `¡Hola! Soy el asistente bot de CyberEdu MX 🤖.\n\nEscribe alguna de estas palabras clave:\n• PRECIO\n• SIMULADOR\n• REGISTRO\n\nO visita: https://cyberedumx.com`;
+  // Respuesta por defecto con menú completo
+  return {
+    replyText: `¡Hola! Soy el asistente bot de CyberEdu MX 🤖.\n\nSelecciona una opción del menú para ayudarte:`,
+    inlineKeyboard: mainKeyboard
+  };
 }
 
 async function saveTelegramLeadInSupabase(supabaseUrl: string, supabaseKey: string, chatId: string, username: string, firstName: string, lastMessage: string) {
