@@ -4174,6 +4174,13 @@ const AITutor = () => {
 
                        {/* ── PREMIUM / SUSCRIPTOR ── */}
                        {usageStats && usageStats.isSubscriber && (
+                             <span className="text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5 text-amber-400">
+                               👑 Consultas Ilimitadas
+                             </span>
+                           )}
+
+                       {/* ── USUARIO GRATIS REGISTRADO ── */}
+                       {usageStats && !usageStats.isSubscriber && user && (
                              <span className={cn(
                                "text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5",
                                usageStats.used >= usageStats.limit ? "text-rose-500 border-rose-500/30" : 
