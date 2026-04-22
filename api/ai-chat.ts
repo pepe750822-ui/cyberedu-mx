@@ -333,7 +333,8 @@ export default async function handler(req: Request) {
     const tzDate = new Date(todayInMexico);
     const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
 
-    const currentTokens = Number(profile.tokens || 0);
+    const rawTokens = profile.tokens ?? profile.token ?? 0;
+    const currentTokens = Number(rawTokens);
 
     // Rule 1: Subscriber -> pasa sin límite (pero actualizamos timestamp + tracking)
     if (profile.subscription_status === 'active' || profile.is_premium === true) {
@@ -356,12 +357,16 @@ export default async function handler(req: Request) {
       const newTokenBalance = Math.max(0, currentTokens - 1);
       console.log(`[AI-CHAT] Deducting token: ${currentTokens} -> ${newTokenBalance}`);
       
+      // Intentar actualizar ambos nombres de columna por si acaso
+      const updateData: any = {
+        updated_at: new Date().toISOString()
+      };
+      if (profile.tokens !== undefined) updateData.tokens = newTokenBalance;
+      if (profile.token !== undefined) updateData.token = newTokenBalance;
+
       const { error: patchError } = await supabaseRequest(`profiles?id=eq.${userId}`, {
         method: 'PATCH',
-        body: JSON.stringify({
-          tokens: newTokenBalance,
-          updated_at: new Date().toISOString()
-        })
+        body: JSON.stringify(updateData)
       });
 
       if (!patchError) {

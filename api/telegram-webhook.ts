@@ -74,11 +74,15 @@ export default async function handler(req: Request) {
       // 2. Si está vinculado, obtener perfil actualizado
       let profile = null;
       if (tgUser?.user_id) {
-        const { data: userProfile } = await supabase
+        const { data: userProfile, error: profileError } = await supabase
           .from('profiles')
-          .select('tokens, full_name, subscription_status, is_premium')
+          .select('*') // Seleccionamos todo para verificar nombres de columnas
           .eq('id', tgUser.user_id)
           .maybeSingle();
+        
+        if (profileError) {
+          console.error('[DEBUG] Error al buscar perfil:', profileError);
+        }
         profile = userProfile;
       }
 
@@ -108,15 +112,21 @@ export default async function handler(req: Request) {
           return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
         }
         
-        const tokens = profile?.tokens || 0;
+        // Diagnóstico para el usuario (usando fallback por si acaso)
+        const rawTokens = profile?.tokens ?? (profile as any)?.token ?? 0;
+        const tokens = Number(rawTokens);
         const name = profile?.full_name || firstName;
-        const status = (profile?.subscription_status === 'active' || profile?.is_premium) ? "💎 Premium" : "🎟️ Estándar";
+        const isPremium = profile?.subscription_status === 'active' || profile?.is_premium;
+        const status = isPremium ? "💎 Premium" : "🎟️ Estándar";
         const partialId = tgUser.user_id ? `...${tgUser.user_id.slice(-6)}` : 'N/A';
+
+        // DEBUG INFO (Temporary as requested)
+        const debugMsg = `\n\n🔍 **DEBUG:**\nID: \`${tgUser.user_id}\`\nProfile: ${!!profile ? '✅' : '❌'}\nRaw: \`${rawTokens}\` (${typeof rawTokens})`;
 
         return sendTelegramMessage(
           TELEGRAM_API, 
           chatId, 
-          `👤 *Cuenta:* ${name}\n✨ *Nivel:* ${status}\n🪙 *Balance:* ${tokens} tokens\n\n🆔 *Ref:* ${partialId}\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, 
+          `👤 *Cuenta:* ${name}\n✨ *Nivel:* ${status}\n🪙 *Balance:* ${tokens} tokens\n\n🆔 *Ref:* ${partialId}\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.${debugMsg}`, 
           getMainKeyboard()
         );
       }
@@ -128,14 +138,8 @@ export default async function handler(req: Request) {
 
         // A. Caso Usuario Registrado (Vinculado)
         if (tgUser?.user_id) {
-          const tokens = profile?.tokens || 0;
-          const isPremium = profile?.subscription_status === 'active' || profile?.is_premium;
-
-          if (tokens <= 0 && !isPremium) {
-            return sendTelegramMessage(TELEGRAM_API, chatId, "⚠️ No tienes tokens disponibles. Compra más en cyberedumx.com/tokens", getMainKeyboard());
-          }
-
-          // Llamar a la IA
+          // El límite de preguntas (tokens o gratuito diario) se valida en el API ai-chat.ts
+          // Delegamos la responsabilidad para no duplicar lógica.
           return handleAICall(TELEGRAM_API, chatId, query, tgUser.user_id, url.host, true);
         } 
         
@@ -248,7 +252,14 @@ async function handleAICall(api: string, chatId: string, question: string, userI
       })
     });
 
-    if (!aiRes.ok) throw new Error('IA Error');
+    if (!aiRes.ok) {
+      const errorData = await aiRes.json().catch(() => ({}));
+      if (errorData.error) {
+        return sendTelegramMessage(api, chatId, `⚠️ ${errorData.error}`, getMainKeyboard());
+      }
+      throw new Error('IA Error');
+    }
+
     const data = await aiRes.text();
     const rawText = parseSSEResponse(data);
     const cleanText = stripXmlTags(rawText);
