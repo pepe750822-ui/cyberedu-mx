@@ -9,8 +9,10 @@ import {
   Zap, 
   Crown, 
   Star,
-  Info
+  Info,
+  Send
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -66,6 +68,8 @@ const TokensPage = () => {
   const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const [pendingQuestionMsg, setPendingQuestionMsg] = useState<string | null>(null);
+  const [linkingCode, setLinkingCode] = useState("");
+  const [isLinking, setIsLinking] = useState(false);
 
   useEffect(() => {
     const raw = localStorage.getItem('cyberedu_pending_question');
@@ -91,6 +95,41 @@ const TokensPage = () => {
     }
   }, [searchParams]);
 
+
+  const handleLinkTelegram = async () => {
+    if (!user) {
+      toast.error("Debes iniciar sesión para vincular Telegram");
+      return;
+    }
+    if (!linkingCode || linkingCode.length < 5) {
+      toast.error("Por favor ingresa un código válido");
+      return;
+    }
+
+    setIsLinking(true);
+    try {
+      const resp = await fetch("/api/telegram-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          linkingCode: linkingCode.trim().toUpperCase()
+        }),
+      });
+
+      const data = await resp.json();
+      if (data.success) {
+        toast.success("¡Bot de Telegram vinculado con éxito! 🎉");
+        setLinkingCode("");
+      } else {
+        toast.error(data.error || "Código inválido");
+      }
+    } catch (error: any) {
+      toast.error("Error al vincular: " + error.message);
+    } finally {
+      setIsLinking(false);
+    }
+  };
 
   const handleBuy = async (packageId: string) => {
     if (!user) {
@@ -177,8 +216,8 @@ const TokensPage = () => {
           </div>
         </div>
 
-        {/* Balance Current */}
-        <div className="max-w-4xl mx-auto">
+        {/* Balance Current & Telegram Link */}
+        <div className="max-w-4xl mx-auto space-y-4">
             <div className="glass-card-premium p-6 rounded-3xl border-primary/20 bg-primary/5 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-5">
                     <div className="w-16 h-16 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center">
@@ -195,6 +234,40 @@ const TokensPage = () => {
                     </Button>
                 </div>
             </div>
+
+            {/* Telegram Linking Card */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="glass-card-premium p-6 rounded-3xl border-sky-500/20 bg-sky-500/5 flex flex-col md:flex-row items-center justify-between gap-6"
+            >
+                <div className="flex items-center gap-5">
+                    <div className="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-500/30 flex items-center justify-center">
+                        <Send className="h-6 w-6 text-sky-400" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Ecosistema Telegram</p>
+                        <h3 className="text-lg font-bold text-white">Vincular con @CyberEduMXBot</h3>
+                        <p className="text-xs text-slate-400">Usa tus tokens directamente en el chat de Telegram.</p>
+                    </div>
+                </div>
+                
+                <div className="flex w-full md:w-auto gap-2">
+                    <Input 
+                      placeholder="Código (ej: YGG65K)" 
+                      value={linkingCode}
+                      onChange={(e) => setLinkingCode(e.target.value)}
+                      className="bg-white/5 border-white/10 rounded-xl h-11 text-center font-black tracking-widest uppercase"
+                    />
+                    <Button 
+                      onClick={handleLinkTelegram}
+                      disabled={isLinking || !linkingCode}
+                      className="bg-sky-500 hover:bg-sky-400 text-black font-black uppercase tracking-widest text-[10px] px-6 rounded-xl h-11 shrink-0"
+                    >
+                        {isLinking ? "..." : "Vincular"}
+                    </Button>
+                </div>
+            </motion.div>
         </div>
 
         {/* Explanatory Section */}
