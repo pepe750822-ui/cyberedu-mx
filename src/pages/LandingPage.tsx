@@ -15,7 +15,10 @@ import {
   Zap,
   Ticket,
   Crown,
-  Sparkles
+  Sparkles,
+  Users,
+  Bot,
+  Layers
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -165,39 +168,206 @@ const LandingPage = () => {
       </nav>
 
       {/* 1. Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden px-4">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
-        
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Plataforma de Nueva Generación</span>
+      <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden px-4">
+        {/* Background glows */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 w-[350px] h-[350px] bg-violet-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 w-[350px] h-[350px] bg-orange-500/8 blur-[100px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 max-w-5xl mx-auto">
+
+          {/* Live badge */}
+          <div className="flex justify-center mb-7 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-[11px] font-black uppercase tracking-widest">ECOEMS 2026 · 20-28 Junio · Prepárate Ya</span>
+            </div>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-150">
-            Domina el <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-400 to-violet-400">ECOEMS 2026</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-            Prepárate con <span className="text-white font-bold">Tutor IA Powered by Claude</span>. Acelera tu aprendizaje y asegura tu lugar en la preparatoria.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
-            <Button 
+
+          {/* Title */}
+          <div className="text-center animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.05] mb-5">
+              Aprueba el ECOEMS{" "}
+              <span className="relative inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">en 45 Días</span>
+                <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400/0 via-emerald-400/70 to-emerald-400/0 rounded-full" />
+              </span>
+            </h1>
+
+            <p className="text-lg md:text-2xl text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed">
+              <span className="text-white font-bold">Tutor IA disponible 24/7</span>
+              {" + "}
+              <span className="text-cyan-400 font-bold">9 Artefactos Interactivos</span>
+              {" para dominar cada tema del examen."}
+            </p>
+          </div>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+            <Button
               onClick={() => navigate("/auth")}
-              className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-[0.15em] shadow-[0_0_40px_rgba(var(--primary),0.3)] hover:scale-105 transition-all"
+              className="w-full sm:w-auto h-14 px-10 rounded-2xl font-black uppercase tracking-[0.12em] text-sm transition-all hover:scale-105 active:scale-95 text-black"
+              style={{
+                background: "linear-gradient(135deg, #10b981 0%, #f59e0b 100%)",
+                boxShadow: "0 0 40px rgba(16,185,129,0.35), 0 4px 20px rgba(245,158,11,0.2)"
+              }}
             >
-              Empezar Gratis Ahora
+              Empezar Gratis
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => document.getElementById('precios')?.scrollIntoView({ behavior: 'smooth' })}
               className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-white/5 border-white/10 hover:bg-white/10 text-white font-bold uppercase tracking-widest transition-all"
             >
-              Ver Planes
+              Ver Precios
             </Button>
           </div>
+
+          {/* Social proof */}
+          <div className="flex justify-center mt-6 animate-in fade-in duration-1000 delay-500">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <div className="flex -space-x-2">
+                {(["#8b5cf6","#06b6d4","#10b981","#f59e0b"] as const).map((color, i) => (
+                  <div
+                    key={i}
+                    className="w-7 h-7 rounded-full border-2 border-slate-900 flex items-center justify-center text-[9px] font-black text-white"
+                    style={{ backgroundColor: color }}
+                  >
+                    {["M","J","A","K"][i]}
+                  </div>
+                ))}
+              </div>
+              <Users className="h-3.5 w-3.5 text-slate-400" />
+              <span className="text-xs font-bold text-slate-300">
+                <span className="text-white font-black">47 estudiantes</span> ya están usando CyberEdu
+              </span>
+            </div>
+          </div>
+
+          {/* Trust badges */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-6 animate-in fade-in duration-1000 delay-700">
+            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-violet-500/30 hover:bg-violet-500/5 transition-all">
+              <Bot className="h-3.5 w-3.5 text-violet-400" />
+              Tutor IA de Anthropic
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all">
+              <Layers className="h-3.5 w-3.5 text-cyan-400" />
+              9 Artefactos Interactivos
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              Acceso de Por Vida
+            </div>
+          </div>
+
+          {/* Hero Visual — AI Tutor mock */}
+          <div className="mt-14 max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500">
+            <div
+              className="relative rounded-3xl border border-white/10 overflow-hidden"
+              style={{
+                background: "linear-gradient(145deg, rgba(15,23,42,0.97) 0%, rgba(2,6,23,0.99) 100%)",
+                boxShadow: "0 0 80px rgba(16,185,129,0.10), 0 0 40px rgba(139,92,246,0.08), 0 32px 64px rgba(0,0,0,0.5)"
+              }}
+            >
+              {/* Window bar */}
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: "rgba(255,255,255,0.02)" }}>
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
+                    <Bot className="h-3 w-3 text-violet-400" />
+                    <span className="text-[10px] text-slate-400 font-bold">CyberAgent · Tutor IA</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat messages */}
+              <div className="p-5 space-y-4">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div
+                    className="max-w-[75%] px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm font-medium text-white"
+                    style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)" }}
+                  >
+                    ¿Cómo funciona la fotosíntesis para el ECOEMS?
+                  </div>
+                </div>
+
+                {/* AI response */}
+                <div className="flex gap-3">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1"
+                    style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
+                  >
+                    <Bot className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="flex-1 space-y-2.5">
+                    <div
+                      className="px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-200 leading-relaxed"
+                      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+                    >
+                      La fotosíntesis convierte luz solar en glucosa ☀️<br />
+                      <br />
+                      <span className="text-emerald-400 font-bold">Fórmula clave [BIO 3.1]:</span>
+                      <span
+                        className="ml-2 px-2 py-0.5 rounded font-mono text-[11px]"
+                        style={{ background: "rgba(16,185,129,0.15)", color: "#34d399" }}
+                      >
+                        6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: "🎯 Quiz Interactivo", color: "#10b981" },
+                        { label: "📹 Ver Video Gratis", color: "#6366f1" },
+                        { label: "🧬 Cuerpo Humano 3D", color: "#06b6d4" }
+                      ].map((tag) => (
+                        <span
+                          key={tag.label}
+                          className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider cursor-pointer hover:opacity-80 transition-opacity"
+                          style={{
+                            background: `${tag.color}20`,
+                            color: tag.color,
+                            border: `1px solid ${tag.color}30`
+                          }}
+                        >
+                          {tag.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Input bar */}
+              <div className="px-5 pb-5">
+                <div
+                  className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+                >
+                  <span className="text-sm text-slate-500 flex-1">Pregunta algo al Tutor IA...</span>
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center"
+                    style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
+                  >
+                    <ArrowRight className="h-4 w-4 text-white" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom gradient fade */}
+              <div className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none" style={{ background: "linear-gradient(to top, #020617, transparent)" }} />
+            </div>
+          </div>
+
         </div>
       </section>
 
