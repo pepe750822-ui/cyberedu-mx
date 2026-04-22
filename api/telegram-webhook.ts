@@ -55,22 +55,38 @@ export default async function handler(req: Request) {
       }
 
       // 1. Obtener estado del usuario (¿vinculado?)
-      const { data: tgUser } = await supabase
+      let { data: tgUser } = await supabase
         .from('telegram_users')
-        .select('*, profiles(tokens, full_name)')
+        .select('*')
         .eq('chat_id', chatId)
         .maybeSingle();
 
       // Si no existe en telegram_users, crearlo como invitado
       if (!tgUser) {
-        await supabase.from('telegram_users').insert({ chat_id: chatId, username, first_name: firstName });
+        const { data: newUser } = await supabase
+          .from('telegram_users')
+          .insert({ chat_id: chatId, username, first_name: firstName })
+          .select()
+          .single();
+        tgUser = newUser;
+      }
+
+      // 2. Si está vinculado, obtener perfil actualizado
+      let profile = null;
+      if (tgUser?.user_id) {
+        const { data: userProfile } = await supabase
+          .from('profiles')
+          .select('tokens, full_name, subscription_status, is_premium')
+          .eq('id', tgUser.user_id)
+          .maybeSingle();
+        profile = userProfile;
       }
 
       const lowerText = text.toLowerCase();
 
-      // 2. Manejo de Comandos
+      // 3. Manejo de Comandos
       if (lowerText.startsWith('/start')) {
-        return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, firstName), getMainKeyboard());
+        return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, profile, firstName), getMainKeyboard());
       }
 
       if (lowerText === '/vincular' || lowerText === '👤 vincular') {
@@ -91,20 +107,25 @@ export default async function handler(req: Request) {
         if (!tgUser?.user_id) {
           return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
         }
-        const tokens = tgUser.profiles?.tokens || 0;
-        const name = tgUser.profiles?.full_name || firstName;
-        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, getMainKeyboard());
+        
+        const tokens = profile?.tokens || 0;
+        const name = profile?.full_name || firstName;
+        const status = (profile?.subscription_status === 'active' || profile?.is_premium) ? "💎 Premium" : "🎟️ Estándar";
+
+        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n✨ *Nivel:* ${status}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, getMainKeyboard());
       }
 
-      // 3. Lógica de preguntas a la IA (/pregunta o cualquier texto si queremos auto-responder)
+      // 4. Lógica de preguntas a la IA
       if (lowerText.startsWith('/pregunta') || !text.startsWith('/')) {
         const query = text.replace('/pregunta', '').trim();
         if (!query) return sendTelegramMessage(TELEGRAM_API, chatId, "Escribe tu pregunta después del comando. Ejemplo: /pregunta ¿Qué es la fotosíntesis?", getMainKeyboard());
 
         // A. Caso Usuario Registrado (Vinculado)
         if (tgUser?.user_id) {
-          const tokens = tgUser.profiles?.tokens || 0;
-          if (tokens <= 0) {
+          const tokens = profile?.tokens || 0;
+          const isPremium = profile?.subscription_status === 'active' || profile?.is_premium;
+
+          if (tokens <= 0 && !isPremium) {
             return sendTelegramMessage(TELEGRAM_API, chatId, "⚠️ No tienes tokens disponibles. Compra más en cyberedumx.com/tokens", getMainKeyboard());
           }
 
@@ -193,9 +214,10 @@ async function sendTelegramMessage(api: string, chatId: string, text: string, in
   return new Response('OK');
 }
 
-function getWelcomeMessage(tgUser: any, firstName: string) {
+function getWelcomeMessage(tgUser: any, profile: any, firstName: string) {
   if (tgUser?.user_id) {
-    return `¡Bienvenido de vuelta, ${tgUser.profiles?.full_name || firstName}! 🚀\n\nTienes *${tgUser.profiles?.tokens || 0} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
+    const tokens = profile?.tokens || 0;
+    return `¡Bienvenido de vuelta, ${profile?.full_name || firstName}! 🚀\n\nTienes *${tokens} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
   return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
 }
