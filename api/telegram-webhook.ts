@@ -65,8 +65,8 @@ export default async function handler(req: Request) {
       if (lowerText === '/mis_tokens') {
         if (!tgUser?.user_id) return sendTelegramMessage(TELEGRAM_API, chatId, "Aún no has vinculado tu cuenta. Usa /vincular para empezar.");
         const tokens = tgUser.profiles?.tokens || 0;
-        return sendTelegramMessage(TELEGRAM_API, chatId, `Tienes *${tokens} tokens* disponibles 🪙.`, [
-          [{ text: "💎 Comprar más", url: "https://cyberedumx.com/tokens" }]
+        return sendTelegramMessage(TELEGRAM_API, chatId, `Tienes *${tokens} tokens* disponibles 🪙.\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, [
+          [{ text: "💎 Obtener más tokens", url: "https://cyberedumx.com/tokens" }]
         ]);
       }
 
@@ -143,9 +143,9 @@ async function sendTelegramMessage(api: string, chatId: string, text: string, ke
 
 function getWelcomeMessage(tgUser: any, firstName: string) {
   if (tgUser?.user_id) {
-    return `¡Bienvenido de vuelta, ${tgUser.profiles?.full_name || firstName}! 🚀\n\nTienes *${tgUser.profiles?.tokens || 0} tokens* disponibles.\n\nEscríbeme cualquier duda académica o usa /pregunta.`;
+    return `¡Bienvenido de vuelta, ${tgUser.profiles?.full_name || firstName}! 🚀\n\nTienes *${tgUser.profiles?.tokens || 0} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web, usa el comando /vincular.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular.`;
 }
 
 async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {
@@ -204,7 +204,7 @@ function getReplyForTelegram(text: string, firstName: string): { replyText: stri
 
   if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('gratis')) {
     return {
-      replyText: '¡En CyberEdu MX casi todo es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n\n¿Qué es de pago?\n1. 🤖 **Tutor IA:** 1 token = 1 pregunta.\n2. 🎓 **Curso Udemy:** Opción premium completa.\n\n¿Qué te gustaría consultar?',
+      replyText: '¡En CyberEdu MX el estudio es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n✅ Guías y Material: GRATIS\n\n¿Por qué usar Tokens?\n🤖 **Tutor IA:** Los tokens te dan derecho a realizar **preguntas académicas directas** en Telegram o la Web para resolver dudas específicas del ECOEMS (1 token = 1 consulta).\n\n¿Qué es de pago?\n1. Tokens del Tutor IA.\n2. Curso Premium en Udemy.\n\n¿Qué te gustaría consultar?',
       inlineKeyboard: [
         [{ text: "💎 Comprar Tokens IA", url: "https://cyberedumx.com/tokens" }],
         [{ text: "🎓 Curso en Udemy", url: "https://www.udemy.com/course/tu-curso-aqui" }]
