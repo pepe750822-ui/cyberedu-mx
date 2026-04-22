@@ -24,7 +24,8 @@ import {
   Share2,
   Search,
   X,
-  Bot
+  Bot,
+  ArrowRight
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
@@ -195,49 +196,156 @@ const Index = () => {
           <div className="absolute inset-0 hero-gradient opacity-95" />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/10 backdrop-blur-md border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-sm font-black px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 uppercase tracking-widest text-[11px]">
-              <span className="relative flex h-2 w-2 mr-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              ECOEMS 2026 · 20-28 Junio · Prepárate Ya
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 bg-emerald-500/10 backdrop-blur-md border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-sm font-black px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 uppercase tracking-widest text-[11px]">
+                <span className="relative flex h-2 w-2 mr-1">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                ECOEMS 2026 · 20-28 Junio · Prepárate Ya
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-foreground mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
+                Aprueba el ECOEMS <br /><span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">en 45 Días</span>
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
+                <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">9 Artefactos Interactivos</span> para dominar cada tema del examen.
+              </p>
+              <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
+                <div className="h-px w-8 bg-violet-500/30 hidden md:block" />
+                <span className="text-[11px] font-black uppercase tracking-[0.15em] text-violet-500 flex items-center gap-2 drop-shadow-sm">
+                  <Bot className="h-4 w-4" />
+                  Powered by Claude AI
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
+                  <Video className="h-5 w-5 text-secondary" />
+                  <span className="text-sm font-medium">{totalVideos} Videos HD</span>
+                </div>
+                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-accent" />
+                  <span className="text-sm font-medium">{areas.length} Áreas Críticas</span>
+                </div>
+                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg shadow-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <span className="text-sm font-medium">{stats.completos} Completados</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate("/reportes")}
+                  className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/10 px-4 py-2 rounded-lg transition-all font-bold"
+                >
+                  <BarChart3 className="h-5 w-5" />
+                  <span>Ver Analíticos</span>
+                </Button>
+              </div>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-foreground mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
-              Aprueba el ECOEMS <br /><span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">en 45 Días</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-              <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">9 Artefactos Interactivos</span> para dominar cada tema del examen.
-            </p>
-            <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
-              <div className="h-px w-8 bg-violet-500/30 hidden md:block" />
-              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-violet-500 flex items-center gap-2 drop-shadow-sm">
-                <Bot className="h-4 w-4" />
-                Powered by Claude AI
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-              <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
-                <Video className="h-5 w-5 text-secondary" />
-                <span className="text-sm font-medium">{totalVideos} Videos HD</span>
-              </div>
-              <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
-                <BookOpen className="h-5 w-5 text-accent" />
-                <span className="text-sm font-medium">{areas.length} Áreas Críticas</span>
-              </div>
-              <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg shadow-sm">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span className="text-sm font-medium">{stats.completos} Completados</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/reportes")}
-                className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/10 px-4 py-2 rounded-lg transition-all font-bold"
+
+            {/* Hero Visual — AI Tutor mock */}
+            <div className="hidden lg:block animate-in fade-in slide-in-from-right duration-1000 delay-500">
+              <div
+                className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
+                style={{
+                  background: "linear-gradient(145deg, rgba(15,23,42,0.97) 0%, rgba(2,6,23,0.99) 100%)",
+                  boxShadow: "0 0 80px rgba(16,185,129,0.10), 0 0 40px rgba(139,92,246,0.08), 0 32px 64px rgba(0,0,0,0.5)"
+                }}
               >
-                <BarChart3 className="h-5 w-5" />
-                <span>Ver Analíticos</span>
-              </Button>
+                {/* Window bar */}
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: "rgba(255,255,255,0.02)" }}>
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                    <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+                  </div>
+                  <div className="flex-1 flex justify-center">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
+                      <Bot className="h-3 w-3 text-violet-400" />
+                      <span className="text-[10px] text-slate-400 font-bold">CyberAgent · Tutor IA</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chat messages */}
+                <div className="p-5 space-y-4">
+                  {/* User message */}
+                  <div className="flex justify-end">
+                    <div
+                      className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm font-medium text-white shadow-sm"
+                      style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)" }}
+                    >
+                      ¿Cómo funciona la fotosíntesis para el ECOEMS?
+                    </div>
+                  </div>
+
+                  {/* AI response */}
+                  <div className="flex gap-3">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 shadow-sm"
+                      style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
+                    >
+                      <Bot className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="flex-1 space-y-2.5">
+                      <div
+                        className="px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-200 leading-relaxed shadow-sm"
+                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+                      >
+                        La fotosíntesis convierte luz solar en glucosa ☀️<br />
+                        <br />
+                        <span className="text-emerald-400 font-bold">Fórmula clave [BIO 3.1]:</span>
+                        <span
+                          className="ml-2 px-2 py-0.5 rounded font-mono text-[11px] block mt-1 w-fit"
+                          style={{ background: "rgba(16,185,129,0.15)", color: "#34d399" }}
+                        >
+                          6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { label: "🎯 Quiz Interactivo", color: "#10b981" },
+                          { label: "📹 Ver Video Gratis", color: "#6366f1" },
+                          { label: "🧬 Cuerpo Humano 3D", color: "#06b6d4" }
+                        ].map((tag) => (
+                          <span
+                            key={tag.label}
+                            className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider cursor-pointer hover:opacity-80 transition-opacity"
+                            style={{
+                              background: `${tag.color}20`,
+                              color: tag.color,
+                              border: `1px solid ${tag.color}30`
+                            }}
+                          >
+                            {tag.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Input bar */}
+                <div className="px-5 pb-5">
+                  <div
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl shadow-inner"
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    <span className="text-sm text-slate-500 flex-1">Pregunta algo al Tutor IA...</span>
+                    <div
+                      className="w-8 h-8 rounded-xl flex items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform"
+                      onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+                      style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
+                    >
+                      <ArrowRight className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom gradient fade */}
+                <div className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(2,6,23,0.9), transparent)" }} />
+              </div>
             </div>
           </div>
         </div>
