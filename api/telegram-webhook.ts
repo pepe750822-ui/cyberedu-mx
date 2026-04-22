@@ -4,12 +4,22 @@ export const config = {
   runtime: 'edge',
 };
 
-// Se utiliza el token proporcionado como valor por defecto, 
-// pero se puede sobrescribir con variables de entorno para mayor seguridad.
-const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8707238381:AAEDV1n2aS9EMSJBgK8wsEtzSUZQvA757W0';
+const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
 export default async function handler(req: Request) {
+  // Verificar que el token esté configurado
+  if (!TELEGRAM_TOKEN) {
+    console.error('TELEGRAM_BOT_TOKEN no está configurado en las variables de entorno.');
+    return new Response(JSON.stringify({ 
+      error: 'Configuración incompleta', 
+      detail: 'Falta TELEGRAM_BOT_TOKEN' 
+    }), { 
+      status: 500, 
+      headers: { 'Content-Type': 'application/json' } 
+    });
+  }
+
   // 1. Configuración automática del Webhook (GET /api/telegram-webhook?setup=true)
   if (req.method === 'GET') {
     const url = new URL(req.url);
