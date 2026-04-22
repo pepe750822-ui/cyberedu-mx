@@ -7,118 +7,204 @@ export const config = {
 export default async function handler(req: Request) {
   const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Verificar que el token esté configurado
-  if (!TELEGRAM_TOKEN) {
-    console.error('TELEGRAM_BOT_TOKEN no está configurado en las variables de entorno.');
-    return new Response(JSON.stringify({ 
-      error: 'Configuración incompleta', 
-      detail: 'Falta VITE_TELEGRAM_BOT_TOKEN en las variables de entorno de Vercel.' 
-    }), { 
-      status: 500, 
-      headers: { 'Content-Type': 'application/json' } 
-    });
+  if (!TELEGRAM_TOKEN || !SUPABASE_URL || !SUPABASE_KEY) {
+    return new Response(JSON.stringify({ error: 'Configuración incompleta' }), { status: 500 });
   }
 
-  // Configuración manual del webhook vía URL (GET /api/telegram-webhook?setup=true)
-  if (req.method === 'GET') {
-    const url = new URL(req.url);
-    if (url.searchParams.get('setup') === 'true') {
-      const webhookUrl = `https://${url.host}/api/telegram-webhook`;
-      
-      try {
-        const setupRes = await fetch(`${TELEGRAM_API}/setWebhook?url=${webhookUrl}`);
-        const setupData = await setupRes.json();
-        return new Response(JSON.stringify({
-          message: 'Intento de configuración de Webhook completado',
-          webhook_url: webhookUrl,
-          telegram_response: setupData
-        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      } catch (error) {
-        return new Response(JSON.stringify({ error: 'Error configurando webhook' }), { status: 500 });
-      }
-    }
-    
-    return new Response('El Webhook de Telegram está activo. Usa ?setup=true en la URL para conectarlo a tu Bot.', { 
-      status: 200, 
-      headers: { 'Content-Type': 'text/plain' }
-    });
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: false }
+  });
+
+  const url = new URL(req.url);
+
+  // Setup manual
+  if (url.searchParams.get('setup') === 'true') {
+    const webhookUrl = `https://${url.host}/api/telegram-webhook`;
+    const res = await fetch(`${TELEGRAM_API}/setWebhook?url=${webhookUrl}`);
+    return new Response(JSON.stringify(await res.json()), { headers: { 'Content-Type': 'application/json' } });
   }
 
   if (req.method === 'POST') {
     try {
       const body = await req.json();
+      if (!body.message || !body.message.text) return new Response('OK');
 
-      // Verificar si hay un mensaje de texto
-      if (body.message && body.message.text) {
-        const chatId = body.message.chat.id;
-        const text = body.message.text;
-        const firstName = body.message.from?.first_name || 'Usuario';
-        const username = body.message.from?.username || '';
+      const chatId = body.message.chat.id.toString();
+      const text = body.message.text;
+      const firstName = body.message.from?.first_name || 'Usuario';
+      const username = body.message.from?.username || '';
 
-        console.log(`Mensaje de Telegram recibido [${chatId}]: ${text}`);
+      // 1. Obtener estado del usuario (¿vinculado?)
+      const { data: tgUser } = await supabase
+        .from('telegram_users')
+        .select('*, profiles(tokens, full_name)')
+        .eq('chat_id', chatId)
+        .maybeSingle();
 
-        // A. Generar respuesta automática basada en palabras clave
-        const { replyText, inlineKeyboard } = getReplyForTelegram(text, firstName);
+      // Si no existe en telegram_users, crearlo como invitado
+      if (!tgUser) {
+        await supabase.from('telegram_users').insert({ chat_id: chatId, username, first_name: firstName });
+      }
 
-        // B. Enviar la respuesta vía API de Telegram
-        await fetch(`${TELEGRAM_API}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: replyText,
-            reply_markup: inlineKeyboard ? { inline_keyboard: inlineKeyboard } : undefined
-          })
-        });
+      const lowerText = text.toLowerCase();
 
-        // C. Guardar el lead en Supabase
-        const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-        const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      // 2. Manejo de Comandos
+      if (lowerText.startsWith('/start')) {
+        return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, firstName));
+      }
+
+      if (lowerText === '/vincular') {
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+        await supabase.from('telegram_users').update({ linking_code: code }).eq('chat_id', chatId);
+        return sendTelegramMessage(TELEGRAM_API, chatId, `Tu código de vinculación es: *${code}*\n\nIngrésalo en la web de CyberEdu MX para conectar tu cuenta.`);
+      }
+
+      if (lowerText === '/mis_tokens') {
+        if (!tgUser?.user_id) return sendTelegramMessage(TELEGRAM_API, chatId, "Aún no has vinculado tu cuenta. Usa /vincular para empezar.");
+        const tokens = tgUser.profiles?.tokens || 0;
+        return sendTelegramMessage(TELEGRAM_API, chatId, `Tienes *${tokens} tokens* disponibles 🪙.`, [
+          [{ text: "💎 Comprar más", url: "https://cyberedumx.com/tokens" }]
+        ]);
+      }
+
+      // 3. Lógica de preguntas a la IA (/pregunta o cualquier texto si queremos auto-responder)
+      if (lowerText.startsWith('/pregunta') || !text.startsWith('/')) {
+        const query = text.replace('/pregunta', '').trim();
+        if (!query) return sendTelegramMessage(TELEGRAM_API, chatId, "Escribe tu pregunta después del comando. Ejemplo: /pregunta ¿Qué es la fotosíntesis?");
+
+        // A. Caso Usuario Registrado (Vinculado)
+        if (tgUser?.user_id) {
+          const tokens = tgUser.profiles?.tokens || 0;
+          if (tokens <= 0) {
+            return sendTelegramMessage(TELEGRAM_API, chatId, "⚠️ No tienes tokens disponibles. Compra más en cyberedumx.com/tokens");
+          }
+
+          // Llamar a la IA
+          return handleAICall(TELEGRAM_API, chatId, query, tgUser.user_id, url.host, true);
+        } 
         
-        if (SUPABASE_URL && SUPABASE_KEY) {
-          await saveTelegramLeadInSupabase(SUPABASE_URL, SUPABASE_KEY, chatId.toString(), username, firstName, text);
-        } else {
-          console.error('Faltan las credenciales de Supabase. El lead no se guardó.');
+        // B. Caso Usuario Invitado
+        else {
+          const today = new Date().toISOString().split('T')[0];
+          const { data: usage } = await supabase
+            .from('telegram_guest_usage')
+            .select('*')
+            .eq('chat_id', chatId)
+            .eq('usage_date', today)
+            .maybeSingle();
+
+          const count = usage?.questions_count || 0;
+          if (count >= 3) {
+            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (3 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth");
+          }
+
+          // Incrementar uso
+          if (usage) {
+            await supabase.from('telegram_guest_usage').update({ questions_count: count + 1 }).eq('id', usage.id);
+          } else {
+            await supabase.from('telegram_guest_usage').insert({ chat_id: chatId, usage_date: today, questions_count: 1 });
+          }
+
+          return handleAICall(TELEGRAM_API, chatId, query, null, url.host, false);
         }
       }
 
-      // IMPORTANTE: Telegram requiere que siempre devolvamos 200 OK para no reintentar mensajes
-      return new Response('OK', { status: 200 });
+      // Otras respuestas por defecto (Keyword match)
+      const { replyText, inlineKeyboard } = getReplyForTelegram(text, firstName);
+      return sendTelegramMessage(TELEGRAM_API, chatId, replyText, inlineKeyboard);
+
     } catch (error) {
-      console.error('Error procesando webhook de Telegram:', error);
-      // Siempre devolver 200 incluso si hay error, para evitar bloqueos del webhook
-      return new Response('ERROR', { status: 200 });
+      console.error('Telegram Error:', error);
+      return new Response('OK');
     }
   }
 
-  return new Response('Método no permitido', { status: 405 });
+  return new Response('OK');
 }
 
-// ==========================================
-// LÓGICA DE RESPUESTAS Y BASE DE DATOS
-// ==========================================
+// ─── HELPERS ───
+
+async function sendTelegramMessage(api: string, chatId: string, text: string, keyboard?: any[][]) {
+  await fetch(`${api}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: 'Markdown',
+      reply_markup: keyboard ? { inline_keyboard: keyboard } : undefined
+    })
+  });
+  return new Response('OK');
+}
+
+function getWelcomeMessage(tgUser: any, firstName: string) {
+  if (tgUser?.user_id) {
+    return `¡Bienvenido de vuelta, ${tgUser.profiles?.full_name || firstName}! 🚀\n\nTienes *${tgUser.profiles?.tokens || 0} tokens* disponibles.\n\nEscríbeme cualquier duda académica o usa /pregunta.`;
+  }
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web, usa el comando /vincular.`;
+}
+
+async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {
+  // Notificar que estamos pensando
+  await fetch(`${api}/sendChatAction`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, action: 'typing' })
+  });
+
+  try {
+    const aiRes = await fetch(`https://${host}/api/ai-chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: question }],
+        userId: userId,
+        isTelegram: true,
+        context: { platform: 'telegram', isRegistered }
+      })
+    });
+
+    if (!aiRes.ok) throw new Error('IA Error');
+    const data = await aiRes.text();
+    const cleanText = parseSSEResponse(data);
+    return sendTelegramMessage(api, chatId, cleanText);
+  } catch (err) {
+    return sendTelegramMessage(api, chatId, "Lo siento, tuve un problema conectando con mi cerebro artificial. Reintenta en un momento. 🧠❌");
+  }
+}
+
+function parseSSEResponse(sseData: string): string {
+  const lines = sseData.split('\n');
+  let fullText = "";
+  for (const line of lines) {
+    if (line.startsWith('data: ')) {
+      try {
+        const jsonStr = line.replace('data: ', '');
+        if (jsonStr === '[DONE]') continue;
+        const json = JSON.parse(jsonStr);
+        const content = json.choices?.[0]?.delta?.content || "";
+        fullText += content;
+      } catch (e) { /* ignore */ }
+    }
+  }
+  return fullText || "No pude generar una respuesta.";
+}
 
 function getReplyForTelegram(text: string, firstName: string): { replyText: string, inlineKeyboard?: any[][] } {
   const lowerMsg = text.toLowerCase();
-
-  // Menú principal de botones
   const mainKeyboard = [
     [{ text: "🎯 Probar Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }],
     [{ text: "💰 Ver Precios y Tokens", url: "https://cyberedumx.com/tokens" }],
     [{ text: "👤 Crear Cuenta Gratis", url: "https://cyberedumx.com/auth" }]
   ];
 
-  if (lowerMsg.includes('hola') || lowerMsg.includes('/start') || lowerMsg.includes('buenas')) {
+  if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('gratis')) {
     return {
-      replyText: `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nSoy tu asistente virtual. En esta plataforma casi todo es **GRATIS** (videos, simuladores, guías).\n\nSolo se requiere pago para:\n1. 🤖 Consultas ilimitadas al Tutor IA.\n2. 🎓 Curso premium en Udemy.\n\n¿En qué puedo ayudarte?`,
-      inlineKeyboard: mainKeyboard
-    };
-  }
-  
-  if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('pagar') || lowerMsg.includes('gratis')) {
-    return {
-      replyText: '¡En CyberEdu MX casi todo es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n✅ Guías e Infografías: GRATIS\n\n¿Qué es de pago?\n1. 🤖 **Tutor IA:** Funciona con tokens (1 pregunta = 1 token). Los paquetes inician desde $20 MXN.\n2. 🎓 **Curso Udemy:** Si prefieres estudiar en Udemy, tenemos un curso premium completo.\n\n¿Qué te gustaría consultar?',
+      replyText: '¡En CyberEdu MX casi todo es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n\n¿Qué es de pago?\n1. 🤖 **Tutor IA:** 1 token = 1 pregunta.\n2. 🎓 **Curso Udemy:** Opción premium completa.\n\n¿Qué te gustaría consultar?',
       inlineKeyboard: [
         [{ text: "💎 Comprar Tokens IA", url: "https://cyberedumx.com/tokens" }],
         [{ text: "🎓 Curso en Udemy", url: "https://www.udemy.com/course/tu-curso-aqui" }]
@@ -128,66 +214,13 @@ function getReplyForTelegram(text: string, firstName: string): { replyText: stri
   
   if (lowerMsg.includes('simulador')) {
     return {
-      replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro. ¡Es 100% GRATIS y tiene el mismo formato que el examen real!',
+      replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro 100% GRATIS.',
       inlineKeyboard: [[{ text: "🚀 Abrir Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }]]
     };
   }
   
-  if (lowerMsg.includes('registro') || lowerMsg.includes('crear cuenta') || lowerMsg.includes('apuntarme')) {
-    return {
-      replyText: '¡Excelente decisión! Regístrate gratis en segundos y accede a todos los videos y materiales sin pagar nada.',
-      inlineKeyboard: [[{ text: "📝 Registrarme Ahora", url: "https://cyberedumx.com/auth" }]]
-    };
-  }
-  
-  // Respuesta por defecto con menú completo
   return {
-    replyText: `¡Hola! Soy el asistente bot de CyberEdu MX 🤖.\n\nSelecciona una opción del menú para ayudarte:`,
+    replyText: `¡Hola! Soy el asistente bot de CyberEdu MX 🤖.\n\nEscribe tu duda académica directamente para usar el Tutor IA, o usa el menú:`,
     inlineKeyboard: mainKeyboard
   };
-}
-
-async function saveTelegramLeadInSupabase(supabaseUrl: string, supabaseKey: string, chatId: string, username: string, firstName: string, lastMessage: string) {
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false }
-  });
-
-  try {
-    const { data: existingLead, error: searchError } = await supabase
-      .from('telegram_leads')
-      .select('id, messages_count')
-      .eq('chat_id', chatId)
-      .maybeSingle();
-
-    if (searchError) {
-      console.error('Error buscando lead de Telegram:', searchError);
-      return;
-    }
-
-    if (existingLead) {
-      const newCount = (existingLead.messages_count || 0) + 1;
-      await supabase
-        .from('telegram_leads')
-        .update({
-          username: username,
-          first_name: firstName,
-          last_message: lastMessage,
-          messages_count: newCount,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', existingLead.id);
-    } else {
-      await supabase
-        .from('telegram_leads')
-        .insert({
-          chat_id: chatId,
-          username: username,
-          first_name: firstName,
-          last_message: lastMessage,
-          messages_count: 1
-        });
-    }
-  } catch (err) {
-    console.error('Excepción guardando lead de Telegram:', err);
-  }
 }
