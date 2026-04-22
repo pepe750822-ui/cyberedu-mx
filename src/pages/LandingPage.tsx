@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   Zap,
   Ticket,
-  Crown
+  Crown,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -26,6 +27,17 @@ const LandingPage = () => {
   useEffect(() => {
     document.title = "CyberEdu MX | Preparación ECOEMS con IA";
     window.scrollTo(0, 0);
+
+    // Forzar dark mode en la landing para que los colores sean siempre correctos
+    const root = document.documentElement;
+    const prevClass = root.className;
+    root.classList.add("dark");
+    document.body.style.backgroundColor = "#020617"; // slate-950
+
+    return () => {
+      root.className = prevClass;
+      document.body.style.backgroundColor = "";
+    };
   }, []);
 
   const features = [
@@ -132,7 +144,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-primary/30 font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-primary/30 font-sans" style={{ backgroundColor: '#020617', color: '#e2e8f0' }}>
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
