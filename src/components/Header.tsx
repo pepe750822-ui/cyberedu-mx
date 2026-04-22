@@ -73,7 +73,7 @@ const Header = () => {
               Manual de Uso
             </a>
             <a
-              href="/libro-ecoems"
+              href="/libro/manual_digital_ECOEMS.html"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-muted-foreground hover:text-amber-500 transition-colors flex items-center gap-1"
@@ -306,7 +306,7 @@ const Header = () => {
                     Manual de Uso App
                   </a>
                   <a
-                    href="/libro-ecoems"
+                    href="/libro/manual_digital_ECOEMS.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"

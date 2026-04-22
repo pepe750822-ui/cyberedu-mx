@@ -44,8 +44,7 @@
     { "source": "/dashboard",                                               "destination": "/master-admin",     "permanent": true }
   ],
   "rewrites": [
-                { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/libro-ecoems", "destination": "/libro/manual_digital_ECOEMS.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
