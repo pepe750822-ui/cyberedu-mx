@@ -188,7 +188,7 @@ function getMainKeyboard() {
   return [
     [{ text: "🪙 Mis Tokens", callback_data: "/mis_tokens" }, { text: "🚀 Simulador Pro", url: "https://cyberedumx.com/simulador-pro" }],
     [{ text: "💎 Comprar Tokens", url: "https://cyberedumx.com/tokens" }],
-    [{ text: "👤 Vincular Cuenta", callback_data: "/vincular" }]
+    [{ text: "🌐 Ir a la Web", url: "https://cyberedumx.com" }, { text: "👤 Vincular", callback_data: "/vincular" }]
   ];
 }
 
@@ -206,7 +206,8 @@ async function sendTelegramMessage(api: string, chatId: string, text: string, in
   const replyKeyboard = {
     keyboard: [
       [{ text: "🪙 Mis Tokens" }, { text: "🚀 Simulador Pro" }],
-      [{ text: "💎 Comprar Tokens" }, { text: "👤 Vincular" }]
+      [{ text: "💎 Comprar Tokens" }, { text: "🌐 Ir a la Web" }],
+      [{ text: "👤 Vincular" }]
     ],
     resize_keyboard: true,
     one_time_keyboard: false
