@@ -76,7 +76,15 @@ export default async function handler(req: Request) {
       if (lowerText === '/vincular') {
         const code = Math.random().toString(36).substring(2, 8).toUpperCase();
         await supabase.from('telegram_users').update({ linking_code: code }).eq('chat_id', chatId);
-        return sendTelegramMessage(TELEGRAM_API, chatId, `Tu código de vinculación es: *${code}*\n\nIngrésalo en la web de CyberEdu MX para conectar tu cuenta.`, getMainKeyboard());
+        return sendTelegramMessage(
+          TELEGRAM_API, 
+          chatId, 
+          `Tu código de vinculación es: *${code}*\n\nCópialo y haz clic en el botón de abajo para pegarlo en la sección de Tokens de la web.`, 
+          [
+            [{ text: "🔗 Abrir Web para Vincular", url: "https://cyberedumx.com/tokens" }],
+            ...getMainKeyboard()
+          ]
+        );
       }
 
       if (lowerText === '/mis_tokens') {
