@@ -30,12 +30,29 @@ export default async function handler(req: Request) {
   if (req.method === 'POST') {
     try {
       const body = await req.json();
-      if (!body.message || !body.message.text) return new Response('OK');
+      
+      let chatId, text, firstName, username;
 
-      const chatId = body.message.chat.id.toString();
-      const text = body.message.text;
-      const firstName = body.message.from?.first_name || 'Usuario';
-      const username = body.message.from?.username || '';
+      if (body.callback_query) {
+        chatId = body.callback_query.message.chat.id.toString();
+        text = body.callback_query.data; // El comando del botón
+        firstName = body.callback_query.from?.first_name || 'Usuario';
+        username = body.callback_query.from?.username || '';
+        
+        // Responder al callback para quitar el relojito de Telegram
+        await fetch(`${TELEGRAM_API}/answerCallbackQuery`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ callback_query_id: body.callback_query.id })
+        });
+      } else if (body.message && body.message.text) {
+        chatId = body.message.chat.id.toString();
+        text = body.message.text;
+        firstName = body.message.from?.first_name || 'Usuario';
+        username = body.message.from?.username || '';
+      } else {
+        return new Response('OK');
+      }
 
       // 1. Obtener estado del usuario (¿vinculado?)
       const { data: tgUser } = await supabase
@@ -53,36 +70,34 @@ export default async function handler(req: Request) {
 
       // 2. Manejo de Comandos
       if (lowerText.startsWith('/start')) {
-        return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, firstName));
+        return sendTelegramMessage(TELEGRAM_API, chatId, getWelcomeMessage(tgUser, firstName), getMainKeyboard());
       }
 
       if (lowerText === '/vincular') {
         const code = Math.random().toString(36).substring(2, 8).toUpperCase();
         await supabase.from('telegram_users').update({ linking_code: code }).eq('chat_id', chatId);
-        return sendTelegramMessage(TELEGRAM_API, chatId, `Tu código de vinculación es: *${code}*\n\nIngrésalo en la web de CyberEdu MX para conectar tu cuenta.`);
+        return sendTelegramMessage(TELEGRAM_API, chatId, `Tu código de vinculación es: *${code}*\n\nIngrésalo en la web de CyberEdu MX para conectar tu cuenta.`, getMainKeyboard());
       }
 
       if (lowerText === '/mis_tokens') {
         if (!tgUser?.user_id) {
-          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
+          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens", getMainKeyboard());
         }
         const tokens = tgUser.profiles?.tokens || 0;
         const name = tgUser.profiles?.full_name || firstName;
-        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, [
-          [{ text: "💎 Obtener más tokens", url: "https://cyberedumx.com/tokens" }]
-        ]);
+        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, getMainKeyboard());
       }
 
       // 3. Lógica de preguntas a la IA (/pregunta o cualquier texto si queremos auto-responder)
       if (lowerText.startsWith('/pregunta') || !text.startsWith('/')) {
         const query = text.replace('/pregunta', '').trim();
-        if (!query) return sendTelegramMessage(TELEGRAM_API, chatId, "Escribe tu pregunta después del comando. Ejemplo: /pregunta ¿Qué es la fotosíntesis?");
+        if (!query) return sendTelegramMessage(TELEGRAM_API, chatId, "Escribe tu pregunta después del comando. Ejemplo: /pregunta ¿Qué es la fotosíntesis?", getMainKeyboard());
 
         // A. Caso Usuario Registrado (Vinculado)
         if (tgUser?.user_id) {
           const tokens = tgUser.profiles?.tokens || 0;
           if (tokens <= 0) {
-            return sendTelegramMessage(TELEGRAM_API, chatId, "⚠️ No tienes tokens disponibles. Compra más en cyberedumx.com/tokens");
+            return sendTelegramMessage(TELEGRAM_API, chatId, "⚠️ No tienes tokens disponibles. Compra más en cyberedumx.com/tokens", getMainKeyboard());
           }
 
           // Llamar a la IA
@@ -101,7 +116,7 @@ export default async function handler(req: Request) {
 
           const count = usage?.questions_count || 0;
           if (count >= 3) {
-            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (3 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth");
+            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (3 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth", getMainKeyboard());
           }
 
           // Incrementar uso
@@ -130,7 +145,17 @@ export default async function handler(req: Request) {
 
 // ─── HELPERS ───
 
+function getMainKeyboard() {
+  return [
+    [{ text: "🪙 Mis Tokens", callback_data: "/mis_tokens" }, { text: "🚀 Simulador Pro", url: "https://cyberedumx.com/simulador-pro" }],
+    [{ text: "💎 Comprar Tokens", url: "https://cyberedumx.com/tokens" }],
+    [{ text: "👤 Vincular Cuenta", callback_data: "/vincular" }]
+  ];
+}
+
 async function sendTelegramMessage(api: string, chatId: string, text: string, keyboard?: any[][]) {
+  const reply_markup = keyboard ? { inline_keyboard: keyboard } : undefined;
+  
   await fetch(`${api}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -138,7 +163,7 @@ async function sendTelegramMessage(api: string, chatId: string, text: string, ke
       chat_id: chatId,
       text,
       parse_mode: 'Markdown',
-      reply_markup: keyboard ? { inline_keyboard: keyboard } : undefined
+      reply_markup
     })
   });
   return new Response('OK');
@@ -172,16 +197,11 @@ async function handleAICall(api: string, chatId: string, question: string, userI
     });
 
     if (!aiRes.ok) throw new Error('IA Error');
-    // Procesar respuesta (ai-chat devuelve un stream, necesitamos el texto final)
     const data = await aiRes.text();
-    
-    // Limpiar el formato SSE (data: {"choices"...}) para sacar solo el texto
     const rawText = parseSSEResponse(data);
-    
-    // Limpiar tags XML para que no se vean en Telegram
     const cleanText = stripXmlTags(rawText);
 
-    return sendTelegramMessage(api, chatId, cleanText);
+    return sendTelegramMessage(api, chatId, cleanText, getMainKeyboard());
   } catch (err) {
     return sendTelegramMessage(api, chatId, "Lo siento, tuve un problema conectando con mi cerebro artificial. Reintenta en un momento. 🧠❌");
   }
@@ -205,7 +225,6 @@ function parseSSEResponse(sseData: string): string {
 }
 
 function stripXmlTags(text: string): string {
-  // Eliminar bloques de etiquetas comunes que no queremos mostrar en Telegram
   return text
     .replace(/<reasoning>[\s\S]*?<\/reasoning>/g, '')
     .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, '')
@@ -229,26 +248,19 @@ function stripXmlTags(text: string): string {
 
 function getReplyForTelegram(text: string, firstName: string): { replyText: string, inlineKeyboard?: any[][] } {
   const lowerMsg = text.toLowerCase();
-  const mainKeyboard = [
-    [{ text: "🎯 Probar Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }],
-    [{ text: "💰 Ver Precios y Tokens", url: "https://cyberedumx.com/tokens" }],
-    [{ text: "👤 Crear Cuenta Gratis", url: "https://cyberedumx.com/auth" }]
-  ];
+  const mainKeyboard = getMainKeyboard();
 
   if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('gratis')) {
     return {
       replyText: '¡En CyberEdu MX el estudio es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n✅ Guías y Material: GRATIS\n\n¿Por qué usar Tokens?\n🤖 **Tutor IA:** Los tokens te dan derecho a realizar **preguntas académicas directas** en Telegram o la Web para resolver dudas específicas del ECOEMS (1 token = 1 consulta).\n\n¿Qué es de pago?\n1. Tokens del Tutor IA.\n2. Curso Premium en Udemy.\n\n¿Qué te gustaría consultar?',
-      inlineKeyboard: [
-        [{ text: "💎 Comprar Tokens IA", url: "https://cyberedumx.com/tokens" }],
-        [{ text: "🎓 Curso en Udemy", url: "https://www.udemy.com/course/tu-curso-aqui" }]
-      ]
+      inlineKeyboard: mainKeyboard
     };
   }
   
   if (lowerMsg.includes('simulador')) {
     return {
       replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro 100% GRATIS.',
-      inlineKeyboard: [[{ text: "🚀 Abrir Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }]]
+      inlineKeyboard: mainKeyboard
     };
   }
   
