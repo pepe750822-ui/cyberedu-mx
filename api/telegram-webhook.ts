@@ -262,12 +262,48 @@ async function handleAICall(api: string, chatId: string, question: string, userI
 
     const data = await aiRes.text();
     const rawText = parseSSEResponse(data);
-    const cleanText = stripXmlTags(rawText);
+    
+    // Procesar artefactos (Recomendaciones, etc.)
+    const { cleanText, extraButtons } = processArtifacts(rawText);
+    
+    // Combinar con el teclado principal
+    const combinedKeyboard = [...extraButtons, ...getMainKeyboard()];
 
-    return sendTelegramMessage(api, chatId, cleanText, getMainKeyboard());
+    return sendTelegramMessage(api, chatId, cleanText, combinedKeyboard);
   } catch (err) {
+    console.error("AI Call Error:", err);
     return sendTelegramMessage(api, chatId, "Lo siento, tuve un problema conectando con mi cerebro artificial. Reintenta en un momento. 🧠❌");
   }
+}
+
+function processArtifacts(text: string): { cleanText: string, extraButtons: any[][] } {
+  const extraButtons: any[][] = [];
+  
+  // Extraer recomendaciones de video
+  const recRegex = /<recommendation>([\s\S]*?)<\/recommendation>/g;
+  let match;
+  while ((match = recRegex.exec(text)) !== null) {
+    try {
+      const rec = JSON.parse(match[1]);
+      if (rec.videoId && rec.areaId) {
+        extraButtons.push([{ 
+          text: `📺 Ver video: ${rec.title || 'Explicación completa'}`, 
+          url: `https://cyberedumx.com/area/${rec.areaId}?video=${rec.videoId}` 
+        }]);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  // Detectar si hay elementos interactivos que requieren la web
+  const hasInteractive = /<(calculator|simulator|algebra|atom|human_body|geography|solar_system|mexico_map|timeline)>/.test(text);
+  if (hasInteractive) {
+    extraButtons.push([{ 
+      text: "🚀 Usar simulador interactivo en la Web", 
+      url: "https://cyberedumx.com/" 
+    }]);
+  }
+
+  return { cleanText: stripXmlTags(text), extraButtons };
 }
 
 function parseSSEResponse(sseData: string): string {
