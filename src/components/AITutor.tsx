@@ -4129,48 +4129,51 @@ const AITutor = () => {
                     ))}
                   </div>
 
-                    <div className="text-right mb-2">
-                       {/* Guest counter */}
-                       {!user && guestQueriesUsed < 3 && (
-                         <span className={cn(
-                           "text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border",
-                           guestQueriesUsed === 2
-                             ? "text-amber-400 bg-amber-400/10 border-amber-400/20 animate-pulse"
-                             : "text-slate-400 bg-slate-800/50 border-white/5"
-                         )}>
-                           {guestQueriesUsed === 0 ? "3 consultas gratis disponibles" : `Consulta ${guestQueriesUsed}/3`}
-                         </span>
-                       )}
+                    <div className="mb-2">
 
-                       {!usageStats && user && (
-                         <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5">
-                           Sincronizando uso...
-                         </span>
-                       )}
-                       
-                       {usageStats && usageStats.isSubscriber && (
-                         <div className="flex flex-col items-end gap-1">
-                           <span className="text-[10px] font-black uppercase text-amber-400 tracking-widest bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/20 flex items-center gap-1.5">
-                             <Zap className="h-3 w-3 fill-amber-400" /> Acceso Ilimitado (Premium)
-                           </span>
-                           {usageStats.tokens > 0 && (
-                             <span className="text-[9px] font-bold text-slate-500 pr-2">
-                               Saldo: {usageStats.tokens} tokens (estacionados)
-                             </span>
-                           )}
+                       {/* ── GUEST (sin registro) ── */}
+                       {!user && (
+                         <div className={cn(
+                           "flex items-center justify-between gap-2 px-3 py-2 rounded-xl border transition-all",
+                           isGuestLimitReached
+                             ? "bg-rose-950/40 border-rose-500/30"
+                             : guestQueriesUsed >= 2
+                             ? "bg-amber-950/40 border-amber-500/30 animate-pulse"
+                             : "bg-slate-800/50 border-white/8"
+                         )}>
+                           <div className="flex items-center gap-2 min-w-0">
+                             <span className="text-base leading-none">👤</span>
+                             <div className="min-w-0">
+                               <p className={cn(
+                                 "text-[10px] font-black uppercase tracking-widest leading-none",
+                                 isGuestLimitReached ? "text-rose-400" : guestQueriesUsed >= 2 ? "text-amber-400" : "text-slate-300"
+                               )}>
+                                 {isGuestLimitReached ? "Límite alcanzado" : `Consulta ${guestQueriesUsed}/3 · Sin registro`}
+                               </p>
+                               <p className="text-[9px] text-slate-500 font-medium mt-0.5">
+                                 Regístrate gratis → <span className="text-emerald-400 font-bold">5/día</span>
+                               </p>
+                             </div>
+                           </div>
+                           <button
+                             onClick={() => { window.location.href = '/auth'; }}
+                             className="shrink-0 px-2.5 py-1 rounded-lg bg-primary text-white text-[9px] font-black uppercase tracking-wider hover:bg-primary/90 transition-all active:scale-95"
+                           >
+                             Registrarme
+                           </button>
                          </div>
                        )}
 
-                       {usageStats && !usageStats.isSubscriber && (
-                         <>
-                           {usageStats.tokens > 0 && (
-                             <div className="flex flex-col items-end gap-1">
-                               <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20 flex items-center gap-1.5">
-                                 <Ticket className="h-3 w-3" /> {usageStats.tokens} tokens disponibles
-                               </span>
-                             </div>
-                           )}
-                           {usageStats.tokens <= 0 && (
+                       {/* ── LOADING ── */}
+                       {!usageStats && user && (
+                         <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/50 border border-white/5">
+                           <span className="text-base">⏳</span>
+                           <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Cargando plan...</span>
+                         </div>
+                       )}
+
+                       {/* ── PREMIUM / SUSCRIPTOR ── */}
+                       {usageStats && usageStats.isSubscriber && (
                              <span className={cn(
                                "text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5",
                                usageStats.used >= usageStats.limit ? "text-rose-500 border-rose-500/30" : 

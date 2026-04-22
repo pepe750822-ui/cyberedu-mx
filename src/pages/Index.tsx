@@ -196,21 +196,24 @@ const Index = () => {
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-md border border-primary/30 text-primary-foreground text-sm font-medium px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 neon-border-purple">
-              <GraduationCap className="h-4 w-4" />
-              Examen de Educación Media Superior
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 backdrop-blur-md border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-sm font-black px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 uppercase tracking-widest text-[11px]">
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              ECOEMS 2026 · 20-28 Junio · Prepárate Ya
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-foreground mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
-              Domina el <span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">Temario ECOEMS 2026</span> <br /> y asegura tu lugar
+              Aprueba el ECOEMS <br /><span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">en 45 Días</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-              Prepárate con BioReto Pro v3.0, la plataforma de <span className="text-accent font-bold">última generación</span> para tu ingreso a bachillerato. 100% gratuita.
+              <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">9 Artefactos Interactivos</span> para dominar cada tema del examen.
             </p>
             <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
-              <div className="h-px w-8 bg-emerald-500/30 hidden md:block" />
-              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-emerald-500 flex items-center gap-2 drop-shadow-sm">
-                <ShieldCheck className="h-4 w-4" />
-                Simulador ECOEMS & UNAM Oficial
+              <div className="h-px w-8 bg-violet-500/30 hidden md:block" />
+              <span className="text-[11px] font-black uppercase tracking-[0.15em] text-violet-500 flex items-center gap-2 drop-shadow-sm">
+                <Bot className="h-4 w-4" />
+                Powered by Claude AI
               </span>
             </div>
             <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
