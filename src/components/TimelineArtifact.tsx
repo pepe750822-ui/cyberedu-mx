@@ -307,9 +307,7 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
             </button>
           </div>
           
-          <div className="grid md:grid-cols-[1fr,auto] gap-4 items-center">
-            <p className="text-[12px] text-slate-200 leading-relaxed italic">{selected.detail}</p>
-            
+          <div className="grid md:grid-cols-[auto,1fr] gap-4 items-center">
             {(selected.videoId && selected.areaId) && (
               <button
                 onClick={() => {
@@ -319,9 +317,10 @@ export default function TimelineArtifact({ focus = '' }: { focus?: string }) {
                 className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
               >
                 <PlayCircle className="h-4 w-4" />
-                Ver video del tema →
+                Ver video del tema
               </button>
             )}
+            <p className="text-[12px] text-slate-200 leading-relaxed italic">{selected.detail}</p>
           </div>
 
           {selected.ecoems && (
