@@ -377,7 +377,7 @@ export default async function handler(req: Request) {
       });
     } else {
       console.log(`[AI-CHAT] Daily limit REACHED.`);
-      const msg = `Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy. Regresa mañana o consigue tokens para continuar ahora — desde $20 pesos.`;
+      const msg = `¡Alcanzaste tus ${dailyLimit} preguntas gratuitas de hoy! 🎓 Regresa mañana para seguir estudiando, o consigue tokens para continuar ahora — desde $20 pesos. ¡Tu esfuerzo vale la pena!`;
 
       return new Response(JSON.stringify({
         error: msg,
@@ -560,6 +560,7 @@ export default async function handler(req: Request) {
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
       ✅ Regístrate GRATIS en /
+      ✅ **5 preguntas al día con el Tutor IA** (vs 3 sin registro)
       ✅ 7 días de acceso completo al Tutor IA incluidos
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:

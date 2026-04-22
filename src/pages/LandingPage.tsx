@@ -73,9 +73,9 @@ const LandingPage = () => {
       name: "Gratis",
       price: "0",
       description: "Para probar la plataforma",
-      tokens: "3 consultas/día",
-      features: ["Acceso a simulador básico", "91 Videos Educativos", "3 preguntas diarias al Tutor IA", "No requiere registro"],
-      cta: "Empezar Gratis",
+      tokens: "5 preguntas/día",
+      features: ["Acceso a todo el contenido", "91 Videos Educativos", "5 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
+      cta: "Registrarme Gratis",
       action: () => navigate("/auth"),
       highlight: false,
       icon: <Zap className="h-6 w-6 text-slate-400" />

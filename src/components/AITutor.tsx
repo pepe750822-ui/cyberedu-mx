@@ -3846,8 +3846,10 @@ const AITutor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  const GUEST_LIMIT = 3;   // Sin registro
+  const FREE_DAILY_LIMIT = 5; // Con registro gratis
   const guestQueriesUsed = !user ? parseInt(localStorage.getItem('cyberedu_guest_count') || '0') : 0;
-  const isGuestLimitReached = !user && guestQueriesUsed >= 3;
+  const isGuestLimitReached = !user && guestQueriesUsed >= GUEST_LIMIT;
 
   // Keep ref pointing at the latest sendMessage (avoids stale closure in auto-send effect)
   sendMessageRef.current = sendMessage;
@@ -4042,7 +4044,8 @@ const AITutor = () => {
                   {isGuestLimitReached && (
                     <div className="mb-3 p-3 bg-primary/10 border border-primary/30 rounded-xl relative overflow-hidden animate-in slide-in-from-bottom-2 fade-in">
                       <div className="absolute top-0 left-0 w-1 h-full bg-primary rounded-l" />
-                      <p className="text-xs text-white font-bold mb-2 pl-2">Has usado tus 3 consultas gratuitas 🎓</p>
+                      <p className="text-xs text-white font-bold mb-1.5 pl-2">Has usado tus 3 consultas sin registro 🎓</p>
+                      <p className="text-[10px] text-slate-300 mb-2 pl-2">✨ Regístrate gratis y obtén <strong>5 preguntas diarias</strong> + acceso a todo el contenido.</p>
                       <div className="flex flex-wrap gap-2 pl-2">
                         <button
                           onClick={() => { window.location.href = '/auth'; }}
