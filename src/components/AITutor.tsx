@@ -4182,9 +4182,7 @@ const AITutor = () => {
                                🎁 {usageStats.used}/{usageStats.limit} preguntas hoy
                              </span>
                            )}
-                         </>
-                       )}
-                    </div>
+                     </div>
                   
                   {/* File Preview */}
                   {pendingFile && (
