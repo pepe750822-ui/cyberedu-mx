@@ -33,7 +33,7 @@ export default async function handler(req: Request) {
     }
 
     const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-    const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 
     if (!SUPABASE_URL || !SUPABASE_KEY) {
       return jsonResponse({ error: 'Configuración de base de datos incompleta' }, 500);

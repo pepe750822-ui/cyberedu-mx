@@ -8,7 +8,7 @@ export default async function handler(req: Request) {
   const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.VITE_TELEGRAM_BOT_TOKEN;
   const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 
   if (!TELEGRAM_TOKEN || !SUPABASE_URL || !SUPABASE_KEY) {
     return new Response(JSON.stringify({ error: 'Configuración incompleta' }), { status: 500 });
@@ -111,8 +111,14 @@ export default async function handler(req: Request) {
         const tokens = profile?.tokens || 0;
         const name = profile?.full_name || firstName;
         const status = (profile?.subscription_status === 'active' || profile?.is_premium) ? "💎 Premium" : "🎟️ Estándar";
+        const partialId = tgUser.user_id ? `...${tgUser.user_id.slice(-6)}` : 'N/A';
 
-        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n✨ *Nivel:* ${status}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, getMainKeyboard());
+        return sendTelegramMessage(
+          TELEGRAM_API, 
+          chatId, 
+          `👤 *Cuenta:* ${name}\n✨ *Nivel:* ${status}\n🪙 *Balance:* ${tokens} tokens\n\n🆔 *Ref:* ${partialId}\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, 
+          getMainKeyboard()
+        );
       }
 
       // 4. Lógica de preguntas a la IA
