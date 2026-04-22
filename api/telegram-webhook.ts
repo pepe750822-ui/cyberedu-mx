@@ -4,16 +4,17 @@ export const config = {
   runtime: 'edge',
 };
 
-const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
-
 export default async function handler(req: Request) {
+  const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+  const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
+
   // Verificar que el token esté configurado
   if (!TELEGRAM_TOKEN) {
     console.error('TELEGRAM_BOT_TOKEN no está configurado en las variables de entorno.');
     return new Response(JSON.stringify({ 
       error: 'Configuración incompleta', 
-      detail: 'Falta TELEGRAM_BOT_TOKEN' 
+      detail: 'Falta TELEGRAM_BOT_TOKEN',
+      env_keys: Object.keys(process.env).filter(k => k.includes('TELEGRAM'))
     }), { 
       status: 500, 
       headers: { 'Content-Type': 'application/json' } 
