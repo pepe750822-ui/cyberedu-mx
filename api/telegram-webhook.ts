@@ -14,6 +14,8 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ 
       error: 'Configuración incompleta', 
       detail: 'Falta TELEGRAM_BOT_TOKEN',
+      timestamp: new Date().toISOString(),
+      deployment: process.env.VERCEL_URL,
       env_keys: Object.keys(process.env).filter(k => k.includes('TELEGRAM') || k.includes('SUPABASE') || k.includes('URL'))
     }), { 
       status: 500, 
