@@ -107,6 +107,16 @@ export default async function handler(req: Request) {
         );
       }
 
+      if (lowerText === '/desvincular') {
+        await supabase.from('telegram_users').update({ user_id: null, linked_at: null }).eq('chat_id', chatId);
+        return sendTelegramMessage(
+          TELEGRAM_API, 
+          chatId, 
+          "✅ **Cuenta desvinculada con éxito.**\n\nAhora estás usando el bot en **modo invitado** (límite de 3 preguntas al día).", 
+          getMainKeyboard()
+        );
+      }
+
       if (lowerText === '/mis_tokens' || lowerText === '🪙 mis tokens') {
         if (!tgUser?.user_id) {
           return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
