@@ -63,9 +63,12 @@ export default async function handler(req: Request) {
       }
 
       if (lowerText === '/mis_tokens') {
-        if (!tgUser?.user_id) return sendTelegramMessage(TELEGRAM_API, chatId, "Aún no has vinculado tu cuenta. Usa /vincular para empezar.");
+        if (!tgUser?.user_id) {
+          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
+        }
         const tokens = tgUser.profiles?.tokens || 0;
-        return sendTelegramMessage(TELEGRAM_API, chatId, `Tienes *${tokens} tokens* disponibles 🪙.\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, [
+        const name = tgUser.profiles?.full_name || firstName;
+        return sendTelegramMessage(TELEGRAM_API, chatId, `👤 *Cuenta:* ${name}\n🪙 *Balance:* ${tokens} tokens\n\nCada token te da derecho a una **pregunta académica experta** sobre el temario ECOEMS.`, [
           [{ text: "💎 Obtener más tokens", url: "https://cyberedumx.com/tokens" }]
         ]);
       }
