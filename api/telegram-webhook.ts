@@ -104,35 +104,38 @@ function getReplyForTelegram(text: string, firstName: string): { replyText: stri
 
   // Menú principal de botones
   const mainKeyboard = [
-    [{ text: "🎯 Probar Simulador", url: "https://cyberedumx.com/simulador-pro" }],
+    [{ text: "🎯 Probar Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }],
     [{ text: "💰 Ver Precios y Tokens", url: "https://cyberedumx.com/tokens" }],
     [{ text: "👤 Crear Cuenta Gratis", url: "https://cyberedumx.com/auth" }]
   ];
 
   if (lowerMsg.includes('hola') || lowerMsg.includes('/start') || lowerMsg.includes('buenas')) {
     return {
-      replyText: `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nSoy tu asistente virtual. Estoy aquí para ayudarte a pasar tu examen ECOEMS 2026.\n\n¿Qué te gustaría hacer hoy?`,
+      replyText: `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nSoy tu asistente virtual. En esta plataforma casi todo es **GRATIS** (videos, simuladores, guías).\n\nSolo se requiere pago para:\n1. 🤖 Consultas ilimitadas al Tutor IA.\n2. 🎓 Curso premium en Udemy.\n\n¿En qué puedo ayudarte?`,
       inlineKeyboard: mainKeyboard
     };
   }
   
-  if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('pagar')) {
+  if (lowerMsg.includes('precio') || lowerMsg.includes('costo') || lowerMsg.includes('pagar') || lowerMsg.includes('gratis')) {
     return {
-      replyText: '¡Buenas noticias! El contenido multimedia es GRATIS 🎁.\n\nPara interactuar sin límites con nuestro Tutor IA, los tokens inician desde solo $10 MXN.',
-      inlineKeyboard: [[{ text: "💎 Ver Planes de Tokens", url: "https://cyberedumx.com/tokens" }]]
+      replyText: '¡En CyberEdu MX casi todo es GRATIS! 🎁\n\n✅ Videos y Clases: GRATIS\n✅ Simulador Pro: GRATIS\n✅ Guías e Infografías: GRATIS\n\n¿Qué es de pago?\n1. 🤖 **Tutor IA:** Funciona con tokens (1 pregunta = 1 token). Los paquetes inician desde $20 MXN.\n2. 🎓 **Curso Udemy:** Si prefieres estudiar en Udemy, tenemos un curso premium completo.\n\n¿Qué te gustaría consultar?',
+      inlineKeyboard: [
+        [{ text: "💎 Comprar Tokens IA", url: "https://cyberedumx.com/tokens" }],
+        [{ text: "🎓 Curso en Udemy", url: "https://www.udemy.com/course/tu-curso-aqui" }]
+      ]
     };
   }
   
   if (lowerMsg.includes('simulador')) {
     return {
-      replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro. Tiene el mismo formato que el examen real.',
-      inlineKeyboard: [[{ text: "🚀 Abrir Simulador", url: "https://cyberedumx.com/simulador-pro" }]]
+      replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro. ¡Es 100% GRATIS y tiene el mismo formato que el examen real!',
+      inlineKeyboard: [[{ text: "🚀 Abrir Simulador GRATIS", url: "https://cyberedumx.com/simulador-pro" }]]
     };
   }
   
   if (lowerMsg.includes('registro') || lowerMsg.includes('crear cuenta') || lowerMsg.includes('apuntarme')) {
     return {
-      replyText: '¡Excelente decisión! Regístrate gratis en segundos y accede a todos los videos y materiales.',
+      replyText: '¡Excelente decisión! Regístrate gratis en segundos y accede a todos los videos y materiales sin pagar nada.',
       inlineKeyboard: [[{ text: "📝 Registrarme Ahora", url: "https://cyberedumx.com/auth" }]]
     };
   }
