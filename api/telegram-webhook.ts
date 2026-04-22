@@ -13,17 +13,14 @@ export default async function handler(req: Request) {
     console.error('TELEGRAM_BOT_TOKEN no está configurado en las variables de entorno.');
     return new Response(JSON.stringify({ 
       error: 'Configuración incompleta', 
-      detail: 'Falta TELEGRAM_BOT_TOKEN',
-      timestamp: new Date().toISOString(),
-      deployment: process.env.VERCEL_URL,
-      env_keys: Object.keys(process.env).filter(k => k.includes('TELEGRAM') || k.includes('VITE') || k.includes('ANTHROPIC'))
+      detail: 'Falta VITE_TELEGRAM_BOT_TOKEN en las variables de entorno de Vercel.' 
     }), { 
       status: 500, 
       headers: { 'Content-Type': 'application/json' } 
     });
   }
 
-  // 1. Configuración automática del Webhook (GET /api/telegram-webhook?setup=true)
+  // Configuración manual del webhook vía URL (GET /api/telegram-webhook?setup=true)
   if (req.method === 'GET') {
     const url = new URL(req.url);
     if (url.searchParams.get('setup') === 'true') {
@@ -48,7 +45,6 @@ export default async function handler(req: Request) {
     });
   }
 
-  // 2. Manejo de mensajes entrantes (POST)
   if (req.method === 'POST') {
     try {
       const body = await req.json();
