@@ -11,13 +11,21 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react()].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  esbuild: {
+    // Auto-inject React and common hooks to prevent ReferenceErrors in production
+    jsxInject: `import React, { useState, useEffect, useCallback, useMemo } from 'react';`
+  },
   build: {
+    target: 'es2020',
     outDir: "dist",
+    sourcemap: mode === 'development',
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 1000,
   },
 }));
