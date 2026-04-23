@@ -7,9 +7,24 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 
-// Lazy-loaded pages
-const Index = lazy(() => import("./pages/Index"));
-const AreaDetail = lazy(() => import("./pages/AreaDetail"));
+import { shouldLoadDirect } from "./utils/deviceDetect";
+
+// Critical components - Direct import if on problematic devices (tablet/mobile)
+import IndexComponent from "./pages/Index";
+import AreaDetailComponent from "./pages/AreaDetail";
+import AITutorComponent from "./components/AITutor";
+
+// Lazy-loaded pages (fallback for desktop)
+const IndexLazy = lazy(() => import("./pages/Index"));
+const AreaDetailLazy = lazy(() => import("./pages/AreaDetail"));
+const AITutorLazy = lazy(() => import("./components/AITutor"));
+
+// Use Direct if on tablet/mobile, else use Lazy
+const Index = shouldLoadDirect() ? IndexComponent : IndexLazy;
+const AreaDetail = shouldLoadDirect() ? AreaDetailComponent : AreaDetailLazy;
+const AITutor = shouldLoadDirect() ? AITutorComponent : AITutorLazy;
+
+// Other pages keep standard lazy loading
 const Auth = lazy(() => import("./pages/Auth"));
 const Tokens = lazy(() => import("./pages/Tokens"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -25,8 +40,8 @@ const Modalidades = lazy(() => import("./pages/Modalidades"));
 const Sugerencias = lazy(() => import("./pages/Sugerencias"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const PromoEcoems = lazy(() => import("./pages/PromoEcoems"));
-const AITutor = lazy(() => import("./components/AITutor"));
 const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
+
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import PWAStatusBar from "./components/PWAStatusBar";
@@ -37,6 +52,7 @@ import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
 import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
 import TelegramButton from "./components/TelegramButton";
+
 
 /**
  * StreakAutoSync — invisible component that:

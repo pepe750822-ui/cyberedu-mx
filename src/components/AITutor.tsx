@@ -29,21 +29,25 @@ import "katex/dist/katex.min.css";
 import Mermaid from "./Mermaid";
 import ChartRenderer, { ChartData } from "./ChartRenderer";
 import EduImageViewer from "./EduImageViewer";
-import CalculatorArtifact from "./CalculatorArtifact";
-import SimulatorArtifact from "./SimulatorArtifact";
-import ExerciseArtifact from "./ExerciseArtifact";
-import ChemistryArtifact from "./ChemistryArtifact";
-import PhysicsArtifact from "./PhysicsArtifact";
-import MathGraphArtifact from "./MathGraphArtifact";
-import GlobeArtifact from "./GlobeArtifact";
-import SolarSystemArtifact from "./SolarSystemArtifact";
-import HumanBodyArtifact from "./HumanBodyArtifact";
-import SpatialSeriesArtifact from "./SpatialSeriesArtifact";
-import MexicoMapArtifact from "./MexicoMapArtifact";
-import TimelineArtifact from "./TimelineArtifact";
-import AtomArtifact from "./AtomArtifact";
-import AlgebraArtifact from "./AlgebraArtifact";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
+import LazyWithTimeout from "./LazyWithTimeout";
+
+// Artifacts - Lazy Loaded with Timeout for robustness
+const CalculatorArtifact = () => import("./CalculatorArtifact");
+const SimulatorArtifact = () => import("./SimulatorArtifact");
+const ExerciseArtifact = () => import("./ExerciseArtifact");
+const ChemistryArtifact = () => import("./ChemistryArtifact");
+const PhysicsArtifact = () => import("./PhysicsArtifact");
+const MathGraphArtifact = () => import("./MathGraphArtifact");
+const MexicoMapArtifact = () => import("./MexicoMapArtifact");
+const TimelineArtifact = () => import("./TimelineArtifact");
+const AlgebraArtifact = () => import("./AlgebraArtifact");
+const GlobeArtifact = () => import("./GlobeArtifact");
+const SolarSystemArtifact = () => import("./SolarSystemArtifact");
+const HumanBodyArtifact = () => import("./HumanBodyArtifact");
+const AtomArtifact = () => import("./AtomArtifact");
+const SpatialSeriesArtifact = () => import("./SpatialSeriesArtifact");
+
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
 import { Image as ImageIcon } from "lucide-react";
@@ -2082,52 +2086,55 @@ const MessageBubble = React.memo(({
           {/* 3. Calculadora (CalculatorArtifact) */}
           {msg.calculators?.map((calc: any, i: number) => (
             <SafeBlockErrorBoundary key={`calc-err-${i}`}>
-              <CalculatorArtifact calculator={calc} />
+              <LazyWithTimeout factory={CalculatorArtifact as any} componentProps={{ calculator: calc }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 4. Simulador (SimulatorArtifact) */}
           {msg.simulators?.map((sim: any, i: number) => (
             <SafeBlockErrorBoundary key={`sim-err-${i}`}>
-              <SimulatorArtifact simulator={sim} />
+              <LazyWithTimeout factory={SimulatorArtifact as any} componentProps={{ simulator: sim }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 4.5 Simulador de Física (PhysicsArtifact) */}
           {msg.physics?.map((phys: any, i: number) => (
             <SafeBlockErrorBoundary key={`phys-err-${i}`}>
-              <PhysicsArtifact simulation={phys} />
+              <LazyWithTimeout factory={PhysicsArtifact as any} componentProps={{ simulation: phys }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 4.6 Graficador Matemático (MathGraphArtifact) */}
           {msg.mathGraphs?.map((graph: any, i: number) => (
             <SafeBlockErrorBoundary key={`math-err-${i}`}>
-              <MathGraphArtifact graph={graph} />
+              <LazyWithTimeout factory={MathGraphArtifact as any} componentProps={{ graph: graph }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5. Ejercicio (ExerciseArtifact) */}
           {msg.exercises?.map((ex: any, i: number) => (
             <SafeBlockErrorBoundary key={`ex-err-${i}`}>
-              <ExerciseArtifact exercise={ex} />
+              <LazyWithTimeout factory={ExerciseArtifact as any} componentProps={{ exercise: ex }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.5 Química (ChemistryArtifact) */}
           {msg.chemistryElements?.map((elem: any, i: number) => (
             <SafeBlockErrorBoundary key={`chem-err-${i}`} fallbackMessage="La información del elemento químico está incompleta o tiene un formato inválido.">
-              <ChemistryArtifact element={elem} />
+              <LazyWithTimeout factory={ChemistryArtifact as any} componentProps={{ element: elem }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.6 Geografía (GlobeArtifact) */}
           {msg.geography?.map((geo: any, i: number) => (
             <SafeBlockErrorBoundary key={`geo-err-${i}`} fallbackMessage="No se pudo cargar el globo terráqueo interactivo.">
-              <GlobeArtifact 
-                highlightCountry={geo.country} 
-                highlightContinent={geo.continent} 
-                topic={geo.topic} 
+              <LazyWithTimeout
+                factory={GlobeArtifact as any}
+                componentProps={{
+                  highlightCountry: geo.country,
+                  highlightContinent: geo.continent,
+                  topic: geo.topic
+                }}
               />
             </SafeBlockErrorBoundary>
           ))}
@@ -2135,49 +2142,58 @@ const MessageBubble = React.memo(({
           {/* 5.7 Sistema Solar (SolarSystemArtifact) */}
           {msg.solarSystem?.map((ss: any, i: number) => (
             <SafeBlockErrorBoundary key={`ss-err-${i}`} fallbackMessage="No se pudo cargar el simulador del sistema solar.">
-              <SolarSystemArtifact topic={ss.topic} />
+              <LazyWithTimeout
+                factory={SolarSystemArtifact as any}
+                componentProps={{ topic: ss.topic }}
+              />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.8 Cuerpo Humano (HumanBodyArtifact) */}
           {msg.humanBody?.map((hb: any, i: number) => (
             <SafeBlockErrorBoundary key={`hb-err-${i}`} fallbackMessage="No se pudo cargar el artefacto del cuerpo humano.">
-              <HumanBodyArtifact topic={hb?.topic} />
+              <LazyWithTimeout
+                factory={HumanBodyArtifact as any}
+                componentProps={{ topic: hb?.topic }}
+              />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.9 Series Espaciales (SpatialSeriesArtifact) */}
           {msg.spatialSeries?.map((ss: any, i: number) => (
             <SafeBlockErrorBoundary key={`spat-err-${i}`} fallbackMessage="No se pudo cargar el artefacto de series espaciales.">
-              <SpatialSeriesArtifact difficulty={ss?.difficulty} topic={ss?.topic} />
+              <LazyWithTimeout
+                factory={SpatialSeriesArtifact as any}
+                componentProps={{ difficulty: ss?.difficulty, topic: ss?.topic }}
+              />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.10 Mapa de México (MexicoMapArtifact) */}
           {msg.mexicoMaps?.map((mm: any, i: number) => (
             <SafeBlockErrorBoundary key={`mxmap-err-${i}`} fallbackMessage="No se pudo cargar el mapa de México.">
-              <MexicoMapArtifact state={mm?.state ?? ''} />
+              <LazyWithTimeout factory={MexicoMapArtifact as any} componentProps={{ state: mm?.state ?? '' }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.11 Línea del Tiempo (TimelineArtifact) */}
           {msg.timelines?.map((tl: any, i: number) => (
             <SafeBlockErrorBoundary key={`tl-err-${i}`} fallbackMessage="No se pudo cargar la línea del tiempo.">
-              <TimelineArtifact focus={tl?.focus ?? 'mexico'} />
+              <LazyWithTimeout factory={TimelineArtifact as any} componentProps={{ focus: tl?.focus ?? 'mexico' }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.12 Modelo Atómico (AtomArtifact) */}
           {msg.atoms?.map((at: any, i: number) => (
             <SafeBlockErrorBoundary key={`atom-err-${i}`} fallbackMessage="No se pudo cargar el modelo atómico.">
-              <AtomArtifact element={at?.element ?? ''} />
+              <LazyWithTimeout factory={AtomArtifact as any} componentProps={{ element: at?.element ?? '' }} />
             </SafeBlockErrorBoundary>
           ))}
 
           {/* 5.13 Álgebra Paso a Paso (AlgebraArtifact) */}
           {msg.algebras?.map((alg: any, i: number) => (
             <SafeBlockErrorBoundary key={`alg-err-${i}`} fallbackMessage="No se pudo cargar la calculadora algebraica.">
-              <AlgebraArtifact equation={alg?.equation ?? ''} />
+              <LazyWithTimeout factory={AlgebraArtifact as any} componentProps={{ equation: alg?.equation ?? '' }} />
             </SafeBlockErrorBoundary>
           ))}
 
