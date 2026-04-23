@@ -10,7 +10,7 @@ export default async function handler(req: Request) {
       status,
       headers: { 
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://cyberedumx.com',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type'
       }

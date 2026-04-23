@@ -17,7 +17,7 @@ export default async function handler(req: Request) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://cyberedumx.com',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Content-Type': 'application/json',

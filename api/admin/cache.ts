@@ -6,7 +6,7 @@ const UPSTASH_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS
 const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://cyberedumx.com',
   'Access-Control-Allow-Methods': 'GET, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Content-Type': 'application/json',

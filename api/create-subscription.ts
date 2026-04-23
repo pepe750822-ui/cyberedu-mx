@@ -9,7 +9,7 @@ export default async function handler(req: Request) {
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://cyberedumx.com',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
@@ -107,7 +107,7 @@ export default async function handler(req: Request) {
       status: 200,
       headers: { 
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://cyberedumx.com'
       },
     });
 
