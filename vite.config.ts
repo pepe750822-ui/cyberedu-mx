@@ -17,10 +17,6 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  esbuild: {
-    // Solo inyectar React para evitar errores de duplicación con hooks importados manualmente
-    jsxInject: `import React from 'react';`
-  },
   build: {
     target: 'es2020',
     outDir: "dist",
