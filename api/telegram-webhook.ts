@@ -198,7 +198,8 @@ function getMainKeyboard() {
   return [
     [{ text: "🪙 Mis Tokens", callback_data: "/mis_tokens" }, { text: "🚀 Simulador Pro", url: "https://cyberedumx.com/simulador-pro" }],
     [{ text: "💎 Comprar Tokens", url: "https://cyberedumx.com/tokens" }],
-    [{ text: "🌐 Ir a la Web", url: "https://cyberedumx.com" }, { text: "👤 Vincular", callback_data: "/vincular" }]
+    [{ text: "🌐 Ir a la Web", url: "https://cyberedumx.com" }, { text: "📩 Soporte / Dudas", url: "https://wa.me/525523269241" }],
+    [{ text: "👤 Vincular", callback_data: "/vincular" }]
   ];
 }
 
@@ -217,7 +218,7 @@ async function sendTelegramMessage(api: string, chatId: string, text: string, in
     keyboard: [
       [{ text: "🪙 Mis Tokens" }, { text: "🚀 Simulador Pro" }],
       [{ text: "💎 Comprar Tokens" }, { text: "🌐 Ir a la Web" }],
-      [{ text: "👤 Vincular" }]
+      [{ text: "📩 Soporte / Dudas" }, { text: "👤 Vincular" }]
     ],
     resize_keyboard: true,
     one_time_keyboard: false
@@ -372,6 +373,16 @@ function getReplyForTelegram(text: string, firstName: string): { replyText: stri
     return {
       replyText: '¡Claro que sí! Pon a prueba tus conocimientos con nuestro Simulador Pro 100% GRATIS.',
       inlineKeyboard: mainKeyboard
+    };
+  }
+
+  if (lowerMsg.includes('soporte') || lowerMsg.includes('dudas') || lowerMsg.includes('sugerencia')) {
+    return {
+      replyText: 'Para cualquier duda personalizada, sugerencia o problema técnico, puedes hablar directamente con nuestro equipo humano por WhatsApp. 📩',
+      inlineKeyboard: [
+        [{ text: "📩 Abrir WhatsApp de Soporte", url: "https://wa.me/525523269241" }],
+        ...mainKeyboard
+      ]
     };
   }
   
