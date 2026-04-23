@@ -9,22 +9,10 @@ import LoadingSpinner from "./components/LoadingSpinner";
 
 import { shouldLoadDirect } from "./utils/deviceDetect";
 
-// Critical components - Direct import if on problematic devices (tablet/mobile)
-import IndexComponent from "./pages/Index";
-import AreaDetailComponent from "./pages/AreaDetail";
-import AITutorComponent from "./components/AITutor";
-
-// Lazy-loaded pages (fallback for desktop)
-const IndexLazy = lazy(() => import("./pages/Index"));
-const AreaDetailLazy = lazy(() => import("./pages/AreaDetail"));
-const AITutorLazy = lazy(() => import("./components/AITutor"));
-
-// Use Direct if on tablet/mobile, else use Lazy
-const Index = shouldLoadDirect() ? IndexComponent : IndexLazy;
-const AreaDetail = shouldLoadDirect() ? AreaDetailComponent : AreaDetailLazy;
-const AITutor = shouldLoadDirect() ? AITutorComponent : AITutorLazy;
-
-// Other pages keep standard lazy loading
+// Lazy-loaded pages for performance
+const Index = lazy(() => import("./pages/Index"));
+const AreaDetail = lazy(() => import("./pages/AreaDetail"));
+const AITutor = lazy(() => import("./components/AITutor"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Tokens = lazy(() => import("./pages/Tokens"));
 const Admin = lazy(() => import("./pages/Admin"));
