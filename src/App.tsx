@@ -9,8 +9,9 @@ import LoadingSpinner from "./components/LoadingSpinner";
 
 import { shouldLoadDirect } from "./utils/deviceDetect";
 
+import Index from "./pages/Index";
+
 // Lazy-loaded pages for performance
-const Index = lazy(() => import("./pages/Index"));
 const AreaDetail = lazy(() => import("./pages/AreaDetail"));
 const AITutor = lazy(() => import("./components/AITutor"));
 const Auth = lazy(() => import("./pages/Auth"));
@@ -114,42 +115,12 @@ const PageViewTracker = () => {
 
 const AuthenticatedStudyTools = () => {
   const { user } = useAuth();
-  const [shouldRender, setShouldRender] = useState(false);
-
-  useEffect(() => {
-    // Defer rendering of heavy background tools to prioritize main page content
-    const timer = setTimeout(() => setShouldRender(true), 3500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!shouldRender) return null;
-
   return (
     <Suspense fallback={null}>
       <AITutor />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
     </Suspense>
-  );
-};
-
-const DeferredUI = () => {
-  const [shouldRender, setShouldRender] = useState(false);
-
-  useEffect(() => {
-    // Delay non-critical UI to prioritize main route rendering
-    const timer = setTimeout(() => setShouldRender(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!shouldRender) return null;
-
-  return (
-    <>
-      <PWAInstallBanner />
-      <PWAStatusBar />
-      <TelegramButton />
-    </>
   );
 };
 
@@ -166,10 +137,9 @@ const App = () => (
           <GlobalAnnouncementBanner />
           <PageViewTracker />
           <AuthenticatedStudyTools />
-          {/* Defer non-critical UI elements */}
-          <Suspense fallback={null}>
-            <DeferredUI />
-          </Suspense>
+          <PWAInstallBanner />
+          <PWAStatusBar />
+          <TelegramButton />
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<Index />} />
