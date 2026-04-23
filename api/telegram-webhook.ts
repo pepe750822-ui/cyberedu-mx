@@ -353,6 +353,7 @@ function stripXmlTags(text: string): string {
     .replace(/<timeline>[\s\S]*?<\/timeline>/g, '')
     .replace(/<atom>[\s\S]*?<\/atom>/g, '')
     .replace(/<algebra>[\s\S]*?<\/algebra>/g, '')
+    .replace(/```mermaid[\s\S]*?```/g, '') // Eliminar Mermaid explícitamente
     .trim();
 }
 
