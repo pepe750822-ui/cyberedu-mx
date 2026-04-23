@@ -114,12 +114,42 @@ const PageViewTracker = () => {
 
 const AuthenticatedStudyTools = () => {
   const { user } = useAuth();
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    // Defer rendering of heavy background tools to prioritize main page content
+    const timer = setTimeout(() => setShouldRender(true), 3500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!shouldRender) return null;
+
   return (
     <Suspense fallback={null}>
       <AITutor />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
     </Suspense>
+  );
+};
+
+const DeferredUI = () => {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    // Delay non-critical UI to prioritize main route rendering
+    const timer = setTimeout(() => setShouldRender(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!shouldRender) return null;
+
+  return (
+    <>
+      <PWAInstallBanner />
+      <PWAStatusBar />
+      <TelegramButton />
+    </>
   );
 };
 
@@ -136,9 +166,10 @@ const App = () => (
           <GlobalAnnouncementBanner />
           <PageViewTracker />
           <AuthenticatedStudyTools />
-          <PWAInstallBanner />
-          <PWAStatusBar />
-          <TelegramButton />
+          {/* Defer non-critical UI elements */}
+          <Suspense fallback={null}>
+            <DeferredUI />
+          </Suspense>
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<Index />} />
