@@ -18,8 +18,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   esbuild: {
-    // Auto-inject React and common hooks to prevent ReferenceErrors in production
-    jsxInject: `import React, { useState, useEffect, useCallback, useMemo } from 'react';`
+    // Solo inyectar React para evitar errores de duplicación con hooks importados manualmente
+    jsxInject: `import React from 'react';`
   },
   build: {
     target: 'es2020',
