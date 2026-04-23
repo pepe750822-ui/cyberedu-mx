@@ -199,12 +199,17 @@ export default async function handler(req: Request) {
   // @ts-ignore
   const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
+    'https://cyberedumx.com',
+    'https://www.cyberedumx.com',
     'https://cyberedumx.lovable.app',
     APP_URL,
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://localhost:3000'
   ];
   const origin = req.headers.get('origin');
-  const corsOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+  // Permitir llamadas sin 'origin' (server-to-server desde Telegram webhook)
+  const corsOrigin = !origin ? 'https://cyberedumx.com'
+    : (allowedOrigins.includes(origin) ? origin : 'https://cyberedumx.com');
 
   const corsHeaders = {
     'Access-Control-Allow-Origin': corsOrigin,
