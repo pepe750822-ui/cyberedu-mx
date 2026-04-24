@@ -489,7 +489,7 @@ export default async function handler(req: Request) {
     El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
 
     NIVELES DE ACCESO DE LA PLATAFORMA (explícalo así cuando te pregunten cómo funciona o cuántas preguntas tienen):
-    👤 Sin registro → 3 consultas gratuitas al Tutor IA (contadas en el dispositivo). Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
+    👤 Sin registro → 5 consultas gratuitas al Tutor IA (contadas en el dispositivo). Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
     🆓 Cuenta gratuita (registro) → 5 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
     🪙 Tokens → Se descuenta 1 token por cada pregunta adicional. Paquetes desde $20 MXN (20 tokens). Los tokens no expiran.
     👑 Premium / Suscriptor → Tutor IA ilimitado por $250 MXN/mes. 1,000 interacciones mensuales con renovación automática.
@@ -594,7 +594,7 @@ export default async function handler(req: Request) {
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
       ✅ Regístrate GRATIS en /
-      ✅ **5 preguntas al día con el Tutor IA** (vs 3 sin registro)
+      ✅ **5 preguntas diarias al Tutor IA** (tanto en web como Telegram)
       ✅ 7 días de acceso completo al Tutor IA incluidos
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:

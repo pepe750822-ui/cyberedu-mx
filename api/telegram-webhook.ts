@@ -112,14 +112,14 @@ export default async function handler(req: Request) {
         return sendTelegramMessage(
           TELEGRAM_API, 
           chatId, 
-          "✅ **Cuenta desvinculada con éxito.**\n\nAhora estás usando el bot en **modo invitado** (límite de 3 preguntas al día).", 
+          "✅ **Cuenta desvinculada con éxito.**\n\nAhora estás usando el bot en **modo invitado** (límite de 5 preguntas al día).", 
           getMainKeyboard()
         );
       }
 
       if (lowerText === '/mis_tokens' || lowerText === '🪙 mis tokens') {
         if (!tgUser?.user_id) {
-          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 3 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
+          return sendTelegramMessage(TELEGRAM_API, chatId, "❌ *Cuenta no vinculada*\n\nTodavía estás usando el bot como invitado (límite de 5 preguntas al día).\n\n1. Usa /vincular para obtener un código.\n2. Ingrésalo en cyberedumx.com/tokens");
         }
         
         // Diagnóstico para el usuario (usando fallback por si acaso)
@@ -164,8 +164,8 @@ export default async function handler(req: Request) {
             .maybeSingle();
 
           const count = usage?.questions_count || 0;
-          if (count >= 3) {
-            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (3 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth", getMainKeyboard());
+          if (count >= 5) {
+            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (5 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth", getMainKeyboard());
           }
 
           // Incrementar uso
@@ -241,7 +241,7 @@ function getWelcomeMessage(tgUser: any, profile: any, firstName: string) {
     const tokens = profile?.tokens || 0;
     return `¡Bienvenido de vuelta, ${profile?.full_name || firstName}! 🚀\n\nTienes *${tokens} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *3 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *5 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
 }
 
 async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {

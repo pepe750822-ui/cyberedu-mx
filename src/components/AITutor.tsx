@@ -3135,7 +3135,7 @@ const AITutor = () => {
     if (!isCommand) {
       if (!user) {
         const guestCount = parseInt(localStorage.getItem('cyberedu_guest_count') || '0');
-        if (guestCount >= 3) {
+        if (guestCount >= 5) {
           setShowGuestModal(true);
           return;
         }
@@ -3204,7 +3204,7 @@ const AITutor = () => {
               ));
               setIsStreaming(false);
               const newCount = parseInt(localStorage.getItem('cyberedu_guest_count') || '1');
-              if (newCount >= 3) {
+              if (newCount >= 5) {
                 setTimeout(() => setShowGuestModal(true), 1200);
               }
             },
@@ -3862,7 +3862,7 @@ const AITutor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const GUEST_LIMIT = 3;   // Sin registro
+  const GUEST_LIMIT = 5;   // Sin registro
   const FREE_DAILY_LIMIT = 5; // Con registro gratis
   const guestQueriesUsed = !user ? parseInt(localStorage.getItem('cyberedu_guest_count') || '0') : 0;
   const isGuestLimitReached = !user && guestQueriesUsed >= GUEST_LIMIT;
@@ -4060,8 +4060,8 @@ const AITutor = () => {
                   {isGuestLimitReached && (
                     <div className="mb-3 p-3 bg-primary/10 border border-primary/30 rounded-xl relative overflow-hidden animate-in slide-in-from-bottom-2 fade-in">
                       <div className="absolute top-0 left-0 w-1 h-full bg-primary rounded-l" />
-                      <p className="text-xs text-white font-bold mb-1.5 pl-2">Has usado tus 3 consultas sin registro 🎓</p>
-                      <p className="text-[10px] text-slate-300 mb-2 pl-2">✨ Regístrate gratis y obtén <strong>5 preguntas diarias</strong> + acceso a todo el contenido.</p>
+                      <p className="text-xs text-white font-bold mb-1.5 pl-2">Has usado tus 5 consultas sin registro 🎓</p>
+                      <p className="text-[10px] text-slate-300 mb-2 pl-2">✨ Regístrate gratis para <strong>guardar tu progreso</strong>, videos vistos e insignias.</p>
                       <div className="flex flex-wrap gap-2 pl-2">
                         <button
                           onClick={() => { window.location.href = '/auth'; }}
@@ -4397,17 +4397,17 @@ const AITutor = () => {
 
                 {/* Usage indicator */}
                 <div className="flex justify-center gap-2 mb-4">
-                  {[0, 1, 2].map(i => (
+                  {[0, 1, 2, 3, 4].map(i => (
                     <div key={i} className="h-2 w-8 rounded-full bg-primary" />
                   ))}
                 </div>
-                <p className="text-[10px] font-black text-primary/70 uppercase tracking-widest mb-5">3 / 3 consultas gratuitas</p>
+                <p className="text-[10px] font-black text-primary/70 uppercase tracking-widest mb-5">5 / 5 consultas gratuitas</p>
 
                 <h2 className="text-2xl font-black text-white mb-2 leading-tight">
-                  ¡Regístrate gratis y sigue estudiando!
+                  ¡Regístrate gratis y obtén más!
                 </h2>
                 <p className="text-white/50 text-sm mb-6">
-                  Obtén <span className="text-white font-bold">5 consultas diarias</span> con el Tutor IA, videos, quizzes e infografías — sin costo.
+                  Al crear tu cuenta guardamos tu progreso, videos vistos e insignias — 100% gratis.
                 </p>
 
                 {/* Benefits */}
