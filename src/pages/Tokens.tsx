@@ -10,7 +10,9 @@ import {
   Crown, 
   Star,
   Info,
-  Send
+  Send,
+  Chrome,
+  Lock
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,6 +20,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const tokenPackages = [
   {
@@ -70,6 +73,7 @@ const TokensPage = () => {
   const [pendingQuestionMsg, setPendingQuestionMsg] = useState<string | null>(null);
   const [linkingCode, setLinkingCode] = useState("");
   const [isLinking, setIsLinking] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     const raw = localStorage.getItem('cyberedu_pending_question');
@@ -95,6 +99,27 @@ const TokensPage = () => {
     }
   }, [searchParams]);
 
+
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoggingIn(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/tokens`,
+          queryParams: {
+            prompt: 'select_account',
+            access_type: 'offline',
+          }
+        },
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast.error("Error con Google: " + error.message);
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   const handleLinkTelegram = async () => {
     if (!user) {
@@ -292,124 +317,179 @@ const TokensPage = () => {
           </div>
         </div>
 
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {tokenPackages.map((pkg, idx) => (
-            <motion.div
-              key={pkg.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * idx }}
-            >
-              <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] border-white/10 ${pkg.highlight ? "border-primary/40 ring-1 ring-primary/20" : ""}`}>
-                {pkg.badge && (
-                  <div className="absolute top-6 right-[-35px] rotate-45 bg-primary text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20">
-                    {pkg.badge}
+        {/* Conditional Rendering: Auth Guard vs. Packages */}
+        {!user ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="max-w-4xl mx-auto"
+          >
+            <Card className="glass-card-premium rounded-[3rem] border-primary/20 bg-primary/5 p-8 md:p-16 text-center space-y-8 overflow-hidden relative group">
+              {/* Background Glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+              
+              <div className="relative z-10 space-y-6">
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 rounded-3xl bg-primary/20 border border-primary/30 flex items-center justify-center animate-bounce shadow-2xl shadow-primary/20">
+                    <Lock className="h-10 w-10 text-primary" />
                   </div>
-                )}
-
-                <CardHeader className="p-8 pb-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                      {pkg.icon}
-                    </div>
-                  </div>
-                  <CardTitle className="text-3xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
-                  <CardDescription className="text-slate-500 font-medium">{pkg.description}</CardDescription>
-                </CardHeader>
-
-                <CardContent className="p-8 pt-4 flex-grow space-y-6">
-                  <div className="space-y-1">
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-black text-white">{pkg.tokens}</span>
-                        <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">Tokens</span>
-                    </div>
-                    <p className="text-primary font-black text-2xl">${pkg.price} MXN</p>
-                    <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">${pkg.pricePerToken.toFixed(2)} por token</p>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/5 space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                        <Check className="h-4 w-4 text-emerald-500" />
-                        Acceso ilimitado al Tutor
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-300">
-                        <Check className="h-4 w-4 text-emerald-500" />
-                        Prioridad de respuesta
-                    </div>
-                  </div>
-                </CardContent>
-
-                <CardFooter className="p-8 pt-0">
-                  <Button 
-                    className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20" : "bg-white/10 hover:bg-white/20 border border-white/10"}`}
-                    onClick={() => handleBuy(pkg.id)}
-                    disabled={loadingPkg === pkg.id}
-                  >
-                    {loadingPkg === pkg.id ? (
-                      <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      "Comprar ahora"
-                    )}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Unlimited Plan */}
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ delay: 0.4 }}
-           className="max-w-4xl mx-auto"
-        >
-            <Card className="glass-card-premium rounded-[3rem] border-amber-500/20 bg-amber-500/5 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-12 opacity-5 scale-150 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
-                    <Crown className="h-48 w-48 text-amber-500" />
                 </div>
                 
-                <CardContent className="p-8 md:p-12">
-                   <div className="flex flex-col md:flex-row gap-10 items-center">
-                      <div className="w-24 h-24 rounded-full bg-amber-500/20 border-2 border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xl shadow-amber-500/20">
-                         {unlimitedPackage.icon}
+                <div className="space-y-3">
+                  <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-tight text-white">
+                    Para comprar tokens <br />
+                    <span className="text-primary italic">primero crea tu cuenta</span>
+                  </h2>
+                  <p className="text-slate-400 font-medium text-lg max-w-xl mx-auto">
+                    Solo toma 10 segundos con Google. Tus tokens se acreditarán automáticamente a tu perfil para que nunca los pierdas.
+                  </p>
+                </div>
+
+                <div className="pt-4">
+                  <Button 
+                    onClick={handleGoogleLogin}
+                    disabled={isLoggingIn}
+                    className="h-16 px-10 rounded-2xl bg-white text-black hover:bg-slate-200 transition-all font-black uppercase tracking-widest text-xs flex items-center gap-3 mx-auto shadow-xl shadow-white/10"
+                  >
+                    {isLoggingIn ? (
+                      <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Chrome className="h-5 w-5 text-red-500" />
+                        Registrarse con Google
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                  Protocolo de seguridad SSL/AES activado
+                </p>
+              </div>
+            </Card>
+          </motion.div>
+        ) : (
+          <>
+            {/* Packages Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {tokenPackages.map((pkg, idx) => (
+                <motion.div
+                  key={pkg.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * idx }}
+                >
+                  <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] border-white/10 ${pkg.highlight ? "border-primary/40 ring-1 ring-primary/20" : ""}`}>
+                    {pkg.badge && (
+                      <div className="absolute top-6 right-[-35px] rotate-45 bg-primary text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20">
+                        {pkg.badge}
                       </div>
-                      
-                      <div className="flex-1 space-y-4 text-center md:text-left">
-                         <Badge className="bg-amber-500 text-black font-black uppercase px-3 py-1 mb-2">Plan Maestro</Badge>
-                         <h3 className="text-4xl font-black uppercase tracking-tighter text-white">👑 {unlimitedPackage.name}</h3>
-                         <p className="text-slate-400 font-medium text-lg max-w-xl">
-                            {unlimitedPackage.description}. Ideal para quienes quieren asistencia total en su preparación ECOEMS.
-                         </p>
-                         <div className="flex flex-wrap items-end justify-center md:justify-start gap-4 pt-4">
-                             <div className="flex items-baseline gap-1">
-                                <span className="text-5xl font-black text-white">$250</span>
-                                <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">MXN / mes</span>
-                             </div>
-                             <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase">
-                                $0.25 por token
-                             </div>
-                         </div>
+                    )}
+
+                    <CardHeader className="p-8 pb-4">
+                      <div className="mb-4 flex items-center justify-between">
+                        <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                          {pkg.icon}
+                        </div>
+                      </div>
+                      <CardTitle className="text-3xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
+                      <CardDescription className="text-slate-500 font-medium">{pkg.description}</CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="p-8 pt-4 flex-grow space-y-6">
+                      <div className="space-y-1">
+                        <div className="flex items-baseline gap-2">
+                            <span className="text-5xl font-black text-white">{pkg.tokens}</span>
+                            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">Tokens</span>
+                        </div>
+                        <p className="text-primary font-black text-2xl">${pkg.price} MXN</p>
+                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">${pkg.pricePerToken.toFixed(2)} por token</p>
                       </div>
 
-                      <div className="w-full md:w-auto">
-                        <Button 
-                            className="w-full md:w-56 h-16 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest text-xs shadow-xl shadow-amber-500/20"
-                            onClick={() => handleBuy(unlimitedPackage.id)}
-                            disabled={loadingPkg === unlimitedPackage.id}
-                        >
-                            {loadingPkg === unlimitedPackage.id ? (
-                                <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
-                            ) : (
-                                "Activar ilimitado"
-                            )}
-                        </Button>
+                      <div className="pt-4 border-t border-white/5 space-y-3">
+                        <div className="flex items-center gap-2 text-sm text-slate-300">
+                            <Check className="h-4 w-4 text-emerald-500" />
+                            Acceso ilimitado al Tutor
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-slate-300">
+                            <Check className="h-4 w-4 text-emerald-500" />
+                            Prioridad de respuesta
+                        </div>
                       </div>
-                   </div>
-                </CardContent>
-            </Card>
-        </motion.div>
+                    </CardContent>
+
+                    <CardFooter className="p-8 pt-0">
+                      <Button 
+                        className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20" : "bg-white/10 hover:bg-white/20 border border-white/10"}`}
+                        onClick={() => handleBuy(pkg.id)}
+                        disabled={loadingPkg === pkg.id}
+                      >
+                        {loadingPkg === pkg.id ? (
+                          <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          "Comprar ahora"
+                        )}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Unlimited Plan */}
+            <motion.div
+               initial={{ opacity: 0, y: 30 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: 0.4 }}
+               className="max-w-4xl mx-auto"
+            >
+                <Card className="glass-card-premium rounded-[3rem] border-amber-500/20 bg-amber-500/5 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-12 opacity-5 scale-150 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
+                        <Crown className="h-48 w-48 text-amber-500" />
+                    </div>
+                    
+                    <CardContent className="p-8 md:p-12">
+                       <div className="flex flex-col md:flex-row gap-10 items-center">
+                          <div className="w-24 h-24 rounded-full bg-amber-500/20 border-2 border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xl shadow-amber-500/20">
+                             {unlimitedPackage.icon}
+                          </div>
+                          
+                          <div className="flex-1 space-y-4 text-center md:text-left">
+                             <Badge className="bg-amber-500 text-black font-black uppercase px-3 py-1 mb-2">Plan Maestro</Badge>
+                             <h3 className="text-4xl font-black uppercase tracking-tighter text-white">👑 {unlimitedPackage.name}</h3>
+                             <p className="text-slate-400 font-medium text-lg max-w-xl">
+                                {unlimitedPackage.description}. Ideal para quienes quieren asistencia total en su preparación ECOEMS.
+                             </p>
+                             <div className="flex flex-wrap items-end justify-center md:justify-start gap-4 pt-4">
+                                 <div className="flex items-baseline gap-1">
+                                    <span className="text-5xl font-black text-white">$250</span>
+                                    <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">MXN / mes</span>
+                                 </div>
+                                 <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase">
+                                    $0.25 por token
+                                 </div>
+                             </div>
+                          </div>
+
+                          <div className="w-full md:w-auto">
+                            <Button 
+                                className="w-full md:w-56 h-16 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest text-xs shadow-xl shadow-amber-500/20"
+                                onClick={() => handleBuy(unlimitedPackage.id)}
+                                disabled={loadingPkg === unlimitedPackage.id}
+                            >
+                                {loadingPkg === unlimitedPackage.id ? (
+                                    <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
+                                ) : (
+                                    "Activar ilimitado"
+                                )}
+                            </Button>
+                          </div>
+                       </div>
+                    </CardContent>
+                </Card>
+            </motion.div>
+          </>
+        )}
 
         {/* Info Footer */}
         <div className="max-w-2xl mx-auto text-center space-y-4 text-slate-500 pt-8 border-t border-white/5">
