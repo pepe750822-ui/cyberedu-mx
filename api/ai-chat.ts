@@ -840,7 +840,7 @@ export default async function handler(req: Request) {
     let apiResponse: Response;
 
     if (useDeepSeek) {
-      console.log(`[AI-CHAT] Routing to DEEPSEEK (Simple Query): "${lastUserMsg.slice(0, 40)}..."`);
+      console.log(`[AI-CHAT] 🟢 MODELO: DEEPSEEK (Ahorro activado) | Query: "${lastUserMsg.slice(0, 40)}..."`);
       apiResponse = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {
@@ -858,7 +858,7 @@ export default async function handler(req: Request) {
         }),
       });
     } else {
-      console.log(`[AI-CHAT] Routing to ANTHROPIC (Complex/File Query): "${lastUserMsg.slice(0, 40)}..."`);
+      console.log(`[AI-CHAT] 🧠 MODELO: ANTHROPIC (Claude Haiku) | Query: "${lastUserMsg.slice(0, 40)}..."`);
       apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
