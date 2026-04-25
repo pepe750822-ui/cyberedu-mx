@@ -119,7 +119,15 @@ function isComplexQuery(question: string): boolean {
     /mapa/i, /globo/i, /geografía/i, /continente/i, /país/i, /ubicación/i,
     /átomo/i, /tabla periódica/i, /elemento/i, /química/i, /configuración electrónica/i,
     /cuerpo humano/i, /sistema/i, /órgano/i, /anatomía/i, /biología/i,
-    /historia/i, /línea del tiempo/i, /época/i, /siglo/i, /evento/i, /personaje/i,
+    
+    // Historia y Líneas de Tiempo (Prioridad Claude)
+    /línea del tiempo/i, /cronología/i, /historia/i, /revolución/i, /independencia/i,
+    /guerra/i, /batalla/i, /sucesos históricos/i, /fechas importantes/i,
+    /biografía/i, /personaje histórico/i, /timeline/i, /fecha/i,
+    /¿cuándo fue\?/i, /¿en qué año\?/i, /¿qué pasó en\?/i,
+    /época/i, /siglo/i, /evento/i, /personaje/i,
+    
+    // Otros
     /simulador/i, /interactivo/i, /gráfico/i, /diagrama/i, /esquema/i,
     /sucesión/i, /serie/i, /figura/i, /espacial/i,
     /quiz/i, /examen/i, /trivia/i, /evaluación/i
