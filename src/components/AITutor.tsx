@@ -900,6 +900,67 @@ function parseAlgebrasFromContent(content: string): { algebras: any[]; cleanCont
   return { algebras, cleanContent: content.replace(/<algebra>[\s\S]*?(?:<\/algebra>|$)/g, '').trim() };
 }
 
+function parseNewArtifactsFromContent(content: string): { 
+  physicsGraphs: any[]; 
+  circuitLabs: any[]; 
+  forceDiagrams: any[]; 
+  lewisStructures: any[]; 
+  spatialReasoning3Ds: any[]; 
+  cleanContent: string 
+} {
+  const physicsGraphs: any[] = [];
+  const circuitLabs: any[] = [];
+  const forceDiagrams: any[] = [];
+  const lewisStructures: any[] = [];
+  const spatialReasoning3Ds: any[] = [];
+
+  // 1. Gráficador Cinemático
+  const pgRegex = /<physics-graph>([\s\S]*?)(?:<\/physics-graph>|$)/g;
+  let m;
+  while ((m = pgRegex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) physicsGraphs.push(parsed);
+  }
+
+  // 2. Laboratorio de Circuitos
+  const clRegex = /<circuit-lab>([\s\S]*?)(?:<\/circuit-lab>|$)/g;
+  while ((m = clRegex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) circuitLabs.push(parsed);
+  }
+
+  // 3. Modelador de Fuerzas
+  const fdRegex = /<force-diagram>([\s\S]*?)(?:<\/force-diagram>|$)/g;
+  while ((m = fdRegex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) forceDiagrams.push(parsed);
+  }
+
+  // 4. Modelador de Lewis
+  const lsRegex = /<lewis-structure>([\s\S]*?)(?:<\/lewis-structure>|$)/g;
+  while ((m = lsRegex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) lewisStructures.push(parsed);
+  }
+
+  // 5. Razonamiento Espacial 3D
+  const srRegex = /<spatial-reasoning-3d>([\s\S]*?)(?:<\/spatial-reasoning-3d>|$)/g;
+  while ((m = srRegex.exec(content)) !== null) {
+    const parsed = safeParseJSON(m[1]);
+    if (parsed) spatialReasoning3Ds.push(parsed);
+  }
+
+  const cleanContent = content
+    .replace(/<physics-graph>[\s\S]*?(?:<\/physics-graph>|$)/g, "")
+    .replace(/<circuit-lab>[\s\S]*?(?:<\/circuit-lab>|$)/g, "")
+    .replace(/<force-diagram>[\s\S]*?(?:<\/force-diagram>|$)/g, "")
+    .replace(/<lewis-structure>[\s\S]*?(?:<\/lewis-structure>|$)/g, "")
+    .replace(/<spatial-reasoning-3d>[\s\S]*?(?:<\/spatial-reasoning-3d>|$)/g, "")
+    .trim();
+
+  return { physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, cleanContent };
+}
+
 function parseRecommendationsFromContent(content: string): { recommendations: ContentRecommendation[]; cleanContent: string } {
   const recommendations: ContentRecommendation[] = [];
   const regex = /<recommendation>([\s\S]*?)(?:<\/recommendation>|$)/g;
