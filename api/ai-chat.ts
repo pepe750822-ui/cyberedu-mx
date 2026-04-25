@@ -196,6 +196,8 @@ export default async function handler(req: Request) {
     });
   }
 
+  const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+
   // @ts-ignore
   const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
   const allowedOrigins = [
@@ -831,64 +833,91 @@ export default async function handler(req: Request) {
       (m: any) => (m.role === 'user' || m.role === 'assistant') && m.content && m.content.toString().trim() !== ""
     );
 
-    const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-beta': 'prompt-caching-2024-07-31',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4096,
-        system: finalSystemPrompt,
-        messages: (() => {
-          const anthropicMessages = [...cleanMessages];
-          if (file && anthropicMessages.length > 0) {
-            let lastUserIdx = -1;
-            for (let i = anthropicMessages.length - 1; i >= 0; i--) {
-              if (anthropicMessages[i].role === 'user') {
-                lastUserIdx = i;
-                break;
+    // ─── MODEL ROUTING LOGIC (DEEPSEEK VS ANTHROPIC) ───────────
+    const isComplex = isComplexQuery(lastUserMsg);
+    const useDeepSeek = !isComplex && DEEPSEEK_API_KEY && !file; // DeepSeek for simple text-only queries
+    
+    let apiResponse: Response;
+
+    if (useDeepSeek) {
+      console.log(`[AI-CHAT] Routing to DEEPSEEK (Simple Query): "${lastUserMsg.slice(0, 40)}..."`);
+      apiResponse = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: finalSystemPromptText },
+            ...cleanMessages
+          ],
+          stream: true,
+          max_tokens: 4096,
+        }),
+      });
+    } else {
+      console.log(`[AI-CHAT] Routing to ANTHROPIC (Complex/File Query): "${lastUserMsg.slice(0, 40)}..."`);
+      apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-beta': 'prompt-caching-2024-07-31',
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 4096,
+          system: finalSystemPrompt,
+          messages: (() => {
+            const anthropicMessages = [...cleanMessages];
+            if (file && anthropicMessages.length > 0) {
+              let lastUserIdx = -1;
+              for (let i = anthropicMessages.length - 1; i >= 0; i--) {
+                if (anthropicMessages[i].role === 'user') {
+                  lastUserIdx = i;
+                  break;
+                }
+              }
+              if (lastUserIdx !== -1) {
+                const textContent = anthropicMessages[lastUserIdx].content;
+                const isImage = file.type.startsWith('image/');
+  
+                // Map common types to Anthropic supported ones
+                let mediaType = file.type;
+                if (mediaType === 'image/jpg') mediaType = 'image/jpeg';
+                if (!isImage && mediaType.includes('pdf')) mediaType = 'application/pdf';
+  
+                anthropicMessages[lastUserIdx].content = [
+                  { type: "text", text: textContent },
+                  isImage
+                    ? {
+                      type: "image",
+                      source: {
+                        type: "base64",
+                        media_type: mediaType as any,
+                        data: file.data
+                      }
+                    }
+                    : {
+                      type: "document",
+                      source: {
+                        type: "base64",
+                        media_type: "application/pdf",
+                        data: file.data
+                      }
+                    }
+                ];
               }
             }
-            if (lastUserIdx !== -1) {
-              const textContent = anthropicMessages[lastUserIdx].content;
-              const isImage = file.type.startsWith('image/');
-
-              // Map common types to Anthropic supported ones
-              let mediaType = file.type;
-              if (mediaType === 'image/jpg') mediaType = 'image/jpeg';
-              if (!isImage && mediaType.includes('pdf')) mediaType = 'application/pdf';
-
-              anthropicMessages[lastUserIdx].content = [
-                { type: "text", text: textContent },
-                isImage
-                  ? {
-                    type: "image",
-                    source: {
-                      type: "base64",
-                      media_type: mediaType as any,
-                      data: file.data
-                    }
-                  }
-                  : {
-                    type: "document",
-                    source: {
-                      type: "base64",
-                      media_type: "application/pdf",
-                      data: file.data
-                    }
-                  }
-              ];
-            }
-          }
-          return anthropicMessages;
-        })(),
-        stream: true,
-      }),
-    });
+            return anthropicMessages;
+          })(),
+          stream: true,
+        }),
+      });
+    }
 
     if (!apiResponse.ok) {
       const rawText = await apiResponse.text();
@@ -996,12 +1025,15 @@ export default async function handler(req: Request) {
             buffer = lines.pop() || '';
 
             for (const line of lines) {
-              if (!line.startsWith('data: ')) continue;
-              const data = line.slice(6).trim();
+              const cleanLine = line.trim();
+              if (!cleanLine || !cleanLine.startsWith('data: ')) continue;
+              const data = cleanLine.slice(6).trim();
               if (!data || data === '[DONE]') continue;
 
               try {
                 const parsed = JSON.parse(data);
+                
+                // --- Anthropic Format Handling ---
                 if (parsed.type === 'message_start' && parsed.message?.usage) {
                   const usage = parsed.message.usage;
                   trackUsage(usage);
@@ -1020,7 +1052,28 @@ export default async function handler(req: Request) {
                   await saveDailyCost();
                   controller.enqueue(encoder.encode("data: [DONE]\n\n"));
                 }
+                
+                // --- DeepSeek / OpenAI Format Handling ---
+                else if (parsed.choices?.[0]?.delta?.content !== undefined) {
+                  const content = parsed.choices[0].delta.content;
+                  fullResponseText += content;
+                  // Passthrough OpenAI format as-is since the client already expects choices[0].delta.content
+                  controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+                } else if (parsed.usage && useDeepSeek) {
+                  trackUsage(parsed.usage);
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ usage_delta: parsed.usage })}\n\n`));
+                }
+                
               } catch (e) { /* silent chunk error */ }
+            }
+            
+            // Handle end of DeepSeek stream (OpenAI doesn't always send message_stop like Anthropic)
+            if (useDeepSeek && chunk.includes('[DONE]')) {
+              if (shouldCache && fullResponseText.length > 50) {
+                await cacheSet(cacheKey, fullResponseText, 86400).catch(() => { });
+              }
+              // Note: usage tracking for DeepSeek might need adjustment based on their specific SSE fields
+              controller.enqueue(encoder.encode("data: [DONE]\n\n"));
             }
           }
         } catch (error) {
