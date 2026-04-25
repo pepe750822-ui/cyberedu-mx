@@ -47,6 +47,11 @@ const SolarSystemArtifact = () => import("./SolarSystemArtifact");
 const HumanBodyArtifact = () => import("./HumanBodyArtifact");
 const AtomArtifact = () => import("./AtomArtifact");
 const SpatialSeriesArtifact = () => import("./SpatialSeriesArtifact");
+const PhysicsGraphArtifact = () => import("./PhysicsGraphArtifact");
+const CircuitLabArtifact = () => import("./CircuitLabArtifact");
+const ForceDiagramArtifact = () => import("./ForceDiagramArtifact");
+const LewisStructureArtifact = () => import("./LewisStructureArtifact");
+const SpatialReasoning3DArtifact = () => import("./SpatialReasoning3DArtifact");
 
 import { imageByKey, EduImage, educationalImages, availableImageKeys } from "@/data/educationalImages";
 import { materiales } from "@/data/materialComplementario";
@@ -324,6 +329,11 @@ interface Message {
   timelines?: any[];
   atoms?: any[];
   algebras?: any[];
+  physicsGraphs?: any[];
+  circuitLabs?: any[];
+  forceDiagrams?: any[];
+  lewisStructures?: any[];
+  spatialReasoning3Ds?: any[];
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
@@ -510,6 +520,15 @@ function safeParseJSON(str: string): any {
 
     // Elimina comas al final de listas u objetos que rompen el JSON estándar
     cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
+    
+    // Intento de escape de comillas dobles internas en valores de strings JSON
+    // Busca patrones tipo: ": "texto "con" comillas", " o ": "texto "con" comillas"}
+    // Nota: Esto es heurístico y puede fallar en casos complejos, pero ayuda con el error reportado.
+    cleaned = cleaned.replace(/":\s*"(.*?)"(\s*[,}]) /g, (match, p1, p2) => {
+      const escaped = p1.replace(/"/g, '\\"');
+      return `": "${escaped}"${p2}`;
+    });
+
     // Elimina comillas simples por dobles si el AI se equivoca (arriesgado pero útil en edge cases simples sin contracciones)
     if (!cleaned.includes('"')) {
        cleaned = cleaned.replace(/'/g, '"');
@@ -896,11 +915,11 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 
 function parseAllBlocks(content: string) {
   try {
-    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
-    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent };
+    const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
+    return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent };
   } catch (err) {
     console.error("Critical error in parseAllBlocks:", err);
-    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], spatialSeries: [], mexicoMaps: [], timelines: [], atoms: [], algebras: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], recommendations: [], eduImages: [], cleanContent: content };
+    return { reasoning: null, decisions: [], plan: null, quiz: null, charts: [], calculators: [], simulators: [], geography: [], solarSystem: [], humanBody: [], spatialSeries: [], mexicoMaps: [], timelines: [], atoms: [], algebras: [], physics: [], mathGraphs: [], exercises: [], chemistryElements: [], physicsGraphs: [], circuitLabs: [], forceDiagrams: [], lewisStructures: [], spatialReasoning3Ds: [], recommendations: [], eduImages: [], cleanContent: content };
   }
 }
 
@@ -924,15 +943,16 @@ function parseAllBlocksHelper(content: string) {
   const { mathGraphs, cleanContent: c567 } = parseMathGraphsFromContent(c565);
   const { exercises, cleanContent: c57 } = parseExercisesFromContent(c567);
   const { chemistryElements, cleanContent: c575 } = parseChemistryFromContent(c57);
-  const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c575);
+  const { physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, cleanContent: c576 } = parseNewArtifactsFromContent(c575);
+  const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c576);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent: c6 };
 }
 
 function stripStreamingBlocks(content: string): string {
   // Oculta bloques XML crudos pero deja un placeholder para evitar saltos bruscos de altura
   let cleaned = content
-    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body|spatial_series|mexico_map|timeline|atom|algebra)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
+    .replace(/<(reasoning|decision|plan|quiz|chart|calculator|simulator|physics|math_graph|exercise|chemistry|geography|solar_system|human_body|spatial_series|mexico_map|timeline|atom|algebra|physics-graph|circuit-lab|force-diagram|lewis-structure|spatial-reasoning-3d)>[\s\S]*?(<\/\1>|$)/g, (match, tag) => {
       const names: Record<string, string> = {
         reasoning: "pensando",
         decision: "decisión",
@@ -953,6 +973,11 @@ function stripStreamingBlocks(content: string): string {
         timeline: "línea del tiempo",
         atom: "modelo atómico",
         algebra: "calculadora algebraica",
+        "physics-graph": "gráfico de cinemática",
+        "circuit-lab": "laboratorio de circuitos",
+        "force-diagram": "diagrama de fuerzas",
+        "lewis-structure": "modelo de Lewis",
+        "spatial-reasoning-3d": "desafío 3D",
       };
       return `\n\n> 🧩 *Generando ${names[tag] || tag}...*\n\n`;
     });
@@ -2194,6 +2219,41 @@ const MessageBubble = React.memo(({
           {msg.algebras?.map((alg: any, i: number) => (
             <SafeBlockErrorBoundary key={`alg-err-${i}`} fallbackMessage="No se pudo cargar la calculadora algebraica.">
               <LazyWithTimeout factory={AlgebraArtifact as any} componentProps={{ equation: alg?.equation ?? '' }} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.14 Gráficador Cinemático (PhysicsGraphArtifact) */}
+          {msg.physicsGraphs?.map((pg: any, i: number) => (
+            <SafeBlockErrorBoundary key={`pg-err-${i}`} fallbackMessage="No se pudo cargar el gráfico de cinemática.">
+              <LazyWithTimeout factory={PhysicsGraphArtifact as any} componentProps={pg} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.15 Laboratorio de Circuitos (CircuitLabArtifact) */}
+          {msg.circuitLabs?.map((cl: any, i: number) => (
+            <SafeBlockErrorBoundary key={`cl-err-${i}`} fallbackMessage="No se pudo cargar el simulador de circuitos.">
+              <LazyWithTimeout factory={CircuitLabArtifact as any} componentProps={cl} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.16 Modelador de Fuerzas (ForceDiagramArtifact) */}
+          {msg.forceDiagrams?.map((fd: any, i: number) => (
+            <SafeBlockErrorBoundary key={`fd-err-${i}`} fallbackMessage="No se pudo cargar el diagrama de fuerzas.">
+              <LazyWithTimeout factory={ForceDiagramArtifact as any} componentProps={fd} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.17 Modelador de Lewis (LewisStructureArtifact) */}
+          {msg.lewisStructures?.map((ls: any, i: number) => (
+            <SafeBlockErrorBoundary key={`ls-err-${i}`} fallbackMessage="No se pudo cargar el modelo de Lewis.">
+              <LazyWithTimeout factory={LewisStructureArtifact as any} componentProps={ls} />
+            </SafeBlockErrorBoundary>
+          ))}
+
+          {/* 5.18 Razonamiento Espacial 3D (SpatialReasoning3DArtifact) */}
+          {msg.spatialReasoning3Ds?.map((sr: any, i: number) => (
+            <SafeBlockErrorBoundary key={`sr-err-${i}`} fallbackMessage="No se pudo cargar el desafío 3D.">
+              <LazyWithTimeout factory={SpatialReasoning3DArtifact as any} componentProps={sr} />
             </SafeBlockErrorBoundary>
           ))}
 

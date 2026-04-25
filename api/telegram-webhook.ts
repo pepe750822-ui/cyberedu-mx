@@ -164,8 +164,8 @@ export default async function handler(req: Request) {
             .maybeSingle();
 
           const count = usage?.questions_count || 0;
-          if (count >= 5) {
-            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (5 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth", getMainKeyboard());
+          if (count >= 25) {
+            return sendTelegramMessage(TELEGRAM_API, chatId, "🔒 Límite diario alcanzado (25 preguntas).\n\nRegístrate gratis en la web para seguir preguntando: cyberedumx.com/auth", getMainKeyboard());
           }
 
           // Incrementar uso
@@ -241,7 +241,7 @@ function getWelcomeMessage(tgUser: any, profile: any, firstName: string) {
     const tokens = profile?.tokens || 0;
     return `¡Bienvenido de vuelta, ${profile?.full_name || firstName}! 🚀\n\nTienes *${tokens} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *5 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *25 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
 }
 
 async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {
@@ -307,7 +307,7 @@ function processArtifacts(text: string): { cleanText: string, extraButtons: any[
   }
 
   // Detectar si hay elementos interactivos que requieren la web
-  const hasInteractive = /<(calculator|simulator|algebra|atom|human_body|geography|solar_system|mexico_map|timeline)>/.test(text);
+  const hasInteractive = /<(calculator|simulator|algebra|atom|human_body|geography|solar_system|mexico_map|timeline|physics-graph|circuit-lab|force-diagram|lewis-structure|spatial-reasoning-3d)>/.test(text);
   if (hasInteractive) {
     extraButtons.push([{ 
       text: "🚀 Usar simulador interactivo en la Web", 
@@ -354,6 +354,11 @@ function stripXmlTags(text: string): string {
     .replace(/<timeline>[\s\S]*?<\/timeline>/g, '')
     .replace(/<atom>[\s\S]*?<\/atom>/g, '')
     .replace(/<algebra>[\s\S]*?<\/algebra>/g, '')
+    .replace(/<physics-graph>[\s\S]*?<\/physics-graph>/g, '')
+    .replace(/<circuit-lab>[\s\S]*?<\/circuit-lab>/g, '')
+    .replace(/<force-diagram>[\s\S]*?<\/force-diagram>/g, '')
+    .replace(/<lewis-structure>[\s\S]*?<\/lewis-structure>/g, '')
+    .replace(/<spatial-reasoning-3d>[\s\S]*?<\/spatial-reasoning-3d>/g, '')
     .replace(/(Mermaid|mermaid)\s*```mermaid[\s\S]*?```/gi, '') // Eliminar Mermaid y su prefijo
     .replace(/```mermaid[\s\S]*?```/gi, '') 
     .trim();

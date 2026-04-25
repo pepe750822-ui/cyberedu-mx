@@ -105,36 +105,22 @@ function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
     .slice(0, 200); // max 200 chars for key
 }
 
-function isComplexQuery(question: string): boolean {
-  const complexIndicators = [
-    // Lógica matemática/resolución
-    /calcula/i, /resuelve/i, /desarrolla/i, /demuestra/i,
-    /paso a paso/i, /procedimiento/i, /fórmula/i,
-    /ejercicio/i, /problema/i, /ecuación/i,
-    /compar[a|e]/i, /analiza/i, /justifica/i,
-    /sistema de ecuaciones/i, /derivada/i, /integral/i,
-    /probabilidad/i, /estadística/i, /trigonometría/i,
-    
-    // Disparadores de Artefactos Visuales (Prioridad Claude)
+function requiresClaude(question: string): boolean {
+  const artifactIndicators = [
+    // Disparadores de Artefactos Visuales Web (Prioridad Claude)
     /mapa/i, /globo/i, /geografía/i, /continente/i, /país/i, /ubicación/i,
     /átomo/i, /tabla periódica/i, /elemento/i, /química/i, /configuración electrónica/i,
     /cuerpo humano/i, /sistema/i, /órgano/i, /anatomía/i, /biología/i,
-    
-    // Historia y Líneas de Tiempo (Prioridad Claude)
-    /línea del tiempo/i, /cronología/i, /historia/i, /revolución/i, /independencia/i,
-    /guerra/i, /batalla/i, /sucesos históricos/i, /fechas importantes/i,
-    /biografía/i, /personaje histórico/i, /timeline/i, /fecha/i,
-    /¿cuándo fue\?/i, /¿en qué año\?/i, /¿qué pasó en\?/i,
-    /época/i, /siglo/i, /evento/i, /personaje/i,
-    
-    // Otros
+    /cinemática/i, /velocidad/i, /aceleración/i, /mru/i, /mrua/i,
+    /circuito/i, /corriente/i, /voltaje/i, /resistencia/i, /ley de ohm/i,
+    /fuerza/i, /fricción/i, /plano inclinado/i, /vectores/i, /newton/i,
+    /lewis/i, /enlace/i, /molécula/i, /estructura de lewis/i,
+    /3d/i, /rotar/i, /cubo/i, /espacial/i, /razonamiento espacial/i,
+    /línea del tiempo/i, /cronología/i, /timeline/i,
     /simulador/i, /interactivo/i, /gráfico/i, /diagrama/i, /esquema/i,
-    /sucesión/i, /serie/i, /figura/i, /espacial/i,
     /quiz/i, /examen/i, /trivia/i, /evaluación/i
   ];
-  const isLong = question.length > 80;
-  const hasComplexIndicator = complexIndicators.some(pattern => pattern.test(question));
-  return isLong || hasComplexIndicator;
+  return artifactIndicators.some(pattern => pattern.test(question));
 }
 
 // ─── Should this question be cached? ─────────────────────────
@@ -151,7 +137,7 @@ function isCacheable(message: string, history: any[]): { shouldCache: boolean; c
     return { shouldCache: false, cacheType: null };
   }
 
-  const isComplex = isComplexQuery(message);
+  const isComplex = requiresClaude(message);
   return { shouldCache: true, cacheType: isComplex ? 'complex' : 'simple' };
 }
 
@@ -411,7 +397,7 @@ export default async function handler(req: Request) {
       const { data: usageData } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
 
       const currentCount = usageData?.[0]?.count || 0;
-      const dailyLimit = 5;
+      const dailyLimit = 25;
 
       if (currentCount < dailyLimit) {
         await supabaseRequest(`daily_usage`, {
@@ -430,7 +416,7 @@ export default async function handler(req: Request) {
   }
 
   try {
-    const { messages, context, memory, file } = body;
+    const { messages, context, memory, file, isTelegram } = body;
 
     // ── Cache check ──────────────────────────────────────────
     const lastUserMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || '';
@@ -474,9 +460,10 @@ export default async function handler(req: Request) {
     ## REGLA ESPECÍFICA PARA TELEGRAM (CRÍTICO):
     - Si context.platform === 'telegram':
         * NUNCA uses diagramas \`\`\`mermaid\`\`\`. Se ven mal en móviles. Usa listas con emojis o tablas simples.
-        * NUNCA uses los tags <quiz>, <calculator>, <simulator>, <algebra>, <atom>, <human_body>, <spatial_series>, <mexico_map> o <timeline>.
+        * NUNCA uses los tags <quiz>, <calculator>, <simulator>, <algebra>, <atom>, <human_body>, <spatial_series>, <mexico_map>, <timeline>, <physics-graph>, <circuit-lab>, <force-diagram>, <lewis-structure> o <spatial-reasoning-3d>.
         * SIEMPRE incluye el tag <recommendation> al final. Es OBLIGATORIO para que el usuario tenga un botón funcional.
         * Usa negritas y muchos emojis para que el texto sea fácil de leer en pantallas pequeñas.
+        * ¡NOTICIÓN!: Ahora tienes **25 consultas GRATIS cada día** para estudiar sin límites.
     - Si el tema requiere una herramienta interactiva, explica el concepto y dile que entre a cyberedumx.com para usar el simulador completo.
     
     0. REGLA SUPREMA DE QUÍMICA (PRIORIDAD MÁXIMA):
@@ -509,8 +496,8 @@ export default async function handler(req: Request) {
     El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
 
     NIVELES DE ACCESO DE LA PLATAFORMA (explícalo así cuando te pregunten cómo funciona o cuántas preguntas tienen):
-    👤 Sin registro → 5 consultas gratuitas al Tutor IA (contadas en el dispositivo). Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
-    🆓 Cuenta gratuita (registro) → 5 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
+    👤 Sin registro → 25 consultas gratuitas diarias al Tutor IA. Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
+    🆓 Cuenta gratuita (registro) → 25 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
     🪙 Tokens → Se descuenta 1 token por cada pregunta adicional. Paquetes desde $20 MXN (20 tokens). Los tokens no expiran.
     👑 Premium / Suscriptor → Tutor IA ilimitado por $250 MXN/mes. 1,000 interacciones mensuales con renovación automática.
     📚 Nota: TODOS los videos, simuladores, quiz, infografías y materiales multimedia son SIEMPRE gratuitos para cualquier usuario registrado. Solo el chat con IA tiene límite.
@@ -527,6 +514,11 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <timeline> cuando expliques historia de México o historia universal con eventos cronológicos (Punto 27).
     - SIEMPRE incluye <atom> cuando expliques estructura atómica, electrones, protones, neutrones o modelos atómicos de elementos (Punto 28).
     - SIEMPRE incluye <algebra> cuando resuelvas ecuaciones de primer grado o cuadráticas con valores numéricos concretos (Punto 29).
+    - SIEMPRE incluye <physics-graph> cuando expliques cinemática, velocidad, aceleración o gráficas de movimiento (Punto 30).
+    - SIEMPRE incluye <circuit-lab> cuando expliques circuitos eléctricos, Ley de Ohm, voltaje o resistencia (Punto 31).
+    - SIEMPRE incluye <force-diagram> cuando expliques fuerzas, fricción, planos inclinados o diagramas de cuerpo libre (Punto 32).
+    - SIEMPRE incluye <lewis-structure> cuando expliques enlaces químicos o estructuras de Lewis (Punto 33).
+    - SIEMPRE incluye <spatial-reasoning-3d> cuando expliques razonamiento espacial o rotación de figuras 3D (Punto 34).
     - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
     - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
@@ -614,7 +606,7 @@ export default async function handler(req: Request) {
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
       ✅ Regístrate GRATIS en /
-      ✅ **5 preguntas diarias al Tutor IA** (tanto en web como Telegram)
+      ✅ **25 preguntas diarias al Tutor IA** (tanto en web como Telegram)
       ✅ 7 días de acceso completo al Tutor IA incluidos
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:
@@ -624,8 +616,9 @@ export default async function handler(req: Request) {
       ✅ Todo el contenido multimedia siempre GRATIS
       🔗 Comprar tokens: /tokens
 
+    35. SEGURIDAD JSON (CRÍTICO): Cuando generes bloques JSON (en <quiz>, <calculator>, <reasoning>, etc.), asegúrate de que el JSON sea VÁLIDO. Si necesitas usar comillas dobles dentro de un valor de texto, DEBES escaparlas con barra invertida (ej: \"Dijo \\\"Hola\\\"\"). NUNCA dejes comillas dobles sueltas dentro de un string JSON.
+
     15. IMPORTANTE: El contenido multimedia (biología, física, matemáticas, etc.) es SIEMPRE gratuito y nunca se bloquea. Solo el chat con IA tiene costo tras el periodo de prueba.
-    
     16. RECOMMENDATION TAG (OBLIGATORIO EN CADA RESPUESTA): SIEMPRE al final de cada explicación incluye este tag exacto. Para fotosíntesis sería:
         <recommendation>{ "type": "video", "videoId": "bio-3", "areaId": "biologia", "title": "Tecnología y Metabolismo - Fotosíntesis y Respiración Celular", "priority": "alta", "reason": "Ver explicación completa en video" }</recommendation>
         
@@ -716,6 +709,31 @@ export default async function handler(req: Request) {
         - El campo "equation" es informativo; el usuario puede modificar los coeficientes en la interfaz.
         - NUNCA resuelvas ecuaciones solo con texto; SIEMPRE incluye este tag además del desarrollo textual.
         - Esto activará una calculadora que muestra cada paso con explicación.
+
+    30. GRÁFICADOR CINEMÁTICO (OBLIGATORIO PARA FÍSICA - MOVIMIENTO):
+        - Cuando expliques velocidad, aceleración o gráficas de posición-tiempo/velocidad-tiempo, usa SIEMPRE:
+          <physics-graph>{ "type": "v-t", "acceleration": 2 }</physics-graph>
+        - Esto activará un gráfico interactivo donde el usuario puede ver el movimiento en tiempo real.
+
+    31. LABORATORIO DE CIRCUITOS (OBLIGATORIO PARA FÍSICA - ELECTRICIDAD):
+        - Cuando expliques la Ley de Ohm o circuitos básicos, usa SIEMPRE:
+          <circuit-lab>{ "voltage": 12, "resistance": 10 }</circuit-lab>
+        - Esto activará un simulador de circuitos interactivo.
+
+    32. MODELADOR DE FUERZAS (OBLIGATORIO PARA FÍSICA - FUERZAS):
+        - Cuando expliques fuerzas en planos inclinados o diagramas de cuerpo libre, usa SIEMPRE:
+          <force-diagram>{ "angle": 30, "mass": 5, "friction": 0.2 }</force-diagram>
+        - Esto activará un diagrama de vectores interactivo.
+
+    33. ESTRUCTURA DE LEWIS (OBLIGATORIO PARA QUÍMICA - ENLACES):
+        - Cuando expliques cómo se forman los enlaces químicos o la regla del octeto, usa SIEMPRE:
+          <lewis-structure>{ "molecule": "H2O" }</lewis-structure>
+        - Esto activará un editor de electrones punto-cruz interactivo.
+
+    34. RAZONAMIENTO ESPACIAL 3D (OBLIGATORIO PARA HABILIDAD MATEMÁTICA):
+        - Cuando plantees retos de rotación mental o vistas de objetos, usa SIEMPRE:
+          <spatial-reasoning-3d>{ "challenge": "rotation" }</spatial-reasoning-3d>
+        - Esto activará un cubo 3D que el usuario debe rotar mentalmente para resolver un acertijo.
 
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS EXCLUSIVAS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
@@ -852,8 +870,9 @@ export default async function handler(req: Request) {
     );
 
     // ─── MODEL ROUTING LOGIC (DEEPSEEK VS ANTHROPIC) ───────────
-    const isComplex = isComplexQuery(lastUserMsg);
-    const useDeepSeek = !isComplex && DEEPSEEK_API_KEY && !file; // DeepSeek for simple text-only queries
+    const needsClaude = requiresClaude(lastUserMsg);
+    // Prioridad DeepSeek (Crecimiento): Usar DeepSeek para todo en Telegram o si no requiere artefactos en Web
+    const useDeepSeek = (isTelegram || !needsClaude) && DEEPSEEK_API_KEY && !file;
     
     let apiResponse: Response;
 
