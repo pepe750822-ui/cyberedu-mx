@@ -1045,6 +1045,11 @@ export default async function handler(req: Request) {
                   fullResponseText += parsed.delta.text;
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: parsed.delta.text } }] })}\n\n`));
                 } else if (parsed.type === 'message_stop') {
+                  // Inyectar el emoji del modelo (🧠 para Claude)
+                  const modelEmoji = " 🧠";
+                  fullResponseText += modelEmoji;
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: modelEmoji } }] })}\n\n`));
+
                   if (shouldCache && fullResponseText.length > 50) {
                     const ttl = cacheType === 'complex' ? 604800 : 86400;
                     await cacheSet(cacheKey, fullResponseText, ttl).catch(() => { });
@@ -1069,6 +1074,13 @@ export default async function handler(req: Request) {
             
             // Handle end of DeepSeek stream (OpenAI doesn't always send message_stop like Anthropic)
             if (useDeepSeek && chunk.includes('[DONE]')) {
+              // Inyectar el emoji del modelo (⚡ para DeepSeek)
+              const modelEmoji = " ⚡";
+              if (!fullResponseText.endsWith(modelEmoji)) {
+                fullResponseText += modelEmoji;
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ choices: [{ delta: { content: modelEmoji } }] })}\n\n`));
+              }
+
               if (shouldCache && fullResponseText.length > 50) {
                 await cacheSet(cacheKey, fullResponseText, 86400).catch(() => { });
               }
