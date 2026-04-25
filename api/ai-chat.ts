@@ -107,12 +107,22 @@ function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
 
 function isComplexQuery(question: string): boolean {
   const complexIndicators = [
+    // Lógica matemática/resolución
     /calcula/i, /resuelve/i, /desarrolla/i, /demuestra/i,
     /paso a paso/i, /procedimiento/i, /fórmula/i,
     /ejercicio/i, /problema/i, /ecuación/i,
     /compar[a|e]/i, /analiza/i, /justifica/i,
     /sistema de ecuaciones/i, /derivada/i, /integral/i,
-    /probabilidad/i, /estadística/i, /trigonometría/i
+    /probabilidad/i, /estadística/i, /trigonometría/i,
+    
+    // Disparadores de Artefactos Visuales (Prioridad Claude)
+    /mapa/i, /globo/i, /geografía/i, /continente/i, /país/i, /ubicación/i,
+    /átomo/i, /tabla periódica/i, /elemento/i, /química/i, /configuración electrónica/i,
+    /cuerpo humano/i, /sistema/i, /órgano/i, /anatomía/i, /biología/i,
+    /historia/i, /línea del tiempo/i, /época/i, /siglo/i, /evento/i, /personaje/i,
+    /simulador/i, /interactivo/i, /gráfico/i, /diagrama/i, /esquema/i,
+    /sucesión/i, /serie/i, /figura/i, /espacial/i,
+    /quiz/i, /examen/i, /trivia/i, /evaluación/i
   ];
   const isLong = question.length > 80;
   const hasComplexIndicator = complexIndicators.some(pattern => pattern.test(question));
