@@ -919,35 +919,35 @@ function parseNewArtifactsFromContent(content: string): {
   let m;
   while ((m = pgRegex.exec(content)) !== null) {
     const parsed = safeParseJSON(m[1]);
-    if (parsed) physicsGraphs.push(parsed);
+    physicsGraphs.push(parsed ?? { acceleration: 1, type: 'v-t' });
   }
 
   // 2. Laboratorio de Circuitos
   const clRegex = /<circuit-lab>([\s\S]*?)(?:<\/circuit-lab>|$)/g;
   while ((m = clRegex.exec(content)) !== null) {
     const parsed = safeParseJSON(m[1]);
-    if (parsed) circuitLabs.push(parsed);
+    circuitLabs.push(parsed ?? { voltage: 9, resistance: 10 });
   }
 
   // 3. Modelador de Fuerzas
   const fdRegex = /<force-diagram>([\s\S]*?)(?:<\/force-diagram>|$)/g;
   while ((m = fdRegex.exec(content)) !== null) {
     const parsed = safeParseJSON(m[1]);
-    if (parsed) forceDiagrams.push(parsed);
+    forceDiagrams.push(parsed ?? { angle: 0, mass: 5 });
   }
 
   // 4. Modelador de Lewis
   const lsRegex = /<lewis-structure>([\s\S]*?)(?:<\/lewis-structure>|$)/g;
   while ((m = lsRegex.exec(content)) !== null) {
     const parsed = safeParseJSON(m[1]);
-    if (parsed) lewisStructures.push(parsed);
+    lewisStructures.push(parsed ?? { molecule: 'H2O' });
   }
 
   // 5. Razonamiento Espacial 3D
   const srRegex = /<spatial-reasoning-3d>([\s\S]*?)(?:<\/spatial-reasoning-3d>|$)/g;
   while ((m = srRegex.exec(content)) !== null) {
     const parsed = safeParseJSON(m[1]);
-    if (parsed) spatialReasoning3Ds.push(parsed);
+    spatialReasoning3Ds.push(parsed ?? { challenge: 'rotation' });
   }
 
   const cleanContent = content
