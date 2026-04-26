@@ -74,10 +74,9 @@ const CircuitLabArtifact: React.FC<CircuitLabProps> = ({ voltage: initialVoltage
             <g transform="translate(180, 235)" className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
               <circle cx="0" cy="15" r="5" fill="#334155" />
               <circle cx="40" cy="15" r="5" fill="#334155" />
-              <motion.line 
-                x1="0" y1="15" x2="40" y2={isOpen ? "-10" : "15"}
+              <line
+                x1="0" y1="15" x2="40" y2={isOpen ? -10 : 15}
                 stroke={isOpen ? "#ef4444" : "#10b981"} strokeWidth="4" strokeLinecap="round"
-                animate={{ y2: isOpen ? -10 : 15 }}
               />
             </g>
 

@@ -76,7 +76,7 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
       
       // Auto-sum heuristic: if formula has "+" or "Σ"
       if (cleanFormula.includes("+") || formula.includes("Σ")) {
-        return vars.reduce((acc, v) => acc + (params[v.name] || 0), 0);
+        return vars.reduce((acc, v) => acc + (params[v.name.toLowerCase()] || 0), 0);
       }
 
       // 1. Newton's Second Law: F = m * a
@@ -98,7 +98,7 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
 
       // 4. Multi-variable multiplication
       if (cleanFormula.includes("*") && !cleanFormula.includes("/") && !cleanFormula.includes("+")) {
-        return vars.reduce((acc, v) => acc * (params[v.name] || 0), 1);
+        return vars.reduce((acc, v) => acc * (params[v.name.toLowerCase()] || 0), 1);
       }
 
       // 5. Fallback: JS Evaluation
