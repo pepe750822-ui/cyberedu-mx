@@ -3796,7 +3796,7 @@ const AITutor = () => {
                - <chemistry>: OBLIGATORIO al explicar propiedades de elementos químicos (ej. Oro, Carbono). ¡NO expliques con texto normal o diagramas, usa SOLO este tag! 
                  Ejemplo de Estructura: <chemistry>{"name": "Oro", "symbol": "Au", "atomic_number": 79, "atomic_mass": 196.9, "category": "Metales de transición", "properties": {"density": "19.3 g/cm³", "melting_point": "1064 °C", "boiling_point": "2856 °C", "electron_config": "[Xe] 4f14 5d10 6s1"}, "description": "Resumen breve..."}</chemistry>
                - <physics>: Para simuladores interactivos de física. OBLIGATORIO usar esta estructura exacta:
-                - <circuit-lab>: OBLIGATORIO para explicar circuitos eléctricos (Ley de Ohm, Serie, Paralelo). Ejemplo: <circuit-lab>{"voltage": 12, "resistance": 4, "type": "ohm"}</circuit-lab>
+                - <circuit-lab>: OBLIGATORIO para explicar circuitos eléctricos, Ley de Ohm, Serie o Paralelo. Estructura: <circuit-lab>{"voltage": 12, "resistance": 4, "type": "ohm"}</circuit-lab>
                  <physics>{"title": "Caída Libre", "type": "free_fall", "default_values": {"height": 100, "gravity": 9.81}, "description": "Explicación breve de la fórmula"}</physics>
                - <exercise>: Para plantear problemas prácticos con opciones múltiples o desarrollo.
                - <geography>: OBLIGATORIO cuando el usuario pregunte sobre países, continentes, geografía, mapas, México, o pida ver un globo terráqueo. Usa esta estructura exacta:
