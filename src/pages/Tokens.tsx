@@ -302,7 +302,7 @@ const TokensPage = () => {
             <div className="bg-slate-900/50 p-6 rounded-2xl border border-white/5 flex flex-col gap-2 transition-transform hover:-translate-y-1">
               <div className="text-4xl mb-2">🎁</div>
               <h3 className="font-bold text-lg text-white">Gratis</h3>
-              <p className="text-sm text-slate-400 font-medium">5 preguntas diarias gratis tanto para invitados como registrados.</p>
+              <p className="text-sm text-slate-400 font-medium">15 preguntas gratis sin registro, y 25 preguntas diarias al registrarte.</p>
             </div>
             <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20 flex flex-col gap-2 transition-transform hover:-translate-y-1 shadow-[0_0_30px_rgba(var(--primary),0.05)]">
               <div className="text-4xl mb-2">🎟️</div>
