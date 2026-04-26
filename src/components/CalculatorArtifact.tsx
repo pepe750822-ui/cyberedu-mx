@@ -62,6 +62,17 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
         cleanFormula = formula.split("=")[1].trim();
       }
       
+      // Normalizar operadores comunes que el AI suele usar
+      cleanFormula = cleanFormula
+        .replace(/÷/g, "/")
+        .replace(/×/g, "*")
+        .replace(/x/g, (match, offset, full) => {
+          // Solo reemplazar 'x' si parece ser un operador (rodeado de espacios o números)
+          // y no es parte de un nombre de variable (aunque el regex de variables ya lo maneja)
+          // Pero para ser seguros, solo lo reemplazamos si no está en params
+          return params[match] === undefined ? "*" : "x";
+        });
+      
       // Auto-sum heuristic: if formula has "+" or "Σ"
       if (cleanFormula.includes("+") || formula.includes("Σ")) {
         return vars.reduce((acc, v) => acc + (params[v.name] || 0), 0);
@@ -90,11 +101,16 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
       }
 
       // 5. Fallback: JS Evaluation
-      let evalFormula = cleanFormula.replace(/[a-z_0-9]+/g, (match) => {
+      let evalFormula = cleanFormula.replace(/[a-z_0-9.]+/g, (match) => {
+        // Si es un número literal, dejarlo pasar
+        if (!isNaN(parseFloat(match)) && /^[0-9.]+$/.test(match)) return match;
         return params[match] !== undefined ? params[match].toString() : match;
       });
+
       // Safety: only allow numbers and basic math operators
       if (/^[0-9.+\-*/()\s]+$/.test(evalFormula)) {
+        // Evitar división por cero
+        if (evalFormula.includes("/0") && !evalFormula.includes("/0.")) return null;
         return Function(`"use strict"; return (${evalFormula})`)();
       }
     } catch (e) {

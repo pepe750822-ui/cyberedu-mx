@@ -97,7 +97,7 @@
         {
             "name": "Manual Digital ECOEMS",
             "short_name": "Manual",
-            "url": "https://cyberedumx.com/libro/manual_digital_ECOEMS.html",
+            "url": "/libro/manual_digital_ECOEMS.html",
             "icons": [
                 {
                     "src": "/icons/icon-96x96.png",

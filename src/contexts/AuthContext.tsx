@@ -56,8 +56,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isLoadingRef = useRef(isLoading);
   const isSigningOut = useRef(false);
   const fetchingProfileForId = useRef<string | null>(null);
+
+  // Mantener la ref sincronizada para evitar cierres obsoletos en timeouts
+  useEffect(() => {
+    isLoadingRef.current = isLoading;
+  }, [isLoading]);
 
   const fetchProfile = async (userId: string, retryCount = 0) => {
     if (fetchingProfileForId.current === userId && retryCount === 0) {
@@ -204,7 +210,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Safety timeout aumentado a 12s para dar margen a la carga del perfil en redes lentas
     const safetyTimeoutId = setTimeout(() => {
-      if (mounted && isLoading) {
+      // Usamos la ref para verificar el estado real actual, no el capturado al montar
+      if (mounted && isLoadingRef.current) {
         console.warn("[Auth] Safety timeout (12s) - forcing stop loading.");
         setIsLoading(false);
       }

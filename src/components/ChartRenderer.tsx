@@ -65,8 +65,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const ChartRenderer: React.FC<{ chart: ChartData }> = ({ chart }) => {
-  console.log('CHART DATA:', chart?.data);
-  console.log('CHART TYPE:', chart?.type);
+
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 

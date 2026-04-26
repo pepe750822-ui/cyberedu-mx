@@ -2,14 +2,20 @@ import React, { useState, useMemo } from 'react';
 import { Zap, Power, RotateCcw, Lightbulb, Battery, Cpu, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CircuitLabArtifact: React.FC = () => {
-  const [voltage, setVoltage] = useState(9);
-  const [resistance, setResistance] = useState(10);
+interface CircuitLabProps {
+  voltage?: number;
+  resistance?: number;
+}
+
+const CircuitLabArtifact: React.FC<CircuitLabProps> = ({ voltage: initialVoltage, resistance: initialResistance }) => {
+  const [voltage, setVoltage] = useState(initialVoltage ?? 9);
+  const [resistance, setResistance] = useState(initialResistance ?? 10);
   const [isOpen, setIsOpen] = useState(true);
 
   const current = useMemo(() => {
-    return isOpen ? 0 : voltage / resistance;
+    return isOpen ? 0 : voltage / (resistance || 0.1);
   }, [voltage, resistance, isOpen]);
+
 
   // Brightness factor for the bulb
   const brightness = useMemo(() => {
