@@ -715,10 +715,14 @@ export default async function handler(req: Request) {
           <physics-graph>{ "type": "v-t", "acceleration": 2 }</physics-graph>
         - Esto activará un gráfico interactivo donde el usuario puede ver el movimiento en tiempo real.
 
-    31. LABORATORIO DE CIRCUITOS (OBLIGATORIO PARA FÍSICA - ELECTRICIDAD):
-        - Cuando expliques la Ley de Ohm o circuitos básicos, usa SIEMPRE:
-          <circuit-lab>{ "voltage": 12, "resistance": 10 }</circuit-lab>
-        - Esto activará un simulador de circuitos interactivo.
+    31. ELECTRICIDAD Y LEY DE OHM (OBLIGATORIO):
+        Cuando el usuario pregunte sobre la Ley de Ohm o circuitos eléctricos (voltaje, corriente, resistencia, baterías), DEBES generar SIEMPRE estos dos tags XML:
+        1. <circuit-lab>: Para el simulador interactivo. Formato: {"voltage": numero, "resistance": numero}
+           Ejemplo: <circuit-lab>{"voltage": 9, "resistance": 10}</circuit-lab>
+        2. <calculator>: Para la calculadora de la Ley de Ohm. 
+           Formato: {"title": "Calculadora de Ley de Ohm", "formula": "V = I * R", "variables": [{"name": "I", "label": "Corriente", "unit": "A"}, {"name": "R", "label": "Resistencia", "unit": "Ω"}], "result_unit": "V", "explanation": "Calcula el voltaje (V) multiplicando la corriente (I) por la resistencia (R)."}
+           Ejemplo: <calculator>{"title": "Calculadora: Ley de Ohm", "formula": "V = I * R", "variables": [{"name": "I", "label": "Corriente", "unit": "A"}, {"name": "R", "label": "Resistencia", "unit": "Ω"}], "result_unit": "V", "explanation": "V = I * R"}</calculator>
+        Puedes incluir <chart> para comparaciones adicionales, pero NO reemplaces los anteriores. El simulador debe aparecer DEBAJO de tu explicación textual.
 
     32. MODELADOR DE FUERZAS (OBLIGATORIO PARA FÍSICA - FUERZAS):
         - Cuando expliques fuerzas en planos inclinados o diagramas de cuerpo libre, usa SIEMPRE:
