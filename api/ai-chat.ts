@@ -107,18 +107,68 @@ function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
 
 function requiresClaude(question: string): boolean {
   const artifactIndicators = [
-    // Disparadores de Artefactos Visuales Web (Prioridad Claude)
-    /mapa/i, /globo/i, /geografía/i, /continente/i, /país/i, /ubicación/i,
-    /átomo/i, /tabla periódica/i, /elemento/i, /química/i, /configuración electrónica/i,
-    /cuerpo humano/i, /sistema/i, /órgano/i, /anatomía/i, /biología/i,
-    /cinemática/i, /velocidad/i, /aceleración/i, /mru/i, /mrua/i,
-    /circuito/i, /corriente/i, /voltaje/i, /resistencia/i, /ley de ohm/i,
-    /fuerza/i, /fricción/i, /plano inclinado/i, /vectores/i, /newton/i,
-    /lewis/i, /enlace/i, /molécula/i, /estructura de lewis/i,
-    /3d/i, /rotar/i, /cubo/i, /espacial/i, /razonamiento espacial/i,
-    /línea del tiempo/i, /cronología/i, /timeline/i,
-    /simulador/i, /interactivo/i, /gráfico/i, /diagrama/i, /esquema/i,
-    /quiz/i, /examen/i, /trivia/i, /evaluación/i
+    // ── Geografía / Mapas (GlobeArtifact, MexicoMapArtifact) ──
+    /mapa/i, /globo/i, /geograf/i, /continente/i, /pa[íi]s/i, /ubicaci[oó]n/i,
+    /estado de /i, /estados de /i, /capital de /i, /regi[oó]n/i,
+
+    // ── Química / Tabla periódica / Átomos (ChemistryArtifact, AtomArtifact) ──
+    /[áa]tomo/i, /tabla peri[oó]dica/i, /qu[íi]mica/i, /elemento qu[íi]mico/i,
+    /configuraci[oó]n electr[oó]nica/i, /modelo at[oó]mico/i,
+    /prot[oó]n/i, /neutr[oó]n/i, /electr[oó]n/i, /orbital/i,
+    /lewis/i, /enlace/i, /mol[eé]cula/i, /enlace covalente/i, /octeto/i,
+    /reacci[oó]n qu[íi]mica/i, /compuesto/i,
+
+    // ── Biología / Cuerpo humano (HumanBodyArtifact) ──
+    /cuerpo humano/i, /[oó]rgano/i, /anatom[íi]a/i, /biolog[íi]a/i,
+    /sistema digestivo/i, /sistema nervioso/i, /sistema circulatorio/i,
+    /sistema respiratorio/i, /sistema muscular/i, /sistema [oó]seo/i,
+    /c[eé]lula/i, /adn/i, /gen[eé]tica/i, /mitosis/i, /meiosis/i,
+    /fotosíntesis/i, /fotosintesis/i,
+
+    // ── Física - Cinemática / Movimiento (PhysicsArtifact, PhysicsGraphArtifact) ──
+    /cinem[aá]tica/i, /velocidad/i, /aceleraci[oó]n/i, /mru/i, /mrua/i,
+    /movimiento rectil[íi]neo/i, /gr[aá]fica de movimiento/i,
+    /posici[oó]n.*tiempo/i, /velocidad.*tiempo/i,
+
+    // ── Física - Electricidad / Circuitos (CircuitLabArtifact) ──
+    /circuito/i, /corriente el[eé]ctrica/i, /voltaje/i, /resistencia/i,
+    /ley de ohm/i, /\bohm\b/i, /amperio/i, /bater[íi]a/i,
+    /potencia el[eé]ctrica/i, /circuito en serie/i, /circuito en paralelo/i,
+
+    // ── Física - Fuerzas / Newton (ForceDiagramArtifact) ──
+    /fuerza/i, /fricci[oó]n/i, /plano inclinado/i, /vector/i, /newton/i,
+    /diagrama de cuerpo libre/i, /segunda ley de newton/i,
+
+    // ── Razonamiento espacial / 3D (SpatialReasoning3DArtifact, SpatialSeriesArtifact) ──
+    /\b3d\b/i, /rotar/i, /\bcubo\b/i, /espacial/i, /razonamiento espacial/i,
+    /rotaci[oó]n/i, /vistas de/i,
+    /series (num[eé]ricas|espaciales)/i, /sucesi[oó]n/i, /patr[oó]n num[eé]rico/i,
+
+    // ── Historia / Línea del tiempo (TimelineArtifact) ──
+    /l[íi]nea del tiempo/i, /cronolog[íi]a/i, /timeline/i,
+    /historia de m[eé]xico/i, /historia universal/i, /historia de la/i,
+    /siglo (xix|xx|xxi|xv|xvi|xvii|xviii)/i, /[eé]poca hist[oó]rica/i,
+    /evento hist[oó]rico/i, /independencia de/i, /revoluci[oó]n mexicana/i,
+
+    // ── Sistema solar / Astronomía (SolarSystemArtifact) ──
+    /sistema solar/i, /planeta/i, /[oó]rbita/i, /astronom[íi]a/i,
+    /sat[eé]lite/i, /galaxia/i, /universo/i,
+
+    // ── Calculadora / Fórmulas (CalculatorArtifact) ──
+    /calculadora/i, /calcular/i, /calcula /i, /f[oó]rmula/i,
+
+    // ── Álgebra / Ecuaciones (AlgebraArtifact) ──
+    /ecuaci[oó]n/i, /[aá]lgebra/i, /resuelve.*ecuaci[oó]n/i,
+
+    // ── Matemáticas gráficas (MathGraphArtifact) ──
+    /gr[aá]fica/i, /funci[oó]n matem[aá]tica/i, /par[aá]bola/i,
+
+    // ── Ejercicios / Práctica (ExerciseArtifact) ──
+    /ejercicio/i, /pr[aá]ctica/i, /resuelve/i,
+
+    // ── Genéricos ──
+    /simulador/i, /interactivo/i, /diagrama/i, /esquema/i,
+    /quiz/i, /examen/i, /trivia/i, /evaluaci[oó]n/i,
   ];
   return artifactIndicators.some(pattern => pattern.test(question));
 }
