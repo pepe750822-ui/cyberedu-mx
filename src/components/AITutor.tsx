@@ -3298,7 +3298,7 @@ const AITutor = () => {
             onDelta: upsertGuest,
             signal: abortControllerRef.current.signal,
             onDone: () => {
-              const { cleanContent, algebras, atoms, timelines, mexicoMaps, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, charts, quiz, recommendations, eduImages } = parseAllBlocks(guestContent);
+              const { cleanContent, algebras, atoms, timelines, mexicoMaps, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, physics, mathGraphs, exercises, chemistryElements, charts, quiz, recommendations, eduImages, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds } = parseAllBlocks(guestContent);
               setMessages(prev => prev.map(m =>
                 m.id === guestAssistantId ? {
                   ...m,
@@ -3321,6 +3321,11 @@ const AITutor = () => {
                   quiz: quiz ?? undefined,
                   recommendations: recommendations.length > 0 ? recommendations : undefined,
                   eduImages: eduImages.length > 0 ? eduImages : undefined,
+                  physicsGraphs: physicsGraphs.length > 0 ? physicsGraphs : undefined,
+                  circuitLabs: circuitLabs.length > 0 ? circuitLabs : undefined,
+                  forceDiagrams: forceDiagrams.length > 0 ? forceDiagrams : undefined,
+                  lewisStructures: lewisStructures.length > 0 ? lewisStructures : undefined,
+                  spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined,
                 } : m
               ));
               setIsStreaming(false);
@@ -3576,7 +3581,9 @@ const AITutor = () => {
             const {
               reasoning, decisions, plan, quiz, charts,
               calculators, simulators, geography, solarSystem, humanBody, spatialSeries,
+              mexicoMaps, timelines, atoms, algebras,
               physics, mathGraphs, exercises, chemistryElements,
+              physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds,
               recommendations, eduImages, cleanContent
             } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
@@ -3613,7 +3620,12 @@ const AITutor = () => {
               exercises: exercises.length > 0 ? exercises : undefined,
               chemistryElements: chemistryElements.length > 0 ? chemistryElements : undefined,
               recommendations: recommendations.length > 0 ? recommendations : undefined,
-              eduImages: eduImages.length > 0 ? eduImages : undefined
+              eduImages: eduImages.length > 0 ? eduImages : undefined,
+              physicsGraphs: physicsGraphs.length > 0 ? physicsGraphs : undefined,
+              circuitLabs: circuitLabs.length > 0 ? circuitLabs : undefined,
+              forceDiagrams: forceDiagrams.length > 0 ? forceDiagrams : undefined,
+              lewisStructures: lewisStructures.length > 0 ? lewisStructures : undefined,
+              spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined,
             } : m));
             setIsStreaming(false);
             fetchUsageStats();
@@ -3859,7 +3871,7 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, chemistryElements, exercises, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
+          const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, chemistryElements, exercises, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
           delete (window as any).__lastChatUsage;
@@ -3908,7 +3920,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined, timelines: timelines.length > 0 ? timelines : undefined, atoms: atoms.length > 0 ? atoms : undefined, algebras: algebras.length > 0 ? algebras : undefined, physics, mathGraphs, exercises, chemistryElements, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined, timelines: timelines.length > 0 ? timelines : undefined, atoms: atoms.length > 0 ? atoms : undefined, algebras: algebras.length > 0 ? algebras : undefined, physics, mathGraphs, exercises, chemistryElements, physicsGraphs: physicsGraphs.length > 0 ? physicsGraphs : undefined, circuitLabs: circuitLabs.length > 0 ? circuitLabs : undefined, forceDiagrams: forceDiagrams.length > 0 ? forceDiagrams : undefined, lewisStructures: lewisStructures.length > 0 ? lewisStructures : undefined, spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
               : m
           ));
           setIsStreaming(false);

@@ -252,6 +252,26 @@ export default async function handler(req: Request) {
         - El campo "equation" es informativo; el usuario puede modificar los coeficientes en la interfaz.
         - NUNCA resuelvas ecuaciones solo con texto; SIEMPRE incluye este tag además del desarrollo textual.
 
+    30. GRÁFICADOR CINEMÁTICO (OBLIGATORIO PARA FÍSICA - MOVIMIENTO):
+        - Cuando expliques velocidad, aceleración o gráficas de posición-tiempo/velocidad-tiempo, usa SIEMPRE:
+          <physics-graph>{ "type": "v-t", "acceleration": 2 }</physics-graph>
+
+    31. ELECTRICIDAD Y LEY DE OHM (OBLIGATORIO):
+        - Cuando el usuario pregunte sobre la Ley de Ohm o circuitos eléctricos (voltaje, corriente, resistencia), usa SIEMPRE:
+          <circuit-lab>{"voltage": 9, "resistance": 10}</circuit-lab>
+
+    32. MODELADOR DE FUERZAS (OBLIGATORIO PARA FÍSICA - FUERZAS):
+        - Cuando expliques fuerzas en planos inclinados o diagramas de cuerpo libre, usa SIEMPRE:
+          <force-diagram>{ "angle": 30, "mass": 5, "friction": 0.2 }</force-diagram>
+
+    33. ESTRUCTURA DE LEWIS (OBLIGATORIO PARA QUÍMICA - ENLACES):
+        - Cuando expliques cómo se forman los enlaces químicos o la regla del octeto, usa SIEMPRE:
+          <lewis-structure>{ "molecule": "H2O" }</lewis-structure>
+
+    34. RAZONAMIENTO ESPACIAL 3D (OBLIGATORIO PARA HABILIDAD MATEMÁTICA):
+        - Cuando plantees retos de rotación mental o vistas de objetos, usa SIEMPRE:
+          <spatial-reasoning-3d>{ "challenge": "rotation" }</spatial-reasoning-3d>
+
     17. CATÁLOGO COMPLETO DE CLAVES Y VIDEOS:
     Al recomendar material, NUNCA inventes enlaces. Usa estrictamente uno de estos [areaId] y [videoId]:
 
