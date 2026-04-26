@@ -166,6 +166,7 @@ async function handleAICall(api: string, chatId: string, question: string, userI
         messages: [{ role: 'user', content: question }],
         userId,
         isTelegram: true,
+        telegramChatId: chatId,
         context: { platform: 'telegram', isRegistered }
       })
     });
@@ -234,7 +235,7 @@ function getWelcomeMessage(tgUser: any, profile: any, firstName: string) {
     const tokens = profile?.tokens || profile?.token || 0;
     return `¡Bienvenido de vuelta, ${profile?.full_name || firstName}! 🚀\n\nTienes *${tokens} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *25 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Para usar tus tokens de la web (y tener derecho a más preguntas), usa /vincular o el botón de abajo.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *15 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Vincula tu cuenta con /vincular para acceder a *25 preguntas diarias* y sincronizar tus tokens.`;
 }
 
 function processArtifacts(text: string): { cleanText: string, extraButtons: any[][] } {

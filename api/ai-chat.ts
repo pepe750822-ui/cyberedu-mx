@@ -319,9 +319,38 @@ export default async function handler(req: Request) {
 
   // Para invitados de Telegram que no tienen userId aún
   if (isTelegram && !userId) {
-    // El límite de invitados de Telegram se maneja en el webhook.ts
-    // Aquí solo generamos la respuesta sin descontar tokens de un perfil inexistente.
-    console.log("[AI-CHAT] Telegram Guest Query. Proceeding without profile.");
+    console.log("[AI-CHAT] Telegram Guest Query. Applying 15/day limit by chatId.");
+    const tgChatId = body.telegramChatId;
+    if (tgChatId && UPSTASH_URL && UPSTASH_TOKEN) {
+      const tgToday = new Date().toISOString().split('T')[0];
+      const tgGuestKey = `tg_guest:${tgChatId}:${tgToday}`;
+      try {
+        const incrRes = await fetch(`${UPSTASH_URL}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${UPSTASH_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(['INCR', tgGuestKey])
+        });
+        if (incrRes.ok) {
+          const { result: tgCount } = await incrRes.json() as { result: number };
+          if (tgCount === 1) {
+            await fetch(`${UPSTASH_URL}`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${UPSTASH_TOKEN}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify(['EXPIRE', tgGuestKey, '86400'])
+            });
+          }
+          if (tgCount > 15) {
+            return new Response(JSON.stringify({
+              error: '¡Alcanzaste tus 15 preguntas gratuitas de hoy en Telegram! 🎓 Vincula tu cuenta con /vincular para acceder a 25 preguntas diarias, o regresa mañana.',
+              isAccessDenied: true,
+              reason: 'daily_limit'
+            }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+          }
+        }
+      } catch (e) {
+        console.error('[AI-CHAT] Telegram guest rate limit check failed:', e);
+      }
+    }
   }
 
   // Helper instead of SDK for Edge compatibility
@@ -557,7 +586,7 @@ export default async function handler(req: Request) {
     El examen ECOEMS 2026 es el 20-28 de junio. Cada sesión cuenta.
 
     NIVELES DE ACCESO DE LA PLATAFORMA (explícalo así cuando te pregunten cómo funciona o cuántas preguntas tienen):
-    👤 Sin registro → 25 consultas gratuitas diarias al Tutor IA. Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
+    👤 Sin registro → 15 consultas gratuitas diarias al Tutor IA. Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
     🆓 Cuenta gratuita (registro) → 25 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
     🪙 Tokens → Se descuenta 1 token por cada pregunta adicional. Paquetes desde $20 MXN (20 tokens). Los tokens no expiran.
     👑 Premium / Suscriptor → Tutor IA ilimitado por $250 MXN/mes. 1,000 interacciones mensuales con renovación automática.

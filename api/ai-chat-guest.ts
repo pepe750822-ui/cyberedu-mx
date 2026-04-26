@@ -4,7 +4,7 @@ export const config = { runtime: 'edge' };
 const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 // @ts-ignore
 const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-const GUEST_DAILY_IP_LIMIT = 20;
+const GUEST_DAILY_IP_LIMIT = 15;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': 'https://cyberedumx.com',
@@ -392,7 +392,7 @@ export default async function handler(req: Request) {
 
     Al final de CADA respuesta, incluye siempre este bloque exacto (con el link markdown):
     ---
-    ✨ **¿Quieres 5 consultas diarias y acceso completo?**  [→ Crea tu cuenta gratis aquí](/auth) — sin tarjeta de crédito.`;
+    ✨ **¿Quieres 15 consultas diarias y acceso completo?**  [→ Crea tu cuenta gratis aquí](/auth) — sin tarjeta de crédito. ¡Con registro obtienes 25 preguntas diarias!`;
 
   const cleanMessages = (messages || [])
     .filter((m: any) => (m.role === 'user' || m.role === 'assistant') && m.content?.trim())
