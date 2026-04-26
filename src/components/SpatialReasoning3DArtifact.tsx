@@ -103,12 +103,10 @@ const SpatialReasoning3DArtifact: React.FC = () => {
             </button>
 
             {showResult && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`p-4 rounded-xl flex items-center gap-3 border ${
-                  selectedOption === correctOption 
-                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
+              <div
+                className={`p-4 rounded-xl flex items-center gap-3 border animate-in fade-in slide-in-from-bottom-2 duration-300 ${
+                  selectedOption === correctOption
+                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
                     : 'bg-red-500/10 border-red-500/20 text-red-400'
                 }`}
               >
@@ -117,7 +115,7 @@ const SpatialReasoning3DArtifact: React.FC = () => {
                   <p className="text-xs font-black uppercase">{selectedOption === correctOption ? '¡Excelente!' : 'Casi...'}</p>
                   <p className="text-[10px] opacity-80">{selectedOption === correctOption ? 'Has identificado correctamente la cara superior (verde).' : 'Observa bien los colores al rotar el cubo.'}</p>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
         </div>
