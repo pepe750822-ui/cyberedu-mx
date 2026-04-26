@@ -524,7 +524,7 @@ function safeParseJSON(str: string): any {
     // Intento de escape de comillas dobles internas en valores de strings JSON
     // Busca patrones tipo: ": "texto "con" comillas", " o ": "texto "con" comillas"}
     // Nota: Esto es heurístico y puede fallar en casos complejos, pero ayuda con el error reportado.
-    cleaned = cleaned.replace(/":\s*"(.*?)"(\s*[,}]) /g, (match, p1, p2) => {
+    cleaned = cleaned.replace(/":\s*"(.*?)"(\s*[,}])/g, (match, p1, p2) => {
       const escaped = p1.replace(/"/g, '\\"');
       return `": "${escaped}"${p2}`;
     });
