@@ -113,10 +113,20 @@ function requiresClaude(question: string): boolean {
 
     // ── Química / Tabla periódica / Átomos (ChemistryArtifact, AtomArtifact) ──
     /[áa]tomo/i, /tabla peri[oó]dica/i, /qu[íi]mica/i, /elemento qu[íi]mico/i,
+    /\belementos?\b/i,
     /configuraci[oó]n electr[oó]nica/i, /modelo at[oó]mico/i,
     /prot[oó]n/i, /neutr[oó]n/i, /electr[oó]n/i, /orbital/i,
     /lewis/i, /enlace/i, /mol[eé]cula/i, /enlace covalente/i, /octeto/i,
     /reacci[oó]n qu[íi]mica/i, /compuesto/i,
+    // Términos de tabla periódica
+    /n[uú]mero at[oó]mico/i, /masa at[oó]mica/i, /valencia/i,
+    /electronegatividad/i, /per[íi]odo/i, /\bgrupo\b/i,
+    /\bmetal\b/i, /no metal/i, /gas noble/i, /semimetal/i,
+    // Elementos individuales
+    /\bboro\b/i, /carbono/i, /nitr[oó]geno/i, /ox[íi]geno/i, /fl[uú]or/i,
+    /\bsodio\b/i, /magnesio/i, /aluminio/i, /silicio/i, /f[oó]sforo/i,
+    /azufre/i, /\bcloro\b/i, /potasio/i, /\bcalcio\b/i, /\bhierro\b/i,
+    /\bcobre\b/i, /\bzinc\b/i, /\bplata\b/i, /\boro\b/i, /mercurio/i, /\bplomo\b/i,
 
     // ── Biología / Cuerpo humano (HumanBodyArtifact) ──
     /cuerpo humano/i, /[oó]rgano/i, /anatom[íi]a/i, /biolog[íi]a/i,
