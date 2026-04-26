@@ -25,3 +25,5 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 1000,
   },
 }));
+
+// force redeploy 2026-04-25
