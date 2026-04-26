@@ -161,8 +161,9 @@ function requiresClaude(question: string): boolean {
     /evento hist[oó]rico/i, /independencia de/i, /revoluci[oó]n mexicana/i,
 
     // ── Sistema solar / Astronomía (SolarSystemArtifact) ──
-    /sistema solar/i, /planeta/i, /[oó]rbita/i, /astronom[íi]a/i,
+    /sistema solar/i, /planetas?/i, /[oó]rbita/i, /astronom[íi]a/i,
     /sat[eé]lite/i, /galaxia/i, /universo/i,
+    /\bvenus\b/i, /\bmarte\b/i, /j[uú]piter/i, /saturno/i, /urano/i, /neptuno/i,
 
     // ── Calculadora / Fórmulas (CalculatorArtifact) ──
     /calculadora/i, /calcular/i, /calcula /i, /f[oó]rmula/i,
@@ -718,9 +719,12 @@ export default async function handler(req: Request) {
         - Cuando hables de países o continentes, usa: <geography>{ "country": "México", "continent": "América", "topic": "Relieve" }</geography>.
         - Esto activará un globo 3D interactivo en la pantalla del usuario.
 
-    23. SISTEMA SOLAR (OBLIGATORIO PARA ASTRONOMÍA):
-        - Cuando expliques los planetas, usa: <solar_system>{ "topic": "Los Planetas" }</solar_system>.
-        - Esto activará un simulador 3D del espacio.
+    23. SISTEMA SOLAR (OBLIGATORIO — SIN EXCEPCIÓN):
+        - Cada vez que el usuario mencione planetas, sistema solar, órbitas, astronomía, o cualquier planeta por nombre (Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno, Tierra), DEBES incluir SIEMPRE:
+          <solar_system>{ "topic": "Los Planetas del Sistema Solar" }</solar_system>
+        - NUNCA omitas este tag aunque el tema no aparezca en el temario del ECOEMS. Puedes mencionar brevemente que el tema no es evaluado en el examen, pero IGUAL despliega el simulador como herramienta educativa.
+        - NUNCA respondas sobre planetas o sistema solar solo con texto; SIEMPRE incluye el simulador 3D.
+        - Esto activará un simulador 3D interactivo del espacio.
 
     24. CUERPO HUMANO (OBLIGATORIO PARA BIOLOGÍA - SISTEMAS CORPORALES):
         - Cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía/fisiología, usa: <human_body>{ "topic": "Sistemas del Cuerpo Humano" }</human_body>.
