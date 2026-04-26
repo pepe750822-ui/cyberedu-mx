@@ -52,7 +52,8 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
     for (const v of vars) {
       const val = parseFloat(currentValues[v.name]);
       if (isNaN(val)) return null;
-      params[v.name] = val;
+      // Normalizar nombres a minúsculas para coincidir con la fórmula lowercased
+      params[v.name.toLowerCase()] = val;
     }
 
     try {
