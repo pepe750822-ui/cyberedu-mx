@@ -18,7 +18,8 @@ import {
   Sparkles,
   Users,
   Bot,
-  Layers
+  Layers,
+  MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -76,8 +77,8 @@ const LandingPage = () => {
       name: "Gratis",
       price: "0",
       description: "Para probar la plataforma",
-      tokens: "5 preguntas/día",
-      features: ["Acceso a todo el contenido", "91 Videos Educativos", "5 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
+      tokens: "25 preguntas/día",
+      features: ["Acceso a todo el contenido", "91 Videos Educativos", "25 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
       cta: "Registrarme Gratis",
       action: () => navigate("/auth"),
       highlight: false,
@@ -200,7 +201,7 @@ const LandingPage = () => {
             <p className="text-lg md:text-2xl text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed">
               <span className="text-white font-bold">Tutor IA disponible 24/7</span>
               {" + "}
-              <span className="text-cyan-400 font-bold">9 Artefactos Interactivos</span>
+              <span className="text-cyan-400 font-bold">19 Laboratorios Virtuales</span>
               {" para dominar cada tema del examen."}
             </p>
           </div>
@@ -215,7 +216,7 @@ const LandingPage = () => {
                 boxShadow: "0 0 40px rgba(16,185,129,0.35), 0 4px 20px rgba(245,158,11,0.2)"
               }}
             >
-              Empezar Gratis
+              Empezar Gratis — 25 Preguntas/Día
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button
@@ -226,6 +227,10 @@ const LandingPage = () => {
               Ver Precios
             </Button>
           </div>
+          <p className="text-center text-[11px] text-slate-500 mt-3 font-medium animate-in fade-in duration-1000 delay-400">
+            Sin registro: <span className="text-slate-300 font-bold">15 preguntas gratis al instante</span> · También en{" "}
+            <span className="text-cyan-400 font-bold">@CyberEduMXBot</span> en Telegram
+          </p>
 
           {/* Social proof */}
           <div className="flex justify-center mt-6 animate-in fade-in duration-1000 delay-500">
@@ -256,7 +261,11 @@ const LandingPage = () => {
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all">
               <Layers className="h-3.5 w-3.5 text-cyan-400" />
-              9 Artefactos Interactivos
+              19 Laboratorios Virtuales
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-sky-500/30 hover:bg-sky-500/5 transition-all">
+              <MessageCircle className="h-3.5 w-3.5 text-sky-400" />
+              Bot Telegram 24/7
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
@@ -326,9 +335,13 @@ const LandingPage = () => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        { label: "🎯 Quiz Interactivo", color: "#10b981" },
-                        { label: "📹 Ver Video Gratis", color: "#6366f1" },
-                        { label: "🧬 Cuerpo Humano 3D", color: "#06b6d4" }
+                        { label: "🧮 Calculadora IA", color: "#10b981" },
+                        { label: "⚡ Lab de Circuitos", color: "#f59e0b" },
+                        { label: "⚛️ Estructura de Lewis", color: "#06b6d4" },
+                        { label: "🌍 Mapa Interactivo", color: "#6366f1" },
+                        { label: "📐 Diagramas de Fuerzas", color: "#8b5cf6" },
+                        { label: "🤖 Bot Telegram 24/7", color: "#0ea5e9" },
+                        { label: "🎮 Simulador ECOEMS", color: "#ec4899" }
                       ].map((tag) => (
                         <span
                           key={tag.label}
