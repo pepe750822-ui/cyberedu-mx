@@ -3517,7 +3517,7 @@ const AITutor = () => {
     }
 
     // Se eliminó la validación estricta local de tokens (probadita). 
-    // Ahora delegamos que el backend aplique el límite de 5 consultas diarias y retorne el banner 403.
+    // Ahora delegamos que el backend aplique el límite de 25 consultas diarias y retorne el banner 403.
 
     // /explica <tema> - Enhanced explanation via AI with context
     const explicaMatch = text.trim().match(/^\/explica\s+(.+)/i);

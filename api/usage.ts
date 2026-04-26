@@ -66,7 +66,7 @@ export default async function handler(req: Request) {
   const isSubscriber = profile.subscription_status === 'active' || profile.is_premium === true;
   const tokens = profile.tokens || 0;
   const used = usageResult.data?.count || 0;
-  const dailyLimit = 5;
+  const dailyLimit = 25;
 
   return new Response(JSON.stringify({
     used,
