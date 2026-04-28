@@ -1,5 +1,11 @@
 {
   "buildCommand": "NODE_OPTIONS=--max-old-space-size=4096 npm run build",
+  "crons": [
+    {
+      "path": "/api/telegram-cron",
+      "schedule": "0 13 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",

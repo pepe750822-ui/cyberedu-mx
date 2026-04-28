@@ -77,6 +77,13 @@ export default async function handler(req: Request) {
       tgUser = newUser;
     }
 
+    // Track last interaction (used by cron for reactivation + anti-spam)
+    supabase
+      .from('telegram_users')
+      .update({ last_user_message_at: new Date().toISOString() })
+      .eq('chat_id', chatId)
+      .then(() => {}) // fire-and-forget
+
     // 2. Obtener perfil
     let profile = null;
     if (tgUser?.user_id) {
@@ -124,7 +131,7 @@ export default async function handler(req: Request) {
       if (!query) return sendTelegramMessage(TELEGRAM_API, chatId, "Escribe tu pregunta académica. Ejemplo: ¿Qué es la fotosíntesis?", getMainKeyboard());
 
       console.log(`[TELEGRAM] Procesando pregunta IA: "${query.slice(0, 50)}..."`);
-      return handleAICall(TELEGRAM_API, chatId, query, tgUser?.user_id || null, url.host, !!tgUser?.user_id);
+      return handleAICall(TELEGRAM_API, chatId, query, tgUser?.user_id || null, url.host, !!tgUser?.user_id, supabase);
     }
 
     // Fallback por defecto
@@ -137,7 +144,7 @@ export default async function handler(req: Request) {
   }
 }
 
-async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean) {
+async function handleAICall(api: string, chatId: string, question: string, userId: string | null, host: string, isRegistered: boolean, supabase?: any) {
   const abortController = new AbortController();
   const timeoutId = setTimeout(() => abortController.abort(), 25000); // 25s max
 
@@ -176,6 +183,16 @@ async function handleAICall(api: string, chatId: string, question: string, userI
 
     if (!aiRes.ok) {
       const err = await aiRes.json().catch(() => ({}));
+
+      // Queue a limit promo to send ~2 hours later via cron
+      if ((aiRes.status === 403 || aiRes.status === 429) && err.reason === 'daily_limit' && supabase) {
+        const scheduledAt = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString();
+        supabase
+          .from('telegram_sequences')
+          .insert({ chat_id: chatId, sequence_type: 'limit_promo', step: 1, scheduled_at: scheduledAt })
+          .then(() => {});
+      }
+
       return sendTelegramMessage(api, chatId, `⚠️ ${err.error || "No pude conectar con el Tutor IA. Reintenta ahora."}`, getMainKeyboard());
     }
 
