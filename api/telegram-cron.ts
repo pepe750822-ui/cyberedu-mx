@@ -92,22 +92,47 @@ export default async function handler(req: Request) {
     return new Response('Method Not Allowed', { status: 405 });
   }
 
+  // ── Diagnostic: log env var presence (never log actual values) ───────────────
   const CRON_SECRET    = process.env.CRON_SECRET;
   const ADMIN_SECRET   = process.env.ADMIN_SECRET;
   const TG_TOKEN       = process.env.TELEGRAM_BOT_TOKEN || process.env.VITE_TELEGRAM_BOT_TOKEN;
   const SUPABASE_URL   = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
   const SUPABASE_KEY   = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!TG_TOKEN || !SUPABASE_URL || !SUPABASE_KEY) {
-    return jsonErr('Configuración incompleta', 500);
-  }
+  const envDiag = {
+    TELEGRAM_BOT_TOKEN:      !!process.env.TELEGRAM_BOT_TOKEN,
+    VITE_TELEGRAM_BOT_TOKEN: !!process.env.VITE_TELEGRAM_BOT_TOKEN,
+    TG_TOKEN_resolved:       !!TG_TOKEN,
+    SUPABASE_URL:            !!process.env.SUPABASE_URL,
+    VITE_SUPABASE_URL:       !!process.env.VITE_SUPABASE_URL,
+    SUPABASE_URL_resolved:   !!SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    CRON_SECRET:             !!CRON_SECRET,
+    ADMIN_SECRET:            !!ADMIN_SECRET,
+  };
+  console.log('[CRON] env check:', JSON.stringify(envDiag));
 
   // Auth: accept CRON_SECRET (Vercel cron) or ADMIN_SECRET (manual test)
   const auth = req.headers.get('Authorization') || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
   const validSecrets = [CRON_SECRET, ADMIN_SECRET].filter(Boolean);
+
+  console.log('[CRON] auth header present:', !!auth, '| valid secrets count:', validSecrets.length);
+
   if (!validSecrets.includes(token)) {
+    console.log('[CRON] auth FAILED — token does not match any valid secret');
     return jsonErr('No autorizado', 401);
+  }
+  console.log('[CRON] auth OK');
+
+  if (!TG_TOKEN || !SUPABASE_URL || !SUPABASE_KEY) {
+    const missing = [
+      !TG_TOKEN       && 'TELEGRAM_BOT_TOKEN',
+      !SUPABASE_URL   && 'SUPABASE_URL',
+      !SUPABASE_KEY   && 'SUPABASE_SERVICE_ROLE_KEY',
+    ].filter(Boolean);
+    console.log('[CRON] missing env vars:', missing);
+    return jsonErr(`Configuración incompleta: faltan ${missing.join(', ')}`, 500);
   }
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
