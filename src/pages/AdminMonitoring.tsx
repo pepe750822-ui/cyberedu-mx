@@ -5,21 +5,45 @@ import RefreshCw from 'lucide-react/dist/esm/icons/refresh-cw';
 import Ticket from 'lucide-react/dist/esm/icons/ticket';
 import Zap from 'lucide-react/dist/esm/icons/zap';
 import Crown from 'lucide-react/dist/esm/icons/crown';
-import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import Megaphone from 'lucide-react/dist/esm/icons/megaphone';
 import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
 import Bell from 'lucide-react/dist/esm/icons/bell';
 import Users from 'lucide-react/dist/esm/icons/users';
 import Activity from 'lucide-react/dist/esm/icons/activity';
 import CalendarCheck from 'lucide-react/dist/esm/icons/calendar-check';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Send } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
+const BROADCAST_HISTORY_KEY = 'tg_broadcast_history';
+const MAX_HISTORY = 5;
+
+interface BroadcastRecord {
+  id: string;
+  date: string;
+  message: string;
+  sent: number;
+  failed: number;
+  blocked: number;
+  total: number;
+  segment: string;
+}
+
+function loadHistory(): BroadcastRecord[] {
+  try {
+    return JSON.parse(localStorage.getItem(BROADCAST_HISTORY_KEY) || '[]');
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(records: BroadcastRecord[]) {
+  localStorage.setItem(BROADCAST_HISTORY_KEY, JSON.stringify(records.slice(0, MAX_HISTORY)));
+}
+
 const AdminMonitoring = () => {
   const { user, profile, session, isLoading } = useAuth();
-  const navigate = useNavigate();
   const [activeUsers, setActiveUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -32,6 +56,17 @@ const AdminMonitoring = () => {
   const [newAnnouncement, setNewAnnouncement] = useState('');
   const [announcementType, setAnnouncementType] = useState('info');
   const [isSavingAnn, setIsSavingAnn] = useState(false);
+
+  // Broadcast state
+  const [broadcastMsg, setBroadcastMsg] = useState('');
+  const [broadcastSegment, setBroadcastSegment] = useState<'all' | 'linked' | 'guest'>('all');
+  const [broadcastSecret, setBroadcastSecret] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [broadcastProgress, setBroadcastProgress] = useState(0);
+  const [broadcastResult, setBroadcastResult] = useState<{ sent: number; failed: number; blocked: number; total: number } | null>(null);
+  const [broadcastError, setBroadcastError] = useState('');
+  const [broadcastHistory, setBroadcastHistory] = useState<BroadcastRecord[]>(() => loadHistory());
 
   const fetchTgStats = async () => {
     setLoadingTg(true);
@@ -112,6 +147,70 @@ const AdminMonitoring = () => {
         fetchAnnouncements();
     } catch (e) {
         console.error(e);
+    }
+  };
+
+  const segmentLabel = (s: string) =>
+    s === 'linked' ? 'Solo vinculados a cuenta web' : s === 'guest' ? 'Solo invitados' : 'Todos los usuarios';
+
+  const targetCount = tgStats.filter(u => {
+    if (broadcastSegment === 'linked') return !!u.user_id;
+    if (broadcastSegment === 'guest') return !u.user_id;
+    return true;
+  }).length;
+
+  const handleBroadcast = async () => {
+    if (!broadcastMsg.trim() || !broadcastSecret) return;
+    const confirmed = window.confirm(
+      `¿Seguro? Se enviará a ${targetCount} usuarios de Telegram (${segmentLabel(broadcastSegment)}).`
+    );
+    if (!confirmed) return;
+
+    setIsBroadcasting(true);
+    setBroadcastResult(null);
+    setBroadcastError('');
+    setBroadcastProgress(10);
+
+    const progressInterval = setInterval(() => {
+      setBroadcastProgress(p => Math.min(p + 3, 90));
+    }, 500);
+
+    try {
+      const res = await fetch('/api/telegram-broadcast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${broadcastSecret}`,
+        },
+        body: JSON.stringify({ message: broadcastMsg, segment: broadcastSegment }),
+      });
+
+      clearInterval(progressInterval);
+      setBroadcastProgress(100);
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al enviar');
+
+      setBroadcastResult(data);
+
+      const record: BroadcastRecord = {
+        id: Date.now().toString(),
+        date: new Date().toISOString(),
+        message: broadcastMsg,
+        segment: segmentLabel(broadcastSegment),
+        ...data,
+      };
+      const updated = [record, ...broadcastHistory].slice(0, MAX_HISTORY);
+      setBroadcastHistory(updated);
+      saveHistory(updated);
+      setBroadcastMsg('');
+      setShowPreview(false);
+    } catch (err: any) {
+      clearInterval(progressInterval);
+      setBroadcastProgress(0);
+      setBroadcastError(err.message || 'Error desconocido');
+    } finally {
+      setIsBroadcasting(false);
     }
   };
 
@@ -524,6 +623,161 @@ const AdminMonitoring = () => {
                     )}
                 </div>
             </div>
+        </div>
+        {/* Sección Broadcast Telegram */}
+        <div className="mt-8 bg-slate-900/40 rounded-3xl border border-white/5 overflow-hidden">
+          <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-sky-500/10 border border-sky-500/20">
+              <Send className="h-5 w-5 text-sky-400" />
+            </div>
+            <div>
+              <h2 className="text-sm font-black uppercase tracking-widest text-white">📢 Broadcast Telegram</h2>
+              <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Enviar mensaje masivo a usuarios del bot</p>
+            </div>
+          </div>
+
+          <div className="p-8 space-y-6">
+            {/* Segmentación */}
+            <div>
+              <label className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-2 block">Destinatarios</label>
+              <div className="flex flex-wrap gap-2">
+                {(['all', 'linked', 'guest'] as const).map(seg => (
+                  <button
+                    key={seg}
+                    onClick={() => setBroadcastSegment(seg)}
+                    className={cn(
+                      "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all",
+                      broadcastSegment === seg
+                        ? "bg-sky-500 text-white border-sky-500 shadow-lg shadow-sky-500/20"
+                        : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/70"
+                    )}
+                  >
+                    {seg === 'all' && 'Todos los usuarios'}
+                    {seg === 'linked' && 'Solo vinculados a cuenta web'}
+                    {seg === 'guest' && 'Solo invitados (sin vincular)'}
+                    <span className="ml-1.5 opacity-60">
+                      ({tgStats.filter(u => seg === 'all' ? true : seg === 'linked' ? !!u.user_id : !u.user_id).length})
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Textarea */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-[10px] font-black uppercase text-white/30 tracking-widest">Mensaje</label>
+                <span className={cn(
+                  "text-[10px] font-black",
+                  broadcastMsg.length > 3800 ? "text-rose-400" : "text-white/30"
+                )}>
+                  {broadcastMsg.length}/4096
+                </span>
+              </div>
+              <textarea
+                value={broadcastMsg}
+                onChange={e => { setBroadcastMsg(e.target.value.slice(0, 4096)); setBroadcastResult(null); setBroadcastError(''); }}
+                placeholder="Escribe tu mensaje aquí... Soporta emojis 🚀 y *texto en negrita* con Markdown de Telegram"
+                rows={5}
+                className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:border-sky-500/50 transition-all placeholder:text-white/10 resize-none"
+              />
+            </div>
+
+            {/* ADMIN_SECRET */}
+            <div>
+              <label className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-2 block">Admin Secret</label>
+              <input
+                type="password"
+                value={broadcastSecret}
+                onChange={e => setBroadcastSecret(e.target.value)}
+                placeholder="ADMIN_SECRET de Vercel"
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:border-sky-500/50 transition-all placeholder:text-white/10"
+              />
+            </div>
+
+            {/* Botones preview/enviar */}
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setShowPreview(p => !p)}
+                disabled={!broadcastMsg.trim()}
+                className="px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/10 disabled:opacity-30 transition-all"
+              >
+                {showPreview ? 'Ocultar preview' : 'Vista previa'}
+              </button>
+              <button
+                onClick={handleBroadcast}
+                disabled={isBroadcasting || !broadcastMsg.trim() || !broadcastSecret}
+                className="px-6 py-3 rounded-xl bg-sky-500 text-white text-xs font-black uppercase tracking-widest hover:bg-sky-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-sky-500/20"
+              >
+                {isBroadcasting ? 'Enviando...' : `Enviar a ${targetCount} usuarios`}
+              </button>
+            </div>
+
+            {/* Preview */}
+            {showPreview && broadcastMsg.trim() && (
+              <div className="p-5 rounded-2xl bg-sky-500/5 border border-sky-500/20">
+                <p className="text-[10px] font-black uppercase tracking-widest text-sky-400 mb-3">Preview del mensaje:</p>
+                <p className="text-sm text-white/80 whitespace-pre-wrap font-mono leading-relaxed">{broadcastMsg}</p>
+              </div>
+            )}
+
+            {/* Barra de progreso */}
+            {isBroadcasting && (
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Enviando mensajes...</p>
+                  <p className="text-[10px] font-black text-sky-400">{broadcastProgress}%</p>
+                </div>
+                <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                  <div
+                    className="h-full bg-sky-500 rounded-full transition-all duration-500"
+                    style={{ width: `${broadcastProgress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Resultado */}
+            {broadcastResult && (
+              <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20">
+                <p className="text-sm font-black text-white">
+                  ✅ Enviado a <span className="text-emerald-400">{broadcastResult.sent}</span> usuarios
+                  {broadcastResult.failed > 0 && <> · ❌ <span className="text-rose-400">{broadcastResult.failed}</span> fallidos</>}
+                  {broadcastResult.blocked > 0 && <> · 🚫 <span className="text-white/40">{broadcastResult.blocked}</span> bloquearon</>}
+                  <span className="text-[10px] text-white/30 ml-2">de {broadcastResult.total} total</span>
+                </p>
+              </div>
+            )}
+
+            {/* Error */}
+            {broadcastError && (
+              <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-bold">
+                ⚠️ {broadcastError}
+              </div>
+            )}
+
+            {/* Historial */}
+            {broadcastHistory.length > 0 && (
+              <div>
+                <h3 className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-3">Últimos broadcasts</h3>
+                <div className="space-y-2">
+                  {broadcastHistory.map(rec => (
+                    <div key={rec.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-1">
+                      <div className="flex items-start justify-between gap-4">
+                        <p className="text-xs text-white/70 line-clamp-2 font-medium flex-1">{rec.message}</p>
+                        <span className="text-[9px] text-white/30 whitespace-nowrap shrink-0">
+                          {new Date(rec.date).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-white/30">
+                        ✅ {rec.sent} · ❌ {rec.failed} · 🚫 {rec.blocked} · Total: {rec.total} · {rec.segment}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
