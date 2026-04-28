@@ -135,10 +135,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // ── Load data ────────────────────────────────────────────────────────────────
 
-  const { data: allUsers } = await supabase
+  // Use `neq(true)` instead of `eq(false)` so rows where blocked IS NULL are included.
+  // PostgreSQL: NULL = false → false, NULL != true → true. This matches all non-blocked rows.
+  const { data: allUsers, error: usersError } = await supabase
     .from('telegram_users')
     .select('chat_id, user_id, created_at, last_user_message_at, blocked')
-    .eq('blocked', false);
+    .neq('blocked', true);
+
+  console.log('[CRON] telegram_users fetched:', allUsers?.length ?? 0, '| error:', usersError?.message ?? null);
+
+  if (usersError) {
+    return res.status(500).json({ error: `Error al leer telegram_users: ${usersError.message}` });
+  }
 
   if (!allUsers || allUsers.length === 0) {
     return res.status(200).json({ sent: 0, skipped: 0, message: 'No hay usuarios activos' });
