@@ -1,7 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
