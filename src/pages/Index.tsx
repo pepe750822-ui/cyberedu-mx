@@ -74,12 +74,12 @@ const Index = () => {
 
   useEffect(() => {
     // SEO Dynamic Tags
-    document.title = "BioReto Pro v3.0 - Simulador ECOEMS 2026 & Guía UNAM | CyberEdu MX";
-    
+    document.title = "CyberEdu MX — Prepárate para el ECOEMS 2026";
+
     // Update Meta Description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Estudia para el ECOEMS 2026 y UNAM con BioReto Pro v3.0. Simuladores inteligentes, 90+ videos y seguimiento de progreso. ¡Acceso 100% gratuito!");
+      metaDescription.setAttribute("content", "Domina el ECOEMS 2026 con CyberEdu MX. Tutor IA 24/7, 19 Laboratorios Virtuales, simuladores inteligentes y 90+ videos. ¡25 preguntas gratis al día!");
     }
 
     // Structured Data (JSON-LD)
@@ -305,9 +305,10 @@ const Index = () => {
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {[
-                          { label: "🎯 Quiz Interactivo", color: "#10b981" },
-                          { label: "📹 Ver Video Gratis", color: "#6366f1" },
-                          { label: "🧬 Cuerpo Humano 3D", color: "#06b6d4" }
+                          { label: "⚡ Lab Circuitos", color: "#f59e0b" },
+                          { label: "⚛️ Lewis", color: "#10b981" },
+                          { label: "🤖 Bot Telegram", color: "#06b6d4" },
+                          { label: "🎯 Simulador ECOEMS", color: "#6366f1" }
                         ].map((tag) => (
                           <span
                             key={tag.label}
@@ -440,8 +441,8 @@ const Index = () => {
                         Pruébalo gratis
                       </button>
                     )}
-                    <p className="text-[10px] text-muted-foreground/60 font-medium">
-                      Empieza ahora
+                    <p className="text-[10px] text-muted-foreground/60 font-medium leading-relaxed">
+                      Sin registro: 15 preguntas gratis al instante · Con cuenta gratuita: 25 preguntas diarias · También en Telegram: <span className="text-cyan-400 font-bold">@CyberEduMXBot</span>
                     </p>
                   </div>
                 </div>
