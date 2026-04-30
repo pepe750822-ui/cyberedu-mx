@@ -52,7 +52,7 @@ const LandingPage = () => {
     },
     {
       icon: <Globe className="h-6 w-6 text-blue-400" />,
-      title: "9 Artefactos Interactivos",
+      title: "19 Laboratorios Virtuales",
       description: "Explora el cuerpo humano en 3D, el globo terráqueo interactivo, el sistema solar y la línea del tiempo de historia."
     },
     {
