@@ -209,7 +209,7 @@ const Index = () => {
                 Aprueba el ECOEMS <br /><span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">en 45 Días</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-                <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">9 Artefactos Interactivos</span> para dominar cada tema del examen.
+                <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
               </p>
               <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
                 <div className="h-px w-8 bg-violet-500/30 hidden md:block" />
