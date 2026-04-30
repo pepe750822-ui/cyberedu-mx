@@ -24,12 +24,14 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { simuladoECOEMS, Question } from "@/data/simuladorData";
+import { simuladoECOEMS2 } from "@/data/simuladorData2";
 import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
 
 type ExamMode = 'full' | 'practice';
+type BankSelection = 'bank1' | 'bank2' | 'mixed';
 
 // Fisher-Yates shuffle
 function shuffleArray<T>(arr: T[]): T[] {
@@ -93,6 +95,7 @@ const SimuladorPro = () => {
     const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
     const [examMode, setExamMode] = useState<ExamMode>('full');
     const [selectedArea, setSelectedArea] = useState<string>('all');
+    const [selectedBank, setSelectedBank] = useState<BankSelection>('bank1');
 
     // SEO Dynamic Tags for Simulador
     useEffect(() => {
@@ -269,9 +272,14 @@ const SimuladorPro = () => {
     const currentQuestion = activeQuestions[currentQuestionIndex];
 
     const buildPool = (area: string): Question[] => {
-        if (area === 'all') return simuladoECOEMS;
-        if (area === 'habilidades') return simuladoECOEMS.filter(q => q.area.startsWith('Habilidad'));
-        return simuladoECOEMS.filter(q => q.area === area);
+        const fromSource = (src: Question[]) => {
+            if (area === 'all') return src;
+            if (area === 'habilidades') return src.filter(q => q.area.startsWith('Habilidad'));
+            return src.filter(q => q.area === area);
+        };
+        if (selectedBank === 'bank1') return fromSource(simuladoECOEMS);
+        if (selectedBank === 'bank2') return fromSource(simuladoECOEMS2);
+        return [...fromSource(simuladoECOEMS), ...fromSource(simuladoECOEMS2)];
     };
 
     const handleStartExam = (mode: ExamMode = 'full') => {
@@ -386,6 +394,31 @@ const SimuladorPro = () => {
                         <p className="text-slate-400 text-sm leading-relaxed max-w-md mx-auto">
                             Preguntas y opciones aleatorizadas en cada intento. Elige materia y modo.
                         </p>
+                    </div>
+
+                    {/* Bank selector */}
+                    <div className="space-y-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Banco de preguntas</p>
+                        <div className="flex justify-center gap-2">
+                            {([
+                                { label: 'Banco 1', value: 'bank1' as BankSelection },
+                                { label: 'Banco 2', value: 'bank2' as BankSelection },
+                                { label: 'Mixto', value: 'mixed' as BankSelection },
+                            ]).map(b => (
+                                <button
+                                    key={b.value}
+                                    onClick={() => setSelectedBank(b.value)}
+                                    className={cn(
+                                        "px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border",
+                                        selectedBank === b.value
+                                            ? "bg-indigo-600 text-white border-indigo-600"
+                                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
+                                    )}
+                                >
+                                    {b.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Filter by subject */}
