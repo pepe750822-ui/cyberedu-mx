@@ -352,6 +352,42 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Areas Section */}
+      <section id="areas" className="container mx-auto px-4 py-16 md:py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-gradient-blue italic">
+            Sistemas de Aprendizaje
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium">
+            Entrena en las áreas que el examen demanda. Domina cada módulo y asegura tu lugar.
+          </p>
+        </div>
+        <div className="flex justify-end mb-4">
+          <Button
+            variant={sortByProgress ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSortByProgress((v) => !v)}
+          >
+            <ArrowUpDown className="h-4 w-4 mr-1" />
+            {sortByProgress ? "Orden original" : "Ordenar por progreso"}
+          </Button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {sortedAreas.map((area, index) => {
+            const ap = areaProgress[area.id];
+            return (
+              <AreaCard
+                key={area.id}
+                area={area}
+                index={index}
+                viewedCount={ap?.viewed ?? 0}
+                totalCount={ap?.total}
+              />
+            );
+          })}
+        </div>
+      </section>
+
       {/* AI Tutor Showcase — right after hero so it's immediately visible */}
       <AnimatePresence>
         {!aiTutorDismissed && (
@@ -905,42 +941,6 @@ const Index = () => {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Areas Section */}
-      <section id="areas" className="container mx-auto px-4 py-16 md:py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-gradient-blue italic">
-            Sistemas de Aprendizaje
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium">
-            Entrena en las áreas que el examen demanda. Domina cada módulo y asegura tu lugar.
-          </p>
-        </div>
-        <div className="flex justify-end mb-4">
-          <Button
-            variant={sortByProgress ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSortByProgress((v) => !v)}
-          >
-            <ArrowUpDown className="h-4 w-4 mr-1" />
-            {sortByProgress ? "Orden original" : "Ordenar por progreso"}
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {sortedAreas.map((area, index) => {
-            const ap = areaProgress[area.id];
-            return (
-              <AreaCard
-                key={area.id}
-                area={area}
-                index={index}
-                viewedCount={ap?.viewed ?? 0}
-                totalCount={ap?.total}
-              />
-            );
-          })}
         </div>
       </section>
 
