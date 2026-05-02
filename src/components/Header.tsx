@@ -57,6 +57,12 @@ const Header = () => {
               Inicio
             </Link>
             <Link
+              to="/simulador-pro"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              🎯 Simulador
+            </Link>
+            <Link
               to="/#areas"
               onClick={handleAreasClick}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -284,6 +290,13 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Inicio
+                  </Link>
+                  <Link
+                    to="/simulador-pro"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-foreground font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    🎯 Simulador
                   </Link>
                   <Link
                     to="/#areas"
