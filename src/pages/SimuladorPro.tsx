@@ -405,11 +405,11 @@ const SimuladorPro = () => {
                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Banco de preguntas</p>
                         <div className="flex flex-wrap justify-center gap-2">
                             {([
-                                { label: 'Banco 1', value: 'bank1' as BankSelection },
-                                { label: 'Banco 2', value: 'bank2' as BankSelection },
-                                { label: 'Banco 3', value: 'bank3' as BankSelection },
-                                { label: 'Banco 4', value: 'bank4' as BankSelection },
-                                { label: 'Mixto (512)', value: 'mixed' as BankSelection },
+                                { label: 'Banco 1 — Práctica General', value: 'bank1' as BankSelection },
+                                { label: 'Banco 2 — Generado por IA', value: 'bank2' as BankSelection },
+                                { label: 'Banco 3 — Examen de Práctica', value: 'bank3' as BankSelection },
+                                { label: 'Banco 4 — 📋 Guía Oficial IPN/UNAM 2025', value: 'bank4' as BankSelection },
+                                { label: 'Mixto — 512 reactivos combinados', value: 'mixed' as BankSelection },
                             ]).map(b => (
                                 <button
                                     key={b.value}
@@ -825,53 +825,39 @@ const SimuladorPro = () => {
             </div>
 
             {/* Navigation Footer */}
-            <div className="bg-slate-950 border-t border-white/10 p-6">
-                <div className="container mx-auto max-w-4xl flex items-center justify-between">
+            <div className="bg-slate-950 border-t border-white/10 p-4">
+                <div className="container mx-auto max-w-4xl flex items-center gap-2">
                     <Button
                         variant="outline"
                         onClick={handlePrev}
                         disabled={currentQuestionIndex === 0}
-                        className="rounded-xl border-white/10 hover:bg-white/5 px-6 h-12 text-[10px] font-black uppercase tracking-widest disabled:opacity-30"
+                        className="flex-1 rounded-xl border-white/10 hover:bg-white/5 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest disabled:opacity-30"
                     >
-                        <ChevronLeft className="mr-2 h-4 w-4" /> Anterior
+                        <ChevronLeft className="mr-1 h-4 w-4" /> Anterior
                     </Button>
-
-                    <div className="flex gap-4 items-center">
-                        <Button
-                            variant="outline"
-                            onClick={() => {
-                                if (!currentQuestion) return;
-                                setMarkedForReview(prev => ({
-                                    ...prev,
-                                    [currentQuestion.id]: !prev[currentQuestion.id]
-                                }));
-                            }}
-                            className={cn(
-                                "rounded-xl border-white/10 px-4 h-12 text-[10px] font-black uppercase tracking-widest",
-                                currentQuestion && markedForReview[currentQuestion.id] ? "bg-amber-500/20 border-amber-500 text-amber-500" : "text-slate-400 hover:bg-white/5"
-                            )}
-                        >
-                            <AlertCircle className="mr-1 h-3 w-3" /> {currentQuestion && markedForReview[currentQuestion.id] ? "Marcada" : "Marcar Revisión"}
-                        </Button>
-
-                        <div className="hidden sm:flex gap-2 text-[10px] font-black text-slate-600 uppercase">
-                            {currentQuestion && userAnswers[currentQuestion.id] !== undefined ? (
-                                <div className="flex items-center gap-1 text-emerald-500">
-                                    <CheckCircle2 className="h-3 w-3" /> Respuesta Guardada
-                                </div>
-                            ) : (
-                                <div className="flex items-center gap-1">
-                                    <AlertCircle className="h-3 w-3" /> Sin Responder
-                                </div>
-                            )}
-                        </div>
-                    </div>
 
                     <Button
                         onClick={currentQuestionIndex === activeQuestions.length - 1 ? handleFinishExam : handleNext}
-                        className="rounded-xl bg-primary px-8 h-12 text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all"
+                        className="flex-1 rounded-xl bg-primary h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all"
                     >
-                        {currentQuestionIndex === activeQuestions.length - 1 ? "Finalizar" : "Siguiente"} <ChevronRight className="ml-2 h-4 w-4" />
+                        {currentQuestionIndex === activeQuestions.length - 1 ? "Finalizar" : "Siguiente"} <ChevronRight className="ml-1 h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        onClick={() => {
+                            if (!currentQuestion) return;
+                            setMarkedForReview(prev => ({
+                                ...prev,
+                                [currentQuestion.id]: !prev[currentQuestion.id]
+                            }));
+                        }}
+                        className={cn(
+                            "flex-1 rounded-xl border-white/10 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest",
+                            currentQuestion && markedForReview[currentQuestion.id] ? "bg-amber-500/20 border-amber-500 text-amber-500" : "text-slate-400 hover:bg-white/5"
+                        )}
+                    >
+                        🔖 {currentQuestion && markedForReview[currentQuestion.id] ? "Marcada" : "Marcar"}
                     </Button>
                 </div>
             </div>
