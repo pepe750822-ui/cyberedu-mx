@@ -25,13 +25,14 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { simuladoECOEMS, Question } from "@/data/simuladorData";
 import { simuladoECOEMS2 } from "@/data/simuladorData2";
+import { simuladoECOEMS3 } from "@/data/simuladorData3";
 import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
 
 type ExamMode = 'full' | 'practice';
-type BankSelection = 'bank1' | 'bank2' | 'mixed';
+type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'mixed';
 
 // Fisher-Yates shuffle
 function shuffleArray<T>(arr: T[]): T[] {
@@ -99,10 +100,10 @@ const SimuladorPro = () => {
 
     // SEO Dynamic Tags for Simulador
     useEffect(() => {
-        document.title = "Simulador Pro ECOEMS 2026 - 128 Reactivos | CyberEdu MX";
+        document.title = "Simulador Pro ECOEMS 2026 - 384 Reactivos | CyberEdu MX";
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
-            metaDescription.setAttribute("content", "Realiza el simulador pro más avanzado para el ECOEMS 2026. 128 reactivos integrales, tiempo real de 3 horas y predicción de resultados con IA.");
+            metaDescription.setAttribute("content", "Realiza el simulador pro más avanzado para el ECOEMS 2026. 384 reactivos en 3 bancos, modo práctica sin tiempo y predicción de resultados con IA.");
         }
 
         const structuredData = {
@@ -279,7 +280,8 @@ const SimuladorPro = () => {
         };
         if (selectedBank === 'bank1') return fromSource(simuladoECOEMS);
         if (selectedBank === 'bank2') return fromSource(simuladoECOEMS2);
-        return [...fromSource(simuladoECOEMS), ...fromSource(simuladoECOEMS2)];
+        if (selectedBank === 'bank3') return fromSource(simuladoECOEMS3);
+        return [...fromSource(simuladoECOEMS), ...fromSource(simuladoECOEMS2), ...fromSource(simuladoECOEMS3)];
     };
 
     const handleStartExam = (mode: ExamMode = 'full') => {
@@ -392,18 +394,19 @@ const SimuladorPro = () => {
                     <div className="space-y-4">
                         <h1 className="text-4xl font-black uppercase tracking-tighter text-white">Simulador Pro ECOEMS</h1>
                         <p className="text-slate-400 text-sm leading-relaxed max-w-md mx-auto">
-                            Preguntas y opciones aleatorizadas en cada intento. Elige materia y modo.
+                            384 reactivos en 3 bancos — preguntas y opciones aleatorizadas en cada intento.
                         </p>
                     </div>
 
                     {/* Bank selector */}
                     <div className="space-y-3">
                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Banco de preguntas</p>
-                        <div className="flex justify-center gap-2">
+                        <div className="flex flex-wrap justify-center gap-2">
                             {([
                                 { label: 'Banco 1', value: 'bank1' as BankSelection },
                                 { label: 'Banco 2', value: 'bank2' as BankSelection },
-                                { label: 'Mixto', value: 'mixed' as BankSelection },
+                                { label: 'Banco 3', value: 'bank3' as BankSelection },
+                                { label: 'Mixto (384)', value: 'mixed' as BankSelection },
                             ]).map(b => (
                                 <button
                                     key={b.value}
