@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(ls supabase/migrations/)",
+      "Bash(ls supabase/)",
+      "Bash(git commit *)",
+      "Bash(node -e \"require\\('@vercel/node'\\)\")"
     ]
   }
 }
