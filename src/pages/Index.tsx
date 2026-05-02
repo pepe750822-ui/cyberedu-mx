@@ -241,6 +241,14 @@ const Index = () => {
                   <span>Ver Analíticos</span>
                 </Button>
               </div>
+              <div className="mt-6 flex flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
+                <Button
+                  onClick={() => navigate("/simulador-pro")}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-black px-6 py-6 rounded-2xl shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 text-sm md:text-base"
+                >
+                  🎯 Simulador Pro — 512 reactivos GRATIS
+                </Button>
+              </div>
             </div>
 
             {/* Hero Visual — AI Tutor mock */}
@@ -373,13 +381,35 @@ const Index = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div 
+            onClick={() => navigate("/simulador-pro")}
+            className="group relative flex flex-col justify-between p-6 rounded-3xl bg-card border-2 border-indigo-500/30 shadow-lg hover:shadow-indigo-500/20 hover:border-indigo-500/50 transition-all cursor-pointer overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative z-10 space-y-4">
+              <div className="h-12 w-12 rounded-2xl bg-indigo-500/20 text-indigo-500 flex items-center justify-center text-2xl">
+                🎯
+              </div>
+              <div>
+                <h3 className="text-xl font-black uppercase tracking-tight text-foreground group-hover:text-indigo-400 transition-colors">
+                  Simulador ECOEMS 2026
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2 font-medium">
+                  512 reactivos · 4 bancos · Modo mixto · Aleatorio
+                </p>
+              </div>
+            </div>
+            <div className="relative z-10 mt-6 flex items-center text-sm font-bold text-indigo-500 uppercase tracking-widest">
+              Iniciar Simulacro <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
           {sortedAreas.map((area, index) => {
             const ap = areaProgress[area.id];
             return (
               <AreaCard
                 key={area.id}
                 area={area}
-                index={index}
+                index={index + 1}
                 viewedCount={ap?.viewed ?? 0}
                 totalCount={ap?.total}
               />
