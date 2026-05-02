@@ -144,6 +144,14 @@
   </script>
 
   <script>
+    // Polyfill Object.hasOwn for Android <9 / Chrome <93 / Safari <15.4
+    if (!Object.hasOwn) {
+      Object.hasOwn = function(obj, key) {
+        return Object.prototype.hasOwnProperty.call(obj, key);
+      };
+    }
+  </script>
+  <script>
     (function () {
       const theme = localStorage.getItem('theme');
       if (theme === 'light') {
