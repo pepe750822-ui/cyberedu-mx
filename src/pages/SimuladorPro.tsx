@@ -407,7 +407,7 @@ const SimuladorPro = () => {
                             {([
                                 { label: 'Banco 1 — Práctica General', value: 'bank1' as BankSelection },
                                 { label: 'Banco 2 — Generado por IA', value: 'bank2' as BankSelection },
-                                { label: 'Banco 3 — Examen de Práctica', value: 'bank3' as BankSelection },
+                                { label: 'Banco 3 — Instituto IMEI', value: 'bank3' as BankSelection },
                                 { label: 'Banco 4 — 📋 Guía Oficial IPN/UNAM 2025', value: 'bank4' as BankSelection },
                                 { label: 'Mixto — 512 reactivos combinados', value: 'mixed' as BankSelection },
                             ]).map(b => (
