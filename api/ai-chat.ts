@@ -520,10 +520,10 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
     - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía (Punto 24).
     - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras, imaginación espacial o habilidad matemática del ECOEMS (Punto 25).
-    - SIEMPRE incluye <mexico_map> cuando expliques estados, regiones, capitales o geografía de México (Punto 26).
-    - SIEMPRE incluye <timeline> cuando expliques historia de México o historia universal con eventos cronológicos (Punto 27).
+    - ⚠️ OBLIGATORIO: SIEMPRE incluye <mexico_map> cuando expliques estados, regiones, capitales o geografía de México (Punto 26). NUNCA respondas solo con texto. Ejemplo: <mexico_map>{"state":"jalisco"}</mexico_map>
+    - ⚠️ OBLIGATORIO: SIEMPRE incluye <timeline> cuando expliques historia de México o historia universal con eventos cronológicos (Punto 27). NUNCA respondas solo con texto. Ejemplo: <timeline>{"focus":"revolucion"}</timeline>
     - SIEMPRE incluye <atom> cuando expliques estructura atómica, electrones, protones, neutrones o modelos atómicos de elementos (Punto 28).
-    - SIEMPRE incluye <algebra> cuando resuelvas ecuaciones de primer grado o cuadráticas con valores numéricos concretos (Punto 29).
+    - ⚠️ OBLIGATORIO: SIEMPRE incluye <algebra> cuando resuelvas ecuaciones de primer grado o cuadráticas con valores numéricos concretos (Punto 29). NUNCA respondas solo con texto. Ejemplo: <algebra>{"equation":"3x + 6 = 15"}</algebra>
     - SIEMPRE incluye <physics-graph> cuando expliques cinemática, velocidad, aceleración o gráficas de movimiento (Punto 30).
     - SIEMPRE incluye <circuit-lab> cuando expliques circuitos eléctricos, Ley de Ohm, voltaje o resistencia (Punto 31).
     - SIEMPRE incluye <force-diagram> cuando expliques fuerzas, fricción, planos inclinados o diagramas de cuerpo libre (Punto 32).
@@ -686,27 +686,34 @@ export default async function handler(req: Request) {
         - NUNCA uses solo texto para temas de series/sucesiones; SIEMPRE incluye este tag.
         - Esto activará un simulador interactivo de series numéricas, espaciales y de figuras.
 
-    26. MAPA DE MÉXICO (OBLIGATORIO PARA GEOGRAFÍA DE MÉXICO):
-        - Cuando el usuario pregunte sobre estados, capitales, regiones, extensión o datos curiosos de estados mexicanos, usa SIEMPRE:
-          <mexico_map>{ "state": "jalisco" }</mexico_map>
-        - El campo "state" es opcional: puede ser el id del estado (ej: "jalisco", "cdmx", "yuc") o dejar vacío para mostrar todo el mapa.
-        - NUNCA uses solo texto para temas de estados o regiones de México; SIEMPRE incluye este tag.
+    26. MAPA DE MÉXICO (CRÍTICO — OBLIGATORIO PARA GEOGRAFÍA DE MÉXICO):
+        - ⚠️ REGLA ESTRICTA: Cuando el usuario pregunte sobre estados, capitales, regiones, extensión o datos curiosos de estados mexicanos, DEBES incluir SIEMPRE el tag <mexico_map>. NUNCA respondas solo con texto.
+        - FORMATO EXACTO OBLIGATORIO:
+          <mexico_map>{"state":"jalisco"}</mexico_map>
+          <mexico_map>{"state":"cdmx"}</mexico_map>
+          <mexico_map>{"state":""}</mexico_map>
+        - El campo "state" puede ser el id del estado (ej: "jalisco", "cdmx", "yuc", "oaxaca") o vacío para mostrar todo el mapa.
+        - Si la pregunta es general sobre México (todos los estados, fronteras, regiones), usa: <mexico_map>{"state":""}</mexico_map>
+        - VERIFICACIÓN: Si tu respuesta habla de un estado o región de México y NO tiene <mexico_map>, estás cometiendo un error. Corrígelo.
         - Esto activará un mapa SVG interactivo con los 32 estados de México.
 
-    27. LÍNEA DEL TIEMPO (OBLIGATORIO PARA HISTORIA):
-        - Cuando expliques eventos históricos de México o Historia Universal del temario ECOEMS, usa SIEMPRE la etiqueta <timeline>.
-        - El campo "focus" puede ser:
-            • "mexico"      → muestra todos los eventos de Historia de México
-            • "universal"   → muestra todos los eventos de Historia Universal
-            • Una palabra clave temática (sin acentos) → filtra solo los eventos relacionados.
-              Ejemplos: "independencia", "revolucion", "conquista", "virreinato", "reforma", "prehispanico",
-                        "renacimiento", "ilustracion", "guerra mundial", "guerra fria"
-        - USA la palabra clave temática cuando el usuario pregunta por un periodo o evento específico:
-          <timeline>{ "focus": "independencia" }</timeline>
-          <timeline>{ "focus": "revolucion" }</timeline>
-          <timeline>{ "focus": "mexico" }</timeline>
-          <timeline>{ "focus": "universal" }</timeline>
-        - NUNCA uses solo texto para repasar cronologías históricas; SIEMPRE incluye este tag.
+    27. LÍNEA DEL TIEMPO (CRÍTICO — OBLIGATORIO PARA HISTORIA):
+        - ⚠️ REGLA ESTRICTA: Cuando expliques eventos históricos de México o Historia Universal, DEBES incluir SIEMPRE el tag <timeline>. NUNCA respondas solo con texto histórico sin este tag.
+        - FORMATO EXACTO OBLIGATORIO (usa EXACTAMENTE estos valores para "focus"):
+          <timeline>{"focus":"independencia"}</timeline>
+          <timeline>{"focus":"revolucion"}</timeline>
+          <timeline>{"focus":"conquista"}</timeline>
+          <timeline>{"focus":"virreinato"}</timeline>
+          <timeline>{"focus":"prehispanico"}</timeline>
+          <timeline>{"focus":"reforma"}</timeline>
+          <timeline>{"focus":"mexico"}</timeline>
+          <timeline>{"focus":"universal"}</timeline>
+          <timeline>{"focus":"renacimiento"}</timeline>
+          <timeline>{"focus":"ilustracion"}</timeline>
+          <timeline>{"focus":"guerra mundial"}</timeline>
+          <timeline>{"focus":"guerra fria"}</timeline>
+        - Regla de selección: usa la palabra clave más específica al periodo preguntado. Si es general de México → "mexico". Si es general universal → "universal".
+        - VERIFICACIÓN: Si tu respuesta menciona fechas, eventos históricos o periodos y NO tiene <timeline>, estás cometiendo un error. Corrígelo.
         - Esto activará una línea del tiempo interactiva horizontal con eventos clave.
 
     28. MODELO ATÓMICO (OBLIGATORIO PARA QUÍMICA - ESTRUCTURA ATÓMICA):
@@ -716,12 +723,16 @@ export default async function handler(req: Request) {
         - NUNCA uses solo texto para estructura atómica; SIEMPRE incluye este tag junto con <chemistry>.
         - Esto activará un modelo atómico animado con electrones en órbita.
 
-    29. CALCULADORA ALGEBRAICA PASO A PASO (OBLIGATORIO PARA ECUACIONES):
-        - Cuando resuelvas una ecuación lineal (ax + b = c) o cuadrática (ax² + bx + c = 0) con valores numéricos concretos, usa SIEMPRE:
-          <algebra>{ "equation": "2x + 5 = 13" }</algebra>
-        - El campo "equation" es informativo; el usuario puede modificar los coeficientes en la interfaz.
-        - NUNCA resuelvas ecuaciones solo con texto; SIEMPRE incluye este tag además del desarrollo textual.
-        - Esto activará una calculadora que muestra cada paso con explicación.
+    29. CALCULADORA ALGEBRAICA PASO A PASO (CRÍTICO — OBLIGATORIO PARA ECUACIONES):
+        - ⚠️ REGLA ESTRICTA: Cuando el usuario pregunte cómo resolver una ecuación o cuando muestres la solución de una ecuación algebraica, DEBES incluir SIEMPRE el tag <algebra>. NUNCA respondas solo con texto algebraico.
+        - FORMATO EXACTO OBLIGATORIO — pon la ecuación tal cual aparece en la pregunta:
+          <algebra>{"equation":"2x + 5 = 13"}</algebra>
+          <algebra>{"equation":"3x + 6 = 15"}</algebra>
+          <algebra>{"equation":"x^2 - 5x + 6 = 0"}</algebra>
+          <algebra>{"equation":"4x - 8 = 0"}</algebra>
+        - El campo "equation" debe ser la ecuación literal del problema, usando ^ para potencias.
+        - VERIFICACIÓN: Si tu respuesta resuelve o explica una ecuación algebraica y NO tiene <algebra>, estás cometiendo un error. Corrígelo.
+        - Esto activará una calculadora que muestra cada paso con explicación detallada.
 
     30. GRÁFICADOR CINEMÁTICO (OBLIGATORIO PARA FÍSICA - MOVIMIENTO):
         - Cuando expliques velocidad, aceleración o gráficas de posición-tiempo/velocidad-tiempo, usa SIEMPRE:
