@@ -22,7 +22,19 @@ export default defineConfig(({ mode }) => ({
     outDir: "dist",
     sourcemap: mode === 'development',
     minify: 'esbuild',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('@react-three/fiber') || id.includes('@react-three/drei') || id.includes('three/')) {
+            return 'three';
+          }
+          if (id.includes('mermaid')) {
+            return 'mermaid';
+          }
+        },
+      },
+    },
   },
 }));
 

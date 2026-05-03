@@ -155,7 +155,7 @@ const BlogPostDetail = () => {
                                 {relatedPosts.map(rp => (
                                     <Link key={rp.id} to={`/blog/${rp.slug}`} className="group flex flex-col gap-4">
                                         <div className="aspect-video rounded-3xl overflow-hidden border border-border">
-                                            <img src={rp.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={rp.title} />
+                                            <img src={rp.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={rp.title} loading="lazy" />
                                         </div>
                                         <h4 className="font-black text-sm uppercase italic leading-tight group-hover:text-primary transition-colors">{rp.title}</h4>
                                     </Link>

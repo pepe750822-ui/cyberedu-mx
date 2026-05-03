@@ -51,6 +51,7 @@ const UltimoVideoCard = () => {
                         src={`https://img.youtube.com/vi/${video.videoUrl.split('embed/')[1]?.split('?')[0] || video.id}/mqdefault.jpg`}
                         className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
                         alt={video.title}
+                        loading="lazy"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className="bg-primary/20 backdrop-blur-md p-2 rounded-full border border-white/20">

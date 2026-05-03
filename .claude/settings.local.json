@@ -8,7 +8,8 @@
       "Bash(ls supabase/migrations/)",
       "Bash(ls supabase/)",
       "Bash(git commit *)",
-      "Bash(node -e \"require\\('@vercel/node'\\)\")"
+      "Bash(node -e \"require\\('@vercel/node'\\)\")",
+      "Bash(npx tsc *)"
     ]
   }
 }

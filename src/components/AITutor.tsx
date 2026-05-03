@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback, Suspense } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,7 +26,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
-import Mermaid from "./Mermaid";
+const MermaidLazy = React.lazy(() => import('./Mermaid'));
 import ChartRenderer, { ChartData } from "./ChartRenderer";
 import EduImageViewer from "./EduImageViewer";
 import { SafeBlockErrorBoundary } from "./SafeBlockErrorBoundary";
@@ -1739,10 +1739,11 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                 </div>
                 <div className="flex-1 min-w-0">
                   {infoImgUrl && (
-                    <img 
-                      src={infoImgUrl} 
+                    <img
+                      src={infoImgUrl}
                       alt={`Infografía ${r.title}`}
                       className="w-full h-40 object-contain rounded-lg mb-2 bg-slate-800/50 opacity-80 group-hover:opacity-100 transition-opacity border border-white/5 shadow-sm"
+                      loading="lazy"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                     />
                   )}
@@ -1756,7 +1757,7 @@ const RecommendationsCard: React.FC<{ recs: ContentRecommendation[]; onNavigate:
                 </div>
               </button>
               
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none group-hover/rec:pointer-events-auto">
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-auto">
                 {hasInfo && (
                   <button 
                     onClick={(e) => {
@@ -2515,6 +2516,7 @@ const AITutor = () => {
   }, []);
 
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isWaitingFirstChunk, setIsWaitingFirstChunk] = useState(false);
 
   // Fire the auto-send once the panel is open and not already streaming
   useEffect(() => {
@@ -3037,7 +3039,9 @@ const AITutor = () => {
         const sanitized = sanitizeMermaidContent(rawContent);
         return (
           <div className="w-full max-w-full overflow-x-auto my-4 custom-scrollbar" style={{ overflow: 'auto', maxWidth: '100%' }}>
-            <Mermaid chart={sanitized} />
+            <Suspense fallback={<div className="text-slate-500 text-xs p-2 animate-pulse">Cargando diagrama...</div>}>
+              <MermaidLazy chart={sanitized} />
+            </Suspense>
           </div>
         );
       }
@@ -3711,6 +3715,7 @@ const AITutor = () => {
 
     let lastUiUpdate = 0;
     const upsertAssistant = (chunk: string) => {
+      if (assistantContent === "") setIsWaitingFirstChunk(false);
       assistantContent += chunk;
       
       const now = Date.now();
@@ -3870,6 +3875,7 @@ const AITutor = () => {
       let cacheTypeHit: 'simple' | 'complex' | null = null;
       let hitModel: string | undefined;
 
+      setIsWaitingFirstChunk(true);
       await streamChat({
         messages: history,
         context: buildContext(),
@@ -3981,6 +3987,7 @@ const AITutor = () => {
         }
         return [...prev, { role: "assistant", content: errContent, id: assistantId }];
       });
+      setIsWaitingFirstChunk(false);
       setIsStreaming(false);
     }
   };
@@ -4171,7 +4178,7 @@ const AITutor = () => {
                       />
                   )}
                   {messages.map((msg) => (
-                    <MessageBubble 
+                    <MessageBubble
                       key={msg.id}
                       msg={msg}
                       isExpanded={isExpanded}
@@ -4194,6 +4201,21 @@ const AITutor = () => {
                       isSpeaking={isSpeaking}
                     />
                   ))}
+                  {isStreaming && isWaitingFirstChunk && (
+                    <div className="flex items-start gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <div className="h-8 w-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                        <Bot className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex items-center gap-2 bg-white/5 border border-white/5 rounded-2xl px-4 py-3">
+                        <span className="text-xs font-bold text-amber-400">⚡ CyberAgent está pensando</span>
+                        <span className="flex gap-1 ml-1">
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}} />
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}} />
+                          <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}} />
+                        </span>
+                      </div>
+                    </div>
+                  )}
                </div>
             </div>
 

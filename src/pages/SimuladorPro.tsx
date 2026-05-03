@@ -630,7 +630,7 @@ const SimuladorPro = () => {
 
                                         {q.imageUrl && (
                                             <div className="mb-6 rounded-2xl overflow-hidden border border-white/10 bg-black/20">
-                                                <img src={q.imageUrl} alt={`Imagen reactivo ${idx + 1}`} className="max-h-64 mx-auto object-contain" />
+                                                <img src={q.imageUrl} alt={`Imagen reactivo ${idx + 1}`} className="max-h-64 mx-auto object-contain" loading="lazy" />
                                             </div>
                                         )}
 
@@ -794,6 +794,7 @@ const SimuladorPro = () => {
                                     src={currentQuestion.imageUrl}
                                     alt="Visual del reactivo"
                                     className="max-h-80 mx-auto object-contain animate-in fade-in zoom-in duration-500"
+                                    loading="lazy"
                                 />
                             </div>
                         )}
