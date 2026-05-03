@@ -1070,6 +1070,9 @@ export default async function handler(req: Request) {
 
     const stream = new ReadableStream({
       async start(controller) {
+        // Send model info as first event so the client knows which model is responding
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ model_used: useDeepSeek ? 'deepseek-v4-flash' : 'claude-haiku' })}\n\n`));
+
         if (!apiResponse.body) {
           controller.close();
           return;

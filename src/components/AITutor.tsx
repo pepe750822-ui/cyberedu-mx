@@ -337,6 +337,7 @@ interface Message {
   eduImages?: EduImage[];
   isFromCache?: boolean;
   cacheType?: 'simple' | 'complex' | null;
+  modelUsed?: string;
 }
 
 // ─── Shared Navigation Handler Wrapper ───
@@ -1083,6 +1084,7 @@ async function streamChat({
   onDone: () => void;
   onUsage?: (usage: any) => void;
   onCache?: (cacheType?: 'simple' | 'complex') => void;
+  onModel?: (model: string) => void;
   signal?: AbortSignal;
   token?: string;
   file?: { type: string; data: string };
@@ -1134,6 +1136,8 @@ async function streamChat({
         if (parsed.usage_delta) aggregatedUsage = { ...aggregatedUsage, ...parsed.usage_delta };
         // Detect cache hit flag
         if (parsed.fromCache === true && onCache) onCache(parsed.cacheType || 'simple');
+        // Detect model used
+        if (parsed.model_used && onModel) onModel(parsed.model_used);
 
         let c: string | undefined;
         // Formato nuevo Edge Function: { content: "texto" }
@@ -2103,11 +2107,19 @@ const MessageBubble = React.memo(({
         {isAssistant && msg.isFromCache && (
           <span className={cn(
             "flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full select-none mb-0.5",
-            msg.cacheType === 'complex' 
-              ? "text-fuchsia-300 bg-fuchsia-500/20 border border-fuchsia-500/30" 
+            msg.cacheType === 'complex'
+              ? "text-fuchsia-300 bg-fuchsia-500/20 border border-fuchsia-500/30"
               : "text-cyan-300 bg-cyan-500/10 border border-cyan-500/20"
           )}>
             {msg.cacheType === 'complex' ? '🧠 Caché Experto' : '📦 Caché'}
+          </span>
+        )}
+
+        {/* Model badge — shown for assistant messages */}
+        {isAssistant && msg.modelUsed && (
+          <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 select-none mb-0.5">
+            {msg.modelUsed === 'deepseek-v4-flash' ? '⚡' : '🧠'}
+            {msg.modelUsed === 'deepseek-v4-flash' ? 'DeepSeek V4-Flash' : 'Claude Haiku'}
           </span>
         )}
 
@@ -3856,6 +3868,7 @@ const AITutor = () => {
       const startTime = Date.now();
       let hitCache = false;
       let cacheTypeHit: 'simple' | 'complex' | null = null;
+      let hitModel: string | undefined;
 
       await streamChat({
         messages: history,
@@ -3866,6 +3879,7 @@ const AITutor = () => {
         signal: abortControllerRef.current.signal,
         token: session?.access_token,
         onCache: (type) => { hitCache = true; cacheTypeHit = type || 'simple'; },
+        onModel: (model) => { hitModel = model; },
         onUsage: (usage: any) => {
           // Usage data is captured here; we store it in a ref-like variable for onDone
           (window as any).__lastChatUsage = usage;
@@ -3920,7 +3934,7 @@ const AITutor = () => {
 
           setMessages(prev => prev.map(m =>
             m.id === assistantId
-              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined, timelines: timelines.length > 0 ? timelines : undefined, atoms: atoms.length > 0 ? atoms : undefined, algebras: algebras.length > 0 ? algebras : undefined, physics, mathGraphs, exercises, chemistryElements, physicsGraphs: physicsGraphs.length > 0 ? physicsGraphs : undefined, circuitLabs: circuitLabs.length > 0 ? circuitLabs : undefined, forceDiagrams: forceDiagrams.length > 0 ? forceDiagrams : undefined, lewisStructures: lewisStructures.length > 0 ? lewisStructures : undefined, spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit }
+              ? { ...m, content: finalCleanContent, reasoning, decisions: decisions.length > 0 ? decisions : undefined, plan, quiz, charts: charts.length > 0 ? charts : undefined, calculators, simulators, geography: geography.length > 0 ? geography : undefined, solarSystem: solarSystem.length > 0 ? solarSystem : undefined, humanBody: humanBody.length > 0 ? humanBody : undefined, spatialSeries: spatialSeries.length > 0 ? spatialSeries : undefined, mexicoMaps: mexicoMaps.length > 0 ? mexicoMaps : undefined, timelines: timelines.length > 0 ? timelines : undefined, atoms: atoms.length > 0 ? atoms : undefined, algebras: algebras.length > 0 ? algebras : undefined, physics, mathGraphs, exercises, chemistryElements, physicsGraphs: physicsGraphs.length > 0 ? physicsGraphs : undefined, circuitLabs: circuitLabs.length > 0 ? circuitLabs : undefined, forceDiagrams: forceDiagrams.length > 0 ? forceDiagrams : undefined, lewisStructures: lewisStructures.length > 0 ? lewisStructures : undefined, spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined, recommendations, eduImages: eduImages.length > 0 ? eduImages : undefined, isFromCache: hitCache, cacheType: cacheTypeHit, modelUsed: hitModel }
               : m
           ));
           setIsStreaming(false);
