@@ -918,6 +918,8 @@ export default async function handler(req: Request) {
       }
     }
 
+    console.log(`[AI-ROUTER] Modelo: ${useDeepSeek ? 'DeepSeek V4-Flash' : 'Claude Haiku'} | hasFile: ${!!file} | userId: ${userId?.slice(0,8)}`);
+
     if (!useDeepSeek) {
       console.log(`[AI-CHAT] 🧠 MODELO: ANTHROPIC (Claude Haiku) | Query: "${lastUserMsg.slice(0, 40)}..."`);
       apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
