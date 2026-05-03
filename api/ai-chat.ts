@@ -105,85 +105,6 @@ function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
     .slice(0, 200); // max 200 chars for key
 }
 
-function requiresClaude(question: string): boolean {
-  const artifactIndicators = [
-    // ── Geografía / Mapas (GlobeArtifact, MexicoMapArtifact) ──
-    /mapa/i, /globo/i, /geograf/i, /continente/i, /pa[íi]s/i, /ubicaci[oó]n/i,
-    /estado de /i, /estados de /i, /capital de /i, /regi[oó]n/i,
-
-    // ── Química / Tabla periódica / Átomos (ChemistryArtifact, AtomArtifact) ──
-    /[áa]tomo/i, /tabla peri[oó]dica/i, /qu[íi]mica/i, /elemento qu[íi]mico/i,
-    /\belementos?\b/i,
-    /configuraci[oó]n electr[oó]nica/i, /modelo at[oó]mico/i,
-    /prot[oó]n/i, /neutr[oó]n/i, /electr[oó]n/i, /orbital/i,
-    /lewis/i, /enlace/i, /mol[eé]cula/i, /enlace covalente/i, /octeto/i,
-    /reacci[oó]n qu[íi]mica/i, /compuesto/i,
-    // Términos de tabla periódica
-    /n[uú]mero at[oó]mico/i, /masa at[oó]mica/i, /valencia/i,
-    /electronegatividad/i, /per[íi]odo/i, /\bgrupo\b/i,
-    /\bmetal\b/i, /no metal/i, /gas noble/i, /semimetal/i,
-    // Elementos individuales
-    /\bboro\b/i, /carbono/i, /nitr[oó]geno/i, /ox[íi]geno/i, /fl[uú]or/i,
-    /\bsodio\b/i, /magnesio/i, /aluminio/i, /silicio/i, /f[oó]sforo/i,
-    /azufre/i, /\bcloro\b/i, /potasio/i, /\bcalcio\b/i, /\bhierro\b/i,
-    /\bcobre\b/i, /\bzinc\b/i, /\bplata\b/i, /\boro\b/i, /mercurio/i, /\bplomo\b/i,
-
-    // ── Biología / Cuerpo humano (HumanBodyArtifact) ──
-    /cuerpo humano/i, /[oó]rgano/i, /anatom[íi]a/i, /biolog[íi]a/i,
-    /sistema digestivo/i, /sistema nervioso/i, /sistema circulatorio/i,
-    /sistema respiratorio/i, /sistema muscular/i, /sistema [oó]seo/i,
-    /c[eé]lula/i, /adn/i, /gen[eé]tica/i, /mitosis/i, /meiosis/i,
-    /fotosíntesis/i, /fotosintesis/i,
-
-    // ── Física - Cinemática / Movimiento (PhysicsArtifact, PhysicsGraphArtifact) ──
-    /cinem[aá]tica/i, /velocidad/i, /aceleraci[oó]n/i, /mru/i, /mrua/i,
-    /movimiento rectil[íi]neo/i, /gr[aá]fica de movimiento/i,
-    /posici[oó]n.*tiempo/i, /velocidad.*tiempo/i,
-
-    // ── Física - Electricidad / Circuitos (CircuitLabArtifact) ──
-    /circuito/i, /corriente el[eé]ctrica/i, /voltaje/i, /resistencia/i,
-    /ley de ohm/i, /\bohm\b/i, /amperio/i, /bater[íi]a/i,
-    /potencia el[eé]ctrica/i, /circuito en serie/i, /circuito en paralelo/i,
-
-    // ── Física - Fuerzas / Newton (ForceDiagramArtifact) ──
-    /fuerza/i, /fricci[oó]n/i, /plano inclinado/i, /vector/i, /newton/i,
-    /diagrama de cuerpo libre/i, /segunda ley de newton/i,
-
-    // ── Razonamiento espacial / 3D (SpatialReasoning3DArtifact, SpatialSeriesArtifact) ──
-    /\b3d\b/i, /rotar/i, /\bcubo\b/i, /espacial/i, /razonamiento espacial/i,
-    /rotaci[oó]n/i, /vistas de/i,
-    /series (num[eé]ricas|espaciales)/i, /sucesi[oó]n/i, /patr[oó]n num[eé]rico/i,
-
-    // ── Historia / Línea del tiempo (TimelineArtifact) ──
-    /l[íi]nea del tiempo/i, /cronolog[íi]a/i, /timeline/i,
-    /historia de m[eé]xico/i, /historia universal/i, /historia de la/i,
-    /siglo (xix|xx|xxi|xv|xvi|xvii|xviii)/i, /[eé]poca hist[oó]rica/i,
-    /evento hist[oó]rico/i, /independencia de/i, /revoluci[oó]n mexicana/i,
-
-    // ── Sistema solar / Astronomía (SolarSystemArtifact) ──
-    /sistema solar/i, /planetas?/i, /[oó]rbita/i, /astronom[íi]a/i,
-    /sat[eé]lite/i, /galaxia/i, /universo/i,
-    /\bvenus\b/i, /\bmarte\b/i, /j[uú]piter/i, /saturno/i, /urano/i, /neptuno/i,
-
-    // ── Calculadora / Fórmulas (CalculatorArtifact) ──
-    /calculadora/i, /calcular/i, /calcula /i, /f[oó]rmula/i,
-
-    // ── Álgebra / Ecuaciones (AlgebraArtifact) ──
-    /ecuaci[oó]n/i, /[aá]lgebra/i, /resuelve.*ecuaci[oó]n/i,
-
-    // ── Matemáticas gráficas (MathGraphArtifact) ──
-    /gr[aá]fica/i, /funci[oó]n matem[aá]tica/i, /par[aá]bola/i,
-
-    // ── Ejercicios / Práctica (ExerciseArtifact) ──
-    /ejercicio/i, /pr[aá]ctica/i, /resuelve/i,
-
-    // ── Genéricos ──
-    /simulador/i, /interactivo/i, /diagrama/i, /esquema/i,
-    /quiz/i, /examen/i, /trivia/i, /evaluaci[oó]n/i,
-  ];
-  return artifactIndicators.some(pattern => pattern.test(question));
-}
-
 // ─── Should this question be cached? ─────────────────────────
 // Skip cache for questions that depend on personal context
 function isCacheable(message: string, history: any[]): { shouldCache: boolean; cacheType: 'simple' | 'complex' | null } {
@@ -198,8 +119,7 @@ function isCacheable(message: string, history: any[]): { shouldCache: boolean; c
     return { shouldCache: false, cacheType: null };
   }
 
-  const isComplex = requiresClaude(message);
-  return { shouldCache: true, cacheType: isComplex ? 'complex' : 'simple' };
+  return { shouldCache: true, cacheType: 'simple' };
 }
 
 // ─── Redis Rate Limiting (Safety Layer) ───────────────────────
@@ -966,32 +886,39 @@ export default async function handler(req: Request) {
       (m: any) => (m.role === 'user' || m.role === 'assistant') && m.content && m.content.toString().trim() !== ""
     );
 
-    // ─── MODEL ROUTING LOGIC (DEEPSEEK VS ANTHROPIC) ───────────
-    const needsClaude = requiresClaude(lastUserMsg);
-    // Prioridad DeepSeek (Crecimiento): Usar DeepSeek para todo en Telegram o si no requiere artefactos en Web
-    const useDeepSeek = (isTelegram || !needsClaude) && DEEPSEEK_API_KEY && !file;
-    
-    let apiResponse: Response;
+    // ─── MODEL ROUTING LOGIC: hasFile → Claude Haiku, else → DeepSeek V4-Flash ─
+    let useDeepSeek = Boolean(DEEPSEEK_API_KEY && !file);
+
+    let apiResponse!: Response;
 
     if (useDeepSeek) {
-      console.log(`[AI-CHAT] 🟢 MODELO: DEEPSEEK (Ahorro activado) | Query: "${lastUserMsg.slice(0, 40)}..."`);
-      apiResponse = await fetch('https://api.deepseek.com/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: finalSystemPromptText },
-            ...cleanMessages
-          ],
-          stream: true,
-          max_tokens: 4096,
-        }),
-      });
-    } else {
+      try {
+        console.log(`[AI-CHAT] 🟢 MODELO: DEEPSEEK V4-Flash | Query: "${lastUserMsg.slice(0, 40)}..."`);
+        const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: 'deepseek-v4-flash',
+            messages: [
+              { role: 'system', content: finalSystemPromptText },
+              ...cleanMessages
+            ],
+            stream: true,
+            max_tokens: 4096,
+          }),
+        });
+        if (!dsRes.ok && dsRes.status >= 500) throw new Error(`DeepSeek ${dsRes.status}`);
+        apiResponse = dsRes;
+      } catch (dsError) {
+        console.log('[FALLBACK] DeepSeek V4-Flash failed, using Claude Haiku');
+        useDeepSeek = false;
+      }
+    }
+
+    if (!useDeepSeek) {
       console.log(`[AI-CHAT] 🧠 MODELO: ANTHROPIC (Claude Haiku) | Query: "${lastUserMsg.slice(0, 40)}..."`);
       apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
