@@ -976,11 +976,6 @@ function parseRecommendationsFromContent(content: string): { recommendations: Co
 }
 
 function parseAllBlocks(content: string) {
-  console.log('[PARSE] fullText length:', content.length);
-  console.log('[PARSE] has timeline:', content.includes('<timeline>'));
-  console.log('[PARSE] has mexico_map:', content.includes('<mexico_map>'));
-  console.log('[PARSE] has algebra:', content.includes('<algebra>'));
-  console.log('[PARSE] has mermaid:', content.includes('```mermaid'));
   try {
     const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent } = parseAllBlocksHelper(content);
     return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent };
@@ -3722,16 +3717,8 @@ const AITutor = () => {
     let lastUiUpdate = 0;
     const upsertAssistant = (chunk: string) => {
       if (assistantContent === "") setIsWaitingFirstChunk(false);
-      const prevLen = assistantContent.length;
       assistantContent += chunk;
-      // Log when XML artefact tags first appear in the accumulated stream
-      const xmlTags = ['<timeline>', '<mexico_map>', '<algebra>', '```mermaid'] as const;
-      for (const tag of xmlTags) {
-        if (!assistantContent.slice(0, prevLen).includes(tag) && assistantContent.includes(tag)) {
-          console.log(`[ACCUMULATE] "${tag}" first seen at offset ${prevLen}, chunk: "${chunk.slice(0, 80)}"`);
-        }
-      }
-      
+
       const now = Date.now();
       if (now - lastUiUpdate < 100) return; // Limitar a 10 actualizaciones por segundo
       lastUiUpdate = now;
@@ -3905,8 +3892,6 @@ const AITutor = () => {
           (window as any).__lastChatUsage = usage;
         },
         onDone: () => {
-          console.log('[STREAM] onDone fired. assistantContent length:', assistantContent.length);
-          console.log('[STREAM] tail-300:', assistantContent.slice(-300));
           const { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, chemistryElements, exercises, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent } = parseAllBlocks(assistantContent);
           const responseTime = Date.now() - startTime;
           const usage = (window as any).__lastChatUsage || {};
