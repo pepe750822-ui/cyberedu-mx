@@ -27,11 +27,19 @@ export function usePushNotifications() {
         applicationServerKey: urlBase64ToUint8Array(vapidKey),
       });
 
-      await (supabase as any).from("push_subscriptions").upsert(
+      console.log("[Push] Browser subscription created:", sub.endpoint);
+
+      const { error } = await (supabase as any).from("push_subscriptions").upsert(
         { user_id: userId, subscription: sub.toJSON() },
         { onConflict: "user_id" }
       );
 
+      if (error) {
+        console.error("[Push] Supabase upsert failed:", error.message, error.code, error.details);
+        return false;
+      }
+
+      console.log("[Push] Subscription saved to Supabase OK");
       return true;
     } catch (err) {
       console.error("[Push] Subscription error:", err);
