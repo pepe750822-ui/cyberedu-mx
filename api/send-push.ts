@@ -3,15 +3,29 @@ import webpush from "web-push";
 // Vercel Hobby: nodejs functions max 10s
 export const config = { runtime: "nodejs", maxDuration: 10 };
 
-webpush.setVapidDetails(
-  "mailto:pepe750822@gmail.com",
-  process.env.VITE_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
-
 export default async function handler(req: Request) {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
+  }
+
+  // Check all env vars before doing anything
+  const vapidPublic = process.env.VITE_VAPID_PUBLIC_KEY;
+  const vapidPrivate = process.env.VAPID_PRIVATE_KEY;
+  const supabaseUrl = process.env.VITE_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  const missing = [
+    !vapidPublic && "VITE_VAPID_PUBLIC_KEY",
+    !vapidPrivate && "VAPID_PRIVATE_KEY",
+    !supabaseUrl && "VITE_SUPABASE_URL",
+    !supabaseKey && "SUPABASE_SERVICE_ROLE_KEY",
+  ].filter(Boolean);
+
+  if (missing.length > 0) {
+    return new Response(
+      JSON.stringify({ ok: false, error: `Missing env vars: ${missing.join(", ")}` }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 
   let body: any;
@@ -31,14 +45,8 @@ export default async function handler(req: Request) {
     return new Response("Missing title or message", { status: 400 });
   }
 
-  const supabaseUrl = process.env.VITE_SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !supabaseKey) {
-    return new Response(
-      JSON.stringify({ ok: false, error: "SUPABASE_SERVICE_ROLE_KEY not set in Vercel env vars" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
-  }
+  // Init VAPID inside handler — avoids module-level crash on missing keys
+  webpush.setVapidDetails("mailto:pepe750822@gmail.com", vapidPublic!, vapidPrivate!);
 
   // Fetch subscriptions with 5s timeout
   const controller = new AbortController();
@@ -51,7 +59,7 @@ export default async function handler(req: Request) {
       {
         signal: controller.signal,
         headers: {
-          apikey: supabaseKey,
+          apikey: supabaseKey!,
           Authorization: `Bearer ${supabaseKey}`,
         },
       }
@@ -61,7 +69,7 @@ export default async function handler(req: Request) {
     if (!res.ok) {
       const text = await res.text();
       return new Response(
-        JSON.stringify({ ok: false, error: `Supabase error ${res.status}: ${text}` }),
+        JSON.stringify({ ok: false, error: `Supabase ${res.status}: ${text}` }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
