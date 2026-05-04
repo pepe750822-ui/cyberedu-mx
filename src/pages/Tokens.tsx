@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { 
-  Ticket, 
-  Check, 
-  ShieldCheck, 
-  Rocket, 
-  Zap, 
-  Crown, 
+import {
+  Ticket,
+  Check,
+  ShieldCheck,
+  Rocket,
+  Zap,
+  Crown,
   Star,
   Info,
   Send,
   Chrome,
-  Lock
+  Lock,
+  Bell
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 const tokenPackages = [
   {
@@ -30,8 +32,10 @@ const tokenPackages = [
     price: 20,
     pricePerToken: 1.00,
     badge: "Lanzamiento",
+    badgeColor: "bg-primary",
     icon: <Ticket className="h-6 w-6 text-slate-400" />,
-    description: "Ideal para dudas rápidas."
+    description: "Ideal para dudas rápidas.",
+    urgency: "Ideal para empezar hoy",
   },
   {
     id: "popular",
@@ -40,9 +44,11 @@ const tokenPackages = [
     price: 50,
     pricePerToken: 0.83,
     highlight: true,
-    badge: "Más vendido",
+    badge: "MÁS POPULAR",
+    badgeColor: "bg-violet-600",
     icon: <Star className="h-6 w-6 text-amber-500" />,
-    description: "El balance perfecto para estudiar."
+    description: "El balance perfecto para estudiar.",
+    urgency: "El preferido de quienes aprueban",
   },
   {
     id: "pro",
@@ -51,7 +57,8 @@ const tokenPackages = [
     price: 120,
     pricePerToken: 0.75,
     icon: <Rocket className="h-6 w-6 text-primary" />,
-    description: "Para estudiantes intensivos."
+    description: "Para estudiantes intensivos.",
+    urgency: "Para los que van en serio",
   }
 ];
 
@@ -65,6 +72,8 @@ const unlimitedPackage = {
     icon: <Crown className="h-8 w-8 text-amber-500" />
 };
 
+const EXAM_DATE = new Date("2026-06-20T08:00:00");
+
 const TokensPage = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
@@ -74,6 +83,14 @@ const TokensPage = () => {
   const [linkingCode, setLinkingCode] = useState("");
   const [isLinking, setIsLinking] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const { subscribe } = usePushNotifications();
+
+  const examDays = useMemo(() => {
+    const diff = EXAM_DATE.getTime() - Date.now();
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  }, []);
 
   useEffect(() => {
     const raw = localStorage.getItem('cyberedu_pending_question');
@@ -153,6 +170,25 @@ const TokensPage = () => {
       toast.error("Error al vincular: " + error.message);
     } finally {
       setIsLinking(false);
+    }
+  };
+
+  const handleSubscribePush = async () => {
+    if (!user) {
+      toast.error("Debes iniciar sesión para activar recordatorios");
+      return;
+    }
+    setSubscribing(true);
+    try {
+      const ok = await subscribe(user.id);
+      if (ok) {
+        setSubscribed(true);
+        toast.success("¡Recordatorios del ECOEMS activados! 🔔");
+      } else {
+        toast.error("No se pudo activar las notificaciones. Verifica los permisos del navegador.");
+      }
+    } finally {
+      setSubscribing(false);
     }
   };
 
@@ -370,6 +406,27 @@ const TokensPage = () => {
           </motion.div>
         ) : (
           <>
+            {/* Urgency countdown */}
+            {examDays > 0 && (
+              <div className="text-center p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                <p className="text-red-400 font-bold text-lg">⚠️ El ECOEMS es el 20 de junio</p>
+                <p className="text-4xl font-black text-white mt-1">{examDays} días para prepararte</p>
+                <p className="text-slate-400 text-sm mt-1">Cada día sin practicar es ventaja para los demás</p>
+              </div>
+            )}
+
+            {/* Push notifications CTA */}
+            <div className="flex justify-center">
+              <button
+                onClick={handleSubscribePush}
+                disabled={subscribing || subscribed}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-300 hover:bg-violet-500/20 transition-colors text-sm font-semibold disabled:opacity-60"
+              >
+                <Bell className="h-4 w-4" />
+                {subscribed ? "✓ Recordatorios activados" : subscribing ? "Activando..." : "🔔 Activar recordatorios del ECOEMS"}
+              </button>
+            </div>
+
             {/* Packages Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {tokenPackages.map((pkg, idx) => (
@@ -381,7 +438,7 @@ const TokensPage = () => {
                 >
                   <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] border-white/10 ${pkg.highlight ? "border-primary/40 ring-1 ring-primary/20" : ""}`}>
                     {pkg.badge && (
-                      <div className="absolute top-6 right-[-35px] rotate-45 bg-primary text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20">
+                      <div className={`absolute top-6 right-[-35px] rotate-45 ${(pkg as any).badgeColor ?? 'bg-primary'} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
                         {pkg.badge}
                       </div>
                     )}
@@ -418,8 +475,8 @@ const TokensPage = () => {
                       </div>
                     </CardContent>
 
-                    <CardFooter className="p-8 pt-0">
-                      <Button 
+                    <CardFooter className="p-8 pt-0 flex flex-col gap-2">
+                      <Button
                         className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20" : "bg-white/10 hover:bg-white/20 border border-white/10"}`}
                         onClick={() => handleBuy(pkg.id)}
                         disabled={loadingPkg === pkg.id}
@@ -430,6 +487,9 @@ const TokensPage = () => {
                           "Comprar ahora"
                         )}
                       </Button>
+                      {(pkg as any).urgency && (
+                        <p className="text-xs text-center text-slate-500 font-medium">{(pkg as any).urgency}</p>
+                      )}
                     </CardFooter>
                   </Card>
                 </motion.div>
@@ -471,8 +531,8 @@ const TokensPage = () => {
                              </div>
                           </div>
 
-                          <div className="w-full md:w-auto">
-                            <Button 
+                          <div className="w-full md:w-auto flex flex-col items-center gap-2">
+                            <Button
                                 className="w-full md:w-56 h-16 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest text-xs shadow-xl shadow-amber-500/20"
                                 onClick={() => handleBuy(unlimitedPackage.id)}
                                 disabled={loadingPkg === unlimitedPackage.id}
@@ -483,6 +543,7 @@ const TokensPage = () => {
                                     "Activar ilimitado"
                                 )}
                             </Button>
+                            <p className="text-xs text-slate-500 font-medium text-center">Acceso ilimitado hasta el examen</p>
                           </div>
                        </div>
                     </CardContent>

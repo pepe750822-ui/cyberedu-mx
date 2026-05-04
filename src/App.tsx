@@ -41,6 +41,7 @@ import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
 import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
 import TelegramButton from "./components/TelegramButton";
+import ExamCountdown from "./components/ExamCountdown";
 
 
 /**
@@ -162,6 +163,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <GlobalAnnouncementBanner />
+          <ExamCountdown />
           <PageViewTracker />
           <AuthenticatedStudyTools />
           <PWAInstallBanner />
