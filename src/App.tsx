@@ -137,7 +137,9 @@ const AuthenticatedStudyTools = () => {
       <AITutor />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
+      {/* TEMPORALMENTE DESACTIVADO - debugging tablet Android
       {showOnboarding && <OnboardingModal />}
+      */}
     </Suspense>
   );
 };
