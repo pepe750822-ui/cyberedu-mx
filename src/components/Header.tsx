@@ -201,6 +201,12 @@ const Header = () => {
             </Tooltip>
           )}
 
+          {user?.email === 'pepe750822@gmail.com' && (
+            <Link to="/admin" className="text-xs text-violet-400 hover:text-violet-300 flex items-center gap-1 transition-colors">
+              ⚙️ Admin
+            </Link>
+          )}
+
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
               <ProfileDialog>
@@ -378,6 +384,16 @@ const Header = () => {
                     >
                       <ShieldCheck className="h-5 w-5" />
                       PANEL MAESTRO (ADMIN)
+                    </Link>
+                  )}
+
+                  {user?.email === 'pepe750822@gmail.com' && (
+                    <Link
+                      to="/admin"
+                      className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-violet-500/10 transition-colors text-violet-400 font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      ⚙️ Admin Dashboard
                     </Link>
                   )}
                   <a
