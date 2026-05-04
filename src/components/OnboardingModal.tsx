@@ -119,7 +119,7 @@ export default function OnboardingModal() {
       }`}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => close(false)} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => close(false)} />
 
       {/* Modal */}
       <div

@@ -120,7 +120,7 @@ const AuthenticatedStudyTools = () => {
   const showOnboarding =
     !!user &&
     !!profile &&
-    !profile.onboarding_completed &&
+    profile.onboarding_completed === false &&
     !localStorage.getItem("cyberedu_onboarding_done");
 
   return (
