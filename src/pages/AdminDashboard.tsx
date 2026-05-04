@@ -385,6 +385,12 @@ export default function AdminDashboard() {
                     url: "https://resend.com/metrics",
                     color: "from-violet-600 to-violet-500",
                   },
+                  {
+                    label: "Microsoft Clarity",
+                    icon: "🎯",
+                    url: "https://clarity.microsoft.com",
+                    color: "from-blue-500 to-cyan-500",
+                  },
                 ].map((tool) => (
                   <a
                     key={tool.label}
