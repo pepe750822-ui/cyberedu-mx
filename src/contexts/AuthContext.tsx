@@ -209,14 +209,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Initial session check
     checkSession();
 
-    // Safety timeout aumentado a 12s para dar margen a la carga del perfil en redes lentas
+    // Safety timeout: 5s máximo para desbloquear la app en Android/redes lentas
     const safetyTimeoutId = setTimeout(() => {
-      // Usamos la ref para verificar el estado real actual, no el capturado al montar
       if (mounted && isLoadingRef.current) {
-        console.warn("[Auth] Safety timeout (12s) - forcing stop loading.");
+        console.warn("[Auth] Safety timeout (5s) - forcing stop loading.");
         setIsLoading(false);
       }
-    }, 12000);
+    }, 5000);
 
     return () => {
       mounted = false;
