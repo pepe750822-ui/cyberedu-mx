@@ -113,13 +113,22 @@ const PageViewTracker = () => {
   return null;
 };
 
+const OnboardingModal = lazy(() => import("./components/OnboardingModal"));
+
 const AuthenticatedStudyTools = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const showOnboarding =
+    !!user &&
+    !!profile &&
+    !profile.onboarding_completed &&
+    !localStorage.getItem("cyberedu_onboarding_done");
+
   return (
     <Suspense fallback={null}>
       <AITutor />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
+      {showOnboarding && <OnboardingModal />}
     </Suspense>
   );
 };

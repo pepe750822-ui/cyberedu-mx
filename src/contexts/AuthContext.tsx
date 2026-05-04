@@ -23,6 +23,7 @@ interface UserProfile {
   trial_used?: boolean;
   last_daily_free?: string | null;
   daily_questions_count?: number;
+  onboarding_completed?: boolean | null;
 }
 
 interface AuthContextValue {

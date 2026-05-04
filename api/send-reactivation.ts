@@ -1,56 +1,53 @@
+// Node runtime — edge limit (30s) is too tight for 21 emails × 500ms delay
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
+  maxDuration: 60,
 };
 
-const RECIPIENTS = [
-  'adri.mor.enfermeria@gmail.com',
-  'amairanimejiah@gmail.com',
-  'amairanimejih@gmail.com',
-  'amembrillog@gmail.com',
-  'angelhernandezam2330@gmail.com',
-  'calderongarciapablo28@gmail.com',
-  'choski.chan@gmail.com',
-  'danniss0210@gmail.com',
-  'dulcevanesafuenteshernandez@gmail.com',
-  'floresvania553@gmail.com',
-  'hserna2311@gmail.com',
-  'iangerardofrancorafael@gmail.com',
-  'imika.ja@gmail.com',
-  'jccabanillas@gmail.com',
-  'jfespinoza@gmail.com',
-  'jimenaortiz403@gmail.com',
-  'karlismejito@gmail.com',
-  'l181080472@iztapalapa.tecnm.mx',
-  'lisset.jazmin.rodriguez@gmail.com',
-  'melanicalderon324@gmail.com',
-  'nohemibecerril15@gmail.com',
-  'odanag@gmail.com',
-  'santiago.roman1611@gmail.com',
-  'sotomayorcesar239@gmail.com',
-  'valemancera147@gmail.com',
-  'yanethchagro@gmail.com',
-  'zamoramaciasestefania@gmail.com',
+const RECIPIENTS: { email: string; name: string }[] = [
+  { email: "kekisalher@gmail.com", name: "Kevin" },
+  { email: "jsaz._2811@icloud.com", name: "Yaz" },
+  { email: "jfespinoza@gmail.com", name: "Juan Francisco" },
+  { email: "lucibahngonz@gmail.com", name: "Luci" },
+  { email: "carloscerlira@gmail.com", name: "Carlos" },
+  { email: "renataramirezrrr03@gmail.com", name: "Renata" },
+  { email: "jafetacad@gmail.com", name: "Jafet" },
+  { email: "andresalvarezpenaloza@gmail.com", name: "Andres" },
+  { email: "chenitarodriguez31@gmail.com", name: "Azucena" },
+  { email: "mar438202@gmail.com", name: "Mar" },
+  { email: "avilaelianyael@gmail.com", name: "Elian" },
+  { email: "altairreynaperez@gmail.com", name: "Aurora" },
+  { email: "karenveragarcia893@gmail.com", name: "Lizzy" },
+  { email: "santiagogalvan339@gmail.com", name: "Santiago" },
+  { email: "cowa7876@gmail.com", name: "Mauricio" },
+  { email: "kuramazappinzone5@gmail.com", name: "Andres" },
+  { email: "gaste.0302@gmail.com", name: "Jehieli" },
+  { email: "angelperezsalinas1502@gmail.com", name: "Angel" },
+  { email: "wtf.mar.ramirez19@gmail.com", name: "Mar" },
+  { email: "cig090511@gmail.com", name: "Cristian" },
+  { email: "nicolasemilio194@gmail.com", name: "Emilio Nicolas" },
 ];
 
-const HTML_BODY = `
+const buildHtml = (name: string) => `
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tu plataforma ECOEMS 2026 se actualizó</title>
+  <title>${name}, tienes consultas gratis esperándote</title>
 </head>
 <body style="margin:0;padding:0;background:#0f172a;font-family:'Segoe UI',Arial,sans-serif;color:#e2e8f0;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 0;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#1e293b;border-radius:16px;overflow:hidden;border:1px solid #334155;">
-          <!-- Header -->
+
+          <!-- Header gradient -->
           <tr>
-            <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px 40px;text-align:center;">
-              <p style="margin:0 0 8px;font-size:13px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#c4b5fd;">CyberEdu MX</p>
-              <h1 style="margin:0;font-size:26px;font-weight:900;color:#ffffff;line-height:1.2;">
-                Tu plataforma ECOEMS 2026<br/>se actualizó ✨
+            <td style="background:linear-gradient(135deg,#7c3aed,#6366f1);padding:32px 40px;text-align:center;">
+              <p style="margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#ddd6fe;">CyberEdu MX</p>
+              <h1 style="margin:0;font-size:26px;font-weight:900;color:#ffffff;line-height:1.25;">
+                ¡${name}, tu Tutor IA<br/>sigue aquí esperándote! 🤖
               </h1>
             </td>
           </tr>
@@ -58,72 +55,76 @@ const HTML_BODY = `
           <!-- Body -->
           <tr>
             <td style="padding:36px 40px;">
+
               <p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#cbd5e1;">
-                ¡Hola! Somos CyberEdu MX.
+                ¡Hola, ${name}! 👋
               </p>
               <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#94a3b8;">
-                Notamos que usaste nuestra plataforma anteriormente y queremos avisarte que
-                lanzamos una <strong style="color:#e2e8f0;">versión completamente nueva</strong> con herramientas que no encontrarás en ningún otro lugar:
+                Te registraste en CyberEdu MX pero aún no has probado el
+                <strong style="color:#a78bfa;">Tutor IA</strong> — la herramienta que más
+                ayuda a los estudiantes a entender los temas del ECOEMS y COMIPEMS.
               </p>
 
-              <!-- Feature list -->
+              <!-- Free consultations badge -->
+              <div style="background:linear-gradient(135deg,#064e3b,#065f46);border:1px solid #10b981;border-radius:12px;padding:16px 24px;text-align:center;margin-bottom:28px;">
+                <p style="margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6ee7b7;">Tu saldo disponible</p>
+                <p style="margin:0;font-size:28px;font-weight:900;color:#34d399;">25 consultas gratis</p>
+                <p style="margin:4px 0 0;font-size:13px;color:#6ee7b7;">Sin tarjeta · Sin límite de temas</p>
+              </div>
+
+              <!-- 4 benefit bullets -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
-                <tr><td style="padding:8px 0;border-bottom:1px solid #1e293b;">
-                  <span style="color:#a78bfa;font-size:18px;margin-right:10px;">🤖</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Tutor IA disponible 24/7</span>
-                  <span style="font-size:13px;color:#94a3b8;"> — resuelve tus dudas al instante</span>
+                <tr><td style="padding:10px 0;border-bottom:1px solid #334155;">
+                  <span style="color:#a78bfa;font-size:20px;margin-right:12px;">🤖</span>
+                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Tutor IA 24/7</span>
+                  <span style="font-size:13px;color:#94a3b8;"> — explica cualquier tema del examen al instante</span>
                 </td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #334155;">
-                  <span style="color:#34d399;font-size:18px;margin-right:10px;">🌍</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Globo terráqueo interactivo</span>
+                <tr><td style="padding:10px 0;border-bottom:1px solid #334155;">
+                  <span style="color:#fb923c;font-size:20px;margin-right:12px;">📝</span>
+                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Simulador ECOEMS</span>
+                  <span style="font-size:13px;color:#94a3b8;"> — 512 reactivos tipo examen real</span>
                 </td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #334155;">
-                  <span style="color:#f472b6;font-size:18px;margin-right:10px;">🫀</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Cuerpo humano interactivo</span>
+                <tr><td style="padding:10px 0;border-bottom:1px solid #334155;">
+                  <span style="color:#f472b6;font-size:20px;margin-right:12px;">🎬</span>
+                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">90+ videos educativos</span>
+                  <span style="font-size:13px;color:#94a3b8;"> — estilo anime, fáciles de entender</span>
                 </td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #334155;">
-                  <span style="color:#fbbf24;font-size:18px;margin-right:10px;">🪐</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Sistema solar 3D</span>
-                </td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #334155;">
-                  <span style="color:#60a5fa;font-size:18px;margin-right:10px;">🔢</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Series numéricas</span>
-                  <span style="font-size:13px;color:#94a3b8;"> — para habilidad matemática</span>
-                </td></tr>
-                <tr><td style="padding:8px 0;">
-                  <span style="color:#fb923c;font-size:18px;margin-right:10px;">📝</span>
-                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Simulador con 128 preguntas</span>
-                  <span style="font-size:13px;color:#94a3b8;"> — tipo examen real</span>
+                <tr><td style="padding:10px 0;">
+                  <span style="color:#34d399;font-size:20px;margin-right:12px;">📈</span>
+                  <span style="font-size:14px;font-weight:700;color:#e2e8f0;">Seguimiento de progreso</span>
+                  <span style="font-size:13px;color:#94a3b8;"> — sabe en qué temas mejorar</span>
                 </td></tr>
               </table>
 
-              <!-- Free badge -->
-              <div style="background:linear-gradient(135deg,#065f46,#064e3b);border:1px solid #10b981;border-radius:12px;padding:16px 24px;text-align:center;margin-bottom:28px;">
-                <p style="margin:0;font-size:20px;font-weight:900;color:#34d399;letter-spacing:0.05em;">TODO GRATIS en cyberedumx.com</p>
-              </div>
-
-              <!-- Urgency -->
+              <!-- Urgency block -->
               <div style="background:#1e1b4b;border:1px solid #4f46e5;border-radius:12px;padding:16px 24px;margin-bottom:32px;text-align:center;">
-                <p style="margin:0;font-size:13px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#a5b4fc;">📅 El examen ECOEMS es el 20–28 de junio</p>
-                <p style="margin:6px 0 0;font-size:15px;color:#c7d2fe;">¡Prepárate ahora antes de que sea tarde!</p>
+                <p style="margin:0;font-size:13px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#a5b4fc;">⏰ El ECOEMS es el 20–28 de junio</p>
+                <p style="margin:6px 0 0;font-size:14px;color:#c7d2fe;">Quedan pocas semanas. Cada día de práctica cuenta.</p>
               </div>
 
-              <!-- CTA -->
+              <!-- CTA button -->
               <div style="text-align:center;margin-bottom:8px;">
-                <a href="https://cyberedumx.com" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#ffffff;font-size:16px;font-weight:900;text-decoration:none;padding:16px 40px;border-radius:50px;letter-spacing:0.05em;box-shadow:0 4px 20px rgba(99,102,241,0.4);">
-                  Entrar gratis a cyberedumx.com →
+                <a href="https://cyberedumx.com" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#6366f1);color:#ffffff;font-size:16px;font-weight:900;text-decoration:none;padding:16px 44px;border-radius:50px;letter-spacing:0.04em;box-shadow:0 4px 24px rgba(124,58,237,0.45);">
+                  Usar mis consultas gratis →
                 </a>
               </div>
+              <p style="margin:12px 0 0;text-align:center;font-size:12px;color:#475569;">
+                Entra en <a href="https://cyberedumx.com" style="color:#7c3aed;text-decoration:none;">cyberedumx.com</a> · Completamente gratis
+              </p>
+
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
             <td style="background:#0f172a;padding:24px 40px;text-align:center;border-top:1px solid #334155;">
-              <p style="margin:0 0 4px;font-size:12px;color:#475569;">© 2026 CyberEdu MX — PrepáraTE</p>
-              <p style="margin:0;font-size:11px;color:#334155;">Recibiste este email porque usaste nuestra plataforma anteriormente.</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#475569;">© 2026 CyberEdu MX — PrepáraTE para el ECOEMS</p>
+              <p style="margin:0;font-size:11px;color:#334155;">
+                Recibiste este email porque te registraste en nuestra plataforma.
+              </p>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>
@@ -132,29 +133,30 @@ const HTML_BODY = `
 </html>
 `;
 
-const TEXT_BODY = `
-Hola! Somos CyberEdu MX.
+const buildText = (name: string) => `
+¡Hola, ${name}! 👋
 
-Notamos que usaste nuestra plataforma anteriormente y queremos avisarte que lanzamos una versión completamente nueva con:
+Te registraste en CyberEdu MX pero aún no has probado el Tutor IA.
 
-- Tutor IA disponible 24/7 para resolver tus dudas
-- Globo terráqueo interactivo
-- Cuerpo humano interactivo
-- Sistema solar 3D
-- Series numéricas para habilidad matemática
-- Simulador con 128 preguntas tipo examen real
+Tienes 25 consultas gratis esperándote — sin tarjeta, sin límite de temas.
 
-Todo GRATIS en cyberedumx.com
+Lo que encontrarás en cyberedumx.com:
+• Tutor IA 24/7 — explica cualquier tema del examen al instante
+• Simulador ECOEMS con 512 reactivos tipo examen real
+• 90+ videos educativos estilo anime
+• Seguimiento de tu progreso
 
-El examen ECOEMS es el 20-28 de junio. ¡Prepárate ahora!
+⏰ El ECOEMS es el 20–28 de junio. Cada día de práctica cuenta.
+
+Entra gratis: https://cyberedumx.com
 
 Éxito,
 El equipo CyberEdu MX
-https://cyberedumx.com
 `.trim();
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export default async function handler(req: Request) {
-  // Only allow POST, and protect with a secret to avoid accidental re-sends
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
   }
@@ -164,7 +166,6 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ error: 'RESEND_API_KEY not configured' }), { status: 500 });
   }
 
-  // Simple authorization via shared secret in body
   let body: { secret?: string } = {};
   try { body = await req.json(); } catch { /* no body */ }
   const SEND_SECRET = process.env.REACTIVATION_SEND_SECRET;
@@ -172,32 +173,48 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
-  // Resend batch: up to 100 emails per call — we have 27, fits in one request
-  const emails = RECIPIENTS.map((to) => ({
-    from: 'CyberEdu MX <noreply@cyberedumx.com>',
-    to,
-    subject: 'Tu plataforma ECOEMS 2026 se actualizó - Entra gratis',
-    html: HTML_BODY,
-    text: TEXT_BODY,
-  }));
+  const results: { email: string; status: 'ok' | 'error'; id?: string; error?: string }[] = [];
 
-  const res = await fetch('https://api.resend.com/emails/batch', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(emails),
-  });
+  for (const recipient of RECIPIENTS) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'CyberEdu MX <noreply@cyberedumx.com>',
+          to: recipient.email,
+          subject: `${recipient.name}, tienes consultas gratis esperándote en CyberEdu MX 🤖`,
+          html: buildHtml(recipient.name),
+          text: buildText(recipient.name),
+        }),
+      });
 
-  const data = await res.json();
+      const data = await res.json() as { id?: string; message?: string };
 
-  if (!res.ok) {
-    return new Response(JSON.stringify({ error: 'Resend error', detail: data }), { status: res.status });
+      if (res.ok) {
+        results.push({ email: recipient.email, status: 'ok', id: data.id });
+        console.log(`[reactivation] ✓ ${recipient.email}`);
+      } else {
+        results.push({ email: recipient.email, status: 'error', error: data.message ?? String(res.status) });
+        console.error(`[reactivation] ✗ ${recipient.email}:`, data.message);
+      }
+    } catch (err: any) {
+      results.push({ email: recipient.email, status: 'error', error: err.message });
+      console.error(`[reactivation] ✗ ${recipient.email}:`, err.message);
+    }
+
+    // 500ms between sends to stay within Resend rate limits
+    await sleep(500);
   }
 
+  const sent = results.filter((r) => r.status === 'ok').length;
+  const failed = results.filter((r) => r.status === 'error').length;
+
   return new Response(
-    JSON.stringify({ ok: true, sent: RECIPIENTS.length, data }),
+    JSON.stringify({ ok: true, total: RECIPIENTS.length, sent, failed, results }),
     { status: 200, headers: { 'Content-Type': 'application/json' } }
   );
 }
