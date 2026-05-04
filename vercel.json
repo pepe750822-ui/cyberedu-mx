@@ -12,7 +12,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://cyberedumx.com"
+          "value": "https://www.cyberedumx.com"
         },
         {
           "key": "Access-Control-Allow-Methods",
@@ -74,8 +74,14 @@
   "redirects": [
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "cyberedumx.com" }],
+      "destination": "https://www.cyberedumx.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "cyberedu-mx.vercel.app" }],
-      "destination": "https://cyberedumx.com/$1",
+      "destination": "https://www.cyberedumx.com/$1",
       "permanent": true
     },
     { "source": "/ecoems2026.php",                                          "destination": "/simulador-pro",    "permanent": true },
