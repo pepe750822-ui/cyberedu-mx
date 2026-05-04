@@ -12,9 +12,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   plugins: [react()],
-  define: {
-    'Object.hasOwn': 'Object.hasOwn || ((obj, key) => Object.prototype.hasOwnProperty.call(obj, key))',
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
