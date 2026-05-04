@@ -235,6 +235,12 @@ export default function AdminDashboard() {
             <h1 className="text-white font-bold text-lg">Admin Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              to="/admin/resumen"
+              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 bg-violet-500/10 border border-violet-500/20 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              📋 Ver Resumen Ejecutivo →
+            </Link>
             <span className="text-slate-500 text-xs">
               Actualizado: {lastRefresh.toLocaleTimeString("es-MX")}
             </span>

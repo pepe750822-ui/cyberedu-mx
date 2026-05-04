@@ -115,12 +115,21 @@ const PageViewTracker = () => {
 
 const OnboardingModal = lazy(() => import("./components/OnboardingModal"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminResumen = lazy(() => import("./pages/AdminResumen"));
 
 const AdminRoute = () => {
   const { user, isLoading } = useAuth();
   if (isLoading) return <LoadingSpinner />;
   return user?.email === "pepe750822@gmail.com"
     ? <AdminDashboard />
+    : <Navigate to="/" replace />;
+};
+
+const AdminResumenRoute = () => {
+  const { user, isLoading } = useAuth();
+  if (isLoading) return <LoadingSpinner />;
+  return user?.email === "pepe750822@gmail.com"
+    ? <AdminResumen />
     : <Navigate to="/" replace />;
 };
 
@@ -175,6 +184,7 @@ const App = () => (
               <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
               <Route path="/tokens" element={<Tokens />} />
               <Route path="/admin" element={<AdminRoute />} />
+              <Route path="/admin/resumen" element={<AdminResumenRoute />} />
               <Route path="/admin/monitoring" element={<ProtectedRoute><AdminMonitoring /></ProtectedRoute>} />
               <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
               <Route path="/master-admin" element={<Admin />} />
