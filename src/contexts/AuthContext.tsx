@@ -183,26 +183,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // Initial session check — desbloquear UI tan pronto como se conozca la sesión
+    // Initial session check con timeout propio — protege contra wss:// bloqueado en Android
     const checkSession = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
-        
-        if (mounted && session) {
-          setSession(session);
-          setUser(session.user);
-          // Liberar loading ANTES de cargar el perfil
-          if (!isAuthRedirect) setIsLoading(false);
-          // Perfil en background
-          fetchProfile(session.user.id); // sin await
+        const sessionPromise = supabase.auth.getSession();
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), 4000)
+        );
+        const { data } = await Promise.race([sessionPromise, timeoutPromise]) as any;
+        if (mounted) {
+          setSession(data?.session ?? null);
+          setUser(data?.session?.user ?? null);
+          if (data?.session?.user) {
+            fetchProfile(data.session.user.id); // sin await — background
+          }
         }
-      } catch (error) {
-        console.error("[Auth] Error inicial en checkSession:", error);
+      } catch (err) {
+        console.warn('[Auth] getSession timeout o error:', err);
       } finally {
-        if (mounted && !isAuthRedirect) {
-          setIsLoading(false); // garantizar que siempre se desbloquee
-        }
+        if (mounted) setIsLoading(false);
       }
     };
 
