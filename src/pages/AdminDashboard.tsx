@@ -391,6 +391,18 @@ export default function AdminDashboard() {
                     url: "https://clarity.microsoft.com",
                     color: "from-blue-500 to-cyan-500",
                   },
+                  {
+                    label: "Anthropic Console",
+                    icon: "🤖",
+                    url: "https://console.anthropic.com/settings/usage",
+                    color: "from-amber-600 to-orange-500",
+                  },
+                  {
+                    label: "DeepSeek Platform",
+                    icon: "⚡",
+                    url: "https://platform.deepseek.com/usage",
+                    color: "from-cyan-600 to-blue-500",
+                  },
                 ].map((tool) => (
                   <a
                     key={tool.label}
