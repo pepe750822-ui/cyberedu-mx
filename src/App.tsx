@@ -10,9 +10,8 @@ import LoadingSpinner from "./components/LoadingSpinner";
 
 import { shouldLoadDirect } from "./utils/deviceDetect";
 
-import Index from "./pages/Index";
-
 // Lazy-loaded pages for performance
+const Index = lazy(() => import("./pages/Index"));
 const AreaDetail = lazy(() => import("./pages/AreaDetail"));
 const AITutor = lazy(() => import("./components/AITutor"));
 const Auth = lazy(() => import("./pages/Auth"));
