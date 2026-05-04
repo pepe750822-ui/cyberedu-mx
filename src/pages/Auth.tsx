@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,9 @@ const Auth = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const ref = searchParams.get("ref");
+  const reason = searchParams.get("reason");
 
   useEffect(() => {
     // Detect password recovery mode from URL hash/supabase session
@@ -204,6 +207,18 @@ const Auth = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="relative z-10 space-y-6">
+            {ref === "simulador" && reason === "limit" && (
+              <div className="p-4 bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-500/40 rounded-xl text-center">
+                <p className="text-2xl mb-1">🎯</p>
+                <p className="text-white font-semibold text-lg">
+                  ¡Ya respondiste 10 preguntas gratis!
+                </p>
+                <p className="text-violet-200 text-sm mt-1">
+                  Regístrate gratis para continuar practicando y acceder al Tutor IA que explica tus errores.
+                </p>
+              </div>
+            )}
+
             <div className="space-y-2 text-center">
               <h2 className="text-2xl font-bold text-white uppercase tracking-tight">
                 {isResettingPassword ? "Nueva Contraseña" : isRecovering ? "Recuperar Acceso" : isLogin ? "Bienvenido Guerrero" : "Inicia tu Camino"}
