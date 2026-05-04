@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { logger } from "@/lib/logger";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import {
     Timer,
     ChevronRight,
@@ -84,6 +85,8 @@ interface SimuladorState {
 const SimuladorPro = () => {
     const navigate = useNavigate();
     const { toast } = useToast();
+    const { user } = useAuth();
+    const GUEST_MAX_QUESTIONS = 10;
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
     const [markedForReview, setMarkedForReview] = useState<Record<string, boolean>>({});
@@ -306,6 +309,10 @@ const SimuladorPro = () => {
 
     const handleSelectAnswer = (optionIndex: number) => {
         if (showResults || !currentQuestion) return;
+        if (!user && Object.keys(userAnswers).length >= GUEST_MAX_QUESTIONS) {
+            navigate("/auth?ref=simulador&reason=limit");
+            return;
+        }
         setUserAnswers(prev => ({
             ...prev,
             [currentQuestion.id]: optionIndex
@@ -564,6 +571,26 @@ const SimuladorPro = () => {
                         </Button>
                     </div>
 
+                    {/* AITutor CTA */}
+                    <button
+                        onClick={() => {
+                            const failedTopics = activeQuestions
+                                .filter(q => userAnswers[q.id] !== q.correctIndex)
+                                .map(q => q.area)
+                                .filter((area, i, arr) => arr.indexOf(area) === i)
+                                .slice(0, 3)
+                                .join(", ");
+                            const message = failedTopics
+                                ? `Fallé preguntas sobre: ${failedTopics}. ¿Me explicas esos temas?`
+                                : "Termino de hacer el simulador. ¿Me ayudas a repasar lo que fallé?";
+                            window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
+                        }}
+                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition-all"
+                    >
+                        🤖 Entender mis errores con el Tutor IA
+                        {!user && <span className="text-xs opacity-75 ml-1">(gratis)</span>}
+                    </button>
+
                     {/* Performance Map */}
                     <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-6">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -649,6 +676,20 @@ const SimuladorPro = () => {
                                             <p className="text-[10px] font-black uppercase text-primary mb-2">Explicación Pro</p>
                                             <p className="text-xs text-slate-300 italic">"{q.explanation}"</p>
                                         </div>
+                                        {!isCorrect && (
+                                            <div className="mt-3 p-3 bg-violet-500/10 border border-violet-500/30 rounded-lg flex items-center justify-between gap-3">
+                                                <span className="text-sm text-violet-300">¿No entendiste este tema?</span>
+                                                <button
+                                                    onClick={() => {
+                                                        const message = `Explícame el tema de ${q.area}: "${q.text.slice(0, 80)}"`;
+                                                        window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
+                                                    }}
+                                                    className="shrink-0 text-xs bg-violet-600 hover:bg-violet-500 text-white px-3 py-1.5 rounded-lg transition-all font-semibold"
+                                                >
+                                                    Preguntarle al Tutor →
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
