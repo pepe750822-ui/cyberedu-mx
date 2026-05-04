@@ -73,6 +73,14 @@ const Index = () => {
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('open') === 'tutor') {
+      window.dispatchEvent(new CustomEvent('cyberedu:open-chat'));
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
     // SEO Dynamic Tags
     document.title = "CyberEdu MX — Prepárate para el ECOEMS 2026";
 
