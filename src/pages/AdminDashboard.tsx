@@ -362,6 +362,44 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Herramientas externas */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-5">
+              <h2 className="text-sm font-semibold text-slate-300 mb-4">Herramientas externas</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  {
+                    label: "Vercel Analytics",
+                    icon: "📊",
+                    url: "https://vercel.com/cyberedu-mx-s-projects/cyberedu-mx/analytics",
+                    color: "from-blue-600 to-blue-500",
+                  },
+                  {
+                    label: "Google Analytics",
+                    icon: "📈",
+                    url: "https://analytics.google.com",
+                    color: "from-orange-600 to-orange-500",
+                  },
+                  {
+                    label: "Resend Métricas",
+                    icon: "📧",
+                    url: "https://resend.com/metrics",
+                    color: "from-violet-600 to-violet-500",
+                  },
+                ].map((tool) => (
+                  <a
+                    key={tool.label}
+                    href={tool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r ${tool.color} hover:opacity-90 transition-opacity`}
+                  >
+                    <span className="text-2xl">{tool.icon}</span>
+                    <span className="text-white font-semibold text-sm">{tool.label} ↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             {/* Fila 4 — Conversión */}
             {conversion && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
