@@ -5,6 +5,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
+    // Polyfill Object.hasOwn for Android <9 / Chrome <93 / Safari <15.4
+    // Must run FIRST — before GA, Clarity, or any external script
+    if (!Object.hasOwn) {
+      Object.hasOwn = function(obj, key) {
+        return Object.prototype.hasOwnProperty.call(obj, key);
+      };
+    }
+  </script>
+  <script>
     if (window.location.hostname.includes("lovable.app")) {
       window.location.replace("https://cyberedumx.com" + window.location.pathname);
     }
@@ -143,14 +152,6 @@
   }
   </script>
 
-  <script>
-    // Polyfill Object.hasOwn for Android <9 / Chrome <93 / Safari <15.4
-    if (!Object.hasOwn) {
-      Object.hasOwn = function(obj, key) {
-        return Object.prototype.hasOwnProperty.call(obj, key);
-      };
-    }
-  </script>
   <script>
     (function () {
       const theme = localStorage.getItem('theme');
