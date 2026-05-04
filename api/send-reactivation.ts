@@ -1,7 +1,6 @@
-// Node runtime — edge limit (30s) is too tight for 21 emails × 500ms delay
+// Edge runtime — single Resend batch call, completes in ~1-2s
 export const config = {
-  runtime: 'nodejs',
-  maxDuration: 60,
+  runtime: 'edge',
 };
 
 const RECIPIENTS: { email: string; name: string }[] = [
@@ -154,8 +153,6 @@ Entra gratis: https://cyberedumx.com
 El equipo CyberEdu MX
 `.trim();
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export default async function handler(req: Request) {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
@@ -173,48 +170,41 @@ export default async function handler(req: Request) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
-  const results: { email: string; status: 'ok' | 'error'; id?: string; error?: string }[] = [];
+  // Single batch call — each object has its own subject/html, completes in ~1-2s
+  const batch = RECIPIENTS.map((r) => ({
+    from: 'CyberEdu MX <noreply@cyberedumx.com>',
+    to: r.email,
+    subject: `${r.name}, tienes consultas gratis esperándote en CyberEdu MX 🤖`,
+    html: buildHtml(r.name),
+    text: buildText(r.name),
+  }));
 
-  for (const recipient of RECIPIENTS) {
-    try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'CyberEdu MX <noreply@cyberedumx.com>',
-          to: recipient.email,
-          subject: `${recipient.name}, tienes consultas gratis esperándote en CyberEdu MX 🤖`,
-          html: buildHtml(recipient.name),
-          text: buildText(recipient.name),
-        }),
-      });
+  const res = await fetch('https://api.resend.com/emails/batch', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(batch),
+  });
 
-      const data = await res.json() as { id?: string; message?: string };
+  const data = await res.json() as { data?: { id: string }[]; message?: string };
 
-      if (res.ok) {
-        results.push({ email: recipient.email, status: 'ok', id: data.id });
-        console.log(`[reactivation] ✓ ${recipient.email}`);
-      } else {
-        results.push({ email: recipient.email, status: 'error', error: data.message ?? String(res.status) });
-        console.error(`[reactivation] ✗ ${recipient.email}:`, data.message);
-      }
-    } catch (err: any) {
-      results.push({ email: recipient.email, status: 'error', error: err.message });
-      console.error(`[reactivation] ✗ ${recipient.email}:`, err.message);
-    }
-
-    // 500ms between sends to stay within Resend rate limits
-    await sleep(500);
+  if (!res.ok) {
+    return new Response(
+      JSON.stringify({ error: 'Resend error', detail: data }),
+      { status: res.status, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
-  const sent = results.filter((r) => r.status === 'ok').length;
-  const failed = results.filter((r) => r.status === 'error').length;
+  const results = RECIPIENTS.map((r, i) => ({
+    email: r.email,
+    name: r.name,
+    id: data.data?.[i]?.id ?? null,
+  }));
 
   return new Response(
-    JSON.stringify({ ok: true, total: RECIPIENTS.length, sent, failed, results }),
+    JSON.stringify({ ok: true, total: RECIPIENTS.length, sent: results.length, results }),
     { status: 200, headers: { 'Content-Type': 'application/json' } }
   );
 }
