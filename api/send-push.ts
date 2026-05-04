@@ -1,6 +1,7 @@
 import webpush from "web-push";
 
-export const config = { runtime: "nodejs", maxDuration: 30 };
+// Vercel Hobby: nodejs functions max 10s
+export const config = { runtime: "nodejs", maxDuration: 10 };
 
 webpush.setVapidDetails(
   "mailto:pepe750822@gmail.com",
@@ -33,30 +34,52 @@ export default async function handler(req: Request) {
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !supabaseKey) {
-    return new Response("Supabase env vars missing", { status: 500 });
+    return new Response(
+      JSON.stringify({ ok: false, error: "SUPABASE_SERVICE_ROLE_KEY not set in Vercel env vars" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 
-  const res = await fetch(
-    `${supabaseUrl}/rest/v1/push_subscriptions?select=subscription`,
-    {
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-      },
+  // Fetch subscriptions with 5s timeout
+  const controller = new AbortController();
+  const fetchTimeout = setTimeout(() => controller.abort(), 5000);
+
+  let subs: { subscription: any }[] = [];
+  try {
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/push_subscriptions?select=subscription`,
+      {
+        signal: controller.signal,
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      }
+    );
+    clearTimeout(fetchTimeout);
+
+    if (!res.ok) {
+      const text = await res.text();
+      return new Response(
+        JSON.stringify({ ok: false, error: `Supabase error ${res.status}: ${text}` }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
     }
-  );
 
-  if (!res.ok) {
-    return new Response("Failed to fetch subscriptions", { status: 500 });
+    subs = await res.json();
+  } catch (err: any) {
+    clearTimeout(fetchTimeout);
+    return new Response(
+      JSON.stringify({ ok: false, error: `Supabase fetch failed: ${err.message}` }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
-
-  const subs: { subscription: any }[] = await res.json();
 
   if (subs.length === 0) {
-    return new Response(JSON.stringify({ ok: true, sent: 0, failed: 0, total: 0 }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ ok: true, total: 0, sent: 0, failed: 0, note: "No subscribers yet" }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
   }
 
   const payload = JSON.stringify({
