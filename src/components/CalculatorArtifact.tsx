@@ -68,6 +68,19 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
         .replace(/÷/g, "/")
         .replace(/×/g, "*");
 
+      // Normalizar superíndices Unicode (², ³, ⁴, etc.) → **N
+      cleanFormula = cleanFormula
+        .replace(/⁰/g, "**0")
+        .replace(/¹/g, "**1")
+        .replace(/²/g, "**2")
+        .replace(/³/g, "**3")
+        .replace(/⁴/g, "**4")
+        .replace(/⁵/g, "**5")
+        .replace(/⁶/g, "**6")
+        .replace(/⁷/g, "**7")
+        .replace(/⁸/g, "**8")
+        .replace(/⁹/g, "**9");
+
       // Replace 'x' only when it's used as multiplication operator (not a variable)
       if (params['x'] === undefined) {
         cleanFormula = cleanFormula.replace(/x/g, "*");
