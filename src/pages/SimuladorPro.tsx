@@ -532,9 +532,12 @@ const SimuladorPro = () => {
                             </p>
                         </div>
 
-                        <div className="bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 space-y-6">
-                            <h3 className="text-sm font-black uppercase tracking-widest text-primary">Predicción AI</h3>
-                            <div className="space-y-4">
+                        <div className="bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 space-y-6 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-5">
+                                <Target className="h-32 w-32" />
+                            </div>
+                            <h3 className="text-sm font-black uppercase tracking-widest text-primary relative z-10">Análisis y Meta</h3>
+                            <div className="space-y-4 relative z-10">
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-slate-400">Probabilidad de Ingreso</span>
                                     <span className="text-sm font-black text-white">{percentage > 80 ? "ALTA" : percentage > 60 ? "MEDIA" : "EN MEJORA"}</span>
@@ -543,15 +546,22 @@ const SimuladorPro = () => {
                                     <div className="h-full bg-primary" style={{ width: `${percentage}%` }} />
                                 </div>
                             </div>
-                            <div className="pt-4 border-t border-white/5 space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-400">Tu Porcentaje</span>
-                                    <span className="text-sm font-black text-white">{percentage.toFixed(0)}%</span>
+                            <div className="pt-4 border-t border-white/5 space-y-4 relative z-10">
+                                <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/10">
+                                    <span className="text-xs font-bold text-slate-400">Tu Meta (Escuela Elegida)</span>
+                                    <span className="text-sm font-black text-amber-400">
+                                        {localStorage.getItem('user_target_school') || 'UNAM - ENP 6'} 
+                                        <span className="text-white ml-2 text-xs">({localStorage.getItem('user_target_score') || '111'} pts)</span>
+                                    </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-400">Tu Desempeño</span>
-                                    <span className={cn("text-sm font-black", percentage >= 70 ? "text-emerald-400" : "text-amber-400")}>
-                                        {percentage >= 70 ? "✓ Por encima del mínimo" : "↑ Sigue practicando"}
+                                    <span className="text-xs font-bold text-slate-400">Tu Puntaje Final</span>
+                                    <span className="text-sm font-black text-white">{score} aciertos</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs font-bold text-slate-400">Veredicto Oficial</span>
+                                    <span className={cn("text-sm font-black", score >= parseInt(localStorage.getItem('user_target_score') || '111') ? "text-emerald-400" : "text-red-400")}>
+                                        {score >= parseInt(localStorage.getItem('user_target_score') || '111') ? "🎉 ¡ALCANZAS TU META!" : "↑ FALTAN PUNTOS"}
                                     </span>
                                 </div>
                             </div>
@@ -581,14 +591,14 @@ const SimuladorPro = () => {
                                 .slice(0, 3)
                                 .join(", ");
                             const message = failedTopics
-                                ? `Fallé preguntas sobre: ${failedTopics}. ¿Me explicas esos temas?`
+                                ? `Fallé preguntas sobre: ${failedTopics}. Necesito que hagamos una autopsia de mis errores. ¿Me los explicas?`
                                 : "Termino de hacer el simulador. ¿Me ayudas a repasar lo que fallé?";
                             window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
                         }}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition-all"
+                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl shadow-violet-500/20 transition-all text-sm uppercase tracking-widest"
                     >
-                        🤖 Entender mis errores con el Tutor IA
-                        {!user && <span className="text-xs opacity-75 ml-1">(gratis)</span>}
+                        🧠 Hacer Autopsia de Errores con Tutor IA
+                        {!user && <span className="text-[10px] opacity-75 ml-1 bg-white/20 px-2 py-0.5 rounded-full">(gratis)</span>}
                     </button>
 
                     {/* Performance Map */}

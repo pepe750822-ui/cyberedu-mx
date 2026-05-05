@@ -39,6 +39,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/hero-education.jpg";
+import { DailyChallenge } from "@/components/DailyChallenge";
 
 // Lazy loading heavy dashboard components for CWV optimization
 const ProgresoDashboard = lazy(() => import("@/components/ProgresoDashboard"));
@@ -603,6 +604,10 @@ const Index = () => {
 
       {/* Dashboard de Progreso Personalizado */}
       <section className="container mx-auto px-4 relative z-10 mt-12 mb-16 space-y-12">
+        
+        {/* Reto Diario Express */}
+        <DailyChallenge />
+
         <Suspense fallback={<div className="h-24 animate-pulse bg-muted rounded-3xl" />}>
           <PredictiveFeedback />
         </Suspense>

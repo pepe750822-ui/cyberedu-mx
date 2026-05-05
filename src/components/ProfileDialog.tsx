@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
     Dialog,
@@ -38,24 +37,47 @@ const COLORS = [
     { name: 'Rose', value: 'rose-500', class: 'bg-rose-500' },
 ];
 
+const SCHOOLS = [
+    { name: "UNAM - ENP 6 (Coyoacán)", score: 111 },
+    { name: "UNAM - ENP 9 (Lindavista)", score: 109 },
+    { name: "UNAM - ENP 2 (Churubusco)", score: 108 },
+    { name: "IPN - CECyT 9 (Batiz)", score: 104 },
+    { name: "IPN - CECyT 3 (Estanislao)", score: 93 },
+    { name: "Colegio de Bachilleres (Promedio)", score: 60 },
+    { name: "CONALEP (Promedio)", score: 45 },
+    { name: "Otra Escuela", score: 80 },
+];
+
 export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
     const [name, setName] = useState(localStorage.getItem('user_display_name') || '');
     const [selectedAvatar, setSelectedAvatar] = useState(localStorage.getItem('user_avatar') || AVATARS[0]);
     const [selectedColor, setSelectedColor] = useState(localStorage.getItem('user_theme_color') || 'amber-500');
     const [dailyGoal, setDailyGoal] = useState(localStorage.getItem('user_daily_goal') || '60');
+    
+    // Target School
+    const [targetSchool, setTargetSchool] = useState(localStorage.getItem('user_target_school') || SCHOOLS[0].name);
 
     const handleSave = () => {
         localStorage.setItem('user_display_name', name);
         localStorage.setItem('user_avatar', selectedAvatar);
         localStorage.setItem('user_theme_color', selectedColor);
         localStorage.setItem('user_daily_goal', dailyGoal);
+        localStorage.setItem('user_target_school', targetSchool);
+        
+        const selectedSchoolData = SCHOOLS.find(s => s.name === targetSchool);
+        if (selectedSchoolData) {
+            localStorage.setItem('user_target_score', selectedSchoolData.score.toString());
+        }
 
         // Update theme color on root (simplified)
         document.documentElement.style.setProperty('--primary', `var(--${selectedColor.split('-')[0]})`);
 
         toast.success("Perfil actualizado con éxito", {
-            description: "Tus preferencias han sido guardadas localmente."
+            description: "Tus preferencias y meta de escuela han sido guardadas."
         });
+        
+        // Dispatch event so other components update instantly
+        window.dispatchEvent(new Event('profileUpdated'));
     };
 
     return (
@@ -63,7 +85,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] bg-slate-950 border-white/10 text-white rounded-[2.5rem]">
+            <DialogContent className="sm:max-w-[500px] bg-slate-950 border-white/10 text-white rounded-[2.5rem] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-black uppercase tracking-tighter flex items-center gap-2">
                         <Settings className="h-6 w-6 text-primary" />
@@ -71,7 +93,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="space-y-8 py-6">
+                <div className="space-y-6 py-6">
                     {/* Avatar Section */}
                     <div className="space-y-4">
                         <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Avatar Estilo Académico</Label>
@@ -81,17 +103,13 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
                                     key={i}
                                     onClick={() => setSelectedAvatar(url)}
                                     className={cn(
-                                        "h-16 w-16 rounded-2xl overflow-hidden border-2 transition-all p-1",
+                                        "h-14 w-14 rounded-2xl overflow-hidden border-2 transition-all p-1",
                                         selectedAvatar === url ? "border-primary scale-110 shadow-lg shadow-primary/20" : "border-transparent opacity-50 hover:opacity-100"
                                     )}
                                 >
                                     <img src={url} alt="Avatar" className="h-full w-full object-cover rounded-xl" />
                                 </button>
                             ))}
-                            <button className="h-16 w-16 rounded-2xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-1 opacity-50 hover:opacity-100">
-                                <Camera className="h-5 w-5" />
-                                <span className="text-[8px] font-bold">SUBIR</span>
-                            </button>
                         </div>
                     </div>
 
@@ -111,7 +129,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
                             <select
                                 value={dailyGoal}
                                 onChange={(e) => setDailyGoal(e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-md h-12 px-3 text-xs focus:outline-none focus:border-primary/50"
+                                className="w-full bg-white/5 border border-white/10 rounded-md h-12 px-3 text-xs focus:outline-none focus:border-primary/50 text-white [&>option]:bg-slate-900"
                             >
                                 <option value="30">30 Minutos (Casual)</option>
                                 <option value="60">60 Minutos (Estándar)</option>
@@ -119,6 +137,24 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
                                 <option value="120">120 Minutos (Hardcore)</option>
                             </select>
                         </div>
+                    </div>
+
+                    {/* Meta de Escuela */}
+                    <div className="space-y-2 bg-primary/10 border border-primary/20 p-4 rounded-2xl">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                            <Target className="h-3 w-3" />
+                            Escuela Primera Opción (Meta)
+                        </Label>
+                        <select
+                            value={targetSchool}
+                            onChange={(e) => setTargetSchool(e.target.value)}
+                            className="w-full bg-slate-900/50 border border-primary/30 rounded-md h-12 px-3 text-xs font-bold focus:outline-none focus:border-primary text-white [&>option]:bg-slate-900"
+                        >
+                            {SCHOOLS.map((school, i) => (
+                                <option key={i} value={school.name}>{school.name} ({school.score} aciertos)</option>
+                            ))}
+                        </select>
+                        <p className="text-[10px] text-slate-400 mt-2">Esta línea de corte se usará para medir tu rendimiento en los simuladores.</p>
                     </div>
 
                     {/* Theme Color */}
@@ -143,7 +179,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
 
                     <Button
                         onClick={handleSave}
-                        className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20 rounded-2xl text-xs"
+                        className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20 rounded-2xl text-xs mt-4"
                     >
                         <CheckCircle2 className="mr-2 h-5 w-5" />
                         Guardar Configuración
@@ -153,3 +189,4 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
         </Dialog>
     );
 };
+

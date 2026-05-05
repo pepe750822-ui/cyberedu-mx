@@ -233,8 +233,40 @@ const ProgresoDashboard = () => {
     }
   };
 
+  // 7. Target Goal State
+  const [targetSchool, setTargetSchool] = useState(localStorage.getItem('user_target_school') || 'UNAM - ENP 6');
+  const [targetScore, setTargetScore] = useState(localStorage.getItem('user_target_score') || '111');
+
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      setTargetSchool(localStorage.getItem('user_target_school') || 'UNAM - ENP 6');
+      setTargetScore(localStorage.getItem('user_target_score') || '111');
+    };
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
+  }, []);
+
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-top-4 duration-1000">
+      {/* Target Banner */}
+      <div className="bg-primary/10 border border-primary/20 rounded-[2rem] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="flex items-center gap-5">
+          <div className="h-16 w-16 bg-primary/20 rounded-[1.5rem] flex items-center justify-center">
+            <Target className="h-8 w-8 text-primary" />
+          </div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-widest text-primary mb-1">Primera Opción (Tu Meta)</p>
+            <h3 className="text-2xl sm:text-3xl font-black text-white">{targetSchool}</h3>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 bg-slate-950/50 p-5 rounded-2xl border border-white/5 w-full sm:w-auto justify-center sm:justify-end">
+          <div className="text-center sm:text-right">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Línea de Corte Oficial</p>
+            <p className="text-3xl font-black text-white">{targetScore} <span className="text-sm font-bold text-slate-500 uppercase tracking-widest">Aciertos</span></p>
+          </div>
+        </div>
+      </div>
+
       {/* 1. Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Streak Card */}

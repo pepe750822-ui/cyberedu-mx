@@ -9,7 +9,21 @@
       "Bash(ls supabase/)",
       "Bash(git commit *)",
       "Bash(node -e \"require\\('@vercel/node'\\)\")",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(xargs grep *)",
+      "Bash(curl *)",
+      "Bash(grep -E \"^\\\\s+\\\\w+: \\\\{$\" src/integrations/supabase/types.ts)",
+      "Bash(npm i *)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('LOTE:', d['results'][0]['email']\\)\")",
+      "Bash(sort -t\"|\" -k2 -rn)",
+      "Bash(sort -k5 -rn)",
+      "Bash(sort -t\"│\" -k3 -rn)",
+      "Bash(sort -t\"|\" -k3 -rn)",
+      "Bash(npx web-push *)",
+      "Bash(npm install *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npm uninstall *)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
