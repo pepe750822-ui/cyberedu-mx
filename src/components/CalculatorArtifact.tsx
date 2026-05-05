@@ -66,54 +66,73 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
       // Normalizar operadores comunes que el AI suele usar
       cleanFormula = cleanFormula
         .replace(/÷/g, "/")
-        .replace(/×/g, "*")
-        .replace(/x/g, (match, offset, full) => {
-          // Solo reemplazar 'x' si parece ser un operador (rodeado de espacios o números)
-          // y no es parte de un nombre de variable (aunque el regex de variables ya lo maneja)
-          // Pero para ser seguros, solo lo reemplazamos si no está en params
-          return params[match] === undefined ? "*" : "x";
-        });
-      
+        .replace(/×/g, "*");
+
+      // Replace 'x' only when it's used as multiplication operator (not a variable)
+      if (params['x'] === undefined) {
+        cleanFormula = cleanFormula.replace(/x/g, "*");
+      }
+
+      // --- PRIMARY: Try safe JS evaluation with variable substitution ---
+      // This handles repeated variables like "l * l * l" correctly
+      // Sort variable names by length (longest first) to avoid partial replacements
+      const sortedVarNames = Object.keys(params).sort((a, b) => b.length - a.length);
+      let evalFormula = cleanFormula;
+      for (const varName of sortedVarNames) {
+        // Replace variable names with their values (word boundaries)
+        const regex = new RegExp(`\\b${varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+        evalFormula = evalFormula.replace(regex, params[varName].toString());
+      }
+
+      // Handle common math functions
+      evalFormula = evalFormula
+        .replace(/π|pi/gi, Math.PI.toString())
+        .replace(/\^/g, "**")
+        .replace(/√\(([^)]+)\)/g, "Math.sqrt($1)")
+        .replace(/sqrt\(([^)]+)\)/g, "Math.sqrt($1)")
+        .replace(/sin\(/g, "Math.sin(")
+        .replace(/cos\(/g, "Math.cos(")
+        .replace(/tan\(/g, "Math.tan(");
+
+      // Safety: only allow numbers, basic math operators, Math functions and parentheses
+      if (/^[0-9.+\-*/().\s,Math.sqrtsincotan**]+$/.test(evalFormula)) {
+        // Avoid division by zero
+        if (evalFormula.includes("/0") && !evalFormula.includes("/0.")) return null;
+        const evalResult = Function(`"use strict"; return (${evalFormula})`)();
+        if (typeof evalResult === 'number' && isFinite(evalResult)) {
+          return evalResult;
+        }
+      }
+
+      // --- FALLBACK HEURISTICS (only if JS eval didn't work) ---
+
       // Auto-sum heuristic: if formula has "+" or "Σ"
       if (cleanFormula.includes("+") || formula.includes("Σ")) {
         return vars.reduce((acc, v) => acc + (params[v.name.toLowerCase()] || 0), 0);
       }
 
-      // 1. Newton's Second Law: F = m * a
+      // Newton's Second Law: F = m * a
       if (cleanFormula.includes("m * a") || cleanFormula.includes("m*a") || (vars.some(v => v.name === 'm') && vars.some(v => v.name === 'a'))) {
         return (params.m || params.masa || 0) * (params.a || params.aceleracion || 0);
       }
       
-      // 2. Linear Function: y = mx + b
+      // Linear Function: y = mx + b
       if (cleanFormula.includes("mx + b") || cleanFormula.includes("m * x + b")) {
         return (params.m || 0) * (params.x || 0) + (params.b || 0);
       }
 
-      // 3. Area of Triangle: (b * h) / 2
+      // Area of Triangle: (b * h) / 2
       if (cleanFormula.includes("/ 2") && (cleanFormula.includes("base") || cleanFormula.includes("altura"))) {
         const b = params.base || params.b || 0;
         const h = params.altura || params.h || 0;
         return (b * h) / 2;
       }
 
-      // 4. Multi-variable multiplication
+      // Multi-variable multiplication (only when each var appears once)
       if (cleanFormula.includes("*") && !cleanFormula.includes("/") && !cleanFormula.includes("+")) {
         return vars.reduce((acc, v) => acc * (params[v.name.toLowerCase()] || 0), 1);
       }
 
-      // 5. Fallback: JS Evaluation
-      let evalFormula = cleanFormula.replace(/[a-z_0-9.]+/g, (match) => {
-        // Si es un número literal, dejarlo pasar
-        if (!isNaN(parseFloat(match)) && /^[0-9.]+$/.test(match)) return match;
-        return params[match] !== undefined ? params[match].toString() : match;
-      });
-
-      // Safety: only allow numbers and basic math operators
-      if (/^[0-9.+\-*/()\s]+$/.test(evalFormula)) {
-        // Evitar división por cero
-        if (evalFormula.includes("/0") && !evalFormula.includes("/0.")) return null;
-        return Function(`"use strict"; return (${evalFormula})`)();
-      }
     } catch (e) {
       console.warn("Calculation failed:", e);
     }
