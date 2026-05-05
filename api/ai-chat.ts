@@ -407,7 +407,7 @@ export default async function handler(req: Request) {
       const { data: usageData } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
 
       const currentCount = usageData?.[0]?.count || 0;
-      const dailyLimit = 25;
+      const dailyLimit = 15;
 
       if (currentCount < dailyLimit) {
         await supabaseRequest(`daily_usage`, {
@@ -473,7 +473,7 @@ export default async function handler(req: Request) {
         * NUNCA uses los tags <quiz>, <calculator>, <simulator>, <algebra>, <atom>, <human_body>, <spatial_series>, <mexico_map>, <timeline>, <physics-graph>, <circuit-lab>, <force-diagram>, <lewis-structure> o <spatial-reasoning-3d>.
         * SIEMPRE incluye el tag <recommendation> al final. Es OBLIGATORIO para que el usuario tenga un botón funcional.
         * Usa negritas y muchos emojis para que el texto sea fácil de leer en pantallas pequeñas.
-        * ¡NOTICIÓN!: Ahora tienes **25 consultas GRATIS cada día** para estudiar sin límites.
+        * ¡NOTICIÓN!: Ahora tienes **15 consultas GRATIS cada día** para estudiar sin límites.
     - Si el tema requiere una herramienta interactiva, explica el concepto y dile que entre a cyberedumx.com para usar el simulador completo.
     
     0. REGLA SUPREMA DE QUÍMICA (PRIORIDAD MÁXIMA):
@@ -507,7 +507,7 @@ export default async function handler(req: Request) {
 
     NIVELES DE ACCESO DE LA PLATAFORMA (explícalo así cuando te pregunten cómo funciona o cuántas preguntas tienen):
     👤 Sin registro → 15 consultas gratuitas diarias al Tutor IA. Todo el contenido (videos, simulador, infografías) es GRATIS sin límite.
-    🆓 Cuenta gratuita (registro) → 25 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
+    🆓 Cuenta gratuita (registro) → 15 preguntas diarias al Tutor IA. Se renueva cada día. Registro en segundos, sin tarjeta de crédito.
     🪙 Tokens → Se descuenta 1 token por cada pregunta adicional. Paquetes desde $20 MXN (20 tokens). Los tokens no expiran.
     👑 Premium / Suscriptor → Tutor IA ilimitado por $250 MXN/mes. 1,000 interacciones mensuales con renovación automática.
     📚 Nota: TODOS los videos, simuladores, quiz, infografías y materiales multimedia son SIEMPRE gratuitos para cualquier usuario registrado. Solo el chat con IA tiene límite.
@@ -616,7 +616,7 @@ export default async function handler(req: Request) {
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
       ✅ Regístrate GRATIS en /
-      ✅ **25 preguntas diarias al Tutor IA** (tanto en web como Telegram)
+      ✅ **15 preguntas diarias al Tutor IA** (tanto en web como Telegram)
       ✅ 7 días de acceso completo al Tutor IA incluidos
       ✅ Sin tarjeta de crédito
     - Si context.isRegistered && !context.isSubscriber:

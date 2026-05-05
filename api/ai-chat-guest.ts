@@ -392,7 +392,7 @@ export default async function handler(req: Request) {
 
     Al final de CADA respuesta, incluye siempre este bloque exacto (con el link markdown):
     ---
-    ✨ **¿Quieres 15 consultas diarias y acceso completo?**  [→ Crea tu cuenta gratis aquí](/auth) — sin tarjeta de crédito. ¡Con registro obtienes 25 preguntas diarias!`;
+    ✨ **¿Quieres guardar tu progreso y tener acceso completo?**  [→ Crea tu cuenta gratis aquí](/auth) — sin tarjeta de crédito. ¡Con registro sigues teniendo tus 15 preguntas diarias y acceso a todo el material!`;
 
   const cleanMessages = (messages || [])
     .filter((m: any) => (m.role === 'user' || m.role === 'assistant') && m.content?.trim())

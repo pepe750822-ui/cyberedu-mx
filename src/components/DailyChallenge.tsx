@@ -4,6 +4,7 @@ import { Flame, CheckCircle, Zap, Brain, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import confetti from 'canvas-confetti';
+import { cn } from '@/lib/utils';
 
 const CHALLENGES = [
   { question: "¿Cuál es el valor de x en la ecuación 2x + 5 = 15?", options: ["x = 10", "x = 5", "x = 2", "x = 20"], correct: 1, area: "Matemáticas" },

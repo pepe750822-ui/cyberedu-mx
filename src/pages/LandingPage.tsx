@@ -77,8 +77,8 @@ const LandingPage = () => {
       name: "Gratis",
       price: "0",
       description: "Para probar la plataforma",
-      tokens: "25 preguntas/día",
-      features: ["Acceso a todo el contenido", "91 Videos Educativos", "25 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
+      tokens: "15 preguntas/día",
+      features: ["Acceso a todo el contenido", "91 Videos Educativos", "15 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
       cta: "Registrarme Gratis",
       action: () => navigate("/auth"),
       highlight: false,
@@ -216,7 +216,7 @@ const LandingPage = () => {
                 boxShadow: "0 0 40px rgba(16,185,129,0.35), 0 4px 20px rgba(245,158,11,0.2)"
               }}
             >
-              Empezar Gratis — 25 Preguntas/Día
+              Empezar Gratis — 15 Preguntas/Día
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button

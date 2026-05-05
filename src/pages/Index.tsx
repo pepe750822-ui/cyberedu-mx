@@ -88,7 +88,7 @@ const Index = () => {
     // Update Meta Description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Domina el ECOEMS 2026 con CyberEdu MX. Tutor IA 24/7, 19 Laboratorios Virtuales, simuladores inteligentes y 90+ videos. ¡25 preguntas gratis al día!");
+      metaDescription.setAttribute("content", "Domina el ECOEMS 2026 con CyberEdu MX. Tutor IA 24/7, 19 Laboratorios Virtuales, simuladores inteligentes y 90+ videos. ¡15 preguntas gratis al día!");
     }
 
     // Structured Data (JSON-LD)
@@ -517,7 +517,7 @@ const Index = () => {
                       </button>
                     )}
                     <p className="text-[10px] text-muted-foreground/60 font-medium leading-relaxed">
-                      Sin registro: 15 preguntas gratis al instante · Con cuenta gratuita: 25 preguntas diarias · También en Telegram: <span className="text-cyan-400 font-bold">@CyberEduMXBot</span>
+                      Sin registro: 15 preguntas gratis al instante · Con cuenta gratuita: 15 preguntas diarias · También en Telegram: <span className="text-cyan-400 font-bold">@CyberEduMXBot</span>
                     </p>
                   </div>
                 </div>

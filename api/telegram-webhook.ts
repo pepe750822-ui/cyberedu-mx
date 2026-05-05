@@ -252,7 +252,7 @@ function getWelcomeMessage(tgUser: any, profile: any, firstName: string) {
     const tokens = profile?.tokens || profile?.token || 0;
     return `¡Bienvenido de vuelta, ${profile?.full_name || firstName}! 🚀\n\nTienes *${tokens} tokens* disponibles para tus **consultas académicas ECOEMS**.\n\nEscríbeme cualquier duda sobre el examen o usa /pregunta.`;
   }
-  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *15 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Vincula tu cuenta con /vincular para acceder a *25 preguntas diarias* y sincronizar tus tokens.`;
+  return `¡Hola ${firstName}! Bienvenido a CyberEdu MX 🚀.\n\nComo invitado, tienes *15 preguntas gratis al día* para resolver tus dudas académicas con nuestro Tutor IA.\n\n👉 Vincula tu cuenta con /vincular para guardar tu progreso y sincronizar tus tokens.`;
 }
 
 function processArtifacts(text: string): { cleanText: string, extraButtons: any[][] } {
