@@ -4,26 +4,31 @@ export const config = {
 };
 
 const RECIPIENTS: { email: string; name: string }[] = [
-  { email: "raulperez.bachillerato@gmail.com", name: "Raul" },
-  { email: "ferrer201135@gmail.com", name: "David" },
-  { email: "efrainrm1427@gmail.com", name: "Efrain" },
-  { email: "adanwapo1982@gmail.com", name: "Adan" },
-  { email: "violetru16@gmail.com", name: "Violet" },
-  { email: "coroneltentleabril@gmail.com", name: "Abril" },
-  { email: "coronel.tentle.ivan.antonio@gmail.com", name: "Iván" },
-  { email: "whoss.maluu@gmail.com", name: "Maria Luisa" },
-  { email: "felipaoalonso2024@gmail.com", name: "Felipao" },
-  { email: "caguilarplay@gmail.com", name: "Carlos" },
+  { email: "valery.fress@gmail.com", name: "Valeria" },
+  { email: "jimenezj.ximena@gmail.com", name: "Ximena" },
+  { email: "rivasrodrigueznatalia@gmail.com", name: "Natalia" },
+  { email: "barcenasmanriquezantonio@gmail.com", name: "Antonio" },
+  { email: "ximenaaliherrerahdo@gmail.com", name: "Ximena" },
+  { email: "kamilabanos6@gmail.com", name: "Kamila" },
+  { email: "sofiagarsil73@gmail.com", name: "Sofia" },
+  { email: "camilagaray99999@gmail.com", name: "Camila" },
+  { email: "playasj26@gmail.com", name: "Rosalba" },
+  { email: "valerynataliacalderonsoria@gmail.com", name: "Valery" },
+  { email: "danna.paola.dragon@gmail.com", name: "Danna" },
+  { email: "sotomayorcesar239@gmail.com", name: "Cesar" },
+  { email: "amembrillog@gmail.com", name: "Abi" },
+  { email: "zoeespinosapalomares@gmail.com", name: "Zoe" },
+  { email: "ashleymartinez1232@gmail.com", name: "Ashley" },
+  { email: "msalascon@gmail.com", name: "Marisol" },
+  { email: "lesli48968@gmail.com", name: "Lesli" },
+  { email: "bendy70@gmail.com", name: "Ian" },
+  { email: "enrique.martines.ginez@gmail.com", name: "Enrique" },
+  { email: "huetzcadelgado@gmail.com", name: "Regina" },
+  { email: "lucibahngonz@gmail.com", name: "Lucia" },
+  { email: "jfespinoza@gmail.com", name: "Juan Francisco" },
+  { email: "lopezduranpabloarmando@gmail.com", name: "Pablo" },
   { email: "mk31tgp@gmail.com", name: "Ian" },
-  { email: "yunuheabigail@gmail.com", name: "Yunuhe" },
-  { email: "cinthyaleon73@hotmail.com", name: "Cinthya" },
-  { email: "adrianarodriguez967@gmail.com", name: "Adriana" },
-  { email: "reginaflores252011@gmail.com", name: "Regina" },
-  { email: "karlasantiagosoto29@gmail.com", name: "Karla" },
-  { email: "sanslu2019a@gmail.com", name: "Luis Pablo" },
-  { email: "pablito2016luis@gmail.com", name: "Pablito" },
-  { email: "lopezduranpabloarmando@gmail.com", name: "Pablo Armando" },
-  { email: "prlopezm@gmail.com", name: "Pablo Rafael" },
+  { email: "lesli48968@gmail.com", name: "Lesli" },
 ];
 
 const buildHtml = (name: string) => `
@@ -45,7 +50,7 @@ const buildHtml = (name: string) => `
             <td style="background:linear-gradient(135deg,#7c3aed,#6366f1);padding:32px 40px;text-align:center;">
               <p style="margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#ddd6fe;">CyberEdu MX</p>
               <h1 style="margin:0;font-size:26px;font-weight:900;color:#ffffff;line-height:1.25;">
-                ¡${name}, tu Tutor IA<br/>sigue aquí esperándote! 🤖
+                ¡${name}, CyberEdu MX se renovó completamente!
               </h1>
             </td>
           </tr>
@@ -58,9 +63,9 @@ const buildHtml = (name: string) => `
                 ¡Hola, ${name}! 👋
               </p>
               <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#94a3b8;">
-                Te registraste en CyberEdu MX pero aún no has probado el
-                <strong style="color:#a78bfa;">Tutor IA</strong> — la herramienta que más
-                ayuda a los estudiantes a entender los temas del ECOEMS y COMIPEMS.
+                Usaste la plataforma anterior y queremos que conozcas la nueva versión —
+                con <strong style="color:#a78bfa;">Tutor IA 24/7</strong>, 512 reactivos y mucho más.
+                Todo gratis.
               </p>
 
               <!-- Free consultations badge -->
@@ -102,12 +107,12 @@ const buildHtml = (name: string) => `
 
               <!-- CTA button -->
               <div style="text-align:center;margin-bottom:8px;">
-                <a href="https://cyberedumx.com" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#6366f1);color:#ffffff;font-size:16px;font-weight:900;text-decoration:none;padding:16px 44px;border-radius:50px;letter-spacing:0.04em;box-shadow:0 4px 24px rgba(124,58,237,0.45);">
-                  Usar mis consultas gratis →
+                <a href="https://www.cyberedumx.com/?open=tutor" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#6366f1);color:#ffffff;font-size:16px;font-weight:900;text-decoration:none;padding:16px 44px;border-radius:50px;letter-spacing:0.04em;box-shadow:0 4px 24px rgba(124,58,237,0.45);">
+                  Ver la nueva CyberEdu MX →
                 </a>
               </div>
               <p style="margin:12px 0 0;text-align:center;font-size:12px;color:#475569;">
-                Entra en <a href="https://cyberedumx.com" style="color:#7c3aed;text-decoration:none;">cyberedumx.com</a> · Completamente gratis
+                Entra en <a href="https://www.cyberedumx.com/?open=tutor" style="color:#7c3aed;text-decoration:none;">cyberedumx.com</a> · Completamente gratis
               </p>
 
             </td>
@@ -134,11 +139,9 @@ const buildHtml = (name: string) => `
 const buildText = (name: string) => `
 ¡Hola, ${name}! 👋
 
-Te registraste en CyberEdu MX pero aún no has probado el Tutor IA.
+Usaste la plataforma anterior y queremos que conozcas la nueva versión — con Tutor IA 24/7, 512 reactivos y mucho más. Todo gratis.
 
-Tienes 25 consultas gratis esperándote — sin tarjeta, sin límite de temas.
-
-Lo que encontrarás en cyberedumx.com:
+Lo que encontrarás en la nueva CyberEdu MX:
 • Tutor IA 24/7 — explica cualquier tema del examen al instante
 • Simulador ECOEMS con 512 reactivos tipo examen real
 • 90+ videos educativos estilo anime
@@ -146,7 +149,7 @@ Lo que encontrarás en cyberedumx.com:
 
 ⏰ El ECOEMS es el 20–28 de junio. Cada día de práctica cuenta.
 
-Entra gratis: https://cyberedumx.com
+Ver la nueva CyberEdu MX: https://www.cyberedumx.com/?open=tutor
 
 Éxito,
 El equipo CyberEdu MX
@@ -173,7 +176,7 @@ export default async function handler(req: Request) {
   const batch = RECIPIENTS.map((r) => ({
     from: 'CyberEdu MX <noreply@cyberedumx.com>',
     to: r.email,
-    subject: `${r.name}, tienes consultas gratis esperándote en CyberEdu MX 🤖`,
+    subject: `${r.name}, la nueva CyberEdu MX te está esperando 🚀`,
     html: buildHtml(r.name),
     text: buildText(r.name),
   }));
