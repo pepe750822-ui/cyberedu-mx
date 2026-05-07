@@ -8,9 +8,14 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+// localStorage can be null/blocked in Safari private mode or sandboxed iframes
+const safeStorage = (() => {
+  try { return window.localStorage; } catch { return undefined; }
+})();
+
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: localStorage,
+    ...(safeStorage && { storage: safeStorage }),
     persistSession: true,
     autoRefreshToken: true,
   }
