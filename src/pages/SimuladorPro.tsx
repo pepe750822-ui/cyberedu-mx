@@ -344,6 +344,7 @@ const SimuladorPro = () => {
 
     // Save result to Supabase once when results screen appears
     useEffect(() => {
+        console.log('[SimuladorPro] showResults:', showResults, 'user:', user?.id, 'questions:', activeQuestions.length);
         if (!showResults || !user || activeQuestions.length === 0) return;
 
         const savedScore = calculateScore();
@@ -364,8 +365,7 @@ const SimuladorPro = () => {
             puntajeMeta = raw ? parseInt(raw) || null : null;
         } catch { /* localStorage blocked */ }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (supabase as any).from('simulador_results').insert({
+        const payload = {
             user_id: user.id,
             modo: examMode,
             banco: selectedBank,
@@ -375,7 +375,22 @@ const SimuladorPro = () => {
             aciertos: savedScore,
             porcentaje: savedPct,
             resultados_por_area: resultadosPorArea,
-        });
+        };
+        console.log('[SimuladorPro] Inserting payload:', payload);
+
+        const doInsert = async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { data, error } = await (supabase as any)
+                .from('simulador_results')
+                .insert(payload);
+            if (error) {
+                console.error('[SimuladorPro] Error saving result to Supabase:', error);
+            } else {
+                console.log('[SimuladorPro] Result saved successfully:', data);
+            }
+        };
+
+        doInsert();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showResults]);
 
