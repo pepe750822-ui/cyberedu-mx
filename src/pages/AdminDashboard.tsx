@@ -89,17 +89,17 @@ export default function AdminDashboard() {
         premiumUsersRaw,
       ] = await Promise.all([
         // Active users today (distinct user_ids)
-        (supabase as any).from("daily_usage").select("user_id").eq("date", todayStr),
+        supabase.from("daily_usage").select("user_id").eq("date", todayStr),
         // New registrations today
         supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", todayUTC),
         // Queries today
-        (supabase as any).from("daily_usage").select("count").eq("date", todayStr),
+        supabase.from("daily_usage").select("count").eq("date", todayStr),
         // Premium updated today (proxy for purchases)
-        (supabase as any).from("profiles").select("id", { count: "exact", head: true })
+        supabase.from("profiles").select("id", { count: "exact", head: true })
           .gte("updated_at", todayUTC)
           .or("is_premium.eq.true,subscription_status.eq.active"),
         // Last 7 days usage
-        (supabase as any).from("daily_usage").select("date,user_id,count").in("date", days),
+        supabase.from("daily_usage").select("date,user_id,count").in("date", days),
         // Last 7 days new profiles
         supabase.from("profiles").select("created_at").gte("created_at", sevenDaysAgoISO),
         // Recent registrations (events table)
@@ -107,9 +107,9 @@ export default function AdminDashboard() {
         // Total users
         supabase.from("profiles").select("id", { count: "exact", head: true }),
         // All usage (for tutor users conversion)
-        (supabase as any).from("daily_usage").select("user_id"),
+        supabase.from("daily_usage").select("user_id"),
         // Premium users
-        (supabase as any).from("profiles").select("id", { count: "exact", head: true })
+        supabase.from("profiles").select("id", { count: "exact", head: true })
           .or("is_premium.eq.true,subscription_status.eq.active,tokens.gt.0"),
       ]);
 

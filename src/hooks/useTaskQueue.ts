@@ -37,7 +37,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     });
 
     const loadTasks = async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from("ai_agent_tasks")
         .select("*")
         .order("created_at", { ascending: false })
@@ -134,7 +134,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
       });
 
       // Insert en base de datos
-      const res = await (supabase as any)
+      const res = await supabase
         .from("ai_agent_tasks")
         .insert({
           user_id: userId,
@@ -188,7 +188,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
 
     setTasks(prev => prev.map(t => t.id === id ? { ...t, status: "queued", error: undefined } : t));
 
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("ai_agent_tasks")
       .update({ status: "queued", error_msg: null, started_at: null, completed_at: null })
       .eq("id", id);
@@ -224,7 +224,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
     // Remove from DB
     if (!id.startsWith("temp_")) {
-        await (supabase as any).from("ai_agent_tasks").delete().eq("id", id);
+        await supabase.from("ai_agent_tasks").delete().eq("id", id);
     }
   }, []);
 
@@ -237,7 +237,7 @@ export function useTaskQueue(memory: AgentMemory, context: any) {
     // Wipe DB
     const realIds = completedIds.filter(id => !id.startsWith("temp_"));
     if (realIds.length > 0) {
-      await (supabase as any).from("ai_agent_tasks").delete().in("id", realIds);
+      await supabase.from("ai_agent_tasks").delete().in("id", realIds);
     }
   }, [tasks]);
 

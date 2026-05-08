@@ -23,7 +23,12 @@
       "Bash(npm install *)",
       "Bash(echo \"EXIT:$?\")",
       "Bash(npm uninstall *)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(grep \"\\\\.tsx$\\\\|\\\\.ts$\")",
+      "Bash(grep -v \":0$\")",
+      "Bash(grep -rn \"className={\\\\`\" /c/Users/pp_it/cyberedumx.com/cyberedu-mx/src --include=\"*.tsx\")",
+      "Bash(grep -rn \"\\\\${.*cn\\(\" /c/Users/pp_it/cyberedumx.com/cyberedu-mx/src --include=\"*.tsx\")"
     ]
   }
 }

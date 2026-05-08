@@ -108,15 +108,15 @@ export default function AdminResumen() {
     try {
       const [todayUsageRaw, weekUsageRaw, newTodayRaw, premiumTodayRaw, activeRaw] =
         await Promise.all([
-          (supabase as any).from("daily_usage").select("count").eq("date", todayStr),
-          (supabase as any).from("daily_usage").select("count,user_id").in("date", days),
+          supabase.from("daily_usage").select("count").eq("date", todayStr),
+          supabase.from("daily_usage").select("count,user_id").in("date", days),
           supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", todayUTC),
-          (supabase as any)
+          supabase
             .from("profiles")
             .select("id", { count: "exact", head: true })
             .gte("updated_at", todayUTC)
             .or("is_premium.eq.true,subscription_status.eq.active"),
-          (supabase as any).from("daily_usage").select("user_id").eq("date", todayStr),
+          supabase.from("daily_usage").select("user_id").eq("date", todayStr),
         ]);
 
       const todayQueries = (todayUsageRaw.data || []).reduce(

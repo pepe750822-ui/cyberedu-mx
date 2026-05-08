@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.4"
   }
   public: {
     Tables: {
@@ -59,6 +59,51 @@ export type Database = {
         }
         Relationships: []
       }
+      announcements: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          type: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          type?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          type?: string | null
+        }
+        Relationships: []
+      }
+      daily_usage: {
+        Row: {
+          count: number
+          date: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          date: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          date?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flashcards: {
         Row: {
           back: string
@@ -97,12 +142,20 @@ export type Database = {
           area_of_interest: string[] | null
           avatar_url: string | null
           created_at: string
+          daily_questions_count: number | null
           email: string | null
           id: string
+          is_premium: boolean | null
+          last_daily_free: string | null
           marketing_opt_in: boolean | null
           name: string | null
           newsletter_opt_in: boolean | null
+          onboarding_completed: boolean | null
           provider: string | null
+          subscription_status: string | null
+          tokens: number | null
+          trial_started_at: string | null
+          trial_used: boolean | null
           updated_at: string
           weekly_reminders: boolean | null
         }
@@ -110,12 +163,20 @@ export type Database = {
           area_of_interest?: string[] | null
           avatar_url?: string | null
           created_at?: string
+          daily_questions_count?: number | null
           email?: string | null
           id: string
+          is_premium?: boolean | null
+          last_daily_free?: string | null
           marketing_opt_in?: boolean | null
           name?: string | null
           newsletter_opt_in?: boolean | null
+          onboarding_completed?: boolean | null
           provider?: string | null
+          subscription_status?: string | null
+          tokens?: number | null
+          trial_started_at?: string | null
+          trial_used?: boolean | null
           updated_at?: string
           weekly_reminders?: boolean | null
         }
@@ -123,14 +184,43 @@ export type Database = {
           area_of_interest?: string[] | null
           avatar_url?: string | null
           created_at?: string
+          daily_questions_count?: number | null
           email?: string | null
           id?: string
+          is_premium?: boolean | null
+          last_daily_free?: string | null
           marketing_opt_in?: boolean | null
           name?: string | null
           newsletter_opt_in?: boolean | null
+          onboarding_completed?: boolean | null
           provider?: string | null
+          subscription_status?: string | null
+          tokens?: number | null
+          trial_started_at?: string | null
+          trial_used?: boolean | null
           updated_at?: string
           weekly_reminders?: boolean | null
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          created_at: string | null
+          id: string
+          subscription: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          subscription: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          subscription?: Json
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -161,6 +251,217 @@ export type Database = {
         }
         Relationships: []
       }
+      simulador_results: {
+        Row: {
+          aciertos: number | null
+          banco: string | null
+          created_at: string | null
+          escuela_meta: string | null
+          fecha: string | null
+          id: string
+          modo: string | null
+          porcentaje: number | null
+          puntaje_meta: number | null
+          resultados_por_area: Json | null
+          total_preguntas: number | null
+          user_id: string | null
+        }
+        Insert: {
+          aciertos?: number | null
+          banco?: string | null
+          created_at?: string | null
+          escuela_meta?: string | null
+          fecha?: string | null
+          id?: string
+          modo?: string | null
+          porcentaje?: number | null
+          puntaje_meta?: number | null
+          resultados_por_area?: Json | null
+          total_preguntas?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          aciertos?: number | null
+          banco?: string | null
+          created_at?: string | null
+          escuela_meta?: string | null
+          fecha?: string | null
+          id?: string
+          modo?: string | null
+          porcentaje?: number | null
+          puntaje_meta?: number | null
+          resultados_por_area?: Json | null
+          total_preguntas?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_sim_profiles"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telegram_broadcast_log: {
+        Row: {
+          chat_id: string
+          id: string
+          message_preview: string | null
+          message_type: string
+          sent_at: string
+          success: boolean
+        }
+        Insert: {
+          chat_id: string
+          id?: string
+          message_preview?: string | null
+          message_type: string
+          sent_at?: string
+          success?: boolean
+        }
+        Update: {
+          chat_id?: string
+          id?: string
+          message_preview?: string | null
+          message_type?: string
+          sent_at?: string
+          success?: boolean
+        }
+        Relationships: []
+      }
+      telegram_guest_usage: {
+        Row: {
+          chat_id: string
+          id: string
+          questions_count: number | null
+          usage_date: string | null
+        }
+        Insert: {
+          chat_id: string
+          id?: string
+          questions_count?: number | null
+          usage_date?: string | null
+        }
+        Update: {
+          chat_id?: string
+          id?: string
+          questions_count?: number | null
+          usage_date?: string | null
+        }
+        Relationships: []
+      }
+      telegram_leads: {
+        Row: {
+          chat_id: string
+          created_at: string | null
+          first_name: string | null
+          id: string
+          last_message: string | null
+          messages_count: number | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          chat_id: string
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_message?: string | null
+          messages_count?: number | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          chat_id?: string
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_message?: string | null
+          messages_count?: number | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      telegram_sequences: {
+        Row: {
+          chat_id: string
+          created_at: string
+          id: string
+          scheduled_at: string
+          sent_at: string | null
+          sequence_type: string
+          step: number
+        }
+        Insert: {
+          chat_id: string
+          created_at?: string
+          id?: string
+          scheduled_at: string
+          sent_at?: string | null
+          sequence_type: string
+          step?: number
+        }
+        Update: {
+          chat_id?: string
+          created_at?: string
+          id?: string
+          scheduled_at?: string
+          sent_at?: string | null
+          sequence_type?: string
+          step?: number
+        }
+        Relationships: []
+      }
+      telegram_users: {
+        Row: {
+          blocked: boolean | null
+          chat_id: string
+          created_at: string | null
+          first_name: string | null
+          id: string
+          last_user_message_at: string | null
+          linked_at: string | null
+          linking_code: string | null
+          user_id: string | null
+          username: string | null
+        }
+        Insert: {
+          blocked?: boolean | null
+          chat_id: string
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_user_message_at?: string | null
+          linked_at?: string | null
+          linking_code?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Update: {
+          blocked?: boolean | null
+          chat_id?: string
+          created_at?: string | null
+          first_name?: string | null
+          id?: string
+          last_user_message_at?: string | null
+          linked_at?: string | null
+          linking_code?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -176,6 +477,33 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      whatsapp_leads: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_message: string | null
+          messages_count: number | null
+          phone_number: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_message?: string | null
+          messages_count?: number | null
+          phone_number: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_message?: string | null
+          messages_count?: number | null
+          phone_number?: string
+          updated_at?: string | null
         }
         Relationships: []
       }

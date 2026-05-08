@@ -29,7 +29,7 @@ export function usePushNotifications() {
 
       console.log("[Push] Browser subscription created:", sub.endpoint);
 
-      const { error } = await (supabase as any).from("push_subscriptions").upsert(
+      const { error } = await supabase.from("push_subscriptions").upsert(
         { user_id: userId, subscription: sub.toJSON() },
         { onConflict: "user_id" }
       );

@@ -613,15 +613,13 @@ const SimuladorPro = () => {
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
         const [{ data: ranking }, { data: masActivos }] = await Promise.all([
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (supabase as any)
+            supabase
                 .from('simulador_results')
                 .select('user_id, porcentaje, aciertos, total_preguntas, modo, profiles(name, avatar_url)')
                 .gte('created_at', weekAgo)
                 .order('porcentaje', { ascending: false })
                 .limit(10),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (supabase as any)
+            supabase
                 .from('simulador_results')
                 .select('user_id, profiles(name, avatar_url)')
                 .gte('created_at', weekAgo),
@@ -647,7 +645,7 @@ const SimuladorPro = () => {
         if (!user) return;
         setChartsLoading(true);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data } = await (supabase as any)
+        const { data } = await supabase
             .from('simulador_results')
             .select('fecha, porcentaje, modo')
             .eq('user_id', user.id)
@@ -704,8 +702,7 @@ const SimuladorPro = () => {
         console.log('[SimuladorPro] Inserting payload:', payload);
 
         const doInsert = async () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const { data, error } = await (supabase as any)
+            const { data, error } = await supabase
                 .from('simulador_results')
                 .insert(payload);
             if (error) {
