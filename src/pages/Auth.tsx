@@ -20,6 +20,8 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+  const [formLoadTime] = useState(Date.now());
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -111,6 +113,20 @@ const Auth = () => {
       return;
     }
 
+    if (!isLogin) {
+      if (honeypot) {
+        console.warn('Bot detected');
+        return;
+      }
+      if (Date.now() - formLoadTime < 3000) {
+        return;
+      }
+      if (/^(kulero|usuario|test|bot|spam|fake)\d+@/i.test(email)) {
+        toast({ title: 'Error de registro', description: 'Por favor usa un email válido', variant: 'destructive' });
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       if (isLogin) {
@@ -121,6 +137,15 @@ const Auth = () => {
         if (error) throw error;
         trackLogin('email');
       } else {
+        const checkRes = await fetch('/api/check-registration', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, honeypot, elapsed: Date.now() - formLoadTime }),
+        });
+        const check = await checkRes.json();
+        if (!check.allowed) {
+          throw new Error(check.reason === 'suspicious_email' ? 'Por favor usa un email válido' : 'Registro no permitido. Inténtalo de nuevo.');
+        }
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -257,6 +282,16 @@ const Auth = () => {
             )}
 
             <form onSubmit={handleEmailAuth} className="space-y-4">
+              {/* Campo honeypot — invisible para humanos */}
+              <input
+                type="text"
+                name="website"
+                value={honeypot}
+                onChange={e => setHoneypot(e.target.value)}
+                style={{ display: 'none' }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
               {!isLogin && !isRecovering && !isResettingPassword && (
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">Nombre Completo</Label>
