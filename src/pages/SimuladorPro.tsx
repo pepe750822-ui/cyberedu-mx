@@ -69,6 +69,32 @@ const AREA_FILTERS: { label: string; value: string }[] = [
     { label: 'Habilidades', value: 'habilidades' },
 ];
 
+interface Escuela { id: string; nombre: string; tipo: 'UNAM' | 'IPN'; puntaje: number }
+
+const ESCUELAS: Escuela[] = [
+    { id: 'cch_sur', nombre: 'CCH Sur', tipo: 'UNAM', puntaje: 95 },
+    { id: 'cch_oriente', nombre: 'CCH Oriente', tipo: 'UNAM', puntaje: 87 },
+    { id: 'cch_vallejo', nombre: 'CCH Vallejo', tipo: 'UNAM', puntaje: 90 },
+    { id: 'cch_azcapo', nombre: 'CCH Azcapotzalco', tipo: 'UNAM', puntaje: 88 },
+    { id: 'cch_naucalpan', nombre: 'CCH Naucalpan', tipo: 'UNAM', puntaje: 86 },
+    { id: 'prepa1', nombre: 'Prepa 1 UNAM', tipo: 'UNAM', puntaje: 100 },
+    { id: 'prepa2', nombre: 'Prepa 2 UNAM', tipo: 'UNAM', puntaje: 96 },
+    { id: 'prepa3', nombre: 'Prepa 3 UNAM', tipo: 'UNAM', puntaje: 98 },
+    { id: 'prepa4', nombre: 'Prepa 4 UNAM', tipo: 'UNAM', puntaje: 94 },
+    { id: 'prepa5', nombre: 'Prepa 5 UNAM', tipo: 'UNAM', puntaje: 97 },
+    { id: 'prepa6', nombre: 'Prepa 6 UNAM', tipo: 'UNAM', puntaje: 99 },
+    { id: 'cecyt1', nombre: 'CECyT 1 Gonzalo Vázquez', tipo: 'IPN', puntaje: 85 },
+    { id: 'cecyt2', nombre: 'CECyT 2 Miguel Bernard', tipo: 'IPN', puntaje: 83 },
+    { id: 'cecyt3', nombre: 'CECyT 3 Estanislao Ramírez', tipo: 'IPN', puntaje: 82 },
+    { id: 'cecyt4', nombre: 'CECyT 4 Lázaro Cárdenas', tipo: 'IPN', puntaje: 84 },
+    { id: 'cecyt5', nombre: 'CECyT 5 Benito Juárez', tipo: 'IPN', puntaje: 86 },
+    { id: 'cecyt6', nombre: 'CECyT 6 Miguel Othón', tipo: 'IPN', puntaje: 81 },
+    { id: 'cecyt7', nombre: 'CECyT 7 Cuauhtémoc', tipo: 'IPN', puntaje: 83 },
+    { id: 'cecyt9', nombre: 'CECyT 9 Juan de Dios Bátiz', tipo: 'IPN', puntaje: 87 },
+    { id: 'cecyt10', nombre: 'CECyT 10 Carlos Vallejo', tipo: 'IPN', puntaje: 82 },
+    { id: 'cecyt11', nombre: 'CECyT 11 Wilfrido Massieu', tipo: 'IPN', puntaje: 88 },
+];
+
 interface SimuladorState {
     activo: boolean;
     fechaInicio: string;
@@ -101,6 +127,12 @@ const SimuladorPro = () => {
     const [examMode, setExamMode] = useState<ExamMode>('full');
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [selectedBank, setSelectedBank] = useState<BankSelection>('bank1');
+    const [selectedEscuela, setSelectedEscuela] = useState<Escuela | null>(() => {
+        try {
+            const saved = localStorage.getItem('user_target_school');
+            return saved ? (ESCUELAS.find(e => e.nombre === saved) ?? null) : null;
+        } catch { return null; }
+    });
 
     // SEO Dynamic Tags for Simulador
     useEffect(() => {
@@ -217,6 +249,19 @@ const SimuladorPro = () => {
         localStorage.removeItem('simulador_revision');
         localStorage.removeItem('simulador_questions');
         setShowRestoreModal(false);
+    };
+
+    const handleSelectEscuela = (escuela: Escuela | null) => {
+        setSelectedEscuela(escuela);
+        try {
+            if (escuela) {
+                localStorage.setItem('user_target_school', escuela.nombre);
+                localStorage.setItem('user_target_score', escuela.puntaje.toString());
+            } else {
+                localStorage.removeItem('user_target_school');
+                localStorage.removeItem('user_target_score');
+            }
+        } catch { /* localStorage blocked */ }
     };
 
     const handlePause = () => {
@@ -455,6 +500,72 @@ const SimuladorPro = () => {
                         </div>
                     </div>
 
+                    {/* School target selector */}
+                    <div className="space-y-3 text-left">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 text-center">🎯 ¿A qué escuela quieres entrar?</p>
+
+                        <div className="flex justify-center">
+                            <button
+                                onClick={() => handleSelectEscuela(null)}
+                                className={cn(
+                                    "px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border",
+                                    !selectedEscuela
+                                        ? "bg-slate-600 text-white border-slate-500"
+                                        : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10"
+                                )}
+                            >
+                                Sin meta específica
+                            </button>
+                        </div>
+
+                        <div className="space-y-2">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-blue-400/70 text-center">UNAM</p>
+                            <div className="flex flex-wrap justify-center gap-1.5">
+                                {ESCUELAS.filter(e => e.tipo === 'UNAM').map(e => (
+                                    <button
+                                        key={e.id}
+                                        onClick={() => handleSelectEscuela(e)}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide transition-all border",
+                                            selectedEscuela?.id === e.id
+                                                ? "bg-blue-600 text-white border-blue-500"
+                                                : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
+                                        )}
+                                    >
+                                        {e.nombre} <span className="opacity-50">· {e.puntaje}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-red-400/70 text-center">IPN</p>
+                            <div className="flex flex-wrap justify-center gap-1.5">
+                                {ESCUELAS.filter(e => e.tipo === 'IPN').map(e => (
+                                    <button
+                                        key={e.id}
+                                        onClick={() => handleSelectEscuela(e)}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide transition-all border",
+                                            selectedEscuela?.id === e.id
+                                                ? "bg-red-700 text-white border-red-600"
+                                                : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
+                                        )}
+                                    >
+                                        {e.nombre} <span className="opacity-50">· {e.puntaje}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {selectedEscuela && (
+                            <p className="text-center text-[10px] text-slate-500 pt-1">
+                                Meta: <span className="font-black text-white">{selectedEscuela.nombre}</span>
+                                {' '}— mínimo <span className="font-black text-amber-400">{selectedEscuela.puntaje} aciertos</span>
+                            </p>
+                        )}
+                    </div>
+
                     {/* Mode info cards */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
@@ -503,6 +614,25 @@ const SimuladorPro = () => {
     const score = calculateScore();
     const percentage = activeQuestions.length > 0 ? (score / activeQuestions.length) * 100 : 0;
 
+    // Top wrong areas (for meta feedback)
+    const wrongAreaCounts: Record<string, number> = {};
+    activeQuestions.forEach(q => {
+        if (userAnswers[q.id] !== q.correctIndex) {
+            wrongAreaCounts[q.area] = (wrongAreaCounts[q.area] || 0) + 1;
+        }
+    });
+    const topWrongAreas = Object.entries(wrongAreaCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 3)
+        .map(([area]) => area);
+
+    // Meta comparisons
+    const myScore = Math.round(percentage);
+    const metaDiff = selectedEscuela ? selectedEscuela.puntaje - myScore : 0;
+    const metaSuccess = !!selectedEscuela && metaDiff <= 0;
+    const metaClose = !!selectedEscuela && metaDiff > 0 && metaDiff <= 10;
+    const areasText = topWrongAreas.join(', ') || 'Todas las materias';
+
     if (showResults) {
         return (
             <div className="min-h-screen bg-slate-950 p-6 md:p-12 overflow-y-auto">
@@ -533,37 +663,68 @@ const SimuladorPro = () => {
                         </div>
 
                         <div className="bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 space-y-6 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-4 opacity-5">
+                            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                                 <Target className="h-32 w-32" />
                             </div>
                             <h3 className="text-sm font-black uppercase tracking-widest text-primary relative z-10">Análisis y Meta</h3>
-                            <div className="space-y-4 relative z-10">
+
+                            {/* Probabilidad de ingreso */}
+                            <div className="space-y-2 relative z-10">
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-slate-400">Probabilidad de Ingreso</span>
                                     <span className="text-sm font-black text-white">{percentage > 80 ? "ALTA" : percentage > 60 ? "MEDIA" : "EN MEJORA"}</span>
                                 </div>
                                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-primary" style={{ width: `${percentage}%` }} />
+                                    <div className="h-full bg-primary transition-all" style={{ width: `${percentage}%` }} />
                                 </div>
                             </div>
-                            <div className="pt-4 border-t border-white/5 space-y-4 relative z-10">
-                                <div className="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/10">
-                                    <span className="text-xs font-bold text-slate-400">Tu Meta (Escuela Elegida)</span>
-                                    <span className="text-sm font-black text-amber-400">
-                                        {localStorage.getItem('user_target_school') || 'UNAM - ENP 6'} 
-                                        <span className="text-white ml-2 text-xs">({localStorage.getItem('user_target_score') || '111'} pts)</span>
-                                    </span>
-                                </div>
+
+                            {/* Meta / veredicto */}
+                            <div className="pt-4 border-t border-white/5 space-y-3 relative z-10">
+                                {selectedEscuela ? (
+                                    <div className={cn(
+                                        "p-4 rounded-2xl border",
+                                        metaSuccess ? "bg-emerald-500/10 border-emerald-500/30" :
+                                        metaClose   ? "bg-amber-500/10 border-amber-500/30" :
+                                                      "bg-red-500/10 border-red-500/30"
+                                    )}>
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-xl shrink-0">{metaSuccess ? "🎉" : metaClose ? "⚠️" : "❌"}</span>
+                                            <div className="space-y-1 min-w-0">
+                                                <p className={cn("text-sm font-black leading-snug", metaSuccess ? "text-emerald-400" : metaClose ? "text-amber-400" : "text-red-400")}>
+                                                    {metaSuccess
+                                                        ? `¡Alcanzas ${selectedEscuela.nombre}! Tu puntaje (${myScore}) supera el mínimo (${selectedEscuela.puntaje})`
+                                                        : metaClose
+                                                        ? `¡Casi! Te faltan ${metaDiff} puntos para ${selectedEscuela.nombre}.`
+                                                        : `Necesitas mejorar ${metaDiff} puntos para ${selectedEscuela.nombre}.`
+                                                    }
+                                                </p>
+                                                {!metaSuccess && (
+                                                    <p className="text-xs text-slate-400">
+                                                        {metaClose ? "Practica estos temas:" : "Enfócate en:"}{' '}
+                                                        <span className="font-bold text-white">{areasText}</span>
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="bg-white/5 p-3 rounded-xl border border-white/10 text-center">
+                                        <p className="text-xs text-slate-500">Sin escuela meta seleccionada</p>
+                                        <p className="text-[10px] text-slate-600 mt-1">Configura tu meta en la pantalla de inicio</p>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-slate-400">Tu Puntaje Final</span>
                                     <span className="text-sm font-black text-white">{score} aciertos</span>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-400">Veredicto Oficial</span>
-                                    <span className={cn("text-sm font-black", score >= parseInt(localStorage.getItem('user_target_score') || '111') ? "text-emerald-400" : "text-red-400")}>
-                                        {score >= parseInt(localStorage.getItem('user_target_score') || '111') ? "🎉 ¡ALCANZAS TU META!" : "↑ FALTAN PUNTOS"}
-                                    </span>
-                                </div>
+                                {selectedEscuela && (
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs font-bold text-slate-400">Mínimo {selectedEscuela.nombre}</span>
+                                        <span className="text-sm font-black text-amber-400">{selectedEscuela.puntaje} aciertos</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
