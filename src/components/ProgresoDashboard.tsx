@@ -376,9 +376,6 @@ const ProgresoDashboard = () => {
         </Card>
       </div>
 
-      {/* Daily Challenge Section */}
-      <DailyChallenge />
-
       {/* 2. Visual Analytics Section */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Weekly Evolution Chart */}

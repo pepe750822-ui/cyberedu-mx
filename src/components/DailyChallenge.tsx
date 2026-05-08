@@ -46,18 +46,27 @@ export const DailyChallenge = () => {
           .eq('active_date', today)
           .single();
 
-        if (error) {
-          // Fallback to latest if not set for today specifically
-          const { data: fallback, error: fbError } = await supabase
+        if (error || !data) {
+          // Fallback to latest
+          const { data: fallback } = await supabase
             .from('daily_challenges')
             .select('*')
             .order('created_at', { ascending: false })
             .limit(1);
           
-          if (!fbError && fallback && fallback[0]) {
+          if (fallback && fallback[0]) {
             setChallenge(fallback[0]);
+          } else {
+            // Static fallback if DB is completely empty
+            setChallenge({
+              id: 'fallback-1',
+              question: '¿Qué órgano del cuerpo humano es el encargado de bombear la sangre?',
+              options: ['Pulmones', 'Cerebro', 'Corazón', 'Hígado'],
+              correct_index: 2,
+              area: 'Biología'
+            });
           }
-        } else if (data) {
+        } else {
           setChallenge(data);
         }
       } catch (err) {
