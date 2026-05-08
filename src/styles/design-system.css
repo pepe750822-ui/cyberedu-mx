@@ -1,0 +1,44 @@
+/* ── CyberEdu MX Design System ─────────────────────────────────────────────
+   Stripe/Apple-inspired utilities. Import in main.tsx after index.css.
+   No page changes required — classes are additive.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Transición base suave */
+.transition-base {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover lift — para cards */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Fade in suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Press — para botones */
+.press:active {
+  transform: scale(0.97);
+}
+
+/* Focus ring consistente */
+.focus-ring:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}

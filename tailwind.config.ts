@@ -19,7 +19,24 @@ export default {
       padding: "2rem",
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Cal Sans', 'Inter', 'sans-serif'],
+      },
       colors: {
+        // Design-system palette (light, Stripe/Apple-inspired)
+        'ink':          '#0A0A0A',
+        'ink-2':        '#3D3D3D',
+        'ink-3':        '#8A8A8A',
+        'surface':      '#FFFFFF',
+        'surface-2':    '#F5F5F5',
+        'surface-3':    '#EBEBEB',
+        'accent-ds':    '#6366F1',
+        'accent-ds-2':  '#4F46E5',
+        'accent-light': '#EEF2FF',
+        'ds-success':   '#16A34A',
+        'ds-warning':   '#D97706',
+        'ds-danger':    '#DC2626',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -90,6 +107,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.3s ease forwards",
       },
     },
   },
