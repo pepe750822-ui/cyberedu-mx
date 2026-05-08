@@ -141,7 +141,8 @@ const Header = () => {
           {profile && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <div 
+                <button
+                  type="button"
                   onClick={() => navigate("/tokens")}
                   className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full cursor-pointer hover:bg-primary/20 transition-all active:scale-95 group"
                 >
@@ -149,7 +150,7 @@ const Header = () => {
                   <span className="text-[10px] font-black text-primary uppercase tracking-widest whitespace-nowrap">
                     {profile.tokens || 0} TOKENS
                   </span>
-                </div>
+                </button>
               </TooltipTrigger>
               <TooltipContent>Tu balance de tokens</TooltipContent>
             </Tooltip>

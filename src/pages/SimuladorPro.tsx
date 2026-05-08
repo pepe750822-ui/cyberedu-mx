@@ -1060,6 +1060,7 @@ const SimuladorPro = () => {
 
                     <Button
                         variant="outline"
+                        disabled={!currentQuestion}
                         onClick={() => {
                             if (!currentQuestion) return;
                             setMarkedForReview(prev => ({
@@ -1068,7 +1069,7 @@ const SimuladorPro = () => {
                             }));
                         }}
                         className={cn(
-                            "flex-1 rounded-xl border-white/10 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest",
+                            "flex-1 rounded-xl border-white/10 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed",
                             currentQuestion && markedForReview[currentQuestion.id] ? "bg-amber-500/20 border-amber-500 text-amber-500" : "text-slate-400 hover:bg-white/5"
                         )}
                     >
