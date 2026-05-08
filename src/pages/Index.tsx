@@ -166,13 +166,13 @@ const Index = () => {
 
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    
-    const query = searchQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    const query = searchQuery.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
     const results: Array<{ areaId: string; videoId: string; title: string; areaName: string }> = [];
-    
+
     areas.forEach(area => {
       area.videos.forEach(video => {
-        const title = video.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const title = video.title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
         if (title.includes(query) || area.name.toLowerCase().includes(query)) {
           results.push({
             areaId: area.id,
@@ -183,16 +183,16 @@ const Index = () => {
         }
       });
     });
-    
+
     return results.slice(0, 10);
   }, [searchQuery]);
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface dark:bg-slate-900">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden mb-0 border-b border-surface-3 bg-surface">
+      <section className="relative overflow-hidden mb-0 border-b border-surface-3 dark:border-slate-700 bg-surface dark:bg-slate-900">
         <div className="absolute inset-0">
           <img
             src={heroImage}
@@ -201,24 +201,24 @@ const Index = () => {
             loading="eager"
             fetchpriority="high"
           />
-          <div className="absolute inset-0 bg-white/90" />
-          <div className="absolute inset-0 bg-white/60" />
+          <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90" />
+          <div className="absolute inset-0 bg-white/60 dark:bg-slate-950/60" />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-accent-light border border-accent-ds/20 text-accent-ds text-[11px] font-black px-4 py-2 rounded-full mb-6 animate-fade-in uppercase tracking-widest">
+              <div className="inline-flex items-center gap-2 bg-accent-light dark:bg-violet-900/30 border border-accent-ds/20 text-accent-ds text-[11px] font-black px-4 py-2 rounded-full mb-6 animate-fade-in uppercase tracking-widest">
                 <span className="relative flex h-2 w-2 mr-1">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ds opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ds" />
                 </span>
                 ECOEMS 2026 · 20-28 Junio · Prepárate Ya
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-ink mb-6 leading-tight text-balance animate-fade-in">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-ink dark:text-white mb-6 leading-tight text-balance animate-fade-in">
                 Aprueba el ECOEMS <br /><span className="text-accent-ds">en 45 Días</span>
               </h1>
-              <p className="text-lg md:text-xl text-ink-2 mb-8 leading-relaxed max-w-lg animate-fade-in">
-                <span className="text-ink font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent-ds font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
+              <p className="text-lg md:text-xl text-ink-2 dark:text-slate-300 mb-8 leading-relaxed max-w-lg animate-fade-in">
+                <span className="text-ink dark:text-white font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent-ds font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
               </p>
               <div className="flex items-center gap-3 mb-10 -mt-2 animate-fade-in">
                 <div className="h-px w-8 bg-accent-ds/30 hidden md:block" />
@@ -228,15 +228,15 @@ const Index = () => {
                 </span>
               </div>
               <div className="flex flex-wrap gap-4 animate-fade-in">
-                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 text-ink dark:text-white bg-surface-2 dark:bg-slate-800 border border-surface-3 dark:border-slate-700 px-4 py-2 rounded-lg">
                   <Video className="h-5 w-5 text-accent-ds" />
                   <span className="text-sm font-semibold">{totalVideos} Videos HD</span>
                 </div>
-                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 text-ink dark:text-white bg-surface-2 dark:bg-slate-800 border border-surface-3 dark:border-slate-700 px-4 py-2 rounded-lg">
                   <BookOpen className="h-5 w-5 text-accent-ds" />
                   <span className="text-sm font-semibold">{areas.length} Áreas Críticas</span>
                 </div>
-                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 text-ink dark:text-white bg-surface-2 dark:bg-slate-800 border border-surface-3 dark:border-slate-700 px-4 py-2 rounded-lg">
                   <CheckCircle className="h-5 w-5 text-ds-success" />
                   <span className="text-sm font-semibold">{stats.completos} Completados</span>
                 </div>
@@ -371,13 +371,13 @@ const Index = () => {
       </section>
 
       {/* Areas Section */}
-      <section id="areas" className="bg-surface-2 border-b border-surface-3">
+      <section id="areas" className="bg-surface-2 dark:bg-slate-800 border-b border-surface-3 dark:border-slate-700">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-display font-black mb-4 text-ink">
+          <h2 className="text-3xl md:text-5xl font-display font-black mb-4 text-ink dark:text-white">
             Sistemas de Aprendizaje
           </h2>
-          <p className="text-ink-3 text-lg max-w-xl mx-auto font-medium">
+          <p className="text-ink-3 dark:text-slate-400 text-lg max-w-xl mx-auto font-medium">
             Entrena en las áreas que el examen demanda. Domina cada módulo y asegura tu lugar.
           </p>
         </div>
@@ -392,7 +392,7 @@ const Index = () => {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <div 
+          <div
             onClick={() => navigate("/simulador-pro")}
             className="group relative flex flex-col justify-between p-6 rounded-3xl bg-card border-2 border-indigo-500/30 shadow-lg hover:shadow-indigo-500/20 hover:border-indigo-500/50 transition-all cursor-pointer overflow-hidden"
           >
@@ -442,7 +442,7 @@ const Index = () => {
             className="container mx-auto px-4 mb-12"
           >
             <div className="relative">
-              <div className="relative bg-surface border border-surface-3 rounded-[2rem] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+              <div className="relative bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-[2rem] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
 
                 {/* Dismiss button */}
                 <button
@@ -461,10 +461,10 @@ const Index = () => {
                         <Bot className="h-6 w-6 text-violet-400" />
                       </div>
                       <div>
-                        <h2 className="text-2xl md:text-3xl font-display font-black text-ink leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-display font-black text-ink dark:text-white leading-tight">
                           Tu Tutor IA para el ECOEMS 2026
                         </h2>
-                        <p className="text-sm text-ink-3 font-medium mt-0.5">
+                        <p className="text-sm text-ink-3 dark:text-slate-400 font-medium mt-0.5">
                           Powered by <span className="text-accent-ds font-bold">Claude AI · Anthropic</span>
                         </p>
                       </div>
@@ -486,14 +486,14 @@ const Index = () => {
                       <button
                         key={item.emoji}
                         onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message: item.query } }))}
-                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-surface-2 border border-surface-3 hover:bg-accent-light hover:border-accent-ds/20 transition-all text-left group/cap"
+                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-surface-2 dark:bg-slate-800 border border-surface-3 dark:border-slate-700 hover:bg-accent-light dark:hover:bg-violet-900/30 hover:border-accent-ds/20 transition-all text-left group/cap"
                       >
                         <span className="text-2xl">{item.emoji}</span>
                         <div>
-                          <p className="text-[11px] font-black text-ink leading-snug group-hover/cap:text-accent-ds transition-colors">
+                          <p className="text-[11px] font-black text-ink dark:text-white leading-snug group-hover/cap:text-accent-ds transition-colors">
                             {item.label}
                           </p>
-                          <p className="text-[10px] text-ink-3 mt-0.5">→ {item.desc}</p>
+                          <p className="text-[10px] text-ink-3 dark:text-slate-400 mt-0.5">→ {item.desc}</p>
                         </div>
                       </button>
                     ))}
@@ -530,60 +530,60 @@ const Index = () => {
       </AnimatePresence>
 
       {/* 📚 Buscador de Contenido Gratuito */}
-      <section className="bg-surface border-b border-surface-3">
+      <section className="bg-surface dark:bg-slate-900 border-b border-surface-3 dark:border-slate-700">
       <div className="container mx-auto px-4 py-12 relative z-20">
-        <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.08)] overflow-visible">
+        <div className="relative bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-[2rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.08)] overflow-visible">
             <div className="absolute -right-10 -top-10 opacity-[0.03] pointer-events-none">
-              <Search className="h-64 w-64 text-ink" />
+              <Search className="h-64 w-64 text-ink dark:text-white" />
             </div>
 
             <div className="relative z-10 flex flex-col items-center text-center space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-light dark:bg-violet-900/30 border border-accent-ds/20 text-accent-ds">
                 <Sparkles className="h-4 w-4" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Acceso 100% Libre</span>
               </div>
 
-              <h2 className="text-3xl md:text-5xl font-display font-black text-ink max-w-4xl text-balance">
+              <h2 className="text-3xl md:text-5xl font-display font-black text-ink dark:text-white max-w-4xl text-balance">
                 Busca tu tema y accede al material completo <br />
-                <span className="text-ink-2 text-2xl md:text-3xl font-semibold">
+                <span className="text-ink-2 dark:text-slate-300 text-2xl md:text-3xl font-semibold">
                   Videos · Infografías · PDFs · Podcasts — Todo GRATIS
                 </span>
               </h2>
-              
+
               <div className="w-full max-w-2xl relative">
                 <div className="relative h-16 md:h-20 group/input">
                   <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-md opacity-0 group-hover/input:opacity-100 transition-opacity pointer-events-none"></div>
                   <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground transition-colors group-focus-within:text-primary" />
-                  <Input 
-                    type="text" 
+                  <Input
+                    type="text"
                     placeholder="Ej: Biología Celular, Leyes de Newton, Geometría..."
                     className="h-full w-full pl-16 pr-6 rounded-2xl bg-slate-950/50 border-2 border-border focus:border-primary/50 text-lg md:text-xl font-medium transition-all"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                
+
                 {/* Search Results */}
                 <AnimatePresence>
                   {filteredTopics.length > 0 && (
-                    <motion.div 
+                    <motion.div
                       style={{ position: "absolute", zIndex: 100 }}
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="top-full left-0 right-0 mt-4 bg-surface border border-surface-3 rounded-2xl p-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-y-auto max-h-[400px] divide-y divide-surface-3"
+                      className="top-full left-0 right-0 mt-4 bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-2xl p-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-y-auto max-h-[400px] divide-y divide-surface-3 dark:divide-slate-700"
                     >
                       {filteredTopics.map((topic, i) => (
                         <button
                           key={`${topic.areaId}-${topic.videoId}-${i}`}
                           onClick={() => navigate(`/area/${topic.areaId}?video=${topic.videoId}`)}
-                          className="w-full flex items-center justify-between p-4 hover:bg-accent-light transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
+                          className="w-full flex items-center justify-between p-4 hover:bg-accent-light dark:hover:bg-violet-900/30 transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
                         >
                           <div className="flex-1 min-w-0 pr-4">
                             <p className="text-[10px] font-black text-accent-ds uppercase tracking-widest mb-0.5">{topic.areaName}</p>
-                            <p className="text-sm md:text-base font-bold text-ink group-hover:text-accent-ds transition-colors truncate">{topic.title}</p>
+                            <p className="text-sm md:text-base font-bold text-ink dark:text-white group-hover:text-accent-ds transition-colors truncate">{topic.title}</p>
                           </div>
-                          <div className="h-8 w-8 rounded-full bg-accent-light flex items-center justify-center text-accent-ds group-hover:bg-accent-ds group-hover:text-white transition-all">
+                          <div className="h-8 w-8 rounded-full bg-accent-light dark:bg-violet-900/30 flex items-center justify-center text-accent-ds group-hover:bg-accent-ds group-hover:text-white transition-all">
                             <ChevronRight className="h-4 w-4" />
                           </div>
                         </button>
@@ -592,8 +592,8 @@ const Index = () => {
                   )}
                 </AnimatePresence>
               </div>
-              
-              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-ink-3">
+
+              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-ink-3 dark:text-slate-400">
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-ds-success" /> 100% Gratis - Empieza ahora</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-accent-ds" /> Multimedia Premium</span>
                 <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-accent-ds" /> Disponible 24/7</span>
@@ -604,9 +604,9 @@ const Index = () => {
       </section>
 
       {/* Dashboard de Progreso Personalizado */}
-      <section className="bg-surface-2 border-t border-surface-3">
+      <section className="bg-surface-2 dark:bg-slate-800 border-t border-surface-3 dark:border-slate-700">
       <div className="container mx-auto px-4 relative z-10 py-16 space-y-12">
-        
+
         {/* Reto Diario Express */}
         <DailyChallenge />
 
@@ -620,9 +620,9 @@ const Index = () => {
           <UltimoVideoCard />
         </Suspense>
 
-        {/* Simuladores Premium Section */}
+        {/* Simuladores Premium Section — CTA final bg-ink */}
         <div className="relative">
-          <div className="relative bg-ink rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-xl">
+          <div className="relative bg-ink dark:bg-slate-950 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-xl">
             <div className="absolute top-0 right-0 p-12 opacity-[0.06] pointer-events-none">
               <Trophy className="h-48 w-48 text-white -rotate-12" />
             </div>
@@ -653,7 +653,7 @@ const Index = () => {
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <Button
                   onClick={() => navigate("/simulador-pro")}
-                  className="h-20 px-10 rounded-3xl bg-white hover:bg-surface-2 text-ink text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(255,255,255,0.15)] transition-all hover:scale-105 active:scale-95 group press"
+                  className="h-20 px-10 rounded-3xl bg-white hover:bg-surface-2 dark:hover:bg-slate-200 text-ink text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(255,255,255,0.15)] transition-all hover:scale-105 active:scale-95 group press"
                 >
                   SIMULADOR REAL
                   <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
@@ -716,19 +716,19 @@ const Index = () => {
               icon: Trophy
             }
           ].map((goal, i) => (
-            <div key={i} className="bg-surface border border-surface-3 p-6 rounded-2xl hover-lift shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-all">
+            <div key={i} className="bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 p-6 rounded-2xl hover-lift shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-all">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 rounded-2xl bg-accent-light">
+                <div className="p-3 rounded-2xl bg-accent-light dark:bg-violet-900/30">
                   <goal.icon className="h-5 w-5 text-accent-ds" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm text-ink">{goal.title}</h4>
-                  <p className="text-[10px] text-ink-3 font-bold uppercase tracking-widest">Meta Mensual</p>
+                  <h4 className="font-semibold text-sm text-ink dark:text-white">{goal.title}</h4>
+                  <p className="text-[10px] text-ink-3 dark:text-slate-400 font-bold uppercase tracking-widest">Meta Mensual</p>
                 </div>
               </div>
-              <p className="text-xs text-ink-3 mb-4 line-clamp-1">{goal.desc}</p>
+              <p className="text-xs text-ink-3 dark:text-slate-400 mb-4 line-clamp-1">{goal.desc}</p>
               <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-ink-3">
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-ink-3 dark:text-slate-400">
                   <span>Progreso</span>
                   <span className="text-accent-ds font-black">{goal.progress}%</span>
                 </div>
@@ -745,21 +745,21 @@ const Index = () => {
 
         {/* 🏆 Digital Certifications Section */}
         <div className="relative">
-          <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
+          <div className="relative bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
             <div className="absolute top-0 right-0 p-12 opacity-[0.04] pointer-events-none">
-              <Award className="h-48 w-48 text-ink rotate-12" />
+              <Award className="h-48 w-48 text-ink dark:text-white rotate-12" />
             </div>
 
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
               <div className="space-y-6 text-center lg:text-left flex-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light dark:bg-violet-900/30 border border-accent-ds/20 text-accent-ds">
                   <Star className="h-3.5 w-3.5" />
                   <span className="text-[10px] font-black uppercase tracking-widest">Recompensa Académica</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-display font-black text-ink">
+                <h2 className="text-3xl md:text-5xl font-display font-black text-ink dark:text-white">
                   Obtén tu <span className="text-accent-ds">Certificación Digital</span>
                 </h2>
-                <p className="text-ink-2 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                <p className="text-ink-2 dark:text-slate-300 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Al completar tus simuladores con éxito, desbloquearás diplomas premium que avalan tu nivel de preparación. Descárgalos en PDF y compártelos en tus redes profesionales.
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
@@ -792,30 +792,30 @@ const Index = () => {
 
         {/* Manual Digital ECOEMS Section */}
         <div className="relative">
-          <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
+          <div className="relative bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
             <div className="absolute top-0 right-0 p-12 opacity-[0.04] pointer-events-none">
-              <BookOpen className="h-48 w-48 text-ink -rotate-12" />
+              <BookOpen className="h-48 w-48 text-ink dark:text-white -rotate-12" />
             </div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="space-y-4 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light dark:bg-violet-900/30 border border-accent-ds/20 text-accent-ds">
                   <BookOpen className="h-4 w-4" />
                   <span className="text-[10px] font-black uppercase tracking-widest">Guía Completa</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-display font-black text-ink">
+                <h2 className="text-3xl md:text-5xl font-display font-black text-ink dark:text-white">
                   Manual Digital ECOEMS
                 </h2>
-                <p className="text-ink-2 text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                <p className="text-ink-2 dark:text-slate-300 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Tu guía estratégica completa para dominar el examen. Temas desglosados, tips de estudio, ejercicios resueltos y todo lo que necesitas en un solo lugar.
                 </p>
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 dark:text-slate-400 bg-surface-2 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-surface-3 dark:border-slate-700">
                     <BookOpen className="h-3 w-3 text-accent-ds" /> Temario Completo
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 dark:text-slate-400 bg-surface-2 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-surface-3 dark:border-slate-700">
                     <Target className="h-3 w-3 text-accent-ds" /> Ejercicios Resueltos
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 dark:text-slate-400 bg-surface-2 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-surface-3 dark:border-slate-700">
                     <Sparkles className="h-3 w-3 text-accent-ds" /> Tips Estratégicos
                   </div>
                 </div>
@@ -938,12 +938,12 @@ const Index = () => {
         {/* Studio Simulators Section */}
         <div className="pt-8 pb-8">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-10 w-10 rounded-2xl bg-accent-light flex items-center justify-center border border-accent-ds/20">
+            <div className="h-10 w-10 rounded-2xl bg-accent-light dark:bg-violet-900/30 flex items-center justify-center border border-accent-ds/20">
               <Sparkles className="h-5 w-5 text-accent-ds" />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-display font-black text-ink">Consola Studio: Por Materia</h2>
-              <p className="text-ink-3 text-xs font-semibold uppercase tracking-widest mt-1">Entrenamiento Intensivo (630+ Reactivos)</p>
+              <h2 className="text-2xl md:text-3xl font-display font-black text-ink dark:text-white">Consola Studio: Por Materia</h2>
+              <p className="text-ink-3 dark:text-slate-400 text-xs font-semibold uppercase tracking-widest mt-1">Entrenamiento Intensivo (630+ Reactivos)</p>
             </div>
           </div>
 
@@ -951,15 +951,15 @@ const Index = () => {
             {areas.filter(a => studioMapping[a.id]).map((area) => (
               <div
                 key={area.id}
-                className="bg-surface border border-surface-3 rounded-2xl p-5 hover-lift transition-all group relative overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+                className="bg-surface dark:bg-slate-900 border border-surface-3 dark:border-slate-700 rounded-2xl p-5 hover-lift transition-all group relative overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-accent-ds rounded-l-2xl" />
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-accent-light rounded-lg">
+                    <div className="p-2 bg-accent-light dark:bg-violet-900/30 rounded-lg">
                       <area.icon className="h-4 w-4 text-accent-ds" />
                     </div>
-                    <h4 className="font-semibold text-ink text-sm">{area.name}</h4>
+                    <h4 className="font-semibold text-ink dark:text-white text-sm">{area.name}</h4>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -971,7 +971,7 @@ const Index = () => {
                         title: sim.name,
                         description: sim.description
                       })}
-                      className="flex items-center justify-between w-full p-3 rounded-xl bg-surface-2 hover:bg-accent-light text-[11px] font-bold text-ink-3 hover:text-accent-ds transition-all border border-surface-3 hover:border-accent-ds/20"
+                      className="flex items-center justify-between w-full p-3 rounded-xl bg-surface-2 dark:bg-slate-800 hover:bg-accent-light dark:hover:bg-violet-900/30 text-[11px] font-bold text-ink-3 dark:text-slate-400 hover:text-accent-ds transition-all border border-surface-3 dark:border-slate-700 hover:border-accent-ds/20"
                     >
                       <span className="truncate mr-2 uppercase tracking-tight">{sim.name}</span>
                       <ChevronRight className="h-3 w-3 text-accent-ds shrink-0" />
