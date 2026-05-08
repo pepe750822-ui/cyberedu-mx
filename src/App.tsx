@@ -42,6 +42,7 @@ import { usePageView } from "./hooks/useAnalytics";
 import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
 import TelegramButton from "./components/TelegramButton";
 import ExamCountdown from "./components/ExamCountdown";
+import { PendingResultSync } from "./components/PendingResultSync";
 
 
 /**
@@ -145,6 +146,7 @@ const AuthenticatedStudyTools = () => {
   return (
     <Suspense fallback={null}>
       <AITutor />
+      <PendingResultSync />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
       {showOnboarding && <OnboardingModal />}

@@ -21,7 +21,9 @@ import {
     Target,
     Shuffle,
     ArrowLeft,
+    Sparkles,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
@@ -668,7 +670,7 @@ const SimuladorPro = () => {
     // Save result to Supabase once when results screen appears
     useEffect(() => {
         console.log('[SimuladorPro] showResults:', showResults, 'user:', user?.id, 'questions:', activeQuestions.length);
-        if (!showResults || !user || activeQuestions.length === 0) return;
+        if (!showResults || activeQuestions.length === 0) return;
 
         const savedScore = calculateScore();
         const savedPct = Math.round((savedScore / activeQuestions.length) * 100);
@@ -689,7 +691,6 @@ const SimuladorPro = () => {
         } catch { /* localStorage blocked */ }
 
         const payload = {
-            user_id: user.id,
             modo: examMode,
             banco: selectedBank,
             escuela_meta: escuelaMeta,
@@ -699,12 +700,17 @@ const SimuladorPro = () => {
             porcentaje: savedPct,
             resultados_por_area: resultadosPorArea,
         };
-        console.log('[SimuladorPro] Inserting payload:', payload);
+
+        if (!user) {
+            console.log('[SimuladorPro] Guest user, saving to pending_simulador_result');
+            localStorage.setItem('pending_simulador_result', JSON.stringify(payload));
+            return;
+        }
 
         const doInsert = async () => {
             const { data, error } = await supabase
                 .from('simulador_results')
-                .insert(payload);
+                .insert({ ...payload, user_id: user.id });
             if (error) {
                 console.error('[SimuladorPro] Error saving result to Supabase:', error);
             } else {
@@ -1099,6 +1105,32 @@ const SimuladorPro = () => {
                                     {examMode === 'practice' ? 'Práctica Rápida' : 'Examen Completo'}
                                 </span>
                             </div>
+
+                            {!user && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-primary/10 border border-primary/20 rounded-3xl p-6 text-center space-y-4 mt-4 w-full"
+                                >
+                                    <div className="flex justify-center">
+                                        <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
+                                            <Sparkles className="h-6 w-6 text-primary" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-black text-white uppercase tracking-tight">¡No pierdas tu score!</h3>
+                                        <p className="text-slate-400 text-xs max-w-sm mx-auto leading-relaxed">
+                                            Regístrate gratis para guardar tus <strong>{score} aciertos</strong> en tu historial y competir en el ranking.
+                                        </p>
+                                    </div>
+                                    <Button 
+                                        onClick={() => navigate('/auth?ref=simulador_result')}
+                                        className="rounded-xl px-6 h-10 font-black uppercase tracking-widest text-[10px] w-full sm:w-auto"
+                                    >
+                                        Guardar Score Ahora
+                                    </Button>
+                                </motion.div>
+                            )}
                             <div className="flex gap-4 items-end">
                                 <span className="text-7xl font-black text-white">{score}</span>
                                 <span className="text-2xl font-black text-slate-500 mb-2">/ {activeQuestions.length}</span>
