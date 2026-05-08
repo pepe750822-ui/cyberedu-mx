@@ -7,6 +7,8 @@ import confetti from 'canvas-confetti';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
+import { Bell } from 'lucide-react';
 
 export const DailyChallenge = () => {
   const [completed, setCompleted] = useState(false);
@@ -22,6 +24,9 @@ export const DailyChallenge = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const { toast } = useToast();
   const { user, session, refreshProfile, profile } = useAuth();
+  const { subscribe } = usePushNotifications();
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(localStorage.getItem('push_subscribed') === 'true');
 
   useEffect(() => {
     const fetchTodayChallenge = async () => {
@@ -153,6 +158,35 @@ export const DailyChallenge = () => {
     }
   };
 
+  const handleSubscribe = async () => {
+    if (!user) {
+      toast({
+        title: "Inicia sesión",
+        description: "Necesitas una cuenta para activar recordatorios.",
+      });
+      return;
+    }
+    
+    setIsSubscribing(true);
+    const success = await subscribe(user.id);
+    setIsSubscribing(false);
+    
+    if (success) {
+      setIsSubscribed(true);
+      localStorage.setItem('push_subscribed', 'true');
+      toast({
+        title: "¡Recordatorios Activados! 🔔",
+        description: "Te avisaremos cuando tu reto diario esté listo.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No pudimos activar las notificaciones. Revisa los permisos de tu navegador.",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="bg-slate-900/50 border border-white/5 rounded-[2rem] p-8 flex items-center justify-center min-h-[160px]">
@@ -180,9 +214,22 @@ export const DailyChallenge = () => {
             <p className="text-xs text-slate-400 font-medium">¡Racha protegida y recompensas obtenidas! Vuelve mañana.</p>
           </div>
         </div>
-        <div className="hidden sm:flex items-center gap-2 bg-emerald-500/20 px-4 py-2 rounded-xl text-emerald-400">
-          <Flame className="h-5 w-5" />
-          <span className="font-black text-sm">{localStorage.getItem('study_streak_count') || '1'} Días</span>
+        <div className="flex items-center gap-3">
+          {!isSubscribed && (
+            <button 
+              onClick={handleSubscribe}
+              disabled={isSubscribing}
+              className="p-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all flex items-center gap-2"
+              title="Activar recordatorios"
+            >
+              {isSubscribing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bell className="h-4 w-4 text-amber-400" />}
+              <span className="text-[10px] font-black uppercase hidden md:inline">Recordarme</span>
+            </button>
+          )}
+          <div className="hidden sm:flex items-center gap-2 bg-emerald-500/20 px-4 py-2 rounded-xl text-emerald-400">
+            <Flame className="h-5 w-5" />
+            <span className="font-black text-sm">{localStorage.getItem('study_streak_count') || '1'} Días</span>
+          </div>
         </div>
       </motion.div>
     );
