@@ -173,6 +173,9 @@ const SimuladorPro = () => {
     const [showCharts, setShowCharts] = useState(false);
     const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number; modo: string }> | null>(null);
     const [chartsLoading, setChartsLoading] = useState(false);
+    const [rankingPuntaje, setRankingPuntaje] = useState<any[] | null>(null);
+    const [rankingActivos, setRankingActivos] = useState<any[] | null>(null);
+    const [rankingLoading, setRankingLoading] = useState(false);
 
     // SEO Dynamic Tags for Simulador
     useEffect(() => {
@@ -328,6 +331,42 @@ const SimuladorPro = () => {
         });
         navigate("/");
     };
+
+    const fetchRanking = useCallback(async () => {
+        if (!user) return;
+        setRankingLoading(true);
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+        const [{ data: ranking }, { data: masActivos }] = await Promise.all([
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (supabase as any)
+                .from('simulador_results')
+                .select('user_id, porcentaje, aciertos, total_preguntas, modo, profiles(name, avatar_url)')
+                .gte('created_at', weekAgo)
+                .order('porcentaje', { ascending: false })
+                .limit(10),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (supabase as any)
+                .from('simulador_results')
+                .select('user_id, profiles(name, avatar_url)')
+                .gte('created_at', weekAgo),
+        ]);
+
+        setRankingPuntaje(ranking || []);
+
+        const conteo: Record<string, { count: number; name: string; user_id: string }> = {};
+        (masActivos || []).forEach((r: any) => {
+            if (!conteo[r.user_id]) {
+                conteo[r.user_id] = { count: 0, name: r.profiles?.name || 'Anónimo', user_id: r.user_id };
+            }
+            conteo[r.user_id].count++;
+        });
+        setRankingActivos(
+            Object.values(conteo).sort((a, b) => b.count - a.count).slice(0, 5)
+        );
+
+        setRankingLoading(false);
+    }, [user]);
 
     const fetchChartData = useCallback(async () => {
         if (!user) return;
@@ -868,6 +907,7 @@ const SimuladorPro = () => {
                                 if (!showCharts) {
                                     setShowCharts(true);
                                     fetchChartData();
+                                    fetchRanking();
                                 } else {
                                     setShowCharts(false);
                                 }
@@ -881,12 +921,16 @@ const SimuladorPro = () => {
                         {showCharts && (
                             <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-10">
                                 {!user ? (
-                                    <div className="text-center py-8 space-y-3">
-                                        <p className="text-slate-300 font-bold text-sm">Regístrate para guardar tu progreso y ver tus gráficas</p>
+                                    <div className="p-6 bg-violet-500/10 border border-violet-500/30 rounded-2xl text-center">
+                                        <p className="text-2xl mb-2">🏆</p>
+                                        <p className="text-white font-bold text-lg">¿Quieres ver tu posición en el ranking?</p>
+                                        <p className="text-slate-400 text-sm mt-1 mb-4">
+                                            Regístrate gratis para guardar tu progreso, ver tus gráficas y competir con otros estudiantes.
+                                        </p>
                                         <button
                                             type="button"
-                                            onClick={() => navigate("/auth?ref=simulador")}
-                                            className="text-primary text-sm underline font-bold"
+                                            onClick={() => navigate('/auth?ref=simulador&reason=ranking')}
+                                            className="bg-violet-600 hover:bg-violet-500 text-white font-bold px-6 py-3 rounded-xl transition-all"
                                         >
                                             Crear cuenta gratis →
                                         </button>
@@ -1031,6 +1075,124 @@ const SimuladorPro = () => {
                                                 </div>
                                             </div>
                                         )}
+
+                                        {/* ── Ranking secciones ─────────────────────── */}
+                                        <div className="border-t border-white/10 pt-8 space-y-8">
+
+                                            {/* Ranking 1 — Puntaje de la semana */}
+                                            <div className="space-y-4">
+                                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🏆 Ranking de Puntaje — Esta Semana</h4>
+                                                {rankingLoading ? (
+                                                    <div className="text-center py-6 text-slate-500 text-sm animate-pulse">Cargando ranking…</div>
+                                                ) : !rankingPuntaje || rankingPuntaje.length === 0 ? (
+                                                    <p className="text-sm text-slate-600 text-center py-4">Sé el primero en aparecer en el ranking esta semana 🚀</p>
+                                                ) : (() => {
+                                                    const maxPct = rankingPuntaje[0]?.porcentaje ?? 100;
+                                                    const userInRanking = rankingPuntaje.some((r: any) => r.user_id === user?.id);
+                                                    return (
+                                                        <>
+                                                            <div className="space-y-2">
+                                                                {rankingPuntaje.map((r: any, i: number) => {
+                                                                    const isMe = r.user_id === user?.id;
+                                                                    const name = r.profiles?.name || 'Anónimo';
+                                                                    const barWidth = maxPct > 0 ? Math.round((r.porcentaje / maxPct) * 100) : 0;
+                                                                    const modeLabel = r.modo === 'full'
+                                                                        ? `📝 ${r.aciertos}/${r.total_preguntas}`
+                                                                        : `⚡ ${r.aciertos}/${r.total_preguntas}`;
+                                                                    const medalStr = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+                                                                    return (
+                                                                        <div
+                                                                            key={`rank-${r.user_id}-${i}`}
+                                                                            className={cn(
+                                                                                "p-3 rounded-2xl border",
+                                                                                isMe ? "bg-violet-600/15 border-violet-500/40" : "bg-white/[0.03] border-white/5"
+                                                                            )}
+                                                                        >
+                                                                            <div className="flex items-center gap-3">
+                                                                                <span className="text-lg w-7 shrink-0 text-center">{medalStr}</span>
+                                                                                <div className="flex-1 min-w-0">
+                                                                                    <div className="flex items-center justify-between mb-1">
+                                                                                        <span className={cn("text-sm font-bold truncate", isMe ? "text-violet-300" : "text-slate-200")}>
+                                                                                            {name}
+                                                                                            {isMe && <span className="ml-2 text-[10px] text-violet-400 font-black">← Tú</span>}
+                                                                                        </span>
+                                                                                        <span className={cn("text-sm font-black shrink-0 ml-2", isMe ? "text-violet-300" : "text-slate-200")}>
+                                                                                            {r.porcentaje}%
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div className="h-2 bg-white/5 rounded-full overflow-hidden mb-1">
+                                                                                        <div
+                                                                                            className={cn("h-full rounded-full transition-all duration-700", isMe ? "bg-violet-500" : i < 3 ? "bg-amber-500" : "bg-slate-600")}
+                                                                                            style={{ width: `${barWidth}%` }}
+                                                                                        />
+                                                                                    </div>
+                                                                                    <span className="text-[10px] text-slate-500">{modeLabel}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                            {!userInRanking && (
+                                                                <p className="text-xs text-slate-600 text-center pt-1">
+                                                                    No estás en el top 10 esta semana — ¡sigue practicando! 💪
+                                                                </p>
+                                                            )}
+                                                        </>
+                                                    );
+                                                })()}
+                                            </div>
+
+                                            {/* Ranking 2 — Más activos de la semana */}
+                                            <div className="space-y-4">
+                                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🔥 Más Dedicados — Esta Semana</h4>
+                                                {rankingLoading ? (
+                                                    <div className="text-center py-6 text-slate-500 text-sm animate-pulse">Cargando ranking…</div>
+                                                ) : !rankingActivos || rankingActivos.length === 0 ? (
+                                                    <p className="text-sm text-slate-600 text-center py-4">Sé el primero en el ranking de dedicación 🔥</p>
+                                                ) : (
+                                                    <div className="space-y-2">
+                                                        {rankingActivos.map((r: any, i: number) => {
+                                                            const isMe = r.user_id === user?.id;
+                                                            const maxCount = rankingActivos[0].count;
+                                                            const barWidth = maxCount > 0 ? Math.round((r.count / maxCount) * 100) : 0;
+                                                            const medalStr = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+                                                            return (
+                                                                <div
+                                                                    key={`activo-${r.user_id}`}
+                                                                    className={cn(
+                                                                        "p-3 rounded-2xl border",
+                                                                        isMe ? "bg-violet-600/15 border-violet-500/40" : "bg-white/[0.03] border-white/5"
+                                                                    )}
+                                                                >
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className="text-lg w-7 shrink-0 text-center">{medalStr}</span>
+                                                                        <div className="flex-1 min-w-0">
+                                                                            <div className="flex items-center justify-between mb-1">
+                                                                                <span className={cn("text-sm font-bold truncate", isMe ? "text-violet-300" : "text-slate-200")}>
+                                                                                    {r.name}
+                                                                                    {isMe && <span className="ml-2 text-[10px] text-violet-400 font-black">← Tú</span>}
+                                                                                </span>
+                                                                                <span className={cn("text-xs font-black shrink-0 ml-2", isMe ? "text-violet-300" : "text-slate-400")}>
+                                                                                    {r.count} {r.count === 1 ? 'simulacro' : 'simulacros'}
+                                                                                </span>
+                                                                            </div>
+                                                                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                                                                <div
+                                                                                    className={cn("h-full rounded-full transition-all duration-700", isMe ? "bg-violet-500" : i < 3 ? "bg-orange-500" : "bg-slate-600")}
+                                                                                    style={{ width: `${barWidth}%` }}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                        </div>
                                     </>
                                 )}
                             </div>
