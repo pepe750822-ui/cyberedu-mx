@@ -425,7 +425,6 @@ const SimuladorPro = () => {
     const navigate = useNavigate();
     const { toast } = useToast();
     const { user } = useAuth();
-    const GUEST_MAX_QUESTIONS = 10;
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
     const [markedForReview, setMarkedForReview] = useState<Record<string, boolean>>({});
@@ -775,10 +774,6 @@ const SimuladorPro = () => {
 
     const handleSelectAnswer = (optionIndex: number) => {
         if (showResults || !currentQuestion) return;
-        if (!user && Object.keys(userAnswers).length >= GUEST_MAX_QUESTIONS) {
-            navigate("/auth?ref=simulador&reason=limit");
-            return;
-        }
         setUserAnswers(prev => ({
             ...prev,
             [currentQuestion.id]: optionIndex
@@ -1282,6 +1277,30 @@ const SimuladorPro = () => {
                             })}
                         </div>
                     </div>
+
+                    {/* Guest registration banner */}
+                    {!user && (
+                        <div className="mb-6 p-5 bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-500/40 rounded-2xl">
+                            <div className="flex items-start gap-4">
+                                <span className="text-3xl">🏆</span>
+                                <div className="flex-1">
+                                    <p className="text-white font-bold text-lg">¡Regístrate para desbloquear todo!</p>
+                                    <ul className="text-violet-200 text-sm mt-2 space-y-1">
+                                        <li>📊 Gráficas de progreso por fecha</li>
+                                        <li>🏆 Ranking semanal con otros estudiantes</li>
+                                        <li>🎯 Seguimiento de tu meta de escuela</li>
+                                        <li>💾 Historial guardado entre sesiones</li>
+                                    </ul>
+                                    <button
+                                        onClick={() => window.location.href = '/auth?ref=simulador&reason=ranking'}
+                                        className="mt-4 bg-violet-600 hover:bg-violet-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all text-sm"
+                                    >
+                                        Crear cuenta gratis — es rápido →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Review Questions */}
                     <div className="space-y-6 pt-10 border-t border-white/5">
