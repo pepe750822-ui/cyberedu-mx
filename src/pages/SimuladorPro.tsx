@@ -188,11 +188,11 @@ const SimuladorPro = () => {
         try {
             const { data: puntaje } = await supabase
                 .from('simulador_ranking_puntaje')
-                .select('*, profiles(name)')
+                .select('*')
                 .limit(10);
             const { data: activos } = await supabase
                 .from('simulador_ranking_actividad')
-                .select('*, profiles(name)')
+                .select('*')
                 .limit(10);
             const { data: porArea } = await supabase
                 .from('simulador_top_per_area')

@@ -221,7 +221,7 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                                             <div className="flex-1 min-w-0">
                                                                 <div className="flex items-center justify-between mb-1">
                                                                     <span className={cn("text-sm font-bold truncate", isMe ? "text-violet-300" : "text-slate-200")}>
-                                                                        {r.profiles?.name || 'Anónimo'}
+                                                                        {r.user_name || 'Anónimo'}
                                                                         {isMe && <span className="ml-2 text-[10px] text-violet-400 font-black">← Tú</span>}
                                                                     </span>
                                                                     {r.area && r.area !== 'all' && (
