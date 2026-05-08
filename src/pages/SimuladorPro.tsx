@@ -20,6 +20,7 @@ import {
     ExternalLink,
     Target,
     Shuffle,
+    ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -862,6 +863,13 @@ const SimuladorPro = () => {
         return (
             <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
                 <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
+                    <button
+                        onClick={() => navigate('/')}
+                        className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-6"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Volver al inicio
+                    </button>
                     <div className="h-24 w-24 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
                         <Brain className="h-12 w-12 text-primary" />
                     </div>
