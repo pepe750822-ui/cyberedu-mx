@@ -52,6 +52,7 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { cn } from "@/lib/utils";
 import NextAchievementCard from "./NextAchievementCard";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { DailyChallenge } from "./DailyChallenge";
 
 const ProgresoDashboard = () => {
