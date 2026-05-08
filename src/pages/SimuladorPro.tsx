@@ -63,12 +63,16 @@ function shuffleQuestionOptions(q: Question): Question {
 const formatFecha = (fecha: string) => {
     const date = new Date(fecha);
     const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
+    const timeStr = date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: true });
+    
+    if (isToday) return `Hoy, ${timeStr}`;
+    
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    if (days === 0) return 'Hoy';
-    if (days === 1) return 'Ayer';
-    if (days < 7) return `Hace ${days} días`;
-    return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+    if (days === 1) return `Ayer, ${timeStr}`;
+    
+    return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) + ` · ${timeStr}`;
 };
 
 const SimuladorPro = () => {
@@ -425,6 +429,9 @@ const SimuladorPro = () => {
                     selectedEscuela={selectedEscuela}
                     myPercentage={Math.round((calculateScore() / activeQuestions.length) * 100)}
                     targetPercentage={selectedEscuela ? Math.round((selectedEscuela.puntaje / 128) * 100) : 0}
+                    metaDiff={selectedEscuela ? (Math.round((selectedEscuela.puntaje / 128) * 100) - Math.round((calculateScore() / activeQuestions.length) * 100)) : 0}
+                    metaSuccess={selectedEscuela ? (Math.round((calculateScore() / activeQuestions.length) * 100) >= Math.round((selectedEscuela.puntaje / 128) * 100)) : false}
+                    metaClose={selectedEscuela ? (Math.round((selectedEscuela.puntaje / 128) * 100) - Math.round((calculateScore() / activeQuestions.length) * 100) <= 5) : false}
                 />
             </SimulatorResults>
         );

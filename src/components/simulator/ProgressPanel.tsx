@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart3 } from "lucide-react";
+import { BarChart3, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Escuela } from "@/data/escuelas";
 
@@ -141,13 +141,17 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                         const pct = total > 0 ? Math.round((item.correctas / total) * 100) : 0;
                                         const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
                                         const textColor = pct >= 70 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-red-400';
+                                        const bgShade = pct >= 70 ? 'bg-emerald-500/10' : pct >= 50 ? 'bg-amber-500/10' : 'bg-red-500/10';
                                         return (
-                                            <div key={item.area} className="space-y-1.5">
+                                            <div key={item.area} className={cn("space-y-2 p-4 rounded-2xl border border-white/5 shadow-inner", bgShade)}>
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-sm text-slate-300">
-                                                        {AREA_EMOJI[item.area] ?? '📖'} <span className="font-bold">{item.area}</span>
+                                                    <span className="text-xs font-black uppercase tracking-wider text-slate-300">
+                                                        {AREA_EMOJI[item.area] ?? '📖'} {item.area}
                                                     </span>
-                                                    <span className={cn("text-sm font-black tabular-nums", textColor)}>{item.correctas}/{total}</span>
+                                                    <div className="flex items-center gap-3">
+                                                        <span className={cn("text-xs font-black px-2 py-0.5 rounded-lg bg-black/20", textColor)}>{pct}%</span>
+                                                        <span className={cn("text-base font-black tabular-nums", textColor)}>{item.correctas}/{total}</span>
+                                                    </div>
                                                 </div>
                                                 <div className="h-3 bg-white/5 rounded-full overflow-hidden">
                                                     <div className={cn("h-full rounded-full transition-all duration-700", barColor)} style={{ width: `${pct}%` }} />
@@ -256,17 +260,23 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                     
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         {rankingPorArea.map((r, i) => (
-                                            <div key={`area-rank-${i}`} className="p-4 bg-white/[0.03] border border-white/5 rounded-2xl flex items-center justify-between group hover:bg-indigo-500/5 transition-all">
-                                                <div className="flex items-center gap-3">
+                                            <div key={`area-rank-${i}`} className="p-4 bg-white/[0.03] border border-indigo-500/10 rounded-2xl flex items-center justify-between group hover:bg-indigo-500/5 transition-all relative overflow-hidden">
+                                                <div className="absolute -top-1 -right-1 opacity-10 group-hover:opacity-20 transition-opacity">
+                                                    <Trophy className="h-12 w-12 text-indigo-400" />
+                                                </div>
+                                                <div className="flex items-center gap-3 relative z-10">
                                                     <span className="text-xl">{AREA_EMOJI[r.area] || '📖'}</span>
                                                     <div>
                                                         <p className="text-[10px] font-black uppercase tracking-tighter text-slate-500">{r.area}</p>
-                                                        <p className="text-sm font-bold text-white truncate max-w-[120px]">{r.user_name}</p>
+                                                        <p className="text-sm font-bold text-white truncate max-w-[120px] flex items-center gap-1.5">
+                                                            {r.user_name}
+                                                            <Trophy className="h-3 w-3 text-amber-500" />
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                <div className="text-right">
+                                                <div className="text-right relative z-10">
                                                     <p className="text-xs font-black text-indigo-400">{r.porcentaje}%</p>
-                                                    <p className="text-[9px] text-slate-600 font-bold">{r.aciertos}/{r.total_preguntas}</p>
+                                                    <p className="text-[9px] text-slate-600 font-bold">🎯 {r.aciertos} aciertos</p>
                                                 </div>
                                             </div>
                                         ))}

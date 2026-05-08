@@ -18,8 +18,21 @@ const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const onlineCount = useOnlineUsers();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [challengeDone, setChallengeDone] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkChallenge = () => {
+      const today = new Date().toISOString().split('T')[0];
+      const done = localStorage.getItem('daily_challenge_date') === today;
+      setChallengeDone(done);
+    };
+    checkChallenge();
+    // Also listen for custom event from DailyChallenge component
+    window.addEventListener('storage', checkChallenge);
+    return () => window.removeEventListener('storage', checkChallenge);
+  }, []);
 
   const handleAreasClick = (e: React.MouseEvent) => {
     if (location.pathname === "/") {
@@ -58,9 +71,15 @@ const Header = () => {
             </Link>
             <Link
               to="/simulador-pro"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
             >
               🎯 Simulador
+              {!challengeDone && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+              )}
             </Link>
             <Link
               to="/#areas"

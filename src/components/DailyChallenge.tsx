@@ -135,6 +135,7 @@ export const DailyChallenge = () => {
       localStorage.setItem('study_streak_count', (currentStreak + 1).toString());
       localStorage.setItem('last_study_date', todayStr);
       localStorage.setItem('daily_challenge_date', todayStr);
+      localStorage.setItem('daily_challenge_sync', Date.now().toString());
       
       setTimeout(() => {
         setCompleted(true);
