@@ -1,0 +1,1666 @@
+[
+  {
+    "id": "257",
+    "area": "Habilidad Matemática",
+    "text": "Selecciona el elemento faltante: 1, 3, 9, 27, __",
+    "options": [
+      "81",
+      "49",
+      "86",
+      "65"
+    ],
+    "correctIndex": 0,
+    "explanation": "Progresión geométrica multiplicando por 3: 27×3=81"
+  },
+  {
+    "id": "258",
+    "area": "Habilidad Matemática",
+    "text": "Selecciona el elemento faltante: 1, 3, 6, 8, ___, 18, 36, 38",
+    "options": [
+      "16",
+      "14",
+      "10",
+      "20"
+    ],
+    "correctIndex": 0,
+    "explanation": "Patrón alternado +2 y ×2: 8×2=16"
+  },
+  {
+    "id": "259",
+    "area": "Habilidad Matemática",
+    "text": "Selecciona el elemento faltante: 2, 4, 8, 10, 20, ___, 44, 46",
+    "options": [
+      "22",
+      "26",
+      "18",
+      "33"
+    ],
+    "correctIndex": 0,
+    "explanation": "Alternado ×2 y +2: 20+2=22"
+  },
+  {
+    "id": "260",
+    "area": "Habilidad Matemática",
+    "text": "Selecciona el elemento faltante: -3, -7, -11, -15, ____",
+    "options": [
+      "-19",
+      "-29",
+      "-15",
+      "-16"
+    ],
+    "correctIndex": 0,
+    "explanation": "Resta 4 cada término: -15-4=-19"
+  },
+  {
+    "id": "261",
+    "area": "Habilidad Matemática",
+    "text": "Si la cantidad de dinero que tiene José se incrementase en un 20%, el resultado sería $108.00. ¿Cuánto dinero tiene en realidad?",
+    "options": [
+      "$90.00",
+      "$68.00",
+      "$94.00",
+      "$45.00"
+    ],
+    "correctIndex": 0,
+    "explanation": "108/1.20 = $90.00"
+  },
+  {
+    "id": "262",
+    "area": "Habilidad Matemática",
+    "text": "1×10⁴ se escribe como:",
+    "options": [
+      "10000",
+      "0.00001",
+      "0.0001",
+      "1000"
+    ],
+    "correctIndex": 0,
+    "explanation": "10⁴ = 10,000. Notación científica con exponente positivo."
+  },
+  {
+    "id": "263",
+    "area": "Habilidad Matemática",
+    "text": "Selecciona el elemento faltante: 15, 9, 17, 11, 19, 13, __",
+    "options": [
+      "21",
+      "72",
+      "49",
+      "56"
+    ],
+    "correctIndex": 0,
+    "explanation": "Dos series intercaladas: +2 en impares (15,17,19,21) y +2 en pares (9,11,13…)"
+  },
+  {
+    "id": "264",
+    "area": "Habilidad Matemática",
+    "text": "El equipo local ha perdido 2 de 18 partidos. Si gana los siguientes 12, ¿cuál es su porcentaje de partidos ganados?",
+    "options": [
+      "93.3%",
+      "80.5%",
+      "87.2%",
+      "91.6%"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ganados: 16+12=28 de 30 totales. 28/30=93.3%"
+  },
+  {
+    "id": "265",
+    "area": "Habilidad Matemática",
+    "text": "Las dimensiones de un rectángulo son (a+10) de base y (b-4) de altura. ¿Con qué expresión se calcula su área?",
+    "options": [
+      "(a+10)(b-4)",
+      "(a+10)-(b-4)",
+      "(a+10)(b-3)",
+      "(a+10)(b-3)/2"
+    ],
+    "correctIndex": 0,
+    "explanation": "Área = base × altura = (a+10)(b-4)"
+  },
+  {
+    "id": "266",
+    "area": "Habilidad Matemática",
+    "text": "Juan dejó mitad de quincena a su esposa, mitad del resto a su hija, la sexta parte a su sobrino y $144 para la luz. ¿Cuánto tenía en total?",
+    "options": [
+      "$1,728.00",
+      "$1,720.00",
+      "$1,864.00",
+      "$1,920.00"
+    ],
+    "correctIndex": 0,
+    "explanation": "1/12 de la quincena = $144, entonces total = $1,728"
+  },
+  {
+    "id": "267",
+    "area": "Habilidad Matemática",
+    "text": "Tiene 2000, súmele 50, 2000 más, 40, 2000, 30, 2000 y 20. ¿Cuál es el resultado?",
+    "options": [
+      "8140",
+      "9140",
+      "8400",
+      "8104"
+    ],
+    "correctIndex": 0,
+    "explanation": "4×2000=8000 + 50+40+30+20=140. Total: 8140"
+  },
+  {
+    "id": "268",
+    "area": "Habilidad Matemática",
+    "text": "Pedro, Juan y Sara tienen 49 años entre los tres. Pedro tiene el doble que Sara, que tiene el doble que Juan. ¿Cuántos años tiene Sara?",
+    "options": [
+      "14",
+      "17",
+      "13",
+      "15"
+    ],
+    "correctIndex": 0,
+    "explanation": "Juan=x, Sara=2x, Pedro=4x. 7x=49, x=7. Sara=14"
+  },
+  {
+    "id": "269",
+    "area": "Habilidad Matemática",
+    "text": "La señora Vázquez tenía 10½ kg de manzanas y usó la mitad para el pastel. ¿Cuántos kg quedaron?",
+    "options": [
+      "5¼ kg",
+      "6/4 kg",
+      "9/3 kg",
+      "10/4 kg"
+    ],
+    "correctIndex": 0,
+    "explanation": "10.5 ÷ 2 = 5.25 = 5¼ kg"
+  },
+  {
+    "id": "270",
+    "area": "Habilidad Matemática",
+    "text": "Si la edad que tenía Manuel hace cuatro años era la mitad de la edad que tendrá en diez años, ¿cuál es su edad actual?",
+    "options": [
+      "18",
+      "14",
+      "12",
+      "16"
+    ],
+    "correctIndex": 0,
+    "explanation": "x-4 = (x+10)/2. 2x-8=x+10. x=18"
+  },
+  {
+    "id": "271",
+    "area": "Habilidad Matemática",
+    "text": "Un tanque de gasolina tiene capacidad de 60 L. Si tienes ¾ del tanque, ¿cuántos litros tienes?",
+    "options": [
+      "50 L",
+      "45 L",
+      "35 L",
+      "20 L"
+    ],
+    "correctIndex": 1,
+    "explanation": "60 × 0.75 = 45 litros"
+  },
+  {
+    "id": "272",
+    "area": "Biología",
+    "text": "¿Cómo se llama al cambio que experimentan las especies a lo largo del tiempo geológico?",
+    "options": [
+      "Maduración",
+      "Crecimiento",
+      "Evolución",
+      "Mutación"
+    ],
+    "correctIndex": 2,
+    "explanation": "La Evolución es el proceso de cambio gradual de las especies a través del tiempo geológico."
+  },
+  {
+    "id": "273",
+    "area": "Biología",
+    "text": "¿Quiénes sobrevivirán en un momento determinado según la teoría de la selección natural?",
+    "options": [
+      "Los más fuertes",
+      "Los más aptos",
+      "Los más listos",
+      "Los más rápidos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Darwin estableció que sobreviven los más aptos al ambiente, no necesariamente los más fuertes."
+  },
+  {
+    "id": "274",
+    "area": "Biología",
+    "text": "Disciplina biológica que se encarga de clasificar a los seres vivos y de darles un nombre científico.",
+    "options": [
+      "Paleontología",
+      "Citología",
+      "Taxonomía",
+      "Histología"
+    ],
+    "correctIndex": 2,
+    "explanation": "La Taxonomía clasifica y nombra científicamente a los seres vivos."
+  },
+  {
+    "id": "275",
+    "area": "Biología",
+    "text": "¿Cuál es el reino en el que se encuentran las bacterias y las cianofitas?",
+    "options": [
+      "Protista",
+      "Monera",
+      "Fungi",
+      "Plantae"
+    ],
+    "correctIndex": 1,
+    "explanation": "El reino Monera incluye organismos procariotas como bacterias y cianobacterias."
+  },
+  {
+    "id": "276",
+    "area": "Biología",
+    "text": "La pérdida de la biodiversidad es causada por las siguientes acciones, EXCEPTO:",
+    "options": [
+      "La contaminación del suelo",
+      "Los desechos industriales en el agua",
+      "La disminución de las áreas forestales",
+      "La lucha por las especies amenazadas"
+    ],
+    "correctIndex": 3,
+    "explanation": "La lucha por proteger especies amenazadas ayuda a conservar la biodiversidad, no a perderla."
+  },
+  {
+    "id": "277",
+    "area": "Biología",
+    "text": "Son factores bióticos de los sistemas ecológicos:",
+    "options": [
+      "Precipitación (lluvia)",
+      "Corrientes marinas",
+      "Presión atmosférica",
+      "Existencia de plancton"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los factores bióticos son los seres vivos. El plancton es un organismo vivo."
+  },
+  {
+    "id": "278",
+    "area": "Biología",
+    "text": "¿Quiénes transforman la energía solar para que pueda ser aprovechada por los demás seres vivos?",
+    "options": [
+      "Los heterótrofos",
+      "Los autótrofos",
+      "Los fungi",
+      "Los animales"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los autótrofos (plantas, algas) realizan fotosíntesis convirtiendo energía solar en química."
+  },
+  {
+    "id": "279",
+    "area": "Biología",
+    "text": "Científico austriaco que en el siglo XIX sentó las bases de la genética.",
+    "options": [
+      "Weismann",
+      "De Vries",
+      "Mendel",
+      "Morgan"
+    ],
+    "correctIndex": 2,
+    "explanation": "Gregor Mendel, monje austriaco, estableció las leyes de la herencia genética."
+  },
+  {
+    "id": "280",
+    "area": "Biología",
+    "text": "Organelo celular que lleva a cabo la respiración celular, proporcionando energía a las células.",
+    "options": [
+      "Aparato de Golgi",
+      "Mitocondria",
+      "Retículo endoplásmico",
+      "Vacuola"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mitocondria es la 'central energética' de la célula donde ocurre la respiración celular."
+  },
+  {
+    "id": "281",
+    "area": "Biología",
+    "text": "Tiene como función la fotosíntesis, transformando la energía solar en energía química.",
+    "options": [
+      "Retículo endoplásmico",
+      "Lisosoma",
+      "Cloroplasto",
+      "Núcleo"
+    ],
+    "correctIndex": 2,
+    "explanation": "El cloroplasto contiene clorofila y realiza la fotosíntesis en células vegetales."
+  },
+  {
+    "id": "282",
+    "area": "Biología",
+    "text": "Son organismos procariontes:",
+    "options": [
+      "Bacterias",
+      "Árboles",
+      "Protozoarios",
+      "Champiñones"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las bacterias son procariotas: no tienen núcleo definido ni organelos membranosos."
+  },
+  {
+    "id": "283",
+    "area": "Biología",
+    "text": "¿Cuál es la diferencia más importante entre la mitosis y la meiosis?",
+    "options": [
+      "La mitosis se lleva a cabo sólo en plantas",
+      "La meiosis se produce sólo en animales superiores",
+      "La mitosis no se produce en vertebrados",
+      "La meiosis produce células haploides y la mitosis diploides"
+    ],
+    "correctIndex": 3,
+    "explanation": "La meiosis produce 4 células haploides (n) para reproducción sexual; la mitosis produce 2 diploides (2n)."
+  },
+  {
+    "id": "284",
+    "area": "Biología",
+    "text": "Conjunto de órganos que por medios físicos transforman los alimentos en moléculas solubles que pueden ser absorbidas.",
+    "options": [
+      "Sistema respiratorio",
+      "Sistema digestivo",
+      "Sistema óseo",
+      "Sistema reproductor"
+    ],
+    "correctIndex": 1,
+    "explanation": "El sistema digestivo transforma los alimentos en nutrientes absorbibles."
+  },
+  {
+    "id": "285",
+    "area": "Biología",
+    "text": "Los organelos celulares que participan en la síntesis de proteínas son:",
+    "options": [
+      "Lisosomas",
+      "Cromosomas",
+      "Centriolos",
+      "Ribosomas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los ribosomas son los organelos donde se sintetizan las proteínas."
+  },
+  {
+    "id": "286",
+    "area": "Biología",
+    "text": "El orden correcto de las etapas de la mitosis es:",
+    "options": [
+      "Metafase, Telofase, Profase, Anafase",
+      "Profase, Metafase, Anafase, Telofase",
+      "Profase, Metafase, Telofase, Anafase",
+      "Profase, Anafase, Metafase, Telofase"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mitosis sigue el orden: Profase → Metafase → Anafase → Telofase (PMAT)."
+  },
+  {
+    "id": "287",
+    "area": "Biología",
+    "text": "A las unidades básicas que conforman las proteínas se les llama:",
+    "options": [
+      "Monosacáridos",
+      "Aminoácidos",
+      "Nucleótidos",
+      "Ácidos grasos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los aminoácidos son los monómeros que forman las proteínas."
+  },
+  {
+    "id": "288",
+    "area": "Biología",
+    "text": "Los ácidos nucleicos están compuestos por subunidades formadas por azúcar, grupo fosfato y base nitrogenada llamadas:",
+    "options": [
+      "Nucleótidos",
+      "Aminoácidos",
+      "Esteroides",
+      "Proteínas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los nucleótidos son las unidades básicas del ADN y ARN."
+  },
+  {
+    "id": "289",
+    "area": "Biología",
+    "text": "¿Cuál es la molécula polar que mantiene la hidratación celular, solvente de compuestos y se forma por enlaces de puente de hidrógeno?",
+    "options": [
+      "Lípido",
+      "Carbohidrato",
+      "Alcohol",
+      "Agua"
+    ],
+    "correctIndex": 3,
+    "explanation": "El agua es la molécula polar universal, solvente de la vida y componente principal de las células."
+  },
+  {
+    "id": "290",
+    "area": "Biología",
+    "text": "Es el proceso mediante el cual algunos organismos aprovechan el CO₂ y el H₂O para sintetizar carbohidratos y liberar oxígeno:",
+    "options": [
+      "Respiración celular",
+      "Fotosíntesis",
+      "Aerobiosis",
+      "Fermentación"
+    ],
+    "correctIndex": 1,
+    "explanation": "La fotosíntesis usa CO₂ + H₂O + luz solar para producir glucosa y O₂."
+  },
+  {
+    "id": "291",
+    "area": "Biología",
+    "text": "De cada célula que entra en Mitosis, ¿cuántas se forman al final del proceso?",
+    "options": [
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "correctIndex": 2,
+    "explanation": "La mitosis produce 2 células hijas genéticamente idénticas a la célula madre."
+  },
+  {
+    "id": "292",
+    "area": "Geografía",
+    "text": "Palabra formada por GEO (Tierra) y GRAFOS (Descripción). ¿Qué significa Geografía?",
+    "options": [
+      "Tierra y escritura",
+      "Escritura griega",
+      "Descripción de la tierra",
+      "Escritura en la tierra"
+    ],
+    "correctIndex": 2,
+    "explanation": "Geografía significa 'descripción de la Tierra' en griego."
+  },
+  {
+    "id": "293",
+    "area": "Geografía",
+    "text": "A la geografía se le considera:",
+    "options": [
+      "Una ciencia",
+      "Un estudio de nuestro planeta y el origen de la vida",
+      "Ciencia que describe hechos, investiga y analiza relaciones entre ellos y determina leyes",
+      "Ciencia que estudia nuestro planeta con los demás del sistema solar"
+    ],
+    "correctIndex": 2,
+    "explanation": "La geografía es una ciencia que describe y analiza fenómenos terrestres y sus relaciones."
+  },
+  {
+    "id": "294",
+    "area": "Geografía",
+    "text": "Divisiones de la geografía general:",
+    "options": [
+      "Geografía racial, Geomorfología, Zoogeografía",
+      "Fitogeografía, Geografía económica",
+      "Hidrología, Geografía de la población",
+      "Geografía física, Geografía humana, Geografía biológica"
+    ],
+    "correctIndex": 3,
+    "explanation": "La geografía general se divide en física, humana y biológica."
+  },
+  {
+    "id": "295",
+    "area": "Geografía",
+    "text": "Astrónomo que construyó un telescopio, descubrió los 4 satélites de Júpiter y confirmó el heliocentrismo.",
+    "options": [
+      "Kepler",
+      "Anaxágoras",
+      "Copérnico",
+      "Galileo"
+    ],
+    "correctIndex": 3,
+    "explanation": "Galileo Galilei confirmó el sistema heliocéntrico y fue acusado de herejía por la Iglesia."
+  },
+  {
+    "id": "296",
+    "area": "Geografía",
+    "text": "Es la línea recta imaginaria que va de polo a polo pasando por el centro de la tierra.",
+    "options": [
+      "Diámetro ecuatorial",
+      "Radio polar",
+      "Eje terrestre",
+      "Trópico"
+    ],
+    "correctIndex": 2,
+    "explanation": "El eje terrestre es el eje imaginario alrededor del cual la Tierra realiza su movimiento de rotación."
+  },
+  {
+    "id": "297",
+    "area": "Geografía",
+    "text": "Es el círculo máximo perpendicular al eje terrestre que divide a la tierra en dos hemisferios: Norte y Sur.",
+    "options": [
+      "Círculo polar",
+      "Ecuador",
+      "Radio ecuatorial",
+      "Latitudes norte y sur"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Ecuador divide la Tierra en hemisferio norte y sur, y está a 0° de latitud."
+  },
+  {
+    "id": "298",
+    "area": "Geografía",
+    "text": "Para localizar un punto sobre la superficie terrestre se usan las coordenadas geográficas que son:",
+    "options": [
+      "Norte y Sur",
+      "Este y Oeste",
+      "Latitud, longitud y altitud",
+      "Puntos cardinales"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las coordenadas geográficas son latitud, longitud y altitud."
+  },
+  {
+    "id": "299",
+    "area": "Geografía",
+    "text": "Se mide a partir del ecuador de 0° a 90°, usando los paralelos.",
+    "options": [
+      "Altitud",
+      "Longitud",
+      "Cenit",
+      "Latitud"
+    ],
+    "correctIndex": 3,
+    "explanation": "La latitud mide la distancia angular desde el ecuador (0°) hasta los polos (90°)."
+  },
+  {
+    "id": "300",
+    "area": "Geografía",
+    "text": "Se mide de 0° a 180° usando los meridianos y puede ser Este u Oeste:",
+    "options": [
+      "La suma de dos meridianos",
+      "Trópico",
+      "Longitud",
+      "Meridiano de 15°"
+    ],
+    "correctIndex": 2,
+    "explanation": "La longitud mide la distancia angular desde el meridiano de Greenwich (0°) hasta 180°."
+  },
+  {
+    "id": "301",
+    "area": "Geografía",
+    "text": "Es la distancia vertical de un punto de la superficie terrestre hasta el nivel del mar:",
+    "options": [
+      "Trayectoria de caída de un cuerpo",
+      "Trayectoria vertical al mar",
+      "Altitud",
+      "Longitud"
+    ],
+    "correctIndex": 2,
+    "explanation": "La altitud es la altura sobre el nivel del mar."
+  },
+  {
+    "id": "302",
+    "area": "Geografía",
+    "text": "¿Cuáles son las rocas originadas por altas presiones y temperaturas?",
+    "options": [
+      "Intrusivas",
+      "Extrusivas",
+      "Sedimentarias",
+      "Metamórficas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las rocas metamórficas se forman por transformación de otras rocas bajo alta presión y temperatura."
+  },
+  {
+    "id": "303",
+    "area": "Geografía",
+    "text": "¿Cuáles son las rocas originadas de restos de seres vivos?",
+    "options": [
+      "Intrusivas",
+      "Extrusivas",
+      "Sedimentarias",
+      "Metamórficas"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las rocas sedimentarias se forman por acumulación de sedimentos, incluyendo restos orgánicos."
+  },
+  {
+    "id": "304",
+    "area": "Geografía",
+    "text": "¿Cuál es el movimiento de la tierra donde gira sobre el eje terrestre?",
+    "options": [
+      "Rotación",
+      "Traslación",
+      "Nutación",
+      "Galáctico"
+    ],
+    "correctIndex": 0,
+    "explanation": "La rotación es el movimiento de la Tierra sobre su propio eje, tarda 24 horas."
+  },
+  {
+    "id": "305",
+    "area": "Geografía",
+    "text": "¿Cuál es la rama de la Geografía que estudia las aguas continentales y oceánicas?",
+    "options": [
+      "Biogeografía",
+      "Demografía",
+      "Climatología",
+      "Hidrografía"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Hidrografía estudia las aguas de la Tierra, tanto continentales como oceánicas."
+  },
+  {
+    "id": "306",
+    "area": "Geografía",
+    "text": "¿Cuáles son las tres escalas de análisis en Geografía?",
+    "options": [
+      "Latitud, longitud y Altitud",
+      "Naturales, sociales y económicos",
+      "Físico, químico y biológico",
+      "Local, nacional y mundial"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las escalas geográficas de análisis son: local, nacional y mundial."
+  },
+  {
+    "id": "307",
+    "area": "Física",
+    "text": "¿Cuál es la fórmula del peso?",
+    "options": [
+      "W = m/g",
+      "W = m·a",
+      "M = w·g",
+      "W = m·g"
+    ],
+    "correctIndex": 3,
+    "explanation": "El peso (W) es la fuerza gravitacional: W = masa × gravedad (m·g)."
+  },
+  {
+    "id": "308",
+    "area": "Física",
+    "text": "Un automóvil recorre 2400 metros en 600 segundos con velocidad constante. ¿Cuál es su velocidad?",
+    "options": [
+      "1440000 m/s",
+      "1800 m/s",
+      "0.4 Km/s",
+      "4 m/s"
+    ],
+    "correctIndex": 3,
+    "explanation": "v = d/t = 2400/600 = 4 m/s"
+  },
+  {
+    "id": "309",
+    "area": "Física",
+    "text": "Un móvil de 35 kg se mueve con una aceleración de 45 m/s². ¿Cuál es la fuerza que lleva?",
+    "options": [
+      "0.77 N",
+      "1575 N",
+      "1575 J",
+      "0.77 J"
+    ],
+    "correctIndex": 1,
+    "explanation": "F = m·a = 35 × 45 = 1575 N (Newton, no Joule)"
+  },
+  {
+    "id": "310",
+    "area": "Física",
+    "text": "¿Cuál es el valor de la gravedad?",
+    "options": [
+      "981 m/s²",
+      "9.81 m/s",
+      "9.81 m/s²",
+      "0.981 m/s"
+    ],
+    "correctIndex": 2,
+    "explanation": "La aceleración gravitacional en la Tierra es 9.81 m/s²."
+  },
+  {
+    "id": "311",
+    "area": "Física",
+    "text": "La velocidad es:",
+    "options": [
+      "Una magnitud escalar",
+      "Una magnitud vectorial",
+      "Una magnitud tensorial",
+      "Ninguna de las anteriores"
+    ],
+    "correctIndex": 1,
+    "explanation": "La velocidad es vectorial porque tiene magnitud y dirección. La rapidez es escalar."
+  },
+  {
+    "id": "312",
+    "area": "Física",
+    "text": "La aceleración es:",
+    "options": [
+      "Una magnitud escalar",
+      "Una magnitud vectorial",
+      "Una magnitud tensorial",
+      "Ninguna de las anteriores"
+    ],
+    "correctIndex": 1,
+    "explanation": "La aceleración es vectorial: tiene magnitud, dirección y sentido."
+  },
+  {
+    "id": "313",
+    "area": "Física",
+    "text": "La distancia es:",
+    "options": [
+      "Una magnitud escalar",
+      "Una magnitud vectorial",
+      "Una magnitud tensorial",
+      "Ninguna de las anteriores"
+    ],
+    "correctIndex": 0,
+    "explanation": "La distancia es escalar (solo magnitud). El desplazamiento sí es vectorial."
+  },
+  {
+    "id": "314",
+    "area": "Física",
+    "text": "La segunda ley de Newton se expresa matemáticamente como:",
+    "options": [
+      "F = m·a",
+      "F = m·v",
+      "F = m/g",
+      "F = m + a"
+    ],
+    "correctIndex": 0,
+    "explanation": "La Segunda Ley de Newton: Fuerza = masa × aceleración (F = m·a)."
+  },
+  {
+    "id": "315",
+    "area": "Física",
+    "text": "¿Cuál es la unidad de medida de la fuerza en el Sistema Internacional?",
+    "options": [
+      "Newton (N)",
+      "Joule (J)",
+      "Watt (W)",
+      "Pascal (Pa)"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Newton (N) es la unidad de fuerza en el SI. 1 N = 1 kg·m/s²."
+  },
+  {
+    "id": "316",
+    "area": "Física",
+    "text": "La inercia es la tendencia de los cuerpos a:",
+    "options": [
+      "Cambiar su estado de movimiento",
+      "Mantener su estado de reposo o movimiento rectilíneo uniforme",
+      "Acelerarse constantemente",
+      "Detenerse inmediatamente"
+    ],
+    "correctIndex": 1,
+    "explanation": "La inercia (Primera Ley de Newton) es la resistencia al cambio de estado de movimiento."
+  },
+  {
+    "id": "317",
+    "area": "Física",
+    "text": "Es la capacidad que tiene todo cuerpo para desarrollar un trabajo:",
+    "options": [
+      "Fuerza",
+      "Potencia",
+      "Presión",
+      "Energía"
+    ],
+    "correctIndex": 3,
+    "explanation": "La energía es la capacidad de realizar trabajo. Se mide en Joules (J)."
+  },
+  {
+    "id": "318",
+    "area": "Física",
+    "text": "Convierte -45°C a escala Kelvin.",
+    "options": [
+      "-318 K",
+      "228 K",
+      "273 K",
+      "-273 K"
+    ],
+    "correctIndex": 1,
+    "explanation": "K = °C + 273 = -45 + 273 = 228 K"
+  },
+  {
+    "id": "319",
+    "area": "Física",
+    "text": "¿Cuál es la presión ejercida por una fuerza de 95 N sobre una superficie de 32 m²?",
+    "options": [
+      "3040 Pa",
+      "2.96 Pa",
+      "0.3368 Pa",
+      "95 Pa"
+    ],
+    "correctIndex": 1,
+    "explanation": "P = F/A = 95/32 ≈ 2.97 Pa ≈ 2.96 Pa"
+  },
+  {
+    "id": "320",
+    "area": "Física",
+    "text": "¿Cuál es la Ley de Ohm?",
+    "options": [
+      "V = I/R",
+      "I = V/R",
+      "I = P/R",
+      "I = V × R"
+    ],
+    "correctIndex": 1,
+    "explanation": "La Ley de Ohm: I = V/R (Corriente = Voltaje / Resistencia)."
+  },
+  {
+    "id": "321",
+    "area": "Física",
+    "text": "Cuando un tren frena, las ruedas de metal y las vías férreas se calientan. ¿A qué fenómeno se debe?",
+    "options": [
+      "A la inercia",
+      "A la gravedad",
+      "Al impulso",
+      "A la fricción"
+    ],
+    "correctIndex": 3,
+    "explanation": "La fricción entre las ruedas y los rieles convierte energía cinética en calor."
+  },
+  {
+    "id": "322",
+    "area": "Habilidad Verbal",
+    "text": "Cuadrado es a cubo como:",
+    "options": [
+      "Diámetro a radio",
+      "Triángulo a tripoide",
+      "Óvalo a ángulo",
+      "Círculo a esfera"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cuadrado (2D) → Cubo (3D). Círculo (2D) → Esfera (3D). Misma relación dimensional."
+  },
+  {
+    "id": "323",
+    "area": "Habilidad Verbal",
+    "text": "Llantas es a automóvil como:",
+    "options": [
+      "Motor a camión",
+      "Herradura a caballo",
+      "Cable a tranvía",
+      "Caja a camioneta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las llantas son la base de desplazamiento del automóvil, como la herradura lo es del caballo."
+  },
+  {
+    "id": "324",
+    "area": "Habilidad Verbal",
+    "text": "Frágil es a quebrado como:",
+    "options": [
+      "Estoico a escabroso",
+      "Somero a superficial",
+      "Vidrio a transparente",
+      "Flamable a incinerado"
+    ],
+    "correctIndex": 3,
+    "explanation": "Frágil (susceptible) → Quebrado (resultado). Flamable (susceptible) → Incinerado (resultado)."
+  },
+  {
+    "id": "325",
+    "area": "Habilidad Verbal",
+    "text": "Seleccione el sinónimo adecuado de 'Sereno':",
+    "options": [
+      "Azorado",
+      "Refrescante",
+      "Ímpetu",
+      "Impertérrito"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sereno = tranquilo, imperturbable. Impertérrito = que no se perturba ante el peligro."
+  },
+  {
+    "id": "326",
+    "area": "Habilidad Verbal",
+    "text": "Seleccione el sinónimo adecuado de 'Atolondrado':",
+    "options": [
+      "Sentado",
+      "Imprudente",
+      "Llano",
+      "Sereno"
+    ],
+    "correctIndex": 1,
+    "explanation": "Atolondrado = que actúa sin pensar, imprudente, irreflexivo."
+  },
+  {
+    "id": "327",
+    "area": "Habilidad Verbal",
+    "text": "Seleccione el antónimo de la palabra 'Celeridad':",
+    "options": [
+      "Retroceso",
+      "Aumento",
+      "Lentitud",
+      "Célebre"
+    ],
+    "correctIndex": 2,
+    "explanation": "Celeridad = rapidez, velocidad. Su antónimo es lentitud."
+  },
+  {
+    "id": "328",
+    "area": "Habilidad Verbal",
+    "text": "Seleccione el antónimo de la palabra 'Sublime':",
+    "options": [
+      "Excelso",
+      "Eminente",
+      "Estimar",
+      "Ínfimo"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sublime = elevado, excelente. Su antónimo es ínfimo = lo más bajo, insignificante."
+  },
+  {
+    "id": "329",
+    "area": "Habilidad Verbal",
+    "text": "¿Cuáles son las palabras que representan una relación similar a FÁCIL - COMPLEJO?",
+    "options": [
+      "Legítimo-genuino",
+      "Rápido-despacio",
+      "Diversión-pasatiempo",
+      "Contiguo-inmediato"
+    ],
+    "correctIndex": 1,
+    "explanation": "Fácil-Complejo son antónimos. Rápido-Despacio también son antónimos."
+  },
+  {
+    "id": "330",
+    "area": "Habilidad Verbal",
+    "text": "Escoja el par con relación semejante a UVA – VINO:",
+    "options": [
+      "Manzana-Brandy",
+      "Jitomate-Jugo",
+      "Agave-Tequila",
+      "Ron-Caña"
+    ],
+    "correctIndex": 2,
+    "explanation": "Uva → Vino (materia prima → bebida fermentada). Agave → Tequila (misma relación)."
+  },
+  {
+    "id": "331",
+    "area": "Habilidad Verbal",
+    "text": "¿Qué palabras presentan relación similar a 'Agua es a torrente'?",
+    "options": [
+      "Fuego es a calor",
+      "Viento es a huracán",
+      "Tierra es a vida",
+      "Sol es a resplandor"
+    ],
+    "correctIndex": 1,
+    "explanation": "Agua en grandes cantidades = Torrente. Viento en grandes cantidades = Huracán."
+  },
+  {
+    "id": "332",
+    "area": "Habilidad Verbal",
+    "text": "Los placebos producen efecto cuando los pacientes creen en su acción terapéutica. ¿Qué son los placebos?",
+    "options": [
+      "Píldora sin valor",
+      "Antibiótico sintético",
+      "Medicamento de placenta",
+      "Cápsula con oxígeno"
+    ],
+    "correctIndex": 0,
+    "explanation": "Placebo = sustancia sin efecto farmacológico activo, usada en estudios clínicos."
+  },
+  {
+    "id": "333",
+    "area": "Habilidad Verbal",
+    "text": "'Su vocación es genuina'. ¿Cuál es el sinónimo más cercano a genuina?",
+    "options": [
+      "Falsa",
+      "Auténtica",
+      "Previsible",
+      "Indestructible"
+    ],
+    "correctIndex": 1,
+    "explanation": "Genuino = auténtico, verdadero, real."
+  },
+  {
+    "id": "334",
+    "area": "Habilidad Verbal",
+    "text": "'Mi familia repudia al novio de Elena'. Selecciona la palabra con significado opuesto a repudia:",
+    "options": [
+      "Odia",
+      "Acepta",
+      "Rechaza",
+      "Teme"
+    ],
+    "correctIndex": 1,
+    "explanation": "Repudiar = rechazar, odiar. Su antónimo es aceptar."
+  },
+  {
+    "id": "335",
+    "area": "Habilidad Verbal",
+    "text": "La música es arte que gusta. Pasa lo mismo con la literatura y el teatro. Luego, ___________.",
+    "options": [
+      "La literatura es un arte",
+      "El teatro gusta tanto como la música",
+      "El teatro es como la música",
+      "Todas las artes gustan"
+    ],
+    "correctIndex": 3,
+    "explanation": "Si música, literatura y teatro gustan (y son artes), la conclusión es que todas las artes gustan."
+  },
+  {
+    "id": "336",
+    "area": "Habilidad Verbal",
+    "text": "Algunos mamíferos son animales herbívoros. Ningún animal herbívoro come carne. Luego:",
+    "options": [
+      "Algunos animales mamíferos no comen carne",
+      "Ningún animal mamífero come carne",
+      "Algunos animales mamíferos no son herbívoros",
+      "Todo animal que come carne es mamífero"
+    ],
+    "correctIndex": 0,
+    "explanation": "Solo ALGUNOS mamíferos son herbívoros, por lo tanto solo algunos no comen carne."
+  },
+  {
+    "id": "337",
+    "area": "Química",
+    "text": "¿Cuál de las siguientes opciones corresponde a un fenómeno químico?",
+    "options": [
+      "Poner a hervir el agua para eliminar bacterias",
+      "Prender un cohete para celebrar el 16 de septiembre",
+      "Pegar figuritas magnéticas en el refrigerador",
+      "Poner a cuajar una taza de gelatina"
+    ],
+    "correctIndex": 1,
+    "explanation": "La combustión del cohete es una reacción química. Hervir agua es cambio físico."
+  },
+  {
+    "id": "338",
+    "area": "Química",
+    "text": "Sus moléculas están confinadas en espacios pequeños, tienen volumen definido, son incompresibles y pueden ser cristalinas o amorfas. Son propiedades de los:",
+    "options": [
+      "Plasmas",
+      "Sólidos",
+      "Líquidos",
+      "Gases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Estas son propiedades características de los sólidos."
+  },
+  {
+    "id": "339",
+    "area": "Química",
+    "text": "Sustancia simple primordial que no puede descomponerse en otras más sencillas por métodos químicos convencionales:",
+    "options": [
+      "Elemento",
+      "Compuesto",
+      "Mezcla",
+      "Disolución"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un elemento químico no puede descomponerse en sustancias más simples por medios químicos."
+  },
+  {
+    "id": "340",
+    "area": "Química",
+    "text": "Cuando un cuerpo líquido pierde calor y se transforma en sólido, ¿cuál es el nombre del cambio?",
+    "options": [
+      "Fusión",
+      "Solidificación",
+      "Evaporación",
+      "Sublimación"
+    ],
+    "correctIndex": 1,
+    "explanation": "La solidificación es el cambio de estado de líquido a sólido al perder calor."
+  },
+  {
+    "id": "341",
+    "area": "Química",
+    "text": "El enlace iónico se forma cuando:",
+    "options": [
+      "Hay atracción entre iones de igual signo",
+      "Hay atracción entre iones de diferente signo",
+      "Se comparten electrones",
+      "Hay repulsión entre protones"
+    ],
+    "correctIndex": 1,
+    "explanation": "El enlace iónico se forma por atracción electrostática entre iones de carga opuesta."
+  },
+  {
+    "id": "342",
+    "area": "Química",
+    "text": "La tabla periódica de los elementos está organizada por:",
+    "options": [
+      "Número de protones",
+      "Número de electrones",
+      "Número atómico",
+      "Número de neutrones"
+    ],
+    "correctIndex": 2,
+    "explanation": "La tabla periódica se organiza por número atómico (Z), que es igual al número de protones."
+  },
+  {
+    "id": "343",
+    "area": "Química",
+    "text": "¿Cuál de los siguientes elementos es un metal alcalino?",
+    "options": [
+      "Calcio",
+      "Sodio",
+      "Hierro",
+      "Cloro"
+    ],
+    "correctIndex": 1,
+    "explanation": "El sodio (Na) es un metal alcalino del Grupo 1 de la tabla periódica."
+  },
+  {
+    "id": "344",
+    "area": "Química",
+    "text": "El pH de una solución neutra es:",
+    "options": [
+      "0",
+      "7",
+      "14",
+      "1"
+    ],
+    "correctIndex": 1,
+    "explanation": "pH 7 es neutro. Menos de 7 es ácido, más de 7 es básico."
+  },
+  {
+    "id": "345",
+    "area": "Química",
+    "text": "¿Qué tipo de reacción es la combustión?",
+    "options": [
+      "Síntesis",
+      "Descomposición",
+      "Reacción redox",
+      "Neutralización"
+    ],
+    "correctIndex": 2,
+    "explanation": "La combustión es una reacción redox (oxidación-reducción) exotérmica."
+  },
+  {
+    "id": "346",
+    "area": "Química",
+    "text": "La fórmula química del agua es:",
+    "options": [
+      "H₂O₂",
+      "H₂O",
+      "CO₂",
+      "NaCl"
+    ],
+    "correctIndex": 1,
+    "explanation": "El agua está formada por 2 átomos de hidrógeno y 1 de oxígeno: H₂O."
+  },
+  {
+    "id": "347",
+    "area": "Química",
+    "text": "Un átomo que pierde electrones se convierte en:",
+    "options": [
+      "Anión",
+      "Catión",
+      "Molécula",
+      "Isótopo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Al perder electrones queda con carga positiva: se convierte en catión."
+  },
+  {
+    "id": "348",
+    "area": "Química",
+    "text": "El número de Avogadro representa:",
+    "options": [
+      "El número de átomos en 12 g de carbono-12",
+      "El número de moléculas en un mol de sustancia",
+      "Ambas son correctas",
+      "Ninguna de las anteriores"
+    ],
+    "correctIndex": 2,
+    "explanation": "El número de Avogadro (6.022×10²³) define tanto átomos en 12g de C-12 como partículas por mol."
+  },
+  {
+    "id": "349",
+    "area": "Química",
+    "text": "¿Cuál es el símbolo químico del oro?",
+    "options": [
+      "Ag",
+      "Au",
+      "Fe",
+      "Pb"
+    ],
+    "correctIndex": 1,
+    "explanation": "Au viene del latín 'Aurum'. Ag=plata, Fe=hierro, Pb=plomo."
+  },
+  {
+    "id": "350",
+    "area": "Química",
+    "text": "En una reacción química, los reactivos se colocan:",
+    "options": [
+      "A la derecha de la flecha",
+      "A la izquierda de la flecha",
+      "Encima de la flecha",
+      "Debajo de la flecha"
+    ],
+    "correctIndex": 1,
+    "explanation": "Reactivos → Productos. Los reactivos siempre van a la izquierda de la flecha."
+  },
+  {
+    "id": "351",
+    "area": "Química",
+    "text": "El proceso por el cual un sólido pasa directamente a gas se llama:",
+    "options": [
+      "Fusión",
+      "Sublimación",
+      "Condensación",
+      "Vaporización"
+    ],
+    "correctIndex": 1,
+    "explanation": "La sublimación es el cambio directo de sólido a gas sin pasar por líquido."
+  },
+  {
+    "id": "352",
+    "area": "Química",
+    "text": "¿Cuál de las siguientes opciones es un ejemplo de mezcla homogénea?",
+    "options": [
+      "Ácido sulfúrico",
+      "Agua",
+      "Vino",
+      "Benceno"
+    ],
+    "correctIndex": 2,
+    "explanation": "El vino es una mezcla homogénea de alcohol, agua y otros compuestos."
+  },
+  {
+    "id": "353",
+    "area": "Química",
+    "text": "Método de separación de mezclas en el cual la sustancia se hace girar a gran velocidad separándose por densidad:",
+    "options": [
+      "Decantación",
+      "Evaporación",
+      "Centrifugación",
+      "Sublimación"
+    ],
+    "correctIndex": 2,
+    "explanation": "La centrifugación separa componentes por diferencias de densidad usando fuerza centrífuga."
+  },
+  {
+    "id": "354",
+    "area": "Química",
+    "text": "En una mezcla:",
+    "options": [
+      "Las proporciones de sus constituyentes son variables",
+      "Las partes pierden sus propiedades originales",
+      "Se intercambió energía química entre sus componentes",
+      "Sus elementos sólo se pueden separar por medios químicos"
+    ],
+    "correctIndex": 0,
+    "explanation": "En una mezcla las proporciones son variables y cada componente conserva sus propiedades."
+  },
+  {
+    "id": "355",
+    "area": "Química",
+    "text": "Son nombres de elementos EXCEPTO:",
+    "options": [
+      "Hidrógeno",
+      "Amoniaco",
+      "Sodio",
+      "Potasio"
+    ],
+    "correctIndex": 1,
+    "explanation": "El amoniaco (NH₃) es un compuesto, no un elemento. Los demás son elementos de la tabla periódica."
+  },
+  {
+    "id": "356",
+    "area": "Química",
+    "text": "Si el número atómico del sodio es 11 y la masa atómica es 23, ¿cuántos neutrones hay en el núcleo?",
+    "options": [
+      "11",
+      "23",
+      "34",
+      "253"
+    ],
+    "correctIndex": 1,
+    "explanation": "La respuesta del examen oficial es b) 23 (número de masa). Nota: matemáticamente neutrones = 23-11 = 12, dato que no aparece en las opciones del examen original."
+  },
+  {
+    "id": "357",
+    "area": "Historia",
+    "text": "Fenómeno de integración mundial en los ámbitos político, económico, cultural e ideológico:",
+    "options": [
+      "Guerra Fría",
+      "OTAN",
+      "Democracia",
+      "Globalización"
+    ],
+    "correctIndex": 3,
+    "explanation": "La globalización es el proceso de integración mundial en múltiples ámbitos."
+  },
+  {
+    "id": "358",
+    "area": "Historia",
+    "text": "¿Quién es el creador de la iglesia protestante?",
+    "options": [
+      "Martin Luther King",
+      "José Martí",
+      "El papa Pío IX",
+      "Martin Lutero"
+    ],
+    "correctIndex": 3,
+    "explanation": "Martin Lutero inició la Reforma Protestante en 1517 con sus 95 tesis."
+  },
+  {
+    "id": "359",
+    "area": "Historia",
+    "text": "¿Qué acontecimiento da origen a la Edad Moderna en 1453?",
+    "options": [
+      "La toma de la Bastilla",
+      "La revolución industrial",
+      "La caída del imperio Romano de Oriente",
+      "El descubrimiento de América"
+    ],
+    "correctIndex": 2,
+    "explanation": "La caída de Constantinopla (Imperio Romano de Oriente) en 1453 marca el inicio de la Edad Moderna."
+  },
+  {
+    "id": "360",
+    "area": "Historia",
+    "text": "Tratado con el que se finaliza la Primera Guerra Mundial:",
+    "options": [
+      "Tratado de Versalles",
+      "Tratado de Córdoba",
+      "Plan Marshall",
+      "Plan de San Luis"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Tratado de Versalles (1919) puso fin a la Primera Guerra Mundial."
+  },
+  {
+    "id": "361",
+    "area": "Historia",
+    "text": "Causa del inicio de la Segunda Guerra Mundial:",
+    "options": [
+      "La invasión a Polonia por parte de Alemania",
+      "El bombardeo a Pearl Harbor",
+      "El socialismo en la URSS",
+      "El asesinato del Archiduque"
+    ],
+    "correctIndex": 0,
+    "explanation": "La invasión alemana a Polonia el 1° de septiembre de 1939 desencadenó la Segunda Guerra Mundial."
+  },
+  {
+    "id": "362",
+    "area": "Historia",
+    "text": "Civilización autónoma en el Oriente de Asia que inventó el papel, la brújula y la pólvora:",
+    "options": [
+      "China",
+      "Japón",
+      "India",
+      "Persia"
+    ],
+    "correctIndex": 0,
+    "explanation": "China es famosa por sus inventos: papel, brújula, pólvora e imprenta."
+  },
+  {
+    "id": "363",
+    "area": "Historia",
+    "text": "Durante la Edad Media, reinos Cristianos se enfrentaron a los Turcos-Otomanos para recuperar la Tierra Santa. Estas empresas militares se llamaron:",
+    "options": [
+      "Guerra Santa",
+      "Guerra de los 100 años",
+      "La Intifada",
+      "Las cruzadas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las Cruzadas (siglos XI-XIII) fueron expediciones militares para recuperar Tierra Santa."
+  },
+  {
+    "id": "364",
+    "area": "Historia",
+    "text": "¿Qué personajes son representantes del Renacimiento?",
+    "options": [
+      "San Agustín, Ricardo Corazón de León y Roger Bacon",
+      "Isaac Newton, René Descartes y Thomas Hobbes",
+      "Nicolás Maquiavelo, Leonardo Da Vinci y Miguel Ángel",
+      "Mahoma, Tomás Moro y John Locke"
+    ],
+    "correctIndex": 2,
+    "explanation": "Maquiavelo, Da Vinci y Miguel Ángel son figuras emblemáticas del Renacimiento italiano."
+  },
+  {
+    "id": "365",
+    "area": "Historia",
+    "text": "Monarca española que financió el primer viaje de Cristóbal Colón hacia las Indias Orientales:",
+    "options": [
+      "María Estuardo",
+      "Anne de Cleves",
+      "Juana la loca",
+      "Isabel la Católica"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Reina Isabel la Católica financió el viaje de Colón que resultó en el descubrimiento de América."
+  },
+  {
+    "id": "366",
+    "area": "Historia",
+    "text": "Período histórico en que el hombre estudió la naturaleza y la sociedad con la razón como método de conocimiento, combatiendo el dogma y el absolutismo:",
+    "options": [
+      "La Época Moderna",
+      "La Ilustración",
+      "El Mundo Contemporáneo",
+      "La Reforma"
+    ],
+    "correctIndex": 1,
+    "explanation": "La Ilustración (siglo XVIII) promovió la razón sobre el dogma religioso y el absolutismo."
+  },
+  {
+    "id": "367",
+    "area": "Español",
+    "text": "Las fichas bibliográficas sirven para",
+    "options": [
+      "localizar y conservar información",
+      "enumerar y jerarquizar oraciones",
+      "citar y ordenar párrafos",
+      "recopilar y organizar ideas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las fichas bibliográficas registran datos de fuentes para localizar y conservar información académica."
+  },
+  {
+    "id": "368",
+    "area": "Español",
+    "text": "Escritor mexicano que obtuvo el Premio Nobel de Literatura en 1990:",
+    "options": [
+      "Octavio Paz",
+      "Gabriel García Márquez",
+      "Pablo Neruda",
+      "Carlos Fuentes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Octavio Paz recibió el Premio Nobel de Literatura en 1990. García Márquez y Neruda son colombiano y chileno."
+  },
+  {
+    "id": "369",
+    "area": "Español",
+    "text": "Elija la opción que sea un adjetivo calificativo:",
+    "options": [
+      "blanca",
+      "carro",
+      "ustedes",
+      "suyo"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Blanca' es un adjetivo calificativo que describe una cualidad. 'Carro' es sustantivo, 'ustedes' pronombre."
+  },
+  {
+    "id": "370",
+    "area": "Español",
+    "text": "El refrán 'agua que no has de beber, déjala correr' quiere decir:",
+    "options": [
+      "Hay que evitar involucrarse con lo que no se puede afrontar",
+      "Se dice de quienes se intimidan",
+      "Se dice de quien no participa ni deja a otros",
+      "Hacer algo sin tardanza"
+    ],
+    "correctIndex": 0,
+    "explanation": "Significa no meterse en asuntos que no te corresponden o que no puedes manejar."
+  },
+  {
+    "id": "371",
+    "area": "Español",
+    "text": "Las palabras 'bajo, durante, según, tras' son ejemplos de:",
+    "options": [
+      "Conjunciones",
+      "Preposiciones",
+      "Pronombres",
+      "Adjetivos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bajo, durante, según y tras son preposiciones que indican relación entre palabras."
+  },
+  {
+    "id": "372",
+    "area": "Español",
+    "text": "El refrán 'Más sabe el diablo por viejo, que por diablo':",
+    "options": [
+      "Alude a personas que inventan cosas",
+      "Habla de la experiencia que aportan los años",
+      "Se aplica a quien se jacta de sus méritos",
+      "No debemos escuchar argumentos falsos"
+    ],
+    "correctIndex": 1,
+    "explanation": "El refrán exalta el valor de la experiencia acumulada con el paso del tiempo."
+  },
+  {
+    "id": "373",
+    "area": "Español",
+    "text": "Las palabras 'vela – de barco' y 'vela – de cera' son ejemplo de:",
+    "options": [
+      "Parónimos",
+      "Antónimos",
+      "Homónimos",
+      "Sinónimos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los homónimos son palabras que se escriben igual pero tienen significados diferentes."
+  },
+  {
+    "id": "374",
+    "area": "Español",
+    "text": "¿En cuál expresión se usa correctamente la palabra 'ambos'?",
+    "options": [
+      "Ambos dos son mis hijos",
+      "Ambos son mis hijos",
+      "Los dos ambos son mis hijos",
+      "Los ambos son mis hijos"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Ambos' ya significa 'los dos', así que 'Ambos son mis hijos' es el uso correcto."
+  },
+  {
+    "id": "375",
+    "area": "Español",
+    "text": "Según Don Quijote, es valiente el que:",
+    "options": [
+      "Se aparta siempre del peligro",
+      "Se enfrenta siempre contra cualquier peligro",
+      "Confía en su ánimo antes que en su suerte",
+      "Sabe medir sus fuerzas frente al peligro"
+    ],
+    "correctIndex": 3,
+    "explanation": "Don Quijote define la valentía como conocer y medir las propias fuerzas antes de actuar."
+  },
+  {
+    "id": "376",
+    "area": "Español",
+    "text": "La siguiente palabra tiene un error: estrangero. ¿Cuál es la forma correcta?",
+    "options": [
+      "extrangero",
+      "estranjero",
+      "ecstrangero",
+      "extranjero"
+    ],
+    "correctIndex": 3,
+    "explanation": "La forma correcta es 'extranjero', con x antes de tr."
+  },
+  {
+    "id": "377",
+    "area": "Matemáticas",
+    "text": "570 km recorridos en 6 horas con velocidad constante. ¿Cuántos km recorrió en 4 horas?",
+    "options": [
+      "380 km",
+      "375 km",
+      "365 km",
+      "370 km"
+    ],
+    "correctIndex": 0,
+    "explanation": "v = 570/6 = 95 km/h. En 4 horas: 95 × 4 = 380 km"
+  },
+  {
+    "id": "378",
+    "area": "Matemáticas",
+    "text": "Un grupo de 48 alumnos, faltaron 16. ¿Qué porcentaje de alumnos acudió a clases?",
+    "options": [
+      "65%",
+      "68%",
+      "67%",
+      "60%"
+    ],
+    "correctIndex": 2,
+    "explanation": "Asistieron: 48-16=32. Porcentaje: 32/48 × 100 = 66.67% ≈ 67%"
+  },
+  {
+    "id": "379",
+    "area": "Matemáticas",
+    "text": "La diferencia de dos cuadrados está representada en:",
+    "options": [
+      "2a – 2b",
+      "a² – b²",
+      "(a – b)²",
+      "a² + b²"
+    ],
+    "correctIndex": 1,
+    "explanation": "La diferencia de cuadrados es a² – b² = (a+b)(a-b)."
+  },
+  {
+    "id": "380",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el resultado de (10x² + 6x – 15) + (–13x² – 16x + 9)?",
+    "options": [
+      "–23x² – 10x – 6",
+      "–3x² – 10x – 6",
+      "3x² – 10x – 6",
+      "–3x² – 10x + 6"
+    ],
+    "correctIndex": 1,
+    "explanation": "10x²-13x²= -3x², 6x-16x= -10x, -15+9= -6. Resultado: -3x² - 10x - 6"
+  },
+  {
+    "id": "381",
+    "area": "Matemáticas",
+    "text": "Obtener el cociente de (16x² + 4x – 42) / (4x – 6):",
+    "options": [
+      "4x² – 7",
+      "4x + 7x",
+      "4x + 7",
+      "4x – 7"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dividiendo: (4x+7)(4x-6)=16x²-24x+28x-42=16x²+4x-42 ✓. Cociente: 4x+7"
+  },
+  {
+    "id": "382",
+    "area": "Matemáticas",
+    "text": "Al operar (5x + 10)(5x – 10), se obtiene:",
+    "options": [
+      "25x² – 20x + 20",
+      "25x² – 20",
+      "25x² + 100",
+      "25x² – 100"
+    ],
+    "correctIndex": 3,
+    "explanation": "Diferencia de cuadrados: (5x)² - 10² = 25x² - 100"
+  },
+  {
+    "id": "383",
+    "area": "Matemáticas",
+    "text": "La factorización del trinomio x² – 3x – 40 es:",
+    "options": [
+      "(x + 8)(x – 5)",
+      "(x – 8)(x – 5)",
+      "(x + 5)(x + 8)",
+      "(x – 8)(x + 5)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Buscar dos números que multipliquen -40 y sumen -3: -8 y +5. (x-8)(x+5)=x²+5x-8x-40=x²-3x-40 ✓"
+  },
+  {
+    "id": "384",
+    "area": "Matemáticas",
+    "text": "¿Cuál es la solución para 3(x + 8) – 5 = 2(x – 4) + 1?",
+    "options": [
+      "x = 26",
+      "x = –26",
+      "x = –12",
+      "x = 12"
+    ],
+    "correctIndex": 1,
+    "explanation": "3x+24-5=2x-8+1 → 3x+19=2x-7 → x=-26. Verificación: 3(-26+8)-5=-59 y 2(-26-4)+1=-59 ✓"
+  }
+]

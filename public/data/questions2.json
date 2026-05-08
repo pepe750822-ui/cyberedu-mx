@@ -1,0 +1,1666 @@
+[
+  {
+    "id": "b2_mat1",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el resultado de (3/4) + (1/6)?",
+    "options": [
+      "11/12",
+      "4/10",
+      "2/3",
+      "5/6"
+    ],
+    "correctIndex": 0,
+    "explanation": "Se busca el M.C.M. de 4 y 6 = 12. Entonces: 9/12 + 2/12 = 11/12."
+  },
+  {
+    "id": "b2_mat2",
+    "area": "Matemáticas",
+    "text": "Si el 30% de un número es 45, ¿cuál es ese número?",
+    "options": [
+      "120",
+      "150",
+      "135",
+      "105"
+    ],
+    "correctIndex": 1,
+    "explanation": "30% × x = 45 → x = 45 / 0.30 = 150."
+  },
+  {
+    "id": "b2_mat3",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el área de un triángulo con base 8 cm y altura 5 cm?",
+    "options": [
+      "40 cm²",
+      "20 cm²",
+      "13 cm²",
+      "16 cm²"
+    ],
+    "correctIndex": 1,
+    "explanation": "Área = (base × altura) / 2 = (8 × 5) / 2 = 20 cm²."
+  },
+  {
+    "id": "b2_mat4",
+    "area": "Matemáticas",
+    "text": "Simplifica: (x² − 4) / (x − 2)",
+    "options": [
+      "x − 2",
+      "x + 2",
+      "2x",
+      "x²"
+    ],
+    "correctIndex": 1,
+    "explanation": "x² − 4 = (x−2)(x+2). Al dividir por (x−2) queda x + 2."
+  },
+  {
+    "id": "b2_mat5",
+    "area": "Matemáticas",
+    "text": "La media aritmética de 8, 12, 15, 10 y 5 es:",
+    "options": [
+      "9",
+      "11",
+      "10",
+      "12"
+    ],
+    "correctIndex": 2,
+    "explanation": "Suma = 50; media = 50 / 5 = 10."
+  },
+  {
+    "id": "b2_mat6",
+    "area": "Matemáticas",
+    "text": "¿Cuántos grados suman los ángulos internos de un pentágono?",
+    "options": [
+      "360°",
+      "720°",
+      "480°",
+      "540°"
+    ],
+    "correctIndex": 3,
+    "explanation": "(n − 2) × 180° = (5 − 2) × 180° = 540°."
+  },
+  {
+    "id": "b2_mat7",
+    "area": "Matemáticas",
+    "text": "Resuelve: 2x + 7 = 19",
+    "options": [
+      "x = 6",
+      "x = 13",
+      "x = 4",
+      "x = 8"
+    ],
+    "correctIndex": 0,
+    "explanation": "2x = 19 − 7 = 12 → x = 6."
+  },
+  {
+    "id": "b2_mat8",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el perímetro de un rectángulo con lados de 6 m y 4 m?",
+    "options": [
+      "24 m",
+      "10 m",
+      "18 m",
+      "20 m"
+    ],
+    "correctIndex": 3,
+    "explanation": "P = 2(largo + ancho) = 2(6 + 4) = 20 m."
+  },
+  {
+    "id": "b2_mat9",
+    "area": "Matemáticas",
+    "text": "Si a = 3 y b = −2, ¿cuánto vale a² − b²?",
+    "options": [
+      "13",
+      "−5",
+      "5",
+      "1"
+    ],
+    "correctIndex": 2,
+    "explanation": "a² = 9, b² = 4; 9 − 4 = 5."
+  },
+  {
+    "id": "b2_mat10",
+    "area": "Matemáticas",
+    "text": "¿Cuánto es √144?",
+    "options": [
+      "14",
+      "11",
+      "13",
+      "12"
+    ],
+    "correctIndex": 3,
+    "explanation": "12 × 12 = 144, por lo que √144 = 12."
+  },
+  {
+    "id": "b2_mat11",
+    "area": "Matemáticas",
+    "text": "Un artículo vale $250 con 20% de descuento. ¿Cuál es el precio final?",
+    "options": [
+      "$230",
+      "$180",
+      "$200",
+      "$210"
+    ],
+    "correctIndex": 2,
+    "explanation": "Descuento = 250 × 0.20 = 50. Precio final = 250 − 50 = $200."
+  },
+  {
+    "id": "b2_mat12",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el M.C.D. de 24 y 36?",
+    "options": [
+      "6",
+      "8",
+      "12",
+      "18"
+    ],
+    "correctIndex": 2,
+    "explanation": "Factores de 24: 1,2,3,4,6,8,12,24. Factores de 36: 1,2,3,4,6,9,12,18,36. M.C.D. = 12."
+  },
+  {
+    "id": "b2_mat13",
+    "area": "Matemáticas",
+    "text": "Si f(x) = 2x² − 3x + 1, ¿cuánto es f(2)?",
+    "options": [
+      "5",
+      "7",
+      "1",
+      "3"
+    ],
+    "correctIndex": 3,
+    "explanation": "f(2) = 2(4) − 3(2) + 1 = 8 − 6 + 1 = 3."
+  },
+  {
+    "id": "b2_mat14",
+    "area": "Matemáticas",
+    "text": "La probabilidad de sacar un número par al lanzar un dado estándar es:",
+    "options": [
+      "1/3",
+      "2/3",
+      "1/6",
+      "1/2"
+    ],
+    "correctIndex": 3,
+    "explanation": "Pares posibles: 2, 4, 6 → 3 de 6 casos = 1/2."
+  },
+  {
+    "id": "b2_mat15",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el volumen de un cubo con arista de 4 cm?",
+    "options": [
+      "48 cm³",
+      "96 cm³",
+      "16 cm³",
+      "64 cm³"
+    ],
+    "correctIndex": 3,
+    "explanation": "V = arista³ = 4³ = 64 cm³."
+  },
+  {
+    "id": "b2_mat16",
+    "area": "Matemáticas",
+    "text": "Resuelve el sistema: x + y = 10 y x − y = 4",
+    "options": [
+      "x=6, y=4",
+      "x=8, y=2",
+      "x=7, y=3",
+      "x=5, y=5"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sumando ambas ecuaciones: 2x = 14 → x = 7. Sustituyendo: y = 3."
+  },
+  {
+    "id": "b2_mat17",
+    "area": "Matemáticas",
+    "text": "¿Cuál es la pendiente de la recta que pasa por (0, 3) y (2, 7)?",
+    "options": [
+      "3",
+      "4",
+      "2",
+      "1"
+    ],
+    "correctIndex": 2,
+    "explanation": "m = (7 − 3) / (2 − 0) = 4 / 2 = 2."
+  },
+  {
+    "id": "b2_mat18",
+    "area": "Matemáticas",
+    "text": "Si 5 cuadernos cuestan $85, ¿cuánto cuestan 8 cuadernos?",
+    "options": [
+      "$120",
+      "$140",
+      "$160",
+      "$136"
+    ],
+    "correctIndex": 3,
+    "explanation": "Precio unitario = 85/5 = $17. Total = 17 × 8 = $136."
+  },
+  {
+    "id": "b2_mat19",
+    "area": "Matemáticas",
+    "text": "¿Cuál es la moda del conjunto: 3, 5, 5, 7, 8, 5, 2?",
+    "options": [
+      "3",
+      "7",
+      "5",
+      "2"
+    ],
+    "correctIndex": 2,
+    "explanation": "El valor 5 aparece 3 veces, más que cualquier otro. La moda es 5."
+  },
+  {
+    "id": "b2_mat20",
+    "area": "Matemáticas",
+    "text": "Un tren viaja a 90 km/h durante 2.5 horas. ¿Qué distancia recorre?",
+    "options": [
+      "200 km",
+      "180 km",
+      "250 km",
+      "225 km"
+    ],
+    "correctIndex": 3,
+    "explanation": "d = v × t = 90 × 2.5 = 225 km."
+  },
+  {
+    "id": "b2_hm1",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie: 2, 6, 18, 54, ...?",
+    "options": [
+      "108",
+      "216",
+      "162",
+      "180"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cada término se multiplica por 3: 54 × 3 = 162."
+  },
+  {
+    "id": "b2_hm2",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie: 100, 91, 83, 76, 70, ...?",
+    "options": [
+      "63",
+      "67",
+      "64",
+      "65"
+    ],
+    "correctIndex": 3,
+    "explanation": "Diferencias decrecientes: −9, −8, −7, −6, −5. El siguiente es 70 − 5 = 65."
+  },
+  {
+    "id": "b2_hm3",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número falta en la serie? 4, 9, ___, 25, 36",
+    "options": [
+      "12",
+      "15",
+      "18",
+      "16"
+    ],
+    "correctIndex": 3,
+    "explanation": "Son cuadrados perfectos: 2², 3², 4², 5², 6². El faltante es 4² = 16."
+  },
+  {
+    "id": "b2_hm4",
+    "area": "Habilidad Matemática",
+    "text": "En una granja hay 3 veces más pollos que cerdos. Si hay 48 pollos, ¿cuántos cerdos hay?",
+    "options": [
+      "12",
+      "24",
+      "16",
+      "18"
+    ],
+    "correctIndex": 2,
+    "explanation": "cerdos = 48 / 3 = 16."
+  },
+  {
+    "id": "b2_hm5",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie de Fibonacci: 1, 1, 2, 3, 5, 8, 13, ...?",
+    "options": [
+      "18",
+      "24",
+      "20",
+      "21"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cada término es la suma de los dos anteriores: 8 + 13 = 21."
+  },
+  {
+    "id": "b2_hm6",
+    "area": "Habilidad Matemática",
+    "text": "Si 6 trabajadores terminan una obra en 10 días, ¿cuántos días tardarán 4 trabajadores?",
+    "options": [
+      "12",
+      "8",
+      "20",
+      "15"
+    ],
+    "correctIndex": 3,
+    "explanation": "Proporción inversa: 6 × 10 = 4 × x → x = 60/4 = 15 días."
+  },
+  {
+    "id": "b2_hm7",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue? 3, 6, 11, 18, 27, ...",
+    "options": [
+      "36",
+      "40",
+      "34",
+      "38"
+    ],
+    "correctIndex": 3,
+    "explanation": "Diferencias: +3, +5, +7, +9, +11. El siguiente es 27 + 11 = 38."
+  },
+  {
+    "id": "b2_hm8",
+    "area": "Habilidad Matemática",
+    "text": "María tiene el doble de la edad de Juan. Si Juan tiene 9 años, ¿cuántos tendrá María en 3 años?",
+    "options": [
+      "18",
+      "15",
+      "21",
+      "24"
+    ],
+    "correctIndex": 2,
+    "explanation": "María ahora = 2 × 9 = 18. En 3 años: 18 + 3 = 21."
+  },
+  {
+    "id": "b2_hm9",
+    "area": "Habilidad Matemática",
+    "text": "¿Cuántos cuadrados hay en total en una cuadrícula de 3 × 3?",
+    "options": [
+      "9",
+      "12",
+      "16",
+      "14"
+    ],
+    "correctIndex": 3,
+    "explanation": "9 cuadrados de 1×1, 4 de 2×2 y 1 de 3×3. Total = 14."
+  },
+  {
+    "id": "b2_hm10",
+    "area": "Habilidad Matemática",
+    "text": "¿Cuál de estas fracciones es la mayor? 3/4, 5/8, 7/10, 2/3",
+    "options": [
+      "5/8",
+      "7/10",
+      "2/3",
+      "3/4"
+    ],
+    "correctIndex": 3,
+    "explanation": "En decimales: 3/4=0.75, 7/10=0.70, 2/3≈0.667, 5/8=0.625. La mayor es 3/4."
+  },
+  {
+    "id": "b2_hm11",
+    "area": "Habilidad Matemática",
+    "text": "Si el precio de un artículo sube 10% y luego baja 10%, el cambio neto es:",
+    "options": [
+      "Queda igual",
+      "Sube 1%",
+      "Baja 2%",
+      "Baja 1%"
+    ],
+    "correctIndex": 3,
+    "explanation": "1.10 × 0.90 = 0.99 → el precio es 99% del original, baja 1%."
+  },
+  {
+    "id": "b2_hm12",
+    "area": "Habilidad Matemática",
+    "text": "En una clase de 30 alumnos, 18 son mujeres. ¿Qué porcentaje son hombres?",
+    "options": [
+      "45%",
+      "35%",
+      "60%",
+      "40%"
+    ],
+    "correctIndex": 3,
+    "explanation": "Hombres = 30 − 18 = 12. Porcentaje = 12/30 × 100 = 40%."
+  },
+  {
+    "id": "b2_hm13",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número multiplicado por sí mismo da 169?",
+    "options": [
+      "12",
+      "14",
+      "11",
+      "13"
+    ],
+    "correctIndex": 3,
+    "explanation": "13 × 13 = 169."
+  },
+  {
+    "id": "b2_hm14",
+    "area": "Habilidad Matemática",
+    "text": "Tres amigos pagan en partes iguales una cuenta de $270. ¿Cuánto paga cada uno?",
+    "options": [
+      "$80",
+      "$95",
+      "85",
+      "$90"
+    ],
+    "correctIndex": 3,
+    "explanation": "270 / 3 = $90 por persona."
+  },
+  {
+    "id": "b2_hm15",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie: 1, 4, 9, 16, 25, ...?",
+    "options": [
+      "30",
+      "32",
+      "36",
+      "49"
+    ],
+    "correctIndex": 2,
+    "explanation": "Son cuadrados perfectos: 1², 2², 3², 4², 5². El siguiente es 6² = 36."
+  },
+  {
+    "id": "b2_hv1",
+    "area": "Habilidad Verbal",
+    "text": "Selecciona el antónimo de 'Abundante':",
+    "options": [
+      "Mucho",
+      "Escaso",
+      "Repleto",
+      "Amplio"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Escaso' significa que hay poco, lo opuesto a abundante."
+  },
+  {
+    "id": "b2_hv2",
+    "area": "Habilidad Verbal",
+    "text": "Agua es a líquido como madera es a:",
+    "options": [
+      "Gas",
+      "Árbol",
+      "Sólido",
+      "Mesa"
+    ],
+    "correctIndex": 2,
+    "explanation": "El agua es un ejemplo de líquido; la madera es un ejemplo de sólido."
+  },
+  {
+    "id": "b2_hv3",
+    "area": "Habilidad Verbal",
+    "text": "Sinónimo de 'Perspicaz':",
+    "options": [
+      "Torpe",
+      "Distraído",
+      "Lento",
+      "Sagaz"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Sagaz' y 'perspicaz' significan agudo e inteligente para percibir las cosas."
+  },
+  {
+    "id": "b2_hv4",
+    "area": "Habilidad Verbal",
+    "text": "¿Cuál de las siguientes NO es un planeta del sistema solar?",
+    "options": [
+      "Saturno",
+      "Venus",
+      "Luna",
+      "Marte"
+    ],
+    "correctIndex": 2,
+    "explanation": "La Luna es un satélite natural de la Tierra, no un planeta."
+  },
+  {
+    "id": "b2_hv5",
+    "area": "Habilidad Verbal",
+    "text": "Carpintero es a madera como herrero es a:",
+    "options": [
+      "Martillo",
+      "Metal",
+      "Forja",
+      "Hierro"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relación artesano-material: el carpintero trabaja la madera; el herrero trabaja el metal."
+  },
+  {
+    "id": "b2_hv6",
+    "area": "Habilidad Verbal",
+    "text": "Antónimo de 'Diligente':",
+    "options": [
+      "Activo",
+      "Eficiente",
+      "Perezoso",
+      "Trabajador"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Perezoso' es lo opuesto a diligente, que implica laboriosidad y esfuerzo."
+  },
+  {
+    "id": "b2_hv7",
+    "area": "Habilidad Verbal",
+    "text": "Completa la serie de letras: A, C, E, G, ___",
+    "options": [
+      "H",
+      "J",
+      "I",
+      "K"
+    ],
+    "correctIndex": 2,
+    "explanation": "Son las letras impares del alfabeto: A(1), C(3), E(5), G(7), I(9)."
+  },
+  {
+    "id": "b2_hv8",
+    "area": "Habilidad Verbal",
+    "text": "Pintor es a pintura como escultor es a:",
+    "options": [
+      "Pincel",
+      "Mármol",
+      "Arte",
+      "Escultura"
+    ],
+    "correctIndex": 3,
+    "explanation": "Relación artista-obra que produce: el pintor produce pinturas; el escultor produce esculturas."
+  },
+  {
+    "id": "b2_hv9",
+    "area": "Habilidad Verbal",
+    "text": "Sinónimo de 'Eficaz':",
+    "options": [
+      "Inútil",
+      "Lento",
+      "Efectivo",
+      "Débil"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Efectivo' y 'eficaz' comparten el significado de producir el efecto deseado."
+  },
+  {
+    "id": "b2_hv10",
+    "area": "Habilidad Verbal",
+    "text": "¿Cuál de estas palabras es un sustantivo abstracto?",
+    "options": [
+      "Mesa",
+      "Gato",
+      "Casa",
+      "Libertad"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Libertad' es abstracto porque no se puede percibir con los sentidos; los otros son concretos."
+  },
+  {
+    "id": "b2_hv11",
+    "area": "Habilidad Verbal",
+    "text": "Maestro es a escuela como médico es a:",
+    "options": [
+      "Medicina",
+      "Paciente",
+      "Hospital",
+      "Salud"
+    ],
+    "correctIndex": 2,
+    "explanation": "Relación profesional-lugar de trabajo: el maestro trabaja en la escuela; el médico en el hospital."
+  },
+  {
+    "id": "b2_hv12",
+    "area": "Habilidad Verbal",
+    "text": "Antónimo de 'Rugoso':",
+    "options": [
+      "Áspero",
+      "Liso",
+      "Duro",
+      "Grueso"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Liso' es lo contrario de rugoso, que tiene superficie sin irregularidades."
+  },
+  {
+    "id": "b2_hv13",
+    "area": "Habilidad Verbal",
+    "text": "Sinónimo de 'Verídico':",
+    "options": [
+      "Falso",
+      "Dudoso",
+      "Incierto",
+      "Verdadero"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Verídico' significa que contiene verdad; 'verdadero' es su sinónimo directo."
+  },
+  {
+    "id": "b2_hv14",
+    "area": "Habilidad Verbal",
+    "text": "Frío es a calor como oscuridad es a:",
+    "options": [
+      "Noche",
+      "Sombra",
+      "Penumbra",
+      "Luz"
+    ],
+    "correctIndex": 3,
+    "explanation": "Frío y calor son antónimos; oscuridad y luz también lo son."
+  },
+  {
+    "id": "b2_hv15",
+    "area": "Habilidad Verbal",
+    "text": "¿Cuál NO pertenece al grupo de instrumentos de viento?",
+    "options": [
+      "Trompeta",
+      "Flauta",
+      "Saxofón",
+      "Violín"
+    ],
+    "correctIndex": 3,
+    "explanation": "El violín es un instrumento de cuerda; trompeta, flauta y saxofón son de viento."
+  },
+  {
+    "id": "b2_esp1",
+    "area": "Español",
+    "text": "¿Cuál es el sujeto en: 'Los estudiantes aprobaron el examen'?",
+    "options": [
+      "aprobaron",
+      "el examen",
+      "Los",
+      "Los estudiantes"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sujeto es quien realiza la acción del verbo: 'Los estudiantes'."
+  },
+  {
+    "id": "b2_esp2",
+    "area": "Español",
+    "text": "Identifica el tipo de oración: '¡Qué hermoso día!'",
+    "options": [
+      "Interrogativa",
+      "Declarativa",
+      "Imperativa",
+      "Exclamativa"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las oraciones exclamativas expresan emoción y van entre signos de exclamación (¡!)."
+  },
+  {
+    "id": "b2_esp3",
+    "area": "Español",
+    "text": "¿Cuál de las siguientes palabras está escrita correctamente?",
+    "options": [
+      "Absolber",
+      "Absolvér",
+      "Abzolver",
+      "Absolver"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Absolver' se escribe con v y sin tilde. Proviene del latín absolvere."
+  },
+  {
+    "id": "b2_esp4",
+    "area": "Español",
+    "text": "El uso de la coma en 'María, Pedro y Juan fueron al cine' sirve para:",
+    "options": [
+      "Indicar pausa larga",
+      "Separar oraciones",
+      "Incorrecto gramaticalmente",
+      "Separar elementos de una enumeración"
+    ],
+    "correctIndex": 3,
+    "explanation": "La coma separa los elementos de una serie o enumeración de palabras."
+  },
+  {
+    "id": "b2_esp5",
+    "area": "Español",
+    "text": "¿Qué figura retórica es: 'Sus ojos son dos luceros'?",
+    "options": [
+      "Hipérbole",
+      "Personificación",
+      "Símil",
+      "Metáfora"
+    ],
+    "correctIndex": 3,
+    "explanation": "La metáfora compara directamente sin usar 'como'. Aquí se comparan ojos con luceros sin nexo comparativo."
+  },
+  {
+    "id": "b2_esp6",
+    "area": "Español",
+    "text": "¿Cuál es el plural correcto de 'lápiz'?",
+    "options": [
+      "Lápizs",
+      "Lápizes",
+      "Lápis",
+      "Lápices"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las palabras terminadas en z cambian la z por c antes de agregar -es: lápiz → lápices."
+  },
+  {
+    "id": "b2_esp7",
+    "area": "Español",
+    "text": "¿Qué tipo de texto es un cuento?",
+    "options": [
+      "Expositivo",
+      "Argumentativo",
+      "Descriptivo",
+      "Narrativo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El cuento es un texto narrativo porque relata eventos o sucesos con personajes y trama."
+  },
+  {
+    "id": "b2_esp8",
+    "area": "Español",
+    "text": "Identifica la oración en modo subjuntivo:",
+    "options": [
+      "Él corría todos los días",
+      "Tú cantas muy bien",
+      "Nosotros comimos tarde",
+      "Ojalá llueva mañana"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Ojalá llueva' usa el subjuntivo para expresar deseo o posibilidad, no certeza."
+  },
+  {
+    "id": "b2_esp9",
+    "area": "Español",
+    "text": "¿Cuál es el significado de 'ubicuo'?",
+    "options": [
+      "Que es único",
+      "Que no existe",
+      "Que es raro",
+      "Que está en todas partes"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Ubicuo' proviene del latín ubique (en todas partes). Se dice de quien puede estar en varios lugares a la vez."
+  },
+  {
+    "id": "b2_esp10",
+    "area": "Español",
+    "text": "¿Cuál es la diferencia entre 'mas' y 'más'?",
+    "options": [
+      "Son exactamente iguales",
+      "'mas' indica cantidad; 'más' es conjunción",
+      "Ninguna diferencia ortográfica",
+      "'más' indica cantidad; 'mas' es conjunción adversativa (pero)"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Más' (con tilde) indica cantidad o comparación. 'Mas' (sin tilde) es conjunción adversativa equivalente a 'pero'."
+  },
+  {
+    "id": "b2_esp11",
+    "area": "Español",
+    "text": "El sufijo '-ción' en palabras como 'educación' indica:",
+    "options": [
+      "Lugar donde ocurre algo",
+      "Persona que realiza algo",
+      "Negación de algo",
+      "Acción o resultado de una acción"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sufijo -ción forma sustantivos abstractos que expresan la acción o su resultado: educar → educación."
+  },
+  {
+    "id": "b2_esp12",
+    "area": "Español",
+    "text": "¿Cuál es el antecedente del pronombre relativo 'quien' en: 'El alumno quien estudió aprobó'?",
+    "options": [
+      "estudió",
+      "aprobó",
+      "quien",
+      "El alumno"
+    ],
+    "correctIndex": 3,
+    "explanation": "El antecedente es el sustantivo al que se refiere el pronombre relativo. Aquí, 'quien' se refiere a 'El alumno'."
+  },
+  {
+    "id": "b2_bio1",
+    "area": "Biología",
+    "text": "¿Cuál es la función principal del ribosoma?",
+    "options": [
+      "Producción de energía",
+      "Digestión celular",
+      "División celular",
+      "Síntesis de proteínas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los ribosomas son los orgánulos donde se lleva a cabo la síntesis (fabricación) de proteínas."
+  },
+  {
+    "id": "b2_bio2",
+    "area": "Biología",
+    "text": "¿Qué tipo de reproducción produce organismos genéticamente idénticos al progenitor?",
+    "options": [
+      "Sexual",
+      "Polinización cruzada",
+      "Reproducción híbrida",
+      "Asexual"
+    ],
+    "correctIndex": 3,
+    "explanation": "La reproducción asexual no combina material genético de dos individuos, por lo que produce clones genéticos."
+  },
+  {
+    "id": "b2_bio3",
+    "area": "Biología",
+    "text": "El proceso por el cual una célula engloba partículas sólidas se llama:",
+    "options": [
+      "Pinocitosis",
+      "Ósmosis",
+      "Difusión",
+      "Fagocitosis"
+    ],
+    "correctIndex": 3,
+    "explanation": "La fagocitosis ('comida celular') es el proceso de ingestión de partículas sólidas mediante la membrana plasmática."
+  },
+  {
+    "id": "b2_bio4",
+    "area": "Biología",
+    "text": "¿Cuál es la molécula portadora principal de la información genética?",
+    "options": [
+      "ARN mensajero",
+      "Proteína",
+      "Glucosa",
+      "ADN"
+    ],
+    "correctIndex": 3,
+    "explanation": "El ADN (ácido desoxirribonucleico) contiene las instrucciones genéticas de todos los seres vivos conocidos."
+  },
+  {
+    "id": "b2_bio5",
+    "area": "Biología",
+    "text": "En la cadena alimenticia, los organismos que producen su propio alimento mediante fotosíntesis son:",
+    "options": [
+      "Consumidores primarios",
+      "Descomponedores",
+      "Consumidores secundarios",
+      "Productores"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los productores (plantas, algas) convierten energía solar en materia orgánica, base de la cadena alimenticia."
+  },
+  {
+    "id": "b2_bio6",
+    "area": "Biología",
+    "text": "¿Qué estructura regula el paso de sustancias hacia dentro y fuera de la célula?",
+    "options": [
+      "Núcleo",
+      "Mitocondria",
+      "Retículo endoplásmico",
+      "Membrana plasmática"
+    ],
+    "correctIndex": 3,
+    "explanation": "La membrana plasmática es selectivamente permeable y controla el intercambio de sustancias entre la célula y su entorno."
+  },
+  {
+    "id": "b2_bio7",
+    "area": "Biología",
+    "text": "La teoría de la evolución por selección natural fue propuesta por:",
+    "options": [
+      "Gregor Mendel",
+      "Louis Pasteur",
+      "Carl Linnaeus",
+      "Charles Darwin"
+    ],
+    "correctIndex": 3,
+    "explanation": "Charles Darwin publicó 'El origen de las especies' (1859), donde propuso que los organismos evolucionan por selección natural."
+  },
+  {
+    "id": "b2_bio8",
+    "area": "Biología",
+    "text": "¿Cuántos cromosomas tiene una célula somática (corporal) humana normal?",
+    "options": [
+      "23",
+      "48",
+      "44",
+      "46"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las células somáticas humanas tienen 46 cromosomas (23 pares). Los gametos tienen solo 23 (uno de cada par)."
+  },
+  {
+    "id": "b2_bio9",
+    "area": "Biología",
+    "text": "¿Cuál es la función principal del sistema nervioso?",
+    "options": [
+      "Transportar oxígeno",
+      "Producir hormonas",
+      "Filtrar la sangre",
+      "Coordinar y controlar las funciones del organismo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sistema nervioso detecta estímulos, los procesa e integra respuestas para coordinar todas las funciones del cuerpo."
+  },
+  {
+    "id": "b2_bio10",
+    "area": "Biología",
+    "text": "El bioma caracterizado por temperaturas extremas y precipitaciones muy escasas es el:",
+    "options": [
+      "Taiga",
+      "Selva tropical",
+      "Tundra",
+      "Desierto"
+    ],
+    "correctIndex": 3,
+    "explanation": "El desierto recibe menos de 250 mm de lluvia al año y tiene grandes variaciones de temperatura."
+  },
+  {
+    "id": "b2_bio11",
+    "area": "Biología",
+    "text": "La división celular que produce células con la mitad de los cromosomas se llama:",
+    "options": [
+      "Mitosis",
+      "Citoquinesis",
+      "Apoptosis",
+      "Meiosis"
+    ],
+    "correctIndex": 3,
+    "explanation": "La meiosis genera gametos (óvulos y espermatozoides) con 23 cromosomas, la mitad del número diploide."
+  },
+  {
+    "id": "b2_bio12",
+    "area": "Biología",
+    "text": "¿Qué parte del tronco encefálico controla funciones vitales como respiración y latido cardíaco?",
+    "options": [
+      "Cerebelo",
+      "Corteza cerebral",
+      "Hipotálamo",
+      "Bulbo raquídeo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El bulbo raquídeo (médula oblongada) regula funciones automáticas vitales como la respiración y la frecuencia cardíaca."
+  },
+  {
+    "id": "b2_bio13",
+    "area": "Biología",
+    "text": "¿Cómo se llama el proceso de transformación de larva en adulto en insectos y anfibios?",
+    "options": [
+      "Muda",
+      "Regeneración",
+      "Hibernación",
+      "Metamorfosis"
+    ],
+    "correctIndex": 3,
+    "explanation": "La metamorfosis es la serie de cambios morfológicos que transforman a un organismo inmaduro en adulto."
+  },
+  {
+    "id": "b2_bio14",
+    "area": "Biología",
+    "text": "¿Qué tipo de tejido conforma los huesos del esqueleto?",
+    "options": [
+      "Tejido muscular",
+      "Tejido epitelial",
+      "Tejido nervioso",
+      "Tejido óseo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El tejido óseo es un tejido conjuntivo especializado, duro y mineralizado, que forma los huesos."
+  },
+  {
+    "id": "b2_fis1",
+    "area": "Física",
+    "text": "La unidad del Sistema Internacional para medir la fuerza es:",
+    "options": [
+      "Joule",
+      "Watt",
+      "Pascal",
+      "Newton"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Newton (N) es la unidad de fuerza: 1 N = 1 kg·m/s². En honor a Isaac Newton."
+  },
+  {
+    "id": "b2_fis2",
+    "area": "Física",
+    "text": "Si un objeto se mueve a velocidad constante, ¿qué se puede afirmar?",
+    "options": [
+      "Hay una fuerza neta actuando sobre él",
+      "Está acelerando",
+      "Está en reposo",
+      "La fuerza neta sobre él es cero"
+    ],
+    "correctIndex": 3,
+    "explanation": "Primera Ley de Newton: si la velocidad es constante (incluyendo cero), la fuerza neta es cero."
+  },
+  {
+    "id": "b2_fis3",
+    "area": "Física",
+    "text": "¿Qué tipo de onda es el sonido?",
+    "options": [
+      "Electromagnética transversal",
+      "Mecánica transversal",
+      "Electromagnética longitudinal",
+      "Mecánica longitudinal"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sonido es una onda mecánica (necesita medio material) y longitudinal (vibración paralela a la propagación)."
+  },
+  {
+    "id": "b2_fis4",
+    "area": "Física",
+    "text": "La energía cinética de un objeto depende de:",
+    "options": [
+      "Su posición y altura",
+      "Su temperatura",
+      "Su color",
+      "Su masa y velocidad"
+    ],
+    "correctIndex": 3,
+    "explanation": "Ec = ½mv². La energía cinética depende de la masa (m) y la velocidad (v) del objeto."
+  },
+  {
+    "id": "b2_fis5",
+    "area": "Física",
+    "text": "Un objeto en caída libre experimenta una aceleración aproximada de:",
+    "options": [
+      "10.8 m/s²",
+      "8.9 m/s²",
+      "6.7 m/s²",
+      "9.8 m/s²"
+    ],
+    "correctIndex": 3,
+    "explanation": "La aceleración gravitacional terrestre estándar es g ≈ 9.8 m/s² (a veces se aproxima a 10 m/s²)."
+  },
+  {
+    "id": "b2_fis6",
+    "area": "Física",
+    "text": "¿Cuál es la fórmula de la velocidad media?",
+    "options": [
+      "v = d × t",
+      "v = t / d",
+      "v = d² / t",
+      "v = d / t"
+    ],
+    "correctIndex": 3,
+    "explanation": "Velocidad = distancia / tiempo. Es la razón entre el desplazamiento y el tiempo transcurrido."
+  },
+  {
+    "id": "b2_fis7",
+    "area": "Física",
+    "text": "La presión se define como:",
+    "options": [
+      "Masa por volumen",
+      "Fuerza por distancia",
+      "Energía por tiempo",
+      "Fuerza dividida entre el área"
+    ],
+    "correctIndex": 3,
+    "explanation": "P = F/A. La presión es la fuerza aplicada perpendicularmente por unidad de área."
+  },
+  {
+    "id": "b2_fis8",
+    "area": "Física",
+    "text": "¿Qué instrumento mide la presión atmosférica?",
+    "options": [
+      "Termómetro",
+      "Manómetro",
+      "Anemómetro",
+      "Barómetro"
+    ],
+    "correctIndex": 3,
+    "explanation": "El barómetro mide la presión atmosférica. Fue inventado por Evangelista Torricelli en 1643."
+  },
+  {
+    "id": "b2_fis9",
+    "area": "Física",
+    "text": "El fenómeno por el cual la luz cambia de dirección al pasar de un medio a otro se llama:",
+    "options": [
+      "Reflexión",
+      "Difracción",
+      "Absorción",
+      "Refracción"
+    ],
+    "correctIndex": 3,
+    "explanation": "La refracción ocurre porque la luz cambia de velocidad al pasar entre medios con diferente índice de refracción."
+  },
+  {
+    "id": "b2_fis10",
+    "area": "Física",
+    "text": "La Primera Ley de Newton (inercia) establece que:",
+    "options": [
+      "F = ma",
+      "Acción y reacción son iguales y opuestas",
+      "La energía se conserva",
+      "Un cuerpo mantiene su estado de reposo o movimiento uniforme si la fuerza neta es cero"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Ley de Inercia afirma que los cuerpos tienden a mantener su estado de movimiento si no actúa una fuerza neta."
+  },
+  {
+    "id": "b2_fis11",
+    "area": "Física",
+    "text": "¿Cuál es la unidad de medida de la energía en el S.I.?",
+    "options": [
+      "Newton",
+      "Watt",
+      "Pascal",
+      "Joule"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Joule (J) es la unidad de energía: 1 J = 1 N·m = 1 kg·m²/s²."
+  },
+  {
+    "id": "b2_fis12",
+    "area": "Física",
+    "text": "En un circuito eléctrico, la resistencia se mide en:",
+    "options": [
+      "Volts (V)",
+      "Amperes (A)",
+      "Watts (W)",
+      "Ohms (Ω)"
+    ],
+    "correctIndex": 3,
+    "explanation": "La resistencia eléctrica se mide en Ohms (Ω), en honor a Georg Simon Ohm."
+  },
+  {
+    "id": "b2_fis13",
+    "area": "Física",
+    "text": "¿Qué tipo de lente converge los rayos de luz en un punto focal?",
+    "options": [
+      "Cóncava",
+      "Plana",
+      "Cilíndrica",
+      "Convexa"
+    ],
+    "correctIndex": 3,
+    "explanation": "La lente convexa (convergente) refracta los rayos hacia un punto focal. Se usa en lupas y anteojos para hipermetropía."
+  },
+  {
+    "id": "b2_fis14",
+    "area": "Física",
+    "text": "La fórmula del trabajo mecánico es:",
+    "options": [
+      "W = m × a",
+      "W = F / d",
+      "W = m × v²",
+      "W = F × d"
+    ],
+    "correctIndex": 3,
+    "explanation": "Trabajo = Fuerza × desplazamiento (W = F·d). Solo se realiza trabajo si hay desplazamiento en la dirección de la fuerza."
+  },
+  {
+    "id": "b2_qui1",
+    "area": "Química",
+    "text": "¿Cuántos electrones tiene el átomo de carbono (número atómico Z = 6)?",
+    "options": [
+      "12",
+      "4",
+      "8",
+      "6"
+    ],
+    "correctIndex": 3,
+    "explanation": "En un átomo neutro, el número de electrones es igual al número atómico (Z). Carbono Z=6 → 6 electrones."
+  },
+  {
+    "id": "b2_qui2",
+    "area": "Química",
+    "text": "¿Qué tipo de enlace se forma cuando un metal cede electrones a un no-metal?",
+    "options": [
+      "Covalente",
+      "Metálico",
+      "Covalente polar",
+      "Iónico"
+    ],
+    "correctIndex": 3,
+    "explanation": "El enlace iónico ocurre cuando hay transferencia de electrones, formando cationes (+) y aniones (−)."
+  },
+  {
+    "id": "b2_qui3",
+    "area": "Química",
+    "text": "El pH de una solución neutra es:",
+    "options": [
+      "0",
+      "14",
+      "1",
+      "7"
+    ],
+    "correctIndex": 3,
+    "explanation": "pH 7 es neutro (como el agua pura). Menor a 7 es ácido; mayor a 7 es básico (alcalino)."
+  },
+  {
+    "id": "b2_qui4",
+    "area": "Química",
+    "text": "¿Cuál es el símbolo del sodio en la tabla periódica?",
+    "options": [
+      "So",
+      "N",
+      "S",
+      "Na"
+    ],
+    "correctIndex": 3,
+    "explanation": "Na proviene del latín 'Natrium'. El sodio es un metal alcalino del grupo 1."
+  },
+  {
+    "id": "b2_qui5",
+    "area": "Química",
+    "text": "En la tabla periódica, los elementos del Grupo 1 se denominan:",
+    "options": [
+      "Metales alcalinotérreos",
+      "Halógenos",
+      "Gases nobles",
+      "Metales alcalinos"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Grupo 1 (Li, Na, K, Rb, Cs, Fr) son los metales alcalinos, muy reactivos y que forman hidróxidos básicos."
+  },
+  {
+    "id": "b2_qui6",
+    "area": "Química",
+    "text": "¿Cuál es el gas que se libera cuando el zinc reacciona con ácido clorhídrico?",
+    "options": [
+      "Oxígeno",
+      "Cloro",
+      "Nitrógeno",
+      "Hidrógeno"
+    ],
+    "correctIndex": 3,
+    "explanation": "Zn + 2HCl → ZnCl₂ + H₂↑. El zinc desplaza al hidrógeno del ácido en esta reacción de sustitución simple."
+  },
+  {
+    "id": "b2_qui7",
+    "area": "Química",
+    "text": "La fórmula química del agua es:",
+    "options": [
+      "H₂O₂",
+      "HO",
+      "H₃O",
+      "H₂O"
+    ],
+    "correctIndex": 3,
+    "explanation": "El agua (H₂O) está compuesta por 2 átomos de hidrógeno y 1 de oxígeno unidos por enlaces covalentes polares."
+  },
+  {
+    "id": "b2_qui8",
+    "area": "Química",
+    "text": "¿Qué tipo de reacción ocurre cuando dos sustancias se combinan para formar una sola?",
+    "options": [
+      "Descomposición",
+      "Desplazamiento simple",
+      "Doble desplazamiento",
+      "Síntesis (combinación)"
+    ],
+    "correctIndex": 3,
+    "explanation": "En la reacción de síntesis: A + B → AB. Las sustancias reactivas se unen para formar un producto más complejo."
+  },
+  {
+    "id": "b2_qui9",
+    "area": "Química",
+    "text": "El número de masa de un átomo es igual a:",
+    "options": [
+      "Solo protones",
+      "Protones + Electrones",
+      "Solo neutrones",
+      "Protones + Neutrones"
+    ],
+    "correctIndex": 3,
+    "explanation": "El número de masa (A) = número de protones (Z) + número de neutrones (N). Los electrones tienen masa despreciable."
+  },
+  {
+    "id": "b2_qui10",
+    "area": "Química",
+    "text": "La concentración de iones H⁺ en una solución con pH = 3 es:",
+    "options": [
+      "10³ mol/L",
+      "3 mol/L",
+      "0.3 mol/L",
+      "10⁻³ mol/L"
+    ],
+    "correctIndex": 3,
+    "explanation": "pH = −log[H⁺]. Si pH = 3, entonces [H⁺] = 10⁻³ mol/L."
+  },
+  {
+    "id": "b2_qui11",
+    "area": "Química",
+    "text": "Una solución saturada es aquella que:",
+    "options": [
+      "Tiene muy poco soluto",
+      "Puede disolver más soluto fácilmente",
+      "Está en estado gaseoso",
+      "No puede disolver más soluto a esa temperatura"
+    ],
+    "correctIndex": 3,
+    "explanation": "Una solución saturada ha disuelto la máxima cantidad posible de soluto a una temperatura y presión dadas."
+  },
+  {
+    "id": "b2_qui12",
+    "area": "Química",
+    "text": "Los isótopos son átomos del mismo elemento que difieren en:",
+    "options": [
+      "Número de protones",
+      "Número de electrones",
+      "Carga eléctrica",
+      "Número de neutrones"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los isótopos tienen el mismo número de protones (Z) pero distinto número de neutrones, por lo que su masa atómica varía."
+  },
+  {
+    "id": "b2_his1",
+    "area": "Historia",
+    "text": "¿Quién lideró el inicio del movimiento de Independencia de México en 1810?",
+    "options": [
+      "Agustín de Iturbide",
+      "José María Morelos",
+      "Vicente Guerrero",
+      "Miguel Hidalgo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El cura Miguel Hidalgo y Costilla dio el Grito de Dolores la madrugada del 16 de septiembre de 1810."
+  },
+  {
+    "id": "b2_his2",
+    "area": "Historia",
+    "text": "¿En qué año se consumó la Independencia de México?",
+    "options": [
+      "1810",
+      "1824",
+      "1815",
+      "1821"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Independencia se consumó el 27 de septiembre de 1821 con la entrada del Ejército Trigarante a la Ciudad de México."
+  },
+  {
+    "id": "b2_his3",
+    "area": "Historia",
+    "text": "¿Cuál fue el objetivo central de las Leyes de Reforma impulsadas por Benito Juárez?",
+    "options": [
+      "Independizarse de España",
+      "Establecer una monarquía",
+      "Anexarse a EE.UU.",
+      "Separar la Iglesia del Estado"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las Leyes de Reforma (1859) secularizaron el Estado mexicano: nacionalizaron bienes del clero y establecieron el registro civil."
+  },
+  {
+    "id": "b2_his4",
+    "area": "Historia",
+    "text": "¿En qué año inició la Revolución Mexicana?",
+    "options": [
+      "1917",
+      "1905",
+      "1920",
+      "1910"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Revolución Mexicana inició el 20 de noviembre de 1910, fecha del Plan de San Luis convocado por Francisco I. Madero."
+  },
+  {
+    "id": "b2_his5",
+    "area": "Historia",
+    "text": "¿Qué civilización prehispánica fundó Tenochtitlan en 1325?",
+    "options": [
+      "Maya",
+      "Olmeca",
+      "Zapoteca",
+      "Mexica (azteca)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los mexicas fundaron Tenochtitlan en un islote del lago Texcoco, siguiendo la señal del águila sobre el nopal."
+  },
+  {
+    "id": "b2_his6",
+    "area": "Historia",
+    "text": "El 'Porfiriato' fue el período de gobierno de:",
+    "options": [
+      "Benito Juárez",
+      "Sebastián Lerdo de Tejada",
+      "Venustiano Carranza",
+      "Porfirio Díaz"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Porfiriato (1876-1911) fue el período de dominio político de Porfirio Díaz, caracterizado por modernización y autoritarismo."
+  },
+  {
+    "id": "b2_his7",
+    "area": "Historia",
+    "text": "La Constitución Política vigente de México fue promulgada en:",
+    "options": [
+      "1824",
+      "1857",
+      "1910",
+      "1917"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Constitución de 1917, promulgada en Querétaro, es la primera constitución social del mundo."
+  },
+  {
+    "id": "b2_his8",
+    "area": "Historia",
+    "text": "¿Cuál fue el principal objetivo del movimiento zapatista de Emiliano Zapata?",
+    "options": [
+      "La Cristiada",
+      "El Plan de Iguala",
+      "El movimiento obrero",
+      "La reforma agraria"
+    ],
+    "correctIndex": 3,
+    "explanation": "El lema 'Tierra y Libertad' resume la lucha de Zapata por redistribuir las tierras a los campesinos mediante la reforma agraria."
+  },
+  {
+    "id": "b2_his9",
+    "area": "Historia",
+    "text": "¿En qué período floreció aproximadamente la cultura olmeca?",
+    "options": [
+      "200 d.C. - 900 d.C.",
+      "900 d.C. - 1521 d.C.",
+      "300 a.C. - 900 a.C.",
+      "1500 a.C. - 400 a.C."
+    ],
+    "correctIndex": 3,
+    "explanation": "La cultura olmeca, considerada 'madre' de las civilizaciones mesoamericanas, floreció en el período Preclásico (1500–400 a.C.)."
+  },
+  {
+    "id": "b2_his10",
+    "area": "Historia",
+    "text": "¿Quién fue el último emperador azteca al momento de la conquista española?",
+    "options": [
+      "Moctezuma I",
+      "Cuauhtémoc",
+      "Ahuízotl",
+      "Moctezuma II"
+    ],
+    "correctIndex": 3,
+    "explanation": "Moctezuma II gobernaba el Imperio Mexica cuando llegó Hernán Cortés en 1519. Cuauhtémoc fue el último tlatoani, pero Moctezuma II era quien reinaba al inicio de la Conquista."
+  },
+  {
+    "id": "b2_his11",
+    "area": "Historia",
+    "text": "¿En qué año inició la Primera Guerra Mundial?",
+    "options": [
+      "1939",
+      "1918",
+      "1910",
+      "1914"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Primera Guerra Mundial inició en 1914, detonada por el asesinato del archiduque Francisco Fernando en Sarajevo."
+  },
+  {
+    "id": "b2_his12",
+    "area": "Historia",
+    "text": "La Revolución Francesa inició en:",
+    "options": [
+      "1776",
+      "1804",
+      "1815",
+      "1789"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Revolución Francesa inició en 1789 con la toma de la Bastilla el 14 de julio, símbolo del absolutismo monárquico."
+  },
+  {
+    "id": "b2_his13",
+    "area": "Historia",
+    "text": "¿Quién lideró la Revolución Bolchevique en Rusia (1917)?",
+    "options": [
+      "Joseph Stalin",
+      "León Trotsky",
+      "Nicolás II",
+      "Vladimir Lenin"
+    ],
+    "correctIndex": 3,
+    "explanation": "Vladimir Lenin lideró el Partido Bolchevique en la Revolución de Octubre de 1917, estableciendo el primer Estado soviético."
+  },
+  {
+    "id": "b2_his14",
+    "area": "Historia",
+    "text": "¿Qué civilización construyó las pirámides de Giza?",
+    "options": [
+      "Mesopotámica",
+      "Griega",
+      "Romana",
+      "Egipcia"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las pirámides de Giza fueron construidas por los antiguos egipcios como tumbas para sus faraones, alrededor del 2560 a.C."
+  },
+  {
+    "id": "b2_his15",
+    "area": "Historia",
+    "text": "La Segunda Guerra Mundial terminó en:",
+    "options": [
+      "1944",
+      "1946",
+      "1943",
+      "1945"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Segunda Guerra Mundial terminó en 1945: Alemania capituló en mayo y Japón en septiembre tras las bombas atómicas."
+  },
+  {
+    "id": "b2_his16",
+    "area": "Historia",
+    "text": "¿Cuál fue la primera civilización en desarrollar un sistema de escritura?",
+    "options": [
+      "Egipcia",
+      "China",
+      "India",
+      "Sumeria (Mesopotamia)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los sumerios desarrollaron la escritura cuneiforme en tablillas de arcilla alrededor del 3200 a.C. en Mesopotamia."
+  },
+  {
+    "id": "b2_his17",
+    "area": "Historia",
+    "text": "El Renacimiento fue un movimiento cultural que surgió en:",
+    "options": [
+      "Francia",
+      "España",
+      "Alemania",
+      "Italia"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Renacimiento (siglos XIV-XVI) comenzó en las ciudades-estado italianas como Florencia, Venecia y Roma."
+  },
+  {
+    "id": "b2_his18",
+    "area": "Historia",
+    "text": "La Declaración de Independencia de Estados Unidos fue firmada en:",
+    "options": [
+      "1789",
+      "1783",
+      "1763",
+      "1776"
+    ],
+    "correctIndex": 3,
+    "explanation": "El 4 de julio de 1776, el Congreso Continental adoptó la Declaración de Independencia, redactada principalmente por Thomas Jefferson."
+  },
+  {
+    "id": "b2_his19",
+    "area": "Historia",
+    "text": "¿Cuál fue el sistema de segregación racial que imperaba en Sudáfrica hasta 1994?",
+    "options": [
+      "Colonialismo",
+      "Fascismo",
+      "Imperialismo",
+      "Apartheid"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Apartheid ('separación' en afrikáans) fue el régimen de segregación racial de Sudáfrica, abolido con la presidencia de Nelson Mandela."
+  },
+  {
+    "id": "b2_his20",
+    "area": "Historia",
+    "text": "La Revolución Industrial comenzó en:",
+    "options": [
+      "Francia",
+      "Alemania",
+      "Estados Unidos",
+      "Gran Bretaña"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Revolución Industrial inició en Gran Bretaña hacia 1760, impulsada por la máquina de vapor y la industria textil."
+  },
+  {
+    "id": "b2_geo1",
+    "area": "Geografía",
+    "text": "¿Cuál es el río más largo de México?",
+    "options": [
+      "Río Grijalva",
+      "Río Balsas",
+      "Río Lerma",
+      "Río Bravo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Río Bravo (3,051 km) es el más largo de México y forma la frontera natural con Estados Unidos."
+  },
+  {
+    "id": "b2_geo2",
+    "area": "Geografía",
+    "text": "¿Cuántas entidades federativas integran la República Mexicana?",
+    "options": [
+      "31",
+      "30",
+      "33",
+      "32"
+    ],
+    "correctIndex": 3,
+    "explanation": "México tiene 32 entidades federativas: 31 estados y la Ciudad de México (antes D.F.)."
+  },
+  {
+    "id": "b2_geo3",
+    "area": "Geografía",
+    "text": "¿En qué cuerpo de agua desemboca el Río Grijalva?",
+    "options": [
+      "Océano Pacífico",
+      "Mar Caribe",
+      "Golfo de California",
+      "Golfo de México"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Río Grijalva, que nace en Guatemala y recorre Chiapas y Tabasco, desemboca en el Golfo de México."
+  },
+  {
+    "id": "b2_geo4",
+    "area": "Geografía",
+    "text": "La Sierra Madre Occidental se localiza en la parte _____ de México.",
+    "options": [
+      "Este",
+      "Sur",
+      "Centro",
+      "Oeste"
+    ],
+    "correctIndex": 3,
+    "explanation": "La Sierra Madre Occidental corre paralela a la costa del Pacífico, en el oeste del país."
+  },
+  {
+    "id": "b2_geo5",
+    "area": "Geografía",
+    "text": "¿Cuál es la capital del estado de Oaxaca?",
+    "options": [
+      "Tuxtla Gutiérrez",
+      "Puebla",
+      "Morelia",
+      "Oaxaca de Juárez"
+    ],
+    "correctIndex": 3,
+    "explanation": "Oaxaca de Juárez es la capital y ciudad más grande del estado de Oaxaca, nombrada en honor a Benito Juárez."
+  },
+  {
+    "id": "b2_geo6",
+    "area": "Geografía",
+    "text": "El Trópico de Cáncer divide a México en:",
+    "options": [
+      "Norte y Sur",
+      "Montañas y llanuras",
+      "Zona árida y zona húmeda",
+      "Zona tropical y zona templada"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Trópico de Cáncer (latitud 23.5°N) divide a México: al sur queda la zona tropical; al norte, la zona templada-árida."
+  }
+]

@@ -52,10 +52,12 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { cn } from "@/lib/utils";
 import NextAchievementCard from "./NextAchievementCard";
 import { useToast } from "@/hooks/use-toast";
+import { DailyChallenge } from "./DailyChallenge";
 
 const ProgresoDashboard = () => {
   const { isViewed } = useVideoProgress();
   const navigate = useNavigate();
+  const { profile } = useAuth();
   const [streak, setStreak] = useState(0);
 
   // 1. Calculate Progress per Area
@@ -316,21 +318,27 @@ const ProgresoDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Completion Card */}
-        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 text-white">
+        {/* Tokens IA Card */}
+        <Card className="overflow-hidden border-none shadow-2xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 text-white animate-float">
           <CardContent className="p-6 relative">
-            <div className="flex items-center justify-between mb-6">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <Zap className="h-24 w-24 fill-white" />
+            </div>
+            <div className="flex items-center justify-between relative z-10">
               <div>
-                <p className="text-emerald-100/80 text-xs font-bold uppercase tracking-widest mb-1">Fecha Estimada</p>
-                <h3 className="text-3xl font-black mt-1">{predictedCompletion}</h3>
+                <p className="text-amber-100/80 text-xs font-bold uppercase tracking-widest mb-1">Tokens de Tutor IA</p>
+                <h3 className="text-5xl font-black mt-1 flex items-baseline gap-2">
+                  {profile?.tokens || 0} <span className="text-lg font-normal opacity-80">Créditos</span>
+                </h3>
               </div>
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md border border-white/20">
-                <Calendar className="h-6 w-6" />
+              <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner border border-white/20">
+                <Brain className="h-8 w-8 text-white" />
               </div>
             </div>
-            <p className="text-[10px] font-medium text-emerald-100/80 uppercase tracking-widest">
-              Basado en tu ritmo actual de {streak > 0 ? Math.round(timeStats.percentage / streak) : 0}% diario
-            </p>
+            <div className="mt-4 flex items-center gap-2 text-xs text-amber-100 bg-white/10 w-fit px-3 py-1 rounded-full border border-white/10">
+              <Sparkles className="h-3 w-3" />
+              <span>Gana más con el reto diario</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -366,6 +374,9 @@ const ProgresoDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Daily Challenge Section */}
+      <DailyChallenge />
 
       {/* 2. Visual Analytics Section */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">

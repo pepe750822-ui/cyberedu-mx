@@ -1,0 +1,1667 @@
+[
+  {
+    "id": "hv1",
+    "area": "Habilidad Verbal",
+    "text": "Sol es a día como Luna es a...",
+    "options": [
+      "Noche",
+      "Estrella",
+      "Cielo",
+      "Oscuridad"
+    ],
+    "correctIndex": 0,
+    "explanation": "Analogía de astro dominante según el periodo de tiempo. El sol domina el día y la luna la noche."
+  },
+  {
+    "id": "hv2",
+    "area": "Habilidad Verbal",
+    "text": "Palabra que no pertenece al grupo:",
+    "options": [
+      "Alegre",
+      "Feliz",
+      "Triste",
+      "Contento"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Triste' es un antónimo de los otros tres términos, que son sinónimos de alegría."
+  },
+  {
+    "id": "hv3",
+    "area": "Habilidad Verbal",
+    "text": "Pluma es a escribir como pincel es a:",
+    "options": [
+      "Leer",
+      "Pintar",
+      "Comer",
+      "Caminar"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relación herramienta-acción. La pluma sirve para escribir y el pincel para pintar."
+  },
+  {
+    "id": "hv4",
+    "area": "Habilidad Verbal",
+    "text": "Sucesión de vocales: A, E, I, O, ...",
+    "options": [
+      "U",
+      "V",
+      "W",
+      "X"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sucesión natural de las vocales en el idioma español."
+  },
+  {
+    "id": "hv5",
+    "area": "Habilidad Verbal",
+    "text": "Médico es a hospital como profesor a:",
+    "options": [
+      "Libro",
+      "Escuela",
+      "Estudiante",
+      "Pizarrón"
+    ],
+    "correctIndex": 1,
+    "explanation": "Relación de profesional con su lugar de trabajo habitual."
+  },
+  {
+    "id": "hv6",
+    "area": "Habilidad Verbal",
+    "text": "Sinónimo de la palabra 'Efímero':",
+    "options": [
+      "Permanente",
+      "Transitorio",
+      "Eterno",
+      "Duradero"
+    ],
+    "correctIndex": 1,
+    "explanation": "Efímero significa que dura muy poco tiempo, por lo tanto es transitorio."
+  },
+  {
+    "id": "hv7",
+    "area": "Habilidad Verbal",
+    "text": "Antónimo de la palabra 'Lealtad':",
+    "options": [
+      "Fidelidad",
+      "Traición",
+      "Respeto",
+      "Nobleza"
+    ],
+    "correctIndex": 1,
+    "explanation": "La traición es lo opuesto a la lealtad y fidelidad."
+  },
+  {
+    "id": "hv8",
+    "area": "Habilidad Verbal",
+    "text": "Relación por analogía: Perro es a Jauría como Abeja es a...",
+    "options": [
+      "Enjambre",
+      "Estampida",
+      "Cardumen",
+      "Bandada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Relación de individuo con su grupo colectivo (sustantivo colectivo)."
+  },
+  {
+    "id": "hv9",
+    "area": "Habilidad Verbal",
+    "text": "Identifica el sinónimo de 'Pulcro':",
+    "options": [
+      "Sucio",
+      "Limpio",
+      "Desordenado",
+      "Manchado"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pulcro significa que es muy limpio y cuidado."
+  },
+  {
+    "id": "hv10",
+    "area": "Habilidad Verbal",
+    "text": "Completa la analogía: Hambre es a comer como sed es a...",
+    "options": [
+      "Dormir",
+      "Beber",
+      "Caminar",
+      "Saltar"
+    ],
+    "correctIndex": 1,
+    "explanation": "Necesidad fisiológica y la acción para satisfacerla."
+  },
+  {
+    "id": "hv11",
+    "area": "Habilidad Verbal",
+    "text": "Palabra que no pertenece al campo semántico de 'Música':",
+    "options": [
+      "Guitarra",
+      "Piano",
+      "Flauta",
+      "Martillo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El martillo es una herramienta de construcción, no un instrumento musical."
+  },
+  {
+    "id": "hv12",
+    "area": "Habilidad Verbal",
+    "text": "Antónimo de 'Gélido':",
+    "options": [
+      "Frío",
+      "Helado",
+      "Ardiente",
+      "Congelado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Gélido significa muy frío; su opuesto es ardiente o muy caliente."
+  },
+  {
+    "id": "hv13",
+    "area": "Habilidad Verbal",
+    "text": "Relación: Libro es a leer como película es a...",
+    "options": [
+      "Escuchar",
+      "Ver",
+      "Tocar",
+      "Oler"
+    ],
+    "correctIndex": 1,
+    "explanation": "Acción principal asociada al objeto cultural."
+  },
+  {
+    "id": "hv14",
+    "area": "Habilidad Verbal",
+    "text": "Palabra con significado opuesto a 'Altruismo':",
+    "options": [
+      "Generosidad",
+      "Egoísmo",
+      "Solidaridad",
+      "Bondad"
+    ],
+    "correctIndex": 1,
+    "explanation": "El altruismo busca el bien ajeno; el egoísmo busca el propio bien sin importar los demás."
+  },
+  {
+    "id": "hv15",
+    "area": "Habilidad Verbal",
+    "text": "Sinónimo de 'Vasto':",
+    "options": [
+      "Estrecho",
+      "Pequeño",
+      "Extenso",
+      "Limitado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Vasto significa muy extendido o amplio."
+  },
+  {
+    "id": "hv16",
+    "area": "Habilidad Verbal",
+    "text": "Analogía: Árbol es a bosque como estrella es a...",
+    "options": [
+      "Galaxia",
+      "Planeta",
+      "Cometa",
+      "Meteorito"
+    ],
+    "correctIndex": 0,
+    "explanation": "Individuo es a conjunto. Muchas estrellas forman una galaxia (o constelación)."
+  },
+  {
+    "id": "hm1",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie: 2, 5, 10, 17, 26, ...?",
+    "options": [
+      "35",
+      "37",
+      "39",
+      "41"
+    ],
+    "correctIndex": 1,
+    "explanation": "La diferencia entre términos aumenta en impares: +3, +5, +7, +9. El siguiente es +11. 26 + 11 = 37."
+  },
+  {
+    "id": "hm2",
+    "area": "Habilidad Matemática",
+    "text": "Si hoy es miércoles, ¿qué día será dentro de 100 días?",
+    "options": [
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes"
+    ],
+    "correctIndex": 3,
+    "explanation": "100 dividido entre 7 deja un residuo de 2 (7x14=98). Miércoles más 2 días es viernes."
+  },
+  {
+    "id": "hm3",
+    "area": "Habilidad Matemática",
+    "text": "Sucesión de cuadrados de primos: 4, 9, 25, 49, 121, x, y, z. Los valores de x, y, z son:",
+    "options": [
+      "144, 169, 196",
+      "169, 225, 289",
+      "169, 289, 361",
+      "169, 196, 225"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los números son cuadrados de números primos: 2², 3², 5², 7², 11², 13²=169, 17²=289, 19²=361."
+  },
+  {
+    "id": "hm4",
+    "area": "Habilidad Matemática",
+    "text": "3 gatos cazan 3 ratones en 3 minutos. ¿Cuántos gatos se necesitan para cazar 100 ratones en 100 minutos?",
+    "options": [
+      "3",
+      "100",
+      "300",
+      "33"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si 3 gatos cazan 3 ratones en 3 min, significa que cada gato caza un ratón cada 3 min. En 100 min, los mismos 3 gatos cazarán 100 ratones si se mantienen trabajando."
+  },
+  {
+    "id": "hm5",
+    "area": "Habilidad Matemática",
+    "text": "En una cuadrícula de 4x4 puntos (3x3 espacios), ¿cuántos cuadrados de tamaño 1x1 se pueden formar?",
+    "options": [
+      "9",
+      "12",
+      "16",
+      "25"
+    ],
+    "correctIndex": 0,
+    "explanation": "La cuadrícula tiene 4 puntos por lado, lo que deja 3 espacios entre ellos. 3x3 = 9 cuadrados de 1x1."
+  },
+  {
+    "id": "hm6",
+    "area": "Habilidad Matemática",
+    "text": "¿Cuál es el siguiente número de la serie: 7, 10, 16, 25, 37, ...?",
+    "options": [
+      "49",
+      "52",
+      "55",
+      "58"
+    ],
+    "correctIndex": 1,
+    "explanation": "Diferencias: +3, +6, +9, +12. La siguiente diferencia es +15. 37 + 15 = 52."
+  },
+  {
+    "id": "hm7",
+    "area": "Habilidad Matemática",
+    "text": "Si una rueda da 5 vueltas y avanza 9.55 m, ¿cuántas vueltas dará en una pista de 382 m?",
+    "options": [
+      "191",
+      "200",
+      "205",
+      "215"
+    ],
+    "correctIndex": 1,
+    "explanation": "Avanza 1.91m por vuelta (9.55/5). 382 / 1.91 = 200 vueltas."
+  },
+  {
+    "id": "hm8",
+    "area": "Habilidad Matemática",
+    "text": "Hay dos peceras A y B con 12 litros cada una. A está al 40% y B al 75% de su capacidad. ¿Cuál es la capacidad de A y B?",
+    "options": [
+      "A=20L, B=16L",
+      "A=30L, B=16L",
+      "A=40L, B=20L",
+      "A=30L, B=24L"
+    ],
+    "correctIndex": 1,
+    "explanation": "Capacidad A = 12 / 0.40 = 30L. Capacidad B = 12 / 0.75 = 16L."
+  },
+  {
+    "id": "hm9",
+    "area": "Habilidad Matemática",
+    "text": "¿Qué número sigue en la serie: 90, 81, 73, 66, 60, ...?",
+    "options": [
+      "53",
+      "54",
+      "55",
+      "56"
+    ],
+    "correctIndex": 2,
+    "explanation": "Patrón de resta decreciente: -9, -8, -7, -6. El siguiente resta 5. 60 - 5 = 55."
+  },
+  {
+    "id": "hm10",
+    "area": "Habilidad Matemática",
+    "text": "En una sucesión de figuras, si el triángulo equilátero tiene lado 1 (Pos 1), ¿cuál es el perímetro de la figura 12?",
+    "options": [
+      "12 cm",
+      "13 cm",
+      "14 cm",
+      "15 cm"
+    ],
+    "correctIndex": 0,
+    "explanation": "En este caso, la posición n corresponde directamente al valor de la medida pedida de forma lineal."
+  },
+  {
+    "id": "hm11",
+    "area": "Habilidad Matemática",
+    "text": "¿Cuántos triángulos distintos se pueden formar usando como vértices los puntos de una cuadrícula de 3x3 (9 puntos)?",
+    "options": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "correctIndex": 2,
+    "explanation": "Hay 8 triángulos posibles considerando las combinaciones válidas de 3 puntos no alineados."
+  },
+  {
+    "id": "hm12",
+    "area": "Habilidad Matemática",
+    "text": "Un reloj se atrasa 3 minutos cada hora. Si se puso a tiempo a las 10:00 am, ¿qué hora marcará a las 7:00 pm?",
+    "options": [
+      "6:21 pm",
+      "6:33 pm",
+      "6:51 pm",
+      "7:00 pm"
+    ],
+    "correctIndex": 1,
+    "explanation": "De 10am a 7pm son 9 horas. 9 x 3 = 27 minutos de atraso. 7:00 - 27 min = 6:33 pm."
+  },
+  {
+    "id": "hm13",
+    "area": "Habilidad Matemática",
+    "text": "Sucesión de cuadrados perfectos: 1, 4, 9, 16, 25, 36... ¿Cuáles son los siguientes dos números?",
+    "options": [
+      "49, 64",
+      "49, 81",
+      "64, 81",
+      "81, 100"
+    ],
+    "correctIndex": 0,
+    "explanation": "Corresponden a 7² = 49 y 8² = 64."
+  },
+  {
+    "id": "hm14",
+    "area": "Habilidad Matemática",
+    "text": "¿Cuántos cubos conforman la siguiente estructura sólida considerando que no hay huecos ocultos?",
+    "options": [
+      "10",
+      "12",
+      "14",
+      "16"
+    ],
+    "correctIndex": 2,
+    "explanation": "Al contar por niveles: Nivel 1 (base): 3x3=9 cubos. Nivel 2: 4 cubos. Nivel 3: 1 cubo. Total = 9 + 4 + 1 = 14 cubos.",
+    "imageUrl": "https://images.unsplash.com/photo-1580136608260-42d1c49e6a72?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": "hm15",
+    "area": "Habilidad Matemática",
+    "text": "A es hermano de B, B es hermana de C, C es hijo de D. ¿Qué relación tiene A con D?",
+    "options": [
+      "Hermano",
+      "Hijo",
+      "Padre",
+      "Tío"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si C es hijo de D, y A y B son hermanos de C, todos son hijos de D."
+  },
+  {
+    "id": "hm16",
+    "area": "Habilidad Matemática",
+    "text": "Si hoy es lunes, ¿qué día será dentro de 50 días?",
+    "options": [
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes"
+    ],
+    "correctIndex": 0,
+    "explanation": "50 dividido entre 7 deja residuo 1 (7x7=49). Lunes + 1 día = Martes."
+  },
+  {
+    "id": "es1",
+    "area": "Español",
+    "text": "Identifica la función de los puntos y comas en un texto:",
+    "options": [
+      "Indicar el fin de una oración",
+      "Separar elementos en una lista compleja",
+      "Unir oraciones relacionadas con una pausa media",
+      "Plantear una pregunta directa"
+    ],
+    "correctIndex": 2,
+    "explanation": "El punto y coma separa oraciones independientes que tienen una relación de significado estrecha."
+  },
+  {
+    "id": "es2",
+    "area": "Español",
+    "text": "La paráfrasis consiste en:",
+    "options": [
+      "Copiar el texto tal cual",
+      "Reescribir el texto con palabras propias manteniendo el sentido",
+      "Resumir solo las ideas secundarias",
+      "Dar una opinión personal sobre el autor"
+    ],
+    "correctIndex": 1,
+    "explanation": "Parafrasear es explicar un texto con palabras propias para hacerlo más comprensible."
+  },
+  {
+    "id": "es3",
+    "area": "Español",
+    "text": "Identifica el recurso literario en: 'El tiempo es oro'.",
+    "options": [
+      "Metáfora",
+      "Símil",
+      "Hipérbole",
+      "Onomatopeya"
+    ],
+    "correctIndex": 0,
+    "explanation": "Es una metáfora porque establece una identidad entre dos términos sin usar nexos comparativos como 'como'."
+  },
+  {
+    "id": "es4",
+    "area": "Español",
+    "text": "En un texto argumentativo, ¿en qué sección se suele plantear la tesis?",
+    "options": [
+      "Introducción",
+      "Desarrollo",
+      "Conclusión",
+      "Anexos"
+    ],
+    "correctIndex": 0,
+    "explanation": "La tesis o idea principal se presenta en la introducción para luego ser defendida en el desarrollo."
+  },
+  {
+    "id": "es5",
+    "area": "Español",
+    "text": "El español es lengua oficial de México según lo establece:",
+    "options": [
+      "La Constitución Política",
+      "La Ley de Educación",
+      "La Declaración de DDHH",
+      "Los Tratados de Tlatelolco"
+    ],
+    "correctIndex": 0,
+    "explanation": "La base legal de la nación define el uso del idioma oficial en el país."
+  },
+  {
+    "id": "es6",
+    "area": "Español",
+    "text": "Identifica el recurso literario en: 'El viento silbaba entre los árboles'.",
+    "options": [
+      "Metáfora",
+      "Onomatopeya",
+      "Símil",
+      "Personificación"
+    ],
+    "correctIndex": 3,
+    "explanation": "La personificación atribuye cualidades humanas (silbar) a objetos inanimados o fenómenos naturales."
+  },
+  {
+    "id": "es7",
+    "area": "Español",
+    "text": "Identifica la función de la lengua predominante en: '¡Qué bonito día!'.",
+    "options": [
+      "Informativa",
+      "Expresiva",
+      "Apelativa",
+      "Metalingüística"
+    ],
+    "correctIndex": 1,
+    "explanation": "Se centra en el emisor y sus sentimientos o emociones."
+  },
+  {
+    "id": "es8",
+    "area": "Español",
+    "text": "Identifica el error ortográfico en las siguientes opciones:",
+    "options": [
+      "El niño jugaba",
+      "La casa esta limpia",
+      "Quiero ir al cine",
+      "Ellos corren rápido"
+    ],
+    "correctIndex": 1,
+    "explanation": "'está' del verbo estar debe llevar tilde; 'esta' sin tilde es un pronombre demostrativo."
+  },
+  {
+    "id": "es9",
+    "area": "Español",
+    "text": "Un texto editorial se clasifica principalmente como:",
+    "options": [
+      "Narrativo",
+      "Descriptivo",
+      "Argumentativo",
+      "Expositivo"
+    ],
+    "correctIndex": 2,
+    "explanation": "El editorial expresa la opinión de un periódico o comunicador sobre un tema, utilizando argumentos."
+  },
+  {
+    "id": "es10",
+    "area": "Español",
+    "text": "Identifica la interpretación correcta (paráfrasis) del refrán: 'El que mucho abarca poco aprieta'.",
+    "options": [
+      "Quien intenta hacer muchas cosas a la vez suele no hacer ninguna bien",
+      "El trabajo duro siempre rinde frutos",
+      "Hay que ser generoso con los demás",
+      "El tiempo vale más que el dinero"
+    ],
+    "correctIndex": 0,
+    "explanation": "Advierte sobre la falta de eficacia al dispersar los esfuerzos en demasiados objetivos."
+  },
+  {
+    "id": "es11",
+    "area": "Español",
+    "text": "Identifica la idea principal en un párrafo sobre el calentamiento global que menciona la subida del nivel del mar:",
+    "options": [
+      "El calentamiento global no existe",
+      "El calentamiento global tiene efectos graves en la Tierra",
+      "Las plantas absorben CO2",
+      "México no se ve afectado"
+    ],
+    "correctIndex": 1,
+    "explanation": "La idea central es el impacto negativo y la gravedad del fenómeno climático."
+  },
+  {
+    "id": "es12",
+    "area": "Español",
+    "text": "Acento que se coloca para diferenciar palabras que se escriben igual pero tienen funciones distintas:",
+    "options": [
+      "Prosódico",
+      "Ortográfico",
+      "Diacrítico",
+      "Enfático"
+    ],
+    "correctIndex": 2,
+    "explanation": "El acento diacrítico permite diferenciar palabras como 'él' (pronombre) de 'el' (artículo)."
+  },
+  {
+    "id": "ma1",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el valor de 'x' en la ecuación 3x - 5 = 16?",
+    "options": [
+      "x = 5",
+      "x = 7",
+      "x = 9",
+      "x = 6"
+    ],
+    "correctIndex": 1,
+    "explanation": "3x = 16 + 5 -> 3x = 21 -> x = 21/3 = 7."
+  },
+  {
+    "id": "ma2",
+    "area": "Matemáticas",
+    "text": "Relaciona los binomios al cubo con su desarrollo: 1.(x+1)³, 2.(x+3)³, 3.(x-2)³. a)x³+9x²+27x+27, b)x³+3x²+3x+1, c)x³-6x²+12x-8.",
+    "options": [
+      "1a, 2b, 3c",
+      "1b, 2a, 3c",
+      "1c, 2b, 3a",
+      "1b, 2c, 3a"
+    ],
+    "correctIndex": 1,
+    "explanation": "Aplicando (a+b)³ = a³ + 3a²b + 3ab² + b³. (x+1)³ es b, (x+3)³ es a, (x-2)³ es c."
+  },
+  {
+    "id": "ma3",
+    "area": "Matemáticas",
+    "text": "Identifica la factorización correcta de x² - 3x + 2:",
+    "options": [
+      "(x+1)(x+2)",
+      "(x-1)(x-2)",
+      "(x-1)(x+2)",
+      "(x+1)(x-2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Buscamos dos números que multiplicados den +2 y sumados -3. Son -1 y -2."
+  },
+  {
+    "id": "ma4",
+    "area": "Matemáticas",
+    "text": "El ángulo entre dos diagonales de caras de un cubo que parten del mismo vértice es:",
+    "options": [
+      "15°",
+      "30°",
+      "45°",
+      "60°"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las diagonales de las caras de un cubo tienen la misma longitud. Al unir sus extremos con otra diagonal, se forma un triángulo equilátero, cuyos ángulos miden 60°."
+  },
+  {
+    "id": "ma5",
+    "area": "Matemáticas",
+    "text": "Dos triángulos están situados entre dos rectas paralelas y comparten la misma base. ¿Cuál es la relación entre sus áreas?",
+    "options": [
+      "Son diferentes",
+      "El de la derecha es mayor",
+      "Son iguales",
+      "Depende del ángulo"
+    ],
+    "correctIndex": 2,
+    "explanation": "Al estar entre paralelas, tienen la misma altura. Si comparten la misma base, su área (b*h/2) es idéntica."
+  },
+  {
+    "id": "ma6",
+    "area": "Matemáticas",
+    "text": "Si 50 latas de aceite cuestan $300, ¿cuántas latas se pueden comprar con $4200?",
+    "options": [
+      "670",
+      "680",
+      "690",
+      "700"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cada lata cuesta 300/50 = $6. Luego 4200 / 6 = 700 latas."
+  },
+  {
+    "id": "ma7",
+    "area": "Matemáticas",
+    "text": "Si 5 trabajadores tardan 10 días en terminar una obra, ¿cuánto tardarán 10 trabajadores?",
+    "options": [
+      "5 días",
+      "10 días",
+      "20 días",
+      "15 días"
+    ],
+    "correctIndex": 0,
+    "explanation": "Relación inversamente proporcional. Al duplicar los trabajadores, el tiempo se reduce a la mitad: 10/2 = 5 días."
+  },
+  {
+    "id": "ma8",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el resultado de la operación (2³ * 2²)?",
+    "options": [
+      "2⁵ (32)",
+      "2⁶ (64)",
+      "4⁵",
+      "16"
+    ],
+    "correctIndex": 0,
+    "explanation": "En multiplicación de potencias de la misma base, se suman los exponentes: 3 + 2 = 5. 2⁵ = 32."
+  },
+  {
+    "id": "ma9",
+    "area": "Matemáticas",
+    "text": "¿Cuál es el volumen de un cubo cuyo lado mide 4 cm?",
+    "options": [
+      "16 cm³",
+      "32 cm³",
+      "64 cm³",
+      "128 cm³"
+    ],
+    "correctIndex": 2,
+    "explanation": "V = lado³ = 4 x 4 x 4 = 64 cm³."
+  },
+  {
+    "id": "ma10",
+    "area": "Matemáticas",
+    "text": "Resuelve la operación: -5 + 8 - (-3) + 2.",
+    "options": [
+      "4",
+      "8",
+      "6",
+      "12"
+    ],
+    "correctIndex": 1,
+    "explanation": "-5 + 8 + 3 + 2 = 3 + 3 + 2 = 8."
+  },
+  {
+    "id": "ma11",
+    "area": "Matemáticas",
+    "text": "¿Cuál es la raíz cuadrada de 144?",
+    "options": [
+      "10",
+      "11",
+      "12",
+      "14"
+    ],
+    "correctIndex": 2,
+    "explanation": "12 x 12 = 144."
+  },
+  {
+    "id": "ma12",
+    "area": "Matemáticas",
+    "text": "Si un ángulo de un triángulo mide 90°, ¿cómo se llama el triángulo?",
+    "options": [
+      "Equilátero",
+      "Isósceles",
+      "Rectángulo",
+      "Escaleno"
+    ],
+    "correctIndex": 2,
+    "explanation": "Se denomina triángulo rectángulo por poseer un ángulo recto de 90°."
+  },
+  {
+    "id": "fi1",
+    "area": "Física",
+    "text": "Un autobús viaja a 60 km/h y hace un recorrido en 9 horas. ¿A qué velocidad debe viajar para hacerlo en 6 horas?",
+    "options": [
+      "70 km/h",
+      "80 km/h",
+      "90 km/h",
+      "100 km/h"
+    ],
+    "correctIndex": 2,
+    "explanation": "Distancia = 60 * 9 = 540 km. Velocidad = 540 / 6 = 90 km/h."
+  },
+  {
+    "id": "fi2",
+    "area": "Física",
+    "text": "Un objeto de 5 kg se encuentra a 20 m de altura. Calcula su energía potencial (g=10 m/s²).",
+    "options": [
+      "500 J",
+      "1000 J",
+      "1500 J",
+      "2000 J"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ep = mgh = 5 * 10 * 20 = 1000 J."
+  },
+  {
+    "id": "fi3",
+    "area": "Física",
+    "text": "En un circuito en serie con tres resistencias de 2, 3 y 5 Ohms, ¿cuál es la resistencia total?",
+    "options": [
+      "8 Ω",
+      "10 Ω",
+      "30 Ω",
+      "6 Ω"
+    ],
+    "correctIndex": 1,
+    "explanation": "En serie se suman: 2 + 3 + 5 = 10 Ohms."
+  },
+  {
+    "id": "fi4",
+    "area": "Física",
+    "text": "¿Qué principio físico explica la sustentación de las alas de un avión?",
+    "options": [
+      "Principio de Arquímedes",
+      "Teorema de Bernoulli",
+      "Principio de Pascal",
+      "Primera Ley de Newton"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bernoulli establece que a mayor velocidad del fluido, menor presión. El aire viaja más rápido arriba del ala, creando menos presión y generando sustentación."
+  },
+  {
+    "id": "fi5",
+    "area": "Física",
+    "text": "Un cuerpo se desplaza a 20 m/s durante 5 segundos con MRU. ¿Qué distancia recorrió?",
+    "options": [
+      "80 m",
+      "100 m",
+      "120 m",
+      "150 m"
+    ],
+    "correctIndex": 1,
+    "explanation": "d = v * t = 20 * 5 = 100 m."
+  },
+  {
+    "id": "fi6",
+    "area": "Física",
+    "text": "¿Cuál es la unidad de medida de la fuerza en el Sistema Internacional?",
+    "options": [
+      "Joule",
+      "Newton",
+      "Watt",
+      "Pascal"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Newton (N) es la unidad de fuerza."
+  },
+  {
+    "id": "fi7",
+    "area": "Física",
+    "text": "El cambio de posición de un objeto con respecto a un marco de referencia se llama:",
+    "options": [
+      "Velocidad",
+      "Aceleración",
+      "Movimiento",
+      "Inercia"
+    ],
+    "correctIndex": 2,
+    "explanation": "El movimiento es el cambio de posición en el tiempo."
+  },
+  {
+    "id": "fi8",
+    "area": "Física",
+    "text": "La propiedad de los cuerpos de oponerse al cambio de su estado de reposo o movimiento se llama:",
+    "options": [
+      "Fuerza",
+      "Gravedad",
+      "Inercia",
+      "Peso"
+    ],
+    "correctIndex": 2,
+    "explanation": "Inercia es la resistencia al cambio de movimiento (1ra Ley de Newton)."
+  },
+  {
+    "id": "fi9",
+    "area": "Física",
+    "text": "La transferencia de calor por medio de ondas electromagnéticas se conoce como:",
+    "options": [
+      "Conducción",
+      "Convección",
+      "Radiación",
+      "Fusión"
+    ],
+    "correctIndex": 2,
+    "explanation": "La radiación no requiere de un medio material para transferir energía térmica."
+  },
+  {
+    "id": "fi10",
+    "area": "Física",
+    "text": "¿Cuál es el valor aproximado de la aceleración de la gravedad en la Tierra?",
+    "options": [
+      "5.8 m/s²",
+      "9.8 m/s²",
+      "12.0 m/s²",
+      "3.0 m/s²"
+    ],
+    "correctIndex": 1,
+    "explanation": "La constante de gravedad terrestre estándar es 9.81 m/s²."
+  },
+  {
+    "id": "fi11",
+    "area": "Física",
+    "text": "Un Joule (J) es la unidad de medida para:",
+    "options": [
+      "Fuerza",
+      "Potencia",
+      "Trabajo y Energía",
+      "Presión"
+    ],
+    "correctIndex": 2,
+    "explanation": "El Joule mide la energía transferida al realizar un trabajo."
+  },
+  {
+    "id": "fi12",
+    "area": "Física",
+    "text": "La ley que establece que 'A toda acción corresponde una reacción igual y opuesta' es:",
+    "options": [
+      "1ra Ley de Newton",
+      "2da Ley de Newton",
+      "3ra Ley de Newton",
+      "Ley de Gravitación"
+    ],
+    "correctIndex": 2,
+    "explanation": "Principio de Acción y Reacción (3ra Ley de Newton)."
+  },
+  {
+    "id": "q1",
+    "area": "Química",
+    "text": "¿Cuál es la partícula mínima de la que está constituido un compuesto químico?",
+    "options": [
+      "Ion",
+      "Átomo",
+      "Molécula",
+      "Micela"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los compuestos están formados por moléculas (unión de dos o más átomos de elementos diferentes)."
+  },
+  {
+    "id": "q2",
+    "area": "Química",
+    "text": "Es la unidad química que mide la cantidad de sustancia:",
+    "options": [
+      "Ion",
+      "Mol",
+      "Molécula",
+      "Partícula"
+    ],
+    "correctIndex": 1,
+    "explanation": "El mol es la unidad fundamental del SI para medir la cantidad de sustancia."
+  },
+  {
+    "id": "q3",
+    "area": "Química",
+    "text": "Una solución que tiene un valor de 8 en la escala de pH se considera:",
+    "options": [
+      "Ácida",
+      "Alcalina (Básica)",
+      "Neutra",
+      "Mezcla"
+    ],
+    "correctIndex": 1,
+    "explanation": "Valores pH > 7 son alcalinos; pH < 7 son ácidos; pH = 7 es neutro."
+  },
+  {
+    "id": "q4",
+    "area": "Química",
+    "text": "Es la unión de dos o más sustancias que conservan sus propiedades físicas originales:",
+    "options": [
+      "Compuesto",
+      "Elemento",
+      "Catión",
+      "Mezcla"
+    ],
+    "correctIndex": 3,
+    "explanation": "En una mezcla, los componentes no reaccionan químicamente y pueden separarse por métodos físicos."
+  },
+  {
+    "id": "q5",
+    "area": "Química",
+    "text": "¿Cuál de los siguientes fenómenos NO es una reacción química?",
+    "options": [
+      "Formación de un arcoíris",
+      "Combustión de madera",
+      "Lluvia ácida",
+      "Oxidación de un clavo"
+    ],
+    "correctIndex": 0,
+    "explanation": "El arcoíris es un fenómeno físico de refracción y dispersión de la luz en gotas de agua."
+  },
+  {
+    "id": "q6",
+    "area": "Química",
+    "text": "Identifica los elementos del grupo 2 de la tabla periódica (Alcalinotérreos):",
+    "options": [
+      "Be, Mg, Ca, Sr, Ra",
+      "Na, K, Li, Cs",
+      "B, Al, Ga, In",
+      "Fe, Cu, Zn, Ag"
+    ],
+    "correctIndex": 0,
+    "explanation": "La familia del Berilio corresponde al Grupo II A o Grupo 2."
+  },
+  {
+    "id": "q7",
+    "area": "Química",
+    "text": "¿Qué tipo de enlace ocurre cuando los átomos comparten electrones?",
+    "options": [
+      "Iónico",
+      "Covalente",
+      "Metálico",
+      "Puentes de Hidrógeno"
+    ],
+    "correctIndex": 1,
+    "explanation": "El enlace covalente se forma compartiendo pares de electrones entre no metales."
+  },
+  {
+    "id": "q8",
+    "area": "Química",
+    "text": "Ordena los estados de la materia de mayor a menor energía cinética de sus moléculas:",
+    "options": [
+      "Sólido, Líquido, Gaseoso",
+      "Gaseoso, Líquido, Sólido",
+      "Líquido, Gaseoso, Sólido",
+      "Sólido, Gaseoso, Líquido"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gas tiene mayor libertad y velocidad molecular (energía cinética), el sólido la menor."
+  },
+  {
+    "id": "q9",
+    "area": "Química",
+    "text": "Es la capacidad de una sustancia para disolverse en otra:",
+    "options": [
+      "Densidad",
+      "Viscosidad",
+      "Solubilidad",
+      "Maleabilidad"
+    ],
+    "correctIndex": 2,
+    "explanation": "La solubilidad mide la máxima cantidad de soluto que se puede disolver en un solvente."
+  },
+  {
+    "id": "q10",
+    "area": "Química",
+    "text": "Símbolo químico del Oro:",
+    "options": [
+      "Ag",
+      "Au",
+      "Fe",
+      "Cu"
+    ],
+    "correctIndex": 1,
+    "explanation": "Au proviene del latín 'Aurum'."
+  },
+  {
+    "id": "q11",
+    "area": "Química",
+    "text": "Componente principal del aire:",
+    "options": [
+      "Oxígeno",
+      "Nitrógeno",
+      "Dióxido de carbono",
+      "Argón"
+    ],
+    "correctIndex": 1,
+    "explanation": "El nitrógeno constituye aproximadamente el 78% del aire atmosférico."
+  },
+  {
+    "id": "q12",
+    "area": "Química",
+    "text": "Científico mexicano que ganó el Nobel por sus investigaciones sobre la capa de ozono:",
+    "options": [
+      "Manuel Sandoval Vallarta",
+      "Mario Molina",
+      "Luis Miramontes",
+      "Rodolfo Neri Vela"
+    ],
+    "correctIndex": 1,
+    "explanation": "Mario Molina recibió el Nobel en 1995 por alertar sobre el efecto de los CFC en el ozono."
+  },
+  {
+    "id": "bi1",
+    "area": "Biología",
+    "text": "La unidad morfológica y funcional de todo ser vivo se denomina:",
+    "options": [
+      "Órgano",
+      "Tejido",
+      "Célula",
+      "Molécula"
+    ],
+    "correctIndex": 2,
+    "explanation": "La célula es la parte más pequeña de un organismo que se considera viva."
+  },
+  {
+    "id": "bi2",
+    "area": "Biología",
+    "text": "¿Cuál es el proceso celular por el que se generan dos células hijas idénticas?",
+    "options": [
+      "Meiosis",
+      "Mitosis",
+      "Fecundación",
+      "Mutación"
+    ],
+    "correctIndex": 1,
+    "explanation": "La mitosis es la división celular que asegura que las hijas tengan el mismo ADN que la madre."
+  },
+  {
+    "id": "bi3",
+    "area": "Biología",
+    "text": "¿En qué organelo ocurre la fotosíntesis en las plantas?",
+    "options": [
+      "Mitocondria",
+      "Ribosoma",
+      "Cloroplasto",
+      "Lisosoma"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los cloroplastos contienen la clorofila necesaria para captar la energía solar."
+  },
+  {
+    "id": "bi4",
+    "area": "Biología",
+    "text": "Gas esencial producido por las plantas como residuo de la fotosíntesis:",
+    "options": [
+      "CO2",
+      "O2",
+      "N2",
+      "CH4"
+    ],
+    "correctIndex": 1,
+    "explanation": "El oxígeno se libera al ambiente y es vital para la respiración de otros seres vivos."
+  },
+  {
+    "id": "bi5",
+    "area": "Biología",
+    "text": "Relación interespecífica donde ambos organismos se benefician:",
+    "options": [
+      "Parasitismo",
+      "Mutualismo",
+      "Comensalismo",
+      "Depredación"
+    ],
+    "correctIndex": 1,
+    "explanation": "En el mutualismo, ambas especies obtienen ventajas de la interacción."
+  },
+  {
+    "id": "bi6",
+    "area": "Biología",
+    "text": "Es la variedad de seres vivos que habitan el planeta y sus relaciones con el medio:",
+    "options": [
+      "Biodiversidad",
+      "Ecosistema",
+      "Bioma",
+      "Biosfera"
+    ],
+    "correctIndex": 0,
+    "explanation": "La biodiversidad abarca la riqueza de especies y la variabilidad genética."
+  },
+  {
+    "id": "bi7",
+    "area": "Biología",
+    "text": "Órgano encargado del bombeo de sangre a todo el cuerpo:",
+    "options": [
+      "Pulmón",
+      "Corazón",
+      "Hígado",
+      "Riñón"
+    ],
+    "correctIndex": 1,
+    "explanation": "El corazón es un músculo que funciona como bomba en el sistema circulatorio."
+  },
+  {
+    "id": "bi8",
+    "area": "Biología",
+    "text": "El ADN se localiza principalmente dentro de la célula en:",
+    "options": [
+      "Citoplasma",
+      "Aparato de Golgi",
+      "Núcleo",
+      "Vacuola"
+    ],
+    "correctIndex": 2,
+    "explanation": "El núcleo celular resguarda el material genético de la célula eucariota."
+  },
+  {
+    "id": "bi9",
+    "area": "Biología",
+    "text": "Tipo de nutrición de los organismos que producen su propio alimento:",
+    "options": [
+      "Heterótrofa",
+      "Autótrofa",
+      "Saprotrófa",
+      "Parasitaria"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los autótrofos (como las plantas) sintetizan materia orgánica a partir de inorgánica."
+  },
+  {
+    "id": "bi10",
+    "area": "Biología",
+    "text": "Funciones fundamentales de los glóbulos rojos:",
+    "options": [
+      "Defensa del cuerpo",
+      "Transporte de oxígeno",
+      "Coagulación de la sangre",
+      "Producción de hormonas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Contienen hemoglobina que captura el O2 en los pulmones y lo lleva a los tejidos."
+  },
+  {
+    "id": "bi11",
+    "area": "Biología",
+    "text": "Célula que posee pared celular y vacuola central grande:",
+    "options": [
+      "Célula Animal",
+      "Célula Vegetal",
+      "Neurona",
+      "Glóbulo Blanco"
+    ],
+    "correctIndex": 1,
+    "explanation": "Características distintivas de las células de las plantas y algas."
+  },
+  {
+    "id": "bi12",
+    "area": "Biología",
+    "text": "La diabetes es una enfermedad de tipo:",
+    "options": [
+      "Infecciosa",
+      "Crónica degenerativa",
+      "Viral",
+      "Bacteriana"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es una condición a largo plazo que afecta la regulación de azúcar en la sangre."
+  },
+  {
+    "id": "ge1",
+    "area": "Geografía",
+    "text": "¿Cuál es el río más largo que atraviesa el territorio mexicano?",
+    "options": [
+      "Río Usumacinta",
+      "Río Grijalva",
+      "Río Bravo",
+      "Río Lerma"
+    ],
+    "correctIndex": 2,
+    "explanation": "El Río Bravo (o Grande) tiene la mayor longitud recorriendo la frontera norte."
+  },
+  {
+    "id": "ge2",
+    "area": "Geografía",
+    "text": "Sistema montañoso que se extiende por el noroeste y occidente de México:",
+    "options": [
+      "Sierra Madre Oriental",
+      "Sierra Madre Occidental",
+      "Eje Neovolcánico",
+      "Sierra Madre del Sur"
+    ],
+    "correctIndex": 1,
+    "explanation": "Recorre la costa del Pacífico desde Sonora hasta Jalisco."
+  },
+  {
+    "id": "ge3",
+    "area": "Geografía",
+    "text": "Estado con la mayor densidad de población en México:",
+    "options": [
+      "Estado de México",
+      "Jalisco",
+      "Ciudad de México",
+      "Nuevo León"
+    ],
+    "correctIndex": 2,
+    "explanation": "Debido a su reducida superficie y enorme cantidad de habitantes, la CDMX tiene la mayor densidad."
+  },
+  {
+    "id": "ge4",
+    "area": "Geografía",
+    "text": "El Índice de Desarrollo Humano (IDH) considera tres factores fundamentales:",
+    "options": [
+      "PIB, Inversión, Ahorro",
+      "Exportaciones, Turismo, Población",
+      "Salud, Educación, Ingreso",
+      "Clima, Suelo, Relieve"
+    ],
+    "correctIndex": 2,
+    "explanation": "Mide esperanza de vida (salud), escolaridad (educación) y poder adquisitivo (ingreso)."
+  },
+  {
+    "id": "ge5",
+    "area": "Geografía",
+    "text": "Región geográfica de México con mayor concentración de pueblos indígenas:",
+    "options": [
+      "Norte",
+      "Centro",
+      "Sur y Sureste",
+      "Occidente"
+    ],
+    "correctIndex": 2,
+    "explanation": "Estados como Oaxaca, Chiapas y Yucatán albergan la mayor diversidad étnica."
+  },
+  {
+    "id": "ge6",
+    "area": "Geografía",
+    "text": "Las líneas imaginarias horizontales que dividen la Tierra se llaman:",
+    "options": [
+      "Meridianos",
+      "Paralelos",
+      "Ejes",
+      "Altitudes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los paralelos miden la latitud (Norte-Sur). El principal es el Ecuador."
+  },
+  {
+    "id": "ge7",
+    "area": "Geografía",
+    "text": "Capa de la atmósfera donde ocurren los fenómenos meteorológicos:",
+    "options": [
+      "Estratosfera",
+      "Troposfera",
+      "Mesosfera",
+      "Termosfera"
+    ],
+    "correctIndex": 1,
+    "explanation": "La troposfera es la capa más baja y densa donde se desarrolla la vida y el clima."
+  },
+  {
+    "id": "ge8",
+    "area": "Geografía",
+    "text": "Fenómeno que consiste en el movimiento de personas de un lugar a otro para residir:",
+    "options": [
+      "Urbanización",
+      "Natalidad",
+      "Migración",
+      "Mortalidad"
+    ],
+    "correctIndex": 2,
+    "explanation": "La migración puede ser interna (mismo país) o externa (otro país)."
+  },
+  {
+    "id": "ge9",
+    "area": "Geografía",
+    "text": "Principal actividad económica del sector primario:",
+    "options": [
+      "Industria",
+      "Comercio",
+      "Agricultura",
+      "Transporte"
+    ],
+    "correctIndex": 2,
+    "explanation": "El sector primario extrae recursos naturales directamente (agricultura, pesca, minería)."
+  },
+  {
+    "id": "ge10",
+    "area": "Geografía",
+    "text": "El Cinturón de Fuego del Pacífico se asocia principalmente con:",
+    "options": [
+      "Sequías",
+      "Huracanes",
+      "Sismos y Volcanes",
+      "Tornados"
+    ],
+    "correctIndex": 2,
+    "explanation": "Es una zona de intensa actividad tectónica y volcánica que rodea al océano Pacífico."
+  },
+  {
+    "id": "ge11",
+    "area": "Geografía",
+    "text": "Recurso natural no renovable:",
+    "options": [
+      "Viento",
+      "Radiación solar",
+      "Petróleo",
+      "Agua dulce"
+    ],
+    "correctIndex": 2,
+    "explanation": "El petróleo tarda millones de años en formarse, por lo que su consumo agota las reservas existentes."
+  },
+  {
+    "id": "ge12",
+    "area": "Geografía",
+    "text": "Continente más poblado del mundo:",
+    "options": [
+      "América",
+      "Europa",
+      "África",
+      "Asia"
+    ],
+    "correctIndex": 3,
+    "explanation": "Asia concentra más del 60% de la población mundial total."
+  },
+  {
+    "id": "hi1",
+    "area": "Historia",
+    "text": "¿Quién fue el último emperador de México durante el Segundo Imperio?",
+    "options": [
+      "Agustín de Iturbide",
+      "Maximiliano de Habsburgo",
+      "Benito Juárez",
+      "Porfirio Díaz"
+    ],
+    "correctIndex": 1,
+    "explanation": "Maximiliano gobernó del 1864 a 1867 antes de ser fusilado en el Cerro de las Campanas."
+  },
+  {
+    "id": "hi2",
+    "area": "Historia",
+    "text": "¿En qué año se consumó la Independencia de México?",
+    "options": [
+      "1810",
+      "1821",
+      "1824",
+      "1910"
+    ],
+    "correctIndex": 1,
+    "explanation": "La entrada del Ejército Trigarante a la CDMX el 27 de sept de 1821 selló el proceso."
+  },
+  {
+    "id": "hi3",
+    "area": "Historia",
+    "text": "¿Cuál fue el plan proclamado por Agustín de Iturbide y Vicente Guerrero para unir fuerzas?",
+    "options": [
+      "Plan de Ayutla",
+      "Plan de Iguala",
+      "Plan de San Luis",
+      "Plan de Ayala"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Plan de las Tres Garantías (Iguala) estableció la base para la independencia."
+  },
+  {
+    "id": "hi4",
+    "area": "Historia",
+    "text": "La Revolución Mexicana inició formalmente el:",
+    "options": [
+      "16 de septiembre de 1810",
+      "20 de noviembre de 1910",
+      "5 de febrero de 1917",
+      "21 de marzo de 1806"
+    ],
+    "correctIndex": 1,
+    "explanation": "Francisco I. Madero convocó al levantamiento armado contra el Porfiriato en esa fecha."
+  },
+  {
+    "id": "hi5",
+    "area": "Historia",
+    "text": "Cultura mesoamericana conocida como la 'Cultura Madre':",
+    "options": [
+      "Mexica",
+      "Maya",
+      "Olmeca",
+      "Zapoteca"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los olmecas fueron la primera gran civilización con rasgos culturales que influyeron a otras."
+  },
+  {
+    "id": "hi6",
+    "area": "Historia",
+    "text": "¿A qué periodo de la historia de México se le conoce como el 'Porfiriato'?",
+    "options": [
+      "1810-1821",
+      "1876-1911",
+      "1910-1920",
+      "1940-1970"
+    ],
+    "correctIndex": 1,
+    "explanation": "Abarca los más de 30 años de gobierno del general Porfirio Díaz."
+  },
+  {
+    "id": "hi7",
+    "area": "Historia",
+    "text": "¿Quién fue el principal autor de los 'Sentimientos de la Nación'?",
+    "options": [
+      "Miguel Hidalgo",
+      "Ignacio Allende",
+      "José María Morelos",
+      "Vicente Guerrero"
+    ],
+    "correctIndex": 2,
+    "explanation": "Morelos expuso sus ideales de libertad y justicia social en este documento ante el Congreso de Chilpancingo."
+  },
+  {
+    "id": "hi8",
+    "area": "Historia",
+    "text": "Evento que dio inicio a la Segunda Guerra Mundial en 1939:",
+    "options": [
+      "Ataque a Pearl Harbor",
+      "Invasión de Polonia por Alemania",
+      "Caída del Muro de Berlín",
+      "Bombardeo de Hiroshima"
+    ],
+    "correctIndex": 1,
+    "explanation": "La invasión de Polonia activó las alianzas defensivas británicas y francesas."
+  },
+  {
+    "id": "hi9",
+    "area": "Historia",
+    "text": "¿Qué civilización construyó las pirámides de Giza?",
+    "options": [
+      "Griega",
+      "Romana",
+      "Egipcia",
+      "Mesopotámica"
+    ],
+    "correctIndex": 2,
+    "explanation": "Son monumentos funerarios del Antiguo Egipto construidos hace más de 4500 años."
+  },
+  {
+    "id": "hi10",
+    "area": "Historia",
+    "text": "El movimiento intelectual europeo del siglo XVIII que enfatizaba la razón se llamó:",
+    "options": [
+      "Renacimiento",
+      "Ilustración",
+      "Barroco",
+      "Romanticismo"
+    ],
+    "correctIndex": 1,
+    "explanation": "La Ilustración o el Siglo de las Luces sentó las bases de la democracia moderna."
+  },
+  {
+    "id": "hi11",
+    "area": "Historia",
+    "text": "¿Qué país fue el principal rival de EE.UU. durante la Guerra Fría?",
+    "options": [
+      "China",
+      "Alemania",
+      "Unión Soviética (URSS)",
+      "Japón"
+    ],
+    "correctIndex": 2,
+    "explanation": "Fue un conflicto ideológico y militar indirecto entre el capitalismo y el comunismo soviético."
+  },
+  {
+    "id": "hi12",
+    "area": "Historia",
+    "text": "¿Quién descubrió América para la corona española en 1492?",
+    "options": [
+      "Hernán Cortés",
+      "Cristóbal Colón",
+      "Francisco Pizarro",
+      "Americo Vespucio"
+    ],
+    "correctIndex": 1,
+    "explanation": "Colón llegó a las islas del Caribe creyendo haber encontrado una ruta a las Indias."
+  },
+  {
+    "id": "ce1",
+    "area": "Formación Cívica y Ética",
+    "text": "¿Qué artículo de la Constitución Mexicana establece que la educación debe ser laica y gratuita?",
+    "options": [
+      "Artículo 1",
+      "Artículo 3",
+      "Artículo 27",
+      "Artículo 123"
+    ],
+    "correctIndex": 1,
+    "explanation": "El artículo 3° Constitucional garantiza el derecho a la educación pública de calidad."
+  },
+  {
+    "id": "ce2",
+    "area": "Formación Cívica y Ética",
+    "text": "La empatía consiste fundamentalmente en:",
+    "options": [
+      "Ignorar los problemas ajenos",
+      "Entender y compartir los sentimientos de los demás",
+      "Criticar el comportamiento de otros",
+      "Competir para ser mejor que el resto"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es la capacidad de ponerse en el lugar del otro para comprender su situación."
+  },
+  {
+    "id": "ce3",
+    "area": "Formación Cívica y Ética",
+    "text": "El uso abusivo del poder o de funciones para obtener un beneficio personal se conoce como:",
+    "options": [
+      "Participación",
+      "Voluntariado",
+      "Corrupción",
+      "Derecho"
+    ],
+    "correctIndex": 2,
+    "explanation": "La corrupción daña la confianza en las instituciones y la justicia social."
+  },
+  {
+    "id": "ce4",
+    "area": "Formación Cívica y Ética",
+    "text": "¿Cómo se integra actualmente el territorio mexicano en cuanto a sus entidades federativas?",
+    "options": [
+      "31 estados y 1 Ciudad de México",
+      "32 estados",
+      "30 estados y un distrito",
+      "28 estados"
+    ],
+    "correctIndex": 0,
+    "explanation": "Son 31 estados libres y soberanos más la capital como entidad autónoma."
+  },
+  {
+    "id": "ce5",
+    "area": "Formación Cívica y Ética",
+    "text": "Principio ético que consiste en 'No hacer daño intencionalmente a otros':",
+    "options": [
+      "Beneficencia",
+      "No maleficencia",
+      "Justicia",
+      "Autonomía"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es un principio fundamental de la bioética y la ética general."
+  },
+  {
+    "id": "ce6",
+    "area": "Formación Cívica y Ética",
+    "text": "La asertividad es la habilidad de:",
+    "options": [
+      "Agredir para defenderse",
+      "Expresar opiniones de forma clara, directa y respetuosa",
+      "Callar para evitar conflictos",
+      "Imponer la voluntad mediante gritos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Permite defender derechos sin atacar ni someterse a otros."
+  },
+  {
+    "id": "ce7",
+    "area": "Formación Cívica y Ética",
+    "text": "Un valor fundamental de la democracia es la tolerancia, que implica:",
+    "options": [
+      "Aceptar y respetar la diversidad de ideas y formas de vida",
+      "Ignorar a quienes piensan diferente",
+      "Imponer las ideas de la mayoría sin diálogo",
+      "Evitar el contacto con personas de otras culturas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sin tolerancia no es posible la convivencia pacífica en una sociedad plural."
+  },
+  {
+    "id": "ce8",
+    "area": "Formación Cívica y Ética",
+    "text": "La participación ciudadana en una democracia incluye:",
+    "options": [
+      "Solo votar en elecciones",
+      "Votar, asociarse, manifestarse e informarse",
+      "Pagar impuestos únicamente",
+      "Obedecer sin cuestionar al gobierno"
+    ],
+    "correctIndex": 1,
+    "explanation": "La democracia requiere una ciudadanía activa y comprometida con el bien común."
+  },
+  {
+    "id": "ce9",
+    "area": "Formación Cívica y Ética",
+    "text": "¿Cuál es la función principal de los Derechos Humanos?",
+    "options": [
+      "Proteger la dignidad de todas las personas",
+      "Privilegiar a ciertos grupos sociales",
+      "Castigar a los delincuentes",
+      "Recaudar impuestos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Son derechos inherentes a todos los seres humanos sin distinción alguna."
+  },
+  {
+    "id": "ce10",
+    "area": "Formación Cívica y Ética",
+    "text": "La equidad de género busca:",
+    "options": [
+      "Que las mujeres tengan más derechos que los hombres",
+      "Igualdad de oportunidades y justicia para ambos sexos",
+      "Eliminar las diferencias biológicas",
+      "Solo que las mujeres estudien"
+    ],
+    "correctIndex": 1,
+    "explanation": "Busca que hombres y mujeres tengan las mismas posibilidades de desarrollo."
+  },
+  {
+    "id": "ce11",
+    "area": "Formación Cívica y Ética",
+    "text": "¿Qué organismo internacional se encarga de velar por la paz y los derechos en el mundo?",
+    "options": [
+      "FIFA",
+      "ONU",
+      "OMC",
+      "INTERPOL"
+    ],
+    "correctIndex": 1,
+    "explanation": "La Organización de las Naciones Unidas fue creada tras la 2da Guerra Mundial para este fin."
+  },
+  {
+    "id": "ce12",
+    "area": "Formación Cívica y Ética",
+    "text": "Vivir en un ambiente sano es un derecho de:",
+    "options": [
+      "Solo personas ricas",
+      "Solo adultos",
+      "Todas las personas y futuras generaciones",
+      "Solo científicos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Es un derecho humano de tercera generación enfocado en la supervivencia y bienestar global."
+  }
+]

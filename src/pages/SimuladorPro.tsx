@@ -28,17 +28,17 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { simuladoECOEMS, Question } from "@/data/simuladorData";
-import { simuladoECOEMS2 } from "@/data/simuladorData2";
-import { simuladoECOEMS3 } from "@/data/simuladorData3";
-import { simuladoECOEMS4 } from "@/data/simuladorData4";
+import { Question, ExamMode, BankSelection } from "@/data/simuladorData";
+import { ESCUELAS, Escuela } from "@/data/escuelas";
+import { SimulatorStart } from "@/components/simulator/SimulatorStart";
+import { SimulatorActive } from "@/components/simulator/SimulatorActive";
+import { SimulatorResults } from "@/components/simulator/SimulatorResults";
+import { ProgressPanel } from "@/components/simulator/ProgressPanel";
+import { RestoreModal } from "@/components/simulator/RestoreModal";
 import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
-
-type ExamMode = 'full' | 'practice';
-type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'mixed';
 
 // Fisher-Yates shuffle
 function shuffleArray<T>(arr: T[]): T[] {
@@ -60,373 +60,23 @@ function shuffleQuestionOptions(q: Question): Question {
     };
 }
 
-const AREA_FILTERS: { label: string; value: string }[] = [
-    { label: 'Todas', value: 'all' },
-    { label: 'Matemáticas', value: 'Matemáticas' },
-    { label: 'Física', value: 'Física' },
-    { label: 'Química', value: 'Química' },
-    { label: 'Biología', value: 'Biología' },
-    { label: 'Historia', value: 'Historia' },
-    { label: 'Geografía', value: 'Geografía' },
-    { label: 'Español', value: 'Español' },
-    { label: 'Cívica', value: 'Formación Cívica y Ética' },
-    { label: 'Habilidades', value: 'habilidades' },
-];
-
-interface Escuela { id: string; nombre: string; tipo: 'UNAM' | 'IPN'; puntaje: number }
-
-const ESCUELAS: Escuela[] = [
-    // CCH UNAM
-    { id: 'cch_azcapo', nombre: 'CCH Azcapotzalco', tipo: 'UNAM', puntaje: 93 },
-    { id: 'cch_naucalpan', nombre: 'CCH Naucalpan', tipo: 'UNAM', puntaje: 87 },
-    { id: 'cch_oriente', nombre: 'CCH Oriente', tipo: 'UNAM', puntaje: 94 },
-    { id: 'cch_sur', nombre: 'CCH Sur', tipo: 'UNAM', puntaje: 96 },
-    { id: 'cch_vallejo', nombre: 'CCH Vallejo', tipo: 'UNAM', puntaje: 95 },
-    // ENP UNAM
-    { id: 'prepa1', nombre: 'Prepa 1 UNAM', tipo: 'UNAM', puntaje: 100 },
-    { id: 'prepa2', nombre: 'Prepa 2 UNAM', tipo: 'UNAM', puntaje: 96 },
-    { id: 'prepa3', nombre: 'Prepa 3 UNAM', tipo: 'UNAM', puntaje: 98 },
-    { id: 'prepa4', nombre: 'Prepa 4 UNAM', tipo: 'UNAM', puntaje: 94 },
-    { id: 'prepa5', nombre: 'Prepa 5 UNAM', tipo: 'UNAM', puntaje: 97 },
-    { id: 'prepa6', nombre: 'Prepa 6 UNAM', tipo: 'UNAM', puntaje: 107 },
-    { id: 'prepa7', nombre: 'Prepa 7 UNAM', tipo: 'UNAM', puntaje: 95 },
-    { id: 'prepa8', nombre: 'Prepa 8 UNAM', tipo: 'UNAM', puntaje: 93 },
-    { id: 'prepa9', nombre: 'Prepa 9 UNAM', tipo: 'UNAM', puntaje: 105 },
-    // CECyT IPN
-    { id: 'cecyt1', nombre: 'CECyT 1 Gonzalo Vázquez', tipo: 'IPN', puntaje: 86 },
-    { id: 'cecyt2', nombre: 'CECyT 2 Miguel Bernard', tipo: 'IPN', puntaje: 90 },
-    { id: 'cecyt3', nombre: 'CECyT 3 Estanislao Ramírez', tipo: 'IPN', puntaje: 78 },
-    { id: 'cecyt4', nombre: 'CECyT 4 Lázaro Cárdenas', tipo: 'IPN', puntaje: 84 },
-    { id: 'cecyt5', nombre: 'CECyT 5 Benito Juárez', tipo: 'IPN', puntaje: 85 },
-    { id: 'cecyt6', nombre: 'CECyT 6 Miguel Othón', tipo: 'IPN', puntaje: 89 },
-    { id: 'cecyt7', nombre: 'CECyT 7 Cuauhtémoc', tipo: 'IPN', puntaje: 80 },
-    { id: 'cecyt8', nombre: 'CECyT 8 Narciso Bassols', tipo: 'IPN', puntaje: 88 },
-    { id: 'cecyt9', nombre: 'CECyT 9 Juan de Dios Bátiz', tipo: 'IPN', puntaje: 100 },
-    { id: 'cecyt10', nombre: 'CECyT 10 Carlos Vallejo', tipo: 'IPN', puntaje: 102 },
-    { id: 'cecyt11', nombre: 'CECyT 11 Wilfrido Massieu', tipo: 'IPN', puntaje: 105 },
-    { id: 'cecyt12', nombre: 'CECyT 12 José María Morelos', tipo: 'IPN', puntaje: 83 },
-    { id: 'cecyt13', nombre: 'CECyT 13 Ricardo Flores Magón', tipo: 'IPN', puntaje: 82 },
-    { id: 'cecyt14', nombre: 'CECyT 14 Luis Enrique Erro', tipo: 'IPN', puntaje: 83 },
-    { id: 'cecyt15', nombre: 'CECyT 15 Diódoro Antúnez', tipo: 'IPN', puntaje: 88 },
-];
-
 const formatFecha = (fecha: string) => {
     const date = new Date(fecha);
     const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    const hora = date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-    if (diffDays === 0) return `Hoy · ${hora}`;
-    if (diffDays === 1) return `Ayer · ${hora}`;
-    if (diffDays < 7) return `${date.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' })} · ${hora}`;
-    return `${date.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit' })} · ${hora}`;
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (days === 0) return 'Hoy';
+    if (days === 1) return 'Ayer';
+    if (days < 7) return `Hace ${days} días`;
+    return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
 };
-
-const AREA_EMOJI: Record<string, string> = {
-    'Matemáticas':             '🧮',
-    'Física':                  '⚡',
-    'Química':                 '🧪',
-    'Biología':                '🔬',
-    'Historia':                '📜',
-    'Geografía':               '🌎',
-    'Español':                 '📚',
-    'Cívica':                  '🏛️',
-    'Formación Cívica y Ética': '🏛️',
-    'Habilidad Matemática':    '🔢',
-    'Habilidad Verbal':        '💬',
-};
-
-// ── ProgressPanel component ───────────────────────────────────────────────
-interface ProgressPanelProps {
-    userId: string | null;
-    onNavigateToAuth: () => void;
-    showCharts: boolean;
-    setShowCharts: (v: boolean) => void;
-    chartData: Array<{ fecha: string; porcentaje: number; modo: string }> | null;
-    chartsLoading: boolean;
-    rankingPuntaje: any[] | null;
-    rankingActivos: any[] | null;
-    rankingLoading: boolean;
-    fetchChartData: () => void;
-    fetchRanking: () => void;
-    areaBarData?: Array<{ area: string; correctas: number; incorrectas: number }>;
-    selectedEscuela?: Escuela | null;
-    myPercentage?: number;
-    targetPercentage?: number;
-    metaDiff?: number;
-    metaSuccess?: boolean;
-    metaClose?: boolean;
-}
-
-const ProgressPanel = ({
-    userId, onNavigateToAuth, showCharts, setShowCharts,
-    chartData, chartsLoading, rankingPuntaje, rankingActivos, rankingLoading,
-    fetchChartData, fetchRanking,
-    areaBarData, selectedEscuela, myPercentage, targetPercentage,
-    metaDiff = 0, metaSuccess, metaClose,
-}: ProgressPanelProps) => (
-    <div className="space-y-4">
-        <button
-            type="button"
-            onClick={() => {
-                if (!showCharts) { setShowCharts(true); fetchChartData(); fetchRanking(); }
-                else { setShowCharts(false); }
-            }}
-            className="w-full flex items-center justify-center gap-2 bg-slate-900/50 border border-white/10 hover:bg-white/5 text-white font-black py-4 px-6 rounded-2xl transition-all text-sm uppercase tracking-widest"
-        >
-            <BarChart3 className="h-5 w-5 text-indigo-400" />
-            {showCharts ? "Ocultar Progreso" : "📊 Ver mi Progreso"}
-        </button>
-
-        {showCharts && (
-            <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-10">
-                {!userId ? (
-                    <div className="p-6 bg-violet-500/10 border border-violet-500/30 rounded-2xl text-center">
-                        <p className="text-2xl mb-2">🏆</p>
-                        <p className="text-white font-bold text-lg">¿Quieres ver tu posición en el ranking?</p>
-                        <p className="text-slate-400 text-sm mt-1 mb-4">
-                            Regístrate gratis para guardar tu progreso, ver tus gráficas y competir con otros estudiantes.
-                        </p>
-                        <button type="button" onClick={onNavigateToAuth}
-                            className="bg-violet-600 hover:bg-violet-500 text-white font-bold px-6 py-3 rounded-xl transition-all">
-                            Crear cuenta gratis →
-                        </button>
-                    </div>
-                ) : chartsLoading ? (
-                    <div className="text-center py-8 text-slate-500 text-sm animate-pulse">Cargando historial…</div>
-                ) : (
-                    <>
-                        {/* Sección 1 — Historial */}
-                        <div className="space-y-4">
-                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">📈 Historial de Puntajes</h4>
-                            {(!chartData || chartData.length === 0) ? (
-                                <p className="text-sm text-slate-600 text-center py-4">
-                                    Es tu primer simulacro guardado — ¡completa más para ver tu progreso!
-                                </p>
-                            ) : (
-                                <div className="flex flex-wrap items-end gap-2 justify-center py-2">
-                                    {chartData.map((item, i) => {
-                                        const prev = chartData[i - 1];
-                                        const diff = prev ? item.porcentaje - prev.porcentaje : null;
-                                        const isLatest = i === chartData.length - 1;
-                                        return (
-                                            <React.Fragment key={i}>
-                                                {i > 0 && (
-                                                    <span className={cn("text-lg font-black mb-4",
-                                                        diff! > 0 ? "text-emerald-400" : diff! < 0 ? "text-red-400" : "text-slate-500")}>
-                                                        {diff! > 0 ? "↗" : diff! < 0 ? "↘" : "→"}
-                                                    </span>
-                                                )}
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <div className={cn(
-                                                        "w-16 h-16 rounded-full flex flex-col items-center justify-center border-2 transition-all",
-                                                        isLatest ? "bg-violet-600/30 border-violet-400 scale-110" : "bg-slate-800 border-white/10"
-                                                    )}>
-                                                        <span className={cn("text-sm font-black leading-none",
-                                                            isLatest ? "text-violet-200" : "text-slate-300")}>
-                                                            {item.porcentaje}%
-                                                        </span>
-                                                        {diff !== null && (
-                                                            <span className={cn("text-[10px] font-bold mt-0.5",
-                                                                diff > 0 ? "text-emerald-400" : diff < 0 ? "text-red-400" : "text-slate-500")}>
-                                                                {diff > 0 ? `+${diff}` : diff}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <span className="text-[9px] text-slate-500 text-center leading-tight">{formatFecha(item.fecha)}</span>
-                                                    <span className="text-[9px] text-slate-600 text-center leading-tight">
-                                                        {item.modo === 'full' ? '📝 Examen completo' : '⚡ Práctica rápida'}
-                                                    </span>
-                                                </div>
-                                            </React.Fragment>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Sección 2 — Materias (solo en resultados) */}
-                        {areaBarData && areaBarData.length > 0 && (
-                            <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">📊 Aciertos por Materia — Este Simulacro</h4>
-                                <div className="space-y-3">
-                                    {areaBarData.map(item => {
-                                        const total = item.correctas + item.incorrectas;
-                                        const pct = total > 0 ? Math.round((item.correctas / total) * 100) : 0;
-                                        const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
-                                        const textColor = pct >= 70 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-red-400';
-                                        return (
-                                            <div key={item.area} className="space-y-1.5">
-                                                <div className="flex justify-between items-center">
-                                                    <span className="text-sm text-slate-300">
-                                                        {AREA_EMOJI[item.area] ?? '📖'} <span className="font-bold">{item.area}</span>
-                                                    </span>
-                                                    <span className={cn("text-sm font-black tabular-nums", textColor)}>{item.correctas}/{total}</span>
-                                                </div>
-                                                <div className="h-3 bg-white/5 rounded-full overflow-hidden">
-                                                    <div className={cn("h-full rounded-full transition-all duration-700", barColor)} style={{ width: `${pct}%` }} />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Sección 3 — Puntaje vs meta (solo en resultados) */}
-                        {selectedEscuela && myPercentage !== undefined && (
-                            <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🎯 Tu Puntaje vs Meta</h4>
-                                <div className="space-y-4">
-                                    <div className="space-y-1.5">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-slate-300 font-bold">Tu puntaje</span>
-                                            <span className="text-sm font-black text-violet-400">{myPercentage}%</span>
-                                        </div>
-                                        <div className="h-5 bg-white/5 rounded-full overflow-hidden">
-                                            <div className="h-full bg-violet-600 rounded-full transition-all duration-700" style={{ width: `${myPercentage}%` }} />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm text-slate-300 font-bold">Meta: {selectedEscuela.nombre}</span>
-                                            <span className="text-sm font-black text-amber-400">{targetPercentage}%</span>
-                                        </div>
-                                        <div className="h-5 bg-white/5 rounded-full overflow-hidden border border-amber-500/30 border-dashed">
-                                            <div className="h-full bg-amber-500/50 rounded-full transition-all duration-700" style={{ width: `${targetPercentage}%` }} />
-                                        </div>
-                                    </div>
-                                    <div className={cn("p-4 rounded-2xl text-center text-sm font-bold",
-                                        metaSuccess ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                            : metaClose ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                                            : "bg-red-500/10 text-red-400 border border-red-500/20")}>
-                                        {metaSuccess ? `¡Lo lograste! Superas la meta por ${Math.abs(metaDiff)}% 🎉`
-                                            : metaClose ? `¡Casi! Te faltan solo ${metaDiff}% 💪`
-                                            : `Necesitas ${metaDiff}% más para llegar a tu meta 📚`}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Rankings */}
-                        <div className="border-t border-white/10 pt-8 space-y-8">
-                            <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🏆 Ranking de Puntaje — Esta Semana</h4>
-                                {rankingLoading ? (
-                                    <div className="text-center py-6 text-slate-500 text-sm animate-pulse">Cargando ranking…</div>
-                                ) : !rankingPuntaje || rankingPuntaje.length === 0 ? (
-                                    <p className="text-sm text-slate-600 text-center py-4">Sé el primero en aparecer en el ranking esta semana 🚀</p>
-                                ) : (() => {
-                                    const maxPct = rankingPuntaje[0]?.porcentaje ?? 100;
-                                    const userInRanking = rankingPuntaje.some((r: any) => r.user_id === userId);
-                                    return (
-                                        <>
-                                            <div className="space-y-2">
-                                                {rankingPuntaje.map((r: any, i: number) => {
-                                                    const isMe = r.user_id === userId;
-                                                    const barWidth = maxPct > 0 ? Math.round((r.porcentaje / maxPct) * 100) : 0;
-                                                    const medalStr = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
-                                                    return (
-                                                        <div key={`rank-${r.user_id}-${i}`} className={cn("p-3 rounded-2xl border",
-                                                            isMe ? "bg-violet-600/15 border-violet-500/40" : "bg-white/[0.03] border-white/5")}>
-                                                            <div className="flex items-center gap-3">
-                                                                <span className="text-lg w-7 shrink-0 text-center">{medalStr}</span>
-                                                                <div className="flex-1 min-w-0">
-                                                                    <div className="flex items-center justify-between mb-1">
-                                                                        <span className={cn("text-sm font-bold truncate", isMe ? "text-violet-300" : "text-slate-200")}>
-                                                                            {r.profiles?.name || 'Anónimo'}
-                                                                            {isMe && <span className="ml-2 text-[10px] text-violet-400 font-black">← Tú</span>}
-                                                                        </span>
-                                                                        <span className={cn("text-sm font-black shrink-0 ml-2", isMe ? "text-violet-300" : "text-slate-200")}>{r.porcentaje}%</span>
-                                                                    </div>
-                                                                    <div className="h-2 bg-white/5 rounded-full overflow-hidden mb-1">
-                                                                        <div className={cn("h-full rounded-full transition-all duration-700",
-                                                                            isMe ? "bg-violet-500" : i < 3 ? "bg-amber-500" : "bg-slate-600")}
-                                                                            style={{ width: `${barWidth}%` }} />
-                                                                    </div>
-                                                                    <span className="text-[10px] text-slate-500">
-                                                                        {r.modo === 'full' ? `📝 ${r.aciertos}/${r.total_preguntas}` : `⚡ ${r.aciertos}/${r.total_preguntas}`}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                            {!userInRanking && (
-                                                <p className="text-xs text-slate-600 text-center pt-1">No estás en el top 10 esta semana — ¡sigue practicando! 💪</p>
-                                            )}
-                                        </>
-                                    );
-                                })()}
-                            </div>
-
-                            <div className="space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🔥 Más Dedicados — Esta Semana</h4>
-                                {rankingLoading ? (
-                                    <div className="text-center py-6 text-slate-500 text-sm animate-pulse">Cargando ranking…</div>
-                                ) : !rankingActivos || rankingActivos.length === 0 ? (
-                                    <p className="text-sm text-slate-600 text-center py-4">Sé el primero en el ranking de dedicación 🔥</p>
-                                ) : (
-                                    <div className="space-y-2">
-                                        {rankingActivos.map((r: any, i: number) => {
-                                            const isMe = r.user_id === userId;
-                                            const maxCount = rankingActivos[0].count;
-                                            const barWidth = maxCount > 0 ? Math.round((r.count / maxCount) * 100) : 0;
-                                            const medalStr = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
-                                            return (
-                                                <div key={`activo-${r.user_id}`} className={cn("p-3 rounded-2xl border",
-                                                    isMe ? "bg-violet-600/15 border-violet-500/40" : "bg-white/[0.03] border-white/5")}>
-                                                    <div className="flex items-center gap-3">
-                                                        <span className="text-lg w-7 shrink-0 text-center">{medalStr}</span>
-                                                        <div className="flex-1 min-w-0">
-                                                            <div className="flex items-center justify-between mb-1">
-                                                                <span className={cn("text-sm font-bold truncate", isMe ? "text-violet-300" : "text-slate-200")}>
-                                                                    {r.name}
-                                                                    {isMe && <span className="ml-2 text-[10px] text-violet-400 font-black">← Tú</span>}
-                                                                </span>
-                                                                <span className={cn("text-xs font-black shrink-0 ml-2", isMe ? "text-violet-300" : "text-slate-400")}>
-                                                                    {r.count} {r.count === 1 ? 'simulacro' : 'simulacros'}
-                                                                </span>
-                                                            </div>
-                                                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                                                                <div className={cn("h-full rounded-full transition-all duration-700",
-                                                                    isMe ? "bg-violet-500" : i < 3 ? "bg-orange-500" : "bg-slate-600")}
-                                                                    style={{ width: `${barWidth}%` }} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </>
-                )}
-            </div>
-        )}
-    </div>
-);
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface SimuladorState {
-    activo: boolean;
-    fechaInicio: string;
-    tiempoTotal: number;
-    tiempoRestante: number;
-    preguntaActual: number;
-    respuestas: (number | null)[];
-    correctas: boolean[];
-    pausado: boolean;
-    timestamp: number;
-    examMode: ExamMode;
-}
 
 const SimuladorPro = () => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
-    const { user } = useAuth();
+
+    // UI state
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
     const [markedForReview, setMarkedForReview] = useState<Record<string, boolean>>({});
@@ -436,8 +86,15 @@ const SimuladorPro = () => {
     const [startTime, setStartTime] = useState<number | null>(null);
     const [isPaused, setIsPaused] = useState(false);
     const [showRestoreModal, setShowRestoreModal] = useState(false);
-    const [savedState, setSavedState] = useState<SimuladorState | null>(null);
+    const [savedState, setSavedState] = useState<any | null>(null);
     const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
+    const [bankData, setBankData] = useState<Record<string, Question[]>>({
+        bank1: [],
+        bank2: [],
+        bank3: [],
+        bank4: []
+    });
+    const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [selectedBank, setSelectedBank] = useState<BankSelection>('bank1');
@@ -452,49 +109,51 @@ const SimuladorPro = () => {
     const [chartsLoading, setChartsLoading] = useState(false);
     const [rankingPuntaje, setRankingPuntaje] = useState<any[] | null>(null);
     const [rankingActivos, setRankingActivos] = useState<any[] | null>(null);
+    const [rankingPorArea, setRankingPorArea] = useState<any[] | null>(null);
     const [rankingLoading, setRankingLoading] = useState(false);
 
-    // SEO Dynamic Tags for Simulador
+    // SEO Dynamic Tags
     useEffect(() => {
         document.title = "Simulador Pro ECOEMS 2026 - 512 Reactivos | CyberEdu MX";
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) {
-            metaDescription.setAttribute("content", "Realiza el simulador pro más avanzado para el ECOEMS 2026. 512 reactivos en 4 bancos, modo práctica sin tiempo y predicción de resultados con IA.");
-        }
-
-        const structuredData = {
-            "@context": "https://schema.org",
-            "@type": "Quiz",
-            "name": "Simulador Pro ECOEMS 2026",
-            "description": "Réplica exacta del examen oficial ECOEMS con 128 reactivos y cronómetro de 3 horas.",
-            "educationalAlignment": {
-                "@type": "AlignmentObject",
-                "alignmentType": "educationalLevel",
-                "educationalFramework": "ECOEMS",
-                "targetName": "Educación Media Superior"
-            },
-            "author": {
-                "@type": "Organization",
-                "name": "CyberEdu MX"
-            }
-        };
-
-        const script = document.createElement("script");
-        script.type = "application/ld+json";
-        script.innerHTML = JSON.stringify(structuredData);
-        document.head.appendChild(script);
-
-        return () => {
-            document.head.removeChild(script);
-        };
     }, []);
 
-    // Load saved state on mount
+    // Load banks
+    useEffect(() => {
+        const loadAllBanks = async () => {
+            setIsLoadingData(true);
+            try {
+                const fetchBank = async (path: string) => {
+                    const res = await fetch(path);
+                    if (!res.ok) throw new Error(`Failed to load ${path}`);
+                    return res.json();
+                };
+                const [b1, b2, b3, b4] = await Promise.all([
+                    fetchBank('/data/questions.json'),
+                    fetchBank('/data/questions2.json'),
+                    fetchBank('/data/questions3.json'),
+                    fetchBank('/data/questions4.json'),
+                ]);
+                setBankData({ bank1: b1, bank2: b2, bank3: b3, bank4: b4 });
+            } catch (error) {
+                logger.error("Error loading question banks", error);
+                toast({
+                    variant: "destructive",
+                    title: "Error de carga",
+                    description: "No se pudieron cargar las preguntas. Por favor, recarga la página.",
+                });
+            } finally {
+                setIsLoadingData(false);
+            }
+        };
+        loadAllBanks();
+    }, [toast]);
+
+    // Check for saved state
     useEffect(() => {
         const saved = localStorage.getItem('simulador_estado');
         if (saved) {
             try {
-                const state: SimuladorState = JSON.parse(saved);
+                const state = JSON.parse(saved);
                 if (state.activo) {
                     setSavedState(state);
                     setShowRestoreModal(true);
@@ -505,63 +164,94 @@ const SimuladorPro = () => {
         }
     }, []);
 
-    const saveStateToLocalStorage = useCallback((overrides: Partial<SimuladorState> = {}) => {
+    const fetchChartData = async () => {
+        if (!user) return;
+        setChartsLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('simulador_results')
+                .select('fecha, porcentaje, modo')
+                .eq('user_id', user.id)
+                .order('fecha', { ascending: true });
+            if (!error) setChartData(data);
+        } finally {
+            setChartsLoading(false);
+        }
+    };
+
+    const fetchRanking = async () => {
+        setRankingLoading(true);
+        try {
+            const { data: puntaje } = await supabase
+                .from('simulador_ranking_puntaje')
+                .select('*, profiles(name)')
+                .limit(10);
+            const { data: activos } = await supabase
+                .from('simulador_ranking_actividad')
+                .select('*, profiles(name)')
+                .limit(10);
+            const { data: porArea } = await supabase
+                .from('simulador_top_per_area')
+                .select('*');
+
+            if (puntaje) setRankingPuntaje(puntaje);
+            if (activos) setRankingActivos(activos);
+            if (porArea) setRankingPorArea(porArea);
+        } finally {
+            setRankingLoading(false);
+        }
+    };
+
+    const saveStateToLocalStorage = useCallback((overrides: any = {}) => {
         const answersArray = activeQuestions.map(q => userAnswers[q.id] ?? null);
-        const state: SimuladorState = {
+        const state = {
             activo: true,
             fechaInicio: new Date(startTime || Date.now()).toISOString(),
             tiempoTotal: EXAM_TIME_SECONDS,
             tiempoRestante: timeLeft,
             preguntaActual: currentQuestionIndex,
             respuestas: answersArray,
-            correctas: activeQuestions.map(q => userAnswers[q.id] === q.correctIndex),
             pausado: isPaused,
             timestamp: Date.now(),
             examMode,
             ...overrides
         };
         localStorage.setItem('simulador_estado', JSON.stringify(state));
-        // Save full shuffled questions so restore preserves option order
         localStorage.setItem('simulador_questions', JSON.stringify(activeQuestions));
         localStorage.setItem('simulador_revision', JSON.stringify(markedForReview));
     }, [currentQuestionIndex, userAnswers, timeLeft, isPaused, startTime, markedForReview, activeQuestions, examMode]);
 
     const handleRestore = () => {
         if (!savedState) return;
-
-        // Restore the exact shuffled question set (with shuffled options)
         const savedQs = localStorage.getItem('simulador_questions');
-        let restoredQuestions: Question[] = simuladoECOEMS;
+        const savedRev = localStorage.getItem('simulador_revision');
         if (savedQs) {
             try {
-                restoredQuestions = JSON.parse(savedQs);
-            } catch {
-                // fall through to default
+                const qs = JSON.parse(savedQs);
+                setActiveQuestions(qs);
+                if (savedRev) setMarkedForReview(JSON.parse(savedRev));
+                
+                if (savedState.respuestas) {
+                    const answers: Record<string, number> = {};
+                    savedState.respuestas.forEach((ans: number | null, idx: number) => {
+                        if (ans !== null && qs[idx]) {
+                            answers[qs[idx].id] = ans;
+                        }
+                    });
+                    setUserAnswers(answers);
+                }
+
+                setExamMode(savedState.examMode || 'full');
+                setTimeLeft(savedState.tiempoRestante || EXAM_TIME_SECONDS);
+                setCurrentQuestionIndex(savedState.preguntaActual || 0);
+                setIsExamActive(true);
+                setShowRestoreModal(false);
+                trackSimuladorResume();
+            } catch (e) {
+                logger.error("Error restoring state", e);
+                handleNewExam();
             }
         }
-
-        setActiveQuestions(restoredQuestions);
-        setExamMode(savedState.examMode || 'full');
-        setIsExamActive(true);
-        setCurrentQuestionIndex(savedState.preguntaActual);
-        setTimeLeft(savedState.tiempoRestante);
-        setStartTime(new Date(savedState.fechaInicio).getTime());
-
-        const restoredAnswers: Record<string, number> = {};
-        savedState.respuestas.forEach((ans, idx) => {
-            if (ans !== null && restoredQuestions[idx]) {
-                restoredAnswers[restoredQuestions[idx].id] = ans;
-            }
-        });
-        setUserAnswers(restoredAnswers);
-
-        const savedRevision = localStorage.getItem('simulador_revision');
-        if (savedRevision) {
-            setMarkedForReview(JSON.parse(savedRevision));
-        }
-
-        setIsPaused(savedState.pausado);
-        setShowRestoreModal(false);
     };
 
     const handleNewExam = () => {
@@ -569,203 +259,100 @@ const SimuladorPro = () => {
         localStorage.removeItem('simulador_revision');
         localStorage.removeItem('simulador_questions');
         setShowRestoreModal(false);
+        setSavedState(null);
     };
 
-    const handleSelectEscuela = (escuela: Escuela | null) => {
-        setSelectedEscuela(escuela);
-        try {
-            if (escuela) {
-                localStorage.setItem('user_target_school', escuela.nombre);
-                localStorage.setItem('user_target_score', escuela.puntaje.toString());
-            } else {
-                localStorage.removeItem('user_target_school');
-                localStorage.removeItem('user_target_score');
-            }
-        } catch { /* localStorage blocked */ }
+    const handleSaveAndExit = () => {
+        saveStateToLocalStorage();
+        navigate('/');
+        toast({ title: "Simulador guardado", description: "Podrás continuarlo la próxima vez que regreses." });
     };
 
     const handlePause = () => {
         setIsPaused(true);
         trackSimuladorPause();
         saveStateToLocalStorage({ pausado: true });
-        toast({
-            title: "Simulador Pausado",
-            description: "Puedes continuar más tarde. Tu progreso está guardado.",
-        });
     };
 
     const handleResume = () => {
         setIsPaused(false);
         trackSimuladorResume();
-        saveStateToLocalStorage({ pausado: false });
     };
 
-    const handleSaveAndExit = () => {
-        saveStateToLocalStorage();
-        toast({
-            title: "Progreso Guardado",
-            description: "Vuelve cuando quieras a continuar tu examen.",
-        });
-        navigate("/");
-    };
-
-    const fetchRanking = useCallback(async () => {
-        if (!user) return;
-        setRankingLoading(true);
-        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-
-        const [{ data: ranking }, { data: masActivos }] = await Promise.all([
-            supabase
-                .from('simulador_results')
-                .select('user_id, porcentaje, aciertos, total_preguntas, modo, profiles(name, avatar_url)')
-                .gte('created_at', weekAgo)
-                .order('porcentaje', { ascending: false })
-                .limit(10),
-            supabase
-                .from('simulador_results')
-                .select('user_id, profiles(name, avatar_url)')
-                .gte('created_at', weekAgo),
-        ]);
-
-        setRankingPuntaje(ranking || []);
-
-        const conteo: Record<string, { count: number; name: string; user_id: string }> = {};
-        (masActivos || []).forEach((r: any) => {
-            if (!conteo[r.user_id]) {
-                conteo[r.user_id] = { count: 0, name: r.profiles?.name || 'Anónimo', user_id: r.user_id };
-            }
-            conteo[r.user_id].count++;
-        });
-        setRankingActivos(
-            Object.values(conteo).sort((a, b) => b.count - a.count).slice(0, 5)
-        );
-
-        setRankingLoading(false);
-    }, [user]);
-
-    const fetchChartData = useCallback(async () => {
-        if (!user) return;
-        setChartsLoading(true);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data } = await supabase
-            .from('simulador_results')
-            .select('fecha, porcentaje, modo')
-            .eq('user_id', user.id)
-            .order('fecha', { ascending: false })
-            .limit(10);
-        setChartData(data ? [...data].reverse() : []);
-        setChartsLoading(false);
-    }, [user]);
-
-    // Auto-save every 10 seconds during exam
+    // Auto-save progress
     useEffect(() => {
         if (isExamActive && !showResults) {
-            const timer = setTimeout(() => {
-                saveStateToLocalStorage();
-            }, 10000);
-            return () => clearTimeout(timer);
+            const interval = setInterval(() => saveStateToLocalStorage(), 30000);
+            return () => clearInterval(interval);
         }
-    }, [isExamActive, showResults, currentQuestionIndex, userAnswers, timeLeft, isPaused, saveStateToLocalStorage]);
+    }, [isExamActive, showResults, saveStateToLocalStorage]);
 
-    // Save result to Supabase once when results screen appears
+    // Result synchronization logic
     useEffect(() => {
-        console.log('[SimuladorPro] showResults:', showResults, 'user:', user?.id, 'questions:', activeQuestions.length);
         if (!showResults || activeQuestions.length === 0) return;
 
         const savedScore = calculateScore();
         const savedPct = Math.round((savedScore / activeQuestions.length) * 100);
-
-        const resultadosPorArea: Record<string, { correctas: number; total: number }> = {};
-        activeQuestions.forEach(q => {
-            if (!resultadosPorArea[q.area]) resultadosPorArea[q.area] = { correctas: 0, total: 0 };
-            resultadosPorArea[q.area].total++;
-            if (userAnswers[q.id] === q.correctIndex) resultadosPorArea[q.area].correctas++;
-        });
-
-        let escuelaMeta: string | null = null;
-        let puntajeMeta: number | null = null;
-        try {
-            escuelaMeta = localStorage.getItem('user_target_school');
-            const raw = localStorage.getItem('user_target_score');
-            puntajeMeta = raw ? parseInt(raw) || null : null;
-        } catch { /* localStorage blocked */ }
+        const escuelaMeta = selectedEscuela?.nombre || 'Ninguna';
+        const puntajeMeta = selectedEscuela?.puntaje || 0;
 
         const payload = {
-            modo: examMode,
-            banco: selectedBank,
             escuela_meta: escuelaMeta,
             puntaje_meta: puntajeMeta,
             total_preguntas: activeQuestions.length,
             aciertos: savedScore,
             porcentaje: savedPct,
-            resultados_por_area: resultadosPorArea,
+            modo: examMode,
+            banco: selectedBank,
+            area: selectedArea
         };
 
         if (!user) {
-            console.log('[SimuladorPro] Guest user, saving to pending_simulador_result');
             localStorage.setItem('pending_simulador_result', JSON.stringify(payload));
             return;
         }
 
         const doInsert = async () => {
-            const { data, error } = await supabase
-                .from('simulador_results')
-                .insert({ ...payload, user_id: user.id });
-            if (error) {
-                console.error('[SimuladorPro] Error saving result to Supabase:', error);
-            } else {
-                console.log('[SimuladorPro] Result saved successfully:', data);
-            }
+            await supabase.from('simulador_results').insert({ ...payload, user_id: user.id });
         };
-
         doInsert();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showResults]);
 
-    // Timer logic — only active in full exam mode
+    // Timer
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (isExamActive && examMode === 'full' && timeLeft > 0 && !isPaused) {
-            timer = setInterval(() => {
-                setTimeLeft(prev => prev - 1);
-            }, 1000);
+            timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
         } else if (examMode === 'full' && timeLeft === 0 && isExamActive) {
             handleFinishExam();
         }
         return () => clearInterval(timer);
     }, [isExamActive, timeLeft, isPaused, examMode]);
 
-    const formatTime = (seconds: number) => {
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = seconds % 60;
-        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-    };
-
-    const currentQuestion = activeQuestions[currentQuestionIndex];
-
     const buildPool = (area: string): Question[] => {
         const fromSource = (src: Question[]) => {
+            if (!src || src.length === 0) return [];
             if (area === 'all') return src;
             if (area === 'habilidades') return src.filter(q => q.area.startsWith('Habilidad'));
             return src.filter(q => q.area === area);
         };
-        if (selectedBank === 'bank1') return fromSource(simuladoECOEMS);
-        if (selectedBank === 'bank2') return fromSource(simuladoECOEMS2);
-        if (selectedBank === 'bank3') return fromSource(simuladoECOEMS3);
-        if (selectedBank === 'bank4') return fromSource(simuladoECOEMS4);
-        return [...fromSource(simuladoECOEMS), ...fromSource(simuladoECOEMS2), ...fromSource(simuladoECOEMS3), ...fromSource(simuladoECOEMS4)];
+        if (selectedBank === 'bank1') return fromSource(bankData.bank1);
+        if (selectedBank === 'bank2') return fromSource(bankData.bank2);
+        if (selectedBank === 'bank3') return fromSource(bankData.bank3);
+        if (selectedBank === 'bank4') return fromSource(bankData.bank4);
+        return [
+            ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
+            ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
+        ];
     };
 
     const handleStartExam = (mode: ExamMode = 'full') => {
         const pool = buildPool(selectedArea);
         let questions = shuffleArray(pool).map(shuffleQuestionOptions);
-        if (mode === 'practice') {
-            questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
-        }
+        if (mode === 'practice') questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
         setActiveQuestions(questions);
         setExamMode(mode);
-        trackSimuladorStart();
         setIsExamActive(true);
         setStartTime(Date.now());
         setUserAnswers({});
@@ -773,834 +360,144 @@ const SimuladorPro = () => {
         setCurrentQuestionIndex(0);
         setTimeLeft(EXAM_TIME_SECONDS);
         setShowResults(false);
-    };
-
-    const handleSelectAnswer = (optionIndex: number) => {
-        if (showResults || !currentQuestion) return;
-        setUserAnswers(prev => ({
-            ...prev,
-            [currentQuestion.id]: optionIndex
-        }));
-    };
-
-    const handleNext = () => {
-        if (currentQuestionIndex < activeQuestions.length - 1) {
-            setCurrentQuestionIndex(prev => prev + 1);
-        }
-    };
-
-    const handlePrev = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(prev => prev - 1);
-        }
+        trackSimuladorStart();
     };
 
     const calculateScore = () => {
         let correct = 0;
-        activeQuestions.forEach(q => {
-            if (userAnswers[q.id] === q.correctIndex) correct++;
-        });
+        activeQuestions.forEach(q => { if (userAnswers[q.id] === q.correctIndex) correct++; });
         return correct;
     };
 
     const handleFinishExam = () => {
         setIsExamActive(false);
         setShowResults(true);
-
         const finalScore = calculateScore();
         const totalTime = examMode === 'full' ? EXAM_TIME_SECONDS - timeLeft : 0;
         const pct = Math.round((finalScore / activeQuestions.length) * 100);
-        const prediccion = pct >= 70 ? 'aprobado' : 'reprobado';
-        trackSimuladorComplete(finalScore, totalTime, prediccion);
-
-        localStorage.setItem('quiz_score_simulador_pro', finalScore.toString());
-        localStorage.setItem('last_sim_time_left', timeLeft.toString());
-
-        const completedSims = parseInt(localStorage.getItem('completed_simulators') || '0');
-        localStorage.setItem('completed_simulators', (completedSims + 1).toString());
-
+        trackSimuladorComplete(finalScore, totalTime, pct >= 70 ? 'aprobado' : 'reprobado');
         localStorage.removeItem('simulador_estado');
         localStorage.removeItem('simulador_revision');
         localStorage.removeItem('simulador_questions');
     };
 
-    // Counts shown in the start screen info cards
-    const filteredPool = buildPool(selectedArea);
-    const fullModeCount = filteredPool.length;
-    const practiceModeCount = Math.min(PRACTICE_QUESTION_COUNT, filteredPool.length);
-
-    // ── Restore modal ─────────────────────────────────────────────────────────
-    if (showRestoreModal) {
+    if (isLoadingData) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-                <div className="max-w-md w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
-                    <div className="h-20 w-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto">
-                        <RotateCcw className="h-10 w-10 text-primary" />
-                    </div>
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-black uppercase tracking-tighter text-white">¿Continuar Anterior?</h2>
-                        <p className="text-slate-400 text-sm leading-relaxed">
-                            Detectamos un simulador en progreso. ¿Deseas retomarlo exactamente donde lo dejaste?
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <Button onClick={handleRestore} className="h-14 rounded-2xl bg-primary hover:bg-primary/90 font-bold uppercase">
-                            Sí, Continuar
-                        </Button>
-                        <Button onClick={handleNewExam} variant="outline" className="h-14 rounded-2xl border-white/10 text-white font-bold uppercase">
-                            No, Nuevo
-                        </Button>
-                    </div>
+            <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
+                <div className="relative">
+                    <div className="h-24 w-24 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+                    <Brain className="absolute inset-0 m-auto h-10 w-10 text-primary animate-pulse" />
                 </div>
+                <p className="mt-8 text-slate-400 font-black uppercase tracking-widest text-sm animate-pulse">Cargando reactivos...</p>
             </div>
         );
     }
 
-    // ── Start screen ──────────────────────────────────────────────────────────
-    if (!isExamActive && !showResults) {
-        return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-                <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
-                    <button
-                        onClick={() => navigate('/')}
-                        className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-6"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Volver al inicio
-                    </button>
-                    <div className="h-24 w-24 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
-                        <Brain className="h-12 w-12 text-primary" />
-                    </div>
-                    <div className="space-y-4">
-                        <h1 className="text-4xl font-black uppercase tracking-tighter text-white">Simulador Pro ECOEMS</h1>
-                        <p className="text-slate-400 text-sm leading-relaxed max-w-md mx-auto">
-                            512 reactivos en 4 bancos — preguntas y opciones aleatorizadas en cada intento.
-                        </p>
-                    </div>
-
-                    {/* Bank selector */}
-                    <div className="space-y-3">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Banco de preguntas</p>
-                        <div className="flex flex-wrap justify-center gap-2">
-                            {([
-                                { label: 'Banco 1 — Práctica General', value: 'bank1' as BankSelection },
-                                { label: 'Banco 2 — Generado por IA', value: 'bank2' as BankSelection },
-                                { label: 'Banco 3 — Instituto IMEI', value: 'bank3' as BankSelection },
-                                { label: 'Banco 4 — 📋 Guía Oficial IPN/UNAM 2025', value: 'bank4' as BankSelection },
-                                { label: 'Mixto — 512 reactivos combinados', value: 'mixed' as BankSelection },
-                            ]).map(b => (
-                                <button
-                                    key={b.value}
-                                    onClick={() => setSelectedBank(b.value)}
-                                    className={cn(
-                                        "px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border",
-                                        selectedBank === b.value
-                                            ? "bg-indigo-600 text-white border-indigo-600"
-                                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
-                                    )}
-                                >
-                                    {b.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Filter by subject */}
-                    <div className="space-y-3">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Filtrar por materia</p>
-                        <div className="flex flex-wrap justify-center gap-2">
-                            {AREA_FILTERS.map(f => (
-                                <button
-                                    key={f.value}
-                                    onClick={() => setSelectedArea(f.value)}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all border",
-                                        selectedArea === f.value
-                                            ? "bg-primary text-white border-primary"
-                                            : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
-                                    )}
-                                >
-                                    {f.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* School target selector */}
-                    <div className="space-y-3 text-left">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 text-center">🎯 ¿A qué escuela quieres entrar?</p>
-
-                        <div className="flex justify-center">
-                            <button
-                                onClick={() => handleSelectEscuela(null)}
-                                className={cn(
-                                    "px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border",
-                                    !selectedEscuela
-                                        ? "bg-slate-600 text-white border-slate-500"
-                                        : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10"
-                                )}
-                            >
-                                Sin meta específica
-                            </button>
-                        </div>
-
-                        <div className="space-y-2">
-                            <p className="text-[9px] font-black uppercase tracking-widest text-blue-400/70 text-center">UNAM</p>
-                            <div className="flex flex-wrap justify-center gap-1.5">
-                                {ESCUELAS.filter(e => e.tipo === 'UNAM').map(e => (
-                                    <button
-                                        key={e.id}
-                                        onClick={() => handleSelectEscuela(e)}
-                                        className={cn(
-                                            "px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide transition-all border",
-                                            selectedEscuela?.id === e.id
-                                                ? "bg-blue-600 text-white border-blue-500"
-                                                : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
-                                        )}
-                                    >
-                                        {e.nombre} <span className="opacity-50">· {e.puntaje}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <p className="text-[9px] font-black uppercase tracking-widest text-red-400/70 text-center">IPN</p>
-                            <div className="flex flex-wrap justify-center gap-1.5">
-                                {ESCUELAS.filter(e => e.tipo === 'IPN').map(e => (
-                                    <button
-                                        key={e.id}
-                                        onClick={() => handleSelectEscuela(e)}
-                                        className={cn(
-                                            "px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide transition-all border",
-                                            selectedEscuela?.id === e.id
-                                                ? "bg-red-700 text-white border-red-600"
-                                                : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10"
-                                        )}
-                                    >
-                                        {e.nombre} <span className="opacity-50">· {e.puntaje}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {selectedEscuela && (
-                            <p className="text-center text-[10px] text-slate-500 pt-1">
-                                Meta: <span className="font-black text-white">{selectedEscuela.nombre}</span>
-                                {' '}— mínimo <span className="font-black text-amber-400">{selectedEscuela.puntaje} aciertos</span>
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Progreso en la pantalla de inicio */}
-                    <ProgressPanel
-                        userId={user?.id ?? null}
-                        onNavigateToAuth={() => navigate('/auth?ref=simulador&reason=ranking')}
-                        showCharts={showCharts}
-                        setShowCharts={setShowCharts}
-                        chartData={chartData}
-                        chartsLoading={chartsLoading}
-                        rankingPuntaje={rankingPuntaje}
-                        rankingActivos={rankingActivos}
-                        rankingLoading={rankingLoading}
-                        fetchChartData={fetchChartData}
-                        fetchRanking={fetchRanking}
-                    />
-
-                    {/* Mode info cards */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
-                            <Clock className="h-5 w-5 text-indigo-400" />
-                            <span className="text-[10px] font-black uppercase text-slate-500">Examen Completo</span>
-                            <span className="text-sm font-bold text-white">3 Horas · {fullModeCount} Reactivos</span>
-                        </div>
-                        <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
-                            <Zap className="h-5 w-5 text-amber-400" />
-                            <span className="text-[10px] font-black uppercase text-slate-500">Práctica Rápida</span>
-                            <span className="text-sm font-bold text-white">Sin Tiempo · {practiceModeCount} Reactivos</span>
-                        </div>
-                    </div>
-
-                    {/* Mode buttons */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <Button
-                            onClick={() => handleStartExam('full')}
-                            className="w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest bg-primary hover:bg-primary/90 group"
-                        >
-                            <Brain className="mr-2 h-5 w-5" />
-                            Examen Completo
-                            <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                        <Button
-                            onClick={() => handleStartExam('practice')}
-                            variant="outline"
-                            className="w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest border-amber-500/30 text-amber-400 hover:bg-amber-500/10 group"
-                        >
-                            <Zap className="mr-2 h-5 w-5" />
-                            Práctica Rápida
-                            <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                    </div>
-
-                    <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                        <Shuffle className="h-3 w-3 text-amber-500" />
-                        Preguntas y opciones aleatorizadas — CyberEdu MX v3.0
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
-    // ── Results screen ────────────────────────────────────────────────────────
-    const score = calculateScore();
-    const percentage = activeQuestions.length > 0 ? (score / activeQuestions.length) * 100 : 0;
-
-    // Top wrong areas (for meta feedback)
-    const wrongAreaCounts: Record<string, number> = {};
-    activeQuestions.forEach(q => {
-        if (userAnswers[q.id] !== q.correctIndex) {
-            wrongAreaCounts[q.area] = (wrongAreaCounts[q.area] || 0) + 1;
-        }
-    });
-    const topWrongAreas = Object.entries(wrongAreaCounts)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 3)
-        .map(([area]) => area);
-
-    // Meta comparisons — normalize both sides to percentage so practice (20q) and
-    // full exam (128q) are comparable against the school's minimum aciertos/128.
-    const myPercentage = Math.round((score / activeQuestions.length) * 100);
-    const targetPercentage = selectedEscuela ? Math.round((selectedEscuela.puntaje / 128) * 100) : 0;
-    const metaDiff = selectedEscuela ? targetPercentage - myPercentage : 0;
-    const metaSuccess = !!selectedEscuela && metaDiff <= 0;
-    const metaClose = !!selectedEscuela && metaDiff > 0 && metaDiff <= 10;
-    const areasText = topWrongAreas.join(', ') || 'Todas las materias';
-
-    const areaBarData = Object.values(
-        activeQuestions.reduce((acc, q) => {
-            const label = q.area === 'Formación Cívica y Ética' ? 'Cívica' : q.area;
-            if (!acc[label]) acc[label] = { area: label, correctas: 0, incorrectas: 0 };
-            if (userAnswers[q.id] === q.correctIndex) acc[label].correctas++;
-            else acc[label].incorrectas++;
-            return acc;
-        }, {} as Record<string, { area: string; correctas: number; incorrectas: number }>)
-    );
+    if (showRestoreModal) return <RestoreModal onRestore={handleRestore} onNew={handleNewExam} />;
 
     if (showResults) {
         return (
-            <div className="min-h-screen bg-slate-950 p-6 md:p-12 overflow-y-auto">
-                <div className="max-w-5xl mx-auto space-y-10">
-                    {/* Header Results */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2 bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center space-y-6">
-                            <div className="h-20 w-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mb-2">
-                                <Trophy className="h-10 w-10" />
-                            </div>
-                            <div className="flex items-center gap-3 flex-wrap justify-center">
-                                <h2 className="text-3xl font-black uppercase text-white">Resultado del Examen</h2>
-                                <span className={cn(
-                                    "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
-                                    examMode === 'practice' ? "bg-amber-500/20 text-amber-400" : "bg-primary/20 text-primary"
-                                )}>
-                                    {examMode === 'practice' ? 'Práctica Rápida' : 'Examen Completo'}
-                                </span>
-                            </div>
-
-                            {!user && (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="bg-primary/10 border border-primary/20 rounded-3xl p-6 text-center space-y-4 mt-4 w-full"
-                                >
-                                    <div className="flex justify-center">
-                                        <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
-                                            <Sparkles className="h-6 w-6 text-primary" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-black text-white uppercase tracking-tight">¡No pierdas tu score!</h3>
-                                        <p className="text-slate-400 text-xs max-w-sm mx-auto leading-relaxed">
-                                            Regístrate gratis para guardar tus <strong>{score} aciertos</strong> en tu historial y competir en el ranking.
-                                        </p>
-                                    </div>
-                                    <Button 
-                                        onClick={() => navigate('/auth?ref=simulador_result')}
-                                        className="rounded-xl px-6 h-10 font-black uppercase tracking-widest text-[10px] w-full sm:w-auto"
-                                    >
-                                        Guardar Score Ahora
-                                    </Button>
-                                </motion.div>
-                            )}
-                            <div className="flex gap-4 items-end">
-                                <span className="text-7xl font-black text-white">{score}</span>
-                                <span className="text-2xl font-black text-slate-500 mb-2">/ {activeQuestions.length}</span>
-                            </div>
-                            <Progress value={percentage} className="h-3 w-full max-w-sm" />
-                            <p className="text-slate-400 text-sm">
-                                Has superado el <span className="text-emerald-400 font-bold">{percentage.toFixed(0)}%</span> de los reactivos correctamente.
-                            </p>
-                        </div>
-
-                        <div className="bg-primary/5 border border-primary/20 rounded-[2.5rem] p-10 space-y-6 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                                <Target className="h-32 w-32" />
-                            </div>
-                            <h3 className="text-sm font-black uppercase tracking-widest text-primary relative z-10">Análisis y Meta</h3>
-
-                            {/* Probabilidad de ingreso */}
-                            <div className="space-y-2 relative z-10">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-400">Probabilidad de Ingreso</span>
-                                    <span className="text-sm font-black text-white">{percentage > 80 ? "ALTA" : percentage > 60 ? "MEDIA" : "EN MEJORA"}</span>
-                                </div>
-                                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-primary transition-all" style={{ width: `${percentage}%` }} />
-                                </div>
-                            </div>
-
-                            {/* Meta / veredicto */}
-                            <div className="pt-4 border-t border-white/5 space-y-3 relative z-10">
-                                {selectedEscuela ? (
-                                    <div className={cn(
-                                        "p-4 rounded-2xl border",
-                                        metaSuccess ? "bg-emerald-500/10 border-emerald-500/30" :
-                                        metaClose   ? "bg-amber-500/10 border-amber-500/30" :
-                                                      "bg-red-500/10 border-red-500/30"
-                                    )}>
-                                        <div className="flex items-start gap-3">
-                                            <span className="text-xl shrink-0">{metaSuccess ? "🎉" : metaClose ? "⚠️" : "❌"}</span>
-                                            <div className="space-y-1 min-w-0">
-                                                <p className={cn("text-sm font-black leading-snug", metaSuccess ? "text-emerald-400" : metaClose ? "text-amber-400" : "text-red-400")}>
-                                                    {metaSuccess
-                                                        ? `¡Alcanzas ${selectedEscuela!.nombre}! Tu rendimiento (${myPercentage}%) supera el mínimo requerido (${targetPercentage}%)`
-                                                        : metaClose
-                                                        ? `¡Casi! Te faltan ${metaDiff}% para ${selectedEscuela!.nombre}.`
-                                                        : `Necesitas mejorar ${metaDiff}% para ${selectedEscuela!.nombre}.`
-                                                    }
-                                                </p>
-                                                {!metaSuccess && (
-                                                    <p className="text-xs text-slate-400">
-                                                        {metaClose ? "Practica estos temas:" : "Enfócate en:"}{' '}
-                                                        <span className="font-bold text-white">{areasText}</span>
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="bg-white/5 p-3 rounded-xl border border-white/10 text-center">
-                                        <p className="text-xs text-slate-500">Sin escuela meta seleccionada</p>
-                                        <p className="text-[10px] text-slate-600 mt-1">Configura tu meta en la pantalla de inicio</p>
-                                    </div>
-                                )}
-
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-bold text-slate-400">Tu Puntaje Final</span>
-                                    <span className="text-sm font-black text-white">{myPercentage}% <span className="text-slate-500 font-bold">({score}/{activeQuestions.length})</span></span>
-                                </div>
-                                {selectedEscuela && (
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs font-bold text-slate-400">Mínimo {selectedEscuela.nombre}</span>
-                                        <span className="text-sm font-black text-amber-400">{targetPercentage}% <span className="text-slate-500 font-bold">({selectedEscuela.puntaje}/128)</span></span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col md:flex-row gap-4">
-                        <Button onClick={() => handleStartExam('full')} variant="outline" className="flex-1 h-14 rounded-xl border-white/10 hover:bg-white/5 text-xs font-black uppercase tracking-widest">
-                            <RotateCcw className="mr-2 h-4 w-4" /> Reintentar Completo
-                        </Button>
-                        <Button onClick={() => handleStartExam('practice')} variant="outline" className="flex-1 h-14 rounded-xl border-amber-500/20 text-amber-400 hover:bg-amber-500/10 text-xs font-black uppercase tracking-widest">
-                            <Zap className="mr-2 h-4 w-4" /> Nueva Práctica Rápida
-                        </Button>
-                        <Button onClick={() => navigate("/")} className="flex-1 h-14 rounded-xl bg-primary text-xs font-black uppercase tracking-widest">
-                            <LayoutDashboard className="mr-2 h-4 w-4" /> Volver al Dashboard
-                        </Button>
-                    </div>
-
-                    {/* Ver mi progreso */}
-                    <ProgressPanel
-                        userId={user?.id ?? null}
-                        onNavigateToAuth={() => navigate('/auth?ref=simulador&reason=ranking')}
-                        showCharts={showCharts}
-                        setShowCharts={setShowCharts}
-                        chartData={chartData}
-                        chartsLoading={chartsLoading}
-                        rankingPuntaje={rankingPuntaje}
-                        rankingActivos={rankingActivos}
-                        rankingLoading={rankingLoading}
-                        fetchChartData={fetchChartData}
-                        fetchRanking={fetchRanking}
-                        areaBarData={areaBarData}
-                        selectedEscuela={selectedEscuela}
-                        myPercentage={myPercentage}
-                        targetPercentage={targetPercentage}
-                        metaDiff={metaDiff}
-                        metaSuccess={metaSuccess}
-                        metaClose={metaClose}
-                    />
-
-                    {/* AITutor CTA */}
-                    <button
-                        onClick={() => {
-                            const failedTopics = activeQuestions
-                                .filter(q => userAnswers[q.id] !== q.correctIndex)
-                                .map(q => q.area)
-                                .filter((area, i, arr) => arr.indexOf(area) === i)
-                                .slice(0, 3)
-                                .join(", ");
-                            const message = failedTopics
-                                ? `Fallé preguntas sobre: ${failedTopics}. Necesito que hagamos una autopsia de mis errores. ¿Me los explicas?`
-                                : "Termino de hacer el simulador. ¿Me ayudas a repasar lo que fallé?";
-                            window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
-                        }}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl shadow-violet-500/20 transition-all text-sm uppercase tracking-widest"
-                    >
-                        🧠 Hacer Autopsia de Errores con Tutor IA
-                        {!user && <span className="text-[10px] opacity-75 ml-1 bg-white/20 px-2 py-0.5 rounded-full">(gratis)</span>}
-                    </button>
-
-                    {/* Performance Map */}
-                    <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-6">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <h3 className="text-lg font-black uppercase text-white flex items-center gap-2">
-                                <BarChart3 className="h-5 w-5 text-indigo-400" /> Mapa de Desempeño
-                            </h3>
-                            <div className="flex flex-wrap gap-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="h-3 w-3 rounded-full bg-emerald-500" />
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Correctas</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="h-3 w-3 rounded-full bg-red-500" />
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Incorrectas</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="h-3 w-3 rounded-full border-2 border-amber-500" />
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Marcadas</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-2 p-2">
-                            {activeQuestions.map((q, idx) => {
-                                const isCorrect = userAnswers[q.id] === q.correctIndex;
-                                const isMarked = markedForReview[q.id];
-                                return (
-                                    <a
-                                        key={q.id}
-                                        href={`#question-${q.id}`}
-                                        className={cn(
-                                            "h-8 w-8 rounded-full text-[10px] font-black flex items-center justify-center transition-all hover:scale-110",
-                                            isCorrect ? "bg-emerald-500 text-white" : "bg-red-500 text-white",
-                                            isMarked && "ring-2 ring-amber-500 ring-offset-2 ring-offset-slate-950"
-                                        )}
-                                        title={`Pregunta ${idx + 1}: ${isCorrect ? 'Correcta' : 'Incorrecta'}${isMarked ? ' (Marcada para revisión)' : ''}`}
-                                    >
-                                        {idx + 1}
-                                    </a>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Guest registration banner */}
-                    {!user && (
-                        <div className="mb-6 p-5 bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-500/40 rounded-2xl">
-                            <div className="flex items-start gap-4">
-                                <span className="text-3xl">🏆</span>
-                                <div className="flex-1">
-                                    <p className="text-white font-bold text-lg">¡Regístrate para desbloquear todo!</p>
-                                    <ul className="text-violet-200 text-sm mt-2 space-y-1">
-                                        <li>📊 Gráficas de progreso por fecha</li>
-                                        <li>🏆 Ranking semanal con otros estudiantes</li>
-                                        <li>🎯 Seguimiento de tu meta de escuela</li>
-                                        <li>💾 Historial guardado entre sesiones</li>
-                                    </ul>
-                                    <button
-                                        onClick={() => window.location.href = '/auth?ref=simulador&reason=ranking'}
-                                        className="mt-4 bg-violet-600 hover:bg-violet-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all text-sm"
-                                    >
-                                        Crear cuenta gratis — es rápido →
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Review Questions */}
-                    <div className="space-y-6 pt-10 border-t border-white/5">
-                        <h3 className="text-lg font-black uppercase text-white flex items-center gap-2">
-                            <Target className="h-5 w-5 text-primary" /> Análisis de Respuestas
-                        </h3>
-                        <div className="grid gap-4">
-                            {activeQuestions.map((q, idx) => {
-                                const isCorrect = userAnswers[q.id] === q.correctIndex;
-                                return (
-                                    <div
-                                        key={q.id}
-                                        id={`question-${q.id}`}
-                                        className={cn("p-6 rounded-3xl border transition-all scroll-mt-24", isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-red-500/5 border-red-500/20")}
-                                    >
-                                        <div className="flex justify-between items-start mb-4">
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Reactivo {idx + 1} - {q.area}</span>
-                                            {isCorrect ? <CheckCircle2 className="text-emerald-500 h-5 w-5" /> : <XSquare className="text-red-500 h-5 w-5" />}
-                                        </div>
-                                        <p className="text-sm font-bold text-white mb-6">{q.text}</p>
-
-                                        {q.imageUrl && (
-                                            <div className="mb-6 rounded-2xl overflow-hidden border border-white/10 bg-black/20">
-                                                <img src={q.imageUrl} alt={`Imagen reactivo ${idx + 1}`} className="max-h-64 mx-auto object-contain" loading="lazy" />
-                                            </div>
-                                        )}
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-                                            {q.options.map((opt, i) => (
-                                                <div key={i} className={cn(
-                                                    "p-3 rounded-xl text-xs font-medium border",
-                                                    i === q.correctIndex ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-100" :
-                                                        i === userAnswers[q.id] ? "bg-red-500/20 border-red-500/30 text-red-100" : "bg-white/5 border-white/5 text-slate-400"
-                                                )}>
-                                                    {opt}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                                            <p className="text-[10px] font-black uppercase text-primary mb-2">Explicación Pro</p>
-                                            <p className="text-xs text-slate-300 italic">"{q.explanation}"</p>
-                                        </div>
-                                        {!isCorrect && (
-                                            <div className="mt-3 p-3 bg-violet-500/10 border border-violet-500/30 rounded-lg flex items-center justify-between gap-3">
-                                                <span className="text-sm text-violet-300">¿No entendiste este tema?</span>
-                                                <button
-                                                    onClick={() => {
-                                                        const message = `No entendí esta pregunta del ECOEMS:\n\n"${q.text}"\n\nOpciones:\n${q.options.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\nLa respuesta correcta es: ${q.options[q.correctIndex]}\n\n¿Me explicas por qué?`;
-                                                        window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
-                                                    }}
-                                                    className="shrink-0 text-xs bg-violet-600 hover:bg-violet-500 text-white px-3 py-1.5 rounded-lg transition-all font-semibold"
-                                                >
-                                                    Preguntarle al Tutor →
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <SimulatorResults
+                user={user}
+                activeQuestions={activeQuestions}
+                userAnswers={userAnswers}
+                markedForReview={markedForReview}
+                examMode={examMode}
+                selectedEscuela={selectedEscuela}
+                onRestartFull={() => handleStartExam('full')}
+                onRestartPractice={() => handleStartExam('practice')}
+                onBackToDashboard={() => navigate('/')}
+            >
+                <ProgressPanel
+                    userId={user?.id ?? null}
+                    onNavigateToAuth={() => navigate('/auth?ref=simulador')}
+                    showCharts={showCharts}
+                    setShowCharts={setShowCharts}
+                    chartData={chartData}
+                    chartsLoading={chartsLoading}
+                    rankingPuntaje={rankingPuntaje}
+                    rankingActivos={rankingActivos}
+                    rankingPorArea={rankingPorArea}
+                    rankingLoading={rankingLoading}
+                    fetchChartData={fetchChartData}
+                    fetchRanking={fetchRanking}
+                    formatFecha={formatFecha}
+                    selectedEscuela={selectedEscuela}
+                    myPercentage={Math.round((calculateScore() / activeQuestions.length) * 100)}
+                    targetPercentage={selectedEscuela ? Math.round((selectedEscuela.puntaje / 128) * 100) : 0}
+                />
+            </SimulatorResults>
         );
     }
 
-    // ── Exam Active View ──────────────────────────────────────────────────────
+    if (isExamActive) {
+        return (
+            <SimulatorActive
+                currentQuestionIndex={currentQuestionIndex}
+                activeQuestions={activeQuestions}
+                userAnswers={userAnswers}
+                markedForReview={markedForReview}
+                timeLeft={timeLeft}
+                isPaused={isPaused}
+                examMode={examMode}
+                onSelectAnswer={(idx) => {
+                    const q = activeQuestions[currentQuestionIndex];
+                    if (q) setUserAnswers(prev => ({ ...prev, [q.id]: idx }));
+                }}
+                onNext={() => setCurrentQuestionIndex(prev => Math.min(prev + 1, activeQuestions.length - 1))}
+                onPrev={() => setCurrentQuestionIndex(prev => Math.max(prev - 1, 0))}
+                onPause={handlePause}
+                onResume={handleResume}
+                onFinish={handleFinishExam}
+                onSaveAndExit={handleSaveAndExit}
+                onToggleMark={() => {
+                    const q = activeQuestions[currentQuestionIndex];
+                    if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
+                }}
+                onJumpToQuestion={setCurrentQuestionIndex}
+                formatTime={(s) => {
+                    const h = Math.floor(s / 3600);
+                    const m = Math.floor((s % 3600) / 60);
+                    const sec = s % 60;
+                    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                }}
+            />
+        );
+    }
+
     return (
-        <div className="min-h-screen bg-slate-950 flex flex-col">
-            {/* HUD Header */}
-            <div className="bg-slate-900/80 backdrop-blur-xl border-b border-white/10 p-4 md:p-6 sticky top-0 z-50">
-                <div className="container mx-auto flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                        <div className="h-10 w-10 bg-primary/20 rounded-xl flex items-center justify-center">
-                            {examMode === 'practice'
-                                ? <Zap className="h-6 w-6 text-amber-400" />
-                                : <Timer className="h-6 w-6 text-primary" />
-                            }
-                        </div>
-                        <div>
-                            {examMode === 'full' ? (
-                                <>
-                                    <p className="text-[10px] font-black text-slate-500 uppercase">Tiempo Restante</p>
-                                    <p className={cn("text-xl font-black text-white tabular-nums", timeLeft < 300 && "text-red-500 animate-pulse")}>
-                                        {formatTime(timeLeft)}
-                                    </p>
-                                </>
-                            ) : (
-                                <>
-                                    <p className="text-[10px] font-black text-slate-500 uppercase">Modo Práctica</p>
-                                    <p className="text-xl font-black text-amber-400">Sin límite</p>
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="hidden lg:flex flex-1 max-w-md mx-4 flex-col gap-1">
-                        <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase">
-                            <span>Preguntas respondidas</span>
-                            <span>{Object.keys(userAnswers).length} de {activeQuestions.length}</span>
-                        </div>
-                        <Progress value={(Object.keys(userAnswers).length / activeQuestions.length) * 100} className="h-2" />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        {examMode === 'full' && (
-                            <Button
-                                onClick={isPaused ? handleResume : handlePause}
-                                variant="outline"
-                                className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
-                            >
-                                {isPaused ? "▶️ Continuar" : "⏸️ Pausar"}
-                            </Button>
-                        )}
-                        <Button
-                            onClick={handleSaveAndExit}
-                            variant="outline"
-                            className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
-                        >
-                            💾 Guardar y salir
-                        </Button>
-                        <Button onClick={handleFinishExam} variant="destructive" className="rounded-xl px-6 h-12 text-[10px] font-black uppercase tracking-widest">
-                            🏁 Finalizar
-                        </Button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Question Main Area */}
-            <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
-                {isPaused && examMode === 'full' && (
-                    <div className="fixed inset-0 z-[60] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-6">
-                        <div className="max-w-md w-full text-center space-y-6">
-                            <div className="h-20 w-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto">
-                                <Timer className="h-10 w-10 text-primary" />
-                            </div>
-                            <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Simulador Pausado</h2>
-                            <p className="text-slate-400">Puedes continuar más tarde. Tu progreso está guardado.</p>
-                            <Button onClick={handleResume} className="w-full h-16 rounded-2xl bg-primary text-lg font-black uppercase tracking-widest">
-                                Reanudar Simulador
-                            </Button>
-                        </div>
-                    </div>
-                )}
-
-                <div className="bg-slate-900/40 border border-white/5 rounded-[2.5rem] p-8 md:p-12 space-y-10 shadow-2xl relative overflow-hidden">
-
-                    {/* Navigation Panel */}
-                    <div className="space-y-4">
-                        <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                            Panel de Navegación ({activeQuestions.length} Preguntas)
-                        </h3>
-                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-1.5 p-4 bg-black/20 rounded-2xl border border-white/5 max-h-[300px] overflow-y-auto custom-scrollbar">
-                            {activeQuestions.map((q, idx) => {
-                                const isCurrent = currentQuestionIndex === idx;
-                                const isAnswered = userAnswers[q.id] !== undefined;
-                                const isMarked = markedForReview[q.id];
-
-                                return (
-                                    <button
-                                        key={q.id}
-                                        onClick={() => setCurrentQuestionIndex(idx)}
-                                        className={cn(
-                                            "h-8 w-8 rounded-full text-[10px] font-black transition-all flex items-center justify-center shrink-0 shadow-sm border-2",
-                                            isCurrent ? "bg-white text-blue-600 border-blue-600 scale-110 z-10 shadow-[0_0_15px_rgba(37,99,235,0.4)]" :
-                                                isMarked ? "bg-amber-500 text-white border-amber-600 animate-pulse" :
-                                                    isAnswered ? "bg-blue-600 text-white border-blue-700" :
-                                                        "bg-slate-800 text-slate-500 border-white/5 hover:border-white/20"
-                                        )}
-                                    >
-                                        {idx + 1}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Subtle Area Indicator */}
-                    <div className="absolute top-0 right-0 p-8">
-                        <span className="text-[40px] font-black text-white/5 uppercase select-none pointer-events-none">
-                            {currentQuestion?.area}
-                        </span>
-                    </div>
-
-                    <div className="space-y-4 relative z-10">
-                        <div className="flex items-center gap-2">
-                            <span className="bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
-                                {currentQuestion?.area}
-                            </span>
-                            <span className="text-slate-600 text-[10px] font-bold">Reactivo {currentQuestionIndex + 1}</span>
-                        </div>
-                        <h2 className="text-xl md:text-2xl font-bold text-white leading-snug">
-                            {currentQuestion?.text}
-                        </h2>
-
-                        {currentQuestion?.imageUrl && (
-                            <div className="rounded-3xl overflow-hidden border border-white/10 bg-black/20 p-4">
-                                <img
-                                    src={currentQuestion.imageUrl}
-                                    alt="Visual del reactivo"
-                                    className="max-h-80 mx-auto object-contain animate-in fade-in zoom-in duration-500"
-                                    loading="lazy"
-                                />
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 relative z-10">
-                        {currentQuestion?.options.map((option, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => handleSelectAnswer(idx)}
-                                className={cn(
-                                    "p-6 rounded-2xl border text-left transition-all duration-300 flex items-center gap-4 group",
-                                    userAnswers[currentQuestion.id] === idx
-                                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(var(--primary),0.2)]"
-                                        : "bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20"
-                                )}
-                            >
-                                <div className={cn(
-                                    "h-8 w-8 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors",
-                                    userAnswers[currentQuestion.id] === idx ? "bg-primary text-white" : "bg-white/10 text-slate-500 group-hover:bg-white/20"
-                                )}>
-                                    {String.fromCharCode(65 + idx)}
-                                </div>
-                                <span className="text-sm md:text-base font-medium">{option}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Navigation Footer */}
-            <div className="bg-slate-950 border-t border-white/10 p-4">
-                <div className="container mx-auto max-w-4xl flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        onClick={handlePrev}
-                        disabled={currentQuestionIndex === 0}
-                        className="flex-1 rounded-xl border-white/10 hover:bg-white/5 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest disabled:opacity-30"
-                    >
-                        <ChevronLeft className="mr-1 h-4 w-4" /> Anterior
-                    </Button>
-
-                    <Button
-                        onClick={currentQuestionIndex === activeQuestions.length - 1 ? handleFinishExam : handleNext}
-                        className="flex-1 rounded-xl bg-primary h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all"
-                    >
-                        {currentQuestionIndex === activeQuestions.length - 1 ? "Finalizar" : "Siguiente"} <ChevronRight className="ml-1 h-4 w-4" />
-                    </Button>
-
-                    <Button
-                        variant="outline"
-                        disabled={!currentQuestion}
-                        onClick={() => {
-                            if (!currentQuestion) return;
-                            setMarkedForReview(prev => ({
-                                ...prev,
-                                [currentQuestion.id]: !prev[currentQuestion.id]
-                            }));
-                        }}
-                        className={cn(
-                            "flex-1 rounded-xl border-white/10 h-12 min-h-[44px] text-[10px] font-black uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed",
-                            currentQuestion && markedForReview[currentQuestion.id] ? "bg-amber-500/20 border-amber-500 text-amber-500" : "text-slate-400 hover:bg-white/5"
-                        )}
-                    >
-                        🔖 {currentQuestion && markedForReview[currentQuestion.id] ? "Marcada" : "Marcar"}
-                    </Button>
-                </div>
-            </div>
-        </div>
+        <SimulatorStart
+            selectedBank={selectedBank}
+            onSelectBank={setSelectedBank}
+            selectedArea={selectedArea}
+            onSelectArea={setSelectedArea}
+            selectedEscuela={selectedEscuela}
+            onSelectEscuela={(e) => {
+                setSelectedEscuela(e);
+                if (e) localStorage.setItem('user_target_school', e.nombre);
+                else localStorage.removeItem('user_target_school');
+            }}
+            onStartExam={handleStartExam}
+            fullModeCount={buildPool(selectedArea).length}
+            practiceModeCount={Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length)}
+            onBackToHome={() => navigate('/')}
+        >
+            <ProgressPanel
+                userId={user?.id ?? null}
+                onNavigateToAuth={() => navigate('/auth?ref=simulador')}
+                showCharts={showCharts}
+                setShowCharts={setShowCharts}
+                chartData={chartData}
+                chartsLoading={chartsLoading}
+                rankingPuntaje={rankingPuntaje}
+                rankingActivos={rankingActivos}
+                rankingPorArea={rankingPorArea}
+                rankingLoading={rankingLoading}
+                fetchChartData={fetchChartData}
+                fetchRanking={fetchRanking}
+                formatFecha={formatFecha}
+            />
+        </SimulatorStart>
     );
 };
 

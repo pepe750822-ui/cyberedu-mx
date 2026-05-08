@@ -1,7 +1,7 @@
-
-import { useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { areas } from '../data/areas';
-import { simuladoECOEMS, Question } from '../data/simuladorData';
+import { Question } from '../data/simuladorData';
+import { QuestionService } from '../services/QuestionService';
 import { useVideoProgress } from './useVideoProgress';
 
 export interface ProgressAnalysis {
@@ -34,6 +34,11 @@ export interface ContentRecommendation {
 
 export const useAITutorSkills = () => {
   const { isViewed, getEstadisticas } = useVideoProgress();
+  const [questions, setQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    QuestionService.getBank1().then(setQuestions);
+  }, []);
 
   // Skill 1: Deep progress analysis
   const analyzeUserProgress = useCallback((): ProgressAnalysis => {
@@ -99,13 +104,13 @@ export const useAITutorSkills = () => {
     if (!targetArea) return null;
 
     // Find matching questions
-    let pool = simuladoECOEMS.filter(q =>
+    let pool = questions.filter(q =>
       q.area.toLowerCase().includes(targetArea.toLowerCase()) ||
       targetArea.toLowerCase().includes(q.area.toLowerCase())
     );
 
     // Fallback to all questions if no match
-    if (pool.length === 0) pool = simuladoECOEMS;
+    if (pool.length === 0) pool = questions;
 
     // Shuffle and pick
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
@@ -185,7 +190,7 @@ export const useAITutorSkills = () => {
       });
     });
 
-    const matchedQuestions = simuladoECOEMS.filter(qst =>
+    const matchedQuestions = questions.filter(qst =>
       qst.text.toLowerCase().includes(q) ||
       qst.area.toLowerCase().includes(q)
     );
@@ -198,7 +203,7 @@ export const useAITutorSkills = () => {
   const getExplanationContext = useCallback((topic: string): string => {
     const q = topic.toLowerCase();
     const matchingArea = areas.find(a => q.includes(a.name.toLowerCase()) || a.name.toLowerCase().includes(q));
-    const matchingQuestions = simuladoECOEMS.filter(qst => qst.area.toLowerCase().includes(q) || q.includes(qst.area.toLowerCase())).slice(0, 3);
+    const matchingQuestions = questions.filter(qst => qst.area.toLowerCase().includes(q) || q.includes(qst.area.toLowerCase())).slice(0, 3);
 
     let context = '';
     if (matchingArea) {
