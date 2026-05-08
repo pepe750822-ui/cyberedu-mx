@@ -23,6 +23,7 @@ import {
     ArrowLeft,
     Sparkles,
 } from "lucide-react";
+import { checkExamAchievements } from "@/utils/achievements";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -325,7 +326,30 @@ const SimuladorPro = () => {
         }
 
         const doInsert = async () => {
-            await supabase.from('simulador_results').insert({ ...payload, user_id: user.id });
+            const { error } = await supabase.from('simulador_results').insert({ ...payload, user_id: user.id });
+            if (!error) {
+                // Check achievements
+                const { count } = await supabase.from('simulador_results').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
+                const areaScores: Record<string, number> = {};
+                Object.entries(areaBreakdown).forEach(([area, stats]) => {
+                    areaScores[area] = Math.round((stats.correctas / stats.total) * 100);
+                });
+
+                const targetPct = selectedEscuela ? Math.round((selectedEscuela.puntaje / 128) * 100) : 0;
+                const newlyGranted = await checkExamAchievements(user.id, {
+                    total_examenes: count || 1,
+                    porcentaje: savedPct,
+                    area_scores: areaScores,
+                    meta_success: savedPct >= targetPct && targetPct > 0
+                });
+
+                newlyGranted.forEach(medal => {
+                    toast({
+                        title: "¡Nueva Medalla Desbloqueada! 🏅",
+                        description: `Has ganado el logro: ${medal}`,
+                    });
+                });
+            }
         };
         doInsert();
     // eslint-disable-next-line react-hooks/exhaustive-deps

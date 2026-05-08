@@ -2,6 +2,7 @@ import React from "react";
 import { BarChart3, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Escuela } from "@/data/escuelas";
+import { BadgesShowcase } from "../profile/BadgesShowcase";
 
 const AREA_EMOJI: Record<string, string> = {
     'Matemáticas': '📐',
@@ -283,6 +284,10 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                     </div>
                                 </div>
                             )}
+                            {/* Medallas y Logros */}
+                            <div className="border-t border-white/10 pt-8">
+                                <BadgesShowcase userId={userId} />
+                            </div>
                         </div>
                     </>
                 )}
