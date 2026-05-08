@@ -216,7 +216,7 @@ const AdminPage = () => {
 
         <div className="grid gap-8">
           {activeTab === 'users' ? (
-            <>
+            <div className="space-y-8">
               {/* Search Card */}
               <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl">
                 <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
