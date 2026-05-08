@@ -4,18 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import {
-    LineChart,
-    Line,
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip as RechartsTooltip,
-    ResponsiveContainer,
-    ReferenceLine,
-} from "recharts";
-import {
     Timer,
     ChevronRight,
     ChevronLeft,
@@ -118,6 +106,20 @@ const ESCUELAS: Escuela[] = [
     { id: 'cecyt14', nombre: 'CECyT 14 Luis Enrique Erro', tipo: 'IPN', puntaje: 83 },
     { id: 'cecyt15', nombre: 'CECyT 15 Diódoro Antúnez', tipo: 'IPN', puntaje: 88 },
 ];
+
+const AREA_EMOJI: Record<string, string> = {
+    'Matemáticas':             '🧮',
+    'Física':                  '⚡',
+    'Química':                 '🧪',
+    'Biología':                '🔬',
+    'Historia':                '📜',
+    'Geografía':               '🌎',
+    'Español':                 '📚',
+    'Cívica':                  '🏛️',
+    'Formación Cívica y Ética': '🏛️',
+    'Habilidad Matemática':    '🔢',
+    'Habilidad Verbal':        '💬',
+};
 
 interface SimuladorState {
     activo: boolean;
@@ -867,88 +869,140 @@ const SimuladorPro = () => {
                                     <div className="text-center py-8 text-slate-500 text-sm animate-pulse">Cargando historial…</div>
                                 ) : (
                                     <>
-                                        {/* Chart 1 — Score % over time */}
-                                        <div className="space-y-3">
-                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Puntaje % — Últimos Simulacros</h4>
+                                        {/* Sección 1 — Historial de puntajes */}
+                                        <div className="space-y-4">
+                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">📈 Historial de Puntajes</h4>
                                             {(!chartData || chartData.length === 0) ? (
-                                                <p className="text-xs text-slate-600 text-center py-4">Es tu primer simulacro guardado — ¡completa más para ver tendencias!</p>
+                                                <p className="text-sm text-slate-600 text-center py-4">
+                                                    Es tu primer simulacro guardado — ¡completa más para ver tu progreso!
+                                                </p>
                                             ) : (
-                                                <div className="h-52">
-                                                    <ResponsiveContainer width="100%" height="100%">
-                                                        <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
-                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                                                            <XAxis
-                                                                dataKey="fecha"
-                                                                tickFormatter={s => new Date(s).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
-                                                                tick={{ fill: '#64748b', fontSize: 10 }}
-                                                            />
-                                                            <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 10 }} />
-                                                            <RechartsTooltip
-                                                                contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
-                                                                formatter={(v) => [`${v}%`, 'Puntaje']}
-                                                                labelFormatter={s => new Date(s).toLocaleDateString('es-MX', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                                            />
-                                                            <Line type="monotone" dataKey="porcentaje" stroke="#7c3aed" strokeWidth={2} dot={{ fill: '#7c3aed', r: 4 }} activeDot={{ r: 6 }} />
-                                                        </LineChart>
-                                                    </ResponsiveContainer>
+                                                <div className="flex flex-wrap items-end gap-2 justify-center py-2">
+                                                    {chartData.map((item, i) => {
+                                                        const prev = chartData[i - 1];
+                                                        const diff = prev ? item.porcentaje - prev.porcentaje : null;
+                                                        const isLatest = i === chartData.length - 1;
+                                                        return (
+                                                            <React.Fragment key={i}>
+                                                                {i > 0 && (
+                                                                    <span className={cn(
+                                                                        "text-lg font-black mb-4",
+                                                                        diff! > 0 ? "text-emerald-400" : diff! < 0 ? "text-red-400" : "text-slate-500"
+                                                                    )}>
+                                                                        {diff! > 0 ? "↗" : diff! < 0 ? "↘" : "→"}
+                                                                    </span>
+                                                                )}
+                                                                <div className="flex flex-col items-center gap-1">
+                                                                    <div className={cn(
+                                                                        "w-16 h-16 rounded-full flex flex-col items-center justify-center border-2 transition-all",
+                                                                        isLatest
+                                                                            ? "bg-violet-600/30 border-violet-400 scale-110"
+                                                                            : "bg-slate-800 border-white/10"
+                                                                    )}>
+                                                                        <span className={cn(
+                                                                            "text-sm font-black leading-none",
+                                                                            isLatest ? "text-violet-200" : "text-slate-300"
+                                                                        )}>
+                                                                            {item.porcentaje}%
+                                                                        </span>
+                                                                        {diff !== null && (
+                                                                            <span className={cn(
+                                                                                "text-[10px] font-bold mt-0.5",
+                                                                                diff > 0 ? "text-emerald-400" : diff < 0 ? "text-red-400" : "text-slate-500"
+                                                                            )}>
+                                                                                {diff > 0 ? `+${diff}` : diff}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <span className="text-[9px] text-slate-600">
+                                                                        {new Date(item.fecha).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
+                                                                    </span>
+                                                                    {isLatest && (
+                                                                        <span className="text-[9px] font-black text-violet-400 uppercase tracking-wide">Hoy</span>
+                                                                    )}
+                                                                </div>
+                                                            </React.Fragment>
+                                                        );
+                                                    })}
                                                 </div>
                                             )}
                                         </div>
 
-                                        {/* Chart 2 — Aciertos por materia (current simulacro) */}
-                                        <div className="space-y-3">
-                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Aciertos por Materia — Este Simulacro</h4>
-                                            <div className="h-64">
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <BarChart data={areaBarData} layout="vertical" margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-                                                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
-                                                        <XAxis type="number" tick={{ fill: '#64748b', fontSize: 10 }} allowDecimals={false} />
-                                                        <YAxis type="category" dataKey="area" width={72} tick={{ fill: '#94a3b8', fontSize: 9 }} />
-                                                        <RechartsTooltip
-                                                            contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
-                                                        />
-                                                        <Bar dataKey="correctas" name="Correctas" stackId="a" fill="#10b981" radius={[0, 0, 0, 0]} />
-                                                        <Bar dataKey="incorrectas" name="Incorrectas" stackId="a" fill="#ef4444" radius={[0, 4, 4, 0]} />
-                                                    </BarChart>
-                                                </ResponsiveContainer>
+                                        {/* Sección 2 — Aciertos por materia */}
+                                        <div className="space-y-4">
+                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">📊 Aciertos por Materia — Este Simulacro</h4>
+                                            <div className="space-y-3">
+                                                {areaBarData.map(item => {
+                                                    const total = item.correctas + item.incorrectas;
+                                                    const pct = total > 0 ? Math.round((item.correctas / total) * 100) : 0;
+                                                    const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
+                                                    const textColor = pct >= 70 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-red-400';
+                                                    const emoji = AREA_EMOJI[item.area] ?? '📖';
+                                                    return (
+                                                        <div key={item.area} className="space-y-1.5">
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="text-sm text-slate-300">
+                                                                    {emoji} <span className="font-bold">{item.area}</span>
+                                                                </span>
+                                                                <span className={cn("text-sm font-black tabular-nums", textColor)}>
+                                                                    {item.correctas}/{total}
+                                                                </span>
+                                                            </div>
+                                                            <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                                                                <div
+                                                                    className={cn("h-full rounded-full transition-all duration-700", barColor)}
+                                                                    style={{ width: `${pct}%` }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
 
-                                        {/* Chart 3 — Progress vs school target */}
+                                        {/* Sección 3 — Tu puntaje vs meta */}
                                         {selectedEscuela && (
-                                            <div className="space-y-3">
-                                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                                    Progreso vs Meta — {selectedEscuela.nombre} ({targetPercentage}% mín.)
-                                                </h4>
-                                                {(!chartData || chartData.length === 0) ? (
-                                                    <p className="text-xs text-slate-600 text-center py-4">Sin datos históricos aún</p>
-                                                ) : (
-                                                    <div className="h-52">
-                                                        <ResponsiveContainer width="100%" height="100%">
-                                                            <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
-                                                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                                                                <XAxis
-                                                                    dataKey="fecha"
-                                                                    tickFormatter={s => new Date(s).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
-                                                                    tick={{ fill: '#64748b', fontSize: 10 }}
-                                                                />
-                                                                <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 10 }} />
-                                                                <RechartsTooltip
-                                                                    contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
-                                                                    formatter={(v) => [`${v}%`, 'Puntaje']}
-                                                                    labelFormatter={s => new Date(s).toLocaleDateString('es-MX', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                                                />
-                                                                <ReferenceLine
-                                                                    y={targetPercentage}
-                                                                    stroke="#f59e0b"
-                                                                    strokeDasharray="4 4"
-                                                                    label={{ value: `Meta ${targetPercentage}%`, fill: '#f59e0b', fontSize: 10, position: 'insideTopRight' }}
-                                                                />
-                                                                <Line type="monotone" dataKey="porcentaje" stroke="#7c3aed" strokeWidth={2} dot={{ fill: '#7c3aed', r: 4 }} activeDot={{ r: 6 }} />
-                                                            </LineChart>
-                                                        </ResponsiveContainer>
+                                            <div className="space-y-4">
+                                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🎯 Tu Puntaje vs Meta</h4>
+                                                <div className="space-y-4">
+                                                    <div className="space-y-1.5">
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-sm text-slate-300 font-bold">Tu puntaje</span>
+                                                            <span className="text-sm font-black text-violet-400">{myPercentage}%</span>
+                                                        </div>
+                                                        <div className="h-5 bg-white/5 rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full bg-violet-600 rounded-full transition-all duration-700"
+                                                                style={{ width: `${myPercentage}%` }}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                )}
+                                                    <div className="space-y-1.5">
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-sm text-slate-300 font-bold">Meta: {selectedEscuela.nombre}</span>
+                                                            <span className="text-sm font-black text-amber-400">{targetPercentage}%</span>
+                                                        </div>
+                                                        <div className="h-5 bg-white/5 rounded-full overflow-hidden border border-amber-500/30 border-dashed">
+                                                            <div
+                                                                className="h-full bg-amber-500/50 rounded-full transition-all duration-700"
+                                                                style={{ width: `${targetPercentage}%` }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className={cn(
+                                                        "p-4 rounded-2xl text-center text-sm font-bold",
+                                                        metaSuccess ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                                            : metaClose ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                                            : "bg-red-500/10 text-red-400 border border-red-500/20"
+                                                    )}>
+                                                        {metaSuccess
+                                                            ? `¡Lo lograste! Superas la meta por ${Math.abs(metaDiff)}% 🎉`
+                                                            : metaClose
+                                                            ? `¡Casi! Te faltan solo ${metaDiff}% 💪`
+                                                            : `Necesitas ${metaDiff}% más para llegar a tu meta 📚`
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </>
