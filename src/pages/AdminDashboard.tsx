@@ -106,8 +106,8 @@ export default function AdminDashboard() {
         supabase.from("profiles").select("name,email,created_at").order("created_at", { ascending: false }).limit(10),
         // Total users
         supabase.from("profiles").select("id", { count: "exact", head: true }),
-        // All usage (for tutor users conversion)
-        supabase.from("daily_usage").select("user_id"),
+        // All usage (for tutor users conversion) - filter for count > 0 to be sure
+        supabase.from("daily_usage").select("user_id").gt("count", 0),
         // Premium users
         supabase.from("profiles").select("id", { count: "exact", head: true })
           .or("is_premium.eq.true,subscription_status.eq.active,tokens.gt.0"),
@@ -159,8 +159,11 @@ export default function AdminDashboard() {
       setEvents(evts);
 
       // --- Conversion ---
+      // We filter out nulls and only count unique user_ids who have at least one query
       const uniqueTutorUsers = new Set<string>(
-        (allUsageRaw.data || []).map((r: any) => r.user_id)
+        (allUsageRaw.data || [])
+          .map((r: any) => r.user_id)
+          .filter(id => id && id !== 'undefined')
       ).size;
       setConversion({
         totalUsers: totalUsersRaw.count ?? 0,

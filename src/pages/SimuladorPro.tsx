@@ -175,10 +175,24 @@ const SimuladorPro = () => {
         try {
             const { data, error } = await supabase
                 .from('simulador_results')
-                .select('fecha, porcentaje, modo')
+                .select('created_at, porcentaje, modo')
                 .eq('user_id', user.id)
-                .order('fecha', { ascending: true });
-            if (!error) setChartData(data);
+                .order('created_at', { ascending: true });
+            
+            if (error) {
+                console.error("Error fetching chart data:", error);
+                return;
+            }
+
+            if (data) {
+                setChartData(data.map(d => ({
+                    fecha: d.created_at || '',
+                    porcentaje: Number(d.porcentaje),
+                    modo: d.modo || ''
+                })));
+            }
+        } catch (err) {
+            console.error("Chart data catch error:", err);
         } finally {
             setChartsLoading(false);
         }
@@ -187,21 +201,34 @@ const SimuladorPro = () => {
     const fetchRanking = async () => {
         setRankingLoading(true);
         try {
-            const { data: puntaje } = await supabase
+            console.log("Fetching rankings...");
+            const { data: puntaje, error: err1 } = await supabase
                 .from('simulador_ranking_puntaje')
                 .select('*')
                 .limit(10);
-            const { data: activos } = await supabase
+            
+            if (err1) console.error("Ranking Puntaje Error:", err1);
+
+            const { data: activos, error: err2 } = await supabase
                 .from('simulador_ranking_actividad')
                 .select('*')
                 .limit(10);
-            const { data: porArea } = await supabase
+
+            if (err2) console.error("Ranking Actividad Error:", err2);
+
+            const { data: porArea, error: err3 } = await supabase
                 .from('simulador_top_per_area')
                 .select('*');
+
+            if (err3) console.error("Ranking Por Area Error:", err3);
+
+            console.log("Ranking data received:", { puntaje, activos, porArea });
 
             if (puntaje) setRankingPuntaje(puntaje);
             if (activos) setRankingActivos(activos);
             if (porArea) setRankingPorArea(porArea);
+        } catch (err) {
+            console.error("Ranking catch error:", err);
         } finally {
             setRankingLoading(false);
         }
