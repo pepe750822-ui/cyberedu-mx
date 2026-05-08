@@ -107,6 +107,17 @@ const ESCUELAS: Escuela[] = [
     { id: 'cecyt15', nombre: 'CECyT 15 Diódoro Antúnez', tipo: 'IPN', puntaje: 88 },
 ];
 
+const formatFecha = (fecha: string) => {
+    const date = new Date(fecha);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    const hora = date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    if (diffDays === 0) return `Hoy · ${hora}`;
+    if (diffDays === 1) return `Ayer · ${hora}`;
+    if (diffDays < 7) return `${date.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' })} · ${hora}`;
+    return `${date.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit' })} · ${hora}`;
+};
+
 const AREA_EMOJI: Record<string, string> = {
     'Matemáticas':             '🧮',
     'Física':                  '⚡',
@@ -160,7 +171,7 @@ const SimuladorPro = () => {
         } catch { return null; }
     });
     const [showCharts, setShowCharts] = useState(false);
-    const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number }> | null>(null);
+    const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number; modo: string }> | null>(null);
     const [chartsLoading, setChartsLoading] = useState(false);
 
     // SEO Dynamic Tags for Simulador
@@ -324,7 +335,7 @@ const SimuladorPro = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { data } = await (supabase as any)
             .from('simulador_results')
-            .select('fecha, porcentaje')
+            .select('fecha, porcentaje, modo')
             .eq('user_id', user.id)
             .order('fecha', { ascending: false })
             .limit(10);
@@ -929,12 +940,12 @@ const SimuladorPro = () => {
                                                                             </span>
                                                                         )}
                                                                     </div>
-                                                                    <span className="text-[9px] text-slate-600">
-                                                                        {new Date(item.fecha).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
+                                                                    <span className="text-[9px] text-slate-500 text-center leading-tight">
+                                                                        {formatFecha(item.fecha)}
                                                                     </span>
-                                                                    {isLatest && (
-                                                                        <span className="text-[9px] font-black text-violet-400 uppercase tracking-wide">Hoy</span>
-                                                                    )}
+                                                                    <span className="text-[9px] text-slate-600 text-center leading-tight">
+                                                                        {item.modo === 'full' ? '📝 Examen completo' : '⚡ Práctica rápida'}
+                                                                    </span>
                                                                 </div>
                                                             </React.Fragment>
                                                         );
