@@ -2,6 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import { logger } from "@/lib/logger";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import {
+    LineChart,
+    Line,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip as RechartsTooltip,
+    ResponsiveContainer,
+    ReferenceLine,
+} from "recharts";
 import {
     Timer,
     ChevronRight,
@@ -133,6 +146,9 @@ const SimuladorPro = () => {
             return saved ? (ESCUELAS.find(e => e.nombre === saved) ?? null) : null;
         } catch { return null; }
     });
+    const [showCharts, setShowCharts] = useState(false);
+    const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number }> | null>(null);
+    const [chartsLoading, setChartsLoading] = useState(false);
 
     // SEO Dynamic Tags for Simulador
     useEffect(() => {
@@ -289,6 +305,20 @@ const SimuladorPro = () => {
         navigate("/");
     };
 
+    const fetchChartData = useCallback(async () => {
+        if (!user) return;
+        setChartsLoading(true);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data } = await (supabase as any)
+            .from('simulador_results')
+            .select('fecha, porcentaje')
+            .eq('user_id', user.id)
+            .order('fecha', { ascending: false })
+            .limit(10);
+        setChartData(data ? [...data].reverse() : []);
+        setChartsLoading(false);
+    }, [user]);
+
     // Auto-save every 10 seconds during exam
     useEffect(() => {
         if (isExamActive && !showResults) {
@@ -298,6 +328,43 @@ const SimuladorPro = () => {
             return () => clearTimeout(timer);
         }
     }, [isExamActive, showResults, currentQuestionIndex, userAnswers, timeLeft, isPaused, saveStateToLocalStorage]);
+
+    // Save result to Supabase once when results screen appears
+    useEffect(() => {
+        if (!showResults || !user || activeQuestions.length === 0) return;
+
+        const savedScore = calculateScore();
+        const savedPct = Math.round((savedScore / activeQuestions.length) * 100);
+
+        const resultadosPorArea: Record<string, { correctas: number; total: number }> = {};
+        activeQuestions.forEach(q => {
+            if (!resultadosPorArea[q.area]) resultadosPorArea[q.area] = { correctas: 0, total: 0 };
+            resultadosPorArea[q.area].total++;
+            if (userAnswers[q.id] === q.correctIndex) resultadosPorArea[q.area].correctas++;
+        });
+
+        let escuelaMeta: string | null = null;
+        let puntajeMeta: number | null = null;
+        try {
+            escuelaMeta = localStorage.getItem('user_target_school');
+            const raw = localStorage.getItem('user_target_score');
+            puntajeMeta = raw ? parseInt(raw) || null : null;
+        } catch { /* localStorage blocked */ }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (supabase as any).from('simulador_results').insert({
+            user_id: user.id,
+            modo: examMode,
+            banco: selectedBank,
+            escuela_meta: escuelaMeta,
+            puntaje_meta: puntajeMeta,
+            total_preguntas: activeQuestions.length,
+            aciertos: savedScore,
+            porcentaje: savedPct,
+            resultados_por_area: resultadosPorArea,
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showResults]);
 
     // Timer logic — only active in full exam mode
     useEffect(() => {
@@ -635,6 +702,16 @@ const SimuladorPro = () => {
     const metaClose = !!selectedEscuela && metaDiff > 0 && metaDiff <= 10;
     const areasText = topWrongAreas.join(', ') || 'Todas las materias';
 
+    const areaBarData = Object.values(
+        activeQuestions.reduce((acc, q) => {
+            const label = q.area === 'Formación Cívica y Ética' ? 'Cívica' : q.area;
+            if (!acc[label]) acc[label] = { area: label, correctas: 0, incorrectas: 0 };
+            if (userAnswers[q.id] === q.correctIndex) acc[label].correctas++;
+            else acc[label].incorrectas++;
+            return acc;
+        }, {} as Record<string, { area: string; correctas: number; incorrectas: number }>)
+    );
+
     if (showResults) {
         return (
             <div className="min-h-screen bg-slate-950 p-6 md:p-12 overflow-y-auto">
@@ -742,6 +819,131 @@ const SimuladorPro = () => {
                         <Button onClick={() => navigate("/")} className="flex-1 h-14 rounded-xl bg-primary text-xs font-black uppercase tracking-widest">
                             <LayoutDashboard className="mr-2 h-4 w-4" /> Volver al Dashboard
                         </Button>
+                    </div>
+
+                    {/* Ver mi progreso */}
+                    <div className="space-y-4">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                if (!showCharts) {
+                                    setShowCharts(true);
+                                    fetchChartData();
+                                } else {
+                                    setShowCharts(false);
+                                }
+                            }}
+                            className="w-full flex items-center justify-center gap-2 bg-slate-900/50 border border-white/10 hover:bg-white/5 text-white font-black py-4 px-6 rounded-2xl transition-all text-sm uppercase tracking-widest"
+                        >
+                            <BarChart3 className="h-5 w-5 text-indigo-400" />
+                            {showCharts ? "Ocultar Progreso" : "📊 Ver mi Progreso"}
+                        </button>
+
+                        {showCharts && (
+                            <div className="bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 space-y-10">
+                                {!user ? (
+                                    <div className="text-center py-8 space-y-3">
+                                        <p className="text-slate-300 font-bold text-sm">Regístrate para guardar tu progreso y ver tus gráficas</p>
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate("/auth?ref=simulador")}
+                                            className="text-primary text-sm underline font-bold"
+                                        >
+                                            Crear cuenta gratis →
+                                        </button>
+                                    </div>
+                                ) : chartsLoading ? (
+                                    <div className="text-center py-8 text-slate-500 text-sm animate-pulse">Cargando historial…</div>
+                                ) : (
+                                    <>
+                                        {/* Chart 1 — Score % over time */}
+                                        <div className="space-y-3">
+                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Puntaje % — Últimos Simulacros</h4>
+                                            {(!chartData || chartData.length === 0) ? (
+                                                <p className="text-xs text-slate-600 text-center py-4">Es tu primer simulacro guardado — ¡completa más para ver tendencias!</p>
+                                            ) : (
+                                                <div className="h-52">
+                                                    <ResponsiveContainer width="100%" height="100%">
+                                                        <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                                                            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                            <XAxis
+                                                                dataKey="fecha"
+                                                                tickFormatter={s => new Date(s).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
+                                                                tick={{ fill: '#64748b', fontSize: 10 }}
+                                                            />
+                                                            <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 10 }} />
+                                                            <RechartsTooltip
+                                                                contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                                                                formatter={(v) => [`${v}%`, 'Puntaje']}
+                                                                labelFormatter={s => new Date(s).toLocaleDateString('es-MX', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                                            />
+                                                            <Line type="monotone" dataKey="porcentaje" stroke="#7c3aed" strokeWidth={2} dot={{ fill: '#7c3aed', r: 4 }} activeDot={{ r: 6 }} />
+                                                        </LineChart>
+                                                    </ResponsiveContainer>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Chart 2 — Aciertos por materia (current simulacro) */}
+                                        <div className="space-y-3">
+                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Aciertos por Materia — Este Simulacro</h4>
+                                            <div className="h-64">
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <BarChart data={areaBarData} layout="vertical" margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+                                                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
+                                                        <XAxis type="number" tick={{ fill: '#64748b', fontSize: 10 }} allowDecimals={false} />
+                                                        <YAxis type="category" dataKey="area" width={72} tick={{ fill: '#94a3b8', fontSize: 9 }} />
+                                                        <RechartsTooltip
+                                                            contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                                                        />
+                                                        <Bar dataKey="correctas" name="Correctas" stackId="a" fill="#10b981" radius={[0, 0, 0, 0]} />
+                                                        <Bar dataKey="incorrectas" name="Incorrectas" stackId="a" fill="#ef4444" radius={[0, 4, 4, 0]} />
+                                                    </BarChart>
+                                                </ResponsiveContainer>
+                                            </div>
+                                        </div>
+
+                                        {/* Chart 3 — Progress vs school target */}
+                                        {selectedEscuela && (
+                                            <div className="space-y-3">
+                                                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                    Progreso vs Meta — {selectedEscuela.nombre} ({targetPercentage}% mín.)
+                                                </h4>
+                                                {(!chartData || chartData.length === 0) ? (
+                                                    <p className="text-xs text-slate-600 text-center py-4">Sin datos históricos aún</p>
+                                                ) : (
+                                                    <div className="h-52">
+                                                        <ResponsiveContainer width="100%" height="100%">
+                                                            <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                                                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                                                <XAxis
+                                                                    dataKey="fecha"
+                                                                    tickFormatter={s => new Date(s).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
+                                                                    tick={{ fill: '#64748b', fontSize: 10 }}
+                                                                />
+                                                                <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 10 }} />
+                                                                <RechartsTooltip
+                                                                    contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                                                                    formatter={(v) => [`${v}%`, 'Puntaje']}
+                                                                    labelFormatter={s => new Date(s).toLocaleDateString('es-MX', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                                                />
+                                                                <ReferenceLine
+                                                                    y={targetPercentage}
+                                                                    stroke="#f59e0b"
+                                                                    strokeDasharray="4 4"
+                                                                    label={{ value: `Meta ${targetPercentage}%`, fill: '#f59e0b', fontSize: 10, position: 'insideTopRight' }}
+                                                                />
+                                                                <Line type="monotone" dataKey="porcentaje" stroke="#7c3aed" strokeWidth={2} dot={{ fill: '#7c3aed', r: 4 }} activeDot={{ r: 6 }} />
+                                                            </LineChart>
+                                                        </ResponsiveContainer>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* AITutor CTA */}
