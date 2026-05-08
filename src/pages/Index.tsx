@@ -823,7 +823,7 @@ const Index = () => {
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <Button
                   variant="primary"
-                  onClick={() => window.open("/libro-ecoems", "_blank")}
+                  onClick={() => window.open("/libro/manual_digital_ECOEMS.html", "_blank")}
                   className="h-20 px-10 rounded-3xl text-lg font-black uppercase tracking-[0.2em] group"
                 >
                   <BookOpen className="mr-2 h-6 w-6" />
