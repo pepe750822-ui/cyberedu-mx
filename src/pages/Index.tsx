@@ -370,6 +370,11 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Reto Diario Express - Ahora más arriba para máxima visibilidad */}
+      <div className="container mx-auto px-4 pt-12 -mb-8">
+        <DailyChallenge />
+      </div>
+
       {/* Areas Section */}
       <section id="areas" className="bg-gray-50 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
       <div className="container mx-auto px-4 py-16 md:py-20">
@@ -606,9 +611,6 @@ const Index = () => {
       {/* Dashboard de Progreso Personalizado */}
       <section className="bg-gray-50 dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
       <div className="container mx-auto px-4 relative z-10 py-16 space-y-12">
-
-        {/* Reto Diario Express */}
-        <DailyChallenge />
 
         <Suspense fallback={<div className="h-24 animate-pulse bg-muted rounded-3xl" />}>
           <PredictiveFeedback />

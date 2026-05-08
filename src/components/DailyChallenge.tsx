@@ -209,9 +209,9 @@ export const DailyChallenge = () => {
                <div className="h-1.5 w-1.5 rounded-full bg-slate-500" />
                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Materia: {challenge.area}</p>
              </div>
-             <div className="flex items-center gap-1.5">
-               <Sparkles className="h-3 w-3 text-amber-500" />
-               <p className="text-[10px] text-amber-500/80 uppercase tracking-widest font-black">Recompensa: 1 Token IA</p>
+             <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
+               <Sparkles className="h-3 w-3 text-amber-500 animate-pulse" />
+               <p className="text-[10px] text-amber-500 uppercase tracking-widest font-black">¡GANA 1 TOKEN IA GRATIS!</p>
              </div>
           </div>
         </div>
