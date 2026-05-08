@@ -188,72 +188,73 @@ const Index = () => {
   }, [searchQuery]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-surface">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden mb-12 border-b border-primary/20">
+      <section className="relative overflow-hidden mb-0 border-b border-surface-3 bg-surface">
         <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Estudiantes preparándose para el examen ECOEMS 2026" 
+          <img
+            src={heroImage}
+            alt="Estudiantes preparándose para el examen ECOEMS 2026"
             className="w-full h-full object-cover"
             loading="eager"
             fetchpriority="high"
           />
-          <div className="absolute inset-0 bg-background/70" />
-          <div className="absolute inset-0 hero-gradient opacity-95" />
+          <div className="absolute inset-0 bg-white/90" />
+          <div className="absolute inset-0 bg-white/60" />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-emerald-500/10 backdrop-blur-md border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-sm font-black px-4 py-2 rounded-full mb-6 animate-in fade-in slide-in-from-left duration-700 uppercase tracking-widest text-[11px]">
+              <div className="inline-flex items-center gap-2 bg-accent-light border border-accent-ds/20 text-accent-ds text-[11px] font-black px-4 py-2 rounded-full mb-6 animate-fade-in uppercase tracking-widest">
                 <span className="relative flex h-2 w-2 mr-1">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ds opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ds" />
                 </span>
                 ECOEMS 2026 · 20-28 Junio · Prepárate Ya
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-foreground mb-6 leading-tight text-balance animate-in fade-in slide-in-from-left duration-1000">
-                Aprueba el ECOEMS <br /><span className="text-gradient-purple underline decoration-primary/30 underline-offset-8">en 45 Días</span>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-ink mb-6 leading-tight text-balance animate-fade-in">
+                Aprueba el ECOEMS <br /><span className="text-accent-ds">en 45 Días</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg animate-in fade-in slide-in-from-left duration-1000 delay-150">
-                <span className="text-foreground font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
+              <p className="text-lg md:text-xl text-ink-2 mb-8 leading-relaxed max-w-lg animate-fade-in">
+                <span className="text-ink font-bold">Tutor IA disponible 24/7</span> + <span className="text-accent-ds font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
               </p>
-              <div className="flex items-center gap-3 mb-10 -mt-2 animate-in fade-in slide-in-from-left duration-1000 delay-200">
-                <div className="h-px w-8 bg-violet-500/30 hidden md:block" />
-                <span className="text-[11px] font-black uppercase tracking-[0.15em] text-violet-500 flex items-center gap-2 drop-shadow-sm">
+              <div className="flex items-center gap-3 mb-10 -mt-2 animate-fade-in">
+                <div className="h-px w-8 bg-accent-ds/30 hidden md:block" />
+                <span className="text-[11px] font-black uppercase tracking-[0.15em] text-accent-ds flex items-center gap-2">
                   <Bot className="h-4 w-4" />
                   Powered by Claude AI
                 </span>
               </div>
-              <div className="flex flex-wrap gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
-                  <Video className="h-5 w-5 text-secondary" />
-                  <span className="text-sm font-medium">{totalVideos} Videos HD</span>
+              <div className="flex flex-wrap gap-4 animate-fade-in">
+                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                  <Video className="h-5 w-5 text-accent-ds" />
+                  <span className="text-sm font-semibold">{totalVideos} Videos HD</span>
                 </div>
-                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-accent" />
-                  <span className="text-sm font-medium">{areas.length} Áreas Críticas</span>
+                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-accent-ds" />
+                  <span className="text-sm font-semibold">{areas.length} Áreas Críticas</span>
                 </div>
-                <div className="flex items-center gap-2 text-foreground/90 glass-card px-4 py-2 rounded-lg shadow-sm">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-sm font-medium">{stats.completos} Completados</span>
+                <div className="flex items-center gap-2 text-ink bg-surface-2 border border-surface-3 px-4 py-2 rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-ds-success" />
+                  <span className="text-sm font-semibold">{stats.completos} Completados</span>
                 </div>
                 <Button
-                  variant="ghost"
+                  variant="ds-ghost"
                   size="sm"
                   onClick={() => navigate("/reportes")}
-                  className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/10 px-4 py-2 rounded-lg transition-all font-bold"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold"
                 >
                   <BarChart3 className="h-5 w-5" />
                   <span>Ver Analíticos</span>
                 </Button>
               </div>
-              <div className="mt-6 flex flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
+              <div className="mt-8 flex flex-wrap gap-4 animate-fade-in">
                 <Button
+                  variant="primary"
                   onClick={() => navigate("/simulador-pro")}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-black px-6 py-6 rounded-2xl shadow-lg shadow-indigo-500/25 transition-all hover:scale-105 text-sm md:text-base"
+                  className="font-black px-8 py-6 rounded-2xl text-sm md:text-base"
                 >
                   🎯 Simulador Pro — 512 reactivos GRATIS
                 </Button>
@@ -370,12 +371,13 @@ const Index = () => {
       </section>
 
       {/* Areas Section */}
-      <section id="areas" className="container mx-auto px-4 py-16 md:py-20">
+      <section id="areas" className="bg-surface-2 border-b border-surface-3">
+      <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-gradient-blue italic">
+          <h2 className="text-3xl md:text-5xl font-display font-black mb-4 text-ink">
             Sistemas de Aprendizaje
           </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium">
+          <p className="text-ink-3 text-lg max-w-xl mx-auto font-medium">
             Entrena en las áreas que el examen demanda. Domina cada módulo y asegura tu lugar.
           </p>
         </div>
@@ -425,6 +427,7 @@ const Index = () => {
             );
           })}
         </div>
+      </div>
       </section>
 
       {/* AI Tutor Showcase — right after hero so it's immediately visible */}
@@ -438,9 +441,8 @@ const Index = () => {
             transition={{ duration: 0.4 }}
             className="container mx-auto px-4 mb-12"
           >
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-[2.5rem] blur opacity-30 group-hover:opacity-50 transition duration-1000" />
-              <div className="relative bg-card border border-violet-500/30 rounded-[2.5rem] overflow-hidden shadow-2xl">
+            <div className="relative">
+              <div className="relative bg-surface border border-surface-3 rounded-[2rem] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
 
                 {/* Dismiss button */}
                 <button
@@ -459,11 +461,11 @@ const Index = () => {
                         <Bot className="h-6 w-6 text-violet-400" />
                       </div>
                       <div>
-                        <h2 className="text-2xl md:text-3xl font-black text-foreground leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-display font-black text-ink leading-tight">
                           Tu Tutor IA para el ECOEMS 2026
                         </h2>
-                        <p className="text-sm text-muted-foreground font-medium mt-0.5">
-                          Powered by <span className="text-violet-400 font-bold">Claude AI · Anthropic</span>
+                        <p className="text-sm text-ink-3 font-medium mt-0.5">
+                          Powered by <span className="text-accent-ds font-bold">Claude AI · Anthropic</span>
                         </p>
                       </div>
                     </div>
@@ -484,14 +486,14 @@ const Index = () => {
                       <button
                         key={item.emoji}
                         onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message: item.query } }))}
-                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-muted/50 border border-border hover:bg-violet-500/10 hover:border-violet-500/30 transition-all text-left group/cap"
+                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-surface-2 border border-surface-3 hover:bg-accent-light hover:border-accent-ds/20 transition-all text-left group/cap"
                       >
                         <span className="text-2xl">{item.emoji}</span>
                         <div>
-                          <p className="text-[11px] font-black text-foreground leading-snug group-hover/cap:text-violet-400 transition-colors">
+                          <p className="text-[11px] font-black text-ink leading-snug group-hover/cap:text-accent-ds transition-colors">
                             {item.label}
                           </p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5">→ {item.desc}</p>
+                          <p className="text-[10px] text-ink-3 mt-0.5">→ {item.desc}</p>
                         </div>
                       </button>
                     ))}
@@ -502,7 +504,7 @@ const Index = () => {
                     {user ? (
                       <button
                         onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
-                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-violet-500/25"
+                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-accent-ds hover:bg-accent-ds-2 text-white font-black text-sm uppercase tracking-widest transition-all shadow-sm press"
                       >
                         <Bot className="h-4 w-4" />
                         Ir al Tutor IA
@@ -510,7 +512,7 @@ const Index = () => {
                     ) : (
                       <button
                         onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
-                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-violet-500/25"
+                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-accent-ds hover:bg-accent-ds-2 text-white font-black text-sm uppercase tracking-widest transition-all shadow-sm press"
                       >
                         <Zap className="h-4 w-4" />
                         Pruébalo gratis
@@ -528,24 +530,23 @@ const Index = () => {
       </AnimatePresence>
 
       {/* 📚 Buscador de Contenido Gratuito */}
-      <section className="container mx-auto px-4 relative z-20 mb-12">
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-          <div className="relative bg-card/80 backdrop-blur-xl border border-primary/20 rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-visible">
-            <div className="absolute -right-10 -top-10 opacity-[0.05] pointer-events-none">
-              <Search className="h-64 w-64 text-primary" />
+      <section className="bg-surface border-b border-surface-3">
+      <div className="container mx-auto px-4 py-12 relative z-20">
+        <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.08)] overflow-visible">
+            <div className="absolute -right-10 -top-10 opacity-[0.03] pointer-events-none">
+              <Search className="h-64 w-64 text-ink" />
             </div>
-            
+
             <div className="relative z-10 flex flex-col items-center text-center space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
                 <Sparkles className="h-4 w-4" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-blue-300">Acceso 100% Libre</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Acceso 100% Libre</span>
               </div>
-              
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground max-w-4xl text-balance">
-                📚 Busca tu tema y accede al material completo <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 italic text-2xl md:text-3xl">
-                  Guía ECOEMS 2026, UNAM y COMIPEMS: Videos + Infografías + PDFs + Podcasts — Todo GRATIS
+
+              <h2 className="text-3xl md:text-5xl font-display font-black text-ink max-w-4xl text-balance">
+                Busca tu tema y accede al material completo <br />
+                <span className="text-ink-2 text-2xl md:text-3xl font-semibold">
+                  Videos · Infografías · PDFs · Podcasts — Todo GRATIS
                 </span>
               </h2>
               
@@ -570,19 +571,19 @@ const Index = () => {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="top-full left-0 right-0 mt-4 bg-card/95 backdrop-blur-2xl border border-border rounded-2xl p-2 shadow-2xl overflow-y-auto max-h-[400px] divide-y divide-border scrollbar-thin scrollbar-thumb-primary/20"
+                      className="top-full left-0 right-0 mt-4 bg-surface border border-surface-3 rounded-2xl p-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-y-auto max-h-[400px] divide-y divide-surface-3"
                     >
                       {filteredTopics.map((topic, i) => (
                         <button
                           key={`${topic.areaId}-${topic.videoId}-${i}`}
                           onClick={() => navigate(`/area/${topic.areaId}?video=${topic.videoId}`)}
-                          className="w-full flex items-center justify-between p-4 hover:bg-primary/5 transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
+                          className="w-full flex items-center justify-between p-4 hover:bg-accent-light transition-colors text-left group first:rounded-t-xl last:rounded-b-xl"
                         >
                           <div className="flex-1 min-w-0 pr-4">
-                            <p className="text-[10px] font-black text-primary/70 uppercase tracking-widest mb-0.5">{topic.areaName}</p>
-                            <p className="text-sm md:text-base font-bold text-foreground group-hover:text-primary transition-colors truncate">{topic.title}</p>
+                            <p className="text-[10px] font-black text-accent-ds uppercase tracking-widest mb-0.5">{topic.areaName}</p>
+                            <p className="text-sm md:text-base font-bold text-ink group-hover:text-accent-ds transition-colors truncate">{topic.title}</p>
                           </div>
-                          <div className="h-8 w-8 rounded-full bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                          <div className="h-8 w-8 rounded-full bg-accent-light flex items-center justify-center text-accent-ds group-hover:bg-accent-ds group-hover:text-white transition-all">
                             <ChevronRight className="h-4 w-4" />
                           </div>
                         </button>
@@ -592,10 +593,10 @@ const Index = () => {
                 </AnimatePresence>
               </div>
               
-              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-emerald-500" /> 100% Gratis - Empieza ahora</span>
-                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-blue-500" /> Multimedia Premium</span>
-                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-violet-500" /> Disponible 24/7</span>
+              <div className="flex flex-wrap justify-center gap-4 text-[10px] font-black uppercase tracking-widest text-ink-3">
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-ds-success" /> 100% Gratis - Empieza ahora</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-accent-ds" /> Multimedia Premium</span>
+                <span className="flex items-center gap-1.5"><CheckCircle className="h-3 w-3 text-accent-ds" /> Disponible 24/7</span>
               </div>
             </div>
           </div>
@@ -603,7 +604,8 @@ const Index = () => {
       </section>
 
       {/* Dashboard de Progreso Personalizado */}
-      <section className="container mx-auto px-4 relative z-10 mt-12 mb-16 space-y-12">
+      <section className="bg-surface-2 border-t border-surface-3">
+      <div className="container mx-auto px-4 relative z-10 py-16 space-y-12">
         
         {/* Reto Diario Express */}
         <DailyChallenge />
@@ -619,68 +621,64 @@ const Index = () => {
         </Suspense>
 
         {/* Simuladores Premium Section */}
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary via-indigo-500 to-purple-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative bg-card border border-border rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-xl">
-            <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-              <Trophy className="h-48 w-48 text-foreground -rotate-12" />
+        <div className="relative">
+          <div className="relative bg-ink rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-xl">
+            <div className="absolute top-0 right-0 p-12 opacity-[0.06] pointer-events-none">
+              <Trophy className="h-48 w-48 text-white -rotate-12" />
             </div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="space-y-4 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                  <Zap className="h-4 w-4 animate-bounce" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">NUEVO: Acceso Libre</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white">
+                  <Zap className="h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Acceso Libre</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground">
-                  Simulador <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-indigo-500 italic">Oficial ECOEMS</span>
+                <h2 className="text-3xl md:text-5xl font-display font-black text-white">
+                  Simulador Oficial ECOEMS
                 </h2>
-                <p className="text-muted-foreground text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                <p className="text-white/70 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Pon a prueba tus conocimientos con una réplica exacta del examen real. Cronómetro oficial, resultados con predicción AI y explicaciones paso a paso.
                 </p>
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <Target className="h-3 w-3 text-emerald-500" /> 128 Reactivos
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/60 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Target className="h-3 w-3 text-white/80" /> 128 Reactivos
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <Clock className="h-3 w-3 text-indigo-500" /> 3 Horas
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/60 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <Clock className="h-3 w-3 text-white/80" /> 3 Horas
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <BarChart3 className="h-3 w-3 text-amber-500" /> Predicción AI
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/60 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+                    <BarChart3 className="h-3 w-3 text-white/80" /> Predicción AI
                   </div>
                 </div>
               </div>
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <Button
                   onClick={() => navigate("/simulador-pro")}
-                  className="h-20 px-10 rounded-3xl bg-primary hover:bg-primary/90 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(var(--primary),0.3)] transition-all hover:scale-105 active:scale-95 group"
+                  className="h-20 px-10 rounded-3xl bg-white hover:bg-surface-2 text-ink text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(255,255,255,0.15)] transition-all hover:scale-105 active:scale-95 group press"
                 >
                   SIMULADOR REAL
                   <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
                 </Button>
                 <Button
-                  variant="outline"
                   onClick={() => window.location.href = "https://cyberedumx.com/studio/nguia.html"}
-                  className="h-14 rounded-2xl border-border hover:bg-muted text-[10px] font-black uppercase tracking-widest text-muted-foreground group transition-all"
+                  className="h-14 rounded-2xl bg-white/10 border border-white/20 hover:bg-white/20 text-[10px] font-black uppercase tracking-widest text-white group transition-all"
                 >
                   CONSOLA STUDIO (PRO)
-                  <Zap className="ml-2 h-4 w-4 text-yellow-500 group-hover:scale-125 transition-transform" />
+                  <Zap className="ml-2 h-4 w-4 text-yellow-400 group-hover:scale-125 transition-transform" />
                 </Button>
 
                 {/* Nuevos Simuladores PHP */}
                 <div className="flex gap-2">
                   <Button
-                    variant="ghost"
                     size="sm"
                     onClick={() => window.location.href = `https://cdn.cyberedumx.com/ecoems2026/simuladores/simulador_completo.php?origin=${encodeURIComponent(window.location.origin)}`}
-                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-indigo-300 hover:text-indigo-200"
+                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter bg-white/5 border border-white/10 hover:bg-white/15 transition-all text-white/70 hover:text-white"
                   >
                     Simulador ECOEMS (Completo)
                   </Button>
                   <Button
-                    variant="ghost"
                     size="sm"
                     onClick={() => window.location.href = `https://cyberedumx.com/ecoems2026/simuladores/simulador_politecnico.php?origin=${encodeURIComponent(window.location.origin)}`}
-                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter border border-white/5 hover:bg-white/10 transition-all text-rose-400 hover:text-rose-300"
+                    className="flex-1 h-12 rounded-xl text-[9px] font-black uppercase tracking-tighter bg-white/5 border border-white/10 hover:bg-white/15 transition-all text-white/70 hover:text-white"
                   >
                     Simulador POLI (IPN)
                   </Button>
@@ -718,21 +716,21 @@ const Index = () => {
               icon: Trophy
             }
           ].map((goal, i) => (
-            <div key={i} className="bg-card border border-border p-6 rounded-3xl group shadow-sm hover:border-primary/20 transition-all">
+            <div key={i} className="bg-surface border border-surface-3 p-6 rounded-2xl hover-lift shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-all">
               <div className="flex items-center gap-4 mb-4">
-                <div className={cn("p-3 rounded-2xl", goal.bg, goal.color)}>
-                  <goal.icon className="h-5 w-5" />
+                <div className="p-3 rounded-2xl bg-accent-light">
+                  <goal.icon className="h-5 w-5 text-accent-ds" />
                 </div>
                 <div>
-                  <h4 className="font-black uppercase tracking-tighter text-sm text-foreground">{goal.title}</h4>
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Meta Mensual</p>
+                  <h4 className="font-semibold text-sm text-ink">{goal.title}</h4>
+                  <p className="text-[10px] text-ink-3 font-bold uppercase tracking-widest">Meta Mensual</p>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground mb-4 line-clamp-1">{goal.desc}</p>
+              <p className="text-xs text-ink-3 mb-4 line-clamp-1">{goal.desc}</p>
               <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-ink-3">
                   <span>Progreso</span>
-                  <span className={goal.color}>{goal.progress}%</span>
+                  <span className="text-accent-ds font-black">{goal.progress}%</span>
                 </div>
                 <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
                   <div
@@ -746,23 +744,22 @@ const Index = () => {
         </div>
 
         {/* 🏆 Digital Certifications Section */}
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative bg-card border border-amber-500/20 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-xl shadow-amber-500/5">
-            <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-              <Award className="h-48 w-48 text-amber-600 rotate-12" />
+        <div className="relative">
+          <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
+            <div className="absolute top-0 right-0 p-12 opacity-[0.04] pointer-events-none">
+              <Award className="h-48 w-48 text-ink rotate-12" />
             </div>
 
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
               <div className="space-y-6 text-center lg:text-left flex-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-500">
-                  <Star className="h-3.5 w-3.5 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
+                  <Star className="h-3.5 w-3.5" />
                   <span className="text-[10px] font-black uppercase tracking-widest">Recompensa Académica</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground">
-                  Obtén tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-amber-400 dark:from-amber-200 dark:to-amber-500 italic">Certificación Digital</span>
+                <h2 className="text-3xl md:text-5xl font-display font-black text-ink">
+                  Obtén tu <span className="text-accent-ds">Certificación Digital</span>
                 </h2>
-                <p className="text-muted-foreground text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                <p className="text-ink-2 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Al completar tus simuladores con éxito, desbloquearás diplomas premium que avalan tu nivel de preparación. Descárgalos en PDF y compártelos en tus redes profesionales.
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
@@ -794,40 +791,40 @@ const Index = () => {
         </div>
 
         {/* Manual Digital ECOEMS Section */}
-        <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative bg-card border border-border rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-xl">
-            <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-              <BookOpen className="h-48 w-48 text-foreground -rotate-12" />
+        <div className="relative">
+          <div className="relative bg-surface border border-surface-3 rounded-[2rem] p-8 md:p-12 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover-lift">
+            <div className="absolute top-0 right-0 p-12 opacity-[0.04] pointer-events-none">
+              <BookOpen className="h-48 w-48 text-ink -rotate-12" />
             </div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="space-y-4 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light border border-accent-ds/20 text-accent-ds">
                   <BookOpen className="h-4 w-4" />
                   <span className="text-[10px] font-black uppercase tracking-widest">Guía Completa</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-foreground">
-                  Manual <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400 italic">Digital ECOEMS</span>
+                <h2 className="text-3xl md:text-5xl font-display font-black text-ink">
+                  Manual Digital ECOEMS
                 </h2>
-                <p className="text-muted-foreground text-sm md:text-base max-w-xl font-medium leading-relaxed">
+                <p className="text-ink-2 text-sm md:text-base max-w-xl font-medium leading-relaxed">
                   Tu guía estratégica completa para dominar el examen. Temas desglosados, tips de estudio, ejercicios resueltos y todo lo que necesitas en un solo lugar.
                 </p>
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <BookOpen className="h-3 w-3 text-amber-500" /> Temario Completo
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                    <BookOpen className="h-3 w-3 text-accent-ds" /> Temario Completo
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <Target className="h-3 w-3 text-orange-500" /> Ejercicios Resueltos
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                    <Target className="h-3 w-3 text-accent-ds" /> Ejercicios Resueltos
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-xl border border-border">
-                    <Sparkles className="h-3 w-3 text-rose-500" /> Tips Estratégicos
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-ink-3 bg-surface-2 px-3 py-1.5 rounded-xl border border-surface-3">
+                    <Sparkles className="h-3 w-3 text-accent-ds" /> Tips Estratégicos
                   </div>
                 </div>
               </div>
               <div className="flex flex-col gap-3 w-full md:w-auto">
                 <Button
+                  variant="primary"
                   onClick={() => window.open("/libro-ecoems", "_blank")}
-                  className="h-20 px-10 rounded-3xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-lg font-black uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(245,158,11,0.3)] transition-all hover:scale-105 active:scale-95 group"
+                  className="h-20 px-10 rounded-3xl text-lg font-black uppercase tracking-[0.2em] group"
                 >
                   <BookOpen className="mr-2 h-6 w-6" />
                   ABRIR MANUAL
@@ -939,14 +936,14 @@ const Index = () => {
         </Suspense>
 
         {/* Studio Simulators Section */}
-        <div className="pt-16 pb-8">
+        <div className="pt-8 pb-8">
           <div className="flex items-center gap-3 mb-8">
-            <div className="h-10 w-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
-              <Sparkles className="h-5 w-5 text-indigo-400" />
+            <div className="h-10 w-10 rounded-2xl bg-accent-light flex items-center justify-center border border-accent-ds/20">
+              <Sparkles className="h-5 w-5 text-accent-ds" />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-foreground">Consola Studio: Por Materia</h2>
-              <p className="text-muted-foreground text-xs font-semibold uppercase tracking-widest mt-1">Entrenamiento Intensivo (630+ Reactivos)</p>
+              <h2 className="text-2xl md:text-3xl font-display font-black text-ink">Consola Studio: Por Materia</h2>
+              <p className="text-ink-3 text-xs font-semibold uppercase tracking-widest mt-1">Entrenamiento Intensivo (630+ Reactivos)</p>
             </div>
           </div>
 
@@ -954,15 +951,15 @@ const Index = () => {
             {areas.filter(a => studioMapping[a.id]).map((area) => (
               <div
                 key={area.id}
-                className="bg-card border border-border rounded-2xl p-5 hover:border-primary/30 transition-all group relative overflow-hidden shadow-sm"
+                className="bg-surface border border-surface-3 rounded-2xl p-5 hover-lift transition-all group relative overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
               >
-                <div className={`absolute top-0 left-0 w-1 h-full ${area.gradientClass.split(' ')[1]}`} />
+                <div className="absolute top-0 left-0 w-1 h-full bg-accent-ds rounded-l-2xl" />
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-muted rounded-lg">
-                      <area.icon className="h-4 w-4 text-primary" />
+                    <div className="p-2 bg-accent-light rounded-lg">
+                      <area.icon className="h-4 w-4 text-accent-ds" />
                     </div>
-                    <h4 className="font-bold text-foreground text-sm">{area.name}</h4>
+                    <h4 className="font-semibold text-ink text-sm">{area.name}</h4>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -974,10 +971,10 @@ const Index = () => {
                         title: sim.name,
                         description: sim.description
                       })}
-                      className="flex items-center justify-between w-full p-3 rounded-xl bg-muted/30 hover:bg-muted/60 text-[11px] font-bold text-muted-foreground hover:text-foreground transition-all border border-transparent hover:border-border"
+                      className="flex items-center justify-between w-full p-3 rounded-xl bg-surface-2 hover:bg-accent-light text-[11px] font-bold text-ink-3 hover:text-accent-ds transition-all border border-surface-3 hover:border-accent-ds/20"
                     >
                       <span className="truncate mr-2 uppercase tracking-tight">{sim.name}</span>
-                      <ChevronRight className="h-3 w-3 text-primary shrink-0" />
+                      <ChevronRight className="h-3 w-3 text-accent-ds shrink-0" />
                     </button>
                   ))}
                 </div>
@@ -985,6 +982,7 @@ const Index = () => {
             ))}
           </div>
         </div>
+      </div>
       </section>
 
       <Footer />
