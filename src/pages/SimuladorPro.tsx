@@ -1321,7 +1321,7 @@ const SimuladorPro = () => {
                                                 <span className="text-sm text-violet-300">¿No entendiste este tema?</span>
                                                 <button
                                                     onClick={() => {
-                                                        const message = `Explícame el tema de ${q.area}: "${q.text.slice(0, 80)}"`;
+                                                        const message = `No entendí esta pregunta del ECOEMS:\n\n"${q.text}"\n\nOpciones:\n${q.options.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\nLa respuesta correcta es: ${q.options[q.correctIndex]}\n\n¿Me explicas por qué?`;
                                                         window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
                                                     }}
                                                     className="shrink-0 text-xs bg-violet-600 hover:bg-violet-500 text-white px-3 py-1.5 rounded-lg transition-all font-semibold"
