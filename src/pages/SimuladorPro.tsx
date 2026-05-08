@@ -626,9 +626,11 @@ const SimuladorPro = () => {
         .slice(0, 3)
         .map(([area]) => area);
 
-    // Meta comparisons
-    const myScore = Math.round(percentage);
-    const metaDiff = selectedEscuela ? selectedEscuela.puntaje - myScore : 0;
+    // Meta comparisons — normalize both sides to percentage so practice (20q) and
+    // full exam (128q) are comparable against the school's minimum aciertos/128.
+    const myPercentage = Math.round((score / activeQuestions.length) * 100);
+    const targetPercentage = selectedEscuela ? Math.round((selectedEscuela.puntaje / 128) * 100) : 0;
+    const metaDiff = selectedEscuela ? targetPercentage - myPercentage : 0;
     const metaSuccess = !!selectedEscuela && metaDiff <= 0;
     const metaClose = !!selectedEscuela && metaDiff > 0 && metaDiff <= 10;
     const areasText = topWrongAreas.join(', ') || 'Todas las materias';
@@ -693,10 +695,10 @@ const SimuladorPro = () => {
                                             <div className="space-y-1 min-w-0">
                                                 <p className={cn("text-sm font-black leading-snug", metaSuccess ? "text-emerald-400" : metaClose ? "text-amber-400" : "text-red-400")}>
                                                     {metaSuccess
-                                                        ? `¡Alcanzas ${selectedEscuela.nombre}! Tu puntaje (${myScore}) supera el mínimo (${selectedEscuela.puntaje})`
+                                                        ? `¡Alcanzas ${selectedEscuela!.nombre}! Tu rendimiento (${myPercentage}%) supera el mínimo requerido (${targetPercentage}%)`
                                                         : metaClose
-                                                        ? `¡Casi! Te faltan ${metaDiff} puntos para ${selectedEscuela.nombre}.`
-                                                        : `Necesitas mejorar ${metaDiff} puntos para ${selectedEscuela.nombre}.`
+                                                        ? `¡Casi! Te faltan ${metaDiff}% para ${selectedEscuela!.nombre}.`
+                                                        : `Necesitas mejorar ${metaDiff}% para ${selectedEscuela!.nombre}.`
                                                     }
                                                 </p>
                                                 {!metaSuccess && (
@@ -717,12 +719,12 @@ const SimuladorPro = () => {
 
                                 <div className="flex justify-between items-center">
                                     <span className="text-xs font-bold text-slate-400">Tu Puntaje Final</span>
-                                    <span className="text-sm font-black text-white">{score} aciertos</span>
+                                    <span className="text-sm font-black text-white">{myPercentage}% <span className="text-slate-500 font-bold">({score}/{activeQuestions.length})</span></span>
                                 </div>
                                 {selectedEscuela && (
                                     <div className="flex justify-between items-center">
                                         <span className="text-xs font-bold text-slate-400">Mínimo {selectedEscuela.nombre}</span>
-                                        <span className="text-sm font-black text-amber-400">{selectedEscuela.puntaje} aciertos</span>
+                                        <span className="text-sm font-black text-amber-400">{targetPercentage}% <span className="text-slate-500 font-bold">({selectedEscuela.puntaje}/128)</span></span>
                                     </div>
                                 )}
                             </div>
