@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { 
   Search, User, Database, Plus, Minus, ShieldCheck, 
   ArrowLeft, Zap, Flame, Trash2, Calendar, LayoutGrid,
-  CheckCircle, List
+  CheckCircle, List, BarChart3, TrendingUp, Target, PieChart
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 
 const AdminPage = () => {
   const { user, profile, isLoading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'challenges'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'challenges' | 'analytics'>('users');
   
   // User Management State
   const [email, setEmail] = useState('');
@@ -30,6 +31,10 @@ const AdminPage = () => {
   });
   
   const [message, setMessage] = useState('');
+  
+  // Academic Analytics State
+  const [globalStats, setGlobalStats] = useState<any>(null);
+  const [areaPerformance, setAreaPerformance] = useState<any[]>([]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -48,7 +53,19 @@ const AdminPage = () => {
     if (activeTab === 'challenges') {
       fetchChallenges();
     }
+    if (activeTab === 'analytics') {
+      fetchAnalytics();
+    }
   }, [activeTab]);
+
+  const fetchAnalytics = async () => {
+    setLoading(true);
+    const { data: stats } = await supabase.from('simulador_global_stats').select('*').single();
+    const { data: areas } = await supabase.from('simulador_area_performance').select('*');
+    if (stats) setGlobalStats(stats);
+    if (areas) setAreaPerformance(areas);
+    setLoading(false);
+  };
 
   const fetchChallenges = async () => {
     setLoading(true);
@@ -189,6 +206,12 @@ const AdminPage = () => {
           >
             <Flame className="h-3.5 w-3.5" /> Retos Diarios
           </button>
+          <button 
+            onClick={() => setActiveTab('analytics')}
+            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'analytics' ? 'bg-primary text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            <BarChart3 className="h-3.5 w-3.5" /> Analíticas Académicas
+          </button>
         </div>
 
         <div className="grid gap-8">
@@ -278,7 +301,91 @@ const AdminPage = () => {
                   </div>
                 </div>
               )}
-            </>
+            </div>
+          ) : activeTab === 'analytics' ? (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="p-6 rounded-3xl bg-white/5 border border-white/10">
+                  <p className="text-[10px] font-black uppercase text-slate-500 mb-1">Total Exámenes</p>
+                  <p className="text-3xl font-black text-white">{globalStats?.total_examenes || 0}</p>
+                  <div className="flex gap-2 mt-2">
+                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-primary/20 text-primary font-bold">{globalStats?.examenes_completos} COMP</span>
+                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 font-bold">{globalStats?.practicas_rapidas} PRAC</span>
+                  </div>
+                </div>
+                <div className="p-6 rounded-3xl bg-white/5 border border-white/10">
+                  <p className="text-[10px] font-black uppercase text-slate-500 mb-1">Promedio Global</p>
+                  <p className="text-3xl font-black text-emerald-400">
+                    {globalStats?.promedio_global ? Math.round(globalStats.promedio_global) : 0}%
+                  </p>
+                  <p className="text-[9px] text-slate-400 mt-2 font-medium">En toda la plataforma</p>
+                </div>
+                <div className="p-6 rounded-3xl bg-white/5 border border-white/10">
+                  <p className="text-[10px] font-black uppercase text-slate-500 mb-1">Usuarios Activos</p>
+                  <p className="text-3xl font-black text-blue-400">{globalStats?.usuarios_unicos || 0}</p>
+                  <p className="text-[9px] text-slate-400 mt-2 font-medium">Han hecho simulacros</p>
+                </div>
+                <div className="p-6 rounded-3xl bg-white/5 border border-white/10">
+                  <p className="text-[10px] font-black uppercase text-slate-500 mb-1">Escuela Top</p>
+                  <p className="text-sm font-black text-amber-400 uppercase leading-tight line-clamp-2">
+                    {globalStats?.escuela_mas_buscada || '---'}
+                  </p>
+                  <p className="text-[9px] text-slate-400 mt-2 font-medium">Meta más frecuente</p>
+                </div>
+              </div>
+
+              {/* Subject Performance */}
+              <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-xl font-bold flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                    Rendimiento por Materia
+                  </h3>
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Ordenado por dificultad</span>
+                </div>
+
+                <div className="space-y-6">
+                  {areaPerformance.map((area, i) => (
+                    <div key={area.materia} className="space-y-2">
+                      <div className="flex justify-between items-end">
+                        <div className="flex items-center gap-3">
+                          <span className="h-8 w-8 rounded-xl bg-white/5 flex items-center justify-center text-sm font-black text-slate-400">
+                            {i + 1}
+                          </span>
+                          <div>
+                            <p className="text-sm font-black text-white uppercase">{area.materia}</p>
+                            <p className="text-[9px] font-bold text-slate-500">{area.veces_evaluada} exámenes realizados</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={cn(
+                            "text-lg font-black",
+                            area.promedio_acierto >= 70 ? "text-emerald-400" : area.promedio_acierto >= 50 ? "text-amber-400" : "text-rose-400"
+                          )}>
+                            {Math.round(area.promedio_acierto)}%
+                          </span>
+                        </div>
+                      </div>
+                      <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                        <div 
+                          className={cn(
+                            "h-full transition-all duration-1000",
+                            area.promedio_acierto >= 70 ? "bg-emerald-500" : area.promedio_acierto >= 50 ? "bg-amber-500" : "bg-rose-500"
+                          )} 
+                          style={{ width: `${area.promedio_acierto}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  {areaPerformance.length === 0 && (
+                    <div className="py-12 text-center text-slate-600 font-bold uppercase tracking-widest text-xs">
+                      Esperando datos de nuevos exámenes...
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="grid lg:grid-cols-2 gap-8 items-start">
               {/* Add Challenge */}

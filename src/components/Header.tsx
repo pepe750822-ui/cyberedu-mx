@@ -9,7 +9,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip
 import GlobalSearch from "@/components/GlobalSearch";
 import { useTheme } from "@/hooks/useTheme";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 import { Users } from "lucide-react";
 

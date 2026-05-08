@@ -300,6 +300,13 @@ const SimuladorPro = () => {
         const escuelaMeta = selectedEscuela?.nombre || 'Ninguna';
         const puntajeMeta = selectedEscuela?.puntaje || 0;
 
+        const areaBreakdown: Record<string, { correctas: number, total: number }> = {};
+        activeQuestions.forEach(q => {
+            if (!areaBreakdown[q.area]) areaBreakdown[q.area] = { correctas: 0, total: 0 };
+            areaBreakdown[q.area].total++;
+            if (userAnswers[q.id] === q.correctIndex) areaBreakdown[q.area].correctas++;
+        });
+
         const payload = {
             escuela_meta: escuelaMeta,
             puntaje_meta: puntajeMeta,
@@ -308,7 +315,8 @@ const SimuladorPro = () => {
             porcentaje: savedPct,
             modo: examMode,
             banco: selectedBank,
-            area: selectedArea
+            area: selectedArea,
+            resultados_por_area: areaBreakdown
         };
 
         if (!user) {
