@@ -2516,6 +2516,11 @@ const AITutor = () => {
     return () => window.removeEventListener('cyberedu:close-chat', handler);
   }, []);
 
+  useEffect(() => {
+    // Dispatch events to sync global UI (like floating buttons)
+    window.dispatchEvent(new CustomEvent(isOpen ? 'cyberedu:opened' : 'cyberedu:closed'));
+  }, [isOpen]);
+
   const [isStreaming, setIsStreaming] = useState(false);
   const [isWaitingFirstChunk, setIsWaitingFirstChunk] = useState(false);
 

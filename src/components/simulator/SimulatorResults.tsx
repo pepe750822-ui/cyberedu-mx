@@ -9,7 +9,8 @@ import {
     LayoutDashboard, 
     BarChart3, 
     CheckCircle2, 
-    XSquare 
+    XSquare,
+    Bot
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -190,6 +191,35 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
                         </div>
                     </div>
                 </div>
+
+                {percentage < 70 && (
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-violet-600/10 border-2 border-violet-600/30 rounded-[2.5rem] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-2xl shadow-violet-500/10"
+                    >
+                        <div className="h-20 w-20 rounded-[2rem] bg-violet-600/20 flex items-center justify-center shrink-0 border border-violet-600/30 animate-pulse">
+                            <Bot className="h-10 w-10 text-violet-400" />
+                        </div>
+                        <div className="flex-1 text-center md:text-left space-y-4">
+                            <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
+                                ¡No te rindas! Tu Tutor IA puede salvar tu examen 🚀
+                            </h3>
+                            <p className="text-slate-300 text-base leading-relaxed">
+                                Has obtenido un <span className="text-rose-400 font-black">{percentage.toFixed(0)}%</span>. Los alumnos que analizan sus errores con la IA aumentan su puntaje un <span className="text-emerald-400 font-black">40% en solo 1 semana</span>.
+                            </p>
+                            <Button 
+                                onClick={() => {
+                                    const message = `Acabo de sacar ${score} de ${activeQuestions.length} (${percentage.toFixed(0)}%) en el simulador. Necesito un plan de rescate urgente para mejorar mis puntos en las áreas que fallé: ${areasText}. ¿Podemos repasar mis errores?`;
+                                    window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
+                                }}
+                                className="bg-violet-600 hover:bg-violet-500 text-white font-black uppercase tracking-widest text-sm px-10 h-14 rounded-2xl shadow-lg shadow-violet-600/25 hover:scale-105 active:scale-95 transition-all"
+                            >
+                                🔥 Crear Plan de Rescate Ahora
+                            </Button>
+                        </div>
+                    </motion.div>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex flex-col md:flex-row gap-4">

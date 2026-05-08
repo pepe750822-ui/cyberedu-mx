@@ -11,7 +11,8 @@ import { useTheme } from "@/hooks/useTheme";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
-import { Users } from "lucide-react";
+import { Users, Bot } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Header = () => {
   const { user, profile, signOut, isSubscriber, trialDaysRemaining } = useAuth();
@@ -21,6 +22,28 @@ const Header = () => {
   const [challengeDone, setChallengeDone] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [hasTutorUsage, setHasTutorUsage] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkTutorUsage = async () => {
+      if (!user) return;
+      try {
+        const { data, error } = await supabase
+          .from('daily_usage')
+          .select('count')
+          .eq('user_id', user.id)
+          .limit(1);
+        
+        if (error) throw error;
+        setHasTutorUsage(data && data.length > 0 && data[0].count > 0);
+      } catch (e) {
+        console.error("Error checking tutor usage:", e);
+        setHasTutorUsage(true); // Fallback to hide badge on error
+      }
+    };
+    checkTutorUsage();
+  }, [user]);
 
   useEffect(() => {
     const checkChallenge = () => {
@@ -144,6 +167,28 @@ const Header = () => {
               Curso Udemy
               <ExternalLink className="h-3 w-3" />
             </a>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+                  className="relative transition-all hover:scale-110 active:scale-95"
+                >
+                  <Bot className="h-5 w-5 text-violet-500" />
+                  {user && hasTutorUsage === false && (
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500 border-2 border-card"></span>
+                    </span>
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Tutor IA 24/7</TooltipContent>
+            </Tooltip>
           </div>
 
           <GlobalSearch className="hidden md:block" />
