@@ -418,10 +418,10 @@ const SimuladorPro = () => {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
             }
-            if ((profile?.tokens || 0) < 100) {
+            if ((profile?.tokens || 0) < 50) {
                 toast({
                     title: "🔒 Banco Premium",
-                    description: "Necesitas 100 tokens para acceder a las Guías UNAM Oficiales. ¡Obtén tokens desde $20 MXN!",
+                    description: "Necesitas 50 tokens para acceder a las Guías UNAM Oficiales. ¡Obtén tokens desde $20 MXN!",
                     variant: "destructive",
                 });
                 setTimeout(() => navigate('/tokens'), 2000);
@@ -436,7 +436,7 @@ const SimuladorPro = () => {
             const currentTokens = profile.tokens || 0;
             await supabase
                 .from('profiles')
-                .update({ tokens: currentTokens - 100 } as any)
+                .update({ tokens: currentTokens - 50 } as any)
                 .eq('id', user.id);
             await refreshProfile();
         }

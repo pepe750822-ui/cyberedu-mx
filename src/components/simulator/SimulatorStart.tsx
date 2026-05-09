@@ -58,7 +58,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     userTokens = 0,
     children
 }) => {
-    const hasTokens = userTokens >= 100;
+    const hasTokens = userTokens >= 50;
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
@@ -132,7 +132,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                     : "bg-white/5 text-slate-600 border-white/10"
                             )}>
                                 <Coins className="w-2.5 h-2.5" />
-                                100
+                                50
                             </span>
                         </button>
                     </div>
@@ -141,7 +141,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     {selectedBank === 'bank5' && (
                         <div className="mt-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-center text-sm">
                             <span className="text-yellow-400 font-semibold">
-                                ✨ Guías Oficiales UNAM 2024-2025 — Se descontarán 100 tokens al iniciar
+                                ✨ Guías Oficiales UNAM 2024-2025 — Se descontarán 50 tokens al iniciar
                             </span>
                         </div>
                     )}
