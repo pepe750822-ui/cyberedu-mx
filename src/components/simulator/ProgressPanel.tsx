@@ -155,6 +155,16 @@ const SubjectMedalsSection: React.FC<{ userId: string }> = ({ userId }) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+const getBancoLabel = (banco: string | undefined, area: string | undefined): string => {
+    if (banco === 'bank5') return '📚 Guías UNAM Oficiales';
+    if (area && area !== 'all') return `📌 ${area}`;
+    if (banco === 'bank1') return '🎯 Práctica General';
+    if (banco === 'bank2') return '🤖 IA';
+    if (banco === 'bank3') return '📋 IMEI';
+    if (banco === 'bank4') return '🏫 Guía Oficial IPN/UNAM';
+    return '🔀 Mezcla de todos';
+};
+
 const AREA_EMOJI: Record<string, string> = {
     'Matemáticas': '📐',
     'Pensamiento Matemático': '📐',
@@ -177,7 +187,7 @@ interface ProgressPanelProps {
     onNavigateToAuth: () => void;
     showCharts: boolean;
     setShowCharts: (v: boolean) => void;
-    chartData: Array<{ fecha: string; porcentaje: number; modo: string }> | null;
+    chartData: Array<{ fecha: string; porcentaje: number; modo: string; banco?: string; area_filtro?: string }> | null;
     chartsLoading: boolean;
     rankingPuntaje: any[] | null;
     rankingActivos: any[] | null;
@@ -274,6 +284,9 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                                     <span className="text-[9px] text-slate-500 text-center leading-tight">{formatFecha(item.fecha)}</span>
                                                     <span className="text-[9px] text-slate-600 text-center leading-tight">
                                                         {item.modo === 'full' ? '📝 Examen completo' : '⚡ Práctica rápida'}
+                                                    </span>
+                                                    <span className="text-[10px] text-slate-500 text-center leading-tight">
+                                                        {getBancoLabel(item.banco, item.area_filtro)}
                                                     </span>
                                                 </div>
                                             </React.Fragment>

@@ -111,7 +111,7 @@ const SimuladorPro = () => {
         } catch { return null; }
     });
     const [showCharts, setShowCharts] = useState(false);
-    const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number; modo: string }> | null>(null);
+    const [chartData, setChartData] = useState<Array<{ fecha: string; porcentaje: number; modo: string; banco?: string; area_filtro?: string }> | null>(null);
     const [chartsLoading, setChartsLoading] = useState(false);
     const [rankingPuntaje, setRankingPuntaje] = useState<any[] | null>(null);
     const [rankingActivos, setRankingActivos] = useState<any[] | null>(null);
@@ -176,7 +176,7 @@ const SimuladorPro = () => {
         try {
             const { data, error } = await supabase
                 .from('simulador_results')
-                .select('created_at, porcentaje, modo')
+                .select('created_at, porcentaje, modo, banco, area')
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: true });
             
@@ -189,7 +189,9 @@ const SimuladorPro = () => {
                 setChartData(data.map(d => ({
                     fecha: d.created_at || '',
                     porcentaje: Number(d.porcentaje),
-                    modo: d.modo || ''
+                    modo: d.modo || '',
+                    banco: (d as any).banco || '',
+                    area_filtro: (d as any).area || 'all',
                 })));
             }
         } catch (err) {
