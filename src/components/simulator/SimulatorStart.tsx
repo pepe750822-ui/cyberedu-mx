@@ -7,8 +7,8 @@ import {
     ChevronRight,
     Shuffle,
     Lock,
+    Coins,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
@@ -40,7 +40,7 @@ interface SimulatorStartProps {
     fullModeCount: number;
     practiceModeCount: number;
     onBackToHome: () => void;
-    isPremium?: boolean;
+    userTokens?: number;
     children?: React.ReactNode; // ProgressPanel
 }
 
@@ -55,10 +55,10 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     fullModeCount,
     practiceModeCount,
     onBackToHome,
-    isPremium = false,
+    userTokens = 0,
     children
 }) => {
-    const navigate = useNavigate();
+    const hasTokens = userTokens >= 100;
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
@@ -103,29 +103,48 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 {b.label}
                             </button>
                         ))}
-                        {/* Bank 5 — Premium */}
+                        {/* Bank 5 — Premium (tokens) */}
                         <button
-                            onClick={() => {
-                                if (isPremium) {
-                                    onSelectBank('bank5');
-                                } else {
-                                    navigate('/tokens');
-                                }
-                            }}
+                            onClick={() => onSelectBank('bank5')}
                             className={cn(
-                                "px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
-                                selectedBank === 'bank5' && isPremium
+                                "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
+                                selectedBank === 'bank5'
                                     ? "bg-amber-500 text-black border-amber-500"
-                                    : isPremium
-                                    ? "bg-white/5 text-amber-400 border-amber-500/30 hover:bg-amber-500/10"
-                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 cursor-pointer"
+                                    : hasTokens
+                                    ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
+                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
                             )}
                         >
-                            {isPremium ? '🎓' : <Lock className="w-3 h-3" />}
+                            {hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
                             Banco 5 — Guías UNAM 2024-25
-                            {!isPremium && <span className="ml-1 text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full border border-amber-500/30">MAESTRO</span>}
+                            <span className={cn(
+                                "ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black",
+                                hasTokens
+                                    ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                                    : "bg-white/5 text-slate-500 border-white/10"
+                            )}>
+                                ✨ PREMIUM
+                            </span>
+                            <span className={cn(
+                                "flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border",
+                                hasTokens
+                                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                                    : "bg-white/5 text-slate-600 border-white/10"
+                            )}>
+                                <Coins className="w-2.5 h-2.5" />
+                                100
+                            </span>
                         </button>
                     </div>
+
+                    {/* Banner bank5 */}
+                    {selectedBank === 'bank5' && (
+                        <div className="mt-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-center text-sm">
+                            <span className="text-yellow-400 font-semibold">
+                                ✨ Guías Oficiales UNAM 2024-2025 — Se descontarán 100 tokens al iniciar
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Filter by subject */}

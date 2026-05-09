@@ -77,7 +77,7 @@ const formatFecha = (fecha: string) => {
 };
 
 const SimuladorPro = () => {
-    const { user, profile } = useAuth();
+    const { user, profile, refreshProfile } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -412,7 +412,34 @@ const SimuladorPro = () => {
         ];
     };
 
-    const handleStartExam = (mode: ExamMode = 'full') => {
+    const handleSelectBank = (bank: BankSelection) => {
+        if (bank === 'bank5') {
+            if (!user) {
+                navigate('/auth?ref=simulador&reason=premium');
+                return;
+            }
+            if ((profile?.tokens || 0) < 100) {
+                toast({
+                    title: "🔒 Banco Premium",
+                    description: "Necesitas 100 tokens para acceder a las Guías UNAM Oficiales. ¡Obtén tokens desde $20 MXN!",
+                    variant: "destructive",
+                });
+                setTimeout(() => navigate('/tokens'), 2000);
+                return;
+            }
+        }
+        setSelectedBank(bank);
+    };
+
+    const handleStartExam = async (mode: ExamMode = 'full') => {
+        if (selectedBank === 'bank5' && user && profile) {
+            const currentTokens = profile.tokens || 0;
+            await supabase
+                .from('profiles')
+                .update({ tokens: currentTokens - 100 } as any)
+                .eq('id', user.id);
+            await refreshProfile();
+        }
         const pool = buildPool(selectedArea);
         let questions = shuffleArray(pool).map(shuffleQuestionOptions);
         if (mode === 'practice') questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
@@ -536,7 +563,7 @@ const SimuladorPro = () => {
     return (
         <SimulatorStart
             selectedBank={selectedBank}
-            onSelectBank={setSelectedBank}
+            onSelectBank={handleSelectBank}
             selectedArea={selectedArea}
             onSelectArea={setSelectedArea}
             selectedEscuela={selectedEscuela}
@@ -549,7 +576,7 @@ const SimuladorPro = () => {
             fullModeCount={buildPool(selectedArea).length}
             practiceModeCount={Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length)}
             onBackToHome={() => navigate('/')}
-            isPremium={profile?.is_premium === true}
+            userTokens={profile?.tokens ?? 0}
         >
             <ProgressPanel
                 userId={user?.id ?? null}
