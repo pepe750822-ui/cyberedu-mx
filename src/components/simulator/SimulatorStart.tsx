@@ -41,6 +41,7 @@ interface SimulatorStartProps {
     practiceModeCount: number;
     onBackToHome: () => void;
     userTokens?: number;
+    bank5Unlocked?: boolean;
     children?: React.ReactNode; // ProgressPanel
 }
 
@@ -56,6 +57,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     practiceModeCount,
     onBackToHome,
     userTokens = 0,
+    bank5Unlocked = false,
     children
 }) => {
     const hasTokens = userTokens >= 50;
@@ -103,45 +105,52 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 {b.label}
                             </button>
                         ))}
-                        {/* Bank 5 — Premium (tokens) */}
+                        {/* Bank 5 — Premium (pago único) */}
                         <button
                             onClick={() => onSelectBank('bank5')}
                             className={cn(
                                 "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
                                 selectedBank === 'bank5'
-                                    ? "bg-amber-500 text-black border-amber-500"
+                                    ? bank5Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
+                                    : bank5Unlocked
+                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
                                     : hasTokens
                                     ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
                                     : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
                             )}
                         >
-                            {hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
+                            {bank5Unlocked ? '📚' : hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
                             Banco 5 — Guías UNAM 2024-25
-                            <span className={cn(
-                                "ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black",
-                                hasTokens
-                                    ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
-                                    : "bg-white/5 text-slate-500 border-white/10"
-                            )}>
-                                ✨ PREMIUM
-                            </span>
-                            <span className={cn(
-                                "flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border",
-                                hasTokens
-                                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                                    : "bg-white/5 text-slate-600 border-white/10"
-                            )}>
-                                <Coins className="w-2.5 h-2.5" />
-                                50
-                            </span>
+                            {bank5Unlocked ? (
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                    ✅ DESBLOQUEADO
+                                </span>
+                            ) : (
+                                <>
+                                    <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-white/5 text-slate-500 border-white/10">
+                                        🔒 Pago único
+                                    </span>
+                                    <span className="flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border bg-white/5 text-slate-600 border-white/10">
+                                        <Coins className="w-2.5 h-2.5" />
+                                        50
+                                    </span>
+                                </>
+                            )}
                         </button>
                     </div>
 
                     {/* Banner bank5 */}
-                    {selectedBank === 'bank5' && (
+                    {selectedBank === 'bank5' && !bank5Unlocked && (
                         <div className="mt-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-center text-sm">
                             <span className="text-yellow-400 font-semibold">
-                                ✨ Guías Oficiales UNAM 2024-2025 — Se descontarán 50 tokens al iniciar
+                                ✨ Pago único de 50 tokens — Acceso de por vida a las Guías Oficiales UNAM
+                            </span>
+                        </div>
+                    )}
+                    {selectedBank === 'bank5' && bank5Unlocked && (
+                        <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl text-center text-sm">
+                            <span className="text-green-400 font-semibold">
+                                ✅ Ya tienes acceso — ¡Practica con las Guías Oficiales UNAM sin límite!
                             </span>
                         </div>
                     )}

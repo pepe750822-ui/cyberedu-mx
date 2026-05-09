@@ -414,34 +414,38 @@ const SimuladorPro = () => {
         ];
     };
 
-    const handleSelectBank = (bank: BankSelection) => {
+    const handleSelectBank = async (bank: BankSelection) => {
         if (bank === 'bank5') {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
             }
-            if ((profile?.tokens || 0) < 50) {
+            const hasBank5Access = (profile as any)?.bank5_unlocked === true;
+            if (!hasBank5Access) {
+                if ((profile?.tokens || 0) < 50) {
+                    toast({
+                        title: "🔒 Banco Premium",
+                        description: "Necesitas 50 tokens para desbloquear las Guías UNAM Oficiales para siempre.",
+                        variant: "destructive",
+                    });
+                    setTimeout(() => navigate('/tokens'), 2000);
+                    return;
+                }
+                await supabase
+                    .from('profiles')
+                    .update({ tokens: (profile!.tokens || 0) - 50, bank5_unlocked: true } as any)
+                    .eq('id', user.id);
+                await refreshProfile();
                 toast({
-                    title: "🔒 Banco Premium",
-                    description: "Necesitas 50 tokens para acceder a las Guías UNAM Oficiales. ¡Obtén tokens desde $20 MXN!",
-                    variant: "destructive",
+                    title: "✅ ¡Banco desbloqueado!",
+                    description: "Las Guías UNAM Oficiales son tuyas para siempre 🎉",
                 });
-                setTimeout(() => navigate('/tokens'), 2000);
-                return;
             }
         }
         setSelectedBank(bank);
     };
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
-        if (selectedBank === 'bank5' && user && profile) {
-            const currentTokens = profile.tokens || 0;
-            await supabase
-                .from('profiles')
-                .update({ tokens: currentTokens - 50 } as any)
-                .eq('id', user.id);
-            await refreshProfile();
-        }
         const pool = buildPool(selectedArea);
         let questions = shuffleArray(pool).map(shuffleQuestionOptions);
         if (mode === 'practice') questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
@@ -579,6 +583,7 @@ const SimuladorPro = () => {
             practiceModeCount={Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length)}
             onBackToHome={() => navigate('/')}
             userTokens={profile?.tokens ?? 0}
+            bank5Unlocked={(profile as any)?.bank5_unlocked === true}
         >
             <ProgressPanel
                 userId={user?.id ?? null}
