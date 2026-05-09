@@ -157,11 +157,16 @@ const SubjectMedalsSection: React.FC<{ userId: string }> = ({ userId }) => {
 
 const getBancoLabel = (banco: string | undefined, area: string | undefined): string => {
     if (banco === 'bank5') return '📚 Guías UNAM Oficiales';
-    if (area && area !== 'all') return `📌 ${area}`;
+    const bancoName = banco === 'bank1' ? 'Práctica General'
+        : banco === 'bank2' ? 'IA'
+        : banco === 'bank3' ? 'IMEI'
+        : banco === 'bank4' ? 'Guía IPN/UNAM'
+        : 'Mezcla';
+    if (area && area !== 'all') return `📌 ${area} · ${bancoName}`;
     if (banco === 'bank1') return '🎯 Práctica General';
     if (banco === 'bank2') return '🤖 IA';
     if (banco === 'bank3') return '📋 IMEI';
-    if (banco === 'bank4') return '🏫 Guía Oficial IPN/UNAM';
+    if (banco === 'bank4') return '🏫 Guía IPN/UNAM';
     return '🔀 Mezcla de todos';
 };
 
