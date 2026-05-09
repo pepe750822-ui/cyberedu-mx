@@ -198,6 +198,8 @@ const Index = () => {
             src={heroImage}
             alt="Estudiantes preparándose para el examen ECOEMS 2026"
             className="w-full h-full object-cover"
+            width={1920}
+            height={1080}
             loading="eager"
             fetchpriority="high"
           />
