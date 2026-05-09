@@ -1,8 +1,159 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BarChart3, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Escuela } from "@/data/escuelas";
 import { BadgesShowcase } from "../profile/BadgesShowcase";
+import { supabase } from "@/integrations/supabase/client";
+
+// ─── Subject Medals by Weekly Ranking ────────────────────────────────────────
+
+const SUBJECTS = [
+    { name: 'Matemáticas',            emoji: '🧮' },
+    { name: 'Física',                 emoji: '⚡' },
+    { name: 'Química',                emoji: '🔬' },
+    { name: 'Biología',               emoji: '🌿' },
+    { name: 'Historia',               emoji: '📜' },
+    { name: 'Geografía',              emoji: '🗺️' },
+    { name: 'Español',                emoji: '📚' },
+    { name: 'Formación Cívica y Ética', emoji: '⚖️' },
+    { name: 'Habilidad Matemática',   emoji: '🧠' },
+    { name: 'Habilidad Verbal',       emoji: '🗣️' },
+] as const;
+
+type MedalType = 'gold' | 'silver' | 'bronze' | 'none';
+
+interface SubjectMedal {
+    medal: MedalType;
+    position: number;
+    total: number;
+    pct: number;
+}
+
+const MEDAL_CONFIG: Record<MedalType, { emoji: string; label: string; bg: string; border: string; text: string; desc: string }> = {
+    gold:   { emoji: '🥇', label: 'Oro',      bg: 'bg-yellow-500/20', border: 'border-yellow-500/40', text: 'text-yellow-400', desc: 'Top 33% esta semana' },
+    silver: { emoji: '🥈', label: 'Plata',    bg: 'bg-slate-400/20',  border: 'border-slate-400/40',  text: 'text-slate-300',  desc: 'Top 34–66% esta semana' },
+    bronze: { emoji: '🥉', label: 'Bronce',   bg: 'bg-orange-700/20', border: 'border-orange-700/40', text: 'text-orange-400', desc: 'Top 67–100% esta semana' },
+    none:   { emoji: '⬜', label: 'Sin datos', bg: 'bg-white/5',       border: 'border-white/10',      text: 'text-slate-500',  desc: 'No has practicado esta materia' },
+};
+
+const SubjectMedalsSection: React.FC<{ userId: string }> = ({ userId }) => {
+    const [medals, setMedals] = useState<Record<string, SubjectMedal> | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchMedals = async () => {
+            setLoading(true);
+            try {
+                const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+                const { data, error } = await supabase
+                    .from('simulador_results')
+                    .select('user_id, resultados_por_area')
+                    .gte('created_at', weekAgo)
+                    .not('resultados_por_area', 'is', null);
+
+                if (error || !data) return;
+
+                // Best score per user per area this week
+                const userBest: Record<string, Record<string, number>> = {};
+                for (const row of data) {
+                    if (!row.user_id || !row.resultados_por_area) continue;
+                    const uid = row.user_id as string;
+                    const areas = row.resultados_por_area as Record<string, { correctas: number; total: number }>;
+                    if (!userBest[uid]) userBest[uid] = {};
+                    for (const [area, stats] of Object.entries(areas)) {
+                        const pct = stats.total > 0 ? Math.round((stats.correctas / stats.total) * 100) : 0;
+                        if (userBest[uid][area] === undefined || pct > userBest[uid][area]) {
+                            userBest[uid][area] = pct;
+                        }
+                    }
+                }
+
+                // Ranked list per area (descending)
+                const areaRankings: Record<string, Array<{ uid: string; pct: number }>> = {};
+                for (const [uid, areas] of Object.entries(userBest)) {
+                    for (const [area, pct] of Object.entries(areas)) {
+                        if (!areaRankings[area]) areaRankings[area] = [];
+                        areaRankings[area].push({ uid, pct });
+                    }
+                }
+                for (const area in areaRankings) {
+                    areaRankings[area].sort((a, b) => b.pct - a.pct);
+                }
+
+                // Medal for current user per subject
+                const result: Record<string, SubjectMedal> = {};
+                for (const { name } of SUBJECTS) {
+                    const ranking = areaRankings[name] ?? [];
+                    const idx = ranking.findIndex(r => r.uid === userId);
+                    if (idx === -1) {
+                        result[name] = { medal: 'none', position: 0, total: ranking.length, pct: 0 };
+                        continue;
+                    }
+                    const position = idx + 1;
+                    const total = ranking.length;
+                    const top33 = Math.ceil(total * 0.33);
+                    const top66 = Math.ceil(total * 0.66);
+                    const medal: MedalType = position <= top33 ? 'gold' : position <= top66 ? 'silver' : 'bronze';
+                    result[name] = { medal, position, total, pct: ranking[idx].pct };
+                }
+                setMedals(result);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMedals();
+    }, [userId]);
+
+    if (loading) {
+        return <div className="text-center py-6 text-slate-500 text-sm animate-pulse">Calculando medallas…</div>;
+    }
+    if (!medals) return null;
+
+    return (
+        <div className="space-y-4">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">🏅 Tus Medallas por Materia</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {SUBJECTS.map(({ name, emoji }) => {
+                    const info = medals[name];
+                    const cfg = MEDAL_CONFIG[info.medal];
+                    return (
+                        <div key={name} className={cn(
+                            "p-4 rounded-2xl border flex items-center justify-between gap-3 transition-all",
+                            cfg.bg, cfg.border
+                        )}>
+                            <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-lg shrink-0">{emoji}</span>
+                                <div className="min-w-0">
+                                    <p className="text-[11px] font-black uppercase tracking-tighter text-slate-300 truncate">{name}</p>
+                                    {info.medal !== 'none' && info.total > 0 ? (
+                                        <p className="text-[9px] text-slate-500 font-medium">
+                                            Posición #{info.position} de {info.total} estudiantes
+                                        </p>
+                                    ) : (
+                                        <p className="text-[9px] text-slate-600 font-medium">{cfg.desc}</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0">
+                                {info.medal !== 'none' && (
+                                    <span className={cn("text-xs font-black tabular-nums", cfg.text)}>{info.pct}%</span>
+                                )}
+                                <div className="flex flex-col items-center">
+                                    <span className="text-xl leading-none">{cfg.emoji}</span>
+                                    <span className={cn("text-[9px] font-black uppercase tracking-widest mt-0.5", cfg.text)}>
+                                        {cfg.label}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const AREA_EMOJI: Record<string, string> = {
     'Matemáticas': '📐',
@@ -198,6 +349,9 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                                 </div>
                             </div>
                         )}
+
+                        {/* Sección 4 — Medallas por Materia */}
+                        {userId && <SubjectMedalsSection userId={userId} />}
 
                         {/* Rankings */}
                         <div className="border-t border-white/10 pt-8 space-y-8">
