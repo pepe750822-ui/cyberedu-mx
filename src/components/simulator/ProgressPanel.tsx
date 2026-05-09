@@ -156,7 +156,10 @@ const SubjectMedalsSection: React.FC<{ userId: string }> = ({ userId }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const getBancoLabel = (banco: string | undefined, area: string | undefined): string => {
-    if (banco === 'bank5') return '📚 Guías UNAM Oficiales';
+    if (banco === 'bank5') {
+        if (area && area !== 'all') return `📚 Guías UNAM · 📌 ${area}`;
+        return '📚 Guías UNAM Oficiales';
+    }
     const bancoName = banco === 'bank1' ? 'Práctica General'
         : banco === 'bank2' ? 'IA'
         : banco === 'bank3' ? 'IMEI'
