@@ -1,17 +1,19 @@
 import React from "react";
-import { 
-    Brain, 
-    ArrowLeft, 
-    Clock, 
-    Zap, 
-    ChevronRight, 
-    Shuffle 
+import {
+    Brain,
+    ArrowLeft,
+    Clock,
+    Zap,
+    ChevronRight,
+    Shuffle,
+    Lock,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 
-type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'mixed';
+type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank5' | 'mixed';
 type ExamMode = 'full' | 'practice';
 
 const AREA_FILTERS = [
@@ -38,6 +40,7 @@ interface SimulatorStartProps {
     fullModeCount: number;
     practiceModeCount: number;
     onBackToHome: () => void;
+    isPremium?: boolean;
     children?: React.ReactNode; // ProgressPanel
 }
 
@@ -52,8 +55,10 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     fullModeCount,
     practiceModeCount,
     onBackToHome,
+    isPremium = false,
     children
 }) => {
+    const navigate = useNavigate();
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
@@ -98,6 +103,28 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 {b.label}
                             </button>
                         ))}
+                        {/* Bank 5 — Premium */}
+                        <button
+                            onClick={() => {
+                                if (isPremium) {
+                                    onSelectBank('bank5');
+                                } else {
+                                    navigate('/tokens');
+                                }
+                            }}
+                            className={cn(
+                                "px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
+                                selectedBank === 'bank5' && isPremium
+                                    ? "bg-amber-500 text-black border-amber-500"
+                                    : isPremium
+                                    ? "bg-white/5 text-amber-400 border-amber-500/30 hover:bg-amber-500/10"
+                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 cursor-pointer"
+                            )}
+                        >
+                            {isPremium ? '🎓' : <Lock className="w-3 h-3" />}
+                            Banco 5 — Guías UNAM 2024-25
+                            {!isPremium && <span className="ml-1 text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full border border-amber-500/30">MAESTRO</span>}
+                        </button>
                     </div>
                 </div>
 

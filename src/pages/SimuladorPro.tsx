@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Question, ExamMode, BankSelection } from "@/data/simuladorData";
+import { Question, ExamMode, BankSelection, bank5Questions } from "@/data/simuladorData";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 import { SimulatorStart } from "@/components/simulator/SimulatorStart";
 import { SimulatorActive } from "@/components/simulator/SimulatorActive";
@@ -77,7 +77,7 @@ const formatFecha = (fecha: string) => {
 };
 
 const SimuladorPro = () => {
-    const { user } = useAuth();
+    const { user, profile } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -97,7 +97,8 @@ const SimuladorPro = () => {
         bank1: [],
         bank2: [],
         bank3: [],
-        bank4: []
+        bank4: [],
+        bank5: bank5Questions,
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -138,7 +139,7 @@ const SimuladorPro = () => {
                     fetchBank('/data/questions3.json'),
                     fetchBank('/data/questions4.json'),
                 ]);
-                setBankData({ bank1: b1, bank2: b2, bank3: b3, bank4: b4 });
+                setBankData({ bank1: b1, bank2: b2, bank3: b3, bank4: b4, bank5: bank5Questions });
             } catch (error) {
                 logger.error("Error loading question banks", error);
                 toast({
@@ -404,6 +405,7 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank2') return fromSource(bankData.bank2);
         if (selectedBank === 'bank3') return fromSource(bankData.bank3);
         if (selectedBank === 'bank4') return fromSource(bankData.bank4);
+        if (selectedBank === 'bank5') return fromSource(bankData.bank5);
         return [
             ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
             ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
@@ -547,6 +549,7 @@ const SimuladorPro = () => {
             fullModeCount={buildPool(selectedArea).length}
             practiceModeCount={Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length)}
             onBackToHome={() => navigate('/')}
+            isPremium={profile?.is_premium === true}
         >
             <ProgressPanel
                 userId={user?.id ?? null}
