@@ -30,6 +30,8 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Question, ExamMode, BankSelection, bank5Questions } from "@/data/simuladorData";
+import { bank6Questions } from "@/data/simuladorData6";
+import { bank7Questions } from "@/data/simuladorData7";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 import { SimulatorStart } from "@/components/simulator/SimulatorStart";
 import { SimulatorActive } from "@/components/simulator/SimulatorActive";
@@ -99,6 +101,8 @@ const SimuladorPro = () => {
         bank3: [],
         bank4: [],
         bank5: bank5Questions,
+        bank6: bank6Questions,
+        bank7: bank7Questions,
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -408,6 +412,8 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank3') return fromSource(bankData.bank3);
         if (selectedBank === 'bank4') return fromSource(bankData.bank4);
         if (selectedBank === 'bank5') return fromSource(bankData.bank5);
+        if (selectedBank === 'bank6') return fromSource(bankData.bank6);
+        if (selectedBank === 'bank7') return fromSource(bankData.bank7);
         return [
             ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
             ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
@@ -415,17 +421,19 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        if (bank === 'bank5') {
+        if (['bank5', 'bank6', 'bank7'].includes(bank)) {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
             }
-            const hasBank5Access = (profile as any)?.bank5_unlocked === true;
-            if (!hasBank5Access) {
+            const unlockField = `${bank}_unlocked` as keyof typeof profile;
+            const hasBankAccess = (profile as any)?.[unlockField] === true;
+            
+            if (!hasBankAccess) {
                 if ((profile?.tokens || 0) < 50) {
                     toast({
                         title: "🔒 Banco Premium",
-                        description: "Necesitas 50 tokens para desbloquear las Guías UNAM Oficiales para siempre.",
+                        description: "Necesitas 50 tokens para desbloquear este banco oficial para siempre.",
                         variant: "destructive",
                     });
                     setTimeout(() => navigate('/tokens'), 2000);
@@ -433,12 +441,12 @@ const SimuladorPro = () => {
                 }
                 await supabase
                     .from('profiles')
-                    .update({ tokens: (profile!.tokens || 0) - 50, bank5_unlocked: true } as any)
+                    .update({ tokens: (profile!.tokens || 0) - 50, [unlockField]: true } as any)
                     .eq('id', user.id);
                 await refreshProfile();
                 toast({
                     title: "✅ ¡Banco desbloqueado!",
-                    description: "Las Guías UNAM Oficiales son tuyas para siempre 🎉",
+                    description: "El Banco Oficial es tuyo para siempre 🎉",
                 });
             }
         }
@@ -584,6 +592,8 @@ const SimuladorPro = () => {
             onBackToHome={() => navigate('/')}
             userTokens={profile?.tokens ?? 0}
             bank5Unlocked={(profile as any)?.bank5_unlocked === true}
+            bank6Unlocked={(profile as any)?.bank6_unlocked === true}
+            bank7Unlocked={(profile as any)?.bank7_unlocked === true}
         >
             <ProgressPanel
                 userId={user?.id ?? null}
