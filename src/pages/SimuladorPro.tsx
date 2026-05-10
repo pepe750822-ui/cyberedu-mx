@@ -29,9 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Question, ExamMode, BankSelection, bank5Questions } from "@/data/simuladorData";
-import { bank6Questions } from "@/data/simuladorData6";
-import { bank7Questions } from "@/data/simuladorData7";
+import { Question, ExamMode, BankSelection } from "@/data/simuladorData";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 import { SimulatorStart } from "@/components/simulator/SimulatorStart";
 import { SimulatorActive } from "@/components/simulator/SimulatorActive";
@@ -100,9 +98,9 @@ const SimuladorPro = () => {
         bank2: [],
         bank3: [],
         bank4: [],
-        bank5: bank5Questions,
-        bank6: bank6Questions,
-        bank7: bank7Questions,
+        bank5: [],
+        bank6: [],
+        bank7: [],
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -143,7 +141,24 @@ const SimuladorPro = () => {
                     fetchBank('/data/questions3.json'),
                     fetchBank('/data/questions4.json'),
                 ]);
-                setBankData({ bank1: b1, bank2: b2, bank3: b3, bank4: b4, bank5: bank5Questions });
+
+                // Lazy load large banks to speed up initial page load
+                const [mod5, mod6, mod7] = await Promise.all([
+                    import("@/data/simuladorData"),
+                    import("@/data/simuladorData6"),
+                    import("@/data/simuladorData7")
+                ]);
+
+                setBankData(prev => ({ 
+                    ...prev, 
+                    bank1: b1, 
+                    bank2: b2, 
+                    bank3: b3, 
+                    bank4: b4,
+                    bank5: mod5.bank5Questions,
+                    bank6: mod6.bank6Questions,
+                    bank7: mod7.bank7Questions
+                }));
             } catch (error) {
                 logger.error("Error loading question banks", error);
                 toast({
