@@ -129,7 +129,7 @@ export const bank7Questions: Question[] = [
     text: "¿Qué opción balancea la última serie? (figuras geométricas en balanza)",
     options: ["OOOOOO", "△△□", "△△OO", "□□□□"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Analizando el peso de cada figura en la balanza, la option A equilibra la serie.",
+    explanation: "Guía UNAM 2022 — Analizando el peso de cada figura en la balanza, la opción A equilibra la serie.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p15.png",
   },
   {
@@ -331,6 +331,7 @@ export const bank7Questions: Question[] = [
     options: ["exponer", "testimoniar objetivamente", "presentar puntualmente", "exagerar"],
     correctIndex: 3,
     explanation: "Guía UNAM 2022 — El anuncio usa hipérbole al afirmar que 'nunca ningún otro larga-duración resistió tanto', exagerando las cualidades.",
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p40.png",
   },
   {
     id: "unam_2022_41",
@@ -362,7 +363,7 @@ export const bank7Questions: Question[] = [
     text: "Las sustancias que resultan de la unión química de dos o más átomos en proporciones definidas son",
     options: ["compuestos.", "mezclas.", "aleaciones.", "elementos."],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Los compuestos químicos resultan de la unión de átomos de diferentes elementos en proporciones fijas.",
+    explanation: "Guía UNAM 2022 — Los compuestos químicos resultan de la unión de átomos de diferentes elementos en proportions fijas.",
   },
   {
     id: "unam_2022_45",
@@ -670,6 +671,7 @@ export const bank7Questions: Question[] = [
     options: ["I.Frágil, II.Embustero, III.Imaginativo, IV.Atento", "I.Atenta, II.Imaginativo, III.Frágil, IV.Embustero", "I.Frágil, II.Atento, III.Embustero, IV.Imaginativo", "I.Frágil, II.Imaginativo, III.Atento, IV.Embustero"],
     correctIndex: 3,
     explanation: "Guía UNAM 2022 — La niña es Frágil (I), el contador es Imaginativo (II) y Atento (III), el auditorio es Embustero (IV) — no, el contador es embustero.",
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p82.png",
   },
   {
     id: "unam_2022_83",
