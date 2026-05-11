@@ -101,6 +101,7 @@ const SimuladorPro = () => {
         bank5: [],
         bank6: [],
         bank7: [],
+        bank8: [],
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -143,21 +144,23 @@ const SimuladorPro = () => {
                 ]);
 
                 // Lazy load large banks to speed up initial page load
-                const [mod5, mod6, mod7] = await Promise.all([
+                const [mod5, mod6, mod7, mod8] = await Promise.all([
                     import("@/data/simuladorData"),
                     import("@/data/simuladorData6"),
-                    import("@/data/simuladorData7")
+                    import("@/data/simuladorData7"),
+                    import("@/data/simuladorData8")
                 ]);
 
-                setBankData(prev => ({ 
-                    ...prev, 
-                    bank1: b1, 
-                    bank2: b2, 
-                    bank3: b3, 
+                setBankData(prev => ({
+                    ...prev,
+                    bank1: b1,
+                    bank2: b2,
+                    bank3: b3,
                     bank4: b4,
                     bank5: mod5.bank5Questions,
                     bank6: mod6.bank6Questions,
-                    bank7: mod7.bank7Questions
+                    bank7: mod7.bank7Questions,
+                    bank8: mod8.bank8Questions,
                 }));
             } catch (error) {
                 logger.error("Error loading question banks", error);
@@ -429,6 +432,7 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank5') return fromSource(bankData.bank5);
         if (selectedBank === 'bank6') return fromSource(bankData.bank6);
         if (selectedBank === 'bank7') return fromSource(bankData.bank7);
+        if (selectedBank === 'bank8') return fromSource(bankData.bank8);
         return [
             ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
             ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
@@ -436,7 +440,7 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        if (['bank5', 'bank6', 'bank7'].includes(bank)) {
+        if (['bank5', 'bank6', 'bank7', 'bank8'].includes(bank)) {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
@@ -609,6 +613,7 @@ const SimuladorPro = () => {
             bank5Unlocked={(profile as any)?.bank5_unlocked === true}
             bank6Unlocked={(profile as any)?.bank6_unlocked === true}
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}
+            bank8Unlocked={(profile as any)?.bank8_unlocked === true}
         >
             <ProgressPanel
                 userId={user?.id ?? null}
