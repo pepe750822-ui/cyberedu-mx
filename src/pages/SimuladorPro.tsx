@@ -440,14 +440,14 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        if (['bank5', 'bank6', 'bank7', 'bank8'].includes(bank)) {
+        if (['bank5', 'bank8'].includes(bank)) {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
             }
             const unlockField = `${bank}_unlocked` as keyof typeof profile;
             const hasBankAccess = (profile as any)?.[unlockField] === true;
-            
+
             if (!hasBankAccess) {
                 if ((profile?.tokens || 0) < 50) {
                     toast({
@@ -467,6 +467,11 @@ const SimuladorPro = () => {
                     title: "✅ ¡Banco desbloqueado!",
                     description: "El Banco Oficial es tuyo para siempre 🎉",
                 });
+            }
+        } else if (['bank6', 'bank7'].includes(bank)) {
+            if (!user) {
+                navigate('/auth?ref=simulador&reason=guias');
+                return;
             }
         }
         setSelectedBank(bank);
@@ -614,6 +619,8 @@ const SimuladorPro = () => {
             bank6Unlocked={(profile as any)?.bank6_unlocked === true}
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}
             bank8Unlocked={(profile as any)?.bank8_unlocked === true}
+            isLoggedIn={!!user}
+            onNavigateToGuias={() => navigate('/auth?ref=simulador&reason=guias')}
         >
             <ProgressPanel
                 userId={user?.id ?? null}

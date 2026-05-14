@@ -32,47 +32,51 @@ export const DailyChallenge = () => {
     const fetchTodayChallenge = async () => {
       setLoading(true);
       try {
-        const today = new Date().toISOString().split('T')[0];
-        
-        // 1. Check server-side status if profile is available
-        const alreadyClaimedOnServer = profile?.last_challenge_reward === today;
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        const examDate = new Date('2026-06-20');
+        const daysUntilExam = Math.ceil((examDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        const dailySeed = Math.max(0, daysUntilExam);
+
+        const alreadyClaimedOnServer = profile?.last_challenge_reward === todayStr;
         const lastCompletedLocal = localStorage.getItem('daily_challenge_date');
 
-        if (alreadyClaimedOnServer || lastCompletedLocal === today) {
+        if (alreadyClaimedOnServer || lastCompletedLocal === todayStr) {
           setCompleted(true);
           setLoading(false);
           return;
         }
 
-        // 2. Fetch challenge for today from Supabase
-        const { data, error } = await supabase
+        // 1. Exact date match (challenges manually scheduled in DB)
+        const { data: exactMatch } = await supabase
           .from('daily_challenges')
           .select('*')
-          .eq('active_date', today)
-          .single();
+          .eq('active_date', todayStr)
+          .maybeSingle();
 
-        if (error || !data) {
-          // Fallback to latest
-          const { data: fallback } = await supabase
-            .from('daily_challenges')
-            .select('*')
-            .order('created_at', { ascending: false })
-            .limit(1);
-          
-          if (fallback && fallback[0]) {
-            setChallenge(fallback[0]);
-          } else {
-            // Static fallback if DB is completely empty
-            setChallenge({
-              id: 'fallback-1',
-              question: '¿Qué órgano del cuerpo humano es el encargado de bombear la sangre?',
-              options: ['Pulmones', 'Cerebro', 'Corazón', 'Hígado'],
-              correct_index: 2,
-              area: 'Biología'
-            });
-          }
+        if (exactMatch) {
+          setChallenge(exactMatch);
+          return;
+        }
+
+        // 2. Seeded daily selection — unique question each day until exam (seed = days remaining)
+        const { data: allChallenges } = await supabase
+          .from('daily_challenges')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (allChallenges && allChallenges.length > 0) {
+          const idx = dailySeed % allChallenges.length;
+          setChallenge(allChallenges[idx]);
         } else {
-          setChallenge(data);
+          setChallenge({
+            id: 'fallback-1',
+            question: '¿Qué órgano del cuerpo humano es el encargado de bombear la sangre?',
+            options: ['Pulmones', 'Cerebro', 'Corazón', 'Hígado'],
+            correct_index: 2,
+            area: 'Biología'
+          });
         }
       } catch (err) {
         console.error("Error fetching challenge:", err);
