@@ -9,7 +9,7 @@ export interface Question {
 }
 
 export type ExamMode = 'full' | 'practice';
-export type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank5' | 'bank6' | 'bank7' | 'bank8' | 'mixed';
+export type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank5' | 'bank6' | 'bank7' | 'bank8' | 'bank9' | 'mixed';
 export { bank5Questions } from './simuladorData5';
 
 // These are now loaded dynamically from /public/data/questions.json

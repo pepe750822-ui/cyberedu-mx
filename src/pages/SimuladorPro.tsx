@@ -102,6 +102,7 @@ const SimuladorPro = () => {
         bank6: [],
         bank7: [],
         bank8: [],
+        bank9: [],
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -144,11 +145,12 @@ const SimuladorPro = () => {
                 ]);
 
                 // Lazy load large banks to speed up initial page load
-                const [mod5, mod6, mod7, mod8] = await Promise.all([
+                const [mod5, mod6, mod7, mod8, mod9] = await Promise.all([
                     import("@/data/simuladorData"),
                     import("@/data/simuladorData6"),
                     import("@/data/simuladorData7"),
-                    import("@/data/simuladorData8")
+                    import("@/data/simuladorData8"),
+                    import("@/data/simuladorData9"),
                 ]);
 
                 setBankData(prev => ({
@@ -161,6 +163,7 @@ const SimuladorPro = () => {
                     bank6: mod6.bank6Questions,
                     bank7: mod7.bank7Questions,
                     bank8: mod8.bank8Questions,
+                    bank9: mod9.bank9Questions,
                 }));
             } catch (error) {
                 logger.error("Error loading question banks", error);
@@ -433,6 +436,7 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank6') return fromSource(bankData.bank6);
         if (selectedBank === 'bank7') return fromSource(bankData.bank7);
         if (selectedBank === 'bank8') return fromSource(bankData.bank8);
+        if (selectedBank === 'bank9') return fromSource(bankData.bank9);
         return [
             ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
             ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
@@ -440,7 +444,7 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        if (['bank5', 'bank8'].includes(bank)) {
+        if (['bank5', 'bank8', 'bank9'].includes(bank)) {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=premium');
                 return;
@@ -619,6 +623,7 @@ const SimuladorPro = () => {
             bank6Unlocked={(profile as any)?.bank6_unlocked === true}
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}
             bank8Unlocked={(profile as any)?.bank8_unlocked === true}
+            bank9Unlocked={(profile as any)?.bank9_unlocked === true}
             isLoggedIn={!!user}
             onNavigateToGuias={() => navigate('/auth?ref=simulador&reason=guias')}
         >
