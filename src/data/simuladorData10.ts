@@ -200,7 +200,8 @@ export const bank10Questions: Question[] = [
       "I. Frágil / II. Imaginativo / III. Atento / IV. Embustero"
     ],
     correctIndex: 3,
-    explanation: "Del texto se infiere: la niña es frágil (como de cera blanca), el contador es imaginativo (fantasía de campanas, príncipes...) y atento (mira de reojo), y el auditorio es embustero por dejarse embelesar por embustes."
+    explanation: "Del texto se infiere: la niña es frágil (como de cera blanca), el contador es imaginativo (fantasía de campanas, príncipes...) y atento (mira de reojo), y el auditorio es embustero por dejarse embelesar por embustes.",
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p14.png"
   },
   {
     id: "unam_2026_15",
@@ -494,7 +495,8 @@ export const bank10Questions: Question[] = [
       "12"
     ],
     correctIndex: 1,
-    explanation: "Frecuencia relativa de calificación 8 = 0.25. Número de alumnos = 0.25 × 40 = 10."
+    explanation: "Frecuencia relativa de calificación 8 = 0.25. Número de alumnos = 0.25 × 40 = 10.",
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p36.png"
   },
   {
     id: "unam_2026_37",
@@ -547,7 +549,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "Área del paralelogramo = base × altura = 9 m × 4 m = 36 m².",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p40.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p40.png"
   },
 
   // ══════════════════════════════════════════════════════════
@@ -617,7 +619,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "En la serie, el triángulo rota 90° en sentido antihorario en cada paso, resultando en un triángulo rectángulo pequeño orientado a la izquierda.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p45.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p45.png"
   },
   {
     id: "unam_2026_46",
@@ -631,7 +633,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "La serie muestra un círculo donde la sección negra rota en sentido horario y aumenta progresivamente. La siguiente imagen continúa ese patrón.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p46.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p46.png"
   },
   {
     id: "unam_2026_47",
@@ -645,7 +647,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 1,
     explanation: "La serie es n² para n=1,2,3,4... La posición 8 tendrá 8² = 64... Pero la serie mostrada en el PDF incluye bordes, siendo (2n-1)² o similar. La clave indica 72. Patrón: figura n tiene (2n)²/... Los puntos en posición 8 = 72.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p47.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p47.png"
   },
   {
     id: "unam_2026_48",
@@ -659,7 +661,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "La serie muestra figuras donde las líneas internas se desplazan sistemáticamente. La cuarta figura completa el patrón con la configuración D.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p48.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p48.png"
   },
   {
     id: "unam_2026_49",
@@ -673,7 +675,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Al armar el desarrollo plano, la cara con el punto queda en la parte superior, el triángulo a la izquierda y el círculo al frente, resultando en el cubo A.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p49.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p49.png"
   },
   {
     id: "unam_2026_50",
@@ -687,7 +689,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 2,
     explanation: "Al doblar la figura, la cara gris queda en la posición lateral del cubo armado, tal como se muestra en la opción C.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p50.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p50.png"
   },
   {
     id: "unam_2026_51",
@@ -701,7 +703,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Contando los cubos visibles más los ocultos necesarios para sostener la estructura escalonada, el total es 17 cubos.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p51.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p51.png"
   },
   {
     id: "unam_2026_52",
@@ -715,7 +717,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "Al girar el dado hacia abajo, la cara superior (U) pasa al frente, la cara del frente (A) queda abajo, y la I sube. La cara E permanece a la derecha.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p52.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p52.png"
   },
   {
     id: "unam_2026_53",
@@ -742,7 +744,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 2,
     explanation: "El patrón del diagrama circular muestra que cada par opuesto se multiplica: 4×30=120, 10×12=120, entonces el número faltante × 8 = 120 → No. Revisando: 4×?=?, patrón: números adyacentes se multiplican: 4×10=40... La clave indica C=15.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p54.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p54.png"
   },
   {
     id: "unam_2026_55",
@@ -946,7 +948,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "La aceleración es el cambio de velocidad por unidad de tiempo (pendiente de la gráfica v-t). En el intervalo 0–1 h la pendiente es la mayor, pues la velocidad sube de 0 a ~60 km/h.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p69.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p69.png"
   },
   {
     id: "unam_2026_70",
@@ -960,7 +962,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 2,
     explanation: "La gráfica muestra aceleración de 0 a 60 km/h (primera hora), velocidad constante durante dos horas, y desaceleración hasta detenerse en la cuarta hora. Esto corresponde a la opción C.",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p70.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p70.png"
   },
   {
     id: "unam_2026_71",
@@ -974,7 +976,7 @@ export const bank10Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "F = ma → a = F/(mA+mB) = 15/(3+2) = 3 m/s². La caja B (y todo el sistema) tienen la misma aceleración de 3 m/s².",
-    // imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p71.png"
+    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p71.png"
   },
   {
     id: "unam_2026_72",
