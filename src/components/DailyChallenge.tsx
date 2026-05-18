@@ -6,21 +6,41 @@ import { useToast } from '@/hooks/use-toast';
 import confetti from 'canvas-confetti';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { Bell } from 'lucide-react';
+import { simuladoECOEMS2 } from '@/data/simuladorData2';
+import { simuladoECOEMS3 } from '@/data/simuladorData3';
+import { simuladoECOEMS4 } from '@/data/simuladorData4';
+import { bank5Questions } from '@/data/simuladorData5';
+import { bank6Questions } from '@/data/simuladorData6';
+import { bank7Questions } from '@/data/simuladorData7';
+import { bank8Questions } from '@/data/simuladorData8';
+import { bank9Questions } from '@/data/simuladorData9';
+import { bank10Questions } from '@/data/simuladorData10';
+
+const getTodaysSeed = () => {
+  const today = new Date();
+  return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+};
+
+const allQuestions = [
+  ...simuladoECOEMS2,
+  ...simuladoECOEMS3,
+  ...simuladoECOEMS4,
+  ...bank5Questions,
+  ...bank6Questions,
+  ...bank7Questions,
+  ...bank8Questions,
+  ...bank9Questions,
+  ...bank10Questions,
+];
+
+const seed = getTodaysSeed();
+const todayQuestion = allQuestions[seed % allQuestions.length];
 
 export const DailyChallenge = () => {
   const [completed, setCompleted] = useState(false);
   const [claiming, setClaiming] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [challenge, setChallenge] = useState<{
-    id: string;
-    question: string;
-    options: string[];
-    correct_index: number;
-    area: string;
-  } | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
   const { toast } = useToast();
   const { user, session, refreshProfile, profile } = useAuth();
@@ -28,81 +48,23 @@ export const DailyChallenge = () => {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(localStorage.getItem('push_subscribed') === 'true');
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
-    const fetchTodayChallenge = async () => {
-      setLoading(true);
-      try {
-        const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-
-        const examDate = new Date('2026-06-20');
-        const daysUntilExam = Math.ceil((examDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        const dailySeed = Math.max(0, daysUntilExam);
-
-        const alreadyClaimedOnServer = profile?.last_challenge_reward === todayStr;
-        const lastCompletedLocal = localStorage.getItem('daily_challenge_date');
-
-        if (alreadyClaimedOnServer || lastCompletedLocal === todayStr) {
-          setCompleted(true);
-          setLoading(false);
-          return;
-        }
-
-        // 1. Exact date match (challenges manually scheduled in DB)
-        const { data: exactMatch } = await supabase
-          .from('daily_challenges')
-          .select('*')
-          .eq('active_date', todayStr)
-          .maybeSingle();
-
-        if (exactMatch) {
-          setChallenge(exactMatch);
-          return;
-        }
-
-        // 2. Seeded daily selection — unique question each day until exam (seed = days remaining)
-        const { data: allChallenges } = await supabase
-          .from('daily_challenges')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (allChallenges && allChallenges.length > 0) {
-          const idx = dailySeed % allChallenges.length;
-          setChallenge(allChallenges[idx]);
-        } else {
-          setChallenge({
-            id: 'fallback-1',
-            question: '¿Qué órgano del cuerpo humano es el encargado de bombear la sangre?',
-            options: ['Pulmones', 'Cerebro', 'Corazón', 'Hígado'],
-            correct_index: 2,
-            area: 'Biología'
-          });
-        }
-      } catch (err) {
-        console.error("Error fetching challenge:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTodayChallenge();
+    const alreadyClaimedOnServer = profile?.last_challenge_reward === todayStr;
+    const lastCompletedLocal = localStorage.getItem('daily_challenge_date');
+    if (alreadyClaimedOnServer || lastCompletedLocal === todayStr) {
+      setCompleted(true);
+    }
   }, [profile]);
 
   const handleSelect = async (idx: number) => {
-    if (!challenge) return;
+    if (!todayQuestion) return;
     setSelected(idx);
-    
-    if (idx === challenge.correct_index) {
-      // Success!
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      
-      const todayStr = new Date().toISOString().split('T')[0];
 
-      // 1. Claim token reward if logged in
+    if (idx === todayQuestion.correctIndex) {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
       if (user && session) {
         setClaiming(true);
         try {
@@ -139,16 +101,14 @@ export const DailyChallenge = () => {
         });
       }
 
-      // 2. Update streak
       const currentStreak = parseInt(localStorage.getItem('study_streak_count') || '0');
       localStorage.setItem('study_streak_count', (currentStreak + 1).toString());
       localStorage.setItem('last_study_date', todayStr);
       localStorage.setItem('daily_challenge_date', todayStr);
       localStorage.setItem('daily_challenge_sync', Date.now().toString());
-      
+
       setTimeout(() => {
         setCompleted(true);
-        // Force update on other components like ProgresoDashboard
         window.dispatchEvent(new Event('storage'));
       }, 1500);
 
@@ -170,11 +130,11 @@ export const DailyChallenge = () => {
       });
       return;
     }
-    
+
     setIsSubscribing(true);
     const success = await subscribe(user.id);
     setIsSubscribing(false);
-    
+
     if (success) {
       setIsSubscribed(true);
       localStorage.setItem('push_subscribed', 'true');
@@ -191,20 +151,9 @@ export const DailyChallenge = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="bg-slate-900/50 border border-white/5 rounded-[2rem] p-8 flex items-center justify-center min-h-[160px]">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 text-primary animate-spin" />
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Cargando Reto...</p>
-        </div>
-      </div>
-    );
-  }
-
   if (completed) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="bg-emerald-500/10 border border-emerald-500/20 rounded-[2rem] p-6 flex items-center justify-between"
@@ -220,7 +169,7 @@ export const DailyChallenge = () => {
         </div>
         <div className="flex items-center gap-3">
           {!isSubscribed && (
-            <button 
+            <button
               onClick={handleSubscribe}
               disabled={isSubscribing}
               className="p-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all flex items-center gap-2"
@@ -239,14 +188,14 @@ export const DailyChallenge = () => {
     );
   }
 
-  if (!challenge) return null;
+  if (!todayQuestion) return null;
 
   return (
     <div className="relative overflow-hidden bg-slate-900 border border-white/10 rounded-[2rem] p-6 shadow-xl">
       <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
         <Brain className="h-32 w-32 text-amber-500 -rotate-12" />
       </div>
-      
+
       <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
         <div className="flex-1 space-y-4 text-center md:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500">
@@ -255,29 +204,29 @@ export const DailyChallenge = () => {
               {claiming ? 'Procesando Recompensa...' : 'Reto Diario Express'}
             </span>
           </div>
-          <h3 className="text-xl font-black text-white leading-tight">{challenge.question}</h3>
+          <h3 className="text-xl font-black text-white leading-tight">{todayQuestion.text}</h3>
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
-             <div className="flex items-center gap-1.5">
-               <div className="h-1.5 w-1.5 rounded-full bg-slate-500" />
-               <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Materia: {challenge.area}</p>
-             </div>
-             <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
-               <Sparkles className="h-3 w-3 text-amber-500 animate-pulse" />
-               <p className="text-[10px] text-amber-500 uppercase tracking-widest font-black">¡GANA 1 TOKEN IA GRATIS!</p>
-             </div>
+            <div className="flex items-center gap-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-500" />
+              <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Materia: {todayQuestion.area}</p>
+            </div>
+            <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
+              <Sparkles className="h-3 w-3 text-amber-500 animate-pulse" />
+              <p className="text-[10px] text-amber-500 uppercase tracking-widest font-black">¡GANA 1 TOKEN IA GRATIS!</p>
+            </div>
           </div>
         </div>
 
         <div className="w-full md:w-auto flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {challenge.options.map((opt, idx) => (
+          {todayQuestion.options.map((opt, idx) => (
             <button
               key={idx}
               disabled={selected !== null || claiming}
               onClick={() => handleSelect(idx)}
               className={cn(
                 "p-4 rounded-2xl border text-sm font-bold transition-all text-center",
-                selected === idx 
-                  ? (idx === challenge.correct_index ? "bg-emerald-500 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]" : "bg-red-500 border-red-400 text-white")
+                selected === idx
+                  ? (idx === todayQuestion.correctIndex ? "bg-emerald-500 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]" : "bg-red-500 border-red-400 text-white")
                   : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20 hover:scale-[1.02]",
                 claiming && "opacity-50 cursor-not-allowed"
               )}
