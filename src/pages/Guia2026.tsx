@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X } from 'lucide-react';
+import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -17,6 +17,11 @@ interface Tema {
 const getYoutubeId = (url: string) => {
   const match = url.match(/(?:youtu\.be\/|v=)([^&\n?#]+)/);
   return match?.[1] ?? '';
+};
+
+const getThumbnail = (url: string) => {
+  const id = getYoutubeId(url);
+  return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
 };
 
 const TEMAS: Tema[] = [
@@ -344,7 +349,7 @@ const Guia2026 = () => {
                 key={tema.id}
                 onClick={() => !isLocked && openModal(tema, tema.youtubeUrl ? 'video' : tema.infografia ? 'infografia' : 'pdf')}
                 className={cn(
-                  'rounded-2xl border p-5 space-y-4 transition-all relative',
+                  'rounded-2xl border overflow-hidden transition-all relative',
                   !isLocked && 'cursor-pointer hover:border-white/20',
                   isLocked ? 'bg-slate-900/50 border-white/5 opacity-70' : `${c.bg} ${c.border}`,
                   !isLocked && isDone && 'opacity-60'
@@ -358,6 +363,28 @@ const Guia2026 = () => {
                   </div>
                 )}
 
+                {/* Thumbnail */}
+                {tema.youtubeUrl && !isLocked ? (
+                  <div className="relative">
+                    <img
+                      src={getThumbnail(tema.youtubeUrl)}
+                      alt={tema.tema}
+                      className="w-full aspect-video object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <div className="bg-red-600 rounded-full p-3 opacity-90 shadow-lg">
+                        <Play className="h-6 w-6 text-white fill-white" />
+                      </div>
+                    </div>
+                  </div>
+                ) : !isLocked ? (
+                  <div className="w-full aspect-video bg-slate-800/60 flex items-center justify-center">
+                    <span className="text-4xl font-black text-slate-600">#{tema.id}</span>
+                  </div>
+                ) : null}
+
+                {/* Contenido */}
+                <div className="p-5 space-y-4">
                 {/* Cabecera */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1.5 flex-1 min-w-0">
@@ -435,6 +462,7 @@ const Guia2026 = () => {
                     )}
                   </div>
                 )}
+                </div>{/* /contenido */}
               </div>
             );
           })}
