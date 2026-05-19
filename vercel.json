@@ -98,7 +98,6 @@
     { "source": "/curso/ecoems-2026-estrategia-inteligente",                "destination": "/simulador-pro",    "permanent": true },
     { "source": "/curso/ecoems-2026/:path*",                                "destination": "/simulador-pro",    "permanent": true },
     { "source": "/(.*\\.php)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
-    { "source": "/(.*\\.pdf)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.py)",   "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.sql)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
     { "source": "/(.*\\.csv)",  "destination": "https://cdn.cyberedumx.com/$1", "permanent": false },
