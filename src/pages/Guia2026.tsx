@@ -96,10 +96,11 @@ const FREE_PREVIEW_COUNT = 3;
 
 const Guia2026 = () => {
   const navigate = useNavigate();
-  const { profile } = useAuth();
-  const hasGuia2026Access =
+  const { profile, user } = useAuth();
+  const hasAccess =
     (profile as any)?.guia2026_unlocked === true ||
-    (profile as any)?.paquete_completo === true;
+    (profile as any)?.paquete_completo === true ||
+    ((profile as any)?.tokens || 0) >= 100;
 
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
@@ -317,7 +318,7 @@ const Guia2026 = () => {
         </div>
 
         {/* Banner de compra — solo si no tiene acceso */}
-        {!hasGuia2026Access && (
+        {!hasAccess && (
           <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/40 rounded-2xl p-6 text-center space-y-3">
             <div className="text-4xl">🎓</div>
             <h3 className="text-white font-black text-xl">¿Te gustó la muestra?</h3>
@@ -346,7 +347,7 @@ const Guia2026 = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {temasFiltrados.map((tema, globalIdx) => {
             const originalIndex = TEMAS.findIndex(t => t.id === tema.id);
-            const isLocked = !hasGuia2026Access && originalIndex >= FREE_PREVIEW_COUNT;
+            const isLocked = !hasAccess && originalIndex >= FREE_PREVIEW_COUNT;
             const c = COLOR_MAP[tema.materia] ?? DEFAULT_COLOR;
             const isDone = completed[tema.id] === true;
             return (
