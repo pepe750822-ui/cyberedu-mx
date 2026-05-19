@@ -197,35 +197,53 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 </span>
                             )}
                         </button>
-                        {/* Bank 8 — GRATIS */}
+                        {/* Bank 8 — 10 gratis preview */}
                         <button
                             onClick={() => onSelectBank('bank8')}
                             className={cn(
                                 "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
                                 selectedBank === 'bank8'
-                                    ? "bg-emerald-600 text-white border-emerald-600"
-                                    : "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
+                                    ? bank8Unlocked || paqueteCompleto ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
+                                    : bank8Unlocked || paqueteCompleto
+                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
+                                    : "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
                             )}
                         >
-                            🆓 Banco 8 — Guía UNAM 2023
-                            <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                GRATIS
-                            </span>
+                            {bank8Unlocked || paqueteCompleto ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
+                            Banco 8 — Guía UNAM 2023
+                            {bank8Unlocked || paqueteCompleto ? (
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                    ✅ DESBLOQUEADO
+                                </span>
+                            ) : (
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
+                            )}
                         </button>
-                        {/* Bank 9 — GRATIS */}
+                        {/* Bank 9 — 10 gratis preview */}
                         <button
                             onClick={() => onSelectBank('bank9')}
                             className={cn(
                                 "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
                                 selectedBank === 'bank9'
-                                    ? "bg-emerald-600 text-white border-emerald-600"
-                                    : "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
+                                    ? bank9Unlocked || paqueteCompleto ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
+                                    : bank9Unlocked || paqueteCompleto
+                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
+                                    : "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
                             )}
                         >
-                            🆓 Banco 9 — Guía UNAM 2024
-                            <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                GRATIS
-                            </span>
+                            {bank9Unlocked || paqueteCompleto ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
+                            Banco 9 — Guía UNAM 2024
+                            {bank9Unlocked || paqueteCompleto ? (
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                    ✅ DESBLOQUEADO
+                                </span>
+                            ) : (
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
+                            )}
                         </button>
                         {/* Bank 10 — Guía 2026 (incluido en paquete guía2026 o paquete completo) */}
                         {(() => {
@@ -257,12 +275,28 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                         })()}
                     </div>
 
-                    {/* Banner banks 8/9 — siempre gratis */}
-                    {(selectedBank === 'bank8' || selectedBank === 'bank9') && (
-                        <div className="mt-3 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center text-sm">
-                            <span className="text-emerald-400 font-semibold">
-                                🆓 Banco completamente gratuito — ¡Practica sin límite!
-                            </span>
+                    {/* Banner bank8 */}
+                    {selectedBank === 'bank8' && !(bank8Unlocked || paqueteCompleto) && (
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                            <span className="text-amber-400 font-semibold block">🆓 Prueba 10 preguntas gratis ahora mismo</span>
+                            <span className="text-slate-400 text-xs">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                        </div>
+                    )}
+                    {selectedBank === 'bank8' && (bank8Unlocked || paqueteCompleto) && (
+                        <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl text-center text-sm">
+                            <span className="text-green-400 font-semibold">✅ Banco desbloqueado — ¡Practica sin límite!</span>
+                        </div>
+                    )}
+                    {/* Banner bank9 */}
+                    {selectedBank === 'bank9' && !(bank9Unlocked || paqueteCompleto) && (
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                            <span className="text-amber-400 font-semibold block">🆓 Prueba 10 preguntas gratis ahora mismo</span>
+                            <span className="text-slate-400 text-xs">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                        </div>
+                    )}
+                    {selectedBank === 'bank9' && (bank9Unlocked || paqueteCompleto) && (
+                        <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl text-center text-sm">
+                            <span className="text-green-400 font-semibold">✅ Banco desbloqueado — ¡Practica sin límite!</span>
                         </div>
                     )}
                     {/* Banner bank5 — preview */}

@@ -464,14 +464,17 @@ const SimuladorPro = () => {
     };
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
-        const bank5Unlocked = (profile as any)?.bank5_unlocked === true || (profile as any)?.paquete_completo === true;
-        // bank8/bank9 are free for everyone — no preview
+        const bank5Unlocked  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
+        const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
+        const bank9Unlocked  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank10Unlocked =
             (profile as any)?.bank10_unlocked === true ||
             (profile as any)?.guia2026_unlocked === true ||
             (profile as any)?.paquete_completo === true;
         const isPreview =
-            (selectedBank === 'bank5' && !bank5Unlocked) ||
+            (selectedBank === 'bank5'  && !bank5Unlocked)  ||
+            (selectedBank === 'bank8'  && !bank8Unlocked)  ||
+            (selectedBank === 'bank9'  && !bank9Unlocked)  ||
             (selectedBank === 'bank10' && !bank10Unlocked);
 
         const pool = buildPool(selectedArea);
@@ -634,16 +637,24 @@ const SimuladorPro = () => {
             }}
             onStartExam={handleStartExam}
             fullModeCount={(() => {
-                const b5u = (profile as any)?.bank5_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b5u  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
+                const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
+                const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
-                if (selectedBank === 'bank5' && !b5u) return 10;
+                if (selectedBank === 'bank5'  && !b5u)  return 10;
+                if (selectedBank === 'bank8'  && !b8u)  return 10;
+                if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
                 return buildPool(selectedArea).length;
             })()}
             practiceModeCount={(() => {
-                const b5u = (profile as any)?.bank5_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b5u  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
+                const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
+                const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
-                if (selectedBank === 'bank5' && !b5u) return 10;
+                if (selectedBank === 'bank5'  && !b5u)  return 10;
+                if (selectedBank === 'bank8'  && !b8u)  return 10;
+                if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
                 return Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length);
             })()}
