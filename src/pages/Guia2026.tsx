@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock } from 'lucide-react';
+import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -13,6 +13,11 @@ interface Tema {
   infografia?: string;
   pdf?: string;
 }
+
+const getYoutubeId = (url: string) => {
+  const match = url.match(/(?:youtu\.be\/|v=)([^&\n?#]+)/);
+  return match?.[1] ?? '';
+};
 
 const TEMAS: Tema[] = [
   { id: 1,  preguntas: "1-3",     tema: "Ficha bibliográfica, tema del texto, recursos explicativos",                    materia: "Español",                  youtubeUrl: null },
@@ -89,6 +94,14 @@ const Guia2026 = () => {
 
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
+  const [selectedTema, setSelectedTema] = useState<Tema | null>(null);
+  const [activeTab, setActiveTab] = useState<'video' | 'infografia' | 'pdf'>('video');
+
+  const openModal = (tema: Tema, tab: 'video' | 'infografia' | 'pdf' = 'video') => {
+    setSelectedTema(tema);
+    setActiveTab(tab);
+  };
+  const closeModal = () => setSelectedTema(null);
 
   useEffect(() => {
     try {
@@ -112,6 +125,101 @@ const Guia2026 = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      {/* Resource modal */}
+      {selectedTema && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between p-5 border-b border-white/5">
+              <div>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">
+                  {selectedTema.materia} · Preguntas {selectedTema.preguntas}
+                </p>
+                <h3 className="text-white font-black text-base leading-snug">{selectedTema.tema}</h3>
+              </div>
+              <button onClick={closeModal} className="text-slate-400 hover:text-white transition-colors shrink-0 ml-4 mt-0.5">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {(selectedTema.youtubeUrl || selectedTema.infografia || selectedTema.pdf) ? (
+              <>
+                {/* Tabs */}
+                <div className="flex border-b border-white/5">
+                  {selectedTema.youtubeUrl && (
+                    <button
+                      onClick={() => setActiveTab('video')}
+                      className={cn('px-5 py-3 text-sm font-black transition-all', activeTab === 'video' ? 'text-red-400 border-b-2 border-red-400' : 'text-slate-500 hover:text-slate-300')}
+                    >
+                      🎬 Video
+                    </button>
+                  )}
+                  {selectedTema.infografia && (
+                    <button
+                      onClick={() => setActiveTab('infografia')}
+                      className={cn('px-5 py-3 text-sm font-black transition-all', activeTab === 'infografia' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-slate-500 hover:text-slate-300')}
+                    >
+                      🖼️ Infografía
+                    </button>
+                  )}
+                  {selectedTema.pdf && (
+                    <button
+                      onClick={() => setActiveTab('pdf')}
+                      className={cn('px-5 py-3 text-sm font-black transition-all', activeTab === 'pdf' ? 'text-amber-400 border-b-2 border-amber-400' : 'text-slate-500 hover:text-slate-300')}
+                    >
+                      📄 PDF
+                    </button>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-5">
+                  {activeTab === 'video' && selectedTema.youtubeUrl && (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${getYoutubeId(selectedTema.youtubeUrl)}`}
+                      className="w-full aspect-video rounded-xl"
+                      allowFullScreen
+                    />
+                  )}
+                  {activeTab === 'infografia' && selectedTema.infografia && (
+                    <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" />
+                  )}
+                  {activeTab === 'pdf' && selectedTema.pdf && (
+                    <iframe src={selectedTema.pdf} className="w-full h-96 rounded-xl" />
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="p-10 text-center text-slate-500">
+                <p className="text-4xl mb-3">🔜</p>
+                <p className="font-black text-sm uppercase tracking-wide">Recursos en producción</p>
+                <p className="text-xs mt-1 text-slate-600">El video e infografía para este tema estarán disponibles pronto.</p>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="px-5 pb-5 pt-4 border-t border-white/5">
+              <button
+                onClick={() => toggleCompleted(selectedTema.id)}
+                className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white transition-colors"
+              >
+                {completed[selectedTema.id]
+                  ? <CheckCircle className="h-4 w-4 text-emerald-400" />
+                  : <Circle className="h-4 w-4" />
+                }
+                {completed[selectedTema.id] ? 'Marcado como visto ✓' : 'Marcar como visto'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Sticky header */}
       <div className="border-b border-white/5 bg-slate-900/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
@@ -220,8 +328,10 @@ const Guia2026 = () => {
             return (
               <div
                 key={tema.id}
+                onClick={() => !isLocked && openModal(tema, tema.youtubeUrl ? 'video' : tema.infografia ? 'infografia' : 'pdf')}
                 className={cn(
                   'rounded-2xl border p-5 space-y-4 transition-all relative',
+                  !isLocked && 'cursor-pointer hover:border-white/20',
                   isLocked ? 'bg-slate-900/50 border-white/5 opacity-70' : `${c.bg} ${c.border}`,
                   !isLocked && isDone && 'opacity-60'
                 )}
@@ -252,7 +362,7 @@ const Guia2026 = () => {
                   </div>
                   {!isLocked && (
                     <button
-                      onClick={() => toggleCompleted(tema.id)}
+                      onClick={e => { e.stopPropagation(); toggleCompleted(tema.id); }}
                       title={isDone ? 'Marcar como pendiente' : 'Marcar como visto'}
                       className="shrink-0 mt-0.5"
                     >
@@ -266,17 +376,15 @@ const Guia2026 = () => {
 
                 {/* Botones de recursos */}
                 {!isLocked && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2" onClick={e => e.stopPropagation()}>
                     {tema.youtubeUrl ? (
-                      <a
-                        href={tema.youtubeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => openModal(tema, 'video')}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-[10px] font-black uppercase tracking-wider hover:bg-red-500/30 transition-all"
                       >
                         <PlayCircle className="h-3 w-3" />
                         Ver Video
-                      </a>
+                      </button>
                     ) : (
                       <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                         <PlayCircle className="h-3 w-3" />
@@ -284,15 +392,13 @@ const Guia2026 = () => {
                       </span>
                     )}
                     {tema.infografia ? (
-                      <a
-                        href={tema.infografia}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => openModal(tema, 'infografia')}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/20 border border-blue-500/40 text-blue-300 text-[10px] font-black uppercase tracking-wider hover:bg-blue-500/30 transition-all"
                       >
                         <ImageIcon className="h-3 w-3" />
                         Infografía
-                      </a>
+                      </button>
                     ) : (
                       <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                         <ImageIcon className="h-3 w-3" />
@@ -300,15 +406,13 @@ const Guia2026 = () => {
                       </span>
                     )}
                     {tema.pdf ? (
-                      <a
-                        href={tema.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => openModal(tema, 'pdf')}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-black uppercase tracking-wider hover:bg-amber-500/30 transition-all"
                       >
                         <FileText className="h-3 w-3" />
                         PDF
-                      </a>
+                      </button>
                     ) : (
                       <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                         <FileText className="h-3 w-3" />
