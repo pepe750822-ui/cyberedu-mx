@@ -140,15 +140,9 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                     ✅ DESBLOQUEADO
                                 </span>
                             ) : (
-                                <>
-                                    <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-white/5 text-slate-500 border-white/10">
-                                        🔒 Pago único
-                                    </span>
-                                    <span className="flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border bg-white/5 text-slate-600 border-white/10">
-                                        <Coins className="w-2.5 h-2.5" />
-                                        50
-                                    </span>
-                                </>
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
                             )}
                         </button>
                         {/* Bank 6 — Gratis con registro */}
@@ -220,15 +214,9 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                     ✅ DESBLOQUEADO
                                 </span>
                             ) : (
-                                <>
-                                    <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-white/5 text-slate-500 border-white/10">
-                                        🔒 Pago único
-                                    </span>
-                                    <span className="flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border bg-white/5 text-slate-600 border-white/10">
-                                        <Coins className="w-2.5 h-2.5" />
-                                        50
-                                    </span>
-                                </>
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
                             )}
                         </button>
                         {/* Bank 9 — Premium (pago único) */}
@@ -252,15 +240,9 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                     ✅ DESBLOQUEADO
                                 </span>
                             ) : (
-                                <>
-                                    <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-white/5 text-slate-500 border-white/10">
-                                        🔒 Pago único
-                                    </span>
-                                    <span className="flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border bg-white/5 text-slate-600 border-white/10">
-                                        <Coins className="w-2.5 h-2.5" />
-                                        50
-                                    </span>
-                                </>
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
                             )}
                         </button>
                         {/* Bank 10 — Premium (pago único) */}
@@ -284,15 +266,9 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                     ✅ DESBLOQUEADO
                                 </span>
                             ) : (
-                                <>
-                                    <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-white/5 text-slate-500 border-white/10">
-                                        🔒 Pago único
-                                    </span>
-                                    <span className="flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded-full border bg-white/5 text-slate-600 border-white/10">
-                                        <Coins className="w-2.5 h-2.5" />
-                                        50
-                                    </span>
-                                </>
+                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                    🆓 10 gratis · 🔒 50 tokens completo
+                                </span>
                             )}
                         </button>
                     </div>
@@ -304,9 +280,12 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                         (selectedBank === 'bank9' && !bank9Unlocked) ||
                         (selectedBank === 'bank10' && !bank10Unlocked)
                     ) && (
-                        <div className="mt-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-center text-sm">
-                            <span className="text-yellow-400 font-semibold">
-                                ✨ Pago único de 50 tokens — Acceso de por vida a este Banco Oficial
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                            <span className="text-amber-400 font-semibold block">
+                                🆓 Prueba 10 preguntas gratis ahora mismo
+                            </span>
+                            <span className="text-slate-400 text-xs">
+                                Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida
                             </span>
                         </div>
                     )}

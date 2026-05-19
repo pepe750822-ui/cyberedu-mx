@@ -93,6 +93,7 @@ const SimuladorPro = () => {
     const [showRestoreModal, setShowRestoreModal] = useState(false);
     const [savedState, setSavedState] = useState<any | null>(null);
     const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
+    const [isPreviewMode, setIsPreviewMode] = useState(false);
     const [bankData, setBankData] = useState<Record<string, Question[]>>({
         bank1: [],
         bank2: [],
@@ -448,35 +449,12 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
+        // bank5, bank8, bank9, bank10: free 10-question preview — select freely, upsell after results
         if (['bank5', 'bank8', 'bank9', 'bank10'].includes(bank)) {
-            if (!user) {
-                navigate('/auth?ref=simulador&reason=premium');
-                return;
-            }
-            const unlockField = `${bank}_unlocked` as keyof typeof profile;
-            const hasBankAccess = (profile as any)?.[unlockField] === true;
-
-            if (!hasBankAccess) {
-                if ((profile?.tokens || 0) < 50) {
-                    toast({
-                        title: "🔒 Banco Premium",
-                        description: "Necesitas 50 tokens para desbloquear este banco oficial para siempre.",
-                        variant: "destructive",
-                    });
-                    setTimeout(() => navigate('/tokens'), 2000);
-                    return;
-                }
-                await supabase
-                    .from('profiles')
-                    .update({ tokens: (profile!.tokens || 0) - 50, [unlockField]: true } as any)
-                    .eq('id', user.id);
-                await refreshProfile();
-                toast({
-                    title: "✅ ¡Banco desbloqueado!",
-                    description: "El Banco Oficial es tuyo para siempre 🎉",
-                });
-            }
-        } else if (['bank6', 'bank7'].includes(bank)) {
+            setSelectedBank(bank);
+            return;
+        }
+        if (['bank6', 'bank7'].includes(bank)) {
             if (!user) {
                 navigate('/auth?ref=simulador&reason=guias');
                 return;
@@ -486,9 +464,27 @@ const SimuladorPro = () => {
     };
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
+        const bank5Unlocked = (profile as any)?.bank5_unlocked === true;
+        const bank8Unlocked = (profile as any)?.bank8_unlocked === true;
+        const bank9Unlocked = (profile as any)?.bank9_unlocked === true;
+        const bank10Unlocked = (profile as any)?.bank10_unlocked === true;
+        const isPreview =
+            (selectedBank === 'bank5' && !bank5Unlocked) ||
+            (selectedBank === 'bank8' && !bank8Unlocked) ||
+            (selectedBank === 'bank9' && !bank9Unlocked) ||
+            (selectedBank === 'bank10' && !bank10Unlocked);
+
         const pool = buildPool(selectedArea);
-        let questions = shuffleArray(pool).map(shuffleQuestionOptions);
-        if (mode === 'practice') questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
+        let questions: Question[];
+        if (isPreview) {
+            // First 10 as consistent sample, only shuffle options within each question
+            questions = pool.slice(0, 10).map(shuffleQuestionOptions);
+        } else {
+            questions = shuffleArray(pool).map(shuffleQuestionOptions);
+            if (mode === 'practice') questions = questions.slice(0, PRACTICE_QUESTION_COUNT);
+        }
+
+        setIsPreviewMode(isPreview);
         setActiveQuestions(questions);
         setExamMode(mode);
         setIsExamActive(true);
@@ -534,6 +530,7 @@ const SimuladorPro = () => {
     if (showRestoreModal) return <RestoreModal onRestore={handleRestore} onNew={handleNewExam} />;
 
     if (showResults) {
+        const totalBankQuestions = bankData[selectedBank as keyof typeof bankData]?.length ?? 0;
         return (
             <SimulatorResults
                 user={user}
@@ -567,6 +564,23 @@ const SimuladorPro = () => {
                     metaSuccess={selectedEscuela ? (Math.round((calculateScore() / activeQuestions.length) * 100) >= Math.round((selectedEscuela.puntaje / 128) * 100)) : false}
                     metaClose={selectedEscuela ? (Math.round((selectedEscuela.puntaje / 128) * 100) - Math.round((calculateScore() / activeQuestions.length) * 100) <= 5) : false}
                 />
+                {isPreviewMode && (
+                    <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/40 rounded-2xl p-6 text-center">
+                        <div className="text-4xl mb-2">🔓</div>
+                        <h3 className="text-white font-black text-xl mb-2">
+                            ¿Te gustó la muestra?
+                        </h3>
+                        <p className="text-gray-300 mb-4">
+                            Desbloquea las {totalBankQuestions} preguntas completas por solo 50 tokens
+                        </p>
+                        <button
+                            onClick={() => navigate('/tokens')}
+                            className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black px-6 py-3 rounded-xl"
+                        >
+                            🪙 Desbloquear por 50 tokens
+                        </button>
+                    </div>
+                )}
             </SimulatorResults>
         );
     }
@@ -619,8 +633,24 @@ const SimuladorPro = () => {
                 else localStorage.removeItem('user_target_school');
             }}
             onStartExam={handleStartExam}
-            fullModeCount={buildPool(selectedArea).length}
-            practiceModeCount={Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length)}
+            fullModeCount={(() => {
+                const unlocked =
+                    (selectedBank === 'bank5' && (profile as any)?.bank5_unlocked === true) ||
+                    (selectedBank === 'bank8' && (profile as any)?.bank8_unlocked === true) ||
+                    (selectedBank === 'bank9' && (profile as any)?.bank9_unlocked === true) ||
+                    (selectedBank === 'bank10' && (profile as any)?.bank10_unlocked === true);
+                const isPreviewBank = ['bank5', 'bank8', 'bank9', 'bank10'].includes(selectedBank);
+                return isPreviewBank && !unlocked ? 10 : buildPool(selectedArea).length;
+            })()}
+            practiceModeCount={(() => {
+                const unlocked =
+                    (selectedBank === 'bank5' && (profile as any)?.bank5_unlocked === true) ||
+                    (selectedBank === 'bank8' && (profile as any)?.bank8_unlocked === true) ||
+                    (selectedBank === 'bank9' && (profile as any)?.bank9_unlocked === true) ||
+                    (selectedBank === 'bank10' && (profile as any)?.bank10_unlocked === true);
+                const isPreviewBank = ['bank5', 'bank8', 'bank9', 'bank10'].includes(selectedBank);
+                return isPreviewBank && !unlocked ? 10 : Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length);
+            })()}
             onBackToHome={() => navigate('/')}
             userTokens={profile?.tokens ?? 0}
             bank5Unlocked={(profile as any)?.bank5_unlocked === true}
