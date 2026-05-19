@@ -15,8 +15,11 @@ interface Tema {
 }
 
 const getYoutubeId = (url: string) => {
-  const match = url.match(/(?:youtu\.be\/|v=)([^&\n?#]+)/);
-  return match?.[1] ?? '';
+  if (!url) return '';
+  const shortMatch = url.match(/youtu\.be\/([^?&\n]+)/);
+  if (shortMatch) return shortMatch[1];
+  const longMatch = url.match(/[?&]v=([^&\n]+)/);
+  return longMatch?.[1] ?? '';
 };
 
 const getThumbnail = (url: string) => {
@@ -366,18 +369,20 @@ const Guia2026 = () => {
                 )}
 
                 {/* Thumbnail */}
-                {tema.youtubeUrl && !isLocked ? (
+                {tema.youtubeUrl ? (
                   <div className="relative">
                     <img
                       src={getThumbnail(tema.youtubeUrl)}
                       alt={tema.tema}
                       className="w-full aspect-video object-cover"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <div className="bg-red-600 rounded-full p-3 opacity-90 shadow-lg">
-                        <Play className="h-6 w-6 text-white fill-white" />
+                    {!isLocked && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="bg-red-600 rounded-full p-3 opacity-90 shadow-lg">
+                          <Play className="h-6 w-6 text-white fill-white" />
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ) : !isLocked ? (
                   <div className="w-full aspect-video bg-slate-800/60 flex items-center justify-center">
