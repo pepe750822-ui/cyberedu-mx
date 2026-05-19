@@ -90,15 +90,6 @@ const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
 const FREE_PREVIEW_COUNT = 3;
 
-const getPdfEmbedUrl = (pdfUrl: string) => {
-  if (pdfUrl.includes('drive.google.com')) {
-    return pdfUrl.replace('/view', '/preview');
-  }
-  const fullUrl = pdfUrl.startsWith('/')
-    ? `${window.location.origin}${pdfUrl}`
-    : pdfUrl;
-  return `https://docs.google.com/viewer?url=${encodeURIComponent(fullUrl)}&embedded=true`;
-};
 
 const Guia2026 = () => {
   const navigate = useNavigate();
@@ -206,11 +197,28 @@ const Guia2026 = () => {
                     <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" />
                   )}
                   {activeTab === 'pdf' && selectedTema.pdf && (
-                    <iframe
-                      src={getPdfEmbedUrl(selectedTema.pdf)}
-                      className="w-full h-96 rounded-xl border-0"
-                      allowFullScreen
-                    />
+                    <div className="space-y-3">
+                      <object
+                        data={selectedTema.pdf}
+                        type="application/pdf"
+                        className="w-full rounded-xl bg-slate-800"
+                        style={{ height: '500px' }}
+                      >
+                        <div className="flex flex-col items-center justify-center gap-3 py-12 text-slate-400 text-sm">
+                          <FileText className="h-10 w-10 text-slate-600" />
+                          <p className="font-bold">El visor PDF no está disponible en este navegador.</p>
+                        </div>
+                      </object>
+                      <a
+                        href={selectedTema.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-sm font-black hover:bg-amber-500/30 transition-all"
+                      >
+                        <FileText className="h-4 w-4" />
+                        Abrir PDF en nueva pestaña
+                      </a>
+                    </div>
                   )}
                 </div>
               </>
