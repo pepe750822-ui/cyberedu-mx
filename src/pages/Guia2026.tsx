@@ -85,6 +85,16 @@ const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
 const FREE_PREVIEW_COUNT = 3;
 
+const getPdfEmbedUrl = (pdfUrl: string) => {
+  if (pdfUrl.includes('drive.google.com')) {
+    return pdfUrl.replace('/view', '/preview');
+  }
+  const fullUrl = pdfUrl.startsWith('/')
+    ? `${window.location.origin}${pdfUrl}`
+    : pdfUrl;
+  return `https://docs.google.com/viewer?url=${encodeURIComponent(fullUrl)}&embedded=true`;
+};
+
 const Guia2026 = () => {
   const navigate = useNavigate();
   const { profile } = useAuth();
@@ -191,7 +201,11 @@ const Guia2026 = () => {
                     <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" />
                   )}
                   {activeTab === 'pdf' && selectedTema.pdf && (
-                    <iframe src={selectedTema.pdf} className="w-full h-96 rounded-xl" />
+                    <iframe
+                      src={getPdfEmbedUrl(selectedTema.pdf)}
+                      className="w-full h-96 rounded-xl border-0"
+                      allowFullScreen
+                    />
                   )}
                 </div>
               </>
