@@ -238,7 +238,10 @@ const Index = () => {
                 ECOEMS 2026 · 20-28 Junio · Prepárate Ya
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-gray-900 dark:text-white mb-6 leading-tight text-balance animate-fade-in">
-                Aprueba el ECOEMS <br /><span className="text-violet-600">en 45 Días</span>
+                {daysToExam <= 30
+                  ? <>{`¡Último mes! El ECOEMS`} <br /><span className="text-violet-600">{`es en ${daysToExam} días`}</span></>
+                  : <>Aprueba el ECOEMS <br /><span className="text-violet-600">en {daysToExam} días</span></>
+                }
               </h1>
               <p className="text-lg md:text-xl text-gray-600 dark:text-slate-300 mb-8 leading-relaxed max-w-lg animate-fade-in">
                 <span className="text-gray-900 dark:text-white font-bold">Tutor IA disponible 24/7</span> + <span className="text-violet-600 font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
