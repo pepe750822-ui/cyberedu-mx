@@ -73,6 +73,16 @@ const Index = () => {
 
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
+  // Urgency date logic for COMIPEMS 2026
+  const nowDate = new Date();
+  nowDate.setHours(0, 0, 0, 0);
+  const registroFin = new Date('2026-05-22');
+  registroFin.setHours(0, 0, 0, 0);
+  const examenFecha = new Date('2026-06-20');
+  examenFecha.setHours(0, 0, 0, 0);
+  const isRegistroOpen = nowDate <= registroFin;
+  const daysToExam = Math.ceil((examenFecha.getTime() - nowDate.getTime()) / (1000 * 60 * 60 * 24));
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('open') === 'tutor') {
@@ -191,6 +201,17 @@ const Index = () => {
     <div className="min-h-screen bg-white dark:bg-slate-900">
       <Header />
 
+      {/* Urgency Banner */}
+      {isRegistroOpen ? (
+        <div className="w-full bg-red-600 text-white text-center py-3 px-4 font-black text-sm md:text-base animate-pulse">
+          ⚠️ ÚLTIMO DÍA para registrarte al COMIPEMS — Cierra el 22 de mayo ⚠️
+        </div>
+      ) : daysToExam > 0 ? (
+        <div className="w-full bg-orange-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
+          🗓️ El examen COMIPEMS es en <span className="underline">{daysToExam} días</span> — ¡Sigue entrenando!
+        </div>
+      ) : null}
+
       {/* Hero Section */}
       <section className="relative overflow-hidden mb-0 border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         <div className="absolute inset-0">
@@ -258,7 +279,7 @@ const Index = () => {
                   onClick={() => navigate("/simulador-pro")}
                   className="font-black px-8 py-6 rounded-2xl text-sm md:text-base"
                 >
-                  🎯 Simulador Pro — 512 reactivos GRATIS
+                  🚀 Practica ahora — El examen es en {daysToExam} días
                 </Button>
               </div>
             </div>
@@ -366,6 +387,39 @@ const Index = () => {
 
                 {/* Bottom gradient fade */}
                 <div className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(2,6,23,0.9), transparent)" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Última Hora COMIPEMS 2026 */}
+      <section className="w-full bg-yellow-400 text-yellow-900">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🚨</span>
+            <h2 className="text-xl font-black uppercase tracking-wide">Última Hora COMIPEMS 2026</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
+              <span className="text-2xl leading-none animate-pulse">🔴</span>
+              <div>
+                <p className="font-black text-sm uppercase tracking-wide">18–22 Mayo</p>
+                <p className="text-xs font-semibold mt-0.5">Registro al COMIPEMS — ¡No pierdas tu lugar!</p>
+              </div>
+            </div>
+            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
+              <span className="text-2xl leading-none">🟡</span>
+              <div>
+                <p className="font-black text-sm uppercase tracking-wide">23 Mayo</p>
+                <p className="text-xs font-semibold mt-0.5">Cierre definitivo de registro COMIPEMS</p>
+              </div>
+            </div>
+            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
+              <span className="text-2xl leading-none">🟢</span>
+              <div>
+                <p className="font-black text-sm uppercase tracking-wide">20 Junio 2026</p>
+                <p className="text-xs font-semibold mt-0.5">Día del examen — Quedan {daysToExam} días para prepararte</p>
               </div>
             </div>
           </div>
