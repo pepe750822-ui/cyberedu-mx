@@ -134,11 +134,11 @@ const Guia2026 = () => {
       {/* Resource modal */}
       {selectedTema && (
         <div
-          className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 overflow-y-auto p-4"
           onClick={closeModal}
         >
           <div
-            className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+            className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-6xl mx-auto my-4"
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
@@ -198,17 +198,11 @@ const Guia2026 = () => {
                   )}
                   {activeTab === 'pdf' && selectedTema.pdf && (
                     <div className="space-y-3">
-                      <object
-                        data={selectedTema.pdf}
-                        type="application/pdf"
-                        className="w-full rounded-xl bg-slate-800"
-                        style={{ height: '500px' }}
-                      >
-                        <div className="flex flex-col items-center justify-center gap-3 py-12 text-slate-400 text-sm">
-                          <FileText className="h-10 w-10 text-slate-600" />
-                          <p className="font-bold">El visor PDF no está disponible en este navegador.</p>
-                        </div>
-                      </object>
+                      <iframe
+                        src={selectedTema.pdf}
+                        className="w-full h-screen rounded-xl border-0"
+                        allowFullScreen
+                      />
                       <a
                         href={selectedTema.pdf}
                         target="_blank"
