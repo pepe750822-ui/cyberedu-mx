@@ -2450,6 +2450,11 @@ const AITutor = () => {
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
   const { addMetric, addError } = useChatAnalytics();
   const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
+  const isUnlimitedTutor =
+    isSubscriber ||
+    (profile?.tokens ?? 0) >= 150 ||
+    (profile as any)?.guia2026_unlocked === true ||
+    (profile as any)?.paquete_completo === true;
 
   // ─── Topic extractor ───
   const extractTopic = (text: string): string => {
@@ -3611,7 +3616,7 @@ const AITutor = () => {
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
             let finalCleanContent = cleanContent;
-            if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
+            if (!isUnlimitedTutor && !hasTokens) {
               const usedFree = localStorage.getItem('cyberedu_used_free_message');
               if (!usedFree) {
                 localStorage.setItem('cyberedu_used_free_message', 'true');

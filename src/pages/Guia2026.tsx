@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Tema {
   id: number;
@@ -77,7 +78,15 @@ const DEFAULT_COLOR = { bg: 'bg-slate-800', border: 'border-white/10', badge: 'b
 
 const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
+const FREE_PREVIEW_COUNT = 3;
+
 const Guia2026 = () => {
+  const navigate = useNavigate();
+  const { profile } = useAuth();
+  const hasGuia2026Access =
+    (profile as any)?.guia2026_unlocked === true ||
+    (profile as any)?.paquete_completo === true;
+
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
 
@@ -175,25 +184,61 @@ const Guia2026 = () => {
           })}
         </div>
 
+        {/* Banner de compra — solo si no tiene acceso */}
+        {!hasGuia2026Access && (
+          <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/40 rounded-2xl p-6 text-center space-y-3">
+            <div className="text-4xl">🎓</div>
+            <h3 className="text-white font-black text-xl">¿Te gustó la muestra?</h3>
+            <p className="text-gray-300 text-sm max-w-md mx-auto">
+              Accede a los <strong>44 videos completos</strong> + simulador Guía 2026 sin límite por solo <strong>100 tokens</strong> (pago único).
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 pt-1">
+              <button
+                onClick={() => navigate('/tokens')}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
+              >
+                🪙 Desbloquear por 100 tokens
+              </button>
+              <button
+                onClick={() => navigate('/tokens')}
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
+              >
+                ⭐ Paquete Completo — 200 tokens
+              </button>
+            </div>
+            <p className="text-[10px] text-slate-500">Vista previa: primeros {FREE_PREVIEW_COUNT} videos gratis</p>
+          </div>
+        )}
+
         {/* Grid de tarjetas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {temasFiltrados.map(tema => {
+          {temasFiltrados.map((tema, globalIdx) => {
+            const originalIndex = TEMAS.findIndex(t => t.id === tema.id);
+            const isLocked = !hasGuia2026Access && originalIndex >= FREE_PREVIEW_COUNT;
             const c = COLOR_MAP[tema.materia] ?? DEFAULT_COLOR;
             const isDone = completed[tema.id] === true;
             return (
               <div
                 key={tema.id}
                 className={cn(
-                  'rounded-2xl border p-5 space-y-4 transition-all',
-                  c.bg, c.border,
-                  isDone && 'opacity-60'
+                  'rounded-2xl border p-5 space-y-4 transition-all relative',
+                  isLocked ? 'bg-slate-900/50 border-white/5 opacity-70' : `${c.bg} ${c.border}`,
+                  !isLocked && isDone && 'opacity-60'
                 )}
               >
+                {/* Overlay de candado */}
+                {isLocked && (
+                  <div className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center bg-slate-950/60 z-10 gap-2">
+                    <Lock className="h-6 w-6 text-slate-500" />
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Desbloquear — 100 tokens</span>
+                  </div>
+                )}
+
                 {/* Cabecera */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shrink-0', c.badge)}>
+                      <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shrink-0', isLocked ? 'bg-white/5 text-slate-600' : c.badge)}>
                         {tema.materia}
                       </span>
                       <span className="text-[9px] text-slate-500 font-bold shrink-0">
@@ -201,75 +246,77 @@ const Guia2026 = () => {
                       </span>
                     </div>
                     <h3 className="text-sm font-black text-white leading-snug">
-                      <span className={cn('mr-1 font-black', c.text)}>#{tema.id}</span>
+                      <span className={cn('mr-1 font-black', isLocked ? 'text-slate-600' : c.text)}>#{tema.id}</span>
                       {tema.tema}
                     </h3>
                   </div>
-                  <button
-                    onClick={() => toggleCompleted(tema.id)}
-                    title={isDone ? 'Marcar como pendiente' : 'Marcar como visto'}
-                    className="shrink-0 mt-0.5"
-                  >
-                    {isDone
-                      ? <CheckCircle className="h-5 w-5 text-emerald-400" />
-                      : <Circle className="h-5 w-5 text-slate-600 hover:text-slate-400 transition-colors" />
-                    }
-                  </button>
+                  {!isLocked && (
+                    <button
+                      onClick={() => toggleCompleted(tema.id)}
+                      title={isDone ? 'Marcar como pendiente' : 'Marcar como visto'}
+                      className="shrink-0 mt-0.5"
+                    >
+                      {isDone
+                        ? <CheckCircle className="h-5 w-5 text-emerald-400" />
+                        : <Circle className="h-5 w-5 text-slate-600 hover:text-slate-400 transition-colors" />
+                      }
+                    </button>
+                  )}
                 </div>
 
                 {/* Botones de recursos */}
-                <div className="flex flex-wrap gap-2">
-                  {tema.youtubeUrl ? (
-                    <a
-                      href={tema.youtubeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-[10px] font-black uppercase tracking-wider hover:bg-red-500/30 transition-all"
-                    >
-                      <PlayCircle className="h-3 w-3" />
-                      Ver Video
-                    </a>
-                  ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
-                      <PlayCircle className="h-3 w-3" />
-                      🔜 Video
-                    </span>
-                  )}
-
-                  {tema.infografia ? (
-                    <a
-                      href={tema.infografia}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/20 border border-blue-500/40 text-blue-300 text-[10px] font-black uppercase tracking-wider hover:bg-blue-500/30 transition-all"
-                    >
-                      <ImageIcon className="h-3 w-3" />
-                      Infografía
-                    </a>
-                  ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
-                      <ImageIcon className="h-3 w-3" />
-                      🔜 Infografía
-                    </span>
-                  )}
-
-                  {tema.pdf ? (
-                    <a
-                      href={tema.pdf}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-black uppercase tracking-wider hover:bg-amber-500/30 transition-all"
-                    >
-                      <FileText className="h-3 w-3" />
-                      PDF
-                    </a>
-                  ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
-                      <FileText className="h-3 w-3" />
-                      🔜 PDF
-                    </span>
-                  )}
-                </div>
+                {!isLocked && (
+                  <div className="flex flex-wrap gap-2">
+                    {tema.youtubeUrl ? (
+                      <a
+                        href={tema.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-[10px] font-black uppercase tracking-wider hover:bg-red-500/30 transition-all"
+                      >
+                        <PlayCircle className="h-3 w-3" />
+                        Ver Video
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
+                        <PlayCircle className="h-3 w-3" />
+                        🔜 Video
+                      </span>
+                    )}
+                    {tema.infografia ? (
+                      <a
+                        href={tema.infografia}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/20 border border-blue-500/40 text-blue-300 text-[10px] font-black uppercase tracking-wider hover:bg-blue-500/30 transition-all"
+                      >
+                        <ImageIcon className="h-3 w-3" />
+                        Infografía
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
+                        <ImageIcon className="h-3 w-3" />
+                        🔜 Infografía
+                      </span>
+                    )}
+                    {tema.pdf ? (
+                      <a
+                        href={tema.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-black uppercase tracking-wider hover:bg-amber-500/30 transition-all"
+                      >
+                        <FileText className="h-3 w-3" />
+                        PDF
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
+                        <FileText className="h-3 w-3" />
+                        🔜 PDF
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

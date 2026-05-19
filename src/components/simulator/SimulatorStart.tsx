@@ -47,6 +47,8 @@ interface SimulatorStartProps {
     bank8Unlocked?: boolean;
     bank9Unlocked?: boolean;
     bank10Unlocked?: boolean;
+    guia2026Unlocked?: boolean;
+    paqueteCompleto?: boolean;
     isLoggedIn?: boolean;
     onNavigateToGuias?: () => void;
     children?: React.ReactNode; // ProgressPanel
@@ -70,6 +72,8 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     bank8Unlocked = false,
     bank9Unlocked = false,
     bank10Unlocked = false,
+    guia2026Unlocked = false,
+    paqueteCompleto = false,
     isLoggedIn = false,
     onNavigateToGuias,
     children
@@ -193,93 +197,76 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 </span>
                             )}
                         </button>
-                        {/* Bank 8 — Premium (pago único) */}
+                        {/* Bank 8 — GRATIS */}
                         <button
                             onClick={() => onSelectBank('bank8')}
                             className={cn(
                                 "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
                                 selectedBank === 'bank8'
-                                    ? bank8Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
-                                    : bank8Unlocked
-                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
-                                    : hasTokens
-                                    ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
-                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
+                                    ? "bg-emerald-600 text-white border-emerald-600"
+                                    : "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
                             )}
                         >
-                            {bank8Unlocked ? '📚' : hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
-                            Banco 8 — Guía UNAM 2023
-                            {bank8Unlocked ? (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                    ✅ DESBLOQUEADO
-                                </span>
-                            ) : (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                    🆓 10 gratis · 🔒 50 tokens completo
-                                </span>
-                            )}
+                            🆓 Banco 8 — Guía UNAM 2023
+                            <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                GRATIS
+                            </span>
                         </button>
-                        {/* Bank 9 — Premium (pago único) */}
+                        {/* Bank 9 — GRATIS */}
                         <button
                             onClick={() => onSelectBank('bank9')}
                             className={cn(
                                 "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
                                 selectedBank === 'bank9'
-                                    ? bank9Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
-                                    : bank9Unlocked
-                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
-                                    : hasTokens
-                                    ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
-                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
+                                    ? "bg-emerald-600 text-white border-emerald-600"
+                                    : "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
                             )}
                         >
-                            {bank9Unlocked ? '📚' : hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
-                            Banco 9 — Guía UNAM 2024
-                            {bank9Unlocked ? (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                    ✅ DESBLOQUEADO
-                                </span>
-                            ) : (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                    🆓 10 gratis · 🔒 50 tokens completo
-                                </span>
-                            )}
+                            🆓 Banco 9 — Guía UNAM 2024
+                            <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                GRATIS
+                            </span>
                         </button>
-                        {/* Bank 10 — Premium (pago único) */}
-                        <button
-                            onClick={() => onSelectBank('bank10')}
-                            className={cn(
-                                "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
-                                selectedBank === 'bank10'
-                                    ? bank10Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
-                                    : bank10Unlocked
-                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
-                                    : hasTokens
-                                    ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
-                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
-                            )}
-                        >
-                            {bank10Unlocked ? '🆕' : hasTokens ? '🆕' : <Lock className="w-3 h-3 shrink-0" />}
-                            Banco 10 — Guía UNAM 2026
-                            {bank10Unlocked ? (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                    ✅ DESBLOQUEADO
-                                </span>
-                            ) : (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                    🆓 10 gratis · 🔒 50 tokens completo
-                                </span>
-                            )}
-                        </button>
+                        {/* Bank 10 — Guía 2026 (incluido en paquete guía2026 o paquete completo) */}
+                        {(() => {
+                            const b10Unlocked = bank10Unlocked || guia2026Unlocked || paqueteCompleto;
+                            return (
+                                <button
+                                    onClick={() => onSelectBank('bank10')}
+                                    className={cn(
+                                        "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
+                                        selectedBank === 'bank10'
+                                            ? b10Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
+                                            : b10Unlocked
+                                            ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
+                                            : "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
+                                    )}
+                                >
+                                    🆕 Banco 10 — Guía IPN/UNAM 2026
+                                    {b10Unlocked ? (
+                                        <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                                            ✅ INCLUIDO
+                                        </span>
+                                    ) : (
+                                        <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
+                                            🆓 10 gratis · 🔒 100 tokens
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })()}
                     </div>
 
-                    {/* Banner banks */}
-                    {['bank5', 'bank8', 'bank9', 'bank10'].includes(selectedBank) && (
-                        (selectedBank === 'bank5' && !bank5Unlocked) ||
-                        (selectedBank === 'bank8' && !bank8Unlocked) ||
-                        (selectedBank === 'bank9' && !bank9Unlocked) ||
-                        (selectedBank === 'bank10' && !bank10Unlocked)
-                    ) && (
+                    {/* Banner banks 8/9 — siempre gratis */}
+                    {(selectedBank === 'bank8' || selectedBank === 'bank9') && (
+                        <div className="mt-3 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center text-sm">
+                            <span className="text-emerald-400 font-semibold">
+                                🆓 Banco completamente gratuito — ¡Practica sin límite!
+                            </span>
+                        </div>
+                    )}
+                    {/* Banner bank5 — preview */}
+                    {selectedBank === 'bank5' && !bank5Unlocked && !paqueteCompleto && (
                         <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
                             <span className="text-amber-400 font-semibold block">
                                 🆓 Prueba 10 preguntas gratis ahora mismo
@@ -289,15 +276,21 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                             </span>
                         </div>
                     )}
-                    {['bank5', 'bank8', 'bank9', 'bank10'].includes(selectedBank) && (
-                        (selectedBank === 'bank5' && bank5Unlocked) ||
-                        (selectedBank === 'bank8' && bank8Unlocked) ||
-                        (selectedBank === 'bank9' && bank9Unlocked) ||
-                        (selectedBank === 'bank10' && bank10Unlocked)
-                    ) && (
+                    {/* Banner bank10 — preview o incluido en Guía 2026 */}
+                    {selectedBank === 'bank10' && !(bank10Unlocked || guia2026Unlocked || paqueteCompleto) && (
+                        <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-center text-sm space-y-1">
+                            <span className="text-purple-400 font-semibold block">
+                                🆓 Prueba 10 preguntas gratis — Banco incluido en Paquete Guía 2026
+                            </span>
+                            <span className="text-slate-400 text-xs">
+                                100 tokens · Acceso de por vida a este banco + 44 videos de estudio
+                            </span>
+                        </div>
+                    )}
+                    {selectedBank === 'bank10' && (bank10Unlocked || guia2026Unlocked || paqueteCompleto) && (
                         <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl text-center text-sm">
                             <span className="text-green-400 font-semibold">
-                                ✅ Ya tienes acceso — ¡Practica con este Banco Oficial sin límite!
+                                ✅ Incluido en tu paquete — ¡Practica sin límite!
                             </span>
                         </div>
                     )}
