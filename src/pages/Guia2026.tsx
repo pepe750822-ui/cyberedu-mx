@@ -5,83 +5,75 @@ import { cn } from '@/lib/utils';
 
 interface Tema {
   id: number;
-  titulo: string;
+  preguntas: string;
+  tema: string;
   materia: string;
-  color: string;
-  video?: string;
+  youtubeUrl: string | null;
   infografia?: string;
   pdf?: string;
 }
 
 const TEMAS: Tema[] = [
-  // Habilidad Matemática (8)
-  { id: 1,  titulo: 'Series numéricas',                      materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 2,  titulo: 'Analogías matemáticas',                 materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 3,  titulo: 'Sucesiones de figuras',                 materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 4,  titulo: 'Operaciones con conjuntos',             materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 5,  titulo: 'Razonamiento numérico',                 materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 6,  titulo: 'Secuencias lógicas',                    materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 7,  titulo: 'Razonamiento espacial',                 materia: 'Habilidad Matemática', color: 'indigo' },
-  { id: 8,  titulo: 'Diagramas y tablas de datos',           materia: 'Habilidad Matemática', color: 'indigo' },
-  // Biología (4)
-  { id: 9,  titulo: 'La célula y sus funciones',             materia: 'Biología',             color: 'green'  },
-  { id: 10, titulo: 'Genética y herencia',                   materia: 'Biología',             color: 'green'  },
-  { id: 11, titulo: 'Ecosistemas y biodiversidad',           materia: 'Biología',             color: 'green'  },
-  { id: 12, titulo: 'El cuerpo humano y su salud',           materia: 'Biología',             color: 'green'  },
-  // Español (4)
-  { id: 13, titulo: 'Comprensión lectora',                   materia: 'Español',              color: 'amber'  },
-  { id: 14, titulo: 'Gramática y ortografía',                materia: 'Español',              color: 'amber'  },
-  { id: 15, titulo: 'Redacción y coherencia textual',        materia: 'Español',              color: 'amber'  },
-  { id: 16, titulo: 'Tipos de textos y características',     materia: 'Español',              color: 'amber'  },
-  // Química (4)
-  { id: 17, titulo: 'Estructura atómica y tabla periódica',  materia: 'Química',              color: 'cyan'   },
-  { id: 18, titulo: 'Enlace químico y compuestos',           materia: 'Química',              color: 'cyan'   },
-  { id: 19, titulo: 'Reacciones químicas',                   materia: 'Química',              color: 'cyan'   },
-  { id: 20, titulo: 'Soluciones y concentración',            materia: 'Química',              color: 'cyan'   },
-  // Historia (4)
-  { id: 21, titulo: 'México prehispánico y conquista',       materia: 'Historia',             color: 'orange' },
-  { id: 22, titulo: 'Época colonial e independencia',        materia: 'Historia',             color: 'orange' },
-  { id: 23, titulo: 'México siglo XIX y Reforma',            materia: 'Historia',             color: 'orange' },
-  { id: 24, titulo: 'México siglo XX y contemporáneo',       materia: 'Historia',             color: 'orange' },
-  // Matemáticas (4)
-  { id: 25, titulo: 'Álgebra y ecuaciones',                  materia: 'Matemáticas',          color: 'violet' },
-  { id: 26, titulo: 'Geometría y trigonometría',             materia: 'Matemáticas',          color: 'violet' },
-  { id: 27, titulo: 'Aritmética y números',                  materia: 'Matemáticas',          color: 'violet' },
-  { id: 28, titulo: 'Estadística y probabilidad',            materia: 'Matemáticas',          color: 'violet' },
-  // Habilidad Verbal (4)
-  { id: 29, titulo: 'Comprensión de textos',                 materia: 'Habilidad Verbal',     color: 'pink'   },
-  { id: 30, titulo: 'Analogías verbales',                    materia: 'Habilidad Verbal',     color: 'pink'   },
-  { id: 31, titulo: 'Sinónimos y antónimos',                 materia: 'Habilidad Verbal',     color: 'pink'   },
-  { id: 32, titulo: 'Ordenamiento de ideas',                 materia: 'Habilidad Verbal',     color: 'pink'   },
-  // Geografía (4)
-  { id: 33, titulo: 'Geografía de México',                   materia: 'Geografía',            color: 'blue'   },
-  { id: 34, titulo: 'Geografía física y climática',          materia: 'Geografía',            color: 'blue'   },
-  { id: 35, titulo: 'Demografía y población',                materia: 'Geografía',            color: 'blue'   },
-  { id: 36, titulo: 'Mapas y cartografía',                   materia: 'Geografía',            color: 'blue'   },
-  // Física (4)
-  { id: 37, titulo: 'Movimiento y cinemática',               materia: 'Física',               color: 'red'    },
-  { id: 38, titulo: 'Fuerzas y dinámica',                    materia: 'Física',               color: 'red'    },
-  { id: 39, titulo: 'Energía y trabajo',                     materia: 'Física',               color: 'red'    },
-  { id: 40, titulo: 'Ondas, sonido y luz',                   materia: 'Física',               color: 'red'    },
-  // Formación Cívica (4)
-  { id: 41, titulo: 'Derechos humanos y ciudadanía',         materia: 'Formación Cívica y Ética', color: 'emerald' },
-  { id: 42, titulo: 'Democracia y gobierno en México',       materia: 'Formación Cívica y Ética', color: 'emerald' },
-  { id: 43, titulo: 'Valores y ética ciudadana',             materia: 'Formación Cívica y Ética', color: 'emerald' },
-  { id: 44, titulo: 'Globalización y sociedad',              materia: 'Formación Cívica y Ética', color: 'emerald' },
+  { id: 1,  preguntas: "1-3",     tema: "Ficha bibliográfica, tema del texto, recursos explicativos",                    materia: "Español",                  youtubeUrl: null },
+  { id: 2,  preguntas: "4-5",     tema: "Nexos que introducen ideas, conectores de orden",                               materia: "Español",                  youtubeUrl: null },
+  { id: 3,  preguntas: "6-8",     tema: "Signos de puntuación, oración principal, presente histórico",                   materia: "Español",                  youtubeUrl: null },
+  { id: 4,  preguntas: "9-11",    tema: "Tiempos verbales (copretérito), aposiciones, hecho vs opinión",                 materia: "Español",                  youtubeUrl: null },
+  { id: 5,  preguntas: "12",      tema: "Exageración en publicidad",                                                     materia: "Español",                  youtubeUrl: null },
+  { id: 6,  preguntas: "13-16",   tema: "Texto El contador de cuentos (completo)",                                       materia: "Español",                  youtubeUrl: null },
+  { id: 7,  preguntas: "17-19",   tema: "Texto Los agujeros negros",                                                     materia: "Habilidad Verbal",         youtubeUrl: null },
+  { id: 8,  preguntas: "20-22",   tema: "Analogías",                                                                     materia: "Habilidad Verbal",         youtubeUrl: null },
+  { id: 9,  preguntas: "23-25",   tema: "Antónimos",                                                                     materia: "Habilidad Verbal",         youtubeUrl: null },
+  { id: 10, preguntas: "26-28",   tema: "Sinónimos",                                                                     materia: "Habilidad Verbal",         youtubeUrl: null },
+  { id: 11, preguntas: "29-30",   tema: "Jerarquía de operaciones y porcentajes",                                         materia: "Matemáticas",              youtubeUrl: null },
+  { id: 12, preguntas: "31-32",   tema: "Simplificación de potencias y expresiones algebraicas",                         materia: "Matemáticas",              youtubeUrl: null },
+  { id: 13, preguntas: "33-35",   tema: "Perímetro con álgebra, factorización, ecuaciones",                              materia: "Matemáticas",              youtubeUrl: null },
+  { id: 14, preguntas: "36-37",   tema: "Frecuencia relativa y probabilidad",                                             materia: "Matemáticas",              youtubeUrl: null },
+  { id: 15, preguntas: "38-40",   tema: "Semejanza, trigonometría, áreas",                                               materia: "Matemáticas",              youtubeUrl: null },
+  { id: 16, preguntas: "41-44",   tema: "Sucesiones numéricas",                                                          materia: "Habilidad Matemática",     youtubeUrl: null },
+  { id: 17, preguntas: "45-47",   tema: "Series de figuras",                                                             materia: "Habilidad Matemática",     youtubeUrl: null },
+  { id: 18, preguntas: "48-50",   tema: "Series espaciales (dados, cubos)",                                              materia: "Habilidad Matemática",     youtubeUrl: null },
+  { id: 19, preguntas: "51-52",   tema: "Imaginación espacial (contar cubos, dados girados)",                            materia: "Habilidad Matemática",     youtubeUrl: null },
+  { id: 20, preguntas: "53-56",   tema: "Problemas de razonamiento",                                                     materia: "Habilidad Matemática",     youtubeUrl: null },
+  { id: 21, preguntas: "57-60",   tema: "Célula, biodiversidad, áreas protegidas, transgénicos",                         materia: "Biología",                 youtubeUrl: null },
+  { id: 22, preguntas: "61-63",   tema: "Fotosíntesis, aerobios/anaerobios, heterótrofos",                               materia: "Biología",                 youtubeUrl: null },
+  { id: 23, preguntas: "64-65",   tema: "Nutrición y salud respiratoria",                                                materia: "Biología",                 youtubeUrl: null },
+  { id: 24, preguntas: "66-68",   tema: "Reproducción, anticonceptivos, beneficios de transgénicos",                     materia: "Biología",                 youtubeUrl: null },
+  { id: 25, preguntas: "69-70",   tema: "Gráficas velocidad-tiempo",                                                     materia: "Física",                   youtubeUrl: null },
+  { id: 26, preguntas: "71-72",   tema: "Leyes de Newton (F=ma)",                                                        materia: "Física",                   youtubeUrl: null },
+  { id: 27, preguntas: "73-75",   tema: "Electrización, calor/temperatura, Pascal",                                      materia: "Física",                   youtubeUrl: null },
+  { id: 28, preguntas: "76-78",   tema: "Conservación de energía, conductividad, campos magnéticos",                     materia: "Física",                   youtubeUrl: null },
+  { id: 29, preguntas: "79-80",   tema: "Movimiento ondulatorio, luz (longitud de onda, frecuencia)",                   materia: "Física",                   youtubeUrl: null },
+  { id: 30, preguntas: "81-84",   tema: "Modelos atómicos, propiedades físicas, masa/volumen, cambios de estado",        materia: "Química",                  youtubeUrl: null },
+  { id: 31, preguntas: "85-88",   tema: "Electrones externos, número atómico, representación H•, tabla periódica",       materia: "Química",                  youtubeUrl: null },
+  { id: 32, preguntas: "89-92",   tema: "Metales, agua como reactivo, mol, redox",                                       materia: "Química",                  youtubeUrl: null },
+  { id: 33, preguntas: "93-95",   tema: "Humanismo, Ilustración, nacionalismo",                                          materia: "Historia",                 youtubeUrl: null },
+  { id: 34, preguntas: "96-98",   tema: "Fascismo, revolución electrónica, globalización",                               materia: "Historia",                 youtubeUrl: null },
+  { id: 35, preguntas: "99-101",  tema: "Inquisición, absolutismo ilustrado, Reforma",                                   materia: "Historia",                 youtubeUrl: null },
+  { id: 36, preguntas: "102-104", tema: "Artículo 27, Paz y Rulfo, TLCAN",                                               materia: "Historia",                 youtubeUrl: null },
+  { id: 37, preguntas: "105-107", tema: "Temporalidad, coordenadas, husos horarios",                                     materia: "Geografía",                youtubeUrl: null },
+  { id: 38, preguntas: "108-110", tema: "Tectónica de placas, estratosfera, riesgos sísmicos",                           materia: "Geografía",                youtubeUrl: null },
+  { id: 39, preguntas: "111-113", tema: "Petróleo, puertos, turismo",                                                    materia: "Geografía",                youtubeUrl: null },
+  { id: 40, preguntas: "114-116", tema: "Globalización cultural, Palenque, ZEE",                                         materia: "Geografía",                youtubeUrl: null },
+  { id: 41, preguntas: "117-119", tema: "Decisiones individuales, valores estéticos, identidad",                         materia: "Formación Cívica y Ética", youtubeUrl: null },
+  { id: 42, preguntas: "120-122", tema: "Derechos/obligaciones, violencia económica, discriminación",                    materia: "Formación Cívica y Ética", youtubeUrl: null },
+  { id: 43, preguntas: "123-125", tema: "Poder Judicial, partidos políticos, voto",                                      materia: "Formación Cívica y Ética", youtubeUrl: null },
+  { id: 44, preguntas: "126-128", tema: "Función social de medios, calidad de vida, negociación",                        materia: "Formación Cívica y Ética", youtubeUrl: null },
 ];
 
 const COLOR_MAP: Record<string, { bg: string; border: string; badge: string; text: string }> = {
-  indigo:  { bg: 'bg-indigo-500/10',  border: 'border-indigo-500/30',  badge: 'bg-indigo-500/20 text-indigo-300',  text: 'text-indigo-400'  },
-  green:   { bg: 'bg-green-500/10',   border: 'border-green-500/30',   badge: 'bg-green-500/20 text-green-300',    text: 'text-green-400'   },
-  amber:   { bg: 'bg-amber-500/10',   border: 'border-amber-500/30',   badge: 'bg-amber-500/20 text-amber-300',    text: 'text-amber-400'   },
-  cyan:    { bg: 'bg-cyan-500/10',    border: 'border-cyan-500/30',    badge: 'bg-cyan-500/20 text-cyan-300',      text: 'text-cyan-400'    },
-  orange:  { bg: 'bg-orange-500/10',  border: 'border-orange-500/30',  badge: 'bg-orange-500/20 text-orange-300',  text: 'text-orange-400'  },
-  violet:  { bg: 'bg-violet-500/10',  border: 'border-violet-500/30',  badge: 'bg-violet-500/20 text-violet-300',  text: 'text-violet-400'  },
-  pink:    { bg: 'bg-pink-500/10',    border: 'border-pink-500/30',    badge: 'bg-pink-500/20 text-pink-300',      text: 'text-pink-400'    },
-  blue:    { bg: 'bg-blue-500/10',    border: 'border-blue-500/30',    badge: 'bg-blue-500/20 text-blue-300',      text: 'text-blue-400'    },
-  red:     { bg: 'bg-red-500/10',     border: 'border-red-500/30',     badge: 'bg-red-500/20 text-red-300',        text: 'text-red-400'     },
-  emerald: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', badge: 'bg-emerald-500/20 text-emerald-300',text: 'text-emerald-400' },
+  "Español":                  { bg: 'bg-amber-500/10',   border: 'border-amber-500/30',   badge: 'bg-amber-500/20 text-amber-300',    text: 'text-amber-400'   },
+  "Habilidad Verbal":         { bg: 'bg-pink-500/10',    border: 'border-pink-500/30',    badge: 'bg-pink-500/20 text-pink-300',      text: 'text-pink-400'    },
+  "Matemáticas":              { bg: 'bg-violet-500/10',  border: 'border-violet-500/30',  badge: 'bg-violet-500/20 text-violet-300',  text: 'text-violet-400'  },
+  "Habilidad Matemática":     { bg: 'bg-indigo-500/10',  border: 'border-indigo-500/30',  badge: 'bg-indigo-500/20 text-indigo-300',  text: 'text-indigo-400'  },
+  "Biología":                 { bg: 'bg-green-500/10',   border: 'border-green-500/30',   badge: 'bg-green-500/20 text-green-300',    text: 'text-green-400'   },
+  "Física":                   { bg: 'bg-red-500/10',     border: 'border-red-500/30',     badge: 'bg-red-500/20 text-red-300',        text: 'text-red-400'     },
+  "Química":                  { bg: 'bg-cyan-500/10',    border: 'border-cyan-500/30',    badge: 'bg-cyan-500/20 text-cyan-300',      text: 'text-cyan-400'    },
+  "Historia":                 { bg: 'bg-orange-500/10',  border: 'border-orange-500/30',  badge: 'bg-orange-500/20 text-orange-300',  text: 'text-orange-400'  },
+  "Geografía":                { bg: 'bg-blue-500/10',    border: 'border-blue-500/30',    badge: 'bg-blue-500/20 text-blue-300',      text: 'text-blue-400'    },
+  "Formación Cívica y Ética": { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', badge: 'bg-emerald-500/20 text-emerald-300',text: 'text-emerald-400' },
 };
+
+const DEFAULT_COLOR = { bg: 'bg-slate-800', border: 'border-white/10', badge: 'bg-white/10 text-slate-300', text: 'text-slate-400' };
 
 const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
@@ -111,20 +103,18 @@ const Guia2026 = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
+      {/* Sticky header */}
       <div className="border-b border-white/5 bg-slate-900/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Inicio
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-amber-400" />
-            <span className="font-black uppercase tracking-tight text-white text-sm">Guía IPN/UNAM 2026</span>
+            <span className="font-black uppercase tracking-tight text-white text-sm hidden sm:inline">Guía IPN/UNAM 2026</span>
           </div>
-          <div className="text-right">
-            <span className="text-xs text-slate-400">{completedCount}/{TEMAS.length} temas</span>
-          </div>
+          <span className="text-xs text-slate-400 font-bold">{completedCount}/{TEMAS.length} vistos</span>
         </div>
       </div>
 
@@ -135,10 +125,9 @@ const Guia2026 = () => {
             📖 Guía de Estudio 2026
           </h1>
           <p className="text-slate-400 max-w-xl mx-auto text-sm">
-            44 temas organizados por materia. Marca cada tema como visto conforme avances.
+            44 videos organizados por tema. Cada video cubre las preguntas indicadas de la guía oficial IPN/UNAM 2026.
           </p>
 
-          {/* Barra de progreso */}
           <div className="max-w-md mx-auto space-y-2">
             <div className="flex justify-between text-xs text-slate-400 font-bold">
               <span>Has visto <span className="text-white">{completedCount}</span> de {TEMAS.length} temas</span>
@@ -164,11 +153,11 @@ const Guia2026 = () => {
                 : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10'
             )}
           >
-            Todas
+            Todas ({TEMAS.length})
           </button>
           {MATERIAS.map(m => {
-            const tema = TEMAS.find(t => t.materia === m)!;
-            const c = COLOR_MAP[tema.color];
+            const c = COLOR_MAP[m] ?? DEFAULT_COLOR;
+            const count = TEMAS.filter(t => t.materia === m).length;
             return (
               <button
                 key={m}
@@ -180,7 +169,7 @@ const Guia2026 = () => {
                     : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10'
                 )}
               >
-                {m}
+                {m} ({count})
               </button>
             );
           })}
@@ -189,7 +178,7 @@ const Guia2026 = () => {
         {/* Grid de tarjetas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {temasFiltrados.map(tema => {
-            const c = COLOR_MAP[tema.color];
+            const c = COLOR_MAP[tema.materia] ?? DEFAULT_COLOR;
             const isDone = completed[tema.id] === true;
             return (
               <div
@@ -197,18 +186,23 @@ const Guia2026 = () => {
                 className={cn(
                   'rounded-2xl border p-5 space-y-4 transition-all',
                   c.bg, c.border,
-                  isDone && 'opacity-70'
+                  isDone && 'opacity-60'
                 )}
               >
-                {/* Número, materia y check */}
+                {/* Cabecera */}
                 <div className="flex items-start justify-between gap-2">
-                  <div className="space-y-1">
-                    <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full', c.badge)}>
-                      {tema.materia}
-                    </span>
-                    <h3 className="text-sm font-black text-white leading-tight">
-                      <span className={cn('mr-1.5 font-black', c.text)}>#{tema.id}</span>
-                      {tema.titulo}
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shrink-0', c.badge)}>
+                        {tema.materia}
+                      </span>
+                      <span className="text-[9px] text-slate-500 font-bold shrink-0">
+                        Preguntas {tema.preguntas}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-black text-white leading-snug">
+                      <span className={cn('mr-1 font-black', c.text)}>#{tema.id}</span>
+                      {tema.tema}
                     </h3>
                   </div>
                   <button
@@ -225,18 +219,18 @@ const Guia2026 = () => {
 
                 {/* Botones de recursos */}
                 <div className="flex flex-wrap gap-2">
-                  {tema.video ? (
+                  {tema.youtubeUrl ? (
                     <a
-                      href={tema.video}
+                      href={tema.youtubeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-[10px] font-black uppercase tracking-wider hover:bg-red-500/30 transition-all"
                     >
                       <PlayCircle className="h-3 w-3" />
-                      Video
+                      Ver Video
                     </a>
                   ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-black uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                       <PlayCircle className="h-3 w-3" />
                       🔜 Video
                     </span>
@@ -253,7 +247,7 @@ const Guia2026 = () => {
                       Infografía
                     </a>
                   ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-black uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                       <ImageIcon className="h-3 w-3" />
                       🔜 Infografía
                     </span>
@@ -270,7 +264,7 @@ const Guia2026 = () => {
                       PDF
                     </a>
                   ) : (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-black uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-600 text-[10px] font-bold">
                       <FileText className="h-3 w-3" />
                       🔜 PDF
                     </span>
@@ -282,7 +276,7 @@ const Guia2026 = () => {
         </div>
 
         <p className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest">
-          Los recursos se irán publicando conforme se produzcan — CyberEdu MX 2026
+          Videos y recursos se publican conforme se producen — CyberEdu MX 2026
         </p>
       </div>
     </div>
