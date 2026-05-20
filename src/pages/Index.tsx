@@ -420,6 +420,19 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Banner Temario 2026 */}
+      <div className="mx-4 mb-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+        <p className="text-blue-300 text-sm font-semibold mb-3">
+          📋 <strong>Nuevo Temario 2026:</strong> Temas actualizados de Formación Cívica, Historia moderna y Geografía digital.
+        </p>
+        <button
+          onClick={() => navigate('/guia2026')}
+          className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-black py-3 rounded-xl hover:scale-105 transition-transform"
+        >
+          📖 Ver Guía de Estudio 2026 — 44 Videos
+        </button>
+      </div>
+
       {/* Última Hora COMIPEMS 2026 */}
       <section className="w-full bg-yellow-400 text-yellow-900">
         <div className="container mx-auto px-4 py-6">
