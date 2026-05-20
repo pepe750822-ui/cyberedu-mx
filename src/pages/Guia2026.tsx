@@ -269,6 +269,9 @@ const Guia2026 = () => {
           <p className="text-slate-400 max-w-xl mx-auto text-sm">
             44 videos organizados por tema. Cada video cubre las preguntas indicadas de la guía oficial IPN/UNAM 2026.
           </p>
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-sm text-blue-300 max-w-xl mx-auto">
+            📋 <strong>Nuevo Temario 2026:</strong> Incluye temas actualizados de Formación Cívica, Historia moderna y Geografía digital. ¡Revisa la Guía 2026!
+          </div>
 
           <div className="max-w-md mx-auto space-y-2">
             <div className="flex justify-between text-xs text-slate-400 font-bold">

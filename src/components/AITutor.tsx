@@ -2639,14 +2639,14 @@ const AITutor = () => {
       const detailedSyllabus = {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario"],
         "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
-        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos", "3.3 Ortografía y gramática", "3.4 Organización de información"],
+        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos (informativos, literarios, legales/administrativos, publicitarios)", "3.3 Ortografía y gramática (presente histórico, tiempos verbales)", "3.4 Organización de información", "3.5 Recursos retóricos (exageración en publicidad)"],
         "4. Matemáticas": ["4.1 Significado y uso de los números", "4.2 Álgebra", "4.3 Geometría", "4.4 Trigonometría", "4.5 Estadística y Probabilidad"],
-        "5. Ciencias I (Biología)": ["5.1 Biodiversidad", "5.2 Materia y energía", "5.3 Salud", "5.4 Genética"],
+        "5. Ciencias I (Biología)": ["5.1 Biodiversidad y evolución", "5.2 Materia y energía (fotosíntesis, respiración)", "5.3 Salud (anticonceptivos, ETS: agentes causales y síntomas)", "5.4 Genética", "5.5 Desarrollo sustentable y conservación"],
         "6. Ciencias II (Física)": ["6.1 Movimiento, fuerzas y energía", "6.2 Interacciones de la materia", "6.3 Estructura interna de la materia"],
         "7. Ciencias III (Química)": ["7.1 Características de materiales", "7.2 Estructura y periodicidad"],
-        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México"],
-        "9. Geografía": ["9.1 Mapas", "9.2 Recursos y ambiente", "9.3 Población", "9.4 Economía", "9.5 Cultura"],
-        "10. Formación Cívica": ["10.1 Valores", "10.2 Democracia", "10.3 Ciudadanía", "10.4 Solución de conflictos"]
+        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México (Revolución, Guerra Cristera, movimientos sociales años 60, neoliberalismo, TLCAN)"],
+        "9. Geografía": ["9.1 Mapas y SIG/GPS", "9.2 Recursos y ambiente (ecoturismo, ecotecnias)", "9.3 Población", "9.4 Economía e IDH", "9.5 Cultura"],
+        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos", "10.5 Violencia hacia adolescentes (maltrato, abuso y acoso sexual)"]
       };
       
       return {
@@ -3748,14 +3748,14 @@ const AITutor = () => {
       const detailedSyllabus = {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
         "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
-        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos", "3.3 Ortografía y gramática", "3.4 Organización de información"],
+        "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos (informativos, literarios, legales/administrativos, publicitarios)", "3.3 Ortografía y gramática (presente histórico, tiempos verbales)", "3.4 Organización de información", "3.5 Recursos retóricos (exageración en publicidad)"],
         "4. Matemáticas": ["4.1 Significado y uso de los números", "4.2 Álgebra (Ecuaciones, Factorización)", "4.3 Geometría (Pitágoras, Áreas)", "4.4 Trigonometría", "4.5 Estadística y Probabilidad"],
-        "5. Ciencias I (Biología)": ["5.1 Biodiversidad y evolución", "5.2 Materia y energía (Fotosíntesis)", "5.3 Salud", "5.4 Genética"],
+        "5. Ciencias I (Biología)": ["5.1 Biodiversidad y evolución", "5.2 Materia y energía (Fotosíntesis, respiración)", "5.3 Salud (anticonceptivos, ETS: agentes causales y síntomas)", "5.4 Genética", "5.5 Desarrollo sustentable y conservación"],
         "6. Ciencias II (Física)": ["6.1 Movimiento, fuerzas y energía", "6.2 Interacciones de la materia", "6.3 Estructura interna de la materia"],
         "7. Ciencias III (Química)": ["7.1 Características de materiales", "7.2 Estructura y periodicidad (Tabla Periódica)"],
-        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México"],
-        "9. Geografía": ["9.1 Mapas", "9.2 Recursos y ambiente", "9.3 Población", "9.4 Economía", "9.5 Cultura"],
-        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos"]
+        "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México (Revolución, Guerra Cristera, movimientos sociales años 60, neoliberalismo, TLCAN)"],
+        "9. Geografía": ["9.1 Mapas y SIG/GPS", "9.2 Recursos y ambiente (ecoturismo, ecotecnias)", "9.3 Población", "9.4 Economía e IDH", "9.5 Cultura"],
+        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos", "10.5 Violencia hacia adolescentes (maltrato, abuso y acoso sexual)"]
       };
 
       const systemMsg = { 
