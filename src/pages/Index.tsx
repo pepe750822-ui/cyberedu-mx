@@ -201,16 +201,18 @@ const Index = () => {
     <div className="min-h-screen bg-white dark:bg-slate-900">
       <Header />
 
-      {/* Urgency Banner */}
-      {isRegistroOpen ? (
-        <div className="w-full bg-red-600 text-white text-center py-3 px-4 font-black text-sm md:text-base animate-pulse">
-          ⚠️ ÚLTIMO DÍA para registrarte al COMIPEMS — Cierra el 22 de mayo ⚠️
-        </div>
-      ) : daysToExam > 0 ? (
-        <div className="w-full bg-orange-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
-          🗓️ El examen COMIPEMS es en <span className="underline">{daysToExam} días</span> — ¡Sigue entrenando!
-        </div>
-      ) : null}
+      {/* Urgency Banner — altura siempre reservada para evitar CLS */}
+      <div className="min-h-[48px]">
+        {isRegistroOpen ? (
+          <div className="w-full bg-red-600 text-white text-center py-3 px-4 font-black text-sm md:text-base animate-pulse">
+            ⚠️ ÚLTIMO DÍA para registrarte al COMIPEMS — Cierra el 22 de mayo ⚠️
+          </div>
+        ) : daysToExam > 0 ? (
+          <div className="w-full bg-orange-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
+            🗓️ El examen COMIPEMS es en <span className="underline">{daysToExam} días</span> — ¡Sigue entrenando!
+          </div>
+        ) : null}
+      </div>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden mb-0 border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900">
@@ -430,7 +432,7 @@ const Index = () => {
       </section>
 
       {/* Reto Diario Express - Ahora más arriba para máxima visibilidad */}
-      <div className="container mx-auto px-4 pt-12 -mb-8">
+      <div className="container mx-auto px-4 pt-12 -mb-8 min-h-[120px]">
         <DailyChallenge />
       </div>
 
