@@ -100,7 +100,7 @@ const Guia2026 = () => {
   const hasAccess =
     (profile as any)?.guia2026_unlocked === true ||
     (profile as any)?.paquete_completo === true ||
-    ((profile as any)?.tokens || 0) >= 100;
+    ((profile as any)?.tokens || 0) >= 150;
 
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
