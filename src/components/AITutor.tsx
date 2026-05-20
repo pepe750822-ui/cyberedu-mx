@@ -1334,7 +1334,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
       {/* 2. SECCIÓN DE CONTENIDO (Navegación al hacer clic) */}
       <button
         onClick={() => {
-          const resolved = resolveVideoId(step.areaId || planTitle || "", step.videoId || step.text || step.id.toString());
+          const resolved = resolveVideoId(step.areaId || planTitle || "", step.videoId || step.text || step.id?.toString() ?? "");
           const generatedUrl = getUrlForPaso(
             getStepType(), 
             resolved.videoId, 
@@ -2932,7 +2932,7 @@ const AITutor = () => {
              area: "Plan Personalizado por IA",
              titulo: m.plan.title || "Plan de Acción",
              pasos: approvedSteps.map(s => ({
-               id: s.id.toString(),
+               id: s.id?.toString() ?? "",
                titulo: s.text,
                tipo: "video",
                completado: false

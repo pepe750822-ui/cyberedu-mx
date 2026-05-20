@@ -100,7 +100,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
         
         const selectedSchoolData = SCHOOLS.find(s => s.name === targetSchool);
         if (selectedSchoolData) {
-            localStorage.setItem('user_target_score', selectedSchoolData.score.toString());
+            localStorage.setItem('user_target_score', selectedSchoolData.score?.toString() ?? "");
         }
 
         // Update theme color on root (simplified)

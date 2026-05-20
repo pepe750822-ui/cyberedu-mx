@@ -94,7 +94,7 @@ export const CalculatorArtifact: React.FC<CalculatorProps> = ({ calculator }) =>
       for (const varName of sortedVarNames) {
         // Replace variable names with their values (word boundaries)
         const regex = new RegExp(`\\b${varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
-        evalFormula = evalFormula.replace(regex, params[varName].toString());
+        evalFormula = evalFormula.replace(regex, params[varName]?.toString() ?? "");
       }
 
       // Handle common math functions
