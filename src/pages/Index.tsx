@@ -398,6 +398,28 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Banner promocional Paquete Completo */}
+      <section className="mx-4 mb-6">
+        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5 text-center">
+          <div className="text-3xl mb-2">⭐</div>
+          <h2 className="text-white font-black text-xl mb-1">
+            Paquete Completo — 150 Tokens
+          </h2>
+          <p className="text-gray-300 text-sm mb-3">
+            ✅ 44 videos Guía 2026 con infografías y PDFs<br/>
+            ✅ Todos los simuladores desbloqueados<br/>
+            ✅ Tutor IA ilimitado<br/>
+            ✅ Acceso de por vida
+          </p>
+          <button
+            onClick={() => navigate('/tokens')}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl text-lg hover:scale-105 transition-transform"
+          >
+            🪙 Obtener 150 tokens — desde $30 MXN
+          </button>
+        </div>
+      </section>
+
       {/* Última Hora COMIPEMS 2026 */}
       <section className="w-full bg-yellow-400 text-yellow-900">
         <div className="container mx-auto px-4 py-6">
@@ -428,28 +450,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Banner promocional Paquete Completo */}
-      <section className="mx-4 mb-6">
-        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5 text-center">
-          <div className="text-3xl mb-2">⭐</div>
-          <h2 className="text-white font-black text-xl mb-1">
-            Paquete Completo — 150 Tokens
-          </h2>
-          <p className="text-gray-300 text-sm mb-3">
-            ✅ 44 videos Guía 2026 con infografías y PDFs<br/>
-            ✅ Todos los simuladores desbloqueados<br/>
-            ✅ Tutor IA ilimitado<br/>
-            ✅ Acceso de por vida
-          </p>
-          <button
-            onClick={() => navigate('/tokens')}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl text-lg hover:scale-105 transition-transform"
-          >
-            🪙 Obtener 150 tokens — desde $30 MXN
-          </button>
         </div>
       </section>
 
