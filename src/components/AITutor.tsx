@@ -1334,7 +1334,7 @@ const PlanStepItem: React.FC<{ step: PlanStep; planTitle?: string; onToggle: (id
       {/* 2. SECCIÓN DE CONTENIDO (Navegación al hacer clic) */}
       <button
         onClick={() => {
-          const resolved = resolveVideoId(step.areaId || planTitle || "", step.videoId || step.text || step.id?.toString() ?? "");
+          const resolved = resolveVideoId(step.areaId || planTitle || "", step.videoId || step.text || (step.id?.toString() ?? ""));
           const generatedUrl = getUrlForPaso(
             getStepType(), 
             resolved.videoId, 
