@@ -327,6 +327,13 @@ const Header = () => {
             </div>
           )}
 
+          {/* Logout visible en móvil junto al menú hamburguesa */}
+          {user && (
+            <button onClick={() => signOut()} className="md:hidden text-red-400 p-2">
+              <LogOut className="h-5 w-5" />
+            </button>
+          )}
+
           {/* Mobile Menu */}
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
