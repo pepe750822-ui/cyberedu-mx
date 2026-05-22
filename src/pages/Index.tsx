@@ -409,7 +409,7 @@ const Index = () => {
         <div className="text-gray-300 text-sm mb-4 space-y-1">
           <div>✅ 44 videos Guía 2026 con infografías y PDFs</div>
           <div>✅ Todos los simuladores desbloqueados</div>
-          <div>✅ Guías Oficiales UNAM 2021-2025</div>
+          <div>✅ Guías Oficiales UNAM 2021-2026 <span className="bg-green-500 text-white text-xs font-black px-2 py-0.5 rounded-full ml-1">🆕 NUEVA</span></div>
           <div>✅ Acceso de por vida</div>
         </div>
         <button
