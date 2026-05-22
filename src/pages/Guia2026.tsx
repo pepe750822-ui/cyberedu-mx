@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X, Play } from 'lucide-react';
+import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X, Play, Unlock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface Tema {
   id: number;
@@ -96,7 +98,7 @@ const FREE_PREVIEW_COUNT = 3;
 
 const Guia2026 = () => {
   const navigate = useNavigate();
-  const { profile, user } = useAuth();
+  const { profile, user, refreshProfile } = useAuth();
   const hasAccess =
     (profile as any)?.guia2026_unlocked === true ||
     (profile as any)?.paquete_completo === true ||
@@ -106,6 +108,40 @@ const Guia2026 = () => {
   const [filterMateria, setFilterMateria] = useState<string>('all');
   const [selectedTema, setSelectedTema] = useState<Tema | null>(null);
   const [activeTab, setActiveTab] = useState<'video' | 'infografia' | 'pdf'>('video');
+  const [redeemingGuia, setRedeemingGuia] = useState(false);
+
+  const redeemGuia2026 = async () => {
+    if (!user || !profile) {
+      toast.error('Debes iniciar sesión para canjear tokens');
+      return;
+    }
+    const currentTokens = (profile as any)?.tokens ?? 0;
+    if (currentTokens < 100) {
+      toast.error(`Necesitas 100 tokens. Tu balance actual es ${currentTokens}. Obtén tokens en la sección de tokens.`);
+      navigate('/tokens');
+      return;
+    }
+    setRedeemingGuia(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          bank10_unlocked: true,
+          guia2026_unlocked: true,
+          tokens: currentTokens - 100,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+      await refreshProfile();
+      toast.success('¡Guía 2026 desbloqueada! Ya tienes acceso a todos los videos y el simulador Banco 10. 🎉');
+    } catch (err: any) {
+      toast.error('Error al canjear: ' + err.message);
+    } finally {
+      setRedeemingGuia(false);
+    }
+  };
 
   const openModal = (tema: Tema, tab: 'video' | 'infografia' | 'pdf' = 'video') => {
     setSelectedTema(tema);
@@ -325,12 +361,28 @@ const Guia2026 = () => {
               Accede a los <strong>44 videos completos</strong> + simulador Guía 2026 sin límite por solo <strong>100 tokens</strong> (pago único).
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-1">
-              <button
-                onClick={() => navigate('/tokens')}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
-              >
-                🪙 Desbloquear por 100 tokens
-              </button>
+              {/* Botón de canje directo si el usuario tiene suficientes tokens */}
+              {user && ((profile as any)?.tokens ?? 0) >= 100 ? (
+                <button
+                  onClick={redeemGuia2026}
+                  disabled={redeemingGuia}
+                  className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all disabled:opacity-60"
+                >
+                  {redeemingGuia ? (
+                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <Unlock className="h-4 w-4" />
+                  )}
+                  Canjear — 100 tokens
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate('/tokens')}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
+                >
+                  🪙 Obtener tokens para desbloquear
+                </button>
+              )}
               <button
                 onClick={() => navigate('/tokens')}
                 className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"

@@ -86,6 +86,36 @@ export default async function handler(req: Request) {
             } else {
               console.error(`PAGO RECIBIDO PERO USUARIO NO ENCONTRADO. ID: ${external_reference}, Email: ${paymentData.payer?.email}`);
             }
+        } else if (metadata?.packageId === 'guia2026') {
+          // Desbloqueo Guía 2026 — activa simulador banco 10 + acceso a videos
+          const { error } = await supabase
+            .from('profiles')
+            .update({
+              bank10_unlocked: true,
+              guia2026_unlocked: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', external_reference);
+
+          if (error) throw error;
+          console.log(`GUÍA 2026 DESBLOQUEADA: bank10 + guia2026 → Usuario ${external_reference}`);
+        } else if (metadata?.packageId === 'paquete_completo') {
+          // Paquete Completo — desbloquea todos los bancos premium + guía 2026
+          const { error } = await supabase
+            .from('profiles')
+            .update({
+              bank5_unlocked: true,
+              bank8_unlocked: true,
+              bank9_unlocked: true,
+              bank10_unlocked: true,
+              guia2026_unlocked: true,
+              paquete_completo: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', external_reference);
+
+          if (error) throw error;
+          console.log(`PAQUETE COMPLETO DESBLOQUEADO: Todos los bancos + guía 2026 → Usuario ${external_reference}`);
         } else if (metadata?.type === 'subscription' || metadata?.packageId === 'ilimitado') {
           // Lógica de suscripción (Maestro o Ilimitado)
           const { error } = await supabase

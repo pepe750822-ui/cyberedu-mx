@@ -27,10 +27,12 @@ export default async function handler(req: Request) {
 
     // Definir paquetes
     const packages: Record<string, { name: string; price: number; tokens: number }> = {
-      'basico':    { name: 'Paquete Lanzamiento (20 tokens)',    price: 20,  tokens: 20   },
-      'popular':   { name: 'Paquete Estudiante (60 tokens)',     price: 50,  tokens: 60   },
-      'pro':       { name: 'Paquete Pro (160 tokens)',            price: 120, tokens: 160  },
-      'ilimitado': { name: 'Suscripción Maestro (1000 tokens)',   price: 250, tokens: 1000 },
+      'basico':           { name: 'Paquete Lanzamiento (20 tokens)',                          price: 20,  tokens: 20   },
+      'popular':          { name: 'Paquete Estudiante (60 tokens)',                           price: 50,  tokens: 60   },
+      'pro':              { name: 'Paquete Pro (160 tokens)',                                 price: 120, tokens: 160  },
+      'ilimitado':        { name: 'Suscripción Maestro (1000 tokens)',                        price: 250, tokens: 1000 },
+      'guia2026':         { name: 'Paquete Guía 2026 — Simulador + 44 Videos',               price: 90,  tokens: 0    },
+      'paquete_completo': { name: 'Paquete Completo — Todos los Simuladores + Guía 2026',    price: 170, tokens: 0    },
     };
 
     const pkg = packages[packageId];

@@ -28,6 +28,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Question, ExamMode, BankSelection } from "@/data/simuladorData";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
@@ -463,6 +464,39 @@ const SimuladorPro = () => {
         setSelectedBank(bank);
     };
 
+    // Handler para desbloquear bancos con tokens directamente desde SimulatorStart
+    const handleRedeemUnlock = async (
+        bankKey: string,
+        cost: number,
+        updates: Record<string, boolean>
+    ) => {
+        if (!user || !profile) {
+            toast.error("Debes iniciar sesión para canjear tokens");
+            return;
+        }
+        const currentTokens = (profile as any)?.tokens ?? 0;
+        if (currentTokens < cost) {
+            toast.error(`Necesitas ${cost} tokens. Tu balance actual es ${currentTokens}.`);
+            return;
+        }
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({
+                    ...updates,
+                    tokens: currentTokens - cost,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', user.id);
+
+            if (error) throw error;
+            await refreshProfile();
+            toast.success(`¡Banco desbloqueado! Se descontaron ${cost} tokens. 🎉`);
+        } catch (err: any) {
+            toast.error('Error al canjear: ' + err.message);
+        }
+    };
+
     const handleStartExam = async (mode: ExamMode = 'full') => {
         const bank5Unlocked  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
@@ -670,6 +704,7 @@ const SimuladorPro = () => {
             paqueteCompleto={(profile as any)?.paquete_completo === true}
             isLoggedIn={!!user}
             onNavigateToGuias={() => navigate('/auth?ref=simulador&reason=guias')}
+            onRedeemUnlock={handleRedeemUnlock}
         >
             <ProgressPanel
                 userId={user?.id ?? null}

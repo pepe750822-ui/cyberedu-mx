@@ -51,6 +51,7 @@ interface SimulatorStartProps {
     paqueteCompleto?: boolean;
     isLoggedIn?: boolean;
     onNavigateToGuias?: () => void;
+    onRedeemUnlock?: (bankKey: string, cost: number, updates: Record<string, boolean>) => Promise<void>;
     children?: React.ReactNode; // ProgressPanel
 }
 
@@ -76,6 +77,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     paqueteCompleto = false,
     isLoggedIn = false,
     onNavigateToGuias,
+    onRedeemUnlock,
     children
 }) => {
     const hasTokens = userTokens >= 50;
@@ -267,7 +269,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                         </span>
                                     ) : (
                                         <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                            🆓 10 gratis · 🔒 100 tokens
+                                            🆓 10 gratis · 🔒 50 tokens
                                         </span>
                                     )}
                                 </button>
@@ -277,9 +279,17 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
 
                     {/* Banner bank8 */}
                     {selectedBank === 'bank8' && !(bank8Unlocked || paqueteCompleto) && (
-                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-2">
                             <span className="text-amber-400 font-semibold block">🆓 Prueba 10 preguntas gratis ahora mismo</span>
-                            <span className="text-slate-400 text-xs">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                            <span className="text-slate-400 text-xs block">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
+                                <button
+                                    onClick={() => onRedeemUnlock('bank8_unlocked', 50, { bank8_unlocked: true })}
+                                    className="mt-1 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-[10px] font-black uppercase tracking-widest transition-all"
+                                >
+                                    🔓 Desbloquear — 50 tokens
+                                </button>
+                            )}
                         </div>
                     )}
                     {selectedBank === 'bank8' && (bank8Unlocked || paqueteCompleto) && (
@@ -289,9 +299,17 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     )}
                     {/* Banner bank9 */}
                     {selectedBank === 'bank9' && !(bank9Unlocked || paqueteCompleto) && (
-                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-2">
                             <span className="text-amber-400 font-semibold block">🆓 Prueba 10 preguntas gratis ahora mismo</span>
-                            <span className="text-slate-400 text-xs">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                            <span className="text-slate-400 text-xs block">Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida</span>
+                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
+                                <button
+                                    onClick={() => onRedeemUnlock('bank9_unlocked', 50, { bank9_unlocked: true })}
+                                    className="mt-1 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-[10px] font-black uppercase tracking-widest transition-all"
+                                >
+                                    🔓 Desbloquear — 50 tokens
+                                </button>
+                            )}
                         </div>
                     )}
                     {selectedBank === 'bank9' && (bank9Unlocked || paqueteCompleto) && (
@@ -301,24 +319,40 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     )}
                     {/* Banner bank5 — preview */}
                     {selectedBank === 'bank5' && !bank5Unlocked && !paqueteCompleto && (
-                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-1">
+                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-2">
                             <span className="text-amber-400 font-semibold block">
                                 🆓 Prueba 10 preguntas gratis ahora mismo
                             </span>
-                            <span className="text-slate-400 text-xs">
+                            <span className="text-slate-400 text-xs block">
                                 Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida
                             </span>
+                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
+                                <button
+                                    onClick={() => onRedeemUnlock('bank5_unlocked', 50, { bank5_unlocked: true })}
+                                    className="mt-1 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-[10px] font-black uppercase tracking-widest transition-all"
+                                >
+                                    🔓 Desbloquear — 50 tokens
+                                </button>
+                            )}
                         </div>
                     )}
                     {/* Banner bank10 — preview o incluido en Guía 2026 */}
                     {selectedBank === 'bank10' && !(bank10Unlocked || guia2026Unlocked || paqueteCompleto) && (
-                        <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-center text-sm space-y-1">
+                        <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-center text-sm space-y-2">
                             <span className="text-purple-400 font-semibold block">
-                                🆓 Prueba 10 preguntas gratis — Banco incluido en Paquete Guía 2026
+                                🆓 Prueba 10 preguntas gratis — Banco Guía 2026
                             </span>
-                            <span className="text-slate-400 text-xs">
-                                100 tokens · Acceso de por vida a este banco + 44 videos de estudio
+                            <span className="text-slate-400 text-xs block">
+                                50 tokens · Acceso de por vida a este banco. ¡También incluido en el Combo Premium 100 tokens!
                             </span>
+                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
+                                <button
+                                    onClick={() => onRedeemUnlock('bank10_unlocked', 50, { bank10_unlocked: true })}
+                                    className="mt-1 px-4 py-1.5 rounded-lg bg-purple-500 hover:bg-purple-400 text-white text-[10px] font-black uppercase tracking-widest transition-all"
+                                >
+                                    🔓 Desbloquear — 50 tokens
+                                </button>
+                            )}
                         </div>
                     )}
                     {selectedBank === 'bank10' && (bank10Unlocked || guia2026Unlocked || paqueteCompleto) && (

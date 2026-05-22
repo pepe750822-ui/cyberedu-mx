@@ -13,7 +13,9 @@ import {
   Send,
   Chrome,
   Lock,
-  Bell
+  Bell,
+  Unlock,
+  Gift
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -105,7 +107,7 @@ const unlimitedPackage = {
 const EXAM_DATE = new Date("2026-06-20T08:00:00");
 
 const TokensPage = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
@@ -114,6 +116,7 @@ const TokensPage = () => {
   const [isLinking, setIsLinking] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
+  const [redeemingPkg, setRedeemingPkg] = useState<string | null>(null);
   const [subscribed, setSubscribed] = useState(false);
   const { subscribe } = usePushNotifications();
 
@@ -250,6 +253,42 @@ const TokensPage = () => {
       toast.error(error.message);
     } finally {
       setLoadingPkg(null);
+    }
+  };
+
+  // Redención directa con tokens (descuento de saldo + actualización de flags en Supabase)
+  const redeemTokens = async (
+    pkgId: string,
+    cost: number,
+    updates: Record<string, boolean | number>
+  ) => {
+    if (!user || !profile) {
+      toast.error("Debes iniciar sesión para canjear tokens");
+      return;
+    }
+    const currentTokens = profile.tokens ?? 0;
+    if (currentTokens < cost) {
+      toast.error(`Necesitas ${cost} tokens. Tu balance actual es ${currentTokens}.`);
+      return;
+    }
+    setRedeemingPkg(pkgId);
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          ...updates,
+          tokens: currentTokens - cost,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+
+      if (error) throw error;
+      await refreshProfile();
+      toast.success(`¡Desbloqueado! Se descontaron ${cost} tokens de tu balance. 🎉`);
+    } catch (err: any) {
+      toast.error("Error al canjear: " + err.message);
+    } finally {
+      setRedeemingPkg(null);
     }
   };
 
@@ -643,6 +682,221 @@ const TokensPage = () => {
                 </Card>
             </motion.div>
           </>
+        )}
+
+        {/* ——— SECCIÓN: CANJEA TUS TOKENS ——— */}
+        {user && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6 max-w-4xl mx-auto"
+          >
+            {/* Encabezado */}
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center gap-2">
+                <Gift className="h-5 w-5 text-purple-400" />
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Beneficios con Tokens</p>
+              </div>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-white">
+                🎁 Canjea tus Tokens por <span className="text-purple-400">Acceso Premium</span>
+              </h2>
+              <p className="text-slate-400 text-sm">Usa tu saldo de tokens para desbloquear simuladores y material exclusivo sin pagar con tarjeta.</p>
+            </div>
+
+            {/* Grid de tarjetas de canje */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+
+              {/* ——— COMBO PREMIUM 100 TOKENS ——— */}
+              {(() => {
+                const isComboUnlocked = (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 100;
+                return (
+                  <div className={`relative rounded-3xl border p-6 space-y-4 overflow-hidden transition-all ${
+                    isComboUnlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30"
+                  }`}>
+                    {/* Badge MEJOR VALOR */}
+                    <div className="absolute top-4 right-[-28px] rotate-45 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-black uppercase py-1 px-8 shadow-lg">
+                      MEJOR VALOR
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-2xl bg-purple-500/20 border border-purple-500/30 shrink-0">
+                        <Crown className="h-6 w-6 text-purple-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Combo Premium</p>
+                        <h3 className="text-lg font-black text-white">Todos los Simuladores + Guía 2026</h3>
+                        <p className="text-xs text-slate-400 mt-1">Bancos 5, 8, 9, 10 completos + 44 videos de estudio · acceso de por vida</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {["Simulador Banco 5 — Guías UNAM 2024-25", "Simulador Banco 8 — Guía UNAM 2023", "Simulador Banco 9 — Guía UNAM 2024", "🆕 Simulador Banco 10 — Guía IPN/UNAM 2026", "🎬 44 videos Guía de Estudio 2026"].map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-purple-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-2">
+                      {isComboUnlocked ? (
+                        <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                          <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
+                        </div>
+                      ) : canAfford ? (
+                        <button
+                          onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true })}
+                          disabled={redeemingPkg === 'combo_premium'}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-purple-500/20 transition-all disabled:opacity-60"
+                        >
+                          {redeemingPkg === 'combo_premium' ? (
+                            <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : (
+                            <><Unlock className="h-4 w-4" /> Canjear — 100 tokens</>
+                          )}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => navigate('/tokens#comprar')}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase text-xs tracking-widest hover:bg-white/10 transition-all"
+                        >
+                          <Ticket className="h-4 w-4" /> Necesitas 100 tokens ({(profile?.tokens ?? 0)} actuales)
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ——— BANCO 10 INDIVIDUAL 50 TOKENS ——— */}
+              {(() => {
+                const isBank10Unlocked = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 50;
+                return (
+                  <div className={`relative rounded-3xl border p-6 space-y-4 transition-all ${
+                    isBank10Unlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-amber-500/10 border-amber-500/30"
+                  }`}>
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/30 shrink-0">
+                        <Rocket className="h-6 w-6 text-amber-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
+                        <h3 className="text-lg font-black text-white">🆕 Banco 10 — Guía IPN/UNAM 2026</h3>
+                        <p className="text-xs text-slate-400 mt-1">Acceso completo al simulador con preguntas de la guía oficial 2026 · acceso de por vida</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {["128 reactivos oficiales Guía 2026", "Preguntas y opciones aleatorizadas", "Modo examen completo y práctica rápida"].map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-amber-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-2">
+                      {isBank10Unlocked ? (
+                        <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                          <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
+                        </div>
+                      ) : canAfford ? (
+                        <button
+                          onClick={() => redeemTokens('banco10', 50, { bank10_unlocked: true })}
+                          disabled={redeemingPkg === 'banco10'}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase text-xs tracking-widest shadow-lg shadow-amber-500/20 transition-all disabled:opacity-60"
+                        >
+                          {redeemingPkg === 'banco10' ? (
+                            <div className="h-4 w-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                          ) : (
+                            <><Unlock className="h-4 w-4" /> Canjear — 50 tokens</>
+                          )}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => navigate('/tokens#comprar')}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase text-xs tracking-widest hover:bg-white/10 transition-all"
+                        >
+                          <Ticket className="h-4 w-4" /> Necesitas 50 tokens ({(profile?.tokens ?? 0)} actuales)
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ——— BANCOS 5, 8, 9 INDIVIDUALES 50 TOKENS c/u ——— */}
+              {[
+                { id: 'banco5',  bankKey: 'bank5_unlocked',  label: 'Banco 5 — Guías UNAM 2024-25', perks: ['128 preguntas guías oficiales UNAM 2024-25', 'Modo examen + práctica rápida'] },
+                { id: 'banco8',  bankKey: 'bank8_unlocked',  label: 'Banco 8 — Guía UNAM 2023',     perks: ['128 reactivos guía UNAM 2023', 'Preguntas y opciones aleatorizadas'] },
+                { id: 'banco9',  bankKey: 'bank9_unlocked',  label: 'Banco 9 — Guía UNAM 2024',     perks: ['128 reactivos guía UNAM 2024', 'Resultados por materia detallados'] },
+              ].map(({ id, bankKey, label, perks }) => {
+                const isUnlocked = (profile as any)?.[bankKey] === true || (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 50;
+                return (
+                  <div key={id} className={`relative rounded-3xl border p-5 space-y-3 transition-all ${
+                    isUnlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-indigo-500/10 border-indigo-500/30"
+                  }`}>
+                    <div className="flex items-start gap-3">
+                      <div className="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 shrink-0">
+                        <Star className="h-5 w-5 text-indigo-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
+                        <h3 className="text-base font-black text-white">{label}</h3>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      {perks.map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-indigo-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    {isUnlocked ? (
+                      <div className="flex items-center gap-2 w-full h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                        <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        <span className="text-emerald-300 font-black uppercase text-[10px] tracking-widest">✅ Desbloqueado</span>
+                      </div>
+                    ) : canAfford ? (
+                      <button
+                        onClick={() => redeemTokens(id, 50, { [bankKey]: true })}
+                        disabled={redeemingPkg === id}
+                        className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-300 font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-60"
+                      >
+                        {redeemingPkg === id ? (
+                          <div className="h-3.5 w-3.5 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full animate-spin" />
+                        ) : (
+                          <><Unlock className="h-3.5 w-3.5" /> Canjear — 50 tokens</>
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => navigate('/tokens#comprar')}
+                        className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-white/5 border border-white/10 text-slate-500 font-black uppercase text-[10px] tracking-widest hover:bg-white/10 transition-all"
+                      >
+                        <Ticket className="h-3.5 w-3.5" /> Necesitas 50 tokens
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
         )}
 
         {/* Info Footer */}
