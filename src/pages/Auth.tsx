@@ -42,12 +42,15 @@ const Auth = () => {
     if (user && !isResettingPassword) {
       // If we are coming back from a redirect, we might have a 'from' location in state
       const locationState = window.history.state?.usr;
-      const from = locationState?.from?.pathname || "/";
+      let from = locationState?.from?.pathname || "/";
+      if (ref === "tokens") {
+        from = "/tokens";
+      }
       navigate(from, { replace: true });
     }
 
     return () => subscription.unsubscribe();
-  }, [user, navigate, isResettingPassword]);
+  }, [user, navigate, isResettingPassword, ref]);
 
   const passwordsMatch = isLogin || isRecovering || password === confirmPassword;
 
@@ -181,7 +184,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: ref === "tokens" ? `${window.location.origin}/tokens` : window.location.origin,
           queryParams: {
             prompt: 'select_account',
             access_type: 'offline',
