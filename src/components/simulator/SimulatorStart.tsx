@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Brain,
     ArrowLeft,
@@ -80,6 +81,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     onRedeemUnlock,
     children
 }) => {
+    const navigate = useNavigate();
     const hasTokens = userTokens >= 50;
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
@@ -99,6 +101,23 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     <p className="text-slate-400 text-sm leading-relaxed max-w-md mx-auto">
                         512 reactivos en 4 bancos — preguntas y opciones aleatorizadas en cada intento.
                     </p>
+                </div>
+
+                {/* Banner promocional Paquete Completo */}
+                <div className="mx-4 mb-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-xl p-4 flex items-center justify-between gap-3">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="bg-yellow-400 text-black font-black text-xs px-2 py-0.5 rounded-full">🔥 OFERTA</span>
+                        </div>
+                        <p className="text-white font-bold text-sm">Paquete Completo — 100 tokens</p>
+                        <p className="text-gray-400 text-xs">Todos los simuladores + 44 videos Guía 2026</p>
+                    </div>
+                    <button
+                        onClick={() => navigate('/tokens')}
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-4 py-2 rounded-xl text-sm whitespace-nowrap hover:scale-105 transition-transform flex-shrink-0"
+                    >
+                        🪙 Ver oferta
+                    </button>
                 </div>
 
                 {/* Bank selector */}
