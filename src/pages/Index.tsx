@@ -525,7 +525,7 @@ const Index = () => {
         <div className="grid grid-cols-3 gap-3 max-w-2xl mx-auto">
           {[
             { num: "2,800+", label: "Estudiantes preparándose", icon: "🎓" },
-            { num: "512",    label: "Reactivos tipo examen",    icon: "📝" },
+            { num: "1,280+", label: "Reactivos en 10 simuladores", icon: "📝" },
             { num: "44",     label: "Videos Guía 2026",         icon: "🎬" },
           ].map((stat) => (
             <div
