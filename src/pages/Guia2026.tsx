@@ -379,6 +379,22 @@ const Guia2026 = () => {
           </div>
         )}
 
+        {/* Banner Udemy — visible para todos */}
+        <div className="mx-4 mb-6 bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-white font-bold text-sm">🎓 ECOEMS 2026 — 128 Preguntas Resueltas con IA</p>
+            <p className="text-gray-400 text-xs">Guía 2025 completa + Guía 2026 actualizándose — en Udemy</p>
+          </div>
+          <a
+            href="https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-orange-500/30 border border-orange-500/40 text-orange-300 font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap hover:scale-105 transition-transform flex-shrink-0"
+          >
+            Ver en Udemy →
+          </a>
+        </div>
+
         {/* Grid de tarjetas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {temasFiltrados.map((tema, globalIdx) => {
