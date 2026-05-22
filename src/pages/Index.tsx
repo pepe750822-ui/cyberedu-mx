@@ -487,10 +487,17 @@ const Index = () => {
               >
                 🚀 Practica ahora — El examen es en {daysToExam} días
               </button>
+
+              {/* Mobile badge — reemplaza el cerebro 3D en pantallas pequeñas */}
+              <div className="md:hidden flex justify-center gap-3 mt-4">
+                <div className="bg-violet-500/20 border border-violet-500/30 rounded-full px-4 py-2 text-violet-300 text-sm animate-pulse">
+                  🧠 Tutor IA disponible 24/7
+                </div>
+              </div>
             </div>
 
-            {/* Right — 3D floating sphere */}
-            <div className="hidden lg:flex items-center justify-center" style={{ height: "480px" }}>
+            {/* Right — cerebro 3D, solo desktop */}
+            <div className="hidden md:block" style={{ height: "480px" }}>
               <Suspense fallback={null}>
                 <Canvas
                   camera={{ position: [0, 0, 5], fov: 45 }}
