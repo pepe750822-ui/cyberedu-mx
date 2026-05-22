@@ -399,26 +399,26 @@ const Index = () => {
       </section>
 
       {/* Banner promocional Paquete Completo */}
-      <section className="mx-4 mb-6">
-        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5 text-center">
-          <div className="text-3xl mb-2">⭐</div>
-          <h2 className="text-white font-black text-xl mb-1">
-            Paquete Completo — 150 Tokens
-          </h2>
-          <p className="text-gray-300 text-sm mb-3">
-            ✅ 44 videos Guía 2026 con infografías y PDFs<br/>
-            ✅ Todos los simuladores desbloqueados<br/>
-            ✅ Tutor IA ilimitado<br/>
-            ✅ Acceso de por vida
-          </p>
-          <button
-            onClick={() => navigate('/tokens')}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl text-lg hover:scale-105 transition-transform"
-          >
-            🪙 Obtener 150 tokens — desde $30 MXN
-          </button>
+      <div className="mx-4 mb-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5">
+        <div className="text-center mb-3">
+          <span className="bg-yellow-400 text-black font-black text-xs px-3 py-1 rounded-full">🔥 OFERTA ESPECIAL</span>
         </div>
-      </section>
+        <h2 className="text-white font-black text-xl text-center mb-2">
+          Paquete Completo — 100 tokens
+        </h2>
+        <div className="text-gray-300 text-sm mb-4 space-y-1">
+          <div>✅ 44 videos Guía 2026 con infografías y PDFs</div>
+          <div>✅ Todos los simuladores desbloqueados</div>
+          <div>✅ Guías Oficiales UNAM 2021-2025</div>
+          <div>✅ Acceso de por vida</div>
+        </div>
+        <button
+          onClick={() => navigate('/tokens')}
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 rounded-xl text-lg hover:scale-105 transition-transform"
+        >
+          🪙 Obtener con 100 tokens — desde $20 MXN
+        </button>
+      </div>
 
       {/* Banner Temario 2026 */}
       <div className="mx-4 mb-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
