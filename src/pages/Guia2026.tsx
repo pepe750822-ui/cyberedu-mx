@@ -93,7 +93,7 @@ const DEFAULT_COLOR = { bg: 'bg-slate-800', border: 'border-white/10', badge: 'b
 
 const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
-const FREE_PREVIEW_COUNT = 3;
+const FREE_PREVIEW_COUNT = 7;
 
 
 const Guia2026 = () => {
@@ -354,43 +354,28 @@ const Guia2026 = () => {
 
         {/* Banner de compra — solo si no tiene acceso */}
         {!hasAccess && (
-          <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/40 rounded-2xl p-6 text-center space-y-3">
-            <div className="text-4xl">🎓</div>
-            <h3 className="text-white font-black text-xl">¿Te gustó la muestra?</h3>
-            <p className="text-gray-300 text-sm max-w-md mx-auto">
-              Accede a los <strong>44 videos completos</strong> + simulador Guía 2026 sin límite por solo <strong>100 tokens</strong> (pago único).
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 pt-1">
-              {/* Botón de canje directo si el usuario tiene suficientes tokens */}
-              {user && ((profile as any)?.tokens ?? 0) >= 100 ? (
-                <button
-                  onClick={redeemGuia2026}
-                  disabled={redeemingGuia}
-                  className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all disabled:opacity-60"
-                >
-                  {redeemingGuia ? (
-                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <Unlock className="h-4 w-4" />
-                  )}
-                  Canjear — 100 tokens
-                </button>
-              ) : (
-                <button
-                  onClick={() => navigate('/tokens')}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
-                >
-                  🪙 Obtener tokens para desbloquear
-                </button>
-              )}
-              <button
-                onClick={() => navigate('/tokens')}
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black px-6 py-3 rounded-xl hover:opacity-90 transition-all"
-              >
-                ⭐ Paquete Completo — 200 tokens
-              </button>
+          <div className="mx-4 mb-6 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5">
+            <div className="text-center mb-3">
+              <span className="bg-yellow-400 text-black font-black text-xs px-3 py-1 rounded-full">🔥 OFERTA ESPECIAL</span>
             </div>
-            <p className="text-[10px] text-slate-500">Vista previa: primeros {FREE_PREVIEW_COUNT} videos gratis</p>
+            <h3 className="text-white font-black text-xl text-center mb-2">
+              Paquete Completo — 100 tokens
+            </h3>
+            <div className="text-gray-300 text-sm mb-4 space-y-1">
+              <div>✅ Los 44 videos completos con infografías y PDFs</div>
+              <div>✅ Todos los simuladores desbloqueados</div>
+              <div>✅ Guías Oficiales UNAM 2021-2026 🆕</div>
+              <div>✅ Acceso de por vida</div>
+            </div>
+            <button
+              onClick={() => navigate('/tokens')}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 rounded-xl text-lg hover:scale-105 transition-transform"
+            >
+              🪙 Obtener con 100 tokens — desde $20 MXN
+            </button>
+            <p className="text-gray-500 text-xs text-center mt-2">
+              🎁 Los primeros 7 videos son gratis para todos
+            </p>
           </div>
         )}
 
