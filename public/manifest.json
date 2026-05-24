@@ -81,7 +81,22 @@
             "purpose": "maskable"
         }
     ],
-    "screenshots": [],
+    "screenshots": [
+        {
+            "src": "/icons/screenshot-mobile.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Simulador ECOEMS 2026"
+        },
+        {
+            "src": "/icons/screenshot-desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "CyberEdu MX — Simulador Pro"
+        }
+    ],
     "shortcuts": [
         {
             "name": "Simulador ECOEMS",
@@ -95,9 +110,9 @@
             ]
         },
         {
-            "name": "Manual Digital ECOEMS",
-            "short_name": "Manual",
-            "url": "/libro/manual_digital_ECOEMS.html",
+            "name": "Guía 2026",
+            "short_name": "Guía",
+            "url": "/guia2026",
             "icons": [
                 {
                     "src": "/icons/icon-96x96.png",

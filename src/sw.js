@@ -1,6 +1,7 @@
 // =============================================================================
-// CyberEdu MX — Service Worker v3.0
+// CyberEdu MX — Service Worker v3.1
 // Features: Install, Offline Mode, Push Notifications, Background Sync
+// Precache: injected by vite-plugin-pwa (self.__WB_MANIFEST)
 // =============================================================================
 
 const CACHE_VERSION = 'v3';
@@ -21,6 +22,9 @@ const STATIC_ASSETS = [
     '/offline.html',
 ];
 
+// Vite build assets injected automatically by vite-plugin-pwa
+const BUILD_ASSETS = (self.__WB_MANIFEST || []).map(entry => entry.url);
+
 // Offline fallback page
 const OFFLINE_FALLBACK = '/offline.html';
 
@@ -28,7 +32,7 @@ const OFFLINE_FALLBACK = '/offline.html';
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(STATIC_CACHE).then((cache) => {
-            return cache.addAll(STATIC_ASSETS);
+            return cache.addAll([...STATIC_ASSETS, ...BUILD_ASSETS]);
         })
     );
     self.skipWaiting();
@@ -105,7 +109,6 @@ async function networkFirstWithFallback(request) {
     } catch {
         const cached = await caches.match(request);
         if (cached) return cached;
-        // Return offline fallback if it exists
         const offlinePage = await caches.match(OFFLINE_FALLBACK);
         if (offlinePage) return offlinePage;
         return caches.match('/');
@@ -212,13 +215,12 @@ self.addEventListener('message', (event) => {
         );
     }
 
-    // Sync progress to server (background sync trigger)
     if (event.data && event.data.type === 'SYNC_PROGRESS') {
         event.waitUntil(syncProgressToServer(event.data.payload));
     }
 });
 
-// ─── Background Sync (for progress data) ────────────────────────────────────
+// ─── Background Sync ────────────────────────────────────────────────────────
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-progress') {
         event.waitUntil(syncProgressFromQueue());
@@ -229,7 +231,6 @@ self.addEventListener('sync', (event) => {
 });
 
 async function syncProgressFromQueue() {
-    // Read pending sync queue from IndexedDB-like storage via message
     const clients = await self.clients.matchAll();
     clients.forEach(client => {
         client.postMessage({ type: 'SYNC_REQUESTED' });
@@ -245,7 +246,6 @@ async function syncStreakData() {
 
 async function syncProgressToServer(payload) {
     try {
-        // If we have supabase endpoint, send progress
         if (payload && payload.url) {
             await fetch(payload.url, {
                 method: 'POST',
@@ -254,7 +254,6 @@ async function syncProgressToServer(payload) {
             });
         }
     } catch {
-        // Will retry on next sync event
         console.log('[SW] Sync failed, will retry later');
     }
 }
@@ -277,36 +276,28 @@ self.addEventListener('push', (event) => {
         }
     }
 
-    const options = {
-        body: data.body,
-        icon: data.icon || '/icons/icon-192x192.png',
-        badge: data.badge || '/icons/icon-72x72.png',
-        vibrate: [200, 100, 200, 100, 200],
-        tag: data.tag || 'cyberedu-notification',
-        renotify: true,
-        data: {
-            url: data.url || '/',
-            dateOfArrival: Date.now()
-        },
-        actions: [
-            { action: 'study', title: '📖 Estudiar ahora' },
-            { action: 'dismiss', title: '⏰ Después' }
-        ]
-    };
-
     event.waitUntil(
-        self.registration.showNotification(data.title, options)
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: data.icon || '/icons/icon-192x192.png',
+            badge: data.badge || '/icons/icon-72x72.png',
+            vibrate: [200, 100, 200, 100, 200],
+            tag: data.tag || 'cyberedu-notification',
+            renotify: true,
+            data: { url: data.url || '/', dateOfArrival: Date.now() },
+            actions: [
+                { action: 'study', title: '📖 Estudiar ahora' },
+                { action: 'dismiss', title: '⏰ Después' }
+            ]
+        })
     );
 });
 
-// ─── Notification Click Handler ──────────────────────────────────────────────
+// ─── Notification Click ──────────────────────────────────────────────────────
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
-
     if (event.action === 'dismiss') return;
-
     const urlToOpen = event.notification.data?.url || '/';
-
     event.waitUntil(
         self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
             const existingClient = clients.find((c) => c.url.includes(self.location.origin));
@@ -319,7 +310,7 @@ self.addEventListener('notificationclick', (event) => {
     );
 });
 
-// ─── Periodic Background Sync (for streak notifications) ─────────────────────
+// ─── Periodic Background Sync ────────────────────────────────────────────────
 self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'streak-reminder') {
         event.waitUntil(showStreakReminder());
@@ -327,10 +318,8 @@ self.addEventListener('periodicsync', (event) => {
 });
 
 async function showStreakReminder() {
-    // Show a reminder notification if user hasn't studied today
     const clients = await self.clients.matchAll();
     if (clients.length === 0) {
-        // App is not open, show reminder
         await self.registration.showNotification('🔥 ¡Tu racha te necesita!', {
             body: 'No pierdas tu racha de estudio. ¡Solo unos minutos bastan!',
             icon: '/icons/icon-192x192.png',
