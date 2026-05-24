@@ -173,6 +173,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const checkFirstLoginReferral = async (userId: string) => {
+    // Delay to let fetchProfile finish creating the profile for brand-new users
+    await new Promise(r => setTimeout(r, 3000));
+    try {
+      const { data: prof } = await supabase
+        .from('profiles')
+        .select('referred_by, first_login_rewarded')
+        .eq('id', userId)
+        .single();
+
+      if (prof?.referred_by && !prof?.first_login_rewarded) {
+        await (supabase.rpc as any)('award_referral_tokens_login', { ref_code: prof.referred_by });
+        await supabase.from('profiles').update({ first_login_rewarded: true }).eq('id', userId);
+        console.log('[Auth] Recompensa primer login acreditada al referidor de:', userId);
+      }
+    } catch (e) {
+      console.error('[Auth] Error en checkFirstLoginReferral:', e);
+    }
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -205,6 +225,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Cargar perfil en BACKGROUND (no bloqueante)
         if (session?.user) {
           fetchProfile(session.user.id); // sin await
+          if (event === 'SIGNED_IN') {
+            checkFirstLoginReferral(session.user.id); // sin await
+          }
         } else if (event === 'SIGNED_OUT') {
           setProfile(null);
         }

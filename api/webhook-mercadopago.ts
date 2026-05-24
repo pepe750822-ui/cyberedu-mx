@@ -160,6 +160,24 @@ export default async function handler(req: Request) {
         } else {
           console.warn(`[Webhook] ⚠️ TIPO DESCONOCIDO. external_reference=${external_reference} | metadata=`, metadata);
         }
+
+        // ── Recompensa primera compra al referidor ────────────────────
+        try {
+          const { data: buyerProfile } = await supabase
+            .from('profiles')
+            .select('referred_by, first_purchase_rewarded')
+            .eq('id', external_reference)
+            .single();
+
+          if (buyerProfile?.referred_by && !buyerProfile?.first_purchase_rewarded) {
+            await supabase.rpc('award_referral_tokens', { ref_code: buyerProfile.referred_by });
+            await supabase.from('profiles').update({ first_purchase_rewarded: true }).eq('id', external_reference);
+            console.log(`[Webhook] ✅ Recompensa primera compra acreditada al referidor de ${external_reference}`);
+          }
+        } catch (refErr: any) {
+          console.error('[Webhook] Error en recompensa referido primera compra:', refErr.message);
+        }
+
       } else {
         console.log(`[Webhook] Estado del pago ${paymentId}: ${status} (ignorado)`);
       }
