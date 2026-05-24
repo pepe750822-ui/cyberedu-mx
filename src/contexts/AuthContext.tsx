@@ -24,7 +24,16 @@ interface UserProfile {
   last_daily_free?: string | null;
   daily_questions_count?: number;
   onboarding_completed?: boolean | null;
+  referral_code?: string | null;
+  referred_by?: string | null;
+  referral_count?: number;
 }
+
+const generateReferralCode = (name: string, userId: string) => {
+  const base = (name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X');
+  const suffix = userId.slice(0, 4).toUpperCase();
+  return `${base}${suffix}`;
+};
 
 interface AuthContextValue {
   user: User | null;
@@ -98,21 +107,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const currentUser = sessionData?.session?.user;
         
         if (currentUser && currentUser.id === userId) {
+          const displayName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || '';
+          const referralCode = generateReferralCode(displayName, userId);
+
           const { data: newProfile, error: insertError } = await supabase
             .from("profiles")
             .insert({
               id: userId,
               email: currentUser.email,
-              name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email?.split('@')[0],
+              name: displayName,
+              referral_code: referralCode,
               updated_at: new Date().toISOString()
             })
             .select()
             .single();
-          
+
           if (insertError) {
             console.error("[Auth] Error al crear perfil:", insertError);
           } else if (newProfile) {
             setProfile(newProfile as UserProfile);
+
+            // Process referral if the new user came via a referral link
+            const storedRefCode = localStorage.getItem('referral_code');
+            if (storedRefCode) {
+              try {
+                await supabase.from('profiles').update({ referred_by: storedRefCode, tokens: 50 }).eq('id', userId);
+                await (supabase.rpc as any)('award_referral_tokens', { ref_code: storedRefCode });
+                localStorage.removeItem('referral_code');
+                // Re-fetch so UI shows correct token balance
+                const { data: updated } = await supabase.from('profiles').select('*').eq('id', userId).single();
+                if (updated) setProfile(updated as UserProfile);
+              } catch (e) {
+                console.error('[Auth] Error al procesar referido:', e);
+              }
+            }
           }
         }
       } else if (error) {

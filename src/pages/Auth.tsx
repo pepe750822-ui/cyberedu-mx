@@ -30,6 +30,14 @@ const Auth = () => {
   const reason = searchParams.get("reason");
 
   useEffect(() => {
+    // Store referral code from URL — skip known navigation values
+    const knownRefs = ['tokens', 'simulador'];
+    if (ref && !knownRefs.includes(ref)) {
+      localStorage.setItem('referral_code', ref);
+    }
+  }, []);
+
+  useEffect(() => {
     // Detect password recovery mode from URL hash/supabase session
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === "PASSWORD_RECOVERY") {
