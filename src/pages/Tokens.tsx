@@ -734,13 +734,34 @@ const TokensPage = () => {
             </div>
 
             {/* Banner Referidos */}
-            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
-              <p className="text-green-400 font-bold">🎁 ¿Sin dinero? ¡Invita amigos!</p>
-              <p className="text-gray-400 text-sm">Cada amigo que se registre con tu link = 50 tokens gratis para ambos</p>
-              <button onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-profile'))} className="text-green-400 text-sm font-bold mt-2">
-                Ver mi código de referido →
-              </button>
-            </div>
+            {user && (() => {
+              const code = profile?.referral_code ||
+                ((profile?.name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X') +
+                 (profile?.id || '').slice(0, 4).toUpperCase());
+              const link = `https://cyberedumx.com/auth?ref=${code}`;
+              return (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
+                  <p className="text-green-400 font-bold">🎁 ¿Sin dinero? ¡Invita amigos!</p>
+                  <p className="text-gray-400 text-sm mb-3">Cada amigo que se registre con tu link = 50 tokens gratis para ambos</p>
+                  <div className="flex gap-2">
+                    <input
+                      value={link}
+                      readOnly
+                      className="flex-1 bg-gray-800 text-white rounded-lg px-3 py-2 text-xs border border-green-500/20"
+                    />
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(link); }}
+                      className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-3 py-2 rounded-lg text-xs whitespace-nowrap"
+                    >
+                      Copiar
+                    </button>
+                  </div>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Has referido {profile?.referral_count ?? 0} amigos = {(profile?.referral_count ?? 0) * 50} tokens ganados
+                  </p>
+                </div>
+              );
+            })()}
 
             {/* Packages Grid */}
             <div id="comprar" className="grid grid-cols-1 md:grid-cols-3 gap-8">

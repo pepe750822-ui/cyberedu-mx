@@ -202,7 +202,7 @@ function TiltCard({ children, className = "" }: { children: ReactNode; className
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
   const {
     isViewed,
@@ -583,18 +583,35 @@ const Index = () => {
       </div>
 
       {/* ── Banner Referidos ─────────────────────────────── */}
-      <div className="mx-4 mb-4 bg-green-500/10 border border-green-500/30 rounded-2xl p-4 flex items-center justify-between gap-3">
-        <div>
-          <p className="text-white font-bold text-sm">🎁 Invita amigos y gana tokens</p>
-          <p className="text-gray-400 text-xs">Tú y tu amigo reciben 50 tokens gratis</p>
-        </div>
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-profile'))}
-          className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap"
-        >
-          Ver mi código →
-        </button>
-      </div>
+      {user && (() => {
+        const code = profile?.referral_code ||
+          ((profile?.name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X') +
+           (profile?.id || '').slice(0, 4).toUpperCase());
+        const link = `https://cyberedumx.com/auth?ref=${code}`;
+        return (
+          <div className="mx-4 mb-4 bg-green-500/10 border border-green-500/30 rounded-2xl p-4">
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <div>
+                <p className="text-white font-bold text-sm">🎁 Invita amigos y gana tokens</p>
+                <p className="text-gray-400 text-xs">Tú y tu amigo reciben 50 tokens gratis</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <input
+                value={link}
+                readOnly
+                className="flex-1 bg-gray-800/60 text-white rounded-xl px-3 py-2 text-xs border border-green-500/20"
+              />
+              <button
+                onClick={() => { navigator.clipboard.writeText(link); }}
+                className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap"
+              >
+                Copiar
+              </button>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── Última Hora COMIPEMS 2026 ────────────────────── */}
       <section className="w-full bg-yellow-400 text-yellow-900">
