@@ -83,7 +83,13 @@ const SCHOOLS = [
     { name: "Otra Escuela", score: 80 },
 ];
 
-export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
+interface ProfileDialogProps {
+    children: React.ReactNode;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+}
+
+export const ProfileDialog = ({ children, open, onOpenChange }: ProfileDialogProps) => {
     const { profile } = useAuth();
     const [name, setName] = useState(localStorage.getItem('user_display_name') || '');
     const [selectedAvatar, setSelectedAvatar] = useState(localStorage.getItem('user_avatar') || AVATARS[0]);
@@ -117,7 +123,7 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>

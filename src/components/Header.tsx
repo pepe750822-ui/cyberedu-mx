@@ -20,8 +20,15 @@ const Header = () => {
   const onlineCount = useOnlineUsers();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [challengeDone, setChallengeDone] = useState(true);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handler = () => setIsProfileOpen(true);
+    window.addEventListener('cyberedu:open-profile', handler);
+    return () => window.removeEventListener('cyberedu:open-profile', handler);
+  }, []);
 
   const [hasTutorUsage, setHasTutorUsage] = useState<boolean | null>(null);
 
@@ -280,7 +287,7 @@ const Header = () => {
 
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
-              <ProfileDialog>
+              <ProfileDialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
                 <button className="flex items-center gap-3 hover:opacity-80 transition-opacity outline-none">
                   <div className="relative">
                     <Avatar className="h-8 w-8 border border-primary/20">
@@ -536,7 +543,7 @@ const Header = () => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                          <ProfileDialog>
+                          <ProfileDialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
                             <Button variant="outline" className="w-full h-11 rounded-xl gap-2 font-black uppercase tracking-widest text-[10px] bg-white/5 border-white/10">
                               <Settings className="h-4 w-4" />
                               Personalizar Perfil

@@ -737,7 +737,7 @@ const TokensPage = () => {
             <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
               <p className="text-green-400 font-bold">🎁 ¿Sin dinero? ¡Invita amigos!</p>
               <p className="text-gray-400 text-sm">Cada amigo que se registre con tu link = 50 tokens gratis para ambos</p>
-              <button onClick={() => navigate('/perfil')} className="text-green-400 text-sm font-bold mt-2">
+              <button onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-profile'))} className="text-green-400 text-sm font-bold mt-2">
                 Ver mi código de referido →
               </button>
             </div>

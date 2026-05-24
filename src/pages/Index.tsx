@@ -589,7 +589,7 @@ const Index = () => {
           <p className="text-gray-400 text-xs">Tú y tu amigo reciben 50 tokens gratis</p>
         </div>
         <button
-          onClick={() => navigate('/perfil')}
+          onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-profile'))}
           className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap"
         >
           Ver mi código →

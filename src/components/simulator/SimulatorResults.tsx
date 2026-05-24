@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
     Trophy, 
@@ -44,7 +43,6 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
     onBackToDashboard,
     children
 }) => {
-    const navigate = useNavigate();
     const calculateScore = () => {
         let correct = 0;
         activeQuestions.forEach(q => {
@@ -239,7 +237,7 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
                 {/* Banner Referidos */}
                 <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-3 text-center text-sm mt-3">
                     🎁 ¿Tienes amigos preparándose? Invítalos y ambos ganan <strong>50 tokens gratis</strong>
-                    <button onClick={() => navigate('/perfil')} className="block text-green-400 font-bold mt-1 mx-auto">
+                    <button onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-profile'))} className="block text-green-400 font-bold mt-1 mx-auto">
                         Ver mi código →
                     </button>
                 </div>
