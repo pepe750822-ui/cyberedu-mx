@@ -582,6 +582,20 @@ const Index = () => {
         </button>
       </div>
 
+      {/* ── Banner Referidos ─────────────────────────────── */}
+      <div className="mx-4 mb-4 bg-green-500/10 border border-green-500/30 rounded-2xl p-4 flex items-center justify-between gap-3">
+        <div>
+          <p className="text-white font-bold text-sm">🎁 Invita amigos y gana tokens</p>
+          <p className="text-gray-400 text-xs">Tú y tu amigo reciben 50 tokens gratis</p>
+        </div>
+        <button
+          onClick={() => navigate('/perfil')}
+          className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-4 py-2 rounded-xl text-sm whitespace-nowrap"
+        >
+          Ver mi código →
+        </button>
+      </div>
+
       {/* ── Última Hora COMIPEMS 2026 ────────────────────── */}
       <section className="w-full bg-yellow-400 text-yellow-900">
         <div className="container mx-auto px-4 py-6">
