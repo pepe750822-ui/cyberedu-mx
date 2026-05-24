@@ -184,7 +184,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .single();
 
       if (prof?.referred_by && !prof?.first_login_rewarded) {
-        await (supabase.rpc as any)('award_referral_tokens_login', { ref_code: prof.referred_by });
+        await (supabase.rpc as any)('award_referral_tokens', { ref_code: prof.referred_by });
         await supabase.from('profiles').update({ first_login_rewarded: true }).eq('id', userId);
         console.log('[Auth] Recompensa primer login acreditada al referidor de:', userId);
       }
