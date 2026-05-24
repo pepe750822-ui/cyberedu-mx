@@ -213,35 +213,41 @@ export const ProfileDialog = ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
 
-                    {/* Referral Section */}
-                    {profile?.referral_code && (
-                        <div className="bg-gray-800 rounded-xl p-4">
-                            <h3 className="text-white font-bold mb-2">Tu codigo de referido</h3>
-                            <div className="flex gap-2">
-                                <input
-                                    value={`cyberedumx.com/auth?ref=${profile.referral_code}`}
-                                    readOnly
-                                    className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 text-sm"
-                                />
-                                <Button
-                                    type="button"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(`https://cyberedumx.com/auth?ref=${profile.referral_code}`);
-                                        toast.success('Link copiado');
-                                    }}
-                                    className="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 text-sm"
-                                >
-                                    Copiar
-                                </Button>
+                    {/* Referral Section — visible for all logged-in users */}
+                    {profile && (() => {
+                        const code = profile.referral_code ||
+                            ((profile.name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X') +
+                             profile.id.slice(0, 4).toUpperCase());
+                        const link = `https://cyberedumx.com/auth?ref=${code}`;
+                        return (
+                            <div className="bg-gray-800 rounded-xl p-4">
+                                <h3 className="text-white font-bold mb-2">Tu codigo de referido</h3>
+                                <div className="flex gap-2">
+                                    <input
+                                        value={`cyberedumx.com/auth?ref=${code}`}
+                                        readOnly
+                                        className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 text-sm"
+                                    />
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(link);
+                                            toast.success('Link copiado');
+                                        }}
+                                        className="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 text-sm"
+                                    >
+                                        Copiar
+                                    </Button>
+                                </div>
+                                <p className="text-gray-400 text-xs mt-2">
+                                    Tu y tu amigo reciben 50 tokens cuando se registre con tu link
+                                </p>
+                                <p className="text-green-400 text-sm mt-1">
+                                    Has referido {profile.referral_count ?? 0} amigos = {(profile.referral_count ?? 0) * 50} tokens ganados
+                                </p>
                             </div>
-                            <p className="text-gray-400 text-xs mt-2">
-                                Tu y tu amigo reciben 50 tokens cuando se registre con tu link
-                            </p>
-                            <p className="text-green-400 text-sm mt-1">
-                                Has referido {profile.referral_count ?? 0} amigos = {(profile.referral_count ?? 0) * 50} tokens ganados
-                            </p>
-                        </div>
-                    )}
+                        );
+                    })()}
 
                     <Button
                         onClick={handleSave}
