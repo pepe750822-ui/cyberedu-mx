@@ -23,7 +23,14 @@ export default defineConfig(({ mode }) => ({
       includeAssets: ["favicon.ico", "icons/*.png"],
       manifest: false, // ya tenemos public/manifest.json
       injectManifest: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+        globPatterns: ["assets/**/*.{js,css,woff2}", "*.{html,ico}"],
+        globIgnores: [
+          "**/videos/**",
+          "**/ecoems2026/**",
+          "**/ingles/**",
+          "**/guia2026/**",
+          "**/mermaid-*.js",
+        ],
       },
     }),
   ],
