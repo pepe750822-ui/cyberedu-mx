@@ -770,8 +770,8 @@ const TokensPage = () => {
                   <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
                     <span className="text-2xl">2️⃣</span>
                     <div>
-                      <p className="text-white font-bold text-sm">Tu amigo entra por primera vez</p>
-                      <p className="text-gray-400 text-xs">Recibes 50 tokens extra — solo una vez</p>
+                      <p className="text-white font-bold text-sm">Tu amigo vuelve a entrar</p>
+                      <p className="text-gray-400 text-xs">Recibes 50 tokens cuando regrese — solo una vez</p>
                     </div>
                     <span className="ml-auto text-green-400 font-black">+50 🪙</span>
                   </div>
