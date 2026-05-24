@@ -117,6 +117,27 @@ const TokensPage = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
   const [redeemingPkg, setRedeemingPkg] = useState<string | null>(null);
+  const [copiado, setCopiado] = useState(false);
+
+  const referralCode = profile?.referral_code ||
+    ((profile?.name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X') +
+     (profile?.id || '').slice(0, 4).toUpperCase());
+
+  const copiarLinkReferido = async () => {
+    const link = `https://cyberedumx.com/auth?ref=${referralCode}`;
+    try {
+      await navigator.clipboard.writeText(link);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = link;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2000);
+  };
   const [subscribed, setSubscribed] = useState(false);
   const { subscribe } = usePushNotifications();
 
@@ -734,62 +755,58 @@ const TokensPage = () => {
             </div>
 
             {/* Banner Referidos */}
-            {user && (() => {
-              const code = profile?.referral_code ||
-                ((profile?.name || '').replace(/\s+/g, '').toUpperCase().slice(0, 4).padEnd(4, 'X') +
-                 (profile?.id || '').slice(0, 4).toUpperCase());
-              const link = `https://cyberedumx.com/auth?ref=${code}`;
-              return (
-                <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-4 mb-4">
-                  <h3 className="text-green-400 font-black text-lg mb-3">🎁 Gana tokens gratis invitando amigos</h3>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                      <span className="text-2xl">1️⃣</span>
-                      <div>
-                        <p className="text-white font-bold text-sm">Tu amigo se registra</p>
-                        <p className="text-gray-400 text-xs">Ambos reciben 50 tokens al instante</p>
-                      </div>
-                      <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+            {user && (
+              <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-4 mb-4">
+                <h3 className="text-green-400 font-black text-lg mb-3">🎁 Gana tokens gratis invitando amigos</h3>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                    <span className="text-2xl">1️⃣</span>
+                    <div>
+                      <p className="text-white font-bold text-sm">Tu amigo se registra</p>
+                      <p className="text-gray-400 text-xs">Ambos reciben 50 tokens al instante</p>
                     </div>
-                    <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                      <span className="text-2xl">2️⃣</span>
-                      <div>
-                        <p className="text-white font-bold text-sm">Tu amigo entra por primera vez</p>
-                        <p className="text-gray-400 text-xs">Recibes 50 tokens extra — solo una vez</p>
-                      </div>
-                      <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                    <span className="text-2xl">2️⃣</span>
+                    <div>
+                      <p className="text-white font-bold text-sm">Tu amigo entra por primera vez</p>
+                      <p className="text-gray-400 text-xs">Recibes 50 tokens extra — solo una vez</p>
                     </div>
-                    <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                      <span className="text-2xl">3️⃣</span>
-                      <div>
-                        <p className="text-white font-bold text-sm">Tu amigo hace su primera compra</p>
-                        <p className="text-gray-400 text-xs">Recibes 50 tokens más — solo una vez</p>
-                      </div>
-                      <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                    <span className="text-2xl">3️⃣</span>
+                    <div>
+                      <p className="text-white font-bold text-sm">Tu amigo hace su primera compra</p>
+                      <p className="text-gray-400 text-xs">Recibes 50 tokens más — solo una vez</p>
                     </div>
+                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
                   </div>
-                  <div className="bg-green-500/20 rounded-xl p-3 text-center mb-3">
-                    <p className="text-green-300 font-black">🏆 Máximo 150 tokens por cada amigo que invites</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      value={link}
-                      readOnly
-                      className="flex-1 bg-gray-800 text-white rounded-lg px-3 py-2 text-xs border border-green-500/20"
-                    />
-                    <button
-                      onClick={() => { navigator.clipboard.writeText(link); }}
-                      className="bg-green-500/30 border border-green-500/40 text-green-300 font-bold px-3 py-2 rounded-lg text-xs whitespace-nowrap"
-                    >
-                      Copiar
-                    </button>
-                  </div>
-                  <p className="text-gray-500 text-xs mt-2">
-                    Has referido {profile?.referral_count ?? 0} amigos = {(profile?.referral_count ?? 0) * 50} tokens ganados
-                  </p>
                 </div>
-              );
-            })()}
+                <div className="bg-green-500/20 rounded-xl p-3 text-center mb-3">
+                  <p className="text-green-300 font-black">🏆 Máximo 150 tokens por cada amigo que invites</p>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    value={`https://cyberedumx.com/auth?ref=${referralCode}`}
+                    readOnly
+                    className="flex-1 bg-gray-800 text-white rounded-lg px-3 py-2 text-xs border border-green-500/20"
+                  />
+                  <button
+                    onClick={copiarLinkReferido}
+                    className={`px-4 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
+                      copiado ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    {copiado ? '✅ ¡Copiado!' : '📋 Copiar'}
+                  </button>
+                </div>
+                <p className="text-gray-500 text-xs mt-2">
+                  Has referido {profile?.referral_count ?? 0} amigos = {(profile?.referral_count ?? 0) * 50} tokens ganados
+                </p>
+              </div>
+            )}
 
             {/* Packages Grid */}
             <div id="comprar" className="grid grid-cols-1 md:grid-cols-3 gap-8">
