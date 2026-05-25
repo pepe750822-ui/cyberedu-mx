@@ -164,6 +164,7 @@ const Guia2026 = () => {
 
   const completedCount = Object.values(completed).filter(Boolean).length;
   const pct = Math.round((completedCount / TEMAS.length) * 100);
+  const isMobile = window.innerWidth < 768;
 
   const temasFiltrados = filterMateria === 'all'
     ? TEMAS
@@ -237,22 +238,37 @@ const Guia2026 = () => {
                     <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" />
                   )}
                   {activeTab === 'pdf' && selectedTema.pdf && (
-                    <div className="space-y-3">
-                      <iframe
-                        src={selectedTema.pdf}
-                        className="w-full h-screen rounded-xl border-0"
-                        allowFullScreen
-                      />
-                      <a
-                        href={selectedTema.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-sm font-black hover:bg-amber-500/30 transition-all"
-                      >
-                        <FileText className="h-4 w-4" />
-                        Abrir PDF en nueva pestaña
-                      </a>
-                    </div>
+                    isMobile ? (
+                      <div className="text-center p-8">
+                        <div className="text-5xl mb-4">📄</div>
+                        <p className="text-gray-300 mb-4">Los PDFs no se pueden mostrar directamente en móvil</p>
+                        <a
+                          href={selectedTema.pdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-amber-500 text-black font-black px-6 py-3 rounded-xl inline-block"
+                        >
+                          📥 Abrir PDF
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <iframe
+                          src={selectedTema.pdf}
+                          className="w-full h-screen rounded-xl border-0"
+                          allowFullScreen
+                        />
+                        <a
+                          href={selectedTema.pdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-sm font-black hover:bg-amber-500/30 transition-all"
+                        >
+                          <FileText className="h-4 w-4" />
+                          Abrir PDF en nueva pestaña
+                        </a>
+                      </div>
+                    )
                   )}
                 </div>
               </>
