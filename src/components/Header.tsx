@@ -519,7 +519,7 @@ const Header = () => {
 
                 <div className="space-y-1">
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Sesión</p>
-                  {user ? (
+                  {user && (
                     <>
                       <div className="p-4 bg-muted/30 rounded-3xl mb-4 border border-white/5 relative overflow-hidden">
                         {isSubscriber && (
