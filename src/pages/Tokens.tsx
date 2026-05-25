@@ -441,12 +441,12 @@ const TokensPage = () => {
                       <button
                         onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true })}
                         disabled={redeemingPkg === 'combo_premium'}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-purple-500/20 transition-all disabled:opacity-60"
+                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
                       >
                         {redeemingPkg === 'combo_premium' ? (
                           <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         ) : (
-                          <><Unlock className="h-4 w-4" /> Canjear — 100 tokens</>
+                          <>🔓 Canjear — 100 tokens</>
                         )}
                       </button>
                     ) : (
@@ -455,10 +455,15 @@ const TokensPage = () => {
                           const el = document.getElementById('comprar');
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase text-xs tracking-widest hover:bg-white/10 transition-all"
+                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-xs tracking-widest hover:bg-amber-500/20 transition-all"
                       >
-                        <Ticket className="h-4 w-4" /> Necesitas 100 tokens ({(profile?.tokens ?? 0)} actuales)
+                        🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/100)
                       </button>
+                    )}
+                    {user && !isComboUnlocked && (
+                      <p className="text-gray-400 text-xs text-center mt-2">
+                        💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -512,12 +517,12 @@ const TokensPage = () => {
                       <button
                         onClick={() => redeemTokens('banco10', 50, { bank10_unlocked: true })}
                         disabled={redeemingPkg === 'banco10'}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase text-xs tracking-widest shadow-lg shadow-amber-500/20 transition-all disabled:opacity-60"
+                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
                       >
                         {redeemingPkg === 'banco10' ? (
                           <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         ) : (
-                          <><Unlock className="h-4 w-4" /> Canjear — 50 tokens</>
+                          <>🔓 Canjear — 50 tokens</>
                         )}
                       </button>
                     ) : (
@@ -526,10 +531,15 @@ const TokensPage = () => {
                           const el = document.getElementById('comprar');
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black uppercase text-xs tracking-widest hover:bg-white/10 transition-all"
+                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-xs tracking-widest hover:bg-amber-500/20 transition-all"
                       >
-                        <Ticket className="h-4 w-4" /> Necesitas 50 tokens ({(profile?.tokens ?? 0)} actuales)
+                        🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/50)
                       </button>
+                    )}
+                    {user && !isBank10Unlocked && (
+                      <p className="text-gray-400 text-xs text-center mt-2">
+                        💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -578,12 +588,12 @@ const TokensPage = () => {
                     <button
                       onClick={() => redeemTokens(id, 50, { [bankKey]: true })}
                       disabled={redeemingPkg === id}
-                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-300 font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-60"
+                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-60"
                     >
                       {redeemingPkg === id ? (
-                        <div className="h-3.5 w-3.5 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full animate-spin" />
+                        <div className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
-                        <><Unlock className="h-3.5 w-3.5" /> Canjear — 50 tokens</>
+                        <>🔓 Canjear — 50 tokens</>
                       )}
                     </button>
                   ) : (
@@ -592,10 +602,15 @@ const TokensPage = () => {
                         const el = document.getElementById('comprar');
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-white/5 border border-white/10 text-slate-500 font-black uppercase text-[10px] tracking-widest hover:bg-white/10 transition-all"
+                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-[10px] tracking-widest hover:bg-amber-500/20 transition-all"
                     >
-                      <Ticket className="h-3.5 w-3.5" /> Necesitas 50 tokens
+                      🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/50)
                     </button>
+                  )}
+                  {user && !isUnlocked && (
+                    <p className="text-gray-400 text-xs text-center mt-1">
+                      💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
+                    </p>
                   )}
                 </div>
               );
