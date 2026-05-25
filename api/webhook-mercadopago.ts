@@ -41,6 +41,16 @@ export default async function handler(req: Request) {
       const paymentData = await mpResp.json();
       let { status, external_reference, metadata } = paymentData;
 
+      // Logging detallado inmediato para diagnóstico
+      console.log(`[Webhook] ── PAYMENT RAW ──────────────────────────────`);
+      console.log(`[Webhook] Payment ID:         ${paymentId}`);
+      console.log(`[Webhook] Status:             ${status}`);
+      console.log(`[Webhook] external_reference: ${external_reference}`);
+      console.log(`[Webhook] preference_id:      ${paymentData.preference_id}`);
+      console.log(`[Webhook] payer_email:         ${paymentData.payer?.email}`);
+      console.log(`[Webhook] metadata:            ${JSON.stringify(metadata)}`);
+      console.log(`[Webhook] ────────────────────────────────────────────`);
+
       // Fix #2: si metadata está vacía o sin type, recuperarla de la preferencia original.
       // MP no garantiza que /v1/payments/{id} propague la metadata de la preferencia.
       const isMetadataEmpty = !metadata || !metadata.type;

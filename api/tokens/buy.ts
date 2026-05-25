@@ -69,6 +69,10 @@ export default async function handler(req: Request) {
         userId: userId,
         packageId: packageId,
         tokenAmount: pkg.tokens,
+        // snake_case duplicates — MP snake_cases camelCase keys on return, these guarantee the webhook always finds them
+        user_id: userId,
+        package_id: packageId,
+        token_amount: pkg.tokens,
       },
       back_urls: {
         success: `${APP_URL}/tokens?status=success`,
