@@ -296,6 +296,14 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                         })()}
                     </div>
 
+                    {/* Acceso directo Guía 2026 */}
+                    <button
+                        onClick={() => navigate('/guia2026')}
+                        className="w-full mt-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 text-blue-300 font-bold py-2 rounded-xl text-sm hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                    >
+                        🎬 Ver 44 videos — Guía 2026
+                    </button>
+
                     {/* Banner bank8 */}
                     {selectedBank === 'bank8' && !(bank8Unlocked || paqueteCompleto) && (
                         <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-2">
