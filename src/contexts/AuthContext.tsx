@@ -141,6 +141,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               email: currentUser.email,
               name: displayName,
               referral_code: referralCode,
+              tokens: 50,
               updated_at: new Date().toISOString()
             })
             .select()
