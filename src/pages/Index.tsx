@@ -235,7 +235,12 @@ const Index = () => {
 
   const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 768);
+  }, []);
 
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
 
@@ -518,21 +523,23 @@ const Index = () => {
             </div>
 
             {/* Right — cerebro 3D, solo desktop */}
-            <div className="hidden md:block" style={{ height: "480px" }}>
-              <Suspense fallback={null}>
-                <Canvas
-                  camera={{ position: [0, 0, 5], fov: 45 }}
-                  gl={{ alpha: true }}
-                  style={{ background: "transparent" }}
-                >
-                  <ambientLight intensity={0.5} />
-                  <pointLight position={[5, 5, 5]} intensity={2.5} color="#7c3aed" />
-                  <pointLight position={[-5, -5, 5]} intensity={1.2} color="#f59e0b" />
-                  <pointLight position={[0, -5, -5]} intensity={0.5} color="#a855f7" />
-                  <NeuralBrain />
-                </Canvas>
-              </Suspense>
-            </div>
+            {isDesktop && (
+              <div style={{ height: "480px" }}>
+                <Suspense fallback={<div className="w-64 h-64 bg-violet-500/10 rounded-full animate-pulse" />}>
+                  <Canvas
+                    camera={{ position: [0, 0, 5], fov: 45 }}
+                    gl={{ alpha: true }}
+                    style={{ background: "transparent" }}
+                  >
+                    <ambientLight intensity={0.5} />
+                    <pointLight position={[5, 5, 5]} intensity={2.5} color="#7c3aed" />
+                    <pointLight position={[-5, -5, 5]} intensity={1.2} color="#f59e0b" />
+                    <pointLight position={[0, -5, -5]} intensity={0.5} color="#a855f7" />
+                    <NeuralBrain />
+                  </Canvas>
+                </Suspense>
+              </div>
+            )}
 
           </div>
         </div>
