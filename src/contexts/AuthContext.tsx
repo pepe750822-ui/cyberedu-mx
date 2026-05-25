@@ -101,6 +101,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (data) {
         console.log("[Auth] Perfil cargado con éxito para:", userId);
         setProfile(data as UserProfile);
+
+        // Process referral on first load if not yet assigned — covers the case where
+        // the profile was created by a DB trigger before fetchProfile ran.
+        const storedRefCode = localStorage.getItem('referral_code');
+        if (storedRefCode && !data.referred_by) {
+          try {
+            await supabase.from('profiles').update({ referred_by: storedRefCode, tokens: (data.tokens || 0) + 50 }).eq('id', userId);
+            await (supabase.rpc as any)('award_referral_tokens', { ref_code: storedRefCode });
+            localStorage.removeItem('referral_code');
+            console.log('[Auth] ✅ Referido procesado (perfil existente):', storedRefCode);
+            const { data: updated } = await supabase.from('profiles').select('*').eq('id', userId).single();
+            if (updated) setProfile(updated as UserProfile);
+          } catch (e) {
+            console.error('[Auth] Error al procesar referido en perfil existente:', e);
+          }
+        }
       } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
         console.log("[Auth] Perfil no encontrado, creando uno nuevo...");
         const { data: sessionData } = await supabase.auth.getSession();
