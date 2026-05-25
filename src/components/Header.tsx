@@ -367,6 +367,15 @@ const Header = () => {
                 </div>
               </SheetHeader>
 
+              {!user && (
+                <button
+                  onClick={() => { navigate('/auth'); setIsMenuOpen(false); }}
+                  className="w-full bg-gradient-to-r from-violet-600 to-purple-600 text-white font-black py-3 rounded-xl mb-4"
+                >
+                  🚀 Ingresar / Registrarse
+                </button>
+              )}
+
               <div className="mb-8">
                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 px-2">Búsqueda Rápida</p>
                 <GlobalSearch className="block" />
@@ -577,13 +586,6 @@ const Header = () => {
                         Cerrar Sesión
                       </Button>
                     </>
-                  ) : (
-                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="default" className="w-full h-12 font-bold uppercase tracking-widest text-xs">
-                        <UserCircle className="h-5 w-5 mr-2" />
-                        Ingresar a la Plataforma
-                      </Button>
-                    </Link>
                   )}
                 </div>
               </div>
