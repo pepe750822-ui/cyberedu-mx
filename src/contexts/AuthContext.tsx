@@ -102,6 +102,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log("[Auth] Perfil cargado con éxito para:", userId);
         setProfile(data as UserProfile);
 
+        // Backfill referral_code if missing — DB trigger doesn't generate it, only the client does.
+        if (!data.referral_code) {
+          const code = generateReferralCode(data.name || 'USER', userId);
+          await supabase.from('profiles').update({ referral_code: code }).eq('id', userId);
+          console.log('[Auth] ✅ referral_code generado y guardado:', code);
+          setProfile({ ...data, referral_code: code } as UserProfile);
+        }
+
         // Process referral on first load if not yet assigned — covers the case where
         // the profile was created by a DB trigger before fetchProfile ran.
         const storedRefCode = localStorage.getItem('referral_code');
