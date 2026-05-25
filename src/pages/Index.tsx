@@ -430,6 +430,18 @@ const Index = () => {
         <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #0a0a0f)" }} />
       </section>
 
+      {/* ── BANNER REGALO BIENVENIDA ─────────────────────── */}
+      <div className="mx-4 mb-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/40 rounded-2xl p-4 text-center animate-pulse">
+        <div className="text-3xl mb-1">🎁</div>
+        <p className="text-yellow-400 font-black text-lg">¡Regalo especial para todos!</p>
+        <p className="text-white text-sm mt-1">
+          Regalamos <strong>50 tokens gratis</strong> a todos los usuarios registrados
+        </p>
+        <p className="text-gray-400 text-xs mt-1">
+          Úsalos para desbloquear simuladores y la Guía 2026 🚀
+        </p>
+      </div>
+
       {/* ── STATS (glassmorphism) ─────────────────────────── */}
       <section className="relative z-10 mx-4 mb-6 -mt-4">
         <div className="grid grid-cols-3 gap-3 max-w-2xl mx-auto">
