@@ -367,6 +367,13 @@ const Header = () => {
                 </div>
               </SheetHeader>
 
+              {user && profile && (
+                <div className="flex items-center justify-between bg-violet-500/20 border border-violet-500/30 rounded-xl px-4 py-3 mb-4">
+                  <span className="text-white font-bold">🪙 Mis tokens</span>
+                  <span className="text-yellow-400 font-black text-lg">{(profile as any).tokens || 0}</span>
+                </div>
+              )}
+
               {!user && (
                 <button
                   onClick={() => { navigate('/auth'); setIsMenuOpen(false); }}
