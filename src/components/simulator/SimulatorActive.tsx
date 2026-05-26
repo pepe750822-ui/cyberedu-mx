@@ -74,6 +74,27 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         currentQuestionIndex === activeQuestions.length - 1 ? onFinish() : onNext();
     };
 
+    const handleAskTutor = () => {
+        if (!currentQuestion) return;
+        const correct = currentQuestion.options[currentQuestion.correctIndex];
+        const message = `Explícame esta pregunta del ECOEMS:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
+        window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
+    };
+
+    // Enter key → ask Tutor IA when feedback is visible
+    useEffect(() => {
+        if (feedbackIndex === null) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' && !(e.target as HTMLElement).closest('button')) {
+                e.preventDefault();
+                handleAskTutor();
+            }
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [feedbackIndex, currentQuestionIndex]);
+
     const isCorrect = feedbackIndex !== null && feedbackIndex === currentQuestion?.correctIndex;
 
     const optionClass = (idx: number) => {
@@ -282,6 +303,13 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                                 {currentQuestionIndex === activeQuestions.length - 1
                                     ? "Finalizar simulador"
                                     : "Siguiente pregunta →"}
+                            </button>
+                            <button
+                                onClick={handleAskTutor}
+                                className="mt-2 w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
+                            >
+                                🧠 Preguntar al Tutor IA
+                                <span className="text-[9px] text-violet-500 font-black uppercase tracking-widest">[Enter]</span>
                             </button>
                         </div>
                     )}
