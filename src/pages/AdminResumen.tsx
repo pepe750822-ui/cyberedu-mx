@@ -99,6 +99,7 @@ export default function AdminResumen() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date());
+  const [reportedQuestions, setReportedQuestions] = useState<{ question_id: string; count: number }[]>([]);
 
   const fetchStats = useCallback(async () => {
     const todayStr = mexicoToday();
@@ -136,6 +137,21 @@ export default function AdminResumen() {
         newToday: newTodayRaw.count ?? 0,
         premiumToday: premiumTodayRaw.count ?? 0,
       });
+
+      // Reported questions — aggregate in JS (no RPC needed)
+      const { data: rawReports } = await (supabase.from('question_reports' as any) as any)
+        .select('question_id');
+      const countMap: Record<string, number> = {};
+      for (const r of (rawReports ?? [])) {
+        countMap[r.question_id] = (countMap[r.question_id] ?? 0) + 1;
+      }
+      setReportedQuestions(
+        Object.entries(countMap)
+          .map(([question_id, count]) => ({ question_id, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 10)
+      );
+
       setLastRefresh(new Date());
     } catch (err) {
       console.error("[AdminResumen]", err);
@@ -250,6 +266,25 @@ export default function AdminResumen() {
               <p className="text-xs text-slate-600 mt-3">
                 Tarifas: DeepSeek $0.27/$1.10 · Haiku $0.25/$1.25 por 1M tokens · TC $17.50 MXN/USD
               </p>
+            </section>
+
+            {/* Preguntas reportadas */}
+            <section className="rounded-2xl bg-white/[0.03] border border-white/10 p-5">
+              <h2 className="text-white font-bold text-base mb-4">⚠️ Preguntas Reportadas</h2>
+              {reportedQuestions.length === 0 ? (
+                <p className="text-slate-500 text-sm">Sin reportes aún.</p>
+              ) : (
+                <div className="divide-y divide-white/5">
+                  {reportedQuestions.map((r) => (
+                    <div key={r.question_id} className="flex items-center justify-between py-2.5 text-sm">
+                      <span className="text-slate-300 font-mono text-xs truncate max-w-[75%]">{r.question_id}</span>
+                      <span className="text-red-400 font-black text-xs shrink-0 ml-2">
+                        {r.count} {r.count === 1 ? "reporte" : "reportes"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Secciones externas */}
