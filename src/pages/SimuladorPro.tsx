@@ -347,7 +347,14 @@ const SimuladorPro = () => {
         trackSimuladorResume();
     };
 
-    // Auto-save progress
+    // Auto-save on every answer
+    useEffect(() => {
+        if (isExamActive && !showResults && Object.keys(userAnswers).length > 0) {
+            saveStateToLocalStorage();
+        }
+    }, [userAnswers]);
+
+    // Auto-save interval (fallback every 30s)
     useEffect(() => {
         if (isExamActive && !showResults) {
             const interval = setInterval(() => saveStateToLocalStorage(), 30000);
@@ -498,6 +505,18 @@ const SimuladorPro = () => {
             toast.success(`¡Banco desbloqueado! Se descontaron ${cost} tokens. 🎉`);
         } catch (err: any) {
             toast.error('Error al canjear: ' + err.message);
+        }
+    };
+
+    const handleReportQuestion = async (questionId: string) => {
+        try {
+            await supabase.from('question_reports' as any).insert({
+                question_id: questionId,
+                user_id: user?.id ?? null,
+            });
+            toast.success('Reporte enviado. ¡Gracias por ayudarnos a mejorar!');
+        } catch {
+            toast.error('No se pudo enviar el reporte. Intenta de nuevo.');
         }
     };
 
@@ -655,6 +674,7 @@ const SimuladorPro = () => {
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
                 }}
                 onJumpToQuestion={setCurrentQuestionIndex}
+                onReportQuestion={handleReportQuestion}
                 formatTime={(s) => {
                     const h = Math.floor(s / 3600);
                     const m = Math.floor((s % 3600) / 60);

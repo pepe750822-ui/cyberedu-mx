@@ -29,6 +29,7 @@ interface SimulatorActiveProps {
     onSaveAndExit: () => void;
     onToggleMark: () => void;
     onJumpToQuestion: (index: number) => void;
+    onReportQuestion: (questionId: string) => void;
     formatTime: (seconds: number) => string;
 }
 
@@ -49,6 +50,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     onSaveAndExit,
     onToggleMark,
     onJumpToQuestion,
+    onReportQuestion,
     formatTime
 }) => {
     const currentQuestion = activeQuestions[currentQuestionIndex];
@@ -208,6 +210,16 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                         ))}
                     </div>
                 </div>
+            </div>
+
+            {/* Report question */}
+            <div className="container mx-auto max-w-4xl flex justify-end px-4 pb-1">
+                <button
+                    onClick={() => currentQuestion && onReportQuestion(currentQuestion.id)}
+                    className="text-slate-600 hover:text-slate-400 text-[10px] underline transition-colors"
+                >
+                    ⚠️ Reportar problema con esta pregunta
+                </button>
             </div>
 
             {/* Navigation Footer */}
