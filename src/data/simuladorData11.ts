@@ -116,8 +116,8 @@ export const bank11Questions: Question[] = [
     area: "Habilidad Matemática",
     text: "¿Cuál es el número que falta en el último triángulo?",
     options: ["13", "23", "24", "31"],
-    correctIndex: 3,
-    explanation: "Siguiendo el patrón numérico de los triángulos, el número faltante es 31.",
+    correctIndex: 2,
+    explanation: "Siguiendo el patrón numérico de los triángulos, el número faltante es 24.",
     imageUrl: "/bank11/p13.png",
   },
   {
