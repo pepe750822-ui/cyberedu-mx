@@ -546,11 +546,12 @@ const TokensPage = () => {
               );
             })()}
 
-            {/* ——— BANCOS 5, 8, 9 INDIVIDUALES 50 TOKENS c/u ——— */}
+            {/* ——— BANCOS 5, 8, 9, 11 INDIVIDUALES 50 TOKENS c/u ——— */}
             {[
               { id: 'banco5',  bankKey: 'bank5_unlocked',  label: 'Banco 5 — Guías UNAM 2024-25', perks: ['128 preguntas guías oficiales UNAM 2024-25', 'Modo examen + práctica rápida'] },
               { id: 'banco8',  bankKey: 'bank8_unlocked',  label: 'Banco 8 — Guía UNAM 2023',     perks: ['128 reactivos guía UNAM 2023', 'Preguntas y opciones aleatorizadas'] },
               { id: 'banco9',  bankKey: 'bank9_unlocked',  label: 'Banco 9 — Guía UNAM 2024',     perks: ['128 reactivos guía UNAM 2024', 'Resultados por materia detallados'] },
+              { id: 'banco11', bankKey: 'bank11_unlocked', label: 'Banco 11 — 2do Examen Conocimientos Gen.', perks: ['128 reactivos Segundo Examen de Conocimientos Generales', 'Preguntas y opciones aleatorizadas'] },
             ].map(({ id, bankKey, label, perks }) => {
               const isUnlocked = (profile as any)?.[bankKey] === true || (profile as any)?.paquete_completo === true;
               const canAfford = (profile?.tokens ?? 0) >= 50;

@@ -106,6 +106,7 @@ const SimuladorPro = () => {
         bank8: [],
         bank9: [],
         bank10: [],
+        bank11: [],
     });
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [examMode, setExamMode] = useState<ExamMode>('full');
@@ -148,13 +149,14 @@ const SimuladorPro = () => {
                 ]);
 
                 // Lazy load large banks to speed up initial page load
-                const [mod5, mod6, mod7, mod8, mod9, mod10] = await Promise.all([
+                const [mod5, mod6, mod7, mod8, mod9, mod10, mod11] = await Promise.all([
                     import("@/data/simuladorData"),
                     import("@/data/simuladorData6"),
                     import("@/data/simuladorData7"),
                     import("@/data/simuladorData8"),
                     import("@/data/simuladorData9"),
                     import("@/data/simuladorData10"),
+                    import("@/data/simuladorData11"),
                 ]);
 
                 setBankData(prev => ({
@@ -169,6 +171,7 @@ const SimuladorPro = () => {
                     bank8: mod8.bank8Questions,
                     bank9: mod9.bank9Questions,
                     bank10: mod10.bank10Questions,
+                    bank11: mod11.bank11Questions,
                 }));
             } catch (error) {
                 logger.error("Error loading question banks", error);
@@ -443,6 +446,7 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank8') return fromSource(bankData.bank8);
         if (selectedBank === 'bank9') return fromSource(bankData.bank9);
         if (selectedBank === 'bank10') return fromSource(bankData.bank10);
+        if (selectedBank === 'bank11') return fromSource(bankData.bank11);
         return [
             ...fromSource(bankData.bank1), ...fromSource(bankData.bank2),
             ...fromSource(bankData.bank3), ...fromSource(bankData.bank4)
@@ -450,8 +454,8 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        // bank5, bank8, bank9, bank10: free 10-question preview — select freely, upsell after results
-        if (['bank5', 'bank8', 'bank9', 'bank10'].includes(bank)) {
+        // bank5, bank8, bank9, bank10, bank11: free 10-question preview — select freely, upsell after results
+        if (['bank5', 'bank8', 'bank9', 'bank10', 'bank11'].includes(bank)) {
             setSelectedBank(bank);
             return;
         }
@@ -505,11 +509,15 @@ const SimuladorPro = () => {
             (profile as any)?.bank10_unlocked === true ||
             (profile as any)?.guia2026_unlocked === true ||
             (profile as any)?.paquete_completo === true;
+        const bank11Unlocked =
+            (profile as any)?.bank11_unlocked === true ||
+            (profile as any)?.paquete_completo === true;
         const isPreview =
             (selectedBank === 'bank5'  && !bank5Unlocked)  ||
             (selectedBank === 'bank8'  && !bank8Unlocked)  ||
             (selectedBank === 'bank9'  && !bank9Unlocked)  ||
-            (selectedBank === 'bank10' && !bank10Unlocked);
+            (selectedBank === 'bank10' && !bank10Unlocked) ||
+            (selectedBank === 'bank11' && !bank11Unlocked);
 
         const pool = buildPool(selectedArea);
         let questions: Question[];
@@ -675,10 +683,12 @@ const SimuladorPro = () => {
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
                 if (selectedBank === 'bank5'  && !b5u)  return 10;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
                 if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
+                if (selectedBank === 'bank11' && !b11u) return 10;
                 return buildPool(selectedArea).length;
             })()}
             practiceModeCount={(() => {
@@ -686,10 +696,12 @@ const SimuladorPro = () => {
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
                 if (selectedBank === 'bank5'  && !b5u)  return 10;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
                 if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
+                if (selectedBank === 'bank11' && !b11u) return 10;
                 return Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length);
             })()}
             onBackToHome={() => navigate('/')}
@@ -700,6 +712,7 @@ const SimuladorPro = () => {
             bank8Unlocked={(profile as any)?.bank8_unlocked === true}
             bank9Unlocked={(profile as any)?.bank9_unlocked === true}
             bank10Unlocked={(profile as any)?.bank10_unlocked === true}
+            bank11Unlocked={(profile as any)?.bank11_unlocked === true}
             guia2026Unlocked={(profile as any)?.guia2026_unlocked === true}
             paqueteCompleto={(profile as any)?.paquete_completo === true}
             isLoggedIn={!!user}
