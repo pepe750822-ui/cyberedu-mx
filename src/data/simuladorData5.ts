@@ -1064,6 +1064,7 @@ export const bank5Questions: Question[] = [
     options: ["42", "72", "90", "56"],
     correctIndex: 1,
     explanation: "Las figuras crecientes de puntos siguen el patrón n(n+1), donde n es el número de figura. Para la octava posición: 8 × (8+1) = 8 × 9 = 72 puntos.",
+    imageUrl: "/guia2024/p05.png",
   },
   {
     id: "unam_2024_6",
@@ -1072,6 +1073,7 @@ export const bank5Questions: Question[] = [
     options: ["Cuadrado con círculo en esquina", "Círculo con punto central", "Triángulo con línea", "Rectángulo dividido"],
     correctIndex: 0,
     explanation: "En series de figuras se analiza la transformación sistemática de formas, posiciones o combinaciones. Siguiendo el patrón establecido por las figuras anteriores, la siguiente es el cuadrado con círculo en esquina.",
+    imageUrl: "/guia2024/p06.png",
   },
   {
     id: "unam_2024_7",
@@ -1080,6 +1082,7 @@ export const bank5Questions: Question[] = [
     options: ["Manecillas a las 3:00", "Manecillas a las 6:00", "Manecillas a las 9:00", "Manecillas a las 12:00"],
     correctIndex: 0,
     explanation: "En series de relojes, las manecillas siguen un patrón de rotación sistemática (avance horario fijo o giro). Analizando la progresión de los dos primeros relojes, el tercero muestra las manecillas a las 3:00.",
+    imageUrl: "/guia2024/p07.png",
   },
   {
     id: "unam_2024_8",
@@ -1088,6 +1091,7 @@ export const bank5Questions: Question[] = [
     options: ["Estrella de 5 puntas", "Estrella de 6 puntas", "Círculo concéntrico", "Hexágono dividido"],
     correctIndex: 3,
     explanation: "Las series de figuras siguen transformaciones específicas de forma, simetría o composición. Aplicando la regla de cambio establecida en la serie, la figura D (hexágono dividido) es la que continúa la secuencia.",
+    imageUrl: "/guia2024/p08.png",
   },
   {
     id: "unam_2024_9",
@@ -1096,6 +1100,7 @@ export const bank5Questions: Question[] = [
     options: ["Cubo invertido", "Pirámide rotada", "Prisma girado", "Esfera segmentada"],
     correctIndex: 1,
     explanation: "Al girar una figura 180°, los elementos superiores pasan a la parte inferior y viceversa, como un reflejo rotacional respecto al centro. La opción B (pirámide rotada) muestra la figura correctamente girada en ese ángulo.",
+    imageUrl: "/guia2024/p09.png",
   },
   {
     id: "unam_2024_10",
@@ -1104,6 +1109,7 @@ export const bank5Questions: Question[] = [
     options: ["Patrón A ensamblado", "Patrón B ensamblado", "Patrón C ensamblado", "Patrón D ensamblado"],
     correctIndex: 1,
     explanation: "Los patrones o redes geométricas se forman doblando figuras planas para crear formas tridimensionales. Al plegar el patrón dado por sus líneas de doblez, el resultado es la figura B.",
+    imageUrl: "/guia2024/p10.png",
   },
   {
     id: "unam_2024_11",
@@ -1112,6 +1118,7 @@ export const bank5Questions: Question[] = [
     options: ["Triángulo rectángulo", "Trapecio isósceles", "Pentágono irregular", "Rombo segmentado"],
     correctIndex: 0,
     explanation: "Para completar un cuadrado a partir de la figura dada (permitiendo rotaciones), se identifica la forma complementaria que llena exactamente el espacio faltante. El triángulo rectángulo es la pieza que, girada, completa el cuadrado.",
+    imageUrl: "/guia2024/p11.png",
   },
   {
     id: "unam_2024_12",
@@ -1120,6 +1127,7 @@ export const bank5Questions: Question[] = [
     options: ["Reflejo simétrico A", "Reflejo simétrico B", "Reflejo simétrico C", "Reflejo simétrico D"],
     correctIndex: 3,
     explanation: "La simetría axial genera una imagen especular: cada punto de la figura original se refleja al lado opuesto del eje a la misma distancia. Al reflejar la imagen respecto a la línea punteada, la proyección correcta es la opción D.",
+    imageUrl: "/guia2024/p12.png",
   },
   {
     id: "unam_2024_13",
@@ -1128,6 +1136,7 @@ export const bank5Questions: Question[] = [
     options: ["19", "17", "18", "24"],
     correctIndex: 0,
     explanation: "Para contar cubos en figuras tridimensionales se incluyen los cubos ocultos detrás o debajo de otros. Contando sistemáticamente por capas de adelante hacia atrás y de arriba hacia abajo, la figura tiene 19 cubos en total.",
+    imageUrl: "/guia2024/p13.png",
   },
   {
     id: "unam_2024_14",
@@ -1136,6 +1145,7 @@ export const bank5Questions: Question[] = [
     options: ["12", "14", "15", "16"],
     correctIndex: 2,
     explanation: "El patrón numérico establece relaciones matemáticas (suma, resta, multiplicación o división) entre los valores de la figura. Identificando la regla que rige el esquema, el número que completa el patrón es 15.",
+    imageUrl: "/guia2024/p14.png",
   },
   {
     id: "unam_2024_15",
@@ -1260,10 +1270,10 @@ export const bank5Questions: Question[] = [
   {
     id: "unam_2024_30",
     area: "Español",
-    text: "Observa la siguiente tabla y selecciona la afirmación verdadera.",
-    options: ["El ozono tiene dos átomos por unidad.", "El ozono es de color azul pálido e inodoro.", "El oxígeno es muy oxidante.", "El oxígeno es incoloro o inodoro."],
+    text: "Observa la siguiente tabla y selecciona la afirmación verdadera.\n\nSustancia | Átomos por entidad | Color | Olor | Reactividad\nOxígeno | 2 | Incoloro | Inodoro | Oxidante\nOzono | 3 | Azul pálido | Acre | Muy oxidante",
+    options: ["El ozono tiene dos átomos por unidad.", "El ozono es de color azul pálido e inodoro.", "El oxígeno es muy oxidante.", "El oxígeno es incoloro e inodoro."],
     correctIndex: 3,
-    explanation: "Según los datos de la tabla comparativa, el oxígeno (O₂) es un gas incoloro e inodoro en condiciones normales. El ozono (O₃) es el que tiene color azul pálido y olor característico, por lo que la afirmación verdadera es la opción D.",
+    explanation: "Según la tabla, el oxígeno es incoloro e inodoro. El ozono tiene 3 átomos (no 2), el ozono huele acre (no inodoro), y el oxígeno es oxidante (no 'muy oxidante', eso es el ozono).",
   },
   {
     id: "unam_2024_31",
