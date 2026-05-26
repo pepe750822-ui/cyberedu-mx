@@ -505,14 +505,15 @@ const SimuladorPro = () => {
     };
 
     const handleReportQuestion = async (questionId: string) => {
-        try {
-            await supabase.from('question_reports' as any).insert({
-                question_id: questionId,
-                user_id: user?.id ?? null,
-            });
-            toast.success('Reporte enviado. ¡Gracias por ayudarnos a mejorar!');
-        } catch {
+        const { error } = await (supabase.from('question_reports' as any) as any).insert({
+            question_id: questionId,
+            user_id: user?.id ?? null,
+        });
+        if (error) {
+            console.error('[question_reports]', error);
             toast.error('No se pudo enviar el reporte. Intenta de nuevo.');
+        } else {
+            toast.success('Reporte enviado. ¡Gracias por ayudarnos a mejorar!');
         }
     };
 
