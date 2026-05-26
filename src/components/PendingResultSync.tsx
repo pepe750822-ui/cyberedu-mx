@@ -20,7 +20,6 @@ export const PendingResultSync = () => {
         const uploadPending = async () => {
             try {
                 const payload = JSON.parse(pendingResultRaw);
-                console.log('[PendingResultSync] Uploading pending result for user:', user.id);
 
                 const { error } = await supabase
                     .from('simulador_results')

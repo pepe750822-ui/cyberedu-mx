@@ -2609,7 +2609,6 @@ const AITutor = () => {
         
         // Auto-unblock if backend says we have questions left (avoids false positives from legacy localStorage)
         if (data.used < data.limit && dailyLimitBanner.visible) {
-          console.log("Desbloqueando tutor basado en uso real del servidor");
           setDailyLimitBanner({ visible: false, message: "" });
           localStorage.removeItem("cyberedu_daily_limit_reached");
         }

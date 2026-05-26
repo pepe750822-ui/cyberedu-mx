@@ -27,7 +27,6 @@ export function usePushNotifications() {
         applicationServerKey: urlBase64ToUint8Array(vapidKey),
       });
 
-      console.log("[Push] Browser subscription created:", sub.endpoint);
 
       const { error } = await supabase.from("push_subscriptions").upsert(
         { user_id: userId, subscription: sub.toJSON() },
@@ -39,7 +38,6 @@ export function usePushNotifications() {
         return false;
       }
 
-      console.log("[Push] Subscription saved to Supabase OK");
       return true;
     } catch (err) {
       console.error("[Push] Subscription error:", err);

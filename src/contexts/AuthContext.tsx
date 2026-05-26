@@ -77,12 +77,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchProfile = async (userId: string, retryCount = 0) => {
     if (fetchingProfileForId.current === userId && retryCount === 0) {
-      console.log("[Auth] fetchProfile ya en curso para:", userId, "- ignorando duplicado");
       return;
     }
     
     fetchingProfileForId.current = userId;
-    console.log(`[Auth] Iniciando fetchProfile (intento ${retryCount + 1}) para:`, userId);
     
     try {
       // Timeout de 8s para la consulta a Supabase
@@ -99,14 +97,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = await Promise.race([supabaseQuery, timeoutPromise]) as any;
       
       if (data) {
-        console.log("[Auth] Perfil cargado con éxito para:", userId);
         setProfile(data as UserProfile);
 
         // Backfill referral_code if missing — DB trigger doesn't generate it, only the client does.
         if (!data.referral_code) {
           const code = generateReferralCode(data.name || 'USER', userId);
           await supabase.from('profiles').update({ referral_code: code }).eq('id', userId);
-          console.log('[Auth] ✅ referral_code generado y guardado:', code);
           setProfile({ ...data, referral_code: code } as UserProfile);
         }
 
@@ -118,7 +114,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             await supabase.from('profiles').update({ referred_by: storedRefCode, tokens: (data.tokens || 0) + 50 }).eq('id', userId);
             await (supabase.rpc as any)('award_referral_tokens', { ref_code: storedRefCode });
             localStorage.removeItem('referral_code');
-            console.log('[Auth] ✅ Referido procesado (perfil existente):', storedRefCode);
             const { data: updated } = await supabase.from('profiles').select('*').eq('id', userId).single();
             if (updated) setProfile(updated as UserProfile);
           } catch (e) {
@@ -126,7 +121,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       } else if (error && (error.code === 'PGRST116' || error.message.includes('No rows'))) {
-        console.log("[Auth] Perfil no encontrado, creando uno nuevo...");
         const { data: sessionData } = await supabase.auth.getSession();
         const currentUser = sessionData?.session?.user;
         
@@ -175,7 +169,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error(`[Auth] Error en fetchProfile (intento ${retryCount + 1}):`, e.message);
       
       if (e.message === "Supabase Timeout" && retryCount < 1) {
-        console.log("[Auth] Reintentando fetchProfile...");
         fetchingProfileForId.current = null; // Limpiar para permitir el reintento
         return fetchProfile(userId, retryCount + 1);
       }
@@ -211,7 +204,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (prof?.referred_by && !prof?.first_login_rewarded) {
         await (supabase.rpc as any)('award_referral_tokens', { ref_code: prof.referred_by });
         await supabase.from('profiles').update({ first_login_rewarded: true }).eq('id', userId);
-        console.log('[Auth] Recompensa primer login acreditada al referidor de:', userId);
       }
     } catch (e) {
       console.error('[Auth] Error en checkFirstLoginReferral:', e);
@@ -226,7 +218,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                            window.location.hash.includes('type=recovery') ||
                            window.location.search.includes('code=');
 
-    console.log("[Auth] Context Mount - Redirect detected:", isAuthRedirect);
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -234,7 +225,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!mounted) return;
         if (isSigningOut.current) return;
         
-        console.log("[Auth] Evento de Auth:", event, session?.user?.email);
         
         // Sesión inicial nula -> desbloquear inmediatamente
         if (event === 'INITIAL_SESSION' && !session) {
@@ -303,7 +293,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (isSigningOut.current) return;
     isSigningOut.current = true;
     
-    console.log('[signOut] Nuclear iniciado...');
     
     // 1. Limpieza inmediata del estado UI para que el usuario vea el cambio
     setUser(null);
@@ -326,7 +315,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           localStorage.removeItem(key);
         }
       });
-      console.log('[signOut] LocalStorage purgado.');
     } catch (e) {
       console.error("Error limpiando storage:", e);
     }
@@ -340,7 +328,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (result === 'timeout') {
         console.warn('[signOut] El servidor de Supabase tardó demasiado, forzando salida local.');
       } else {
-        console.log('[signOut] Servidor de Supabase respondió OK.');
       }
     } catch (error) {
       console.error('[signOut] Error en servidor, pero continuamos salida local:', error);
@@ -350,7 +337,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try { trackLogout(); } catch (_) { }
 
     // 4. Redirección final al home (accesible sin login)
-    console.log('[signOut] Redirigiendo a /...');
     window.location.href = "/";
   };
 

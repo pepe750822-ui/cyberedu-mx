@@ -93,7 +93,6 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
     }, [attempts, stopTracking]);
 
     const openInNewTab = () => {
-        console.log("[YouTubePlayer] Last resort: Opening in new tab", ytWatchUrl);
         window.open(ytWatchUrl, '_blank', 'noopener,noreferrer');
     };
 
@@ -103,7 +102,6 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
             return;
         }
 
-        console.log(`[YouTubePlayer] Initializing player for ID: ${ytId}`);
         if (playerRef.current) {
             try { playerRef.current.destroy(); } catch (e) { console.warn("[YouTubePlayer] Destroy error", e); }
         }
@@ -121,7 +119,6 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
                 },
                 events: {
                     onReady: (event: any) => {
-                        console.log("[YouTubePlayer] Player ready");
                         if (timeoutRef.current) clearTimeout(timeoutRef.current);
                         setIsReady(true);
                         setIsLoadingAPI(false);
@@ -151,11 +148,9 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
 
     useEffect(() => {
         let mounted = true;
-        console.log(`[YouTubePlayer] Loading attempt ${attempts + 1}/${MAX_ATTEMPTS + 1}`);
 
         const loadAPI = () => {
             if (window.YT?.Player) {
-                console.log("[YouTubePlayer] YT API already available");
                 initPlayer();
                 return;
             }
@@ -165,7 +160,6 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
             const existingScript = document.querySelector('script[src*="youtube.com/iframe_api"]');
             
             if (!existingScript) {
-                console.log("[YouTubePlayer] Creating script tag for YouTube API");
                 const tag = document.createElement('script');
                 tag.src = 'https://www.youtube.com/iframe_api';
                 tag.id = 'yt-iframe-api';
@@ -177,7 +171,6 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
 
             const prevReady = window.onYouTubeIframeAPIReady;
             window.onYouTubeIframeAPIReady = () => {
-                console.log("[YouTubePlayer] global onYouTubeIframeAPIReady fired");
                 if (prevReady) prevReady();
                 if (mounted) initPlayer();
             };

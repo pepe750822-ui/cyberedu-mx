@@ -187,7 +187,6 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      console.log("Iniciando Google Login redirect a:", window.location.origin);
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

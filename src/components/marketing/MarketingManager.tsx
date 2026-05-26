@@ -138,7 +138,6 @@ const MarketingManager = () => {
             }
 
             const { data: { session } } = await supabase.auth.getSession();
-            console.log("[marketing] session present:", !!session, "| email:", session?.user?.email);
 
             if (!session?.access_token) throw new Error("No hay sesión activa. Inicia sesión e intenta de nuevo.");
 
@@ -154,9 +153,7 @@ const MarketingManager = () => {
                 }
             );
 
-            console.log("[marketing] response status:", response.status);
             const data = await response.json();
-            console.log("[marketing] response body:", data);
 
             if (!response.ok) {
                 throw new Error(data?.error ?? `Error ${response.status} — sent:${data?.sent ?? 0} failed:${data?.failed ?? 0}`);

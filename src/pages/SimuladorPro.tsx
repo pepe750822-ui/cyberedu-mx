@@ -234,7 +234,6 @@ const SimuladorPro = () => {
     const fetchRanking = async () => {
         setRankingLoading(true);
         try {
-            console.log("Fetching rankings...");
             const { data: puntaje, error: err1 } = await supabase
                 .from('simulador_ranking_puntaje')
                 .select('*')
@@ -255,7 +254,6 @@ const SimuladorPro = () => {
 
             if (err3) console.error("Ranking Por Area Error:", err3);
 
-            console.log("Ranking data received:", { puntaje, activos, porArea });
 
             if (puntaje) setRankingPuntaje(puntaje);
             if (activos) setRankingActivos(activos);
