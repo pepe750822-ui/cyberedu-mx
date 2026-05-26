@@ -2489,12 +2489,7 @@ const AITutor = () => {
 
   // Bug 2 — Abre el chat de forma segura tras la autenticación solo en la primera visita
   useEffect(() => {
-    console.log("DEBUG [AutoOpen]: User state changed", { 
-      hasUser: !!user, 
-      visited: localStorage.getItem('cyberedu_chat_visited') 
-    });
     if (user && !localStorage.getItem('cyberedu_chat_visited')) {
-      console.log("DEBUG [AutoOpen]: Triggering isOpen(true)");
       setIsOpen(true);
       localStorage.setItem('cyberedu_chat_visited', 'true');
     }
