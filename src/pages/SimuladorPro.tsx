@@ -504,17 +504,16 @@ const SimuladorPro = () => {
         }
     };
 
-    const handleReportQuestion = async (questionId: string) => {
+    const handleReportQuestion = async (questionId: string): Promise<boolean> => {
         const { error } = await (supabase.from('question_reports' as any) as any).insert({
             question_id: questionId,
             user_id: user?.id ?? null,
         });
         if (error) {
             console.error('[question_reports]', error);
-            toast.error('No se pudo enviar el reporte. Intenta de nuevo.');
-        } else {
-            toast.success('Reporte enviado. ¡Gracias por ayudarnos a mejorar!');
+            return false;
         }
+        return true;
     };
 
     const handleStartExam = async (mode: ExamMode = 'full') => {

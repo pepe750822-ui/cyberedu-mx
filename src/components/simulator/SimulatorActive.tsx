@@ -29,7 +29,7 @@ interface SimulatorActiveProps {
     onSaveAndExit: () => void;
     onToggleMark: () => void;
     onJumpToQuestion: (index: number) => void;
-    onReportQuestion: (questionId: string) => void;
+    onReportQuestion: (questionId: string) => Promise<boolean>;
     formatTime: (seconds: number) => string;
 }
 
@@ -57,10 +57,12 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
 
     // Local feedback state — resets or pre-populates when question changes
     const [feedbackIndex, setFeedbackIndex] = useState<number | null>(null);
+    const [reported, setReported] = useState(false);
 
     useEffect(() => {
         const existing = currentQuestion ? userAnswers[currentQuestion.id] : undefined;
         setFeedbackIndex(existing !== undefined ? existing : null);
+        setReported(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentQuestionIndex]);
 
@@ -72,6 +74,13 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
 
     const handleNext = () => {
         currentQuestionIndex === activeQuestions.length - 1 ? onFinish() : onNext();
+    };
+
+    const handleReport = async () => {
+        if (!currentQuestion || reported) return;
+        setReported(true);
+        const ok = await onReportQuestion(currentQuestion.id);
+        if (!ok) setReported(false);
     };
 
     const handleAskTutor = () => {
@@ -319,10 +328,16 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
             {/* Report question */}
             <div className="container mx-auto max-w-4xl flex justify-end px-4 pb-1">
                 <button
-                    onClick={() => currentQuestion && onReportQuestion(currentQuestion.id)}
-                    className="text-slate-600 hover:text-slate-400 text-[10px] underline transition-colors"
+                    onClick={handleReport}
+                    disabled={reported}
+                    className={cn(
+                        "text-[10px] transition-colors",
+                        reported
+                            ? "text-green-500 cursor-default"
+                            : "text-slate-600 hover:text-slate-400 underline"
+                    )}
                 >
-                    ⚠️ Reportar problema con esta pregunta
+                    {reported ? "✅ Reporte enviado" : "⚠️ Reportar problema con esta pregunta"}
                 </button>
             </div>
 
