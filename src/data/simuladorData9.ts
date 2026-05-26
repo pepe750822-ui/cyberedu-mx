@@ -41,7 +41,7 @@ export const bank9Questions: Question[] = [
     options: ["42", "72", "90", "56"],
     correctIndex: 1,
     explanation: "Las figuras forman retículas rectangulares: F(n) = n × (n+1). F1=1×2=2, F2=2×3=6, F3=3×4=12, F4=4×5=20, F5=5×6=30, F6=6×7=42, F7=7×8=56, F8=8×9=72. La octava figura tiene 72 puntos.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p05.png"
+    imageUrl: "/guia2024/p05.png"
   },
   {
     id: "unam_2024_06",
@@ -55,7 +55,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Siguiendo el patrón de desplazamiento del punto y el círculo por los extremos de la cruz, la siguiente figura corresponde a la opción A: punto en brazo superior-izquierdo y círculo en posición inferior-derecha.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p06.png"
+    imageUrl: "/guia2024/p06.png"
   },
   {
     id: "unam_2024_07",
@@ -69,7 +69,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "El patrón avanza ~1h45min entre relojes: R1≈10:10, R2≈11:55, R3≈1:40 (11:55+1:45), R4≈3:25, R5≈5:10. El tercer reloj muestra ~1:40, que corresponde a la opción A.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p07.png"
+    imageUrl: "/guia2024/p07.png"
   },
   {
     id: "unam_2024_08",
@@ -83,7 +83,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "La serie va: Círculo→Octógono→Rombo→... La clave oficial indica que la figura que sigue es D: regresa al círculo exterior con figuras inscritas interiores, completando el ciclo de la serie.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p08.png"
+    imageUrl: "/guia2024/p08.png"
   },
   {
     id: "unam_2024_09",
@@ -97,7 +97,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 1,
     explanation: "Al girar 180°, lo que estaba arriba-izquierda pasa a abajo-derecha. La opción B muestra correctamente la figura invertida: masa horizontal con la torre ahora en el extremo opuesto.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p09.png"
+    imageUrl: "/guia2024/p09.png"
   },
   {
     id: "unam_2024_10",
@@ -111,7 +111,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 1,
     explanation: "Al doblar el patrón: la franja gris inferior se convierte en la cara frontal inferior de la caja. La opción B muestra el prisma con la cara gris en la posición correcta según el desenvolvimiento.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p10.png"
+    imageUrl: "/guia2024/p10.png"
   },
   {
     id: "unam_2024_11",
@@ -125,7 +125,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Para completar un cuadrado de 4×4=16 cuadros con la pieza base de 7 cuadros, se necesita una pieza de 9 cuadros con la forma complementaria. Al girar la opción A, encaja perfectamente con la figura base.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p11.png"
+    imageUrl: "/guia2024/p11.png"
   },
   {
     id: "unam_2024_12",
@@ -139,7 +139,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 3,
     explanation: "La reflexión respecto a un eje horizontal produce la imagen espejo vertical: la figura aparece invertida arriba-abajo. La opción D muestra correctamente la figura proyectada al otro lado del eje punteado.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p12.png"
+    imageUrl: "/guia2024/p12.png"
   },
   {
     id: "unam_2024_13",
@@ -148,7 +148,7 @@ export const bank9Questions: Question[] = [
     options: ["19", "17", "18", "24"],
     correctIndex: 0,
     explanation: "Contando por segmentos: brazo izquierdo=3, brazo derecho=3, brazo superior=3, brazo inferior=3 (subtotal=12). Centro de la cruz: los 4 cubos de intersección + 3 cubos adicionales visibles en la elevación central = 7. Total: 12+7=19 cubos.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p13.png"
+    imageUrl: "/guia2024/p13.png"
   },
   {
     id: "unam_2024_14",
@@ -157,7 +157,7 @@ export const bank9Questions: Question[] = [
     options: ["12", "14", "15", "16"],
     correctIndex: 2,
     explanation: "Los sectores opuestos se multiplican: 4×30=120, 10×12=120, 5×?=120 → ?=24. Revisando con otro patrón: sectores adyacentes 4×10=40... Clave oficial C=15: el patrón muestra que sectores opuestos suman igual o el faltante es 15.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p14.png"
+    imageUrl: "/guia2024/p14.png"
   },
   {
     id: "unam_2024_15",
@@ -450,7 +450,7 @@ export const bank9Questions: Question[] = [
     options: ["exponer", "testimoniar objetivamente", "presentar puntualmente", "exagerar"],
     correctIndex: 3,
     explanation: "El anuncio usa hipérbole ('el primer labial que permanece intacto por 24 horas', 'nunca ningún otro larga-duración resistió tanto') para exagerar las cualidades del producto.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p40.png"
+    imageUrl: "/guia2024/p40.png"
   },
 
   // ─── QUÍMICA (41-52) ───────────────────────────────────────────────────────
@@ -584,7 +584,7 @@ export const bank9Questions: Question[] = [
     options: ["I", "II", "III", "IV"],
     correctIndex: 1,
     explanation: "En su primer viaje (1492), Cristóbal Colón llegó a las Islas del Caribe (específicamente a la isla Guanahaní, hoy Bahamas). El punto II en el mapa corresponde a la región del Caribe.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p53.png"
+    imageUrl: "/guia2024/p53.png"
   },
   {
     id: "unam_2024_54",
@@ -774,7 +774,7 @@ export const bank9Questions: Question[] = [
     options: ["18", "10", "16", "12"],
     correctIndex: 1,
     explanation: "Alumnos con calificación 8 = frecuencia relativa × total = 0.25 × 40 = 10 alumnos.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p72.png"
+    imageUrl: "/guia2024/p72.png"
   },
   {
     id: "unam_2024_73",
@@ -796,7 +796,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Cuando una transversal corta dos paralelas, los ángulos alternos internos son iguales. Los ángulos ABC y BCD están entre las paralelas y en lados opuestos de la transversal.",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p74.png"
+    imageUrl: "/guia2024/p74.png"
   },
   {
     id: "unam_2024_75",
@@ -813,7 +813,7 @@ export const bank9Questions: Question[] = [
     options: ["12 m²", "18 m²", "24 m²", "36 m²"],
     correctIndex: 3,
     explanation: "Área del paralelogramo = base × altura = 9 m × 4 m = 36 m².",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p76.png"
+    imageUrl: "/guia2024/p76.png"
   },
 
   // ─── HABILIDAD VERBAL (77-92) ───────────────────────────────────────────────
@@ -855,7 +855,7 @@ export const bank9Questions: Question[] = [
     ],
     correctIndex: 0,
     explanation: "Del texto: I. La niña es 'frágil, como de cera'. II. El contador es 'embustero' (sus embustes le han ganado importancia). III. Es 'imaginativo' (plagado de fantasía). IV. Los niños están 'atentos' (el auditorio contiene la respiración).",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p79.png"
+    imageUrl: "/guia2024/p79.png"
   },
   {
     id: "unam_2024_80",
@@ -1129,7 +1129,7 @@ export const bank9Questions: Question[] = [
     options: ["1.2 m/s²", "5 m/s²", "7.5 m/s²", "3 m/s²"],
     correctIndex: 3,
     explanation: "La fuerza sobre caja B = F_neta × m_B/(m_A+m_B) ... O usando F=ma para el sistema: a_sistema = 15N/(3+2)kg = 3 m/s². La caja B experimenta la misma aceleración que el sistema = 3 m/s².",
-    imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2024/p107.png"
+    imageUrl: "/guia2024/p107.png"
   },
   {
     id: "unam_2024_108",
