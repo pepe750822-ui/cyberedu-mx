@@ -11,16 +11,33 @@ import { Bot } from "lucide-react";
 
 import { shouldLoadDirect } from "./utils/deviceDetect";
 
+const retryFetch = <T,>(fn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    fn()
+      .then(resolve)
+      .catch((error) => {
+        if (retries === 0) {
+          reject(error);
+          return;
+        }
+        console.log(`Reintentando en ${delay}ms... (${retries} intentos restantes)`);
+        setTimeout(() => {
+          retryFetch(fn, retries - 1, delay).then(resolve, reject);
+        }, delay);
+      });
+  });
+};
+
 // Lazy-loaded pages for performance
 const Index = lazy(() => import("./pages/Index"));
 const AreaDetail = lazy(() => import("./pages/AreaDetail"));
-const AITutor = lazy(() => import("./components/AITutor"));
+const AITutor = lazy(() => retryFetch(() => import("./components/AITutor")));
 const Auth = lazy(() => import("./pages/Auth"));
 const Tokens = lazy(() => import("./pages/Tokens"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const SimuladorPro = lazy(() => import("./pages/SimuladorPro"));
+const SimuladorPro = lazy(() => retryFetch(() => import("./pages/SimuladorPro")));
 const Guia2026 = lazy(() => import("./pages/Guia2026"));
 const Marketing = lazy(() => import("./pages/Marketing"));
 const Certificaciones = lazy(() => import("./pages/Certificaciones"));
@@ -159,7 +176,7 @@ const AuthenticatedStudyTools = () => {
     !localStorage.getItem("cyberedu_onboarding_done");
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando... (si tarda, recarga la página)</div>}>
       <AITutor />
       {user && !tutorOpen && (
         <button
@@ -194,7 +211,7 @@ const App = () => (
           <PWAInstallBanner />
           <PWAStatusBar />
           <TelegramButton />
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando... (si tarda, recarga la página)</div>}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/area/:areaId" element={<AreaDetail />} />
