@@ -1,11 +1,11 @@
-import React from "react";
-import { 
-    Timer, 
-    Zap, 
-    ChevronLeft, 
-    ChevronRight, 
-    CheckCircle2, 
-    XSquare 
+import React, { useState, useEffect } from "react";
+import {
+    Timer,
+    Zap,
+    ChevronLeft,
+    ChevronRight,
+    CheckCircle2,
+    XSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -54,6 +54,51 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     formatTime
 }) => {
     const currentQuestion = activeQuestions[currentQuestionIndex];
+
+    // Local feedback state — resets or pre-populates when question changes
+    const [feedbackIndex, setFeedbackIndex] = useState<number | null>(null);
+
+    useEffect(() => {
+        const existing = currentQuestion ? userAnswers[currentQuestion.id] : undefined;
+        setFeedbackIndex(existing !== undefined ? existing : null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentQuestionIndex]);
+
+    const handleAnswerSelect = (idx: number) => {
+        if (feedbackIndex !== null) return; // lock after first answer
+        setFeedbackIndex(idx);
+        onSelectAnswer(idx);
+    };
+
+    const handleNext = () => {
+        currentQuestionIndex === activeQuestions.length - 1 ? onFinish() : onNext();
+    };
+
+    const isCorrect = feedbackIndex !== null && feedbackIndex === currentQuestion?.correctIndex;
+
+    const optionClass = (idx: number) => {
+        if (feedbackIndex === null) {
+            return userAnswers[currentQuestion?.id] === idx
+                ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(var(--primary),0.2)]"
+                : "bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20";
+        }
+        if (idx === currentQuestion.correctIndex)
+            return "bg-green-500/20 border-green-500/60 text-white";
+        if (idx === feedbackIndex)
+            return "bg-red-500/20 border-red-500/60 text-white";
+        return "bg-white/5 border-white/5 text-slate-500 opacity-40";
+    };
+
+    const badgeClass = (idx: number) => {
+        if (feedbackIndex === null) {
+            return userAnswers[currentQuestion?.id] === idx
+                ? "bg-primary text-white"
+                : "bg-white/10 text-slate-500 group-hover:bg-white/20";
+        }
+        if (idx === currentQuestion.correctIndex) return "bg-green-500 text-white";
+        if (idx === feedbackIndex) return "bg-red-500 text-white";
+        return "bg-white/10 text-slate-500";
+    };
 
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col">
@@ -187,21 +232,21 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                         )}
                     </div>
 
+                    {/* Answer options */}
                     <div className="grid grid-cols-1 gap-4 relative z-10">
                         {currentQuestion?.options.map((option, idx) => (
                             <button
                                 key={idx}
-                                onClick={() => onSelectAnswer(idx)}
+                                onClick={() => handleAnswerSelect(idx)}
+                                disabled={feedbackIndex !== null}
                                 className={cn(
-                                    "p-6 rounded-2xl border text-left transition-all duration-300 flex items-center gap-4 group",
-                                    userAnswers[currentQuestion.id] === idx
-                                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(var(--primary),0.2)]"
-                                        : "bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20"
+                                    "p-6 rounded-2xl border text-left transition-all duration-300 flex items-center gap-4 group disabled:cursor-default",
+                                    optionClass(idx)
                                 )}
                             >
                                 <div className={cn(
                                     "h-8 w-8 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors",
-                                    userAnswers[currentQuestion.id] === idx ? "bg-primary text-white" : "bg-white/10 text-slate-500 group-hover:bg-white/20"
+                                    badgeClass(idx)
                                 )}>
                                     {String.fromCharCode(65 + idx)}
                                 </div>
@@ -209,6 +254,37 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                             </button>
                         ))}
                     </div>
+
+                    {/* Immediate feedback panel */}
+                    {feedbackIndex !== null && currentQuestion && (
+                        <div className={cn(
+                            "rounded-2xl p-5 border animate-in fade-in slide-in-from-bottom-2 duration-300",
+                            isCorrect
+                                ? "bg-green-500/15 border-green-500/40"
+                                : "bg-red-500/15 border-red-500/40"
+                        )}>
+                            <div className="flex items-center gap-2 mb-2">
+                                {isCorrect
+                                    ? <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
+                                    : <XSquare className="h-5 w-5 text-red-400 shrink-0" />
+                                }
+                                <p className={cn("font-black text-base", isCorrect ? "text-green-300" : "text-red-300")}>
+                                    {isCorrect ? "¡Correcto!" : "Incorrecto"}
+                                </p>
+                            </div>
+                            <p className="text-slate-300 text-sm leading-relaxed">
+                                {currentQuestion.explanation}
+                            </p>
+                            <button
+                                onClick={handleNext}
+                                className="mt-4 w-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3 rounded-xl transition-all"
+                            >
+                                {currentQuestionIndex === activeQuestions.length - 1
+                                    ? "Finalizar simulador"
+                                    : "Siguiente pregunta →"}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
