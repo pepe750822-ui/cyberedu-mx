@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 
-type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank5' | 'bank6' | 'bank7' | 'bank8' | 'bank9' | 'bank10' | 'bank11' | 'mixed';
+type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank6' | 'bank7' | 'bank8' | 'bank9' | 'bank10' | 'bank11' | 'mixed';
 type ExamMode = 'full' | 'practice';
 
 const AREA_FILTERS = [
@@ -42,7 +42,6 @@ interface SimulatorStartProps {
     practiceModeCount: number;
     onBackToHome: () => void;
     userTokens?: number;
-    bank5Unlocked?: boolean;
     bank6Unlocked?: boolean;
     bank7Unlocked?: boolean;
     bank8Unlocked?: boolean;
@@ -69,7 +68,6 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     practiceModeCount,
     onBackToHome,
     userTokens = 0,
-    bank5Unlocked = false,
     bank6Unlocked = false,
     bank7Unlocked = false,
     bank8Unlocked = false,
@@ -146,32 +144,6 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                 {b.label}
                             </button>
                         ))}
-                        {/* Bank 5 — Premium (pago único) */}
-                        <button
-                            onClick={() => onSelectBank('bank5')}
-                            className={cn(
-                                "relative px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border flex items-center gap-1.5",
-                                selectedBank === 'bank5'
-                                    ? bank5Unlocked ? "bg-emerald-600 text-white border-emerald-600" : "bg-amber-500 text-black border-amber-500"
-                                    : bank5Unlocked
-                                    ? "bg-white/5 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10"
-                                    : hasTokens
-                                    ? "bg-white/5 text-amber-400 border-amber-500/40 hover:bg-amber-500/10"
-                                    : "bg-white/5 text-slate-500 border-white/10 hover:bg-white/10 opacity-60"
-                            )}
-                        >
-                            {bank5Unlocked ? '📚' : hasTokens ? '📚' : <Lock className="w-3 h-3 shrink-0" />}
-                            Banco 5 — Guías UNAM 2024-25
-                            {bank5Unlocked ? (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                    ✅ DESBLOQUEADO
-                                </span>
-                            ) : (
-                                <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                    🆓 10 gratis · 🔒 50 tokens completo
-                                </span>
-                            )}
-                        </button>
                         {/* Bank 6 — Gratis con registro */}
                         <button
                             onClick={() => onSelectBank('bank6')}
@@ -373,25 +345,6 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     {selectedBank === 'bank9' && (bank9Unlocked || paqueteCompleto) && (
                         <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl text-center text-sm">
                             <span className="text-green-400 font-semibold">✅ Banco desbloqueado — ¡Practica sin límite!</span>
-                        </div>
-                    )}
-                    {/* Banner bank5 — preview */}
-                    {selectedBank === 'bank5' && !bank5Unlocked && !paqueteCompleto && (
-                        <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-center text-sm space-y-2">
-                            <span className="text-amber-400 font-semibold block">
-                                🆓 Prueba 10 preguntas gratis ahora mismo
-                            </span>
-                            <span className="text-slate-400 text-xs block">
-                                Desbloquea el banco completo con un pago único de 50 tokens — acceso de por vida
-                            </span>
-                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
-                                <button
-                                    onClick={() => onRedeemUnlock('bank5_unlocked', 50, { bank5_unlocked: true })}
-                                    className="mt-1 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-[10px] font-black uppercase tracking-widest transition-all"
-                                >
-                                    🔓 Desbloquear — 50 tokens
-                                </button>
-                            )}
                         </div>
                     )}
                     {/* Banner bank10 — preview o incluido en Guía 2026 */}

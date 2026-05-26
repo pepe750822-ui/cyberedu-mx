@@ -100,7 +100,6 @@ const SimuladorPro = () => {
         bank2: [],
         bank3: [],
         bank4: [],
-        bank5: [],
         bank6: [],
         bank7: [],
         bank8: [],
@@ -149,8 +148,7 @@ const SimuladorPro = () => {
                 ]);
 
                 // Lazy load large banks to speed up initial page load
-                const [mod5, mod6, mod7, mod8, mod9, mod10, mod11] = await Promise.all([
-                    import("@/data/simuladorData"),
+                const [mod6, mod7, mod8, mod9, mod10, mod11] = await Promise.all([
                     import("@/data/simuladorData6"),
                     import("@/data/simuladorData7"),
                     import("@/data/simuladorData8"),
@@ -165,7 +163,6 @@ const SimuladorPro = () => {
                     bank2: b2,
                     bank3: b3,
                     bank4: b4,
-                    bank5: mod5.bank5Questions,
                     bank6: mod6.bank6Questions,
                     bank7: mod7.bank7Questions,
                     bank8: mod8.bank8Questions,
@@ -447,7 +444,6 @@ const SimuladorPro = () => {
         if (selectedBank === 'bank2') return fromSource(bankData.bank2);
         if (selectedBank === 'bank3') return fromSource(bankData.bank3);
         if (selectedBank === 'bank4') return fromSource(bankData.bank4);
-        if (selectedBank === 'bank5') return fromSource(bankData.bank5);
         if (selectedBank === 'bank6') return fromSource(bankData.bank6);
         if (selectedBank === 'bank7') return fromSource(bankData.bank7);
         if (selectedBank === 'bank8') return fromSource(bankData.bank8);
@@ -461,8 +457,8 @@ const SimuladorPro = () => {
     };
 
     const handleSelectBank = async (bank: BankSelection) => {
-        // bank5, bank8, bank9, bank10, bank11: free 10-question preview — select freely, upsell after results
-        if (['bank5', 'bank8', 'bank9', 'bank10', 'bank11'].includes(bank)) {
+        // bank8, bank9, bank10, bank11: free 10-question preview — select freely, upsell after results
+        if (['bank8', 'bank9', 'bank10', 'bank11'].includes(bank)) {
             setSelectedBank(bank);
             return;
         }
@@ -521,7 +517,6 @@ const SimuladorPro = () => {
     };
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
-        const bank5Unlocked  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank9Unlocked  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank10Unlocked =
@@ -532,7 +527,6 @@ const SimuladorPro = () => {
             (profile as any)?.bank11_unlocked === true ||
             (profile as any)?.paquete_completo === true;
         const isPreview =
-            (selectedBank === 'bank5'  && !bank5Unlocked)  ||
             (selectedBank === 'bank8'  && !bank8Unlocked)  ||
             (selectedBank === 'bank9'  && !bank9Unlocked)  ||
             (selectedBank === 'bank10' && !bank10Unlocked) ||
@@ -699,12 +693,10 @@ const SimuladorPro = () => {
             }}
             onStartExam={handleStartExam}
             fullModeCount={(() => {
-                const b5u  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
-                if (selectedBank === 'bank5'  && !b5u)  return 10;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
                 if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
@@ -712,12 +704,10 @@ const SimuladorPro = () => {
                 return buildPool(selectedArea).length;
             })()}
             practiceModeCount={(() => {
-                const b5u  = (profile as any)?.bank5_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
-                if (selectedBank === 'bank5'  && !b5u)  return 10;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
                 if (selectedBank === 'bank9'  && !b9u)  return 10;
                 if (selectedBank === 'bank10' && !b10u) return 10;
@@ -726,7 +716,6 @@ const SimuladorPro = () => {
             })()}
             onBackToHome={() => navigate('/')}
             userTokens={profile?.tokens ?? 0}
-            bank5Unlocked={(profile as any)?.bank5_unlocked === true}
             bank6Unlocked={(profile as any)?.bank6_unlocked === true}
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}
             bank8Unlocked={(profile as any)?.bank8_unlocked === true}
