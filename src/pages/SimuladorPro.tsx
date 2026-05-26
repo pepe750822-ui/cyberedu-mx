@@ -505,22 +505,10 @@ const SimuladorPro = () => {
     };
 
     const handleReportQuestion = async (questionId: string): Promise<boolean> => {
-        console.log('[Reporte] user_id:', user?.id ?? 'NO SESSION');
-        console.log('[Reporte] question_id:', questionId);
-        const { data, error, status, statusText } = await (supabase.from('question_reports' as any) as any)
+        const { data, error } = await (supabase.from('question_reports' as any) as any)
             .insert({ question_id: questionId, user_id: user?.id ?? null })
             .select();
-        console.log('[Reporte] data:', data);
-        console.log('[Reporte] error:', error);
-        console.log('[Reporte] status:', status, statusText);
-        if (error) {
-            console.error('[question_reports] INSERT failed:', error);
-            return false;
-        }
-        if (!data || data.length === 0) {
-            console.warn('[question_reports] INSERT silently blocked (RLS?) — no rows returned');
-            return false;
-        }
+        if (error || !data || data.length === 0) return false;
         return true;
     };
 
