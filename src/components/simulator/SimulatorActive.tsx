@@ -174,19 +174,17 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2">
-                        {examMode === 'full' && (
-                            <Button
-                                onClick={isPaused ? onResume : onPause}
-                                variant="outline"
-                                className="flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
-                            >
-                                {isPaused ? "▶️ Continuar" : "⏸️ Pausar"}
-                            </Button>
-                        )}
+                        <Button
+                            onClick={isPaused ? onResume : onPause}
+                            variant="outline"
+                            className="flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
+                        >
+                            {isPaused ? "▶️ Continuar" : "⏸️ Pausar"}
+                        </Button>
                         <Button
                             onClick={onSaveAndExit}
                             variant="outline"
-                            className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
+                            className="flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
                         >
                             💾 Guardar y salir
                         </Button>
@@ -199,7 +197,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
 
             {/* Question Main Area */}
             <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
-                {isPaused && examMode === 'full' && (
+                {isPaused && (
                     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
                         <div className="bg-edu-card rounded-2xl p-6 w-80 text-center border border-edu-indigo/30">
                             <div className="text-4xl mb-3">⏸️</div>
