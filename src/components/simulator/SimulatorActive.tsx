@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Timer,
     Zap,
@@ -55,6 +56,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     onReportQuestion,
     formatTime
 }) => {
+    const navigate = useNavigate();
     const currentQuestion = activeQuestions[currentQuestionIndex];
 
     // Local feedback state — resets or pre-populates when question changes
@@ -196,16 +198,45 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
             {/* Question Main Area */}
             <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
                 {isPaused && examMode === 'full' && (
-                    <div className="fixed inset-0 z-[60] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-6">
-                        <div className="max-w-md w-full text-center space-y-6">
-                            <div className="h-20 w-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto">
-                                <Timer className="h-10 w-10 text-primary" />
-                            </div>
-                            <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Simulador Pausado</h2>
-                            <p className="text-slate-400">Puedes continuar más tarde. Tu progreso está guardado.</p>
-                            <Button onClick={onResume} className="w-full h-16 rounded-2xl bg-primary text-lg font-black uppercase tracking-widest">
-                                Reanudar Simulador
-                            </Button>
+                    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+                        <div className="bg-gray-900 rounded-2xl p-6 w-80 text-center">
+                            <div className="text-4xl mb-3">⏸️</div>
+                            <h3 className="text-white font-black text-xl mb-4">Simulador Pausado</h3>
+
+                            <button
+                                onClick={onResume}
+                                className="w-full bg-violet-600 text-white font-black py-3 rounded-xl mb-3"
+                            >
+                                ▶️ Continuar simulador
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/')}
+                                className="w-full bg-gray-700 text-white font-bold py-2 rounded-xl mb-2"
+                            >
+                                🏠 Ir al inicio
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/guia2026')}
+                                className="w-full bg-gray-700 text-white font-bold py-2 rounded-xl mb-2"
+                            >
+                                🎬 Ver Guía 2026
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/tokens')}
+                                className="w-full bg-gray-700 text-white font-bold py-2 rounded-xl mb-2"
+                            >
+                                🪙 Mis tokens
+                            </button>
+
+                            <button
+                                onClick={() => navigate('/simulador-pro')}
+                                className="w-full bg-red-500/20 border border-red-500/40 text-red-400 font-bold py-2 rounded-xl mt-1"
+                            >
+                                ✕ Abandonar simulador
+                            </button>
                         </div>
                     </div>
                 )}

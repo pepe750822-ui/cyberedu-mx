@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const TELEGRAM_USERNAME = "CyberEduMXBot";
 const TELEGRAM_URL = `https://t.me/${TELEGRAM_USERNAME}`;
 
 const TelegramButton: React.FC = () => {
   const [hovered, setHovered] = useState(false);
+  const { pathname } = useLocation();
+
+  if (pathname === "/simulador-pro") return null;
 
   return (
     <a
