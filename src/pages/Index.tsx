@@ -506,7 +506,7 @@ const Index = () => {
             onClick={() => navigate("/tokens")}
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 rounded-xl text-lg hover:scale-105 transition-transform"
           >
-            🪙 Obtener con 100 tokens — desde $20 MXN
+            📖 Ver Guía 2026 GRATIS — 44 videos
           </button>
         </div>
       </TiltCard>

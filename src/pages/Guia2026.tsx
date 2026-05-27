@@ -366,32 +366,17 @@ const Guia2026 = () => {
           })}
         </div>
 
-        {/* Banner de compra — solo si no tiene acceso */}
-        {!hasAccess && (
-          <div className="mx-4 mb-6 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5">
-            <div className="text-center mb-3">
-              <span className="bg-yellow-400 text-black font-black text-xs px-3 py-1 rounded-full">🔥 OFERTA ESPECIAL</span>
-            </div>
-            <h3 className="text-white font-black text-xl text-center mb-2">
-              Paquete Completo — 100 tokens
-            </h3>
-            <div className="text-gray-300 text-sm mb-4 space-y-1">
-              <div>✅ Los 44 videos completos con infografías y PDFs</div>
-              <div>✅ Todos los simuladores desbloqueados</div>
-              <div>✅ Guías Oficiales UNAM 2021-2026 🆕</div>
-              <div>✅ Acceso de por vida</div>
-            </div>
-            <button
-              onClick={() => navigate('/tokens')}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 rounded-xl text-lg hover:scale-105 transition-transform"
-            >
-              🪙 Obtener con 100 tokens — desde $20 MXN
-            </button>
-            <p className="text-gray-500 text-xs text-center mt-2">
-              🎁 Los primeros 7 videos son gratis para todos
-            </p>
-          </div>
-        )}
+        {/* Banner acceso libre */}
+        <div className="mx-4 mb-6 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/40 rounded-2xl p-4 text-center animate-pulse">
+          <div className="text-3xl mb-1">🎉</div>
+          <p className="text-green-400 font-black text-lg">¡Guía 2026 completamente GRATIS!</p>
+          <p className="text-white text-sm mt-1">
+            Los 44 videos con infografías y PDFs disponibles para todos sin costo
+          </p>
+          <p className="text-gray-400 text-xs mt-1">
+            Comparte con tus amigos que se preparan para el ECOEMS 🚀
+          </p>
+        </div>
 
         {/* Banner Udemy — visible para todos */}
         <div className="mx-4 mb-6 bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 flex items-center justify-between gap-3">
