@@ -327,23 +327,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* ── Urgency Banner ── */}
-      <div className="min-h-[48px]">
-        {etapa === 'registro' ? (
-          <div className="w-full bg-red-600 text-white text-center py-3 px-4 font-black text-sm md:text-base animate-pulse">
-            🔴 ¡Últimos días para registrarte! Cierra el 22 de mayo
-          </div>
-        ) : etapa === 'preparacion' ? (
-          <div className="w-full bg-orange-500 text-white text-center py-3 px-4 font-black text-sm md:text-base">
-            🟡 El examen es en <span className="underline">{daysToExam} días</span> — ¡Prepárate!
-          </div>
-        ) : (
-          <div className="w-full bg-green-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
-            🟢 Resultados el 18 de agosto 2026
-          </div>
-        )}
-      </div>
-
       {/* ── HERO ────────────────────────────────────────────── */}
       <section className="relative overflow-hidden" style={{ background: "#0a0a0f" }}>
 
