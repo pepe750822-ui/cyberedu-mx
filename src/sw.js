@@ -22,8 +22,10 @@ const STATIC_ASSETS = [
     '/offline.html',
 ];
 
-// Vite build assets injected automatically by vite-plugin-pwa
-const BUILD_ASSETS = (self.__WB_MANIFEST || []).map(entry => entry.url);
+// Vite build assets injected automatically by vite-plugin-pwa (deduplicated)
+const BUILD_ASSETS = [...new Set(
+    (self.__WB_MANIFEST || []).map(entry => entry.url).filter(url => !STATIC_ASSETS.includes(url))
+)];
 
 // Offline fallback page
 const OFFLINE_FALLBACK = '/offline.html';
