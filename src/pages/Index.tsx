@@ -314,14 +314,14 @@ const Index = () => {
         <div
           style={{
             position: 'fixed',
-            left: mouseX * (window.innerWidth / 2) + window.innerWidth / 2,
-            top: mouseY * (window.innerHeight / 2) + window.innerHeight / 2,
-            transform: 'translate(-50%, -50%)',
-            transition: 'left 0.1s ease-out, top 0.1s ease-out',
+            left: `${(mouseX + 1) / 2 * 100}vw`,
+            top: `${(mouseY + 1) / 2 * 100}vh`,
+            transform: 'translate(10px, 10px)',
+            transition: 'left 0.08s ease-out, top 0.08s ease-out',
             pointerEvents: 'none',
             zIndex: 9999,
           }}
-          className="text-violet-400 font-black text-sm bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-violet-500/30"
+          className="text-violet-300 font-bold text-xs bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full border border-violet-500/30 whitespace-nowrap"
         >
           🚀 ¡Practica ya!
         </div>
@@ -373,13 +373,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-start">
 
             {/* Left — text + countdown, parallax with mouse */}
-            <div
-              className="max-w-2xl"
-              style={{
-                transform: `translate(${mouseX * 12}px, ${mouseY * 8}px)`,
-                transition: 'transform 0.3s ease-out',
-              }}
-            >
+            <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 border text-violet-400 text-[11px] font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest" style={{ background: "rgba(124,58,237,0.15)", borderColor: "rgba(124,58,237,0.3)" }}>
                 <span className="relative flex h-2 w-2 mr-1">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
