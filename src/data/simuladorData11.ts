@@ -81,7 +81,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuántos hexágonos hay en la figura siguiente?",
     options: ["7", "6", "10", "3"],
     correctIndex: 0,
-    explanation: "Contando todos los hexágonos en la figura, incluyendo los que se forman entre otros, el total es 7.",
+    explanation: "Observa la imagen: busca todos los hexágonos posibles, no solo los más evidentes. Cuenta los hexágonos pequeños individuales y los que se forman al combinar varios. El total es 7.",
     imageUrl: "/bank11/p09.png",
   },
   {
@@ -90,7 +90,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuántos cuadrados hay en la siguiente figura?",
     options: ["4", "5", "7", "8"],
     correctIndex: 1,
-    explanation: "Contando todos los cuadrados posibles (individuales y combinados) en la figura, el total es 5.",
+    explanation: "Observa la imagen: cuenta todos los cuadrados posibles de todos los tamaños — no solo los más pequeños. Incluye los que se forman al combinar varios cuadrados. El total es 5.",
     imageUrl: "/bank11/p10.png",
   },
   {
@@ -99,7 +99,7 @@ export const bank11Questions: Question[] = [
     text: "Observa la figura y selecciona la opción que la representa después de ser girada 90° en el sentido de las manecillas del reloj.",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 2,
-    explanation: "Al girar la figura 90° en sentido horario, el resultado corresponde a la figura C.",
+    explanation: "Observa la imagen: al girar 90° en sentido horario, lo que apunta hacia arriba pasa a apuntar a la derecha. Aplica esa regla a cada parte de la figura. El resultado es la figura C.",
     imageUrl: "/bank11/p11.png",
   },
   {
@@ -108,7 +108,7 @@ export const bank11Questions: Question[] = [
     text: "Selecciona la posición de la siguiente figura cuando se rota 180°.",
     options: ["A", "B", "C", "D"],
     correctIndex: 2,
-    explanation: "Al rotar la figura 180°, queda en la posición C.",
+    explanation: "Observa la imagen: al rotar 180°, lo que estaba arriba queda abajo y lo que estaba a la izquierda queda a la derecha (volteo completo). La posición correcta es la C.",
     imageUrl: "/bank11/p12.png",
   },
   {
@@ -367,7 +367,7 @@ export const bank11Questions: Question[] = [
     text: "A partir de los modelos X, Q y Z: X es ________, Q ________ y Z ________.",
     options: ["compuesto – mezcla – elemento", "mezcla – compuesto – elemento", "elemento – compuesto – mezcla", "mezcla – elemento – compuesto"],
     correctIndex: 1,
-    explanation: "Según los modelos moleculares: X muestra partículas mezcladas (mezcla), Q muestra unión química de átomos diferentes (compuesto), Z muestra un solo tipo de átomo (elemento).",
+    explanation: "Observa la imagen: analiza cada modelo molecular. X muestra partículas distintas sin unir = mezcla; Q muestra átomos distintos enlazados = compuesto; Z muestra un solo tipo de átomo = elemento. Respuesta: mezcla – compuesto – elemento.",
     imageUrl: "/bank11/p44.png",
   },
   {
@@ -424,7 +424,7 @@ export const bank11Questions: Question[] = [
     text: "Interpreta la ecuación química: 2SO₂ + O₂ → 2SO₃",
     options: ["2 mol de SO₂ más 2 mol de O₂ forman 3 mol de SO₃.", "4 mol de SO₂ más 2 mol de O₂ forman 3 mol de SO₃.", "4 mol de SO₂ más 2 mol de O₂ forman 6 mol de SO₃.", "2 mol de SO₂ más 1 mol de O₂ forman 2 mol de SO₃."],
     correctIndex: 3,
-    explanation: "Los coeficientes indican: 2 mol de dióxido de azufre + 1 mol de oxígeno → 2 mol de trióxido de azufre.",
+    explanation: "Observa la imagen: lee los coeficientes estequiométricos de la ecuación. El coeficiente indica el número de moles de cada sustancia: 2 mol SO₂ + 1 mol O₂ → 2 mol SO₃. La opción D describe correctamente esa proporción.",
     imageUrl: "/bank11/p51.png",
   },
   {
@@ -595,7 +595,7 @@ export const bank11Questions: Question[] = [
     text: "Con base en la tabla del Índice de Explosividad Volcánica, la altura de la fumarola en una erupción volcánica paroxismal es más",
     options: ["pequeña que todas las producidas en las otras clasificaciones.", "grande que la emanada en una erupción violenta.", "grande que todas las producidas en las otras clasificaciones.", "pequeña que la emanada en una erupción moderada."],
     correctIndex: 1,
-    explanation: "Según la tabla del IEV, una erupción paroxismal genera una fumarola más grande que una violenta, pero no necesariamente que todas las clasificaciones.",
+    explanation: "Observa la imagen: lee los datos de la tabla del IEV para comparar las alturas de fumarola. Paroxismal: >25 km. Violenta: 3−15 km. La paroxismal es mayor que la violenta, pero no supera a todas (Colosal, Supercolosal también son ≥25 km).",
     imageUrl: "/bank11/p72.png",
   },
   {
@@ -612,7 +612,7 @@ export const bank11Questions: Question[] = [
     text: "Dada la figura, identifica un par de ángulos alternos internos.",
     options: ["4 y 6", "6 y 5", "7 y 3", "1 y 4"],
     correctIndex: 0,
-    explanation: "Los ángulos alternos internos se forman entre las líneas paralelas al mismo lado de la transversal. El par 4 y 6 son alternos internos.",
+    explanation: "Observa la imagen: identifica las dos líneas paralelas y la transversal. Los ángulos alternos internos están entre las paralelas, en lados opuestos de la transversal y son iguales. En la figura, el par 4 y 6 cumplen esa condición.",
     imageUrl: "/bank11/p74.png",
   },
   {
@@ -773,7 +773,7 @@ export const bank11Questions: Question[] = [
     text: "Determina las coordenadas geográficas para el punto II.",
     options: ["30° N, 10° W", "30° S, 10° E", "10° N, 30° W", "10° S, 30° E"],
     correctIndex: 3,
-    explanation: "El punto II se ubica en el hemisferio sur (latitud Sur) y al este del meridiano de Greenwich (longitud Este).",
+    explanation: "Observa la imagen: localiza el punto II en el mapa. Determina si está al norte o sur del ecuador y al este u oeste del meridiano de Greenwich. El punto II está a 10° sur del ecuador y 30° al este → coordenadas 10° S, 30° E.",
     imageUrl: "/bank11/p94.png",
   },
   {
@@ -879,7 +879,7 @@ export const bank11Questions: Question[] = [
     text: "Un automóvil realiza un viaje como el que ilustra la gráfica, ¿cuál opción describe sus características?",
     options: ["Inició en reposo, alcanzó 60 km/h en 1 hora, mantuvo velocidad 3 horas llegando al punto inicial.", "Partió del reposo hasta 60 km/h en 1 hora, se detuvo 2 horas, reanudó hasta llegar al origen.", "Partió del reposo, en 1 hora alcanzó 60 km/h, mantuvo 2 horas, redujo velocidad hasta detenerse a las 4 horas.", "Partió, ascendió montaña en 1 hora, recorrió meseta a 60 km/h 2 horas, descendió 1 hora."],
     correctIndex: 2,
-    explanation: "La gráfica muestra: aceleración (0-1h), velocidad constante (1-3h) y desaceleración (3-4h) hasta detenerse.",
+    explanation: "Observa la imagen: lee la gráfica velocidad vs tiempo por tramos. 0−1h: sube de 0 a 60 km/h (aceleración). 1−3h: línea horizontal a 60 km/h (velocidad constante). 3−4h: baja a 0 (desaceleración). La opción C describe correctamente ese trayecto.",
     imageUrl: "/bank11/p107.png",
   },
   {
