@@ -41,7 +41,7 @@ export const bank6Questions: Question[] = [
     text: "Selecciona el triángulo que sigue en la serie.",
     options: ["Triángulo A", "Triángulo B", "Triángulo C", "Triángulo D"],
     correctIndex: 3,
-    explanation: "Guía UNAM 2021 — Los triángulos rotan 90° en sentido horario en cada paso de la serie.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p05.png",
   },
   {
@@ -50,7 +50,7 @@ export const bank6Questions: Question[] = [
     text: "Si las primeras cuatro figuras de la serie son como se muestran, ¿cuántos puntos tendrá la que ocupa la octava posición?",
     options: ["42", "72", "90", "56"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2021 — El patrón de puntos sigue la fórmula n(2n-1). Para n=8: 8×15=72 puntos.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p06.png",
   },
   {
@@ -59,7 +59,7 @@ export const bank6Questions: Question[] = [
     text: "La figura que continúa la serie es",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 2,
-    explanation: "Guía UNAM 2021 — Los cuadros grises rotan en sentido horario 90° en cada figura.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p07.png",
   },
   {
@@ -68,7 +68,7 @@ export const bank6Questions: Question[] = [
     text: "¿Qué figura continúa la serie?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2021 — Los puntos negro y blanco se desplazan siguiendo un patrón de rotación en cada cuadrante.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p08.png",
   },
   {
@@ -77,7 +77,7 @@ export const bank6Questions: Question[] = [
     text: "Observa la siguiente figura en perspectiva. ¿Cómo se ve si se gira 180°?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2021 — Al girar 180° la figura se invierte preservando la estructura tridimensional.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p09.png",
   },
   {
@@ -86,7 +86,7 @@ export const bank6Questions: Question[] = [
     text: "Selecciona la figura que corresponde al cubo sin armar.",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2021 — Al doblar la cruz plana correctamente, el punto negro queda en la cara superior del cubo.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano para formar el cubo. Verifica qué caras quedan opuestas.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p10.png",
   },
   {
@@ -95,7 +95,7 @@ export const bank6Questions: Question[] = [
     text: "El siguiente cuerpo está formado por 18 cubos. Si se gira 180°, ¿qué cuerpo queda?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2021 — Al girar 180° la estructura mantiene sus 18 cubos con la configuración invertida.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). Aplica ese mismo patrón para elegir la figura correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p11.png",
   },
   {
@@ -104,7 +104,7 @@ export const bank6Questions: Question[] = [
     text: "¿Cuántos cubos se necesitan para completar con la siguiente figura, un prisma de 4×3×3?",
     options: ["21", "20", "24", "22"],
     correctIndex: 3,
-    explanation: "Guía UNAM 2021 — El prisma completo 4×3×3=36 cubos. La figura tiene 14. Faltan 36-14=22 cubos.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano para formar el cubo. Verifica qué caras quedan opuestas.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p12.png",
   },
   {
@@ -113,7 +113,7 @@ export const bank6Questions: Question[] = [
     text: "El número que falta en la tabla es: (9,13,4 / 20,28,8 / 35,?,16)",
     options: ["51", "54", "57", "60"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2021 — Patrón: primera columna + tercera columna = segunda columna. 35+16=51.",
+    explanation: "Observa la imagen: lee los datos de la tabla para calcular o identificar la respuesta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p13.png",
   },
   {
@@ -570,7 +570,7 @@ export const bank6Questions: Question[] = [
     text: "La siguiente gráfica presenta los ocho países con más importaciones en el mundo. Con base en esta información, se puede decir que Francia tiene",
     options: ["menos importaciones que el Reino Unido.", "el triple de importaciones que Italia.", "menos importaciones que Japón.", "más importaciones que Alemania."],
     correctIndex: 2,
-    explanation: "Guía UNAM 2021 — Según la gráfica Francia tiene 7% y Japón 12%, por lo tanto Francia tiene menos importaciones que Japón.",
+    explanation: "Observa la imagen: lee los valores del eje X y Y para identificar la respuesta correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p73.png",
   },
   {
@@ -587,7 +587,7 @@ export const bank6Questions: Question[] = [
     text: "El valor de x en la figura (dos líneas paralelas con transversal, ángulo 70° y expresión 2x+4) es",
     options: ["x=31", "x=33", "x=53", "x=55"],
     correctIndex: 2,
-    explanation: "Guía UNAM 2021 — Ángulos correspondientes: 2x+4=70+70... no. Ángulos suplementarios: 2x+4+70=180. 2x=106. x=53.",
+    explanation: "Observa la imagen: identifica las figuras, sus propiedades y el patrón que sigue la serie.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p75.png",
   },
   {
@@ -740,7 +740,7 @@ export const bank6Questions: Question[] = [
     text: "Determina las coordenadas geográficas para el punto II.",
     options: ["30°N, 10°W", "30°S, 10°E", "10°N, 30°W", "10°S, 30°E"],
     correctIndex: 3,
-    explanation: "Guía UNAM 2021 — El punto II se ubica al sur del ecuador (latitud S) y al este del meridiano de Greenwich (longitud E).",
+    explanation: "Observa la imagen: lee los valores del eje X y Y para identificar la respuesta correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p94.png",
   },
   {
@@ -765,7 +765,7 @@ export const bank6Questions: Question[] = [
     text: "A partir de la gráfica, determina cuál fue el incremento de la población en México de 1910 a 1970 y de 1970 a 2005, respectivamente.",
     options: ["23.8 y 44.2", "33.8 y 54.2", "88 y 54.2", "43.8 y 50.2"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2021 — De 1910 (15.1M) a 1970 (48.9M) = 33.8M. De 1970 (48.9M) a 2005 (103.1M) = 54.2M.",
+    explanation: "Observa la imagen: lee los valores del eje X y Y para identificar la respuesta correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p97.png",
   },
   {
@@ -830,7 +830,7 @@ export const bank6Questions: Question[] = [
     text: "La gráfica representa la velocidad de un vehículo en km/h al paso del tiempo. ¿En cuál de los intervalos de tiempo el vehículo se desplaza con mayor aceleración?",
     options: ["0-1h", "1-2h", "2-3h", "4-5h"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2021 — La mayor aceleración corresponde a la pendiente más pronunciada en la gráfica velocidad-tiempo, que ocurre entre 0 y 1 hora.",
+    explanation: "Observa la imagen: lee los valores del eje X y Y para identificar la respuesta correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p105.png",
   },
   {
@@ -863,7 +863,7 @@ export const bank6Questions: Question[] = [
     text: "Relaciona cada imagen con el tipo de electrización: I (cabello erizado), II (esfera con varilla), III (mano con material). a. Contacto. b. Frotamiento. c. Inducción.",
     options: ["I:c - II:b - III:a", "I:b - II:a - III:c", "I:c - II:a - III:b", "I:a - II:b - III:c"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2021 — I (cabello) = frotamiento (b), II (esfera con varilla) = contacto (a), III (inducción a distancia) = inducción (c).",
+    explanation: "Observa la imagen: identifica las figuras, sus propiedades y el patrón que sigue la serie.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2021/p110.png",
   },
   {
