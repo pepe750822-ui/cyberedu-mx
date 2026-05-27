@@ -41,7 +41,7 @@ export const bank7Questions: Question[] = [
     text: "Elige las figuras que continúan esta serie (rectángulos con diagonales alternando).",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2022 — El patrón alterna entre rectángulo vacío y con diagonales en X.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). El patrón alterna entre rectángulo vacío y rectángulo con diagonales en X; la Figura B es la que continúa la serie.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p05.png",
   },
   {
@@ -50,7 +50,7 @@ export const bank7Questions: Question[] = [
     text: "Selecciona la imagen que continúa en la serie (triángulos con punto).",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 2,
-    explanation: "Guía UNAM 2022 — El triángulo rota y el punto se mueve siguiendo el patrón de la serie.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación, color, tamaño). El triángulo rota progresivamente y el punto cambia de posición; aplica ese mismo patrón para elegir la Figura C.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p06.png",
   },
   {
@@ -59,7 +59,7 @@ export const bank7Questions: Question[] = [
     text: "El número de mosaicos blancos que tendrá la quinta figura de la siguiente sucesión es",
     options: ["25", "27", "29", "33"],
     correctIndex: 2,
-    explanation: "Guía UNAM 2022 — La sucesión de mosaicos blancos sigue el patrón: 1,5,13,25,41... La quinta figura tiene 29.",
+    explanation: "Observa la imagen: cuenta los mosaicos blancos en cada figura de la sucesión (1, 5, 13, 25...). La diferencia entre términos crece de 4 en 4: +4, +8, +12, +16... La quinta figura suma 29 mosaicos blancos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p07.png",
   },
   {
@@ -68,7 +68,7 @@ export const bank7Questions: Question[] = [
     text: "Identifica el tercer reloj de la siguiente serie.",
     options: ["Reloj A", "Reloj B", "Reloj C", "Reloj D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Los relojes avanzan en intervalos de tiempo regulares. El tercero muestra las agujas en la posición correspondiente.",
+    explanation: "Observa la imagen: analiza el avance de las manecillas entre cada reloj de la serie para identificar el patrón de tiempo. Aplica el mismo intervalo al tercer reloj; la posición correcta corresponde al Reloj A.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p08.png",
   },
   {
@@ -77,7 +77,7 @@ export const bank7Questions: Question[] = [
     text: "¿Cuál de las figuras corresponde a la siguiente después de ser girada 180°?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Al girar 180° la estructura de cubos se invierte manteniendo sus proporciones.",
+    explanation: "Observa la imagen: visualiza mentalmente la estructura de cubos girada 180°. Al invertirla, lo que estaba arriba-derecha queda abajo-izquierda y viceversa, manteniendo proporciones. La Figura A es la correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p09.png",
   },
   {
@@ -86,7 +86,7 @@ export const bank7Questions: Question[] = [
     text: "¿Cuál es el desarrollo plano que corresponde al cubo?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2022 — Al doblar el desarrollo plano correcto se forma el cubo con las marcas en las posiciones indicadas.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría cada desarrollo plano para formar el cubo. Verifica qué caras quedan opuestas entre sí y cuál cara queda en cada posición. La Figura B genera el cubo correcto.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p10.png",
   },
   {
@@ -95,7 +95,7 @@ export const bank7Questions: Question[] = [
     text: "Selecciona el cubo que se obtiene al armar la siguiente figura (cruz con triángulo, círculo, cuadrado y punto).",
     options: ["Cubo A", "Cubo B", "Cubo C", "Cubo D"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Al doblar la cruz plana, las caras opuestas deben corresponder con las figuras del desarrollo.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano (la cruz) para formar el cubo. Identifica qué símbolo queda en cada cara al doblar y verifica cuál cubo coincide. El Cubo A es el resultado correcto.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p11.png",
   },
   {
@@ -104,7 +104,7 @@ export const bank7Questions: Question[] = [
     text: "Calcula cuál es el volumen de la siguiente figura, si el ancho y la altura de cada bloque miden 1 u y el largo 2 u.",
     options: ["13", "17", "15", "14"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Contando los bloques visibles y los ocultos: el volumen total es 14 unidades cúbicas (cada bloque = 2u³).",
+    explanation: "Observa la imagen: cuenta todos los bloques visibles y los que quedan ocultos detrás. Cada bloque mide 1u de ancho, 1u de alto y 2u de largo (volumen = 2u³). Suma el volumen total de todos los bloques para obtener 13.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p12.png",
   },
   {
@@ -129,7 +129,7 @@ export const bank7Questions: Question[] = [
     text: "¿Qué opción balancea la última serie? (figuras geométricas en balanza)",
     options: ["OOOOOO", "△△□", "△△OO", "□□□□"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Analizando el peso de cada figura en la balanza, la opción A equilibra la serie.",
+    explanation: "Observa la imagen: analiza cada balanza para deducir el peso relativo de cada figura geométrica. Usa las ecuaciones que forman las balanzas previas para determinar qué combinación equilibra la última. La opción OOOOOO es la correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p15.png",
   },
   {
@@ -330,7 +330,7 @@ export const bank7Questions: Question[] = [
     text: "La estrategia del publicista en el anuncio del labial 'Super Stay 24 horas' se centra en ________ las cualidades del producto.",
     options: ["exponer", "testimoniar objetivamente", "presentar puntualmente", "exagerar"],
     correctIndex: 3,
-    explanation: "Guía UNAM 2022 — El anuncio usa hipérbole al afirmar que 'nunca ningún otro larga-duración resistió tanto', exagerando las cualidades.",
+    explanation: "Observa la imagen: lee con atención el texto del anuncio publicitario. Identifica si el mensaje informa, da testimonio objetivo, o exagera las cualidades del producto. La frase 'nunca ningún otro resistió tanto' es una hipérbole que exagera las cualidades del labial.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p40.png",
   },
   {
@@ -395,7 +395,7 @@ export const bank7Questions: Question[] = [
     text: "Los elementos de los grupos ________ y ________ son metales.",
     options: ["IA – IIA", "IIIA – VIIIA", "VA – VIA", "VIIA – VIIIA"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Los grupos IA (metales alcalinos) y IIA (metales alcalinotérreos) son los metales más representativos de la tabla periódica.",
+    explanation: "Observa la imagen: localiza en la tabla periódica los grupos IA y IIA en el lado izquierdo. Son los metales alcalinos y alcalinotérreos respectivamente, los grupos metálicos más representativos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p48.png",
   },
   {
@@ -588,7 +588,7 @@ export const bank7Questions: Question[] = [
     text: "La tabla de temperaturas promedio de 2015 en CDMX muestra que la temperatura ambiente es ~21°C. El mes más frío fue",
     options: ["enero.", "agosto.", "diciembre.", "marzo."],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — Según la gráfica, enero registra las temperaturas más bajas del año en la Ciudad de México.",
+    explanation: "Observa la imagen: lee los valores del eje Y (temperatura) para cada mes del eje X. El mes con la barra o punto más bajo corresponde al mes más frío. Enero registra las temperaturas más bajas del año.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p72.png",
   },
   {
@@ -621,7 +621,7 @@ export const bank7Questions: Question[] = [
     text: "El seno y el coseno del ángulo A para el triángulo rectángulo ABC son (cateto opuesto=a, cateto adyacente=b, hipotenusa=c)",
     options: ["sen A=a/c, cos A=b/c", "sen A=c/a, cos A=c/b", "sen A=b/a, cos A=a/b", "sen A=a/b, cos A=b/a"],
     correctIndex: 0,
-    explanation: "Guía UNAM 2022 — sen A = cateto opuesto/hipotenusa = a/c. cos A = cateto adyacente/hipotenusa = b/c.",
+    explanation: "Observa la imagen: identifica en el triángulo rectángulo el ángulo A, su cateto opuesto (a), cateto adyacente (b) e hipotenusa (c). sen A = cateto opuesto/hipotenusa = a/c; cos A = cateto adyacente/hipotenusa = b/c.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p76.png",
   },
   {
@@ -670,7 +670,7 @@ export const bank7Questions: Question[] = [
     text: "Completa el cuadro sinóptico de características de los personajes de 'El contador de cuentos': Niña (I, Blanca y crédula), Contador (Piernas de adobe, II, III), Auditorio (Originario de Palo Verde, Público infantil, IV)",
     options: ["I.Frágil, II.Embustero, III.Imaginativo, IV.Atento", "I.Atenta, II.Imaginativo, III.Frágil, IV.Embustero", "I.Frágil, II.Atento, III.Embustero, IV.Imaginativo", "I.Frágil, II.Imaginativo, III.Atento, IV.Embustero"],
     correctIndex: 3,
-    explanation: "Guía UNAM 2022 — La niña es Frágil (I), el contador es Imaginativo (II) y Atento (III), el auditorio es Embustero (IV) — no, el contador es embustero.",
+    explanation: "Observa la imagen: lee los datos del cuadro sinóptico. La niña es Frágil (I); el contador es Imaginativo (II) y Atento (III); el auditorio es Embustero (IV) no aplica — el embustero es el contador. La opción D asigna correctamente todos los atributos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p82.png",
   },
   {
@@ -799,7 +799,7 @@ export const bank7Questions: Question[] = [
     text: "A partir de la gráfica de población de México, determina el incremento de 1910 a 1970 y de 1970 a 2005, respectivamente.",
     options: ["23.8 y 44.2", "33.8 y 54.2", "88 y 54.2", "43.8 y 50.2"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2022 — De 1910 (15.1M) a 1970 (48.9M) = 33.8M. De 1970 (48.9M) a 2005 (103.1M) = 54.2M.",
+    explanation: "Observa la imagen: lee los valores del eje Y (población en millones) en los años 1910, 1970 y 2005. Calcula las diferencias: 1910→1970 = 48.9−15.1 = 33.8 millones; 1970→2005 = 103.1−48.9 = 54.2 millones.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p98.png",
   },
   {
@@ -856,7 +856,7 @@ export const bank7Questions: Question[] = [
     text: "De acuerdo con la gráfica d(m) vs t(s), indica en qué intervalo el móvil adquiere una velocidad constante.",
     options: ["t=0 a 4s", "t=4 a 8s", "t=8 a 12s", "t=12 a 16s"],
     correctIndex: 1,
-    explanation: "Guía UNAM 2022 — La velocidad constante corresponde a la parte de la gráfica donde la distancia cambia linealmente con el tiempo, entre t=4 a 8s.",
+    explanation: "Observa la imagen: en la gráfica d vs t, una línea recta con pendiente constante indica velocidad constante. Identifica el intervalo donde la recta es perfectamente lineal (sin curva): ocurre entre t=4 y t=8s.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2022/p105.png",
   },
   {
