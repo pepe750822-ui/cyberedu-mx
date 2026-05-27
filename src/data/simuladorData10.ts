@@ -200,7 +200,7 @@ export const bank10Questions: Question[] = [
       "I. Frágil / II. Imaginativo / III. Atento / IV. Embustero"
     ],
     correctIndex: 3,
-    explanation: "Del texto se infiere: la niña es frágil (como de cera blanca), el contador es imaginativo (fantasía de campanas, príncipes...) y atento (mira de reojo), y el auditorio es embustero por dejarse embelesar por embustes.",
+    explanation: "Observa la imagen: lee los datos del cuadro sinóptico y búscalos en el texto. I=Frágil (niña como de cera). II=Imaginativo (fantasía de campanas, príncipes). III=Atento (mira de reojo). IV=Embustero (el auditorio se deja embelesar). Respuesta: opción D.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p14.png"
   },
   {
@@ -495,7 +495,7 @@ export const bank10Questions: Question[] = [
       "12"
     ],
     correctIndex: 1,
-    explanation: "Frecuencia relativa de calificación 8 = 0.25. Número de alumnos = 0.25 × 40 = 10.",
+    explanation: "Observa la imagen: lee los datos de la tabla de frecuencias relativas. Para calificación 8 la frecuencia relativa es 0.25. Multiplica por el total evaluado: 0.25 × 40 = 10 alumnos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p36.png"
   },
   {
@@ -548,7 +548,7 @@ export const bank10Questions: Question[] = [
       "36 m²"
     ],
     correctIndex: 3,
-    explanation: "Área del paralelogramo = base × altura = 9 m × 4 m = 36 m².",
+    explanation: "Observa la imagen: identifica la base y la altura perpendicular del paralelogramo (no el lado inclinado). Área = base × altura = 9 m × 4 m = 36 m².",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p40.png"
   },
 
@@ -618,7 +618,7 @@ export const bank10Questions: Question[] = [
       "Triángulo rectángulo pequeño orientado a la izquierda"
     ],
     correctIndex: 3,
-    explanation: "En la serie, el triángulo rota 90° en sentido antihorario en cada paso, resultando en un triángulo rectángulo pequeño orientado a la izquierda.",
+    explanation: "Observa la imagen: identifica el patrón que siguen los triángulos de la serie (rotación y tamaño). El triángulo rota 90° antihorario en cada paso; la siguiente figura es un triángulo rectángulo pequeño orientado a la izquierda (opción D).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p45.png"
   },
   {
@@ -632,7 +632,7 @@ export const bank10Questions: Question[] = [
       "Círculo con cuarto inferior derecho blanco"
     ],
     correctIndex: 0,
-    explanation: "La serie muestra un círculo donde la sección negra rota en sentido horario y aumenta progresivamente. La siguiente imagen continúa ese patrón.",
+    explanation: "Observa la imagen: identifica el patrón de la sección negra en cada círculo de la serie (rotación y tamaño). La sección gira en sentido horario y aumenta progresivamente; aplica ese patrón para elegir la siguiente figura correcta (opción A).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p46.png"
   },
   {
@@ -646,7 +646,7 @@ export const bank10Questions: Question[] = [
       "56"
     ],
     correctIndex: 1,
-    explanation: "La serie es n² para n=1,2,3,4... La posición 8 tendrá 8² = 64... Pero la serie mostrada en el PDF incluye bordes, siendo (2n-1)² o similar. La clave indica 72. Patrón: figura n tiene (2n)²/... Los puntos en posición 8 = 72.",
+    explanation: "Observa la imagen: cuenta los puntos en cada figura para identificar el patrón de crecimiento. La serie sigue F(n)=n×(n+1): F1=2, F2=6, F3=12... F8=8×9=72. La octava figura tiene 72 puntos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p47.png"
   },
   {
@@ -660,7 +660,7 @@ export const bank10Questions: Question[] = [
       "Figura con un solo segmento"
     ],
     correctIndex: 3,
-    explanation: "La serie muestra figuras donde las líneas internas se desplazan sistemáticamente. La cuarta figura completa el patrón con la configuración D.",
+    explanation: "Observa la imagen: identifica cómo cambia la posición o cantidad de las líneas internas de figura en figura. Aplica ese mismo patrón de desplazamiento sistemático para determinar que la configuración de la opción D es la correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p48.png"
   },
   {
@@ -674,7 +674,7 @@ export const bank10Questions: Question[] = [
       "Cubo con círculo y línea visibles"
     ],
     correctIndex: 0,
-    explanation: "Al armar el desarrollo plano, la cara con el punto queda en la parte superior, el triángulo a la izquierda y el círculo al frente, resultando en el cubo A.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano para formar el cubo. Verifica qué símbolo queda en cada cara al doblar. La cara con el punto queda arriba, el triángulo a la izquierda y el círculo al frente — resulta el cubo A.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p49.png"
   },
   {
@@ -688,7 +688,7 @@ export const bank10Questions: Question[] = [
       "Caja con cara gris en la base frontal"
     ],
     correctIndex: 2,
-    explanation: "Al doblar la figura, la cara gris queda en la posición lateral del cubo armado, tal como se muestra en la opción C.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano para armar la caja. Identifica a qué posición se mueve la cara gris al plegar cada lado. Al doblar, la cara gris queda en posición lateral — opción C.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p50.png"
   },
   {
@@ -702,7 +702,7 @@ export const bank10Questions: Question[] = [
       "18"
     ],
     correctIndex: 0,
-    explanation: "Contando los cubos visibles más los ocultos necesarios para sostener la estructura escalonada, el total es 17 cubos.",
+    explanation: "Observa la imagen: cuenta los cubos visibles por niveles o columnas y añade los cubos ocultos que sostienen la estructura escalonada. Suma todos: el total es 17 cubos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p51.png"
   },
   {
@@ -716,7 +716,7 @@ export const bank10Questions: Question[] = [
       "U al frente, E a la derecha, I arriba (dado D)"
     ],
     correctIndex: 3,
-    explanation: "Al girar el dado hacia abajo, la cara superior (U) pasa al frente, la cara del frente (A) queda abajo, y la I sube. La cara E permanece a la derecha.",
+    explanation: "Observa la imagen: visualiza el dado girando hacia abajo. La cara superior (U) pasa al frente, la cara frontal (A) queda en la parte inferior, y la cara I sube. La cara E permanece a la derecha. El resultado es el dado D.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p52.png"
   },
   {
@@ -743,7 +743,7 @@ export const bank10Questions: Question[] = [
       "16"
     ],
     correctIndex: 2,
-    explanation: "El patrón del diagrama circular muestra que cada par opuesto se multiplica: 4×30=120, 10×12=120, entonces el número faltante × 8 = 120 → No. Revisando: 4×?=?, patrón: números adyacentes se multiplican: 4×10=40... La clave indica C=15.",
+    explanation: "Observa la imagen: analiza la relación entre los números de los sectores del diagrama circular. Los pares de sectores opuestos siguen un patrón constante (4×30=120, 10×12=120). Aplicando esa regla al sector faltante, el número correcto es 15.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p54.png"
   },
   {
@@ -947,7 +947,7 @@ export const bank10Questions: Question[] = [
       "4 – 5 h"
     ],
     correctIndex: 0,
-    explanation: "La aceleración es el cambio de velocidad por unidad de tiempo (pendiente de la gráfica v-t). En el intervalo 0–1 h la pendiente es la mayor, pues la velocidad sube de 0 a ~60 km/h.",
+    explanation: "Observa la imagen: en la gráfica v-t, la aceleración equivale a la pendiente de cada tramo. El tramo con mayor pendiente (subida más empinada) corresponde a la mayor aceleración. En el intervalo 0–1 h la velocidad sube de 0 a ~60 km/h — máxima pendiente.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p69.png"
   },
   {
@@ -961,7 +961,7 @@ export const bank10Questions: Question[] = [
       "El automóvil partió del reposo y se encontró con la pendiente de una montaña a la que ascendió en una hora, después recorrió la meseta de la montaña a 60 km/h durante dos horas, en la hora siguiente descendió a 60 km/h"
     ],
     correctIndex: 2,
-    explanation: "La gráfica muestra aceleración de 0 a 60 km/h (primera hora), velocidad constante durante dos horas, y desaceleración hasta detenerse en la cuarta hora. Esto corresponde a la opción C.",
+    explanation: "Observa la imagen: lee la gráfica velocidad vs tiempo por tramos. 0−1h: sube de 0 a 60 km/h (aceleración). 1−3h: línea horizontal a 60 km/h (velocidad constante). 3−4h: baja a 0 (desaceleración). La opción C describe correctamente ese trayecto.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p70.png"
   },
   {
@@ -975,7 +975,7 @@ export const bank10Questions: Question[] = [
       "3 m/s²"
     ],
     correctIndex: 3,
-    explanation: "F = ma → a = F/(mA+mB) = 15/(3+2) = 3 m/s². La caja B (y todo el sistema) tienen la misma aceleración de 3 m/s².",
+    explanation: "Observa la imagen: identifica las masas de las cajas A (3 kg) y B (2 kg) y la fuerza neta (15 N). Aplica F=ma para todo el sistema: a = F/(mA+mB) = 15/(3+2) = 3 m/s². Toda la cadena de cajas comparte la misma aceleración.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2026/p71.png"
   },
   {
