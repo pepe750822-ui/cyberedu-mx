@@ -42,6 +42,20 @@ import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSi
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
 
+const BANK_LABELS: Record<BankSelection, string> = {
+    bank1: 'Banco 1 — Práctica General',
+    bank2: 'Banco 2 — IA',
+    bank3: 'Banco 3 — IMEI',
+    bank4: 'Banco 4 — Guía IPN/UNAM 2025',
+    bank6: 'Banco 6 — UNAM 2021',
+    bank7: 'Banco 7 — UNAM 2022',
+    bank8: 'Banco 8 — UNAM 2023',
+    bank9: 'Banco 9 — UNAM 2024',
+    bank10: 'Banco 10 — IPN/UNAM 2026',
+    bank11: 'Banco 11 — 2do Conocimientos Gen.',
+    mixed: 'Mixto — Combinado',
+};
+
 // Fisher-Yates shuffle
 function shuffleArray<T>(arr: T[]): T[] {
     const a = [...arr];
@@ -504,7 +518,7 @@ const SimuladorPro = () => {
 
     const handleReportQuestion = async (questionId: string): Promise<boolean> => {
         const { data, error } = await (supabase.from('question_reports' as any) as any)
-            .insert({ question_id: questionId, user_id: user?.id ?? null })
+            .insert({ question_id: questionId, user_id: user?.id ?? null, bank_id: selectedBank })
             .select();
         if (error || !data || data.length === 0) return false;
         return true;
@@ -662,6 +676,7 @@ const SimuladorPro = () => {
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
                 }}
                 onJumpToQuestion={setCurrentQuestionIndex}
+                bankLabel={BANK_LABELS[selectedBank]}
                 onReportQuestion={handleReportQuestion}
                 formatTime={(s) => {
                     const h = Math.floor(s / 3600);

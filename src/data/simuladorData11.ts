@@ -36,7 +36,7 @@ export const bank11Questions: Question[] = [
     text: "¿Qué números completan la secuencia de la cadena? (imagen con números en cadena)",
     options: ["30, 10", "33, 10", "33, 12", "36, 13"],
     correctIndex: 1,
-    explanation: "Siguiendo el patrón de la cadena numérica, los valores que completan son 33 y 10.",
+    explanation: "Observa la imagen: la cadena tiene dos grupos de números que siguen reglas distintas. Aplicando los patrones de cada grupo, los valores que completan la cadena son 33 y 10.",
     imageUrl: "/bank11/p04.png",
   },
   {
@@ -45,7 +45,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuál es la figura que continúa en la siguiente serie?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 0,
-    explanation: "La figura sigue el patrón de rotación de la serie mostrada.",
+    explanation: "Observa la imagen: la serie muestra figuras que rotan progresivamente. Identifica el eje de rotación y el ángulo de giro entre cada figura para determinar cuál es la siguiente. La respuesta correcta es la Figura A.",
     imageUrl: "/bank11/p05.png",
   },
   {
@@ -54,7 +54,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuál es la figura que continúa en la siguiente serie?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 3,
-    explanation: "Analizando el patrón de la serie, la figura D es la que continúa correctamente.",
+    explanation: "Observa la imagen: analiza cómo cambian los elementos (forma, posición, cantidad) de una figura a la siguiente. Siguiendo ese patrón, la Figura D es la que continúa correctamente la serie.",
     imageUrl: "/bank11/p06.png",
   },
   {
@@ -63,7 +63,7 @@ export const bank11Questions: Question[] = [
     text: "El número de cubos que tendrá la octava figura de la siguiente sucesión es",
     options: ["28", "35", "36", "45"],
     correctIndex: 1,
-    explanation: "El patrón de cubos sigue la fórmula n(n+1)/2 × algo. La octava figura tiene 35 cubos.",
+    explanation: "Observa la imagen: la sucesión muestra figuras de cubos que crecen siguiendo un patrón. Cuenta los cubos en cada figura (1, 3, 6, 10, 15, 21, 28, 35) para ver que la octava figura tiene 35 cubos.",
     imageUrl: "/bank11/p07.png",
   },
   {
@@ -72,7 +72,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuál es la figura que sigue para completar la secuencia?",
     options: ["Figura A", "Figura B", "Figura C", "Figura D"],
     correctIndex: 3,
-    explanation: "Siguiendo el patrón de la secuencia, la figura D completa correctamente la serie.",
+    explanation: "Observa la imagen: identifica cómo cambian las figuras (elementos internos, orientación o cantidad) a lo largo de la serie. Siguiendo ese patrón, la Figura D es la que completa correctamente la secuencia.",
     imageUrl: "/bank11/p08.png",
   },
   {
@@ -117,7 +117,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuál es el número que falta en el último triángulo?",
     options: ["13", "23", "24", "31"],
     correctIndex: 2,
-    explanation: "Siguiendo el patrón numérico de los triángulos, el número faltante es 24.",
+    explanation: "Observa la imagen: cada triángulo tiene tres números relacionados por una operación (suma, multiplicación, etc.). Identifica la regla en los triángulos completos y aplícala al triángulo incompleto. El número faltante es 24.",
     imageUrl: "/bank11/p13.png",
   },
   {
@@ -126,7 +126,7 @@ export const bank11Questions: Question[] = [
     text: "¿Cuál es el número que falta en el siguiente cuadro?",
     options: ["10", "12", "16", "18"],
     correctIndex: 0,
-    explanation: "Siguiendo el patrón del cuadro numérico, el número faltante es 10.",
+    explanation: "Observa la imagen: el cuadro numérico tiene filas y columnas relacionadas por una operación constante. Encuentra la regla (suma, producto o cociente) y aplícala para obtener el número faltante: 10.",
     imageUrl: "/bank11/p14.png",
   },
   {
@@ -545,7 +545,7 @@ export const bank11Questions: Question[] = [
     text: "Agrega paréntesis para indicar el orden correcto de las operaciones en la expresión dada.",
     options: ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
     correctIndex: 2,
-    explanation: "La opción 3 indica correctamente el orden de operaciones respetando la jerarquía matemática.",
+    explanation: "Observa la imagen: la expresión debe resolverse aplicando jerarquía de operaciones (paréntesis, potencias, multiplicación/división, suma/resta). La Opción 3 coloca los paréntesis en el lugar correcto para obtener el resultado esperado.",
     imageUrl: "/bank11/p66.png",
   },
   {
@@ -586,7 +586,7 @@ export const bank11Questions: Question[] = [
     text: "Selecciona los valores de x que satisfacen la ecuación cuadrática.",
     options: ["Opción A", "Opción B", "Opción C", "Opción D"],
     correctIndex: 2,
-    explanation: "La opción C contiene los valores correctos de x que satisfacen la ecuación cuadrática planteada.",
+    explanation: "Observa la imagen: identifica los coeficientes a, b y c de la ecuación cuadrática. Aplica la fórmula general x = (−b ± √(b²−4ac)) / 2a para obtener los valores de x. La opción C corresponde a los valores correctos.",
     imageUrl: "/bank11/p71.png",
   },
   {
@@ -870,7 +870,7 @@ export const bank11Questions: Question[] = [
     text: "Identifica el tipo de movimiento representado en la gráfica posición-tiempo.",
     options: ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
     correctIndex: 2,
-    explanation: "La opción 3 representa correctamente el movimiento descrito en la gráfica posición-tiempo.",
+    explanation: "Observa la gráfica posición-tiempo: una línea con pendiente positiva constante indica movimiento rectilíneo uniforme; una curva indica aceleración; una línea horizontal indica reposo. Analiza cada tramo de la gráfica para identificar el tipo de movimiento. La opción 3 es la correcta.",
     imageUrl: "/bank11/p106.png",
   },
   {

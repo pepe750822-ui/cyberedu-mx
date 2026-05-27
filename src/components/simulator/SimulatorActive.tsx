@@ -20,6 +20,7 @@ interface SimulatorActiveProps {
     timeLeft: number;
     isPaused: boolean;
     examMode: 'full' | 'practice';
+    bankLabel: string;
     onSelectAnswer: (index: number) => void;
     onNext: () => void;
     onPrev: () => void;
@@ -41,6 +42,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     timeLeft,
     isPaused,
     examMode,
+    bankLabel,
     onSelectAnswer,
     onNext,
     onPrev,
@@ -161,8 +163,8 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
 
                     <div className="hidden lg:flex flex-1 max-w-md mx-4 flex-col gap-1">
                         <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase">
-                            <span>Preguntas respondidas</span>
-                            <span>{Object.keys(userAnswers).length} de {activeQuestions.length}</span>
+                            <span>{bankLabel} — Pregunta {currentQuestionIndex + 1} de {activeQuestions.length}</span>
+                            <span>{Object.keys(userAnswers).length} respondidas</span>
                         </div>
                         <Progress value={(Object.keys(userAnswers).length / activeQuestions.length) * 100} className="h-2" />
                     </div>
@@ -172,7 +174,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                             <Button
                                 onClick={isPaused ? onResume : onPause}
                                 variant="outline"
-                                className="hidden md:flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
+                                className="flex rounded-xl px-4 h-12 text-[10px] font-black uppercase tracking-widest border-white/10 text-white"
                             >
                                 {isPaused ? "▶️ Continuar" : "⏸️ Pausar"}
                             </Button>
