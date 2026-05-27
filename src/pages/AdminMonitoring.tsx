@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
-import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left';
-import RefreshCw from 'lucide-react/dist/esm/icons/refresh-cw';
-import Ticket from 'lucide-react/dist/esm/icons/ticket';
-import Zap from 'lucide-react/dist/esm/icons/zap';
-import Crown from 'lucide-react/dist/esm/icons/crown';
-import Megaphone from 'lucide-react/dist/esm/icons/megaphone';
-import Trash2 from 'lucide-react/dist/esm/icons/trash-2';
-import Bell from 'lucide-react/dist/esm/icons/bell';
-import Users from 'lucide-react/dist/esm/icons/users';
-import Activity from 'lucide-react/dist/esm/icons/activity';
-import CalendarCheck from 'lucide-react/dist/esm/icons/calendar-check';
+import { ShieldCheck, ArrowLeft, RefreshCw, Ticket, Zap, Crown, Megaphone, Trash2, Bell, Users, Activity, CalendarCheck, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Send } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
