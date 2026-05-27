@@ -156,15 +156,29 @@ const Index = () => {
     return () => clearInterval(id);
   }, []);
 
-  // Urgency date logic for COMIPEMS 2026
+  // Urgency date logic for ECOEMS 2026
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
   const registroFin = new Date("2026-05-22");
   registroFin.setHours(0, 0, 0, 0);
   const examenFecha = new Date("2026-06-20");
   examenFecha.setHours(0, 0, 0, 0);
-  const isRegistroOpen = nowDate <= registroFin;
+  const resultadosFecha = new Date("2026-08-18");
+  resultadosFecha.setHours(0, 0, 0, 0);
+  const etapa = nowDate <= registroFin ? 'registro'
+    : nowDate <= examenFecha ? 'preparacion'
+    : nowDate <= resultadosFecha ? 'espera'
+    : 'resultados';
+  const isRegistroOpen = etapa === 'registro';
   const daysToExam = Math.ceil((examenFecha.getTime() - nowDate.getTime()) / (1000 * 60 * 60 * 24));
+
+  const fechas = [
+    { fecha: "13 Feb 2026",        evento: "Publicación de Convocatoria",          status: "done"    },
+    { fecha: "17 Mar – 14 Abr",    evento: "Registro de Aspirantes",               status: "done"    },
+    { fecha: "18 – 22 May",        evento: "Conclusión de Registro UNAM / IPN",    status: etapa === 'registro' ? "urgent" : "done" },
+    { fecha: "20, 21, 27, 28 Jun", evento: "Aplicación Examen Digital",            status: etapa === 'preparacion' ? "urgent" : etapa === 'registro' ? "pending" : "done" },
+    { fecha: "18 Ago 2026",        evento: "Publicación de Resultados",            status: etapa === 'espera' ? "urgent" : etapa === 'resultados' ? "done" : "pending" },
+  ];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -284,15 +298,19 @@ const Index = () => {
 
       {/* ── Urgency Banner ── */}
       <div className="min-h-[48px]">
-        {isRegistroOpen ? (
+        {etapa === 'registro' ? (
           <div className="w-full bg-red-600 text-white text-center py-3 px-4 font-black text-sm md:text-base animate-pulse">
-            ⚠️ ÚLTIMO DÍA para registrarte al COMIPEMS — Cierra el 22 de mayo ⚠️
+            🔴 ¡Últimos días para registrarte! Cierra el 22 de mayo
           </div>
-        ) : daysToExam > 0 ? (
-          <div className="w-full bg-orange-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
-            🗓️ El examen COMIPEMS es en <span className="underline">{daysToExam} días</span> — ¡Sigue entrenando!
+        ) : etapa === 'preparacion' ? (
+          <div className="w-full bg-orange-500 text-white text-center py-3 px-4 font-black text-sm md:text-base">
+            🟡 El examen es en <span className="underline">{daysToExam} días</span> — ¡Prepárate!
           </div>
-        ) : null}
+        ) : (
+          <div className="w-full bg-green-600 text-white text-center py-3 px-4 font-black text-sm md:text-base">
+            🟢 Resultados el 18 de agosto 2026
+          </div>
+        )}
       </div>
 
       {/* ── HERO ────────────────────────────────────────────── */}
@@ -403,7 +421,9 @@ const Index = () => {
                   boxShadow: "0 0 40px rgba(124,58,237,0.5), 0 0 80px rgba(124,58,237,0.15)",
                 }}
               >
-                🚀 Practica ahora — El examen es en {daysToExam} días
+                {etapa === 'registro' || etapa === 'preparacion'
+                  ? `🚀 Practica ahora — El examen es en ${daysToExam} días`
+                  : '🚀 Practica ahora — Prepárate para el siguiente ciclo'}
               </button>
 
               {/* Mobile badge — reemplaza el cerebro 3D en pantallas pequeñas */}
@@ -555,35 +575,36 @@ const Index = () => {
         </div>
       )}
 
-      {/* ── Última Hora COMIPEMS 2026 ────────────────────── */}
+      {/* ── Última Hora ECOEMS 2026 ─────────────────────── */}
       <section className="w-full bg-yellow-400 text-yellow-900">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl">🚨</span>
-            <h2 className="text-xl font-black uppercase tracking-wide">Última Hora COMIPEMS 2026</h2>
+            <h2 className="text-xl font-black uppercase tracking-wide">Calendario ECOEMS 2026</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
-              <span className="text-2xl leading-none animate-pulse">🔴</span>
-              <div>
-                <p className="font-black text-sm uppercase tracking-wide">18–22 Mayo</p>
-                <p className="text-xs font-semibold mt-0.5">Registro al COMIPEMS — ¡No pierdas tu lugar!</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {fechas.map(({ fecha, evento, status }) => (
+              <div
+                key={fecha}
+                className={`rounded-2xl p-4 flex items-start gap-3 border ${
+                  status === 'urgent'
+                    ? 'bg-yellow-900/25 border-yellow-900/50'
+                    : status === 'done'
+                    ? 'bg-yellow-900/5 border-yellow-900/10 opacity-70'
+                    : 'bg-yellow-900/10 border-yellow-900/20'
+                }`}
+              >
+                <span className="text-xl leading-none shrink-0">
+                  {status === 'done' ? '✅' : status === 'urgent' ? '🔴' : '🗓️'}
+                </span>
+                <div>
+                  <p className={`font-black text-xs uppercase tracking-wide ${status === 'urgent' ? 'animate-pulse' : ''}`}>
+                    {fecha}
+                  </p>
+                  <p className="text-xs font-semibold mt-0.5 leading-snug">{evento}</p>
+                </div>
               </div>
-            </div>
-            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
-              <span className="text-2xl leading-none">🟡</span>
-              <div>
-                <p className="font-black text-sm uppercase tracking-wide">23 Mayo</p>
-                <p className="text-xs font-semibold mt-0.5">Cierre definitivo de registro COMIPEMS</p>
-              </div>
-            </div>
-            <div className="bg-yellow-900/10 rounded-2xl p-4 flex items-start gap-3 border border-yellow-900/20">
-              <span className="text-2xl leading-none">🟢</span>
-              <div>
-                <p className="font-black text-sm uppercase tracking-wide">20 Junio 2026</p>
-                <p className="text-xs font-semibold mt-0.5">Día del examen — Quedan {daysToExam} días para prepararte</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
