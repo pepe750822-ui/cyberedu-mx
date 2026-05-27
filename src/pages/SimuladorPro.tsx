@@ -345,6 +345,12 @@ const SimuladorPro = () => {
         toast({ title: "Simulador guardado", description: "Podrás continuarlo la próxima vez que regreses." });
     };
 
+    const handleAbandon = () => {
+        saveStateToLocalStorage();
+        navigate('/simulador-pro');
+        toast({ title: "Simulador guardado", description: "Podrás continuarlo la próxima vez que regreses." });
+    };
+
     const handlePause = () => {
         setIsPaused(true);
         trackSimuladorPause();
@@ -671,6 +677,7 @@ const SimuladorPro = () => {
                 onResume={handleResume}
                 onFinish={handleFinishExam}
                 onSaveAndExit={handleSaveAndExit}
+                onAbandon={handleAbandon}
                 onToggleMark={() => {
                     const q = activeQuestions[currentQuestionIndex];
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));

@@ -29,6 +29,7 @@ interface SimulatorActiveProps {
     onResume: () => void;
     onFinish: () => void;
     onSaveAndExit: () => void;
+    onAbandon: () => void;
     onToggleMark: () => void;
     onJumpToQuestion: (index: number) => void;
     onReportQuestion: (questionId: string) => Promise<boolean>;
@@ -51,6 +52,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     onResume,
     onFinish,
     onSaveAndExit,
+    onAbandon,
     onToggleMark,
     onJumpToQuestion,
     onReportQuestion,
@@ -232,7 +234,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                             </button>
 
                             <button
-                                onClick={() => navigate('/simulador-pro')}
+                                onClick={onAbandon}
                                 className="w-full bg-red-500/20 border border-red-500/40 text-red-400 font-bold py-2 rounded-xl mt-1"
                             >
                                 ✕ Abandonar simulador
