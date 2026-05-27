@@ -1,7 +1,31 @@
 import Spline from '@splinetool/react-spline';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 export default function NeuralBrainCanvas() {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return (
+      <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="absolute rounded-full opacity-60"
+            style={{
+              width: `${80 + i * 40}px`,
+              height: `${80 + i * 40}px`,
+              background: i % 2 === 0
+                ? 'radial-gradient(circle, #7c3aed, transparent)'
+                : 'radial-gradient(circle, #f59e0b, transparent)',
+              animation: `floatOrb${i} ${3 + i * 0.8}s ease-in-out infinite alternate`,
+              left: `${10 + i * 12}%`,
+              top: `${15 + (i % 3) * 20}%`,
+            }}
+          />
+        ))}
+        <div className="text-6xl animate-pulse z-10">🤖</div>
+      </div>
+    );
+  }
+
   return (
     <Suspense fallback={
       <div className="w-full h-full flex items-center justify-center">
@@ -12,6 +36,7 @@ export default function NeuralBrainCanvas() {
         scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
         style={{ background: 'transparent' }}
         className="w-full h-full"
+        onError={() => setFailed(true)}
       />
     </Suspense>
   );
