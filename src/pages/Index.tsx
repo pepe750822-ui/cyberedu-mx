@@ -309,6 +309,24 @@ const Index = () => {
     <div className="min-h-screen dark" style={{ background: "#0a0a0f" }}>
       <Header />
 
+      {/* Texto que sigue el cursor — solo desktop */}
+      {isDesktop && (
+        <div
+          style={{
+            position: 'fixed',
+            left: mouseX * (window.innerWidth / 2) + window.innerWidth / 2,
+            top: mouseY * (window.innerHeight / 2) + window.innerHeight / 2,
+            transform: 'translate(-50%, -50%)',
+            transition: 'left 0.1s ease-out, top 0.1s ease-out',
+            pointerEvents: 'none',
+            zIndex: 9999,
+          }}
+          className="text-violet-400 font-black text-sm bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-violet-500/30"
+        >
+          🚀 ¡Practica ya!
+        </div>
+      )}
+
       {/* ── Urgency Banner ── */}
       <div className="min-h-[48px]">
         {etapa === 'registro' ? (
