@@ -1,10 +1,27 @@
 import Spline from '@splinetool/react-spline';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
+
+// Detección temprana de WebGL
+function isWebGLAvailable() {
+  if (typeof window === 'undefined') return true;
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext && 
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch (e) {
+    return false;
+  }
+}
 
 export default function NeuralBrainCanvas() {
+  const [webglSupported, setWebglSupported] = useState(true);
   const [failed, setFailed] = useState(false);
 
-  if (failed) {
+  useEffect(() => {
+    setWebglSupported(isWebGLAvailable());
+  }, []);
+
+  if (!webglSupported || failed) {
     return (
       <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
         {[...Array(6)].map((_, i) => (
