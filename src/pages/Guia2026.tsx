@@ -99,10 +99,8 @@ const FREE_PREVIEW_COUNT = 7;
 const Guia2026 = () => {
   const navigate = useNavigate();
   const { profile, user, refreshProfile } = useAuth();
-  const hasAccess =
-    (profile as any)?.guia2026_unlocked === true ||
-    (profile as any)?.paquete_completo === true ||
-    ((profile as any)?.tokens || 0) >= 150;
+  // Guía 2026 — acceso libre para todos
+  const hasAccess = true;
 
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
