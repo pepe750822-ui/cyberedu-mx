@@ -128,10 +128,23 @@ const Index = () => {
   const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
     setIsDesktop(window.innerWidth >= 768);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      setMouseX(x);
+      setMouseY(y);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   const [activeSimulator, setActiveSimulator] = useState<{ url: string; title: string; description?: string } | null>(null);
@@ -341,8 +354,14 @@ const Index = () => {
         <div className="relative container mx-auto px-4 py-20 md:py-28">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            {/* Left — text + countdown */}
-            <div className="max-w-2xl">
+            {/* Left — text + countdown, parallax with mouse */}
+            <div
+              className="max-w-2xl"
+              style={{
+                transform: `translate(${mouseX * 12}px, ${mouseY * 8}px)`,
+                transition: 'transform 0.3s ease-out',
+              }}
+            >
               <div className="inline-flex items-center gap-2 border text-violet-400 text-[11px] font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest" style={{ background: "rgba(124,58,237,0.15)", borderColor: "rgba(124,58,237,0.3)" }}>
                 <span className="relative flex h-2 w-2 mr-1">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
