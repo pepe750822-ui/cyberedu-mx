@@ -32,7 +32,7 @@ export const bank8Questions: Question[] = [
     text: "¿Qué números completan la secuencia de la cadena?\n\n20 | 15 | 19 | 18 | 17 | 24 | 14 | ? | ?",
     options: ["30, 10", "33, 10", "33, 12", "36, 13"],
     correctIndex: 1,
-    explanation: "La cadena alterna dos series: (20, 19, 17, 14, ?) que resta 1, 2, 3... → 14-4=10; y (15, 18, 24, 33, ?) que suma 3, 6, 9... → 24+9=33. Los faltantes son 33 y 10.",
+    explanation: "Observa la imagen: la cadena tiene dos grupos de números alternados. Primer grupo (20, 19, 17, 14, ?): resta 1, 2, 3, 4 → falta 10. Segundo grupo (15, 18, 24, 33, ?): suma 3, 6, 9 → falta 33.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p04.png"
   },
   {
@@ -46,7 +46,7 @@ export const bank8Questions: Question[] = [
       "Cuadrado con cuadrícula densa en esquina inferior derecha"
     ],
     correctIndex: 3,
-    explanation: "El patrón rota el área cuadriculada 90° en sentido horario en cada figura: primero está en la mitad izquierda, luego en la mitad inferior, luego dispersa, y finalmente en la esquina inferior derecha (opción D).",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (rotación del área cuadriculada). El área rayada rota 90° en sentido horario en cada paso: mitad izquierda → mitad inferior → dispersa → esquina inferior derecha (opción D).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p05.png"
   },
   {
@@ -60,7 +60,7 @@ export const bank8Questions: Question[] = [
       "Dos rectángulos negros apilados horizontalmente (negro|blanco / blanco|negro)"
     ],
     correctIndex: 3,
-    explanation: "La serie sigue el patrón: [rect-negro][X-grande][rect-negro][X-mediana]. Tras la X mediana, el patrón retorna a rectángulos negros — la opción D muestra la disposición correcta de bloques negros.",
+    explanation: "Observa la imagen: identifica el patrón que siguen las figuras (tipo de relleno y disposición). La serie alterna: rectángulo negro → X grande → rectángulo negro → X mediana → rectángulo negro (opción D con disposición de bloques negros).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p06.png"
   },
   {
@@ -69,7 +69,7 @@ export const bank8Questions: Question[] = [
     text: "El número de cubos que tendrá la octava figura de la siguiente sucesión es\n\n(Figura 1: 1 cubo solo; Figura 2: fila de 3 cubos en L; Figura 3: pirámide de 6 cubos — observa la imagen)",
     options: ["28", "35", "36", "45"],
     correctIndex: 2,
-    explanation: "Contando por figuras: F1=1, F2=1+2+3=6... Revisando la imagen: F1=1 cubo, F2=3 cubos (fila base 2 + 1 arriba), F3=6 cubos (base 3+2+1). La sucesión es F(n)=n(n+1)/2: F8=8×9/2=36 cubos.",
+    explanation: "Observa la imagen: cuenta los cubos en cada figura de la sucesión (F1=1, F2=3, F3=6...). Sigue la fórmula de números triangulares F(n)=n(n+1)/2. Para la octava figura: F8 = 8×9/2 = 36 cubos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p07.png"
   },
   {
@@ -83,7 +83,7 @@ export const bank8Questions: Question[] = [
       "Círculo con cuarto inferior izquierdo sombreado"
     ],
     correctIndex: 3,
-    explanation: "La zona sombreada rota en sentido antihorario 90° en cada figura: cuadrantes completos → mitad izquierda → sin sombra → cuarto inf-der → cuarto inf-izq. La respuesta es D.",
+    explanation: "Observa la imagen: identifica el patrón de la zona sombreada en cada figura (posición y tamaño). La sombra rota 90° antihorario en cada paso: completa → mitad izq → sin sombra → cuarto inf-der → cuarto inf-izq (opción D).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p08.png"
   },
   {
@@ -92,7 +92,7 @@ export const bank8Questions: Question[] = [
     text: "¿Cuántos hexágonos hay en la figura siguiente?\n\n(Figura con patrón de rombos blancos y negros que forman hexágonos)",
     options: ["7", "6", "10", "3"],
     correctIndex: 3,
-    explanation: "La figura muestra rombos blancos sobre fondo negro. Tres rombos blancos adyacentes forman un hexágono. Contando los grupos completos de 3 rombos que forman hexágono: hay 3 hexágonos completos en la figura. (Los rombos parciales en los bordes no forman hexágono completo.)",
+    explanation: "Observa la imagen: identifica los rombos blancos sobre el fondo negro. Tres rombos blancos adyacentes forman un hexágono. Cuenta únicamente los grupos completos de 3 rombos (los del borde no completan hexágono): hay 3 hexágonos completos.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p09.png"
   },
   {
@@ -101,7 +101,7 @@ export const bank8Questions: Question[] = [
     text: "¿Cuántos cuadrados hay en la siguiente figura?\n\n(Figura de 2×2 cuadrados pequeños)",
     options: ["4", "5", "7", "8"],
     correctIndex: 1,
-    explanation: "En una cuadrícula 2×2 hay: 4 cuadrados pequeños (1×1) + 1 cuadrado grande (2×2) = 5 cuadrados en total.",
+    explanation: "Observa la imagen: cuenta todos los cuadrados posibles, no solo los más pequeños. En una cuadrícula 2×2: 4 cuadrados individuales (1×1) + 1 cuadrado grande que los contiene todos (2×2) = 5 cuadrados en total.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p10.png"
   },
   {
@@ -115,7 +115,7 @@ export const bank8Questions: Question[] = [
       "Forma en L con extensión hacia abajo-derecha"
     ],
     correctIndex: 2,
-    explanation: "Al girar 90° en sentido horario: lo que apuntaba arriba ahora apunta a la derecha. La figura en L con brazo superior-izquierdo queda con el brazo apuntando a la derecha — opción C.",
+    explanation: "Observa la imagen: al girar 90° en sentido horario, lo que apunta hacia arriba pasa a apuntar a la derecha. Aplica esa regla a cada parte de la figura en L. El brazo superior-izquierdo queda apuntando a la derecha — opción C.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p11.png"
   },
   {
@@ -129,7 +129,7 @@ export const bank8Questions: Question[] = [
       "Constelación de cubos con distribución espejo vertical"
     ],
     correctIndex: 2,
-    explanation: "Una rotación de 180° invierte la figura completa: lo que estaba arriba queda abajo y lo que estaba a la izquierda queda a la derecha. La opción C muestra la posición correcta.",
+    explanation: "Observa la imagen: visualiza mentalmente la figura girada 180°. Lo que estaba arriba queda abajo y lo que estaba a la izquierda queda a la derecha (volteo completo). La opción C muestra la posición correcta.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p12.png"
   },
   {
@@ -138,7 +138,7 @@ export const bank8Questions: Question[] = [
     text: "¿Cuál es el número que falta en el último triángulo?\n\nTriángulo 1: vértice 1, lados 4 y 3, base 1\nTriángulo 2: vértice 2, lados 12 y 5, base 2\nTriángulo 3: vértice 3, lados ? y 7, base 3",
     options: ["13", "23", "24", "31"],
     correctIndex: 2,
-    explanation: "El patrón: el número del lado = vértice × base × factor. En triángulo 1: 4 = 1×3+1; Triángulo 2: 12 = 2×5+2; Triángulo 3: ? = 3×7+3 = 21+3 = 24.",
+    explanation: "Observa la imagen: analiza los números dentro de cada triángulo para encontrar el patrón. T1: 4 = 1×3+1; T2: 12 = 2×5+2; T3: ? = 3×7+3 = 21+3 = 24.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p13.png"
   },
   {
@@ -147,7 +147,7 @@ export const bank8Questions: Question[] = [
     text: "¿Cuál es el número que falta en el siguiente cuadro?\n\n| 20 |  4 | 16 |\n| 28 |  8 | 20 |\n| 40 |  ? | 30 |",
     options: ["10", "12", "16", "18"],
     correctIndex: 0,
-    explanation: "El patrón por columna: col1 (20,28,40) suma 8 y 12; col3 (16,20,30) suma 4 y 10; col2 (4,8,?) La diferencia col1–col3 = col2: 20-16=4, 28-20=8, 40-30=10. Falta 10.",
+    explanation: "Observa la imagen: lee los datos de la tabla por columna. Col1 (20,28,40): +8,+12. Col3 (16,20,30): +4,+10. Col2 = Col1−Col3: 20−16=4, 28−20=8, 40−30=10. El número faltante es 10.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p14.png"
   },
   {
@@ -449,7 +449,7 @@ export const bank8Questions: Question[] = [
       "mezcla – elemento – compuesto"
     ],
     correctIndex: 1,
-    explanation: "X muestra distintos tipos de partículas sin combinar = mezcla; Q muestra átomos distintos enlazados = compuesto; Z muestra un solo tipo de átomo = elemento.",
+    explanation: "Observa la imagen: analiza cada modelo molecular. X muestra partículas distintas sin unir = mezcla; Q muestra átomos distintos enlazados = compuesto; Z muestra un solo tipo de átomo = elemento. Respuesta: mezcla – compuesto – elemento.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p44.png"
   },
   {
@@ -753,7 +753,7 @@ export const bank8Questions: Question[] = [
       "pequeña que la emanada en una erupción moderada."
     ],
     correctIndex: 1,
-    explanation: "Paroxismal: más de 25 km. Violenta: 3 a 15 km. La fumarola paroxismal (>25 km) es mayor que la violenta (máx 15 km), pero no mayor que todas: Colosal, Supercolosal y Megacolosal también son >25 km.",
+    explanation: "Observa la imagen: lee los datos de la tabla del IEV. Paroxismal: >25 km. Violenta: 3−15 km. La fumarola paroxismal es mayor que la violenta (máx 15 km), pero no que todas (Colosal/Supercolosal también superan 25 km).",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p72.png"
   },
   {
@@ -770,7 +770,7 @@ export const bank8Questions: Question[] = [
     text: "Dada la figura, identifica un par de ángulos alternos internos.",
     options: ["4 y 6", "6 y 5", "7 y 3", "1 y 4"],
     correctIndex: 0,
-    explanation: "Los ángulos alternos internos están entre las paralelas, en lados opuestos de la transversal. En la figura, los ángulos 4 y 6 cumplen esta condición.",
+    explanation: "Observa la imagen: identifica las dos líneas paralelas y la transversal. Los ángulos alternos internos se forman entre las paralelas, en lados opuestos de la transversal. En la figura, los ángulos 4 y 6 cumplen esa condición.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p74.png"
   },
   {
@@ -965,7 +965,7 @@ export const bank8Questions: Question[] = [
     text: "Determina las coordenadas geográficas para el punto II en el mapa.",
     options: ["30° N, 10° W", "30° S, 10° E", "10° N, 30° W", "10° S, 30° E"],
     correctIndex: 3,
-    explanation: "El punto II está ubicado en el hemisferio sur (debajo del ecuador = S) y al este del meridiano de Greenwich (= E). Las coordenadas son 10° S, 30° E.",
+    explanation: "Observa la imagen: localiza el punto II en el mapa. Verifica si está al norte o sur del ecuador (latitud) y al este u oeste del meridiano de Greenwich (longitud). El punto II está a 10° al sur y 30° al este: coordenadas 10° S, 30° E.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p94.png"
   },
   {
@@ -1094,7 +1094,7 @@ export const bank8Questions: Question[] = [
       "Gráfica con curva descendente"
     ],
     correctIndex: 2,
-    explanation: "Los datos (t=0,p=0), (t=1,p=1), (t=2,p=4), (t=3,p=9) corresponden a p=t², una parábola. La gráfica C muestra posición(m) en eje Y y tiempo(s) en eje X con curva parabólica.",
+    explanation: "Observa la imagen: los valores (0,0), (1,1), (2,4), (3,9) siguen p=t², una relación cuadrática cuya gráfica es una parábola. Busca la gráfica con eje Y=posición(m), eje X=tiempo(s) y curva parabólica ascendente — opción C.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p106.png"
   },
   {
@@ -1108,7 +1108,7 @@ export const bank8Questions: Question[] = [
       "El automóvil ascendió una montaña en una hora, recorrió la meseta a 60 km/h durante dos horas y descendió en la siguiente."
     ],
     correctIndex: 2,
-    explanation: "La gráfica muestra: aceleración de 0 a 60 km/h (hora 0-1), velocidad constante de 60 km/h (horas 1-3), desaceleración hasta 0 (hora 3-4). Describe movimiento con aceleración, crucero y frenado.",
+    explanation: "Observa la imagen: lee la gráfica velocidad vs tiempo por tramos. 0−1h: sube de 0 a 60 km/h (aceleración). 1−3h: línea horizontal a 60 km/h (velocidad constante). 3−4h: baja a 0 (desaceleración). La opción C describe correctamente ese trayecto.",
     imageUrl: "https://lruwnuldlltwktdfrwho.supabase.co/storage/v1/object/public/simulador-imagenes/guia2023/p107.png"
   },
   {
