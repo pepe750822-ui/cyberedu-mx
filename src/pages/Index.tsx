@@ -506,7 +506,13 @@ const Index = () => {
             onClick={() => navigate("/tokens")}
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 rounded-xl text-lg hover:scale-105 transition-transform"
           >
-            📖 Ver Guía 2026 GRATIS — 44 videos
+            🪙 Obtener Paquete Completo — 100 tokens
+          </button>
+          <button
+            onClick={() => navigate("/guia2026")}
+            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-black py-2 rounded-xl text-sm mt-2 hover:scale-105 transition-transform"
+          >
+            📖 Ver Guía 2026 GRATIS →
           </button>
         </div>
       </TiltCard>
