@@ -93,14 +93,14 @@ const DEFAULT_COLOR = { bg: 'bg-slate-800', border: 'border-white/10', badge: 'b
 
 const MATERIAS = [...new Set(TEMAS.map(t => t.materia))];
 
-const FREE_PREVIEW_COUNT = 7;
+const FREE_PREVIEW_COUNT = 20;
 
 
 const Guia2026 = () => {
   const navigate = useNavigate();
   const { profile, user, refreshProfile } = useAuth();
-  // Guía 2026 — acceso libre para todos
-  const hasAccess = true;
+  // Sin login → 20 videos gratis; con login → todos los 44 gratis
+  const hasAccess = user !== null;
 
   const [completed, setCompleted] = useState<Record<number, boolean>>({});
   const [filterMateria, setFilterMateria] = useState<string>('all');
@@ -366,17 +366,17 @@ const Guia2026 = () => {
           })}
         </div>
 
-        {/* Banner acceso libre */}
-        <div className="mx-4 mb-6 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/40 rounded-2xl p-4 text-center animate-pulse">
-          <div className="text-3xl mb-1">🎉</div>
-          <p className="text-green-400 font-black text-lg">¡Guía 2026 completamente GRATIS!</p>
-          <p className="text-white text-sm mt-1">
-            Los 44 videos con infografías y PDFs disponibles para todos sin costo
-          </p>
-          <p className="text-gray-400 text-xs mt-1">
-            Comparte con tus amigos que se preparan para el ECOEMS 🚀
-          </p>
-        </div>
+        {/* Banner según estado de login */}
+        {!user && (
+          <div className="mx-4 mb-4 bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-center">
+            <p className="text-blue-300 text-sm">
+              🎁 Estás viendo <strong>20 videos gratis</strong> —
+              <button onClick={() => navigate('/auth')} className="text-blue-400 underline font-bold ml-1">
+                Regístrate gratis
+              </button> para ver los 44 completos
+            </p>
+          </div>
+        )}
 
         {/* Banner Udemy — visible para todos */}
         <div className="mx-4 mb-6 bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 flex items-center justify-between gap-3">
