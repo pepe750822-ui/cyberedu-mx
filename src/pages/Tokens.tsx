@@ -25,6 +25,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
+import { clarityEvent } from "@/lib/clarity";
 
 const tokenPackages = [
   {
@@ -266,6 +267,7 @@ const TokensPage = () => {
 
       const data = await resp.json();
       if (data.init_point) {
+        clarityEvent('compra_tokens');
         window.location.href = data.init_point;
       } else {
         throw new Error(data.error || "Error al crear la preferencia de pago");
@@ -305,6 +307,7 @@ const TokensPage = () => {
 
       if (error) throw error;
       await refreshProfile();
+      clarityEvent('banco_desbloqueado');
       toast.success(`¡Desbloqueado! Se descontaron ${cost} tokens de tu balance. 🎉`);
     } catch (err: any) {
       toast.error("Error al canjear: " + err.message);

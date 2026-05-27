@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useMemo, ReactNode, use
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 import { trackLogout } from "@/hooks/useAnalytics";
+import { clarityEvent, clarityIdentify } from "@/lib/clarity";
 
 interface UserProfile {
   id: string;
@@ -145,6 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             console.error("[Auth] Error al crear perfil:", insertError);
           } else if (newProfile) {
             setProfile(newProfile as UserProfile);
+            clarityEvent('registro_completado');
 
             // Process referral if the new user came via a referral link
             const storedRefCode = localStorage.getItem('referral_code');
@@ -242,6 +244,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           fetchProfile(session.user.id); // sin await
           if (event === 'SIGNED_IN') {
             checkFirstLoginReferral(session.user.id); // sin await
+            clarityIdentify(session.user.id, session.user.email);
           }
         } else if (event === 'SIGNED_OUT') {
           setProfile(null);

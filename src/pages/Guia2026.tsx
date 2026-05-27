@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOpen, Lock, X, Play, Unlock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { clarityEvent } from '@/lib/clarity';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -142,6 +143,7 @@ const Guia2026 = () => {
   };
 
   const openModal = (tema: Tema, tab: 'video' | 'infografia' | 'pdf' = 'video') => {
+    if (tab === 'video' && tema.youtubeUrl) clarityEvent('video_guia_visto');
     setSelectedTema(tema);
     setActiveTab(tab);
   };

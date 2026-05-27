@@ -38,6 +38,7 @@ import { SimulatorResults } from "@/components/simulator/SimulatorResults";
 import { ProgressPanel } from "@/components/simulator/ProgressPanel";
 import { RestoreModal } from "@/components/simulator/RestoreModal";
 import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
+import { clarityEvent } from "@/lib/clarity";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
@@ -567,6 +568,7 @@ const SimuladorPro = () => {
         setTimeLeft(EXAM_TIME_SECONDS);
         setShowResults(false);
         trackSimuladorStart();
+        clarityEvent('simulador_iniciado');
     };
 
     const calculateScore = () => {
@@ -669,7 +671,10 @@ const SimuladorPro = () => {
                 examMode={examMode}
                 onSelectAnswer={(idx) => {
                     const q = activeQuestions[currentQuestionIndex];
-                    if (q) setUserAnswers(prev => ({ ...prev, [q.id]: idx }));
+                    if (q) {
+                        clarityEvent('pregunta_respondida');
+                        setUserAnswers(prev => ({ ...prev, [q.id]: idx }));
+                    }
                 }}
                 onNext={() => setCurrentQuestionIndex(prev => Math.min(prev + 1, activeQuestions.length - 1))}
                 onPrev={() => setCurrentQuestionIndex(prev => Math.max(prev - 1, 0))}

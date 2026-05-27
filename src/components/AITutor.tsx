@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, Suspense } from "react";
+import { clarityEvent } from "@/lib/clarity";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -2511,8 +2512,8 @@ const AITutor = () => {
   }, []);
 
   useEffect(() => {
-    // Dispatch events to sync global UI (like floating buttons)
     window.dispatchEvent(new CustomEvent(isOpen ? 'cyberedu:opened' : 'cyberedu:closed'));
+    if (isOpen) clarityEvent('tutor_abierto');
   }, [isOpen]);
 
   const [isStreaming, setIsStreaming] = useState(false);
