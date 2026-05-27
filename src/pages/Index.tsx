@@ -126,6 +126,7 @@ const Index = () => {
   const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [showRobot, setShowRobot] = useState(false);
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const location = useLocation();
@@ -133,6 +134,13 @@ const Index = () => {
   useEffect(() => {
     setIsDesktop(window.innerWidth >= 768);
   }, []);
+
+  useEffect(() => {
+    if (isDesktop) {
+      const timer = setTimeout(() => setShowRobot(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isDesktop]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -431,10 +439,14 @@ const Index = () => {
 
             </div>
 
-            {/* Right — cerebro 3D, solo desktop */}
-            {isDesktop && (
+            {/* Right — cerebro 3D, solo desktop, carga diferida 2s para no bloquear LCP */}
+            {isDesktop && showRobot && (
               <div style={{ height: "500px", marginTop: "-60px" }} className="flex items-start justify-center">
-                <Suspense fallback={<div className="w-64 h-64 bg-violet-500/10 rounded-full animate-pulse" />}>
+                <Suspense fallback={
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-violet-500/20 animate-pulse" />
+                  </div>
+                }>
                   <NeuralBrainCanvas />
                 </Suspense>
               </div>
