@@ -54,8 +54,6 @@ const StudioModal = lazy(() => import("@/components/StudioModal"));
 const PredictiveFeedback = lazy(() => import("@/components/PredictiveFeedback").then(m => ({ default: m.PredictiveFeedback })));
 const NeuralBrainCanvas = lazy(() => import("@/components/NeuralBrainCanvas"));
 
-const AI_TUTOR_DISMISSED_KEY = 'cyberedu_ai_tutor_banner_dismissed';
-
 // Deterministic particle positions — no random on each render
 const PARTICLES = Array.from({ length: 55 }, (_, i) => ({
   id: i,
@@ -272,14 +270,6 @@ const Index = () => {
   }, [areaProgress]);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [aiTutorDismissed, setAiTutorDismissed] = useState(
-    () => localStorage.getItem(AI_TUTOR_DISMISSED_KEY) === "true"
-  );
-
-  const dismissAiTutor = () => {
-    localStorage.setItem(AI_TUTOR_DISMISSED_KEY, "true");
-    setAiTutorDismissed(true);
-  };
 
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -399,7 +389,6 @@ const Index = () => {
               </div>
 
               <p className="text-lg text-slate-300 mb-6 leading-relaxed max-w-lg">
-                <span className="text-white font-bold">Tutor IA disponible 24/7</span> +{" "}
                 <span className="text-violet-400 font-bold">19 Laboratorios Virtuales</span> para dominar cada tema del examen.
               </p>
 
@@ -440,12 +429,6 @@ const Index = () => {
                   : '🚀 Practica ahora — Prepárate para el siguiente ciclo'}
               </button>
 
-              {/* Mobile badge — reemplaza el cerebro 3D en pantallas pequeñas */}
-              <div className="md:hidden flex justify-center gap-3 mt-4">
-                <div className="bg-violet-500/20 border border-violet-500/30 rounded-full px-4 py-2 text-violet-300 text-sm animate-pulse">
-                  🧠 Tutor IA disponible 24/7
-                </div>
-              </div>
             </div>
 
             {/* Right — cerebro 3D, solo desktop */}
@@ -693,101 +676,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* ── AI Tutor Showcase ────────────────────────────── */}
-      <AnimatePresence>
-        {!aiTutorDismissed && (
-          <motion.section
-            key="ai-tutor-banner"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16, scale: 0.97 }}
-            transition={{ duration: 0.4 }}
-            className="container mx-auto px-4 mb-12"
-          >
-            <div className="relative">
-              <div className="relative bg-slate-900 border border-slate-700 rounded-[2rem] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-
-                <button
-                  onClick={dismissAiTutor}
-                  className="absolute top-4 right-4 z-10 p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
-                  aria-label="Cerrar"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-
-                <div className="p-8 md:p-10">
-                  <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="w-12 h-12 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center shrink-0">
-                        <Bot className="h-6 w-6 text-violet-400" />
-                      </div>
-                      <div>
-                        <h2 className="text-2xl md:text-3xl font-display font-black text-white leading-tight">
-                          Tu Tutor IA para el ECOEMS 2026
-                        </h2>
-                        <p className="text-sm text-slate-400 font-medium mt-0.5">
-                          Powered by <span className="text-violet-400 font-bold">Claude AI · Anthropic</span>
-                        </p>
-                      </div>
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-[10px] font-black uppercase tracking-widest text-violet-400 w-fit">
-                      <Sparkles className="h-3 w-3" /> Nuevo
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
-                    {[
-                      { emoji: "🌍", query: "Muéstrame México en el globo terráqueo interactivo", label: 'Escribe "México"', desc: "aparece el globo interactivo" },
-                      { emoji: "🫀", query: "sistema circulatorio", label: 'Escribe "sistema circulatorio"', desc: "cuerpo humano 3D" },
-                      { emoji: "☀️", query: "sistema solar", label: 'Escribe "sistema solar"', desc: "navega los planetas" },
-                      { emoji: "🔢", query: "resolver ecuaciones", label: "Pide resolver ecuaciones", desc: "paso a paso" },
-                      { emoji: "📅", query: "Independencia de México", label: "Pregunta Historia", desc: "línea del tiempo interactiva" },
-                    ].map((item) => (
-                      <button
-                        key={item.emoji}
-                        onClick={() => window.dispatchEvent(new CustomEvent("cyberedu:open-chat", { detail: { message: item.query } }))}
-                        className="flex flex-col items-start gap-2 p-4 rounded-2xl bg-slate-800 border border-slate-700 hover:bg-violet-900/30 hover:border-violet-600/20 transition-all text-left group/cap"
-                      >
-                        <span className="text-2xl">{item.emoji}</span>
-                        <div>
-                          <p className="text-[11px] font-black text-white leading-snug group-hover/cap:text-violet-400 transition-colors">
-                            {item.label}
-                          </p>
-                          <p className="text-[10px] text-slate-400 mt-0.5">→ {item.desc}</p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    {user ? (
-                      <button
-                        onClick={() => window.dispatchEvent(new CustomEvent("cyberedu:open-chat"))}
-                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-black text-sm uppercase tracking-widest transition-all shadow-sm"
-                      >
-                        <Bot className="h-4 w-4" />
-                        Ir al Tutor IA
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => window.dispatchEvent(new CustomEvent("cyberedu:open-chat"))}
-                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-black text-sm uppercase tracking-widest transition-all shadow-sm"
-                      >
-                        <Zap className="h-4 w-4" />
-                        Pruébalo gratis
-                      </button>
-                    )}
-                    <p className="text-[10px] text-slate-400 font-medium leading-relaxed">
-                      Sin registro: 15 preguntas gratis al instante · Con cuenta gratuita: 15 preguntas diarias · También en Telegram: <span className="text-cyan-400 font-bold">@CyberEduMXBot</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
 
       {/* ── Buscador de Contenido ────────────────────────── */}
       <section className="bg-slate-900 border-b border-slate-700">

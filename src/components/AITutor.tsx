@@ -2487,13 +2487,7 @@ const AITutor = () => {
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
 
-  // Bug 2 — Abre el chat de forma segura tras la autenticación solo en la primera visita
-  useEffect(() => {
-    if (user && !localStorage.getItem('cyberedu_chat_visited')) {
-      setIsOpen(true);
-      localStorage.setItem('cyberedu_chat_visited', 'true');
-    }
-  }, [user]);
+  // Auto-open on first visit disabled — user opens manually
 
   // Allow external components to open the chat, optionally pre-fill a message, and force fullscreen
   useEffect(() => {
