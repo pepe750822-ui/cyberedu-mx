@@ -40,7 +40,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    target: 'es2015',
+    target: 'es2020',
     outDir: "dist",
     sourcemap: mode === 'development',
     minify: 'esbuild',
@@ -48,9 +48,6 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('@react-three/fiber') || id.includes('@react-three/drei') || id.includes('three/')) {
-            return 'three';
-          }
           if (id.includes('mermaid')) {
             return 'mermaid';
           }
