@@ -1,45 +1,5 @@
-import { Suspense, useState, useRef, useEffect, lazy } from 'react';
-
-// Carga perezosa del componente Spline para evitar cargar el motor 3D si WebGL no está disponible
-const Spline = lazy(() => import('@splinetool/react-spline'));
-
-const SPLINE_URL = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode';
-
-/**
- * Detecta WebGL sincrónicamente en el primer render (lazy useState initializer).
- * No usa useEffect — el check ocurre ANTES de que Spline se monte.
- */
-function checkWebGL(): boolean {
-  if (typeof window === 'undefined') return true; // SSR: asumir soporte
-  try {
-    const canvas = document.createElement('canvas');
-    const gl = (canvas.getContext('webgl') || canvas.getContext('webgl2') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
-
-    if (!gl) {
-      console.warn('❌ WebGL no disponible');
-      // Intentar obtener razón
-      const canvas2 = document.createElement('canvas');
-      const gl2 = canvas2.getContext('webgl', { failIfMajorPerformanceCaveat: true });
-      console.warn('[NeuralBrainCanvas] failIfMajorPerformanceCaveat test:', !!gl2);
-      return false;
-    }
-
-    // Obtener información del renderer
-    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-    if (debugInfo) {
-      const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-      const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-      console.log('✅ WebGL disponible | Vendor:', vendor, '| Renderer:', renderer);
-    } else {
-      console.log('✅ WebGL disponible | (sin WEBGL_debug_renderer_info)');
-    }
-
-    return true;
-  } catch (e) {
-    console.warn('❌ [NeuralBrainCanvas] Error detectando WebGL:', e);
-    return false;
-  }
-}
+import { useState } from 'react';
+import Spline from '@splinetool/react-spline';
 
 // Fallback de orbes CSS — sin dependencias de WebGL
 function OrbFallback() {
@@ -121,96 +81,18 @@ function OrbFallback() {
 }
 
 export default function NeuralBrainCanvas() {
-  // ✅ Lazy initializer: corre sincrónicamente ANTES del primer render.
-  // Spline NUNCA se monta si WebGL no está disponible.
-  const [webglOK] = useState<boolean>(() => checkWebGL());
-  const [failed, setFailed] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    console.log('[NeuralBrainCanvas] mount | webglOK:', webglOK, '| URL:', SPLINE_URL);
-
-    if (!webglOK) {
-      console.log('[NeuralBrainCanvas] → mostrando OrbFallback (sin WebGL)');
-      return;
-    }
-
-    // Log del tamaño del contenedor al montar
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      console.log('[NeuralBrainCanvas] contenedor:', rect.width, 'x', rect.height, 'px');
-    }
-
-    // Safety-net: si Spline no llama onLoad ni onError en 12s → fallback
-    timeoutRef.current = setTimeout(() => {
-      console.warn('[NeuralBrainCanvas] ⏱ Timeout 12s → fallback CSS activado (Spline no respondió)');
-      setFailed(true);
-    }, 12_000);
-
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, [webglOK]);
-
-  // Sin WebGL (OBS, navegadores sandboxed) → CSS inmediato, sin Spline
-  if (!webglOK || failed) {
+  if (hasError) {
     return <OrbFallback />;
   }
 
   return (
-    <div
-      ref={containerRef}
-      style={{ width: '100%', height: '100%', minHeight: '400px', position: 'relative' }}
-    >
-      <Suspense
-        fallback={
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-violet-500/20 animate-pulse" />
-          </div>
-        }
-      >
-        <Spline
-          scene={SPLINE_URL}
-          style={{ width: '100%', height: '100%', background: 'transparent' }}
-          onLoad={(splineApp) => {
-            console.log('✅ [NeuralBrainCanvas] Spline onLoad — robot cargado', splineApp);
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            setLoaded(true);
-
-            // Log del canvas que Spline creó
-            const canvas = containerRef.current?.querySelector('canvas');
-            if (canvas) {
-              const r = canvas.getBoundingClientRect();
-              console.log('[NeuralBrainCanvas] canvas size:', r.width, 'x', r.height);
-            } else {
-              console.warn('[NeuralBrainCanvas] ⚠ No se encontró canvas en el DOM después de onLoad');
-            }
-          }}
-          onError={(err) => {
-            console.error('❌ [NeuralBrainCanvas] Spline onError:', err);
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            setFailed(true);
-          }}
-        />
-      </Suspense>
-
-      {/* Indicador de carga visible mientras Spline inicializa */}
-      {!loaded && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pointerEvents: 'none',
-          }}
-        >
-          <div className="w-16 h-16 rounded-full bg-violet-500/20 animate-pulse" />
-        </div>
-      )}
+    <div className="w-full h-full">
+      <Spline
+        scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+        onError={() => setHasError(true)}
+      />
     </div>
   );
 }
