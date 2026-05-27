@@ -370,7 +370,7 @@ const Index = () => {
         <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full pointer-events-none" style={{ background: "rgba(245,158,11,0.1)", filter: "blur(60px)" }} />
 
         <div className="relative container mx-auto px-4 py-20 md:py-28">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
 
             {/* Left — text + countdown, parallax with mouse */}
             <div
@@ -473,7 +473,7 @@ const Index = () => {
 
             {/* Right — cerebro 3D, solo desktop */}
             {isDesktop && (
-              <div style={{ height: "480px" }}>
+              <div style={{ height: "500px", marginTop: "-60px" }} className="flex items-start justify-center">
                 <Suspense fallback={<div className="w-64 h-64 bg-violet-500/10 rounded-full animate-pulse" />}>
                   <NeuralBrainCanvas />
                 </Suspense>
