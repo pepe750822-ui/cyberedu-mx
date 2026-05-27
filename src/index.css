@@ -356,6 +356,49 @@
   }
 }
 
+/* ── NeuralBrainCanvas WebGL fallback — floating orb animations ── */
+@keyframes floatOrb0 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+  33%  { transform: translateY(-20px) translateX(15px)  scale(1.1);  opacity: 0.7; }
+  66%  { transform: translateY(15px)  translateX(-10px) scale(0.9);  opacity: 0.5; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+}
+@keyframes floatOrb1 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.4; }
+  33%  { transform: translateY(18px)  translateX(-12px) scale(0.9);  opacity: 0.7; }
+  66%  { transform: translateY(-12px) translateX(10px)  scale(1.05); opacity: 0.5; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.4; }
+}
+@keyframes floatOrb2 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+  33%  { transform: translateY(-15px) translateX(8px)   scale(1.05); opacity: 0.6; }
+  66%  { transform: translateY(12px)  translateX(-8px)  scale(0.95); opacity: 0.5; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+}
+@keyframes floatOrb3 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.5; }
+  33%  { transform: translateY(20px)  translateX(-10px) scale(1.1);  opacity: 0.7; }
+  66%  { transform: translateY(-8px)  translateX(12px)  scale(0.9);  opacity: 0.4; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.5; }
+}
+@keyframes floatOrb4 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+  33%  { transform: translateY(-18px) translateX(15px)  scale(0.95); opacity: 0.6; }
+  66%  { transform: translateY(10px)  translateX(-5px)  scale(1.05); opacity: 0.5; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.3; }
+}
+@keyframes floatOrb5 {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.4; }
+  33%  { transform: translateY(12px)  translateX(-12px) scale(1.05); opacity: 0.7; }
+  66%  { transform: translateY(-15px) translateX(5px)   scale(0.9);  opacity: 0.5; }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1);    opacity: 0.4; }
+}
+
+.orb-float {
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
 @media print {
 
   .no-print,
@@ -402,10 +445,4 @@
   @keyframes float4 { to { transform: translate(15px, 5px) scale(0.95); } }
   @keyframes float5 { to { transform: translate(-5px, -12px) scale(1.05); } }
 
-  @keyframes floatOrb0 { to { transform: translate(10px, -15px) scale(1.1); } }
-  @keyframes floatOrb1 { to { transform: translate(-12px, 10px) scale(0.9); } }
-  @keyframes floatOrb2 { to { transform: translate(8px, 12px) scale(1.05); } }
-  @keyframes floatOrb3 { to { transform: translate(-10px, -8px) scale(1.1); } }
-  @keyframes floatOrb4 { to { transform: translate(15px, 5px) scale(0.95); } }
-  @keyframes floatOrb5 { to { transform: translate(-5px, -12px) scale(1.05); } }
 }
