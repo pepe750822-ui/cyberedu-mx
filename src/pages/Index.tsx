@@ -437,15 +437,15 @@ const Index = () => {
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <Video className="h-5 w-5 text-violet-400" />
-                  <span className="text-sm font-semibold text-white">{totalVideos} Videos HD</span>
+                  <span className="text-sm font-semibold text-white">135+ Videos Guía 2025 y 2026</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <BookOpen className="h-5 w-5 text-violet-400" />
-                  <span className="text-sm font-semibold text-white">{areas.length} Áreas Críticas</span>
+                  <span className="text-sm font-semibold text-white">10 Materias ECOEMS</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <CheckCircle className="h-5 w-5 text-emerald-400" />
-                  <span className="text-sm font-semibold text-white">{stats.completos} Completados</span>
+                  <span className="text-sm font-semibold text-white">1,280+ Reactivos tipo examen</span>
                 </div>
               </div>
 
