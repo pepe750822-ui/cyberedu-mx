@@ -1,7 +1,27 @@
 import Spline from '@splinetool/react-spline';
-import { Suspense, useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
 
-// Fallback de orbes CSS — se muestra solo si Spline falla o agota el tiempo
+/**
+ * Detecta WebGL sincrónicamente en el primer render (lazy useState initializer).
+ * No usa useEffect — el check ocurre ANTES de que Spline se monte.
+ * En OBS: canvas.getContext('webgl') devuelve null → false → fallback CSS.
+ * En Chrome/Edge: devuelve un contexto válido → true → Spline carga.
+ */
+function checkWebGL(): boolean {
+  if (typeof window === 'undefined') return true; // SSR: asumir soporte
+  try {
+    const canvas = document.createElement('canvas');
+    const gl =
+      canvas.getContext('webgl') ||
+      canvas.getContext('webgl2') ||
+      canvas.getContext('experimental-webgl');
+    return !!gl;
+  } catch {
+    return false;
+  }
+}
+
+// Fallback de orbes CSS — sin dependencias de WebGL
 function OrbFallback() {
   return (
     <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
@@ -28,34 +48,28 @@ function OrbFallback() {
 }
 
 export default function NeuralBrainCanvas() {
-  // `failed` solo se activa cuando Spline reporta un error real
+  // ✅ Lazy initializer: corre sincrónicamente ANTES del primer render.
+  // Spline NUNCA se monta si WebGL no está disponible.
+  const [webglOK] = useState<boolean>(() => checkWebGL());
   const [failed, setFailed] = useState(false);
-  // Safety-net: si Spline nunca dispara onLoad ni onError en 15s → fallback
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (!webglOK) return; // No montar Spline → no necesitamos timeout
+
+    // Safety-net: si Spline no llama onLoad ni onError en 12s → fallback
     timeoutRef.current = setTimeout(() => {
-      console.warn('[NeuralBrainCanvas] Spline timeout — activando fallback CSS');
+      console.warn('[NeuralBrainCanvas] Timeout → fallback CSS activado');
       setFailed(true);
-    }, 15_000);
+    }, 12_000);
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [webglOK]);
 
-  const handleLoad = () => {
-    // Spline cargó correctamente → cancelar el timeout
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-
-  const handleError = () => {
-    console.warn('[NeuralBrainCanvas] Spline onError → activando fallback CSS');
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setFailed(true);
-  };
-
-  if (failed) {
+  // Sin WebGL (OBS, navegadores sandboxed) → CSS inmediato, sin Spline
+  if (!webglOK || failed) {
     return <OrbFallback />;
   }
 
@@ -71,8 +85,14 @@ export default function NeuralBrainCanvas() {
         scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
         style={{ background: 'transparent' }}
         className="w-full h-full"
-        onLoad={handleLoad}
-        onError={handleError}
+        onLoad={() => {
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        }}
+        onError={() => {
+          console.warn('[NeuralBrainCanvas] Spline onError → fallback CSS');
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          setFailed(true);
+        }}
       />
     </Suspense>
   );
