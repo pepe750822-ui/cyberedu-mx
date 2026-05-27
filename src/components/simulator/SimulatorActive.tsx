@@ -114,7 +114,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         if (feedbackIndex === null) {
             return userAnswers[currentQuestion?.id] === idx
                 ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(var(--primary),0.2)]"
-                : "bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20";
+                : "bg-edu-card border-edu-indigo/20 text-slate-300 hover:bg-edu-card/80 hover:border-edu-indigo/50";
         }
         if (idx === currentQuestion.correctIndex)
             return "bg-green-500/20 border-green-500/60 text-white";
@@ -127,17 +127,17 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         if (feedbackIndex === null) {
             return userAnswers[currentQuestion?.id] === idx
                 ? "bg-primary text-white"
-                : "bg-white/10 text-slate-500 group-hover:bg-white/20";
+                : "bg-edu-indigo/20 text-slate-400 group-hover:bg-edu-indigo/40";
         }
         if (idx === currentQuestion.correctIndex) return "bg-green-500 text-white";
         if (idx === feedbackIndex) return "bg-red-500 text-white";
-        return "bg-white/10 text-slate-500";
+        return "bg-edu-indigo/10 text-slate-500";
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 flex flex-col">
+        <div className="min-h-screen bg-edu-bg flex flex-col simulator-screen">
             {/* HUD Header */}
-            <div className="bg-slate-900/80 backdrop-blur-xl border-b border-white/10 p-4 md:p-6 sticky top-0 z-50">
+            <div className="bg-edu-card/90 backdrop-blur-xl border-b border-edu-indigo/30 p-4 md:p-6 sticky top-0 z-50">
                 <div className="container mx-auto flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                         <div className="h-10 w-10 bg-primary/20 rounded-xl flex items-center justify-center">
@@ -199,7 +199,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
             <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
                 {isPaused && examMode === 'full' && (
                     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-                        <div className="bg-gray-900 rounded-2xl p-6 w-80 text-center">
+                        <div className="bg-edu-card rounded-2xl p-6 w-80 text-center border border-edu-indigo/30">
                             <div className="text-4xl mb-3">⏸️</div>
                             <h3 className="text-white font-black text-xl mb-4">Simulador Pausado</h3>
 
@@ -241,13 +241,13 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                     </div>
                 )}
 
-                <div className="bg-slate-900/40 border border-white/5 rounded-[2.5rem] p-8 md:p-12 space-y-10 shadow-2xl relative overflow-hidden">
+                <div className="bg-edu-card/50 border border-edu-indigo/20 rounded-[2.5rem] p-8 md:p-12 space-y-10 shadow-2xl relative overflow-hidden">
                     {/* Navigation Panel */}
                     <div className="space-y-4">
                         <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                             Panel de Navegación ({activeQuestions.length} Preguntas)
                         </h3>
-                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-1.5 p-4 bg-black/20 rounded-2xl border border-white/5 max-h-[300px] overflow-y-auto custom-scrollbar">
+                        <div className="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-16 gap-1.5 p-4 bg-edu-bg rounded-2xl border border-edu-indigo/20 max-h-[300px] overflow-y-auto custom-scrollbar">
                             {activeQuestions.map((q, idx) => {
                                 const isCurrent = currentQuestionIndex === idx;
                                 const isAnswered = userAnswers[q.id] !== undefined;
@@ -262,7 +262,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                                             isCurrent ? "bg-white text-blue-600 border-blue-600 scale-110 z-10 shadow-[0_0_15px_rgba(37,99,235,0.4)]" :
                                                 isMarked ? "bg-amber-500 text-white border-amber-600 animate-pulse" :
                                                     isAnswered ? "bg-blue-600 text-white border-blue-700" :
-                                                        "bg-slate-800 text-slate-500 border-white/5 hover:border-white/20"
+                                                        "bg-edu-bg text-slate-500 border-edu-indigo/20 hover:border-edu-indigo/50"
                                         )}
                                     >
                                         {idx + 1}
@@ -375,7 +375,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
             </div>
 
             {/* Navigation Footer */}
-            <div className="bg-slate-950 border-t border-white/10 p-4">
+            <div className="bg-edu-card border-t border-edu-indigo/30 p-4">
                 <div className="container mx-auto max-w-4xl flex items-center gap-2">
                     <Button
                         variant="outline"

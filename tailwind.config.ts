@@ -24,6 +24,12 @@ export default {
         display: ['Cal Sans', 'Inter', 'sans-serif'],
       },
       colors: {
+        // Educational Dark Dashboard tokens (UI/UX Pro Max)
+        'edu-bg':       '#0F0F23',
+        'edu-card':     '#1B1B30',
+        'edu-orange':   '#EA580C',
+        'edu-indigo':   '#4338CA',
+
         // Design-system palette (light, Stripe/Apple-inspired)
         'ink':          '#0A0A0A',
         'ink-2':        '#3D3D3D',
