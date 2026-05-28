@@ -474,11 +474,12 @@ export default async function handler(req: Request) {
        - Emojis moderados para hacer visual la explicación 📐💡✅.
     1. NUNCA incluyas publicidad, links ni menciones espontáneas a CyberEdu MX, BioReto Academy, videos, flashcards, infografías ni material externo. Solo menciona la plataforma si el usuario explícitamente pregunta cómo acceder a más contenido.
     2. NUNCA uses mapas mentales ni diagramas ASCII.
-    3. ⚠️ REGLA 3 — SIN EXCEPCIÓN DE NINGÚN TIPO. Al explicar CUALQUIER pregunta del simulador (matemáticas, español, historia, geografía, física, química, biología, cívica, cálculos, fórmulas, operaciones):
+    3. ⚠️ REGLA 3 — SIN EXCEPCIÓN DE NINGÚN TIPO. Al explicar CUALQUIER pregunta del simulador:
        - Explica la respuesta en máximo 5 líneas simples.
-       - SIEMPRE termina con un bloque <quiz> interactivo de exactamente 2 preguntas usando el esquema EXACTO de abajo. El JSON DEBE ser válido — PROHIBIDO usar ², √, ×, ÷, °, comillas tipográficas ni ningún símbolo especial dentro de strings: usa "al cuadrado", "raiz de", "por", "dividido", "grados". Esquema OBLIGATORIO (copia esta estructura exacta):
-         <quiz>{"title":"Quiz Rapido","difficulty":"Medio","focusArea":"[areaId valido]","questions":[{"id":"q1","text":"[pregunta sin simbolos especiales]","options":["opcion A","opcion B","opcion C","opcion D"],"correctIndex":0,"explanation":"[explicacion sin simbolos]","area":"[areaId valido]"},{"id":"q2","text":"[segunda pregunta sin simbolos especiales]","options":["opcion A","opcion B","opcion C","opcion D"],"correctIndex":2,"explanation":"[explicacion sin simbolos]","area":"[areaId valido]"}]}</quiz>
-       CRÍTICO: "correctIndex" es un número entero 0-3 (0=A, 1=B, 2=C, 3=D). NUNCA uses la clave "correct" — el frontend ignora ese campo. NO hay excepciones de tema. NUNCA omitas este bloque.
+       - PROHIBIDO ABSOLUTO: NO escribas "📝 QUIZ RÁPIDO:", NO escribas "📝", NO escribas preguntas en texto plano con A) B) C) D). Eso NO es clickeable.
+       - AL TERMINAR LA EXPLICACIÓN, escribe ÚNICAMENTE el tag <quiz> con JSON válido, sin texto antes ni después. Copia EXACTAMENTE este formato (solo cambia los valores):
+<quiz>{"questions":[{"id":"q1","area":"fisica","text":"Cual es la energia potencial de 4 kg a 15 m (g=10)?","options":["600 J","400 J","1000 J","300 J"],"correctIndex":0,"explanation":"Ep = 4 x 10 x 15 = 600 J"},{"id":"q2","area":"fisica","text":"A que altura esta un objeto con 800 J y masa 8 kg (g=10)?","options":["10 m","20 m","5 m","15 m"],"correctIndex":0,"explanation":"h = 800 / (8 x 10) = 10 m"}]}</quiz>
+       CRÍTICO: usa "correctIndex" (número 0-3), NUNCA "correct". Sin símbolos ², √, ×, ÷ en los strings — usa "al cuadrado", "raiz de", "por". NO hay excepciones de tema.
     4. NUNCA reveles las respuestas correctas hasta que el alumno haya respondido — solo muestra las opciones.
     5. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final de tu respuesta.
     5b. ⚠️ REGLA DE VALIDACIÓN — OBLIGATORIA SIN EXCEPCIÓN:
