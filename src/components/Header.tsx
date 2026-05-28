@@ -71,7 +71,11 @@ const Header = () => {
     }
   };
 
+  const isActive = (path: string) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
   return (
+    <>
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border transition-colors duration-300">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -615,6 +619,49 @@ const Header = () => {
         </nav>
       </div>
     </header>
+
+    {/* Bottom navigation bar — mobile/tablet only */}
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border flex md:hidden">
+      <button
+        onClick={() => navigate("/")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/") ? "text-violet-400" : "text-muted-foreground hover:text-foreground"}`}
+      >
+        <span className="text-lg leading-none">🏠</span>
+        <span className="text-[9px] font-bold">Inicio</span>
+      </button>
+      <button
+        onClick={() => navigate("/simulador-pro")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/simulador-pro") ? "text-violet-400" : "text-muted-foreground hover:text-foreground"}`}
+      >
+        <span className="text-lg leading-none">🎯</span>
+        <span className="text-[9px] font-bold">Simulador</span>
+      </button>
+      <button
+        onClick={() => navigate("/guia2026")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/guia2026") ? "text-violet-400" : "text-amber-400 hover:text-amber-300"}`}
+      >
+        <span className="text-lg leading-none">📖</span>
+        <span className="text-[9px] font-bold">Guía 2026</span>
+      </button>
+      <button
+        onClick={() => navigate("/acordeon")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/acordeon") ? "text-violet-400" : "text-muted-foreground hover:text-foreground"}`}
+      >
+        <span className="text-lg leading-none">📋</span>
+        <span className="text-[9px] font-bold">Acordeón</span>
+      </button>
+      <button
+        onClick={() => navigate(user ? "/tokens" : "/auth")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/tokens") || isActive("/auth") ? "text-violet-400" : "text-muted-foreground hover:text-foreground"}`}
+      >
+        <span className="text-lg leading-none">{user ? "🪙" : "🔑"}</span>
+        <span className="text-[9px] font-bold">{user ? "Tokens" : "Entrar"}</span>
+      </button>
+    </nav>
+
+    {/* Spacer so content isn't hidden behind the bottom nav */}
+    <div className="h-14 md:hidden" />
+    </>
   );
 };
 
