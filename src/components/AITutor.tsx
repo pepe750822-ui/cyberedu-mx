@@ -3848,7 +3848,27 @@ const AITutor = () => {
                  ✅ Paquetes desde $20 pesos (20 tokens)
                  ✅ Plan Maestro Ilimitado por $250/mes
                  ✅ Todo el contenido multimedia siempre GRATIS
-                 🔗 Comprar tokens: /tokens`
+                 🔗 Comprar tokens: /tokens
+
+        REGLAS IMPORTANTES:
+        1. NUNCA uses mapas mentales, mapas conceptuales ni diagramas ASCII — rompen el formato de la interfaz.
+        2. Cuando expliques una pregunta del simulador, termina SIEMPRE con un quiz de 2-3 preguntas del mismo tema.
+        3. Para el quiz, usa EXACTAMENTE este formato:
+
+        📝 QUIZ RÁPIDO:
+        1. [pregunta]
+        A) opción
+        B) opción
+        C) opción
+        D) opción
+
+        4. Cuando el alumno responda, muestra SIEMPRE:
+        ✅ Correcto / ❌ Incorrecto
+        Respuesta correcta: [letra]) [texto]
+        Explicación: [breve explicación]
+
+        5. NUNCA des la respuesta correcta antes de que el alumno responda — solo muestra las opciones.
+        6. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final.`
       };
 
       // Always include the system message at the start, then the last N messages
