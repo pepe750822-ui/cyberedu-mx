@@ -74,14 +74,24 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border transition-colors duration-300">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="p-1.5 hero-gradient rounded-lg">
-            <GraduationCap className="h-5 w-5 text-white" />
-          </div>
-          <span className="text-lg font-bold text-foreground">
-            PrepáraTE
-          </span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="p-1.5 hero-gradient rounded-lg">
+              <GraduationCap className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-lg font-bold text-foreground">
+              PrepáraTE
+            </span>
+          </Link>
+          {!user && (
+            <button
+              onClick={() => navigate('/auth')}
+              className="hidden sm:flex bg-gradient-to-r from-violet-600 to-purple-600 text-white font-black px-4 py-2 rounded-xl hover:scale-105 transition-transform text-sm whitespace-nowrap"
+            >
+              🚀 Ingresar gratis
+            </button>
+          )}
+        </div>
 
         {/* Online Users Indicator */}
         <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
@@ -95,7 +105,7 @@ const Header = () => {
         </div>
 
         <nav className="flex items-center gap-2 sm:gap-4">
-          <div className="hidden md:flex items-center gap-4 mr-2">
+          <div className="hidden xl:flex items-center gap-4 mr-2">
             <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Inicio
             </Link>
@@ -323,14 +333,7 @@ const Header = () => {
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
-          ) : (
-            <button
-              onClick={() => navigate('/auth')}
-              className="hidden sm:flex bg-gradient-to-r from-violet-600 to-purple-600 text-white font-black px-6 py-2 rounded-xl hover:scale-105 transition-transform whitespace-nowrap"
-            >
-              🚀 Ingresar gratis
-            </button>
-          )}
+          ) : null}
 
           {/* Logout visible en móvil junto al menú hamburguesa */}
           {user && (
