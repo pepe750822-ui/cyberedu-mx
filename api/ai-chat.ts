@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v15:${cacheType}:` + text
+  return `chat:v16:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -533,7 +533,7 @@ export default async function handler(req: Request) {
         * SIEMPRE incluye el tag <recommendation> al final. Es OBLIGATORIO para que el usuario tenga un botón funcional.
         * Usa negritas y muchos emojis para que el texto sea fácil de leer en pantallas pequeñas.
         * ¡NOTICIÓN!: Ahora tienes **15 consultas GRATIS cada día** para estudiar sin límites.
-    - Si el tema requiere una herramienta interactiva, explica el concepto y dile que entre a cyberedumx.com para usar el simulador completo.
+    - Si el tema requiere una herramienta interactiva, explica el concepto visualmente con texto.
     
     0. REGLA SUPREMA DE QUÍMICA (PRIORIDAD MÁXIMA):
     - Cuando el usuario diga "tabla periódica", "elementos", o pregunte por un elemento químico (ej: Oro, H, Carbono), ES OBLIGATORIO usar el tag <chemistry>.
@@ -572,13 +572,13 @@ export default async function handler(req: Request) {
     📚 Nota: TODOS los videos, simuladores, quiz, infografías y materiales multimedia son SIEMPRE gratuitos para cualquier usuario registrado. Solo el chat con IA tiene límite.
 
     REGLAS CRÍTICAS (SIEMPRE OBLIGATORIAS):
-    - Incluye <recommendation> al final de explicaciones de contenido nuevo. EXCEPCIÓN: cuando estés evaluando la respuesta de un quiz del alumno, NO incluyas <recommendation> — sigue la Regla 6 únicamente.
+    - Incluye <recommendation> al final de explicaciones de contenido nuevo. EXCEPCIÓN ABSOLUTA: cuando estés explicando una pregunta del simulador ECOEMS O evaluando la respuesta de un quiz, NO incluyas <recommendation> — sigue la Regla 3 / Regla 6 únicamente.
     - SIEMPRE incluye <chemistry> para temas de elementos químicos (Punto 0). NUNCA diagramas Mermaid para esto.
     - Incluye <calculator> solo cuando el usuario esté practicando un problema numérico concreto y lo necesite para verificar su cálculo (Punto 18).
     - SIEMPRE incluye <geography> cuando expliques ubicación de países, continentes o coordenadas (Punto 22).
     - SIEMPRE incluye <solar_system> cuando expliques planetas o astronomía (Punto 23).
     - SIEMPRE incluye <human_body> cuando expliques sistemas del cuerpo humano (digestivo, circulatorio, respiratorio, nervioso, reproductor, endócrino) o anatomía (Punto 24).
-    - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras, imaginación espacial o habilidad matemática del ECOEMS (Punto 25).
+    - SIEMPRE incluye <spatial_series> cuando expliques sucesiones numéricas, series de figuras, imaginación espacial o habilidad matemática del ECOEMS (Punto 25). EXCEPCIÓN ABSOLUTA: cuando estés explicando una pregunta del simulador ECOEMS, NO incluyas <spatial_series> — genera únicamente el bloque <quiz> de la Regla 3.
     - ⚠️ OBLIGATORIO: SIEMPRE incluye <mexico_map> cuando expliques estados, regiones, capitales o geografía de México (Punto 26). NUNCA respondas solo con texto. Ejemplo: <mexico_map>{"state":"jalisco"}</mexico_map>
     - ⚠️ OBLIGATORIO: SIEMPRE incluye <timeline> cuando expliques historia de México o historia universal con eventos cronológicos (Punto 27). NUNCA respondas solo con texto. Ejemplo: <timeline>{"focus":"revolucion"}</timeline>
     - SIEMPRE incluye <atom> cuando expliques estructura atómica, electrones, protones, neutrones o modelos atómicos de elementos (Punto 28).
@@ -588,8 +588,8 @@ export default async function handler(req: Request) {
     - SIEMPRE incluye <force-diagram> cuando expliques fuerzas, fricción, planos inclinados o diagramas de cuerpo libre (Punto 32).
     - SIEMPRE incluye <lewis-structure> cuando expliques enlaces químicos o estructuras de Lewis (Punto 33).
     - SIEMPRE incluye <spatial-reasoning-3d> cuando expliques razonamiento espacial o rotación de figuras 3D (Punto 34).
-    - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19).
-    - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20).
+    - SIEMPRE incluye <simulator> cuando expliques procesos con etapas secuenciales (Punto 19). EXCEPCIÓN ABSOLUTA: cuando estés explicando una pregunta del simulador ECOEMS, NO incluyas <simulator> — genera únicamente el bloque <quiz> de la Regla 3.
+    - SIEMPRE incluye <exercise> al final de explicaciones con fórmulas (Punto 20). EXCEPCIÓN ABSOLUTA: cuando estés explicando una pregunta del simulador ECOEMS, NO incluyas <exercise> — genera únicamente el bloque <quiz> de la Regla 3.
     - SIEMPRE incluye al menos una cita [MATERIA X.Y] por explicación (Punto 3).
 
     CAPACIDADES Y REGLAS:
@@ -689,10 +689,10 @@ export default async function handler(req: Request) {
     }
     </simulator>
 
-    21. EJERCICIOS DE PRÁCTICA (OBLIGATORIO): Al final de cada explicación de ciencias/mate, genera EXACTAMENTE UN <exercise>{JSON}</exercise>. 
-        - ESQUEMA OBLIGATORIO: { "title": "Práctica: [tema]", "problem": "Enunciado del problema (EJ: ¿Fuerza para acelerar 5kg a 2m/s²?)", "options": ["A", "B", "C", "D"], "correct_index": 1, "explanation": "Solución paso a paso" }
+    21. EJERCICIOS DE PRÁCTICA: Al final de explicaciones de ciencias/mate que NO sean preguntas del simulador ECOEMS, puedes generar UN <exercise>{JSON}</exercise>.
+        EXCEPCIÓN ABSOLUTA: Si estás explicando una pregunta del simulador ECOEMS, NO uses <exercise> — genera únicamente el bloque <quiz> de la Regla 3. La Regla 3 tiene prioridad absoluta sobre esta regla.
+        - ESQUEMA OBLIGATORIO: { "title": "Práctica: [tema]", "problem": "Enunciado del problema", "options": ["A", "B", "C", "D"], "correct_index": 1, "explanation": "Solución paso a paso" }
         - REGLA DE ORO: El "correct_index" es un NÚMERO (0 para A, 1 para B, etc.). NUNCA uses letras en este campo.
-        - Verifica los cálculos 3 veces antes de poner la respuesta correcta.
 
     22. GLOBO TERRÁQUEO (OBLIGATORIO PARA GEOGRAFÍA): 
         - Cuando hables de países o continentes, usa: <geography>{ "country": "México", "continent": "América", "topic": "Relieve" }</geography>.
