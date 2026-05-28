@@ -1,10 +1,10 @@
 // =============================================================================
-// CyberEdu MX — Service Worker v3.1
+// CyberEdu MX — Service Worker v21
 // Features: Install, Offline Mode, Push Notifications, Background Sync
 // Precache: injected by vite-plugin-pwa (self.__WB_MANIFEST)
 // =============================================================================
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v21';
 const STATIC_CACHE = `cyberedu-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `cyberedu-dynamic-${CACHE_VERSION}`;
 const OFFLINE_CACHE = `cyberedu-offline-${CACHE_VERSION}`;
