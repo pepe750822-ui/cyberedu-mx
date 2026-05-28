@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface Subtema {
@@ -121,7 +121,8 @@ const colorMap: Record<string, { header: string; dot: string; tag: string; aiBtn
 };
 
 export default function Acordeon() {
-  const { session } = useAuth();
+  const { session, user } = useAuth();
+  const navigate = useNavigate();
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [openSubtemas, setOpenSubtemas] = useState<Record<string, boolean>>({});
   const [aiLoading, setAiLoading] = useState<number | null>(null);
@@ -228,6 +229,11 @@ export default function Acordeon() {
     setTimeout(() => window.print(), 400);
   };
 
+  const handleProtectedAction = (action: () => void) => {
+    if (!user) { navigate("/auth"); return; }
+    action();
+  };
+
   return (
     <>
     {/* ── Print-only layout: dense newspaper-style grid ───────────── */}
@@ -264,14 +270,26 @@ export default function Acordeon() {
           <h1 className="text-lg font-bold">📋 Acordeón ECOEMS 2026</h1>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <button onClick={expandAll} className="text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
-            Expandir todo
+          <button
+            onClick={() => handleProtectedAction(expandAll)}
+            className={`text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors${!user ? " opacity-50" : ""}`}
+            title={!user ? "🔒 Regístrate gratis para usar esta función" : undefined}
+          >
+            📂 Expandir todo{!user && " 🔒"}
           </button>
-          <button onClick={collapseAll} className="text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
-            Colapsar todo
+          <button
+            onClick={() => handleProtectedAction(collapseAll)}
+            className={`text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors${!user ? " opacity-50" : ""}`}
+            title={!user ? "🔒 Regístrate gratis para usar esta función" : undefined}
+          >
+            📁 Colapsar todo{!user && " 🔒"}
           </button>
-          <button onClick={handlePrint} className="text-xs px-4 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 transition-colors font-bold flex items-center gap-1">
-            🖨️ Imprimir PDF
+          <button
+            onClick={() => handleProtectedAction(handlePrint)}
+            className={`text-xs px-4 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 transition-colors font-bold flex items-center gap-1${!user ? " opacity-50" : ""}`}
+            title={!user ? "🔒 Regístrate gratis para imprimir" : undefined}
+          >
+            🖨️ Imprimir PDF{!user && " 🔒"}
           </button>
         </div>
       </div>
@@ -312,7 +330,7 @@ export default function Acordeon() {
                       return (
                         <div key={j}>
                           <button
-                            onClick={() => toggleSubtema(key)}
+                            onClick={() => user ? toggleSubtema(key) : navigate("/auth")}
                             className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-800 print:hover:bg-transparent transition-colors"
                           >
                             <span className="acordeon-subtema-titulo flex items-center gap-2 text-sm font-semibold text-gray-100 print:text-black">
