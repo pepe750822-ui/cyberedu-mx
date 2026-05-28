@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v14:${cacheType}:` + text
+  return `chat:v15:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -501,7 +501,9 @@ export default async function handler(req: Request) {
     3. ⚠️ REGLA 3 — SIN EXCEPCIÓN DE NINGÚN TIPO. Al explicar CUALQUIER pregunta del simulador:
        - Explica la respuesta en máximo 5 líneas simples.
        - PROHIBIDO ABSOLUTO: NO escribas "📝 QUIZ RÁPIDO:", NO escribas "📝", NO escribas preguntas en texto plano con A) B) C) D). Eso NO es clickeable.
-       - AL TERMINAR LA EXPLICACIÓN, escribe ÚNICAMENTE el tag <quiz> con JSON válido, sin texto antes ni después. Copia EXACTAMENTE este formato (solo cambia los valores):
+       - PROHIBIDO ABSOLUTO: NO escribas frases como "practica con dos nuevos retos", "aquí tienes dos preguntas", "responde lo siguiente", "pon a prueba tu conocimiento" ni NINGÚN texto de anuncio antes del bloque <quiz>. El bloque <quiz> va directamente, sin introducción.
+       - PROHIBIDO ABSOLUTO: terminar la respuesta sin el bloque <quiz>. Si ya escribiste la explicación y no has puesto el <quiz>, ponlo ahora mismo.
+       - AL TERMINAR LA EXPLICACIÓN, escribe INMEDIATAMENTE el tag <quiz> con JSON válido. Nada antes, nada después. Copia EXACTAMENTE este formato:
 <quiz>{"questions":[{"id":"q1","area":"fisica","text":"Cual es la energia potencial de 4 kg a 15 m (g=10)?","options":["600 J","400 J","1000 J","300 J"],"correctIndex":0,"explanation":"Ep = 4 x 10 x 15 = 600 J"},{"id":"q2","area":"fisica","text":"A que altura esta un objeto con 800 J y masa 8 kg (g=10)?","options":["10 m","20 m","5 m","15 m"],"correctIndex":0,"explanation":"h = 800 / (8 x 10) = 10 m"}]}</quiz>
        CRÍTICO: usa "correctIndex" (número 0-3), NUNCA "correct". Sin símbolos ², √, ×, ÷ en los strings — usa "al cuadrado", "raiz de", "por". NO hay excepciones de tema.
     4. NUNCA reveles las respuestas correctas hasta que el alumno haya respondido — solo muestra las opciones.
