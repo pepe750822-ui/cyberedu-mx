@@ -224,6 +224,37 @@ const Header = () => {
             </Tooltip>
           </div>
 
+          {/* Iconos navegación rápida — visibles desde tablet */}
+          <div className="hidden sm:flex items-center gap-1">
+            <button
+              onClick={() => navigate('/simulador-pro')}
+              title="Simulador Pro"
+              className={`p-2 rounded-xl transition-colors hover:bg-white/10 ${
+                location.pathname.includes('simulador') ? 'text-violet-400' : 'text-gray-400'
+              }`}
+            >
+              📝
+            </button>
+            <button
+              onClick={() => navigate('/guia2026')}
+              title="Guía 2026"
+              className={`p-2 rounded-xl transition-colors hover:bg-white/10 ${
+                location.pathname.includes('guia') ? 'text-violet-400' : 'text-gray-400'
+              }`}
+            >
+              🎬
+            </button>
+            <button
+              onClick={() => navigate('/acordeon')}
+              title="Acordeón ECOEMS"
+              className={`p-2 rounded-xl transition-colors hover:bg-white/10 ${
+                location.pathname.includes('acordeon') ? 'text-violet-400' : 'text-gray-400'
+              }`}
+            >
+              📋
+            </button>
+          </div>
+
           <GlobalSearch className="hidden md:block" />
 
           <Tooltip>
