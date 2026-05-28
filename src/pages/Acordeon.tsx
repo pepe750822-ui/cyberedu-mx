@@ -653,7 +653,33 @@ export default function Acordeon() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <>
+    {/* ── Print-only layout: dense newspaper-style grid ───────────── */}
+    <div className="acordeon-print-layout hidden">
+      <h1 className="acordeon-titulo">📋 Acordeón ECOEMS 2026 — cyberedumx.com</h1>
+      <div className="acordeon-print-grid">
+        {areas.map((area) => (
+          <div key={area.nombre} className="acordeon-print-card">
+            <div className="acordeon-print-header">{area.icono} {area.nombre}</div>
+            <div className="acordeon-print-body">
+              {area.subtemas.map((sub) => (
+                <div key={sub.titulo}>
+                  <strong>{sub.titulo}:</strong>
+                  <ul>
+                    {sub.contenido.map((item, k) => (
+                      <li key={k}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* ── Screen layout ────────────────────────────────────────────── */}
+    <div className="acordeon-screen-only min-h-screen bg-gray-950 text-white">
       {/* Topbar */}
       <div className="no-print sticky top-0 z-10 bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3">
@@ -774,5 +800,6 @@ export default function Acordeon() {
         cyberedumx.com — ECOEMS 2026
       </div>
     </div>
+    </>
   );
 }
