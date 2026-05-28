@@ -438,6 +438,15 @@
     width: 100% !important;
   }
 
+  .acordeon-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
   @keyframes float0 { to { transform: translate(10px, -15px) scale(1.1); } }
   @keyframes float1 { to { transform: translate(-12px, 10px) scale(0.9); } }
   @keyframes float2 { to { transform: translate(8px, 12px) scale(1.05); } }

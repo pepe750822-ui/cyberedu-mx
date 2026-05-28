@@ -128,6 +128,12 @@ const Header = () => {
               📖 Guía 2026
             </Link>
             <Link
+              to="/acordeon"
+              className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1"
+            >
+              📋 Acordeón
+            </Link>
+            <Link
               to="/#areas"
               onClick={handleAreasClick}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -412,6 +418,13 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     📖 Guía 2026
+                  </Link>
+                  <Link
+                    to="/acordeon"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-colors text-violet-400 font-bold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    📋 Acordeón
                   </Link>
                   <Link
                     to="/#areas"

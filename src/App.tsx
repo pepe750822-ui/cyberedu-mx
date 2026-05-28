@@ -39,6 +39,7 @@ const AdminMonitoring = lazy(() => import("./pages/AdminMonitoring"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SimuladorPro = lazy(() => retryFetch(() => import("./pages/SimuladorPro")));
 const Guia2026 = lazy(() => import("./pages/Guia2026"));
+const Acordeon = lazy(() => import("./pages/Acordeon"));
 const Marketing = lazy(() => import("./pages/Marketing"));
 const Certificaciones = lazy(() => import("./pages/Certificaciones"));
 const Reportes = lazy(() => import("./pages/Reportes"));
@@ -217,6 +218,7 @@ const App = () => (
               <Route path="/area/:areaId" element={<AreaDetail />} />
               <Route path="/simulador-pro" element={<SimuladorPro />} />
               <Route path="/guia2026" element={<Guia2026 />} />
+              <Route path="/acordeon" element={<Acordeon />} />
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/promo-ecoems" element={<PromoEcoems />} />
               <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
