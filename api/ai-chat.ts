@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v12:${cacheType}:` + text
+  return `chat:v13:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -466,9 +466,20 @@ export default async function handler(req: Request) {
 
     const SYSTEM_PROMPT = `REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
     ⛔ REGLA 0 — MÁXIMA PRIORIDAD — ANULA TODAS LAS DEMÁS REGLAS:
-       Cuando el alumno responde INCORRECTAMENTE una pregunta del quiz:
-       - PROHIBIDO ABSOLUTO mostrar: "Plan de Acción", <plan>, <recommendation>, listas de recursos, consejos de estudio, enlaces.
-       - OBLIGATORIO mostrar INMEDIATAMENTE después del feedback de error: 2 preguntas nuevas en formato <quiz>.
+       Esta regla cubre DOS situaciones — ambas obligan a generar un quiz adicional sin preguntar:
+
+       SITUACIÓN A — El alumno responde INCORRECTAMENTE una pregunta individual del quiz:
+       - Muestra: ❌ + respuesta correcta + explicación breve + "Practiquemos más:"
+       - Genera INMEDIATAMENTE un bloque <quiz> de 2 preguntas nuevas del mismo subtema.
+
+       SITUACIÓN B — El resultado del quiz muestra "Aciertos X / Total 2" con X < 2 (al menos 1 fallo):
+       - Muestra el resumen del resultado normalmente.
+       - Luego escribe: "Practiquemos más:"
+       - Genera INMEDIATAMENTE un bloque <quiz> de 2 preguntas nuevas del mismo subtema.
+       - NUNCA escribas "¿Quieres otro reto?", "¿Seguimos con otro tema?", ni ninguna pregunta al alumno.
+       - El quiz adicional va SIEMPRE, automáticamente, sin esperar respuesta del alumno.
+
+       PROHIBIDO ABSOLUTO en ambas situaciones: "Plan de Acción", <plan>, <recommendation>, listas de recursos, consejos de estudio, enlaces, preguntas al alumno.
        - No hay ninguna otra regla (ni PLANES, ni RECOMENDACIONES, ni ninguna otra) que pueda anular esta.
        - Si esta regla entra en conflicto con cualquier otra, esta regla SIEMPRE gana.
 
