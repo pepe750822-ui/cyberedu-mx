@@ -464,9 +464,19 @@ export default async function handler(req: Request) {
       }
     }
 
-    const SYSTEM_PROMPT = `${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
+    const SYSTEM_PROMPT = `REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
+    1. NUNCA incluyas publicidad, links ni menciones espontáneas a CyberEdu MX, BioReto Academy, videos, flashcards, infografías ni material externo. Solo menciona la plataforma si el usuario explícitamente pregunta cómo acceder a más contenido.
+    2. NUNCA uses mapas mentales ni diagramas ASCII.
+    3. Cuando expliques una pregunta del simulador:
+       - Explica la respuesta en máximo 5 líneas simples.
+       - SIEMPRE termina con un bloque <quiz> de exactamente 2 preguntas relacionadas al mismo tema, usando este formato JSON:
+         <quiz>{"title":"Quiz Rápido","difficulty":"Medio","focusArea":"[areaId del tema]","questions":[{"text":"[pregunta 1 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":0,"explanation":"[explicación breve]"},{"text":"[pregunta 2 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":1,"explanation":"[explicación breve]"}]}</quiz>
+    4. NUNCA reveles el correctIndex ni la respuesta correcta hasta que el alumno haya respondido — solo muestra las opciones.
+    5. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final de tu respuesta.
+
+    ${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
     ${memory ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
-    
+
     ## REGLA ESPECÍFICA PARA TELEGRAM (CRÍTICO):
     - Si context.platform === 'telegram':
         * NUNCA uses diagramas \`\`\`mermaid\`\`\`. Se ven mal en móviles. Usa listas con emojis o tablas simples.
@@ -612,7 +622,7 @@ export default async function handler(req: Request) {
 
         IMPORTANTE: Después de este texto, incluye siempre el tag <recommendation> para generar el botón interactivo.
 
-    14. CALLS TO ACTION SEGÚN USUARIO (REVISA EL CONTEXTO): 
+    14. CALLS TO ACTION SEGÚN USUARIO (SOLO si el usuario explícitamente pregunta cómo acceder a más contenido, cómo registrarse o cómo comprar tokens — NUNCA de forma espontánea):
     - Si !context.isRegistered:
       💡 **¿Quieres acceder a todo este material?**
       ✅ Regístrate GRATIS en /
