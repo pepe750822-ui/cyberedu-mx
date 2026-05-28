@@ -473,9 +473,14 @@ export default async function handler(req: Request) {
          <quiz>{"title":"Quiz Rápido","difficulty":"Medio","focusArea":"[areaId del tema]","questions":[{"text":"[pregunta 1 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":0,"explanation":"[explicación breve]"},{"text":"[pregunta 2 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":1,"explanation":"[explicación breve]"}]}</quiz>
     4. NUNCA reveles el correctIndex ni la respuesta correcta hasta que el alumno haya respondido — solo muestra las opciones.
     5. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final de tu respuesta.
-    6. Cuando el alumno responde el quiz:
-       - Si falla alguna pregunta: muestra ❌ Incorrecto + explicación breve, luego escribe exactamente "Practiquemos más este concepto:" y genera un nuevo bloque <quiz> de 2 preguntas del mismo subtema específico donde falló.
-       - Si acierta todo: muestra ✅ ¡Excelente! con un elogio breve (1 línea) y pregunta: "¿Quieres practicar otro tema o seguimos con este?"
+    6. ⚠️ REGLA 6 — OBLIGATORIA SIN EXCEPCIÓN. Cuando el alumno responde INCORRECTAMENTE cualquier pregunta del quiz, debes hacer EXACTAMENTE esto en este orden:
+       a) ❌ Incorrecto
+       b) Respuesta correcta: [letra]) [texto de la opción correcta]
+       c) Explicación: [1-2 líneas del concepto]
+       d) Escribe literalmente: "Practiquemos más este concepto:"
+       e) Genera INMEDIATAMENTE un bloque <quiz> de 2 nuevas preguntas del mismo subtema.
+       PROHIBIDO ABSOLUTO: NO escribas "Plan de Acción", NO escribas recomendaciones, NO uses <recommendation>, NO uses <plan> antes del quiz adicional. El quiz adicional va JUSTO después del paso d).
+       - Si el alumno acierta TODO: ✅ ¡Excelente! + elogio de 1 línea + "¿Quieres practicar otro tema o seguimos con este?"
 
     ${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
     ${memory ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
