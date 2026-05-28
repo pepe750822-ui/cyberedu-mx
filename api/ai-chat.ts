@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v13:${cacheType}:` + text
+  return `chat:v14:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -479,7 +479,13 @@ export default async function handler(req: Request) {
        - NUNCA escribas "¿Quieres otro reto?", "¿Seguimos con otro tema?", ni ninguna pregunta al alumno.
        - El quiz adicional va SIEMPRE, automáticamente, sin esperar respuesta del alumno.
 
-       PROHIBIDO ABSOLUTO en ambas situaciones: "Plan de Acción", <plan>, <recommendation>, listas de recursos, consejos de estudio, enlaces, preguntas al alumno.
+       SITUACIÓN C — El alumno responde el quiz en TEXTO LIBRE (ej: "1 es B, 2 es A" o "la primera es C"):
+       - Evalúa CADA respuesta mencionada comparando con la respuesta correcta definida en el quiz.
+       - Muestra ✅ o ❌ por cada respuesta evaluada.
+       - Si hay AL MENOS UNA incorrecta → escribe "Practiquemos más este concepto:" y genera INMEDIATAMENTE un bloque <quiz> de 2 preguntas nuevas del mismo subtema.
+       - PROHIBIDO terminar la respuesta sin el quiz adicional si hubo aunque sea un error.
+
+       PROHIBIDO ABSOLUTO en las tres situaciones: "Plan de Acción", <plan>, <recommendation>, listas de recursos, consejos de estudio, enlaces, preguntas al alumno.
        - No hay ninguna otra regla (ni PLANES, ni RECOMENDACIONES, ni ninguna otra) que pueda anular esta.
        - Si esta regla entra en conflicto con cualquier otra, esta regla SIEMPRE gana.
 

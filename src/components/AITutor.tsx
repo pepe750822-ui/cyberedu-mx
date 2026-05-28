@@ -3252,6 +3252,13 @@ const AITutor = () => {
     },
   }), [agentNavigate, handleCitationClick]);
 
+  const handleSend = () => {
+    if (!input.trim() && !pendingFile) return;
+    const msg = input;
+    setInput("");
+    sendMessage(msg);
+  };
+
   const sendMessage = async (text: string) => {
     let finalChatText = text.trim();
     
@@ -4429,7 +4436,7 @@ const AITutor = () => {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+                        onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                         placeholder={isListening ? "Escuchando..." : isGuestLimitReached ? "Regístrate para seguir" : (dailyLimitBanner.visible ? "Límite diario alcanzado" : "Pregunta algo o usa un comando...")}
                         disabled={isStreaming || dailyLimitBanner.visible || isGuestLimitReached}
                         className={cn(
@@ -4450,7 +4457,7 @@ const AITutor = () => {
                       </button>
                     </div>
                     <button
-                      onClick={() => sendMessage(input)}
+                      onClick={handleSend}
                       disabled={(!input.trim() && !pendingFile) || isStreaming || dailyLimitBanner.visible || isGuestLimitReached}
                       className="h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary/20 disabled:opacity-50"
                     >
