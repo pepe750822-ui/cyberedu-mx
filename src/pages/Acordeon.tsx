@@ -569,6 +569,7 @@ export default function Acordeon() {
 
   const generarAcordeonIA = async (idx: number, nombre: string) => {
     setAiLoading(idx);
+    setAiContent((prev) => ({ ...prev, [idx]: "" }));
     try {
       const res = await fetch("/api/ai-chat", {
         method: "POST",
@@ -581,13 +582,55 @@ export default function Acordeon() {
           context: { type: "acordeon", materia: nombre },
         }),
       });
-      const data = await res.json();
-      const text: string = data.content ?? data.message ?? data.response ?? "Sin respuesta";
-      setAiContent((prev) => ({ ...prev, [idx]: text }));
+
+      if (!res.ok || !res.body) {
+        setAiContent((prev) => ({ ...prev, [idx]: "Error al conectar con el tutor IA." }));
+        setAiLoading(null);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let newline: number;
+        while ((newline = buffer.indexOf("\n")) !== -1) {
+          let line = buffer.slice(0, newline);
+          buffer = buffer.slice(newline + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (!line.startsWith("data: ")) continue;
+          const json = line.slice(6).trim();
+          if (json === "[DONE]") break;
+          try {
+            const parsed = JSON.parse(json);
+            const chunk: string =
+              parsed.content ??
+              parsed.choices?.[0]?.delta?.content ??
+              (parsed.type === "content_block_delta" ? parsed.delta?.text : undefined) ??
+              "";
+            if (chunk) {
+              accumulated += chunk;
+              setAiContent((prev) => ({ ...prev, [idx]: accumulated }));
+            }
+          } catch { /* ignore malformed SSE line */ }
+        }
+      }
+
+      if (!accumulated) setAiContent((prev) => ({ ...prev, [idx]: "Sin respuesta del tutor." }));
     } catch {
       setAiContent((prev) => ({ ...prev, [idx]: "No se pudo conectar con el tutor IA." }));
     }
     setAiLoading(null);
+  };
+
+  const handlePrint = () => {
+    expandAll();
+    setTimeout(() => window.print(), 350);
   };
 
   return (
@@ -606,7 +649,7 @@ export default function Acordeon() {
           <button onClick={collapseAll} className="text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
             Colapsar todo
           </button>
-          <button onClick={() => window.print()} className="text-xs px-4 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 transition-colors font-bold flex items-center gap-1">
+          <button onClick={handlePrint} className="text-xs px-4 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 transition-colors font-bold flex items-center gap-1">
             🖨️ Imprimir PDF
           </button>
         </div>
@@ -624,7 +667,7 @@ export default function Acordeon() {
           const isOpen = openAreas.includes(i);
           const colors = colorMap[area.color];
           return (
-            <div key={i} className="acordeon-section rounded-xl overflow-hidden border border-gray-800 print:border-gray-300">
+            <div key={i} className="acordeon-section acordeon-materia rounded-xl overflow-hidden border border-gray-800 print:border-gray-300">
               {/* Area header */}
               <button
                 onClick={() => toggleArea(i)}
@@ -639,7 +682,7 @@ export default function Acordeon() {
               </button>
 
               {isOpen && (
-                <div className="bg-gray-900 print:bg-white">
+                <div className="acordeon-contenido bg-gray-900 print:bg-white">
                   {/* Subtemas */}
                   <div className="divide-y divide-gray-800 print:divide-gray-200">
                     {area.subtemas.map((sub, j) => {

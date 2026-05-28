@@ -443,6 +443,29 @@
     page-break-inside: avoid;
   }
 
+  .acordeon-materia {
+    page-break-before: always;
+    break-before: always;
+  }
+
+  .acordeon-materia:first-of-type {
+    page-break-before: avoid;
+    break-before: avoid;
+  }
+
+  .acordeon-contenido {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body {
+    font-size: 11px !important;
+  }
+
+  h2 { font-size: 14px !important; }
+  h3 { font-size: 12px !important; }
+
   .print-only {
     display: block !important;
   }
