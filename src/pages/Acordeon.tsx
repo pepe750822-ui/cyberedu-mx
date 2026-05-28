@@ -551,6 +551,11 @@ export default function Acordeon() {
   const [aiLoading, setAiLoading] = useState<number | null>(null);
   const [aiContent, setAiContent] = useState<Record<number, string>>({});
 
+  const cleanAiText = (text: string) =>
+    text.replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
+        .replace(/<[a-z_]+>[\s\S]*?<\/[a-z_]+>/g, "")
+        .trim();
+
   const toggleArea = (i: number) =>
     setOpenAreas((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]);
 
@@ -624,7 +629,7 @@ export default function Acordeon() {
               "";
             if (chunk) {
               accumulated += chunk;
-              setAiContent((prev) => ({ ...prev, [idx]: accumulated }));
+              setAiContent((prev) => ({ ...prev, [idx]: cleanAiText(accumulated) }));
             }
           } catch { /* ignore malformed SSE line */ }
         }
