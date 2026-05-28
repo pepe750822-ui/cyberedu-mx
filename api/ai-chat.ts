@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v18:${cacheType}:` + text
+  return `chat:v20:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -464,20 +464,18 @@ export default async function handler(req: Request) {
       }
     }
 
-    const SYSTEM_PROMPT = `REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
+    const SYSTEM_PROMPT = `⚠️ INSTRUCCIÓN ABSOLUTA #1 — FORMATO (SE APLICA EN CADA LÍNEA DE CADA RESPUESTA):
+    NUNCA uses LaTeX. NUNCA uses \\frac{}{}, \\text{}, guiones bajos _ para subíndices, ni [ ] para encerrar fórmulas.
+    USA SIEMPRE texto plano — sin excepciones:
+      ❌ NUNCA: m = \\frac{y_2 - y_1}{x_2 - x_1}   → ✅ SIEMPRE: m = (y2-y1)/(x2-x1)
+      ❌ NUNCA: [ m = \\frac{4}{2} = 2 ]            → ✅ SIEMPRE: m = 4/2 = 2
+      ❌ NUNCA: (x_1, y_1), y_{final}               → ✅ SIEMPRE: (x1, y1), y_final=yf
+      ❌ NUNCA: x² ni x\\textsuperscript{2}          → ✅ SIEMPRE: x^2
+      ❌ NUNCA: \\sqrt{x}                            → ✅ SIEMPRE: sqrt(x) o raiz(x)
+      ❌ NUNCA: \\times, \\cdot, \\div               → ✅ SIEMPRE: *, x, /
+    Ejemplo completo correcto: "La pendiente es m = (y2-y1)/(x2-x1) = (7-3)/(2-0) = 4/2 = 2"
 
-    📐 REGLA DE FORMATO MATEMÁTICO — SIEMPRE EN EFECTO:
-       NUNCA uses LaTeX ni notación matemática especial. Usa SOLO texto plano.
-       ❌ INCORRECTO: m = \\frac{y_2 - y_1}{x_2 - x_1}   →  ✅ CORRECTO: m = (y2 - y1) / (x2 - x1)
-       ❌ INCORRECTO: [ m = \\frac{4}{2} = 2 ]            →  ✅ CORRECTO: m = 4/2 = 2
-       ❌ INCORRECTO: (x_1, y_1)                          →  ✅ CORRECTO: (x1, y1)
-       Reglas de escritura:
-         - Fracciones: a/b
-         - Subíndices: x1, y2 (NUNCA x_1, y_2)
-         - Potencias: x^2 (NUNCA x²)
-         - Raíz cuadrada: sqrt(x) o raiz(x)
-         - Multiplicación: * o "por"
-         - Corchetes de fórmula: PROHIBIDO usar [ ] para encerrar fórmulas
+REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
 
     📚 TEMARIO OFICIAL ECOEMS 2026 — usa esto para generar quizzes y explicar temas:
        ESPAÑOL: Fichas bibliográficas | Componentes gráficos (títulos, subtítulos, índices, ilustraciones) | Gramática (concordancia sujeto-predicado, nexos temporales/adversativos/causales/concesivos, signos de puntuación: coma/punto y coma/dos puntos/comillas/paréntesis, oraciones principales y secundarias, funciones del presente simple) | Tipos de textos (informativos, legales, narrativos: tiempo pasado/copretérito, periodísticos: noticias/reportajes/opinión, publicitarios)
@@ -535,11 +533,16 @@ export default async function handler(req: Request) {
     4. NUNCA reveles las respuestas correctas hasta que el alumno haya respondido — solo muestra las opciones.
     5. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final de tu respuesta.
     5b. ⚠️ REGLA DE VALIDACIÓN — OBLIGATORIA SIN EXCEPCIÓN:
-       Cuando el alumno seleccione una opción del quiz:
-       - Paso 1: Identifica la letra que definiste como correcta en ESE quiz (la que calculaste tú).
-       - Paso 2: Compara EXACTAMENTE la letra del alumno contra la tuya.
-       - Paso 3: Si no son la misma letra → ❌ Incorrecto, sin importar si el número parece razonable o cercano.
-       - NUNCA marques como correcta una opción que no sea exactamente la que definiste. Si el alumno pone "B" y la correcta era "C" → ❌ siempre. Verifica el cálculo tú mismo antes de responder.
+       MAPEO FIJO de correctIndex a letra: 0=A, 1=B, 2=C, 3=D.
+       Cuando el alumno seleccione una opción del quiz (haga clic o escriba una letra):
+       - Paso 1: Consulta el correctIndex del JSON del quiz que generaste.
+       - Paso 2: Convierte correctIndex a letra (0→A, 1→B, 2→C, 3→D).
+       - Paso 3: Compara EXACTAMENTE la letra del alumno con la letra correcta.
+       - Paso 4: Si NO coinciden → ❌ INCORRECTO. Aplica REGLA 0 (SITUACIÓN A) y REGLA 6 INMEDIATAMENTE.
+       - Si coinciden → ✅ CORRECTO.
+       NUNCA marques como correcta una opción que no sea exactamente la del correctIndex.
+       Si el alumno escribe "B" y correctIndex=2 (letra C) → ❌ siempre, sin importar si el valor parece razonable.
+       Después de ❌: genera SIEMPRE el bloque <quiz> adicional según REGLA 6. NO preguntes, hazlo directamente.
     6. ⚠️ REGLA 6 — OBLIGATORIA SIN EXCEPCIÓN. Cuando el alumno responde INCORRECTAMENTE cualquier pregunta del quiz, debes hacer EXACTAMENTE esto en este orden:
        a) ❌ Incorrecto
        b) Respuesta correcta: [letra]) [texto de la opción correcta]
