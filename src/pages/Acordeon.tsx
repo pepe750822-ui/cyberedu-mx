@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Subtema {
   titulo: string;
@@ -544,6 +545,7 @@ const colorMap: Record<string, { header: string; dot: string; tag: string; aiBtn
 };
 
 export default function Acordeon() {
+  const { session } = useAuth();
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [openSubtemas, setOpenSubtemas] = useState<Record<string, boolean>>({});
   const [aiLoading, setAiLoading] = useState<number | null>(null);
@@ -568,12 +570,19 @@ export default function Acordeon() {
   };
 
   const generarAcordeonIA = async (idx: number, nombre: string) => {
+    if (!session?.access_token) {
+      setAiContent((prev) => ({ ...prev, [idx]: "⚠️ Inicia sesión para usar el tutor IA." }));
+      return;
+    }
     setAiLoading(idx);
     setAiContent((prev) => ({ ...prev, [idx]: "" }));
     try {
       const res = await fetch("/api/ai-chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           messages: [{
             role: "user",
@@ -731,12 +740,15 @@ export default function Acordeon() {
                       <button
                         onClick={() => generarAcordeonIA(i, area.nombre)}
                         disabled={aiLoading === i}
+                        title={!session?.access_token ? "Inicia sesión para usar el tutor IA" : undefined}
                         className={`text-xs px-3 py-1.5 rounded-lg text-white font-medium transition-colors flex items-center gap-1.5 ${colors.aiBtn} disabled:opacity-60`}
                       >
                         {aiLoading === i ? (
                           <><span className="animate-spin">⏳</span> Generando...</>
-                        ) : (
+                        ) : session?.access_token ? (
                           <>🧠 Tips IA para {area.nombre}</>
+                        ) : (
+                          <>🔒 Tips IA (requiere sesión)</>
                         )}
                       </button>
                     )}
