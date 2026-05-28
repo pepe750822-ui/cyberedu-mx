@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v17:${cacheType}:` + text
+  return `chat:v18:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -478,6 +478,18 @@ export default async function handler(req: Request) {
          - Raíz cuadrada: sqrt(x) o raiz(x)
          - Multiplicación: * o "por"
          - Corchetes de fórmula: PROHIBIDO usar [ ] para encerrar fórmulas
+
+    📚 TEMARIO OFICIAL ECOEMS 2026 — usa esto para generar quizzes y explicar temas:
+       ESPAÑOL: Fichas bibliográficas | Componentes gráficos (títulos, subtítulos, índices, ilustraciones) | Gramática (concordancia sujeto-predicado, nexos temporales/adversativos/causales/concesivos, signos de puntuación: coma/punto y coma/dos puntos/comillas/paréntesis, oraciones principales y secundarias, funciones del presente simple) | Tipos de textos (informativos, legales, narrativos: tiempo pasado/copretérito, periodísticos: noticias/reportajes/opinión, publicitarios)
+       HABILIDAD VERBAL: Comprensión lectora (info explícita e inferida, idea principal/secundarias, conclusión, secuencia, relaciones: causa-consecuencia/oposición/semejanza/general-particular/analogía/cronológica, hechos vs opiniones, significado por contexto) | Vocabulario (analogías, antónimos, sinónimos)
+       MATEMÁTICAS: Números (enteros, fracciones, decimales, porcentajes, potencias, radicación, proporcionalidad) | Álgebra (literales, ecuaciones 1°/2°, sistemas de ecuaciones, productos notables, factorización, plano cartesiano) | Estadística (índices, gráficas, tablas de frecuencia, media/mediana/moda, probabilidad) | Geometría (ángulos, figuras planas, semejanza de triángulos, Pitágoras, razones trigonométricas, perímetros, áreas, volúmenes)
+       HABILIDAD MATEMÁTICA: Sucesiones numéricas (aritmética, geométrica, cuadrática, Fibonacci) | Series espaciales (rotaciones, traslaciones, reflexiones) | Imaginación espacial (desarrollo plano, vistas ortogonales) | Problemas de razonamiento (regla de tres, edades, MCD, MCM)
+       BIOLOGÍA: Biodiversidad (seres vivos NMRICRE, Darwin/selección natural, adaptación, ecosistemas, desarrollo sustentable) | Transformación de energía (fotosíntesis 6CO₂+6H₂O+luz→glucosa+O₂, respiración aerobia/anaerobia, ciclo carbono, autótrofos/heterótrofos) | Nutrición (dieta equilibrada, contaminación, calentamiento global) | Reproducción (mitosis/meiosis, sexual/asexual, anticonceptivos, ETS) | Genética (fenotipo/genotipo/cromosomas/genes, manipulación genética)
+       FÍSICA: Movimiento (velocidad vs rapidez, gráficas posición-tiempo, aceleración, MRU, caída libre) | Fuerzas (resultante, leyes de Newton, gravitación, peso) | Energía (Ec=½mv², Ep=mgh, conservación, trabajo, electrización, magnetismo) | Partículas (modelo cinético, calor/temperatura, presión, Pascal) | Ondas (movimiento ondulatorio, radiación electromagnética, refracción, luz: longitud de onda/frecuencia)
+       QUÍMICA: Materiales (propiedades físicas/químicas, cambios físicos/químicos, métodos de separación, conservación de la masa) | Estructura atómica (protones/neutrones/electrones, número atómico/masa, iones/moléculas, tabla periódica, enlace químico) | Reacciones (ecuaciones balanceadas, mol, ácidos/bases pH, reacciones redox)
+       HISTORIA: S.XVI-XVIII (nuevas rutas, humanismo, conquistas) | S.XVIII-XIX (Ilustración, Rev.Francesa 1789, independencia EE.UU. 1776, Rev.Industrial) | S.XIX-1920 (nacionalismo, imperialismo, 1ª GM 1914-18, Versalles) | 1920-1960 (fascismo/nazismo/socialismo, 2ª GM 1939-45) | Reciente (Guerra Fría, Golfo Pérsico, globalización) | México colonial (Mesoamérica, Virreinato, Inquisición, criollismo) | México independiente (1821, guerra EE.UU., Reforma 1857, Porfiriato) | Revolución 1910 / Constitución 1917 (Art.3/27/123) | México global (neoliberalismo, TLCAN, reforma electoral)
+       GEOGRAFÍA: Espacio geográfico (coordenadas, husos horarios, SIG/GPS, tipos de mapas) | Recursos naturales (tectónica, ciclo hidrológico, climas, biodiversidad, desarrollo sustentable) | Población (migración, riesgos, vulnerabilidad, crecimiento) | Economía (sectores primario/secundario/terciario, globalización, IDH, turismo) | Cultura y política (diversidad cultural, patrimonio México, fronteras, soberanía: mar 12 millas, ZEE 200 millas)
+       FCE: Autonomía moral, empatía, tipos de normas | Tipos de valores (económicos, estéticos, morales) | Identidad personal | Adolescencia (derechos, obligaciones, violencia, riesgo) | Democracia (principio de mayoría, soberanía, división de poderes) | Constitución (derechos humanos, partidos políticos, Art.3/27/123) | Negociación y resolución de conflictos | Función social de los medios de comunicación
 
     ⛔ REGLA 0 — MÁXIMA PRIORIDAD — ANULA TODAS LAS DEMÁS REGLAS:
        Esta regla cubre DOS situaciones — ambas obligan a generar un quiz adicional sin preguntar:
