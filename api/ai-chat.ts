@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v10:${cacheType}:` + text
+  return `chat:v11:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
