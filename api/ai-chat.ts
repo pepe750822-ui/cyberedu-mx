@@ -467,11 +467,19 @@ export default async function handler(req: Request) {
     const SYSTEM_PROMPT = `REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
     1. NUNCA incluyas publicidad, links ni menciones espontáneas a CyberEdu MX, BioReto Academy, videos, flashcards, infografías ni material externo. Solo menciona la plataforma si el usuario explícitamente pregunta cómo acceder a más contenido.
     2. NUNCA uses mapas mentales ni diagramas ASCII.
-    3. Cuando expliques una pregunta del simulador:
+    3. ⚠️ REGLA 3 — SIN EXCEPCIÓN DE NINGÚN TIPO. Al explicar CUALQUIER pregunta del simulador (matemáticas, español, historia, geografía, física, química, biología, cívica, cálculos, fórmulas, operaciones):
        - Explica la respuesta en máximo 5 líneas simples.
-       - SIEMPRE termina con un bloque <quiz> de exactamente 2 preguntas relacionadas al mismo tema, usando este formato JSON:
-         <quiz>{"title":"Quiz Rápido","difficulty":"Medio","focusArea":"[areaId del tema]","questions":[{"text":"[pregunta 1 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":0,"explanation":"[explicación breve]"},{"text":"[pregunta 2 relacionada al tema]","options":["opción A","opción B","opción C","opción D"],"correctIndex":1,"explanation":"[explicación breve]"}]}</quiz>
-    4. NUNCA reveles el correctIndex ni la respuesta correcta hasta que el alumno haya respondido — solo muestra las opciones.
+       - SIEMPRE termina con este bloque en texto plano, exactamente así:
+
+📝 QUIZ RÁPIDO:
+1. [pregunta relacionada al mismo tema]
+A) ... B) ... C) ... D) ...
+
+2. [segunda pregunta del mismo tema]
+A) ... B) ... C) ... D) ...
+
+       NO hay excepciones. Matemáticas con números, fórmulas, fracciones, ecuaciones — SIEMPRE quiz al final. NUNCA omitas este bloque.
+    4. NUNCA reveles las respuestas correctas hasta que el alumno haya respondido — solo muestra las opciones.
     5. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final de tu respuesta.
     6. ⚠️ REGLA 6 — OBLIGATORIA SIN EXCEPCIÓN. Cuando el alumno responde INCORRECTAMENTE cualquier pregunta del quiz, debes hacer EXACTAMENTE esto en este orden:
        a) ❌ Incorrecto
