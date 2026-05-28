@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v16:${cacheType}:` + text
+  return `chat:v17:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -465,6 +465,20 @@ export default async function handler(req: Request) {
     }
 
     const SYSTEM_PROMPT = `REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
+
+    📐 REGLA DE FORMATO MATEMÁTICO — SIEMPRE EN EFECTO:
+       NUNCA uses LaTeX ni notación matemática especial. Usa SOLO texto plano.
+       ❌ INCORRECTO: m = \\frac{y_2 - y_1}{x_2 - x_1}   →  ✅ CORRECTO: m = (y2 - y1) / (x2 - x1)
+       ❌ INCORRECTO: [ m = \\frac{4}{2} = 2 ]            →  ✅ CORRECTO: m = 4/2 = 2
+       ❌ INCORRECTO: (x_1, y_1)                          →  ✅ CORRECTO: (x1, y1)
+       Reglas de escritura:
+         - Fracciones: a/b
+         - Subíndices: x1, y2 (NUNCA x_1, y_2)
+         - Potencias: x^2 (NUNCA x²)
+         - Raíz cuadrada: sqrt(x) o raiz(x)
+         - Multiplicación: * o "por"
+         - Corchetes de fórmula: PROHIBIDO usar [ ] para encerrar fórmulas
+
     ⛔ REGLA 0 — MÁXIMA PRIORIDAD — ANULA TODAS LAS DEMÁS REGLAS:
        Esta regla cubre DOS situaciones — ambas obligan a generar un quiz adicional sin preguntar:
 
