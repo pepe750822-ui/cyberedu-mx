@@ -438,21 +438,57 @@
     width: 100% !important;
   }
 
+  body {
+    font-size: 7px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 4mm !important;
+  }
+
+  .acordeon-titulo {
+    font-size: 14px !important;
+    text-align: center !important;
+    margin-bottom: 6px !important;
+    font-weight: bold !important;
+    display: block !important;
+  }
+
+  .acordeon-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .acordeon-section {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
   .acordeon-materia {
-    page-break-before: always;
-    break-before: always;
-    padding: 4px !important;
+    break-inside: avoid !important;
+    border: 1px solid #333 !important;
+    padding: 3px !important;
     margin: 0 !important;
+    background: white !important;
+    border-radius: 0 !important;
   }
 
-  .acordeon-materia:first-of-type {
-    page-break-before: avoid;
-    break-before: avoid;
+  .acordeon-materia-titulo {
+    font-size: 9px !important;
+    font-weight: bold !important;
+    border-bottom: 1px solid #333 !important;
+    margin-bottom: 2px !important;
+    padding-bottom: 1px !important;
+  }
+
+  .acordeon-subtema-titulo {
+    font-size: 8px !important;
+    font-weight: bold !important;
+    margin-top: 2px !important;
   }
 
   .acordeon-contenido {
@@ -461,17 +497,10 @@
     overflow: visible !important;
   }
 
-  body {
-    font-size: 8px !important;
-    line-height: 1.2 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
+  li, p { font-size: 7px !important; margin: 0 !important; line-height: 1.2 !important; }
   h1 { font-size: 12px !important; }
   h2 { font-size: 10px !important; }
   h3 { font-size: 9px !important; }
-  p, li, span { font-size: 8px !important; }
 
   .print-only {
     display: block !important;

@@ -551,10 +551,15 @@ export default function Acordeon() {
   const [aiLoading, setAiLoading] = useState<number | null>(null);
   const [aiContent, setAiContent] = useState<Record<number, string>>({});
 
-  const cleanAiText = (text: string) =>
-    text.replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
-        .replace(/<[a-z_]+>[\s\S]*?<\/[a-z_]+>/g, "")
-        .trim();
+  const cleanTipsText = (text: string) =>
+    text
+      .replace(/<recommendation>[\s\S]*?<\/recommendation>/g, "")
+      .replace(/```mermaid[\s\S]*?```/g, "")
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/\[.*?\]\(citation:\/\/.*?\)/g, "")
+      .replace(/<quiz>[\s\S]*?<\/quiz>/g, "")
+      .replace(/<[a-z_]+>[\s\S]*?<\/[a-z_]+>/g, "")
+      .trim();
 
   const toggleArea = (i: number) =>
     setOpenAreas((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]);
@@ -629,7 +634,7 @@ export default function Acordeon() {
               "";
             if (chunk) {
               accumulated += chunk;
-              setAiContent((prev) => ({ ...prev, [idx]: cleanAiText(accumulated) }));
+              setAiContent((prev) => ({ ...prev, [idx]: cleanTipsText(accumulated) }));
             }
           } catch { /* ignore malformed SSE line */ }
         }
@@ -644,7 +649,7 @@ export default function Acordeon() {
 
   const handlePrint = () => {
     expandAll();
-    setTimeout(() => window.print(), 350);
+    setTimeout(() => window.print(), 400);
   };
 
   return (
@@ -671,12 +676,12 @@ export default function Acordeon() {
 
       {/* Print title */}
       <div className="print-only hidden text-center py-4">
-        <h1 className="text-2xl font-bold">Acordeón ECOEMS 2026</h1>
+        <h1 className="acordeon-titulo text-2xl font-bold">Acordeón ECOEMS 2026</h1>
         <p className="text-sm text-gray-500">cyberedumx.com</p>
       </div>
 
       {/* Areas */}
-      <div className="max-w-3xl mx-auto px-4 py-6 space-y-3">
+      <div className="acordeon-grid max-w-3xl mx-auto px-4 py-6 space-y-3">
         {areas.map((area, i) => {
           const isOpen = openAreas.includes(i);
           const colors = colorMap[area.color];
@@ -687,7 +692,7 @@ export default function Acordeon() {
                 onClick={() => toggleArea(i)}
                 className={`w-full flex items-center justify-between px-4 py-3 text-left font-bold text-white ${colors.header} print:bg-gray-200 print:text-black hover:opacity-90 transition-opacity`}
               >
-                <span className="flex items-center gap-2">
+                <span className="acordeon-materia-titulo flex items-center gap-2">
                   <span>{area.icono}</span>
                   <span>{area.nombre}</span>
                   <span className="text-xs font-normal opacity-75">{area.subtemas.length} temas</span>
@@ -708,7 +713,7 @@ export default function Acordeon() {
                             onClick={() => toggleSubtema(key)}
                             className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-800 print:hover:bg-transparent transition-colors"
                           >
-                            <span className="flex items-center gap-2 text-sm font-semibold text-gray-100 print:text-black">
+                            <span className="acordeon-subtema-titulo flex items-center gap-2 text-sm font-semibold text-gray-100 print:text-black">
                               <span className={`w-2 h-2 rounded-full flex-shrink-0 ${colors.dot}`} />
                               {sub.titulo}
                             </span>
