@@ -324,14 +324,12 @@ const Header = () => {
               </Button>
             </div>
           ) : (
-            <div className="hidden sm:block">
-              <Link to="/auth">
-                <Button variant="outline" size="sm">
-                  <UserCircle className="h-4 w-4 mr-1" />
-                  Ingresar
-                </Button>
-              </Link>
-            </div>
+            <button
+              onClick={() => navigate('/auth')}
+              className="hidden sm:flex bg-gradient-to-r from-violet-600 to-purple-600 text-white font-black px-6 py-2 rounded-xl hover:scale-105 transition-transform whitespace-nowrap"
+            >
+              🚀 Ingresar gratis
+            </button>
           )}
 
           {/* Logout visible en móvil junto al menú hamburguesa */}
