@@ -74,7 +74,7 @@ const TEMAS: Tema[] = [
   { id: 41, preguntas: "117-119", tema: "Decisiones individuales, valores estéticos, identidad",                         materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/GHQjydPvGPE", infografia: "/guia2026/video41-infografia.png", pdf: "/guia2026/video41.pdf" },
   { id: 42, preguntas: "120-122", tema: "Derechos/obligaciones, violencia económica, discriminación",                    materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/Cl1O0j5tgrg", infografia: "/guia2026/video42-infografia.png", pdf: "/guia2026/video42.pdf" },
   { id: 43, preguntas: "123-125", tema: "Poder Judicial, partidos políticos, voto",                                      materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/Fc5SKC0MXnw", infografia: "/guia2026/video43-infografia.png", pdf: "/guia2026/video43.pdf" },
-  { id: 44, preguntas: "126-128", tema: "Función social de medios, calidad de vida, negociación",                        materia: "Formación Cívica y Ética", youtubeUrl: null },
+  { id: 44, preguntas: "126-128", tema: "Función social de medios, calidad de vida, negociación",                        materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/laEx4H_1wPU", infografia: "/guia2026/video44-infografia.png", pdf: "/guia2026/video44.pdf" },
 ];
 
 const COLOR_MAP: Record<string, { bg: string; border: string; badge: string; text: string }> = {
