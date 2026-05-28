@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { RelatedQuestions } from "./RelatedQuestions";
 import { useNavigate } from "react-router-dom";
 import {
     Timer,
@@ -338,6 +339,12 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                             <p className="text-slate-300 text-sm leading-relaxed">
                                 {currentQuestion.explanation}
                             </p>
+                            <div className="mt-3 bg-violet-500/10 border border-violet-500/20 rounded-xl p-3">
+                                <p className="text-violet-300 text-xs font-bold mb-2">
+                                    💡 Preguntas relacionadas que podrían venir en el ECOEMS:
+                                </p>
+                                <RelatedQuestions area={currentQuestion.area} questionText={currentQuestion.text} />
+                            </div>
                             <button
                                 onClick={handleNext}
                                 className="mt-4 w-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3 rounded-xl transition-all"
