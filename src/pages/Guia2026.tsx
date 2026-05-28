@@ -72,7 +72,7 @@ const TEMAS: Tema[] = [
   { id: 39, preguntas: "111-113", tema: "Petróleo, puertos, turismo",                                                    materia: "Geografía",                youtubeUrl: "https://youtu.be/oyriFPSzrwo", infografia: "/guia2026/video39-infografia.png", pdf: "/guia2026/video39.pdf" },
   { id: 40, preguntas: "114-116", tema: "Globalización cultural, Palenque, ZEE",                                         materia: "Geografía",                youtubeUrl: "https://youtu.be/516PiekP_rE", infografia: "/guia2026/video40-infografia.png", pdf: "/guia2026/video40.pdf" },
   { id: 41, preguntas: "117-119", tema: "Decisiones individuales, valores estéticos, identidad",                         materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/GHQjydPvGPE", infografia: "/guia2026/video41-infografia.png", pdf: "/guia2026/video41.pdf" },
-  { id: 42, preguntas: "120-122", tema: "Derechos/obligaciones, violencia económica, discriminación",                    materia: "Formación Cívica y Ética", youtubeUrl: null },
+  { id: 42, preguntas: "120-122", tema: "Derechos/obligaciones, violencia económica, discriminación",                    materia: "Formación Cívica y Ética", youtubeUrl: "https://youtu.be/Cl1O0j5tgrg", infografia: "/guia2026/video42-infografia.png", pdf: "/guia2026/video42.pdf" },
   { id: 43, preguntas: "123-125", tema: "Poder Judicial, partidos políticos, voto",                                      materia: "Formación Cívica y Ética", youtubeUrl: null },
   { id: 44, preguntas: "126-128", tema: "Función social de medios, calidad de vida, negociación",                        materia: "Formación Cívica y Ética", youtubeUrl: null },
 ];
