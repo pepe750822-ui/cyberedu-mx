@@ -587,121 +587,184 @@ function parsePlanFromContent(content: string): { plan: Plan | null; cleanConten
   return { plan, cleanContent: content.replace(/<plan>[\s\S]*?(?:<\/plan>|$)/g, "").trim() };
 }
 
+/**
+ * Parses plain-text quiz format inside a <quiz> block.
+ * Handles:
+ *  - Each option on its own line:  A) Ecuador\n B) Eje terrestre\n ...
+ *  - All options on one line:      A) Ecuador B) Eje terrestre C) Meridiano D) Trópico
+ *  - Different markers: A., **A)**, etc.
+ *  - correctIndex: N  (0-based)
+ *  - Respuesta correcta: N or C
+ *  - Optional "Pregunta N:" or just numbered lists "1."
+ */
+function parsePlainTextQuiz(quizText: string): PersonalizedQuiz | null {
+  const questions: any[] = [];
+
+  // Split by "Pregunta N:" markers (handles optional asterisks, colons, dots)
+  const pregRegex = /\*?\*?Pregunta\s+(\d+)\*?\*?\s*[:.-]?/gi;
+  let match;
+  const markers: { index: number; length: number }[] = [];
+  while ((match = pregRegex.exec(quizText)) !== null) {
+    markers.push({ index: match.index, length: match[0].length });
+  }
+
+  // Fallback: If "Pregunta" is not used, maybe they just numbered them like "1.", "2."
+  if (markers.length === 0) {
+    const numRegex = /(?:^|\n)\s*(?:\*?\*?)?\d+(?:\.|\))\s+/gi;
+    while ((match = numRegex.exec(quizText)) !== null) {
+       markers.push({ index: match.index, length: match[0].length });
+    }
+  }
+
+  if (markers.length === 0) return null;
+
+  for (let k = 0; k < markers.length; k++) {
+    const start = markers[k].index + markers[k].length;
+    const end = (k + 1 < markers.length) ? markers[k + 1].index : quizText.length;
+    const block = quizText.substring(start, end).trim();
+
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) continue;
+
+    let questionText = '';
+    const optionsMap: Record<number, string> = {};
+    let correctIndex = 0;
+    let foundOptions = false;
+    let explanation = '';
+
+    for (const line of lines) {
+      // Check for correct index or answer
+      // Matches "Respuesta: C", "Respuesta correcta: 2", "correctIndex: A"
+      const rcMatch = line.match(/(?:correctIndex|Respuesta(?: correcta)?|Soluci[oó]n)\s*[:.-]?\s*(?:\*?\*?)?([A-D]|\d+)(?:\*?\*?)?(?:\)|.)?\s*(?:\*?\*?)?/i);
+      if (rcMatch && !foundOptions) {
+        // sometimes "Solución" might be inside questionText, but we usually expect it at the end.
+        // If we haven't found options yet, maybe it's just a coincidence, but let's allow it.
+      }
+      
+      // Let's refine the answer check to be safer:
+      const answerMatch = line.match(/^(?:\*?\*?)?(?:correctIndex|Respuesta(?: correcta)?|Soluci[oó]n)\s*[:.-]?\s*(?:\*?\*?)?([A-D]|\d+)(?:\*?\*?)?(?:\)|.)?\s*(?:\*?\*?)?$/i);
+      if (answerMatch) {
+        const val = answerMatch[1].toUpperCase();
+        if (['A','B','C','D'].includes(val)) {
+          correctIndex = val.charCodeAt(0) - 65; // A=0, B=1, etc.
+        } else {
+          correctIndex = parseInt(val, 10);
+        }
+        continue;
+      }
+
+      // If answer matches inline like "**Respuesta:** A) Opción"
+      const answerMatchInline = line.match(/(?:\*?\*?)?(?:correctIndex|Respuesta(?: correcta)?|Soluci[oó]n)\s*[:.-]?\s*(?:\*?\*?)?([A-D]|\d+)/i);
+      if (answerMatchInline && foundOptions) {
+        const val = answerMatchInline[1].toUpperCase();
+        if (['A','B','C','D'].includes(val)) {
+          correctIndex = val.charCodeAt(0) - 65;
+        } else {
+          correctIndex = parseInt(val, 10);
+        }
+        // Don't continue, might contain explanation
+        const remainder = line.replace(answerMatchInline[0], '').trim();
+        if (remainder.length > 5) {
+          explanation += (explanation ? ' ' : '') + remainder;
+        }
+        continue;
+      }
+
+      // Check for Explanation
+      const expMatch = line.match(/^(?:\*?\*?)?(?:Explicaci[oó]n|Justificaci[oó]n)\s*[:.-]?\s*(.+)/i);
+      if (expMatch) {
+        explanation = expMatch[1].trim();
+        continue;
+      }
+
+      // Match options like A), A., **A)**
+      const optionSplitRegex = /(?:^|(?<=\s))(?:\*?\*?)?([A-D])(?:\)|\.)(?:\*?\*?)?\s+/gi;
+      const optionLetters: { letter: string; textStart: number; matchIndex: number }[] = [];
+      let om;
+      while ((om = optionSplitRegex.exec(line)) !== null) {
+        optionLetters.push({ 
+          letter: om[1].toUpperCase(), 
+          textStart: om.index + om[0].length, 
+          matchIndex: om.index 
+        });
+      }
+
+      if (optionLetters.length > 0) {
+        foundOptions = true;
+        for (let j = 0; j < optionLetters.length; j++) {
+          const start = optionLetters[j].textStart;
+          const end = (j + 1 < optionLetters.length) ? optionLetters[j + 1].matchIndex : line.length;
+          const optText = line.substring(start, end).trim();
+          const letterIdx = optionLetters[j].letter.charCodeAt(0) - 65; 
+          if (optText) optionsMap[letterIdx] = optText;
+        }
+      } else if (!foundOptions) {
+        // Lines before any option are part of the question text
+        questionText += (questionText ? '\n' : '') + line;
+      } else if (foundOptions) {
+        // If we already found options and this doesn't match an answer, it could be part of the explanation or a multi-line option
+        // We'll append it to explanation for safety if it's long enough, or to the last option if it makes sense.
+        // For simplicity, treat as explanation if it's clearly after options.
+        explanation += (explanation ? '\n' : '') + line;
+      }
+    }
+
+    // Build ordered options array (0 to 3)
+    const options = [0, 1, 2, 3].map(idx =>
+      optionsMap[idx] || `Opción ${String.fromCharCode(65 + idx)}`
+    );
+
+    const realOptionCount = Object.keys(optionsMap).length;
+    if (questionText.trim() && realOptionCount >= 2) {
+      questions.push({
+        id: `q_plain_${k + 1}`,
+        area: 'general',
+        text: questionText.trim(),
+        options,
+        correctIndex: isNaN(correctIndex) ? 0 : correctIndex,
+        explanation: explanation.trim()
+      });
+    }
+  }
+
+  if (questions.length === 0) return null;
+
+  return {
+    title: "Quiz de práctica",
+    focusArea: "General",
+    questions,
+    difficulty: "intermedio"
+  };
+}
+
 function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null; cleanContent: string } {
   const regex = /<quiz>([\s\S]*?)(?:<\/quiz>|$)/g;
   const quizMatch = regex.exec(content);
   if (!quizMatch) return { quiz: null, cleanContent: content };
-  
-  const parsed = safeParseJSON(quizMatch[1]);
-  if (!parsed) {
-    // Try to parse plain text quiz format as fallback
-    try {
-      const quizText = quizMatch[1];
-      const questions: any[] = [];
-      const pregRegex = /Pregunta\s+(\d+)\s*:/gi;
-      let match;
-      const indices: { index: number; num: string; length: number }[] = [];
-      while ((match = pregRegex.exec(quizText)) !== null) {
-        indices.push({
-          index: match.index,
-          num: match[1],
-          length: match[0].length
-        });
-      }
-      
-      for (let k = 0; k < indices.length; k++) {
-        const start = indices[k].index + indices[k].length;
-        const end = (k + 1 < indices.length) ? indices[k+1].index : quizText.length;
-        const block = quizText.substring(start, end).trim();
-        
-        const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
-        if (lines.length === 0) continue;
-        
-        let text = '';
-        const options: string[] = [];
-        let correctIndex = 0;
-        let foundOptions = false;
-        
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i];
-          if (/[A-D]\)/i.test(line)) {
-            foundOptions = true;
-            const optMatches = [...line.matchAll(/([A-D])\)\s*([^A-D\n]+)/gi)];
-            if (optMatches.length > 0) {
-              optMatches.forEach(m => {
-                const letter = m[1].toUpperCase();
-                const letterIdx = letter.charCodeAt(0) - 65;
-                options[letterIdx] = m[2].trim();
-              });
-            }
-          } else if (/correctIndex/i.test(line)) {
-            const ciMatch = line.match(/correctIndex\s*:\s*(\d+)/i);
-            if (ciMatch) {
-              correctIndex = parseInt(ciMatch[1], 10);
-            }
-          } else if (!foundOptions) {
-            text += (text ? ' ' : '') + line;
-          }
-        }
-        
-        const finalOptions = Array.from({ length: 4 }, (_, idx) => options[idx] || `Opción ${String.fromCharCode(65 + idx)}`);
-        
-        questions.push({
-          id: `q_plain_${k + 1}`,
-          area: 'general',
-          text: text.trim(),
-          options: finalOptions,
-          correctIndex: isNaN(correctIndex) ? 0 : correctIndex,
-          explanation: ''
-        });
-      }
-      
-      if (questions.length > 0) {
-        const quizObj: PersonalizedQuiz = {
-          title: "Quiz de práctica",
-          focusArea: "General",
-          questions,
-          difficulty: "intermedio"
-        };
-        return {
-          quiz: quizObj,
-          cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim()
-        };
-      }
-    } catch (err) {
-      console.error("Error parsing plain text quiz:", err);
-    }
 
-    return { 
-      quiz: null, 
-      cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
-    };
-  }
-  
-  const quizObj = parsed as PersonalizedQuiz;
-  
-  if (!quizObj || !Array.isArray(quizObj.questions)) {
-    return { 
-      quiz: null, 
-      cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
-    };
-  }
+  const rawQuizContent = quizMatch[1];
+  const cleanedContent = content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim();
 
-  if (quizObj && Array.isArray(quizObj.questions)) {
+  // ── Strategy 1: Try JSON parse first ──
+  const parsed = safeParseJSON(rawQuizContent);
+
+  if (parsed && Array.isArray(parsed.questions)) {
+    // JSON path — normalize correctIndex
+    const quizObj = parsed as PersonalizedQuiz;
     quizObj.questions = quizObj.questions.map(q => {
       let ci: any = q.correctIndex !== undefined ? q.correctIndex : (q as any).correct_index;
       const options = q.options || [];
       const explanation = (q.explanation || "").toLowerCase();
       const upperCi = String(ci).toUpperCase().trim();
-      
+
       let bestIdx = -1;
 
-      // PRIORITY 0: Already a valid 0-based integer — use directly
+      // PRIORITY 0: Already a valid 0-based integer
       if (typeof ci === 'number' && Number.isInteger(ci) && ci >= 0 && ci < options.length) {
         bestIdx = ci;
       }
 
-      // 1. Letter-based (A, B, C, D) — most common AI mistake
+      // 1. Letter-based (A, B, C, D)
       if (bestIdx === -1) {
         if (upperCi === 'A' || upperCi.startsWith('A)') || upperCi.startsWith('OPCION A') || upperCi.startsWith('OPCIÓN A')) bestIdx = 0;
         else if (upperCi === 'B' || upperCi.startsWith('B)') || upperCi.startsWith('OPCION B') || upperCi.startsWith('OPCIÓN B')) bestIdx = 1;
@@ -709,14 +772,14 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
         else if (upperCi === 'D' || upperCi.startsWith('D)') || upperCi.startsWith('OPCION D') || upperCi.startsWith('OPCIÓN D')) bestIdx = 3;
       }
 
-      // 2. Exact text match: ci equals the option text
+      // 2. Exact text match
       if (bestIdx === -1 && typeof ci === 'string' && ci.trim().length > 2) {
         const cleanCi = ci.toLowerCase().trim();
         const exactIdx = options.findIndex(o => String(o).toLowerCase().trim() === cleanCi);
         if (exactIdx !== -1) bestIdx = exactIdx;
       }
 
-      // 3. Partial text match: ci contains the option or vice versa
+      // 3. Partial text match
       if (bestIdx === -1 && typeof ci === 'string' && ci.trim().length > 5) {
         const cleanCi = ci.toLowerCase().trim();
         const partialIdx = options.findIndex(o => {
@@ -748,11 +811,11 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
         if (matchNum) {
           const num = parseInt(matchNum[0], 10);
           if (upperCi.includes('OPCION') || upperCi.includes('OPCIÓN')) {
-            bestIdx = num - 1; // "Opción 1" -> index 0
+            bestIdx = num - 1;
           } else if (num > 0 && num <= options.length) {
-            bestIdx = num - 1; // likely 1-based
+            bestIdx = num - 1;
           } else {
-            bestIdx = num; // 0-based as string
+            bestIdx = num;
           }
         }
       }
@@ -765,12 +828,24 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
 
       return { ...q, correctIndex: finalCi };
     });
+
+    return { quiz: quizObj, cleanContent: cleanedContent };
   }
 
-  return { 
-    quiz: quizObj, 
-    cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
-  };
+  // ── Strategy 2: Plain-text quiz format ──
+  try {
+    const plainQuiz = parsePlainTextQuiz(rawQuizContent);
+    if (plainQuiz) {
+      console.log(`[QuizParser] Successfully parsed ${plainQuiz.questions.length} questions from plain text format.`);
+      return { quiz: plainQuiz, cleanContent: cleanedContent };
+    }
+  } catch (err) {
+    console.error("[QuizParser] Error in plain text fallback:", err);
+  }
+
+  // ── Nothing worked ──
+  console.warn("[QuizParser] Could not parse quiz content as JSON or plain text.");
+  return { quiz: null, cleanContent: cleanedContent };
 }
 
 function parseChartsFromContent(content: string): { charts: ChartData[]; cleanContent: string } {
