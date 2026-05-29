@@ -225,6 +225,13 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                             </button>
 
                             <button
+                                onClick={() => navigate('/acordeon')}
+                                className="w-full bg-gray-700 text-white font-bold py-2 rounded-xl mb-2"
+                            >
+                                📋 Acordeón ECOEMS
+                            </button>
+
+                            <button
                                 onClick={() => navigate('/tokens')}
                                 className="w-full bg-gray-700 text-white font-bold py-2 rounded-xl mb-2"
                             >
