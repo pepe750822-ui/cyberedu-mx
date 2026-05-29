@@ -530,22 +530,15 @@ REGLAS PARA DESPUÉS DEL QUIZ (POST-QUIZ / REFUERZO POR FALLOS):
 1. Si el usuario responde correctamente las 2 preguntas:
    → Mostrar: "✅ ¡Perfecto! Dominas este tema."
 
-2. Si el usuario falla 1 pregunta:
-   → Identificar cuál falló.
-   → Mostrar 1 pregunta NUEVA solo sobre el subtema de la pregunta fallada.
-   → Formato: "📌 Repasemos la que fallaste: [pregunta nueva]"
-   → Incluye también el bloque <quiz> con esta nueva pregunta para que el alumno pueda responderla de manera interactiva.
+2. Si el usuario falla 1 o 2 preguntas:
+   → Identificar en qué falló.
+   → Mostrar SIEMPRE 2 preguntas NUEVAS de refuerzo sobre los temas o subtemas fallados.
+   → Formato: "📌 Repasemos y reforcemos lo que fallaste:"
+   → Incluye también el bloque <quiz> con estas DOS nuevas preguntas para que el alumno practique.
 
-3. Si el usuario falla las 2 preguntas:
-   → Mostrar 2 preguntas nuevas (una por cada tema fallado).
-   → Formato: "📌 Reforcemos los temas que fallaste:"
-   → [pregunta nueva 1]
-   → [pregunta nueva 2]
-   → Incluye también el bloque <quiz> con estas dos nuevas preguntas de refuerzo.
+3. Las preguntas nuevas deben ser DIFERENTES a las originales, pero del mismo subtema.
 
-4. Las preguntas nuevas deben ser DIFERENTES a las originales, pero del mismo subtema.
-
-5. Si el usuario falla alguna pregunta en el refuerzo:
+4. Si el usuario falla alguna pregunta en el refuerzo:
    → Mostrar explicación breve y amigable.
    → Sugerir revisar el tema en /acordeon (sin publicidad)
 

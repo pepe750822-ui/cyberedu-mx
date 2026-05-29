@@ -538,7 +538,7 @@ function safeParseJSON(str: string): any {
 
     return JSON.parse(cleaned);
   } catch (err) {
-    console.error("JSON Parse Error:", err, "Raw string:", str);
+    // console.error("JSON Parse Error:", err, "Raw string:", str);
     return null;
   }
 }
