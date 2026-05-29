@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Bot } from "lucide-react";
@@ -47,6 +47,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPostDetail = lazy(() => import("./pages/BlogPostDetail"));
 const Modalidades = lazy(() => import("./pages/Modalidades"));
 const Sugerencias = lazy(() => import("./pages/Sugerencias"));
+const Tutor = lazy(() => import("./pages/Tutor"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const PromoEcoems = lazy(() => import("./pages/PromoEcoems"));
 const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
@@ -157,6 +158,7 @@ const AdminResumenRoute = () => {
 
 const AuthenticatedStudyTools = () => {
   const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const [tutorOpen, setTutorOpen] = useState(false);
 
   useEffect(() => {
@@ -181,7 +183,7 @@ const AuthenticatedStudyTools = () => {
       <AITutor />
       {user && !tutorOpen && (
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+          onClick={() => navigate('/tutor')}
           className="fixed bottom-6 right-6 z-40 bg-violet-600 hover:bg-violet-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-violet-500/25 transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300"
         >
           <Bot className="h-7 w-7" />
@@ -235,6 +237,7 @@ const App = () => (
               <Route path="/admin/monitoring" element={<ProtectedRoute><AdminMonitoring /></ProtectedRoute>} />
               <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
               <Route path="/master-admin" element={<Admin />} />
+              <Route path="/tutor" element={<Tutor />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
