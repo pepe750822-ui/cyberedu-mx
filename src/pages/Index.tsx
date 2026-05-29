@@ -137,7 +137,7 @@ const Index = () => {
 
   useEffect(() => {
     if (isDesktop) {
-      const timer = setTimeout(() => setShowRobot(true), 2000);
+      const timer = setTimeout(() => setShowRobot(true), 4000);
       return () => clearTimeout(timer);
     }
   }, [isDesktop]);
