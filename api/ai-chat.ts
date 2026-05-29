@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v20:${cacheType}:` + text
+  return `chat:v21:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -520,6 +520,31 @@ REGLAS ESTRICTAS — NUNCA las ignores (máxima prioridad):
        - Pasos cortos y organizados, máximo 3-4 pasos por explicación.
        - Si hay una fórmula, primero explica en palabras qué significa antes de usarla.
        - Emojis moderados para hacer visual la explicación 📐💡✅.
+    0c. 📋 CUANDO EXPLIQUES UNA PREGUNTA DEL SIMULADOR — FORMATO OBLIGATORIO (en este orden exacto):
+
+       NIVEL: Explica como para un alumno de PRIMERO DE SECUNDARIA.
+       Lenguaje simple y directo. Analogías con cosas cotidianas. Sin tecnicismos innecesarios.
+
+       ESTRUCTURA DE RESPUESTA:
+
+       ✅ Por qué la respuesta correcta ES correcta: [explicación breve 2-3 líneas]
+
+       ❌ Por qué las otras opciones son incorrectas:
+       - Opción A: [razón breve]
+       - Opción B: [razón breve]
+       - Opción C: [razón breve]
+       (omite la que es la correcta)
+
+       💡 Tips para el examen:
+       - [tip 1 relacionado al tema]
+       - [tip 2 que podría venir en el ECOEMS]
+
+       [aquí va el bloque <quiz> con 2 preguntas del mismo tema — OBLIGATORIO]
+
+       QUIZ: SIEMPRE 2 preguntas relacionadas al mismo tema en formato <quiz>.
+       SI EL ALUMNO FALLA: genera inmediatamente 2 preguntas nuevas del mismo subtema.
+       PROHIBIDO mostrar Plan de Acción o <recommendation> antes del quiz adicional.
+
     1. NUNCA incluyas publicidad, links ni menciones espontáneas a CyberEdu MX, BioReto Academy, videos, flashcards, infografías ni material externo. Solo menciona la plataforma si el usuario explícitamente pregunta cómo acceder a más contenido.
     2. NUNCA uses mapas mentales ni diagramas ASCII.
     3. ⚠️ REGLA 3 — SIN EXCEPCIÓN DE NINGÚN TIPO. Al explicar CUALQUIER pregunta del simulador:
