@@ -4070,9 +4070,9 @@ const AITutor = () => {
       <div className={cn(
         "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",
         isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-40 pointer-events-none",
-        isExpanded 
-          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[10000]" 
-          : "bottom-20 sm:bottom-24 inset-x-2 sm:inset-auto sm:right-6 w-auto sm:w-[550px] h-[650px] max-h-[calc(100dvh-120px)] sm:max-h-[75vh]"
+        isExpanded
+          ? "bottom-0 right-0 w-full h-[100dvh] sm:rounded-none border-none z-[10000]"
+          : "inset-0 w-full h-full rounded-none sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[550px] sm:h-[650px] sm:max-h-[75vh] sm:rounded-[2rem]"
       )}>
         {/* Header */}
         <div className="p-2 sm:p-3 border-b border-white/5 bg-gradient-to-r from-primary/20 via-slate-900/40 to-primary/10">
