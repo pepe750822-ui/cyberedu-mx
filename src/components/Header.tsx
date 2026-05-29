@@ -138,12 +138,6 @@ const Header = () => {
               📋 Acordeón
             </Link>
             <Link
-              to="/tutor"
-              className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1"
-            >
-              🧠 Tutor IA
-            </Link>
-            <Link
               to="/#areas"
               onClick={handleAreasClick}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -688,11 +682,11 @@ const Header = () => {
         <span className="text-[9px] font-bold">Acordeón</span>
       </button>
       <button
-        onClick={() => navigate('/tutor')}
-        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/tutor") ? "text-violet-400" : "text-violet-400/70 hover:text-violet-400"}`}
+        onClick={() => navigate(user ? "/tokens" : "/auth")}
+        className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${isActive("/tokens") || isActive("/auth") ? "text-violet-400" : "text-muted-foreground hover:text-foreground"}`}
       >
-        <span className="text-lg leading-none">🧠</span>
-        <span className="text-[9px] font-bold">Tutor IA</span>
+        <span className="text-lg leading-none">{user ? "🪙" : "🔑"}</span>
+        <span className="text-[9px] font-bold">{user ? "Tokens" : "Entrar"}</span>
       </button>
     </nav>
 

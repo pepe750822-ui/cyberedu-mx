@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, Suspense } from "react";
 import { clarityEvent } from "@/lib/clarity";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -2443,9 +2443,6 @@ const MessageBubble = React.memo(({
 const AITutor = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const isFullPage = location.pathname === '/tutor';
 
 
   const { analyzeUserProgress, generatePersonalizedQuiz, getRecommendations, getExplanationContext } = useAITutorSkills();
@@ -2482,27 +2479,14 @@ const AITutor = () => {
   };
 
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isOpen, setIsOpen] = useState(isFullPage);
-  const [isExpanded, setIsExpanded] = useState(isFullPage || isMobile);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(isMobile);
   const [pendingAutoSend, setPendingAutoSend] = useState<string | null>(null);
   // Ref keeps the latest sendMessage without stale-closure issues in effects
   const sendMessageRef = useRef<((text: string) => void) | null>(null);
   const [showAgentSidebar, setShowAgentSidebar] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [input, setInput] = useState("");
-
-  // Auto-open when navigating to /tutor, read ?q= param and auto-send
-  useEffect(() => {
-    if (!isFullPage) return;
-    setIsOpen(true);
-    setIsExpanded(true);
-    const q = searchParams.get('q');
-    if (q) {
-      setInput(q);
-      setPendingAutoSend(q);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFullPage, location.search]);
 
   // Auto-open on first visit disabled — user opens manually
 
@@ -4052,9 +4036,12 @@ const AITutor = () => {
 
   return (
     <>
-      {/* Floating Toggle — always navigates to /tutor page */}
+      {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
       <button
-        onClick={() => navigate('/tutor')}
+        onClick={() => {
+          setIsOpen(true);
+          setIsExpanded(true);
+        }}
         className={cn(
           "fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-[100] transition-all duration-500 flex items-center justify-center",
           isOpen && isExpanded
@@ -4140,23 +4127,16 @@ const AITutor = () => {
               >
                 <RefreshCw className="h-4 w-4" />
               </button>
-              {/* Botón cerrar / regresar */}
+              {/* Botón cerrar visible solo en móvil — el botón flotante se oculta en fullscreen */}
               <button
                 onClick={() => {
-                  if (isFullPage) {
-                    navigate(-1 as any);
-                  } else {
-                    setIsOpen(false);
-                    setIsExpanded(false);
-                  }
+                  setIsOpen(false);
+                  setIsExpanded(false);
                 }}
-                title={isFullPage ? "Regresar" : "Cerrar tutor"}
-                className="flex items-center gap-1 p-1.5 mr-2 hover:bg-white/10 rounded-xl text-slate-400 hover:text-white transition-colors"
+                title="Cerrar tutor"
+                className="flex p-1.5 mr-2 hover:bg-white/10 rounded-xl text-slate-400 hover:text-red-400 transition-colors"
               >
-                {isFullPage
-                  ? <span className="text-xs font-bold px-1">← Regresar</span>
-                  : <X className="h-4 w-4" />
-                }
+                <X className="h-4 w-4" />
               </button>
             </div>
           </div>

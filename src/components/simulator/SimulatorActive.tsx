@@ -93,7 +93,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         if (!currentQuestion) return;
         const correct = currentQuestion.options[currentQuestion.correctIndex];
         const message = `Explícame esta pregunta del ECOEMS:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
-        navigate(`/tutor?q=${encodeURIComponent(message)}`);
+        window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
     };
 
     // Enter key → ask Tutor IA when feedback is visible
