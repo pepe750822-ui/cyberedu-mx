@@ -594,6 +594,84 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
   
   const parsed = safeParseJSON(quizMatch[1]);
   if (!parsed) {
+    // Try to parse plain text quiz format as fallback
+    try {
+      const quizText = quizMatch[1];
+      const questions: any[] = [];
+      const pregRegex = /Pregunta\s+(\d+)\s*:/gi;
+      let match;
+      const indices: { index: number; num: string; length: number }[] = [];
+      while ((match = pregRegex.exec(quizText)) !== null) {
+        indices.push({
+          index: match.index,
+          num: match[1],
+          length: match[0].length
+        });
+      }
+      
+      for (let k = 0; k < indices.length; k++) {
+        const start = indices[k].index + indices[k].length;
+        const end = (k + 1 < indices.length) ? indices[k+1].index : quizText.length;
+        const block = quizText.substring(start, end).trim();
+        
+        const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+        if (lines.length === 0) continue;
+        
+        let text = '';
+        const options: string[] = [];
+        let correctIndex = 0;
+        let foundOptions = false;
+        
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          if (/[A-D]\)/i.test(line)) {
+            foundOptions = true;
+            const optMatches = [...line.matchAll(/([A-D])\)\s*([^A-D\n]+)/gi)];
+            if (optMatches.length > 0) {
+              optMatches.forEach(m => {
+                const letter = m[1].toUpperCase();
+                const letterIdx = letter.charCodeAt(0) - 65;
+                options[letterIdx] = m[2].trim();
+              });
+            }
+          } else if (/correctIndex/i.test(line)) {
+            const ciMatch = line.match(/correctIndex\s*:\s*(\d+)/i);
+            if (ciMatch) {
+              correctIndex = parseInt(ciMatch[1], 10);
+            }
+          } else if (!foundOptions) {
+            text += (text ? ' ' : '') + line;
+          }
+        }
+        
+        const finalOptions = Array.from({ length: 4 }, (_, idx) => options[idx] || `Opción ${String.fromCharCode(65 + idx)}`);
+        
+        questions.push({
+          id: `q_plain_${k + 1}`,
+          area: 'general',
+          text: text.trim(),
+          options: finalOptions,
+          correctIndex: isNaN(correctIndex) ? 0 : correctIndex,
+          explanation: ''
+        });
+      }
+      
+      if (questions.length > 0) {
+        const quizObj: PersonalizedQuiz = {
+          title: "Quiz de práctica",
+          focusArea: "General",
+          questions,
+          difficulty: "intermedio"
+        };
+        return {
+          quiz: quizObj,
+          cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim()
+        };
+      }
+    } catch (err) {
+      console.error("Error parsing plain text quiz:", err);
+    }
+
     return { 
       quiz: null, 
       cleanContent: content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim() 
