@@ -419,8 +419,8 @@ const MEMORY_TTL = 7 * 24 * 60 * 60 * 1000;
 // usen el mismo endpoint optimizado: Haiku 4.5 + prompt caching + analytics.
 // Para sobreescribir en desarrollo local, define VITE_CHAT_URL en .env
 const CHAT_URL = "/api/ai-chat";
-const MEMORY_KEY = "cyberagent_memory_v2";
-const HISTORY_KEY = "ai_agent_history_v2";
+const MEMORY_KEY = "cyberagent_memory_v24";
+const HISTORY_KEY = "ai_agent_history_v24";
 
 // ─── Helpfully sanitize Mermaid syntax for v11 ───
 // NOTE: We ONLY replace accented characters and curly quotes.
@@ -1139,7 +1139,14 @@ function parseAllBlocks(content: string) {
   }
 }
 
-function parseAllBlocksHelper(content: string) {
+// Limpiar bloques de "null" repetidos generados por la IA
+function cleanNullBlocks(text: string): string {
+  // Eliminar secuencias de "null" repetidas (más de 3 seguidas)
+  return text.replace(/(null\s*){4,}/gi, '');
+}
+
+function parseAllBlocksHelper(rawContent: string) {
+  const content = cleanNullBlocks(rawContent);
   const { reasoning, cleanContent: c1 } = parseReasoningFromContent(content);
   const { decisions, cleanContent: c2 } = parseDecisionsFromContent(c1);
   const { plan, cleanContent: c3 } = parsePlanFromContent(c2);

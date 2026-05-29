@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v23:${cacheType}:` + text
+  return `chat:v24:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -509,7 +509,21 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
    - Emojis innecesarios (solo ✅ ❌ 💡 como marcadores)
    - "Plan de Acción" o "recommendation" en lugar de quiz
 
-5. CACHÉ: v23
+5. CACHÉ: v24
+
+EL QUIZ DEBE USAR EXACTAMENTE ESTE FORMATO:
+
+<quiz>
+Pregunta 1: [texto de la pregunta]
+A) [opción] B) [opción] C) [opción] D) [opción]
+correctIndex: [0-3]
+
+Pregunta 2: [texto de la pregunta]
+A) [opción] B) [opción] C) [opción] D) [opción]
+correctIndex: [0-3]
+</quiz>
+
+NO uses formato de lista simple como "1. ¿Pregunta?" sin el tag <quiz>.
 
 REGLAS PARA DESPUÉS DEL QUIZ (POST-QUIZ / REFUERZO POR FALLOS):
 
@@ -535,8 +549,8 @@ REGLAS PARA DESPUÉS DEL QUIZ (POST-QUIZ / REFUERZO POR FALLOS):
    → Mostrar explicación breve y amigable.
    → Sugerir revisar el tema en /acordeon (sin publicidad)
 
-    ${context ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
-    ${memory ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
+    ${context && context !== 'null' ? '## CONTEXTO REAL (SITUACION ACTUAL): ' + JSON.stringify(context) : ''}
+    ${memory && memory !== 'null' ? '## MEMORIA RECIENTE: ' + JSON.stringify(memory) : ''}
 
     [areaId: formacion-civica]
     fce-1: Fundamentos Personales e Interculturalidad
