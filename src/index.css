@@ -498,12 +498,12 @@
 /* ── Modo imprimir por materia — 12pt, sin columnas ── */
 @media print {
   body.print-by-materia {
-    font-size: 12pt !important;
+    font-size: 10pt !important;
     line-height: 1.4 !important;
   }
 
   body.print-by-materia * {
-    font-size: 12pt !important;
+    font-size: 10pt !important;
     line-height: 1.4 !important;
   }
 
