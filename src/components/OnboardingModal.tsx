@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { X, Bot, Zap, Trophy, ChevronRight } from "lucide-react";
@@ -82,7 +81,6 @@ const steps = [
 
 export default function OnboardingModal() {
   const { user, refreshProfile } = useAuth();
-  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [closing, setClosing] = useState(false);
 
@@ -97,7 +95,11 @@ export default function OnboardingModal() {
     await refreshProfile();
     if (openChat) {
       setTimeout(() => {
-        navigate(`/tutor?q=${encodeURIComponent("Hola, acabo de registrarme. ¿Qué temas cubre el examen ECOEMS?")}`);
+        window.dispatchEvent(
+          new CustomEvent("cyberedu:open-chat", {
+            detail: { message: "Hola, acabo de registrarme. ¿Qué temas cubre el examen ECOEMS?" },
+          })
+        );
       }, 300);
     }
   };

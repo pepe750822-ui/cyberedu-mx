@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
     Trophy, 
@@ -44,7 +43,6 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
     onBackToDashboard,
     children
 }) => {
-    const navigate = useNavigate();
     const calculateScore = () => {
         let correct = 0;
         activeQuestions.forEach(q => {
@@ -210,10 +208,10 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
                             <p className="text-slate-300 text-base leading-relaxed">
                                 Has obtenido un <span className="text-rose-400 font-black">{percentage.toFixed(0)}%</span>. Los alumnos que analizan sus errores con la IA aumentan su puntaje un <span className="text-emerald-400 font-black">40% en solo 1 semana</span>.
                             </p>
-                            <Button
+                            <Button 
                                 onClick={() => {
                                     const message = `Acabo de sacar ${score} de ${activeQuestions.length} (${percentage.toFixed(0)}%) en el simulador. Necesito un plan de rescate urgente para mejorar mis puntos en las áreas que fallé: ${areasText}. ¿Podemos repasar mis errores?`;
-                                    navigate(`/tutor?q=${encodeURIComponent(message)}`);
+                                    window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
                                 }}
                                 className="bg-violet-600 hover:bg-violet-500 text-white font-black uppercase tracking-widest text-sm px-10 h-14 rounded-2xl shadow-lg shadow-violet-600/25 hover:scale-105 active:scale-95 transition-all"
                             >
@@ -259,7 +257,7 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
                         const message = failedTopics
                             ? `Fallé preguntas sobre: ${failedTopics}. Necesito que hagamos una autopsia de mis errores. ¿Me los explicas?`
                             : "Termino de hacer el simulador. ¿Me ayudas a repasar lo que fallé?";
-                        navigate(`/tutor?q=${encodeURIComponent(message)}`);
+                        window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
                     }}
                     className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl shadow-violet-500/20 transition-all text-sm uppercase tracking-widest"
                 >
@@ -358,7 +356,7 @@ export const SimulatorResults: React.FC<SimulatorResultsProps> = ({
                                             <button
                                                 onClick={() => {
                                                     const message = `No entendí esta pregunta del ECOEMS:\n\n"${q.text}"\n\nOpciones:\n${q.options.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\nLa respuesta correcta es: ${q.options[q.correctIndex]}\n\n¿Me explicas por qué?`;
-                                                    navigate(`/tutor?q=${encodeURIComponent(message)}`);
+                                                    window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
                                                 }}
                                                 className="shrink-0 text-xs bg-violet-600 hover:bg-violet-500 text-white px-3 py-1.5 rounded-lg transition-all font-semibold"
                                             >

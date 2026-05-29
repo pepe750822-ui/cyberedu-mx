@@ -203,7 +203,8 @@ const Index = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("open") === "tutor") {
-      navigate("/tutor");
+      window.dispatchEvent(new CustomEvent("cyberedu:open-chat"));
+      window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
 
