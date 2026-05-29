@@ -130,6 +130,7 @@ const Index = () => {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     setIsDesktop(window.innerWidth >= 768);
@@ -439,7 +440,7 @@ const Index = () => {
             </div>
 
             {/* Right — cerebro 3D, solo desktop, carga diferida 2s para no bloquear LCP */}
-            {isDesktop && showRobot && (
+            {isDesktop && showRobot && isHomePage && (
               <div style={{ height: "500px", marginTop: "-60px" }} className="flex items-start justify-center">
                 <Suspense fallback={
                   <div className="w-full h-full flex items-center justify-center">

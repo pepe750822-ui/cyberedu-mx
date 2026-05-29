@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Spline from '@splinetool/react-spline';
 
 // Fallback de orbes CSS — sin dependencias de WebGL
@@ -82,6 +82,19 @@ function OrbFallback() {
 
 export default function NeuralBrainCanvas() {
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      const canvas = document.querySelector('canvas');
+      if (canvas) {
+        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+        if (gl) {
+          const ext = gl.getExtension('WEBGL_lose_context');
+          if (ext) ext.loseContext();
+        }
+      }
+    };
+  }, []);
 
   if (hasError) {
     return <OrbFallback />;
