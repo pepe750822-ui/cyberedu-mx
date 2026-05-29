@@ -658,7 +658,11 @@ export default function Acordeon() {
 
   const handlePrintByMateria = () => {
     expandAll();
-    setTimeout(() => window.print(), 400);
+    document.body.classList.add('print-by-materia');
+    setTimeout(() => {
+      window.print();
+      document.body.classList.remove('print-by-materia');
+    }, 400);
   };
 
   const handleProtectedAction = (action: () => void) => {

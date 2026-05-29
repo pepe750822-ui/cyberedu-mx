@@ -495,3 +495,42 @@
   }
 }
 
+/* ── Modo imprimir por materia — 12pt, sin columnas ── */
+@media print {
+  body.print-by-materia {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  body.print-by-materia * {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  body.print-by-materia .acordeon-screen-only { display: block !important; }
+  body.print-by-materia .acordeon-print-layout { display: none !important; }
+
+  body.print-by-materia .acordeon-print-grid,
+  body.print-by-materia .acordeon-grid {
+    display: block !important;
+    columns: unset !important;
+  }
+
+  body.print-by-materia .acordeon-materia {
+    page-break-before: always !important;
+    break-before: always !important;
+    break-inside: auto !important;
+  }
+
+  body.print-by-materia .acordeon-materia:first-child {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  body.print-by-materia .acordeon-contenido {
+    display: block !important;
+    columns: unset !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
