@@ -214,7 +214,7 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
+                  onClick={() => navigate('/tutor')}
                   className="relative transition-all hover:scale-110 active:scale-95"
                 >
                   <Bot className="h-5 w-5 text-violet-500" />

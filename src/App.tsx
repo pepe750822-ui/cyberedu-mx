@@ -4,10 +4,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
-import { Bot } from "lucide-react";
 
 import { shouldLoadDirect } from "./utils/deviceDetect";
 
@@ -31,7 +30,6 @@ const retryFetch = <T,>(fn: () => Promise<T>, retries = 3, delay = 1000): Promis
 // Lazy-loaded pages for performance
 const Index = lazy(() => import("./pages/Index"));
 const AreaDetail = lazy(() => import("./pages/AreaDetail"));
-const AITutor = lazy(() => retryFetch(() => import("./components/AITutor")));
 const Auth = lazy(() => import("./pages/Auth"));
 const Tokens = lazy(() => import("./pages/Tokens"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -158,19 +156,6 @@ const AdminResumenRoute = () => {
 
 const AuthenticatedStudyTools = () => {
   const { user, profile } = useAuth();
-  const navigate = useNavigate();
-  const [tutorOpen, setTutorOpen] = useState(false);
-
-  useEffect(() => {
-    const handleOpen = () => setTutorOpen(true);
-    const handleClose = () => setTutorOpen(false);
-    window.addEventListener('cyberedu:opened', handleOpen);
-    window.addEventListener('cyberedu:closed', handleClose);
-    return () => {
-      window.removeEventListener('cyberedu:opened', handleOpen);
-      window.removeEventListener('cyberedu:closed', handleClose);
-    };
-  }, []);
 
   const showOnboarding =
     !!user &&
@@ -179,16 +164,7 @@ const AuthenticatedStudyTools = () => {
     !localStorage.getItem("cyberedu_onboarding_done");
 
   return (
-    <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando... (si tarda, recarga la página)</div>}>
-      <AITutor />
-      {user && !tutorOpen && (
-        <button
-          onClick={() => navigate('/tutor')}
-          className="fixed bottom-6 right-6 z-40 bg-violet-600 hover:bg-violet-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-violet-500/25 transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300"
-        >
-          <Bot className="h-7 w-7" />
-        </button>
-      )}
+    <Suspense fallback={null}>
       <PendingResultSync />
       {user && <StreakAutoSync />}
       {user && <AchievementObserver />}
