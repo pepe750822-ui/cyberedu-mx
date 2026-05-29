@@ -30,6 +30,8 @@ export default defineConfig(({ mode }) => ({
           "**/ingles/**",
           "**/guia2026/**",
           "**/mermaid-*.js",
+          "**/*spline*",
+          "**/neuralbraincanvas*",
         ],
       },
     }),

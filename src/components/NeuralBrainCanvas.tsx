@@ -85,14 +85,13 @@ export default function NeuralBrainCanvas() {
 
   useEffect(() => {
     return () => {
-      const canvas = document.querySelector('canvas');
-      if (canvas) {
-        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+      document.querySelectorAll('canvas').forEach(canvas => {
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
         if (gl) {
           const ext = gl.getExtension('WEBGL_lose_context');
           if (ext) ext.loseContext();
         }
-      }
+      });
     };
   }, []);
 
