@@ -656,6 +656,15 @@ export default function Acordeon() {
     setTimeout(() => window.print(), 400);
   };
 
+  const handlePrintByMateria = () => {
+    expandAll();
+    document.body.classList.add('print-by-materia');
+    setTimeout(() => {
+      window.print();
+      document.body.classList.remove('print-by-materia');
+    }, 400);
+  };
+
   const handleProtectedAction = (action: () => void) => {
     if (!user) { navigate("/auth"); return; }
     action();
@@ -717,6 +726,13 @@ export default function Acordeon() {
             title={!user ? "🔒 Regístrate gratis para imprimir" : undefined}
           >
             🖨️ Imprimir PDF{!user && " 🔒"}
+          </button>
+          <button
+            onClick={() => handleProtectedAction(handlePrintByMateria)}
+            className={`text-xs px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors font-bold flex items-center gap-1${!user ? " opacity-50" : ""}`}
+            title={!user ? "🔒 Regístrate gratis para imprimir" : undefined}
+          >
+            🖨️ Imprimir por Materia{!user && " 🔒"}
           </button>
         </div>
       </div>

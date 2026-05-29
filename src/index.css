@@ -494,3 +494,24 @@
     padding-left: 6px !important;
   }
 }
+
+/* ── Modo imprimir por materia — 1 página por materia en columnas ── */
+body.print-by-materia .acordeon-materia {
+  page-break-before: always !important;
+  break-before: always !important;
+}
+
+body.print-by-materia .acordeon-materia:first-child {
+  page-break-before: avoid !important;
+  break-before: avoid !important;
+}
+
+body.print-by-materia .acordeon-contenido {
+  display: block !important;
+  columns: 3 !important;
+  column-gap: 8px !important;
+}
+
+body.print-by-materia .acordeon-subtema {
+  break-inside: avoid !important;
+}
