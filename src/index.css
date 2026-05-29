@@ -508,8 +508,9 @@ body.print-by-materia .acordeon-materia:first-child {
 
 body.print-by-materia .acordeon-contenido {
   display: block !important;
-  columns: 3 !important;
-  column-gap: 8px !important;
+  columns: unset !important;
+  column-gap: unset !important;
+  width: 100% !important;
 }
 
 body.print-by-materia .acordeon-subtema {
