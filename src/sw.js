@@ -34,7 +34,8 @@ const OFFLINE_FALLBACK = '/offline.html';
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(STATIC_CACHE).then((cache) => {
-            return cache.addAll([...STATIC_ASSETS, ...BUILD_ASSETS]);
+            const allAssets = [...new Set([...STATIC_ASSETS, ...BUILD_ASSETS])];
+            return cache.addAll(allAssets);
         })
     );
     self.skipWaiting();

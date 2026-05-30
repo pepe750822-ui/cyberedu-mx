@@ -2241,16 +2241,16 @@ const MemoryBadge: React.FC<{ memory: AgentMemory }> = ({ memory }) => {
 };
 
 // ─── Message Bubble Component (Memoized) ───
-const MessageBubble = React.memo(({ 
-  msg, 
-  isExpanded, 
-  handleFeedback, 
-  handlePlanAction, 
-  handleToggleStep, 
-  handleQuizAnswer, 
-  quizAnswers, 
-  togglePaso, 
-  deletePlan, 
+const MessageBubble = React.memo(({
+  msg,
+  isExpanded,
+  handleFeedback,
+  handlePlanAction,
+  handleToggleStep,
+  handleQuizAnswer,
+  quizAnswers,
+  togglePaso,
+  deletePlan,
   agentNavigate,
   fixingCheckId,
   setFixingCheckId,
@@ -2260,7 +2260,8 @@ const MessageBubble = React.memo(({
   markdownComponents,
   isStreaming,
   speakMessage,
-  isSpeaking
+  isSpeaking,
+  sendMessage
 }: any) => {
   const isAssistant = msg.role === "assistant";
 
@@ -4390,6 +4391,7 @@ const AITutor = () => {
                       isStreaming={isStreaming && messages[messages.length-1].id === msg.id}
                       speakMessage={speakMessage}
                       isSpeaking={isSpeaking}
+                      sendMessage={sendMessage}
                     />
                   ))}
                   {isStreaming && isWaitingFirstChunk && (
