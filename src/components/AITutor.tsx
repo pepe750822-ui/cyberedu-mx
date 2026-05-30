@@ -1683,11 +1683,25 @@ const AnalysisCard: React.FC<{ analysis: ProgressAnalysis; onNavigate: (path: st
 };
 
 // ─── Quiz Card (self-contained, no external state) ───
-const QuizCard: React.FC<{ quiz: PersonalizedQuiz }> = ({ quiz }) => {
+const QuizCard: React.FC<{
+  quiz: PersonalizedQuiz;
+  onComplete?: (incorrectItems: Array<{ text: string; explanation: string }>) => void;
+}> = ({ quiz, onComplete }) => {
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  
+  const [notified, setNotified] = useState(false);
+
   const questions = Array.isArray(quiz?.questions) ? quiz.questions : [];
   const isEvaluated = questions.length > 0 && questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
+
+  useEffect(() => {
+    if (isEvaluated && !notified && onComplete) {
+      setNotified(true);
+      const incorrect = questions
+        .filter((q, qi) => answers[q.id || `q${qi}`] !== Number(q.correctIndex ?? 0))
+        .map(q => ({ text: q.text || (q as any).question || '', explanation: q.explanation || '' }));
+      if (incorrect.length > 0) onComplete(incorrect);
+    }
+  }, [isEvaluated, notified, onComplete, answers, questions]);
 
   const handleAnswer = (qId: string, idx: number) => {
     setAnswers(prev => {
@@ -1756,7 +1770,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz }> = ({ quiz }) => {
                 })}
               </div>
 
-              {answered && (
+              {answered && q.explanation && (
                 <div className={cn(
                   "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
                   isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-amber-500/5 border-amber-500/20"
@@ -1771,7 +1785,7 @@ const QuizCard: React.FC<{ quiz: PersonalizedQuiz }> = ({ quiz }) => {
                     <div className="space-y-1">
                       <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Explicación</p>
                       <p className="text-xs font-medium text-slate-300 leading-relaxed">
-                        {q.explanation || ""}
+                        {q.explanation}
                       </p>
                     </div>
                   </div>
@@ -2494,7 +2508,17 @@ const MessageBubble = React.memo(({
           ))}
 
           {/* 6. Quiz (AITutorQuiz) */}
-          {msg.quiz && <QuizCard quiz={msg.quiz} />}
+          {msg.quiz && (
+            <QuizCard
+              quiz={msg.quiz}
+              onComplete={(incorrectItems) => {
+                if (!isStreaming && incorrectItems.length > 0) {
+                  const first = incorrectItems[0];
+                  sendMessage(`Respondí mal esta pregunta: "${first.text}". Explícame el tema en 3 oraciones simples y genera 2 preguntas de práctica en formato <quiz>.`);
+                }
+              }}
+            />
+          )}
 
           {/* 7. Recomendación (RecommendationsCard) */}
           {msg.recommendations && msg.recommendations.length > 0 && 
@@ -3923,28 +3947,17 @@ const AITutor = () => {
         1. NUNCA incluyas publicidad, links ni menciones a CyberEdu MX, videos, flashcards, infografías ni material externo.
         2. NUNCA uses mapas mentales, diagramas ASCII ni tablas complejas.
         3. Cuando expliques una pregunta del simulador:
-           - Explica la respuesta en máximo 5 líneas simples.
-           - SIEMPRE termina con este formato exacto:
-
-        📝 QUIZ RÁPIDO:
-        1. [pregunta relacionada]
-        A) opción
-        B) opción
-        C) opción
-        D) opción
-
-        2. [segunda pregunta relacionada]
-        A) opción
-        B) opción
-        C) opción
-        D) opción
-
-        4. NUNCA reveles la respuesta correcta hasta que el alumno responda — solo muestra las opciones.
-        5. Cuando el alumno responda, muestra SIEMPRE:
-           ✅ Correcto / ❌ Incorrecto
+           - Explica la respuesta en maximo 5 lineas simples. Sin emojis.
+           - SIEMPRE termina generando 2 preguntas relacionadas en formato <quiz> (ver REGLAS DE ORO, punto 5).
+        4. NUNCA reveles la respuesta correcta hasta que el alumno responda.
+        5. Cuando el alumno responda al quiz de texto plano, muestra (sin emojis):
+           Correcto / Incorrecto
            Respuesta correcta: [letra]) [texto]
-           Explicación: [breve explicación]
+           Explicacion: [breve explicacion]
         6. Si el alumno no responde y pregunta otra cosa, igual lanza el quiz al final.
+        7. CUANDO EL MENSAJE EMPIECE CON "Respondí mal esta pregunta:":
+           - Explica por que la respuesta correcta es correcta (maximo 3 oraciones, lenguaje simple de secundaria, SIN emojis, SIN tecnicismos).
+           - Genera EXACTAMENTE 2 preguntas de practica sobre el mismo tema en formato <quiz>.
 
         TEMARIO OFICIAL NUMERADO: ${JSON.stringify(detailedSyllabus)}. 
         
@@ -3971,25 +3984,34 @@ const AITutor = () => {
            REGLA CRÍTICA MERMAID v11: 
            - USA SIEMPRE 'flowchart TD' o 'flowchart LR' y COMILLAS DOBLES en etiquetas con acentos o paréntesis (Ej: A["Física (Mecánica)"]).
         5. QUIZ INTERACTIVO (REGLAS MUY IMPORTANTES):
-           Genera tu respuesta estrictamente encapsulada en la etiqueta <quiz> usando JSON válido. 
-           EJEMPLO OBLIGATORIO DE ESTRUCTURA:
+           Genera tu respuesta estrictamente encapsulada en la etiqueta <quiz> usando JSON valido.
+           - SIEMPRE genera EXACTAMENTE 2 preguntas — ni mas ni menos.
+           - El campo "explanation" es OBLIGATORIO en cada pregunta. Sin emojis en la explicacion.
+           - Lenguaje simple y directo (nivel secundaria). Sin tecnicismos innecesarios.
+           EJEMPLO OBLIGATORIO DE ESTRUCTURA (2 preguntas):
            <quiz>
            {
-             "title": "Título del Quiz",
-             "difficulty": "Difícil",
+             "title": "Titulo del Quiz",
+             "difficulty": "Medio",
              "focusArea": "biologia",
              "questions": [
                {
-                 "text": "¿Pregunta de ejemplo?",
-                 "options": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+                 "text": "Pregunta uno?",
+                 "options": ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"],
                  "correctIndex": 0,
-                 "explanation": "Explicación breve de por qué es la correcta."
+                 "explanation": "La opcion 1 es correcta porque [razon simple]. Las otras son incorrectas porque [razon breve]."
+               },
+               {
+                 "text": "Pregunta dos?",
+                 "options": ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"],
+                 "correctIndex": 2,
+                 "explanation": "La opcion 3 es correcta porque [razon simple]."
                }
              ]
            }
            </quiz>
-           - CRÍTICO: "correctIndex" DEBE ser un número entero 0-basado correspondondiente al arreglo options.
-           - PROHIBIDO usar letras, índices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
+           - CRITICO: "correctIndex" DEBE ser un numero entero 0-basado correspondiente al arreglo options.
+           - PROHIBIDO usar letras, indices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
          8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta.
