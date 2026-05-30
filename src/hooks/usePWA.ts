@@ -65,11 +65,16 @@ export function usePWA() {
     // Trigger install prompt
     const installApp = useCallback(async () => {
         if (!deferredPrompt) return false;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        setDeferredPrompt(null);
-        setIsInstallable(false);
-        return outcome === "accepted";
+        try {
+            await deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            return outcome === "accepted";
+        } catch {
+            return false;
+        } finally {
+            setDeferredPrompt(null);
+            setIsInstallable(false);
+        }
     }, [deferredPrompt]);
 
     return {

@@ -40,11 +40,28 @@ const PWAInstallBanner = () => {
 
     const handleInstall = async () => {
         setIsInstalling(true);
-        const accepted = await installApp();
-        setIsInstalling(false);
-        if (accepted) {
-            setShowSuccessAnimation(true);
-            setTimeout(() => setIsVisible(false), 2000);
+
+        // 30s safety timeout — close banner if userChoice never resolves
+        const timeoutId = setTimeout(() => {
+            setIsInstalling(false);
+            setIsVisible(false);
+        }, 30_000);
+
+        try {
+            const accepted = await installApp();
+            clearTimeout(timeoutId);
+            setIsInstalling(false);
+            if (accepted) {
+                setShowSuccessAnimation(true);
+                setTimeout(() => setIsVisible(false), 2000);
+            } else {
+                // Prompt was dismissed — close banner (event is consumed)
+                setIsVisible(false);
+            }
+        } catch {
+            clearTimeout(timeoutId);
+            setIsInstalling(false);
+            setIsVisible(false);
         }
     };
 
