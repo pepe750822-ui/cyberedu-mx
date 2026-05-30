@@ -436,6 +436,40 @@ const sanitizeMermaidContent = (content: string): string => content
   .replace(/\u2018|\u2019/g, "'"); // curly single quotes -> straight
 
 // ─── Link Hyper-Resolution ───
+function cleanTutorResponse(text: string): string {
+  if (!text) return text;
+  let out = text;
+
+  // 1. Remove ❌-headed blocks (wrong-options section) through next blank line
+  out = out.replace(/^❌[^\n]*(?:\n(?!\n)[^\n]*)*/gm, '');
+
+  // 2. Remove lines containing banned phrases
+  const banned = [
+    'Por qué las otras',
+    'opciones son incorrectas',
+    'Material completo',
+    'GRATIS',
+    'Ver video:',
+    'Empieza ahora',
+    'CyberEdu MX',
+  ];
+  for (const phrase of banned) {
+    const re = new RegExp(`^.*${phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*$`, 'gim');
+    out = out.replace(re, '');
+  }
+
+  // 3. Remove emojis (broad Unicode ranges)
+  out = out.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '');
+
+  // 4. Remove lines starting with "* Opción" / "- Opción"
+  out = out.replace(/^[*\-]\s+Opci[oó]n\b.*$/gim, '');
+
+  // 5. Collapse triple+ blank lines left by removals
+  out = out.replace(/\n{3,}/g, '\n\n').trim();
+
+  return out;
+}
+
 const autoLinkCitations = (text: string): string => {
   // Convierte [BIO 5.2] -> [BIO 5.2](citation://BIO/5.2) SOLO si:
   // 1. No está ya dentro de un link markdown: (?<!\])
@@ -3031,7 +3065,7 @@ const AITutor = () => {
           welcomeText += `🚨 **Alertas de Temario:** Hay temas de ECOEMS que requieren tu atención inmediata.\n\n`;
         }
 
-        welcomeText += "**¿Qué te gustaría estudiar hoy?**\n- Escribe `/reporte` para ver tu rendimiento.\n- Escribe `/analisis` para ver tus áreas débiles.\n- Escribe `/recomienda` para un **Plan de Acción ECOEMS**.\n- O simplemente hazme una consulta sobre los temas del examen.";
+        welcomeText += "¿Con qué tema del ECOEMS empezamos hoy?";
 
         return { 
           ...m, 
@@ -3796,7 +3830,7 @@ const AITutor = () => {
             } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
-            let finalCleanContent = cleanContent;
+            let finalCleanContent = cleanTutorResponse(cleanContent);
             if (!isUnlimitedTutor && !hasTokens) {
               const usedFree = localStorage.getItem('cyberedu_used_free_message');
               if (!usedFree) {
@@ -4136,7 +4170,7 @@ const AITutor = () => {
             }));
           }
 
-          let finalCleanContent = autoLinkCitations(cleanContent);
+          let finalCleanContent = autoLinkCitations(cleanTutorResponse(cleanContent));
           if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
             const usedFree = localStorage.getItem('cyberedu_used_free_message');
             if (!usedFree) {
