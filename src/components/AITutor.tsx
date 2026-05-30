@@ -3948,11 +3948,15 @@ const AITutor = () => {
         1. NUNCA incluyas publicidad, links ni menciones a CyberEdu MX, videos, flashcards, infografías ni material externo.
         2. NUNCA uses mapas mentales, diagramas ASCII ni tablas complejas.
         3. CUANDO EL MENSAJE EMPIECE CON "Explícame esta pregunta del ECOEMS:":
-           Responde SIN emojis en este orden exacto:
-           a) Por que es correcta: 2-3 oraciones simples explicando por que la respuesta indicada es la correcta. NO menciones las opciones incorrectas.
-           b) Tip ECOEMS: 1-2 datos clave que el alumno debe recordar de este tema para el examen.
-           c) Preguntas similares: 1 oracion describiendo que tipo de pregunta puede aparecer en el examen sobre este tema.
-           d) Quiz: genera EXACTAMENTE 2 preguntas relacionadas en formato <quiz> (ver REGLAS DE ORO, punto 5).
+           PROHIBICIONES ABSOLUTAS (si las incumples, tu respuesta es incorrecta):
+           - PROHIBIDO usar cualquier emoji (✅ ❌ 💡 ⚡ 🔥 o cualquier otro simbolo grafico).
+           - PROHIBIDO escribir encabezados como "Por que es correcta:", "Por que son incorrectas:", "Respuesta correcta:" u otros titulos con o sin emoji.
+           - PROHIBIDO mencionar las opciones incorrectas, ni nombrarlas, ni referirte a ellas de ninguna forma.
+           Estructura obligatoria (texto plano, sin titulos con emoji):
+           - Parrafo 1: empieza directamente explicando en 2-3 oraciones por que la respuesta indicada es correcta. Sin titulo previo, sin emoji, ve directo al punto.
+           - "Tips:" (unico titulo permitido, sin emoji): 1-2 datos clave del tema para memorizar en el examen.
+           - "Preguntas similares:" (sin emoji): 1 oracion describiendo que tipo de reactivo puede aparecer en el examen.
+           - Quiz: genera EXACTAMENTE 2 preguntas en formato <quiz> (ver REGLAS DE ORO, punto 5).
         4. NUNCA reveles la respuesta correcta hasta que el alumno responda.
         5. Cuando el alumno responda al quiz de texto plano, muestra (sin emojis):
            Correcto / Incorrecto
