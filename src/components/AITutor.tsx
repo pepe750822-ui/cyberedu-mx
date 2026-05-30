@@ -447,12 +447,18 @@ function cleanTutorResponse(text: string): string {
   const banned = [
     'Por qué las otras',
     'opciones son incorrectas',
+    'Por qué la respuesta correcta',
+    'ES correcta:',
+    'es correcta:',
     'Material completo',
     'GRATIS',
     'Ver video:',
     'Empieza ahora',
     'CyberEdu MX',
   ];
+
+  // Remove lines starting with ** (bold headers the model shouldn't emit)
+  out = out.replace(/^\*\*\s+.*$/gm, '');
   for (const phrase of banned) {
     const re = new RegExp(`^.*${phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*$`, 'gim');
     out = out.replace(re, '');
@@ -4546,11 +4552,11 @@ const AITutor = () => {
                     </button>
 
                     {[
-                      { label: "📈 Reporte", cmd: "/reporte" },
-                      { label: "📊 Análisis", cmd: "/analisis" },
-                      { label: "✨ Planes IA", cmd: "/recomienda" },
-                      { label: "🧠 Explica...", cmd: "/explica " },
-                      { label: "🧩 Quiz...", cmd: "/quiz " }
+                      { label: "Reporte", cmd: "/reporte" },
+                      { label: "Análisis", cmd: "/analisis" },
+                      { label: "Planes IA", cmd: "/recomienda" },
+                      { label: "Explica...", cmd: "/explica " },
+                      { label: "Quiz...", cmd: "/quiz " }
                     ].map((btn: any, i) => (
                       <button
                         key={i}
@@ -4609,7 +4615,7 @@ const AITutor = () => {
                        {/* ── PREMIUM / SUSCRIPTOR ── */}
                        {usageStats && usageStats.isSubscriber && (
                              <span className="text-[10px] font-black uppercase tracking-widest bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/5 text-amber-400">
-                               👑 Consultas Ilimitadas
+                               Consultas Ilimitadas
                              </span>
                            )}
 
