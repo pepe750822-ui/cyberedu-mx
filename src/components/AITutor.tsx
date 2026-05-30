@@ -1209,7 +1209,7 @@ function parseAllBlocksHelper(rawContent: string) {
   const { physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, cleanContent: c576 } = parseNewArtifactsFromContent(c575);
   const { recommendations, cleanContent: c58 } = parseRecommendationsFromContent(c576);
   const { eduImages, cleanContent: c6 } = parseImagesFromContent(c58);
-  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent: c6 };
+  return { reasoning, decisions, plan, quiz, charts, calculators, simulators, geography, solarSystem, humanBody, spatialSeries, mexicoMaps, timelines, atoms, algebras, physics, mathGraphs, exercises, chemistryElements, physicsGraphs, circuitLabs, forceDiagrams, lewisStructures, spatialReasoning3Ds, recommendations, eduImages, cleanContent: cleanTutorResponse(c6) };
 }
 
 function stripStreamingBlocks(content: string): string {
@@ -3836,7 +3836,7 @@ const AITutor = () => {
             } = parseAllBlocks(assistantContent);
             if (decisions.length > 0) setMemory(prev => ({ ...prev, decisions: [...prev.decisions, ...decisions].slice(-20) }));
             
-            let finalCleanContent = cleanTutorResponse(cleanContent);
+            let finalCleanContent = cleanContent;
             if (!isUnlimitedTutor && !hasTokens) {
               const usedFree = localStorage.getItem('cyberedu_used_free_message');
               if (!usedFree) {
@@ -4186,7 +4186,7 @@ const AITutor = () => {
             }));
           }
 
-          let finalCleanContent = autoLinkCitations(cleanTutorResponse(cleanContent));
+          let finalCleanContent = autoLinkCitations(cleanContent);
           if (!isSubscriber && trialDaysRemaining <= 0 && !hasTokens) {
             const usedFree = localStorage.getItem('cyberedu_used_free_message');
             if (!usedFree) {
