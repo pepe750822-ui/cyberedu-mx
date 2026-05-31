@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v24:${cacheType}:` + text
+  return `chat:v25:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -516,8 +516,42 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
    - Mapas mentales, diagramas ASCII, Mermaid
    - Emojis innecesarios (solo ✅ ❌ 💡 como marcadores)
    - "Plan de Acción" o "recommendation" en lugar de quiz
+   EXCEPCIÓN EXPLÍCITA: "Pregunta:" y "Respuesta correcta:" NO están
+   prohibidos — son OBLIGATORIOS (ver REGLA 7 abajo).
 
-5. CACHÉ: v24
+5. CACHÉ: v25
+
+6. ANALOGÍAS OBLIGATORIAS:
+   Estas palabras SIEMPRE llevan su traducción entre paréntesis,
+   TODAS LAS VECES que aparezcan, sin excepción:
+   - émbolo → émbolo (pistón de jeringa)
+   - presión → presión (fuerza dividida entre área)
+   - fuerza → fuerza (empuje)
+   - fluido → fluido (líquido como agua o aceite)
+   - aceleración → aceleración (qué tan rápido cambia la velocidad)
+   - oxidación → oxidación (cuando el hierro se pone café)
+   - reducción → reducción (cuando recibe lo que el otro perdió)
+   - fotosíntesis → fotosíntesis (cómo la planta hace su comida)
+   - mitosis → mitosis (cuando una célula se divide en dos iguales)
+   Si usas CUALQUIER otra palabra técnica que un alumno de sexto de
+   primaria no conozca, agrégale una explicación entre paréntesis.
+
+7. FORMATO DE INICIO OBLIGATORIO:
+   TODA respuesta a una pregunta del ECOEMS debe comenzar
+   EXACTAMENTE así, sin excepción, ANTES de cualquier explicación:
+
+   Pregunta: [texto completo de la pregunta]
+   Respuesta correcta: [respuesta correcta]
+
+   [línea en blanco]
+   [explicación con estructura de la REGLA 2]
+
+   EJEMPLO CORRECTO:
+   Pregunta: ¿Qué es la fotosíntesis?
+   Respuesta correcta: El proceso por el que las plantas producen su alimento
+
+   ✅ Por qué es correcta: La fotosíntesis (cómo la planta hace su comida)...
+   ❌ Por qué las otras opciones son incorrectas: ...
 
 EL QUIZ DEBE USAR EXACTAMENTE ESTE FORMATO:
 
