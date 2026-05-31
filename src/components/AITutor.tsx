@@ -851,8 +851,15 @@ function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null;
         if (matchNum) {
           const num = parseInt(matchNum[0], 10);
           if (upperCi.includes('OPCION') || upperCi.includes('OPCIÓN')) {
+            // "Opción 3" is always 1-based
             bestIdx = num - 1;
+          } else if (num >= 0 && num < options.length) {
+            // Already a valid 0-based index — use directly.
+            // This fixes the off-by-one when the AI sends "3" (string) for the
+            // last option in a 4-option quiz: 3 < 4 → bestIdx=3, not 3-1=2.
+            bestIdx = num;
           } else if (num > 0 && num <= options.length) {
+            // Looks 1-based (num equals options.length → last option)
             bestIdx = num - 1;
           } else {
             bestIdx = num;
@@ -1841,20 +1848,49 @@ const QuizCard: React.FC<{
           const userPick = answers[q.id || `q${qi}`];
           return userPick !== undefined && userPick === Number(q.correctIndex ?? 0);
         }).length;
-        
+
+        const incorrectItems = questions
+          .filter((q, qi) => answers[q.id || `q${qi}`] !== Number(q.correctIndex ?? 0))
+          .map(q => ({
+            text: q.text || (q as any).question || '',
+            correctAnswer: (q.options || [])[Number(q.correctIndex ?? 0)] || '',
+            explanation: q.explanation || '',
+          }));
+
         return (
-          <div className="p-5 mt-4 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center">
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
-            <div className="flex items-center gap-4">
-              <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
-                <p className="text-3xl font-black text-emerald-400">{correctCount}</p>
-              </div>
-              <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
-                <p className="text-3xl font-black text-white">{questions.length}</p>
+          <div className="mt-4 space-y-3">
+            <div className="p-5 rounded-[2rem] bg-slate-900 border border-white/5 shadow-xl text-center flex flex-col items-center justify-center">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Resultado Final</p>
+              <div className="flex items-center gap-4">
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Aciertos</p>
+                  <p className="text-3xl font-black text-emerald-400">{correctCount}</p>
+                </div>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10 min-w-[100px]">
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total</p>
+                  <p className="text-3xl font-black text-white">{questions.length}</p>
+                </div>
               </div>
             </div>
+
+            {incorrectItems.length > 0 && (
+              <div className="p-5 rounded-[2rem] bg-rose-500/5 border border-rose-500/20 shadow-xl space-y-4">
+                <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest">
+                  📌 Repasemos lo que fallaste
+                </p>
+                {incorrectItems.map((item, i) => (
+                  <div key={i} className="space-y-1.5">
+                    <p className="text-xs font-bold text-white leading-snug">{item.text}</p>
+                    <p className="text-xs text-emerald-400 font-bold">
+                      ✅ Respuesta correcta: {item.correctAnswer}
+                    </p>
+                    {item.explanation && (
+                      <p className="text-xs text-slate-300 leading-relaxed">{item.explanation}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       })()}
