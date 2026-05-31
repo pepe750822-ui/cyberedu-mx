@@ -276,8 +276,11 @@ export default async function handler(req: Request) {
   // Helper instead of SDK for Edge compatibility
   const supabaseRequest = async (path: string, options: any = {}) => {
     const url = `${SUPABASE_URL}/rest/v1/${path}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
     try {
       const res = await fetch(url, {
+        signal: controller.signal,
         ...options,
         headers: {
           'apikey': SUPABASE_SERVICE_ROLE_KEY,
@@ -298,7 +301,7 @@ export default async function handler(req: Request) {
       // Handle 204 No Content or empty bodies
       const text = await res.text().catch(() => '');
       if (!text) return { data: null, error: null };
-      
+
       try {
         const data = JSON.parse(text);
         return { data, error: null };
@@ -306,7 +309,12 @@ export default async function handler(req: Request) {
         return { data: text, error: null };
       }
     } catch (e: any) {
+      if (e.name === 'AbortError') {
+        return { data: null, error: { message: 'Supabase request timeout after 8s' } };
+      }
       return { data: null, error: { message: e.message } };
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
 

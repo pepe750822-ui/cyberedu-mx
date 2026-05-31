@@ -57,10 +57,21 @@ export default async function handler(req: Request) {
   const tzDate = new Date(todayInMexico);
   const localToday = tzDate.getFullYear() + "-" + String(tzDate.getMonth() + 1).padStart(2, '0') + "-" + String(tzDate.getDate()).padStart(2, '0');
 
-  const [profileResult, usageResult] = await Promise.all([
-    supabase.from('profiles').select('tokens, subscription_status, is_premium').eq('id', userId).single(),
-    supabase.from('daily_usage').select('count').eq('user_id', userId).eq('date', localToday).single()
-  ]);
+  const withTimeout = <T,>(p: Promise<T>, ms: number): Promise<T> =>
+    Promise.race([p, new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+
+  let profileResult, usageResult;
+  try {
+    [profileResult, usageResult] = await withTimeout(Promise.all([
+      supabase.from('profiles').select('tokens, subscription_status, is_premium').eq('id', userId).single(),
+      supabase.from('daily_usage').select('count').eq('user_id', userId).eq('date', localToday).single()
+    ]), 8000);
+  } catch {
+    return new Response(JSON.stringify({ error: 'Tiempo de espera agotado' }), {
+      status: 504,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
   const profile = (profileResult.data as Record<string, any>) || {};
   const isSubscriber = profile.subscription_status === 'active' || profile.is_premium === true;

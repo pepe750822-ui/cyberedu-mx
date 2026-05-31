@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Spline from '@splinetool/react-spline';
 
 // Fallback de orbes CSS — sin dependencias de WebGL
@@ -22,7 +22,7 @@ function OrbFallback() {
         @keyframes floatOrb4 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(25px, -20px) scale(0.9); } }
         @keyframes floatOrb5 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-35px, 25px) scale(1.15); } }
       `}</style>
-      
+
       {/* Background Orbs */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
         {[...Array(6)].map((_, i) => (
@@ -46,16 +46,16 @@ function OrbFallback() {
 
       {/* Robot SVG & Text */}
       <div className="z-10 flex flex-col items-center justify-center" style={{ animation: 'robotFloat 4s ease-in-out infinite' }}>
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="110" 
-          height="110" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="1.2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="110"
+          height="110"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="text-violet-300 drop-shadow-[0_0_20px_rgba(124,58,237,0.9)]"
         >
           <rect width="16" height="12" x="4" y="8" rx="3" fill="rgba(124,58,237,0.1)" />
@@ -82,9 +82,27 @@ function OrbFallback() {
 
 export default function NeuralBrainCanvas() {
   const [hasError, setHasError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Skip WebGL entirely on narrow viewports — 56% of traffic is mobile
+    if (window.innerWidth < 768) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Only mount Spline when the container is actually in the viewport.
+    // This prevents GL_INVALID_FRAMEBUFFER_OPERATION spam from off-screen renders.
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(container);
+
     return () => {
+      observer.disconnect();
+      // Release WebGL contexts on unmount to avoid context leaks
       document.querySelectorAll('canvas').forEach(canvas => {
         const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
         if (gl) {
@@ -100,11 +118,13 @@ export default function NeuralBrainCanvas() {
   }
 
   return (
-    <div className="w-full h-full">
-      <Spline
-        scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-        onError={() => setHasError(true)}
-      />
+    <div ref={containerRef} className="w-full h-full">
+      {isVisible && (
+        <Spline
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          onError={() => setHasError(true)}
+        />
+      )}
     </div>
   );
 }

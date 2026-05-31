@@ -1,5 +1,9 @@
 {
   "buildCommand": "NODE_OPTIONS=--max-old-space-size=4096 npm run build",
+  "functions": {
+    "api/usage.ts": { "maxDuration": 30 },
+    "api/ai-chat.ts": { "maxDuration": 30 }
+  },
   "crons": [
     {
       "path": "/api/telegram-cron",
