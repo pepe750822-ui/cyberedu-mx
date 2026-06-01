@@ -343,6 +343,69 @@ const TokensPage = () => {
           </div>
         )}
 
+        {/* ——— PAQUETES PREMIUM — siempre visible ——— */}
+        <div className="space-y-4">
+          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">Paquetes Premium — Pago único</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {premiumPackages.map((pkg, idx) => (
+              <motion.div
+                key={pkg.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * idx }}
+              >
+                <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] ${pkg.highlight ? "border-purple-500/40 ring-1 ring-purple-500/20" : "border-white/10"}`}>
+                  {pkg.badge && (
+                    <div className={`absolute top-6 right-[-35px] rotate-45 ${pkg.badgeColor} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
+                      {pkg.badge}
+                    </div>
+                  )}
+                  <CardHeader className="p-8 pb-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        {pkg.icon}
+                      </div>
+                    </div>
+                    <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
+                    <CardDescription className="text-slate-400 font-medium text-xs">{pkg.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-8 pt-0 flex-grow space-y-4">
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-black text-white">${pkg.price}</span>
+                        <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">MXN</span>
+                      </div>
+                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Pago único — acceso de por vida</p>
+                    </div>
+                    <div className="pt-3 border-t border-white/5 space-y-2">
+                      {pkg.perks.map(perk => (
+                        <div key={perk} className="flex items-center gap-2 text-sm text-slate-300">
+                          <Check className="h-4 w-4 text-purple-400 shrink-0" />
+                          {perk}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-8 pt-0 flex flex-col gap-2">
+                    <Button
+                      className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 shadow-lg shadow-purple-500/20 text-white" : "bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 text-purple-300"}`}
+                      onClick={() => handleBuy(pkg.id)}
+                      disabled={loadingPkg === pkg.id}
+                    >
+                      {loadingPkg === pkg.id ? (
+                        <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        `Comprar — $${pkg.price} MXN`
+                      )}
+                    </Button>
+                    <p className="text-xs text-center text-slate-500 font-medium">{pkg.urgency}</p>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
         {/* ——— PAQUETES DE TOKENS — siempre visible ——— */}
         <div id="comprar" className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tokenPackages.map((pkg, idx) => (
@@ -410,69 +473,6 @@ const TokensPage = () => {
               </Card>
             </motion.div>
           ))}
-        </div>
-
-        {/* ——— PAQUETES PREMIUM — siempre visible ——— */}
-        <div className="space-y-4">
-          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">Paquetes Premium — Pago único</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {premiumPackages.map((pkg, idx) => (
-              <motion.div
-                key={pkg.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * idx }}
-              >
-                <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] ${pkg.highlight ? "border-purple-500/40 ring-1 ring-purple-500/20" : "border-white/10"}`}>
-                  {pkg.badge && (
-                    <div className={`absolute top-6 right-[-35px] rotate-45 ${pkg.badgeColor} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
-                      {pkg.badge}
-                    </div>
-                  )}
-                  <CardHeader className="p-8 pb-4">
-                    <div className="mb-4 flex items-center justify-between">
-                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        {pkg.icon}
-                      </div>
-                    </div>
-                    <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
-                    <CardDescription className="text-slate-400 font-medium text-xs">{pkg.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-8 pt-0 flex-grow space-y-4">
-                    <div>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-black text-white">${pkg.price}</span>
-                        <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">MXN</span>
-                      </div>
-                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Pago único — acceso de por vida</p>
-                    </div>
-                    <div className="pt-3 border-t border-white/5 space-y-2">
-                      {pkg.perks.map(perk => (
-                        <div key={perk} className="flex items-center gap-2 text-sm text-slate-300">
-                          <Check className="h-4 w-4 text-purple-400 shrink-0" />
-                          {perk}
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="p-8 pt-0 flex flex-col gap-2">
-                    <Button
-                      className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 shadow-lg shadow-purple-500/20 text-white" : "bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 text-purple-300"}`}
-                      onClick={() => handleBuy(pkg.id)}
-                      disabled={loadingPkg === pkg.id}
-                    >
-                      {loadingPkg === pkg.id ? (
-                        <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                      ) : (
-                        `Comprar — $${pkg.price} MXN`
-                      )}
-                    </Button>
-                    <p className="text-xs text-center text-slate-500 font-medium">{pkg.urgency}</p>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
         </div>
 
         {/* ——— PLAN ILIMITADO — siempre visible ——— */}

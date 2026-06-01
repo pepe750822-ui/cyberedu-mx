@@ -440,6 +440,29 @@ const Index = () => {
                   : '🚀 Practica ahora — Prepárate para el siguiente ciclo'}
               </button>
 
+              {/* Guía 2026 promo — hero inline */}
+              <div
+                className="mt-6 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                style={{ background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)" }}
+              >
+                <div className="flex-1 min-w-0">
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full mb-2" style={{ background: "rgba(168,85,247,0.25)", color: "#c084fc" }}>
+                    TODO INCLUIDO
+                  </span>
+                  <p className="text-white font-bold text-sm leading-snug">
+                    44 videos · 1,855 preguntas · Simulador · Acordeón · Tutor IA
+                  </p>
+                  <p className="text-violet-300 font-black text-base mt-0.5">$90 MXN — Pago único</p>
+                </div>
+                <button
+                  onClick={() => navigate("/tokens")}
+                  className="shrink-0 font-black text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
+                  style={{ background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "#fff", boxShadow: "0 4px 16px rgba(124,58,237,0.35)" }}
+                >
+                  Ver paquete completo →
+                </button>
+              </div>
+
             </div>
 
             {/* Right — cerebro 3D, solo desktop, carga diferida 2s para no bloquear LCP */}
