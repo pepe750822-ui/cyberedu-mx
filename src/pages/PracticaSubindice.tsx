@@ -50,9 +50,7 @@ type QuizPhase =
       phase: "quiz";
       subindice: string;
       questions: QuizQuestion[];
-      currentIdx: number;
       answers: (number | null)[];
-      feedbackIdx: number | null;
     }
   | { phase: "results"; subindice: string; questions: QuizQuestion[]; answers: number[] };
 
@@ -103,39 +101,27 @@ export default function PracticaSubindice() {
       phase: "quiz",
       subindice,
       questions: randomizedQuestions,
-      currentIdx: 0,
       answers: new Array(randomizedQuestions.length).fill(null),
-      feedbackIdx: null,
     });
   };
 
-  // Called when user taps an option — immediately lock in and show feedback
-  const handleSelectOption = (aIdx: number) => {
-    if (quiz.phase !== "quiz" || quiz.feedbackIdx !== null) return;
-    setQuiz({ ...quiz, feedbackIdx: aIdx });
+  const handleSelectOption = (qIdx: number, aIdx: number) => {
+    if (quiz.phase !== "quiz") return;
+    const newAnswers = [...quiz.answers];
+    newAnswers[qIdx] = aIdx;
+    setQuiz({ ...quiz, answers: newAnswers });
   };
 
-  // Advance to next question or show results
-  const handleNext = () => {
-    if (quiz.phase !== "quiz" || quiz.feedbackIdx === null) return;
-    const newAnswers = [...quiz.answers];
-    newAnswers[quiz.currentIdx] = quiz.feedbackIdx;
-
-    if (quiz.currentIdx === quiz.questions.length - 1) {
-      setQuiz({
-        phase: "results",
-        subindice: quiz.subindice,
-        questions: quiz.questions,
-        answers: newAnswers as number[],
-      });
-    } else {
-      setQuiz({
-        ...quiz,
-        currentIdx: quiz.currentIdx + 1,
-        answers: newAnswers,
-        feedbackIdx: null,
-      });
-    }
+  const handleShowResults = () => {
+    if (quiz.phase !== "quiz") return;
+    // Fill unanswered with -1 to allow seeing results even if incomplete
+    const completeAnswers = quiz.answers.map(a => a === null ? -1 : a);
+    setQuiz({
+      phase: "results",
+      subindice: quiz.subindice,
+      questions: quiz.questions,
+      answers: completeAnswers,
+    });
   };
 
   // Open AITutor with question context — same pattern as SimuladorPro
@@ -299,128 +285,58 @@ export default function PracticaSubindice() {
                     {(quiz as any).subindice}
                   </h2>
                 </div>
-                {quiz.phase === "quiz" && (
-                  <span className="shrink-0 text-xs font-black text-slate-500 tabular-nums">
-                    {quiz.currentIdx + 1} / {quiz.questions.length}
-                  </span>
-                )}
               </div>
 
-              {/* Progress bar */}
+              {/* Progress bar and Quiz — all questions at once */}
               {quiz.phase === "quiz" && (
-                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary rounded-full transition-all duration-300"
-                    style={{ width: `${((quiz.currentIdx + (quiz.feedbackIdx !== null ? 1 : 0)) / quiz.questions.length) * 100}%` }}
-                  />
+                <div className="space-y-8">
+                  {quiz.questions.map((q, qIdx) => {
+                    const selectedIdx = quiz.answers[qIdx];
+                    return (
+                      <div key={qIdx} className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
+                        <p className="text-sm md:text-base font-semibold text-white leading-snug">
+                          <span className="text-primary font-black mr-2">{qIdx + 1}.</span>
+                          {q.question}
+                        </p>
+
+                        {/* Options */}
+                        <div className="space-y-3">
+                          {q.options.map((opt, oIdx) => {
+                            const isSelected = selectedIdx === oIdx;
+                            const optionClass = isSelected
+                              ? "bg-indigo-500/20 border-indigo-500/60 text-white"
+                              : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
+                            const badgeClass = isSelected
+                              ? "bg-indigo-500 text-white"
+                              : "bg-white/10 text-slate-400";
+
+                            return (
+                              <button
+                                key={oIdx}
+                                onClick={() => handleSelectOption(qIdx, oIdx)}
+                                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border flex items-center gap-3 ${optionClass}`}
+                              >
+                                <span className={`h-7 w-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors ${badgeClass}`}>
+                                  {String.fromCharCode(65 + oIdx)}
+                                </span>
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  
+                  <button
+                    onClick={handleShowResults}
+                    disabled={quiz.answers.includes(null)}
+                    className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 text-white font-black text-[11px] uppercase tracking-widest px-6 py-4 rounded-xl transition-all"
+                  >
+                    Ver resultados finales
+                  </button>
                 </div>
               )}
-
-              {/* Quiz — one question at a time */}
-              {quiz.phase === "quiz" && (() => {
-                const q = quiz.questions[quiz.currentIdx];
-                const feedbackIdx = quiz.feedbackIdx;
-                const isCorrect = feedbackIdx !== null && feedbackIdx === q.correct;
-
-                const optionClass = (idx: number) => {
-                  if (feedbackIdx === null) {
-                    return "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
-                  }
-                  if (idx === q.correct) return "bg-green-500/20 border-green-500/60 text-white";
-                  if (idx === feedbackIdx) return "bg-red-500/20 border-red-500/60 text-white";
-                  return "bg-white/5 border-white/5 text-slate-500 opacity-40";
-                };
-
-                const badgeClass = (idx: number) => {
-                  if (feedbackIdx === null) return "bg-white/10 text-slate-400";
-                  if (idx === q.correct) return "bg-green-500 text-white";
-                  if (idx === feedbackIdx) return "bg-red-500 text-white";
-                  return "bg-white/5 text-slate-500";
-                };
-
-                return (
-                  <div className="space-y-4">
-                    {/* Question */}
-                    <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
-                      <p className="text-sm md:text-base font-semibold text-white leading-snug">
-                        <span className="text-primary font-black mr-2">{quiz.currentIdx + 1}.</span>
-                        {q.question}
-                      </p>
-
-                      {/* Options */}
-                      <div className="space-y-3">
-                        {q.options.map((opt, oIdx) => (
-                          <button
-                            key={oIdx}
-                            onClick={() => handleSelectOption(oIdx)}
-                            disabled={feedbackIdx !== null}
-                            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border flex items-center gap-3 disabled:cursor-default ${optionClass(oIdx)}`}
-                          >
-                            <span className={`h-7 w-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors ${badgeClass(oIdx)}`}>
-                              {String.fromCharCode(65 + oIdx)}
-                            </span>
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Immediate feedback panel — appears after selecting */}
-                    <AnimatePresence>
-                      {feedbackIdx !== null && (
-                        <motion.div
-                          key="feedback"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className={`rounded-2xl p-5 border ${
-                            isCorrect
-                              ? "bg-green-500/15 border-green-500/40"
-                              : "bg-red-500/15 border-red-500/40"
-                          }`}
-                        >
-                          <div className="flex items-center gap-2 mb-2">
-                            {isCorrect
-                              ? <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
-                              : <XSquare className="h-5 w-5 text-red-400 shrink-0" />
-                            }
-                            <p className={`font-black text-base ${isCorrect ? "text-green-300" : "text-red-300"}`}>
-                              {isCorrect
-                                ? "¡Correcto!"
-                                : `Incorrecto. La respuesta correcta es: ${q.options[q.correct]}`
-                              }
-                            </p>
-                          </div>
-                          <p className="text-slate-300 text-sm leading-relaxed">
-                            {q.explanation}
-                          </p>
-
-                          {/* Next / Finish button */}
-                          <button
-                            onClick={handleNext}
-                            className="mt-4 w-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3 rounded-xl transition-all"
-                          >
-                            {quiz.currentIdx === quiz.questions.length - 1
-                              ? "Ver resultados finales"
-                              : "Siguiente pregunta →"}
-                          </button>
-
-                          {/* Ask Tutor — only on wrong answers, exact SimuladorPro pattern */}
-                          {!isCorrect && (
-                            <button
-                              onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
-                              className="mt-2 w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
-                            >
-                              🧠 Preguntar al Tutor IA
-                            </button>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })()}
 
               {/* Results */}
               {quiz.phase === "results" && (
