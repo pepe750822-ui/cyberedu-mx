@@ -126,6 +126,12 @@ const Header = () => {
               )}
             </Link>
             <Link
+              to="/practica-subindice"
+              className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
+            >
+              Practica por Tema
+            </Link>
+            <Link
               to="/guia2026"
               className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1"
             >
@@ -234,6 +240,15 @@ const Header = () => {
               }`}
             >
               📝
+            </button>
+            <button
+              onClick={() => navigate('/practica-subindice')}
+              title="Práctica por Tema"
+              className={`p-2 rounded-xl transition-colors hover:bg-white/10 text-xs font-black ${
+                location.pathname.includes('practica') ? 'text-cyan-400' : 'text-gray-400'
+              }`}
+            >
+              ⚡
             </button>
             <button
               onClick={() => navigate('/guia2026')}
@@ -446,6 +461,14 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     🎯 Simulador
+                  </Link>
+                  <Link
+                    to="/practica-subindice"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors text-cyan-400 font-bold border border-cyan-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    ⚡ Práctica por Tema
+                    <span className="ml-auto text-[8px] bg-cyan-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
                   </Link>
                   <Link
                     to="/guia2026"

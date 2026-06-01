@@ -499,6 +499,78 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── NOVEDADES 2026 ──────────────────────────────── */}
+      <section className="mx-4 mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-white font-black text-lg">Novedades CyberEdu MX 2026</h2>
+          <span className="text-[9px] font-black bg-violet-600 text-white px-2 py-0.5 rounded-full uppercase tracking-widest shrink-0">2026</span>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+
+          {/* 1. Nuevos Bancos */}
+          <div className="bg-violet-500/10 border border-violet-500/30 rounded-2xl p-4 flex flex-col gap-2">
+            <span className="self-start text-[9px] font-black bg-violet-600 text-white px-2 py-0.5 rounded-full uppercase tracking-widest">NUEVO</span>
+            <h3 className="text-white font-black text-sm leading-tight">Nuevos Bancos en el Simulador</h3>
+            <p className="text-slate-400 text-xs leading-relaxed flex-1">
+              Banco 10 — Guía IPN/UNAM 2026 y Examen de Conocimientos Generales recién agregados. Más de 500 reactivos nuevos.
+            </p>
+            <button
+              onClick={() => navigate("/simulador-pro")}
+              className="text-violet-400 text-xs font-black hover:text-violet-300 text-left mt-1 transition-colors"
+            >
+              Ir al Simulador →
+            </button>
+          </div>
+
+          {/* 2. Práctica por Tema */}
+          <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl p-4 flex flex-col gap-2">
+            <span className="self-start text-[9px] font-black bg-cyan-600 text-white px-2 py-0.5 rounded-full uppercase tracking-widest">NUEVO</span>
+            <h3 className="text-white font-black text-sm leading-tight">Práctica por Tema</h3>
+            <p className="text-slate-400 text-xs leading-relaxed flex-1">
+              Practica exactamente los subíndices donde más te cuesta trabajo. 5 preguntas por tema, generadas por IA.
+            </p>
+            <button
+              onClick={() => navigate("/practica-subindice")}
+              className="text-cyan-400 text-xs font-black hover:text-cyan-300 text-left mt-1 transition-colors"
+            >
+              Practicar ahora →
+            </button>
+          </div>
+
+          {/* 3. Acordeón */}
+          <div
+            className="rounded-2xl p-4 flex flex-col gap-2 border border-white/10"
+            style={{ background: "rgba(255,255,255,0.04)" }}
+          >
+            <h3 className="text-white font-black text-sm leading-tight">Acordeón de Temario</h3>
+            <p className="text-slate-400 text-xs leading-relaxed flex-1">
+              Consulta palabras clave y resúmenes de los 200 subíndices del temario oficial ECOEMS 2026.
+            </p>
+            <button
+              onClick={() => navigate("/acordeon")}
+              className="text-slate-300 text-xs font-black hover:text-white text-left mt-1 transition-colors"
+            >
+              Ver temario →
+            </button>
+          </div>
+
+          {/* 4. Tutor IA */}
+          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 flex flex-col gap-2">
+            <h3 className="text-white font-black text-sm leading-tight">Tutor IA para Adolescentes</h3>
+            <p className="text-slate-400 text-xs leading-relaxed flex-1">
+              "Explícame como si tuviera 12 años." El AITutor responde con analogías simples, sin tecnicismos, con quiz incluido.
+            </p>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("cyberedu:open-chat"))}
+              className="text-emerald-400 text-xs font-black hover:text-emerald-300 text-left mt-1 transition-colors"
+            >
+              Probar el Tutor →
+            </button>
+          </div>
+
+        </div>
+      </section>
+
       {/* ── Promo Paquete Completo (3D tilt) ─────────────── */}
       <TiltCard className="mx-4 mb-4">
         <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/40 rounded-2xl p-5">
