@@ -15,7 +15,8 @@ import {
   Lock,
   Bell,
   Unlock,
-  Gift
+  Gift,
+  ArrowLeft
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -296,7 +297,17 @@ const TokensPage = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 rounded-full blur-[120px]" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 pt-24 space-y-12 relative">
+      <div className="max-w-6xl mx-auto px-6 pt-8 space-y-12 relative">
+        <div>
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-slate-400 hover:text-white text-sm font-bold transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Inicio
+          </button>
+        </div>
+
         {pendingQuestionMsg && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}

@@ -1737,7 +1737,6 @@ const QuizCard: React.FC<{
   quiz: PersonalizedQuiz;
   onComplete?: (incorrectItems: Array<{ text: string; explanation: string }>) => void;
 }> = ({ quiz, onComplete }) => {
-  const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [showResult, setShowResult] = useState(false);
   const [notified, setNotified] = useState(false);
@@ -1762,13 +1761,7 @@ const QuizCard: React.FC<{
     });
   };
 
-  const handleNext = () => {
-    if (currentStep < questions.length - 1) {
-      setCurrentStep(s => s + 1);
-    } else {
-      setShowResult(true);
-    }
-  };
+  const allAnswered = questions.length > 0 && questions.every((q, qi) => answers[q.id || `q${qi}`] !== undefined);
 
   // ── Result screen ──
   if (showResult) {
@@ -1822,115 +1815,113 @@ const QuizCard: React.FC<{
     );
   }
 
-  // ── Active question ──
-  const q = questions[currentStep];
-  if (!q) return null;
-
-  const actualId = q.id || `q${currentStep}`;
-  const selectedOption = answers[actualId];
-  const answered = selectedOption !== undefined;
-  const isCorrect = answered && selectedOption === Number(q.correctIndex ?? 0);
-  const opts = Array.isArray(q?.options) ? q.options : [];
-  const correctText = opts[Number(q.correctIndex ?? 0)] || '';
-  const isLast = currentStep === questions.length - 1;
+  // ── All questions shown at once ──
+  if (questions.length === 0) return null;
 
   return (
     <div className="my-5 space-y-4">
       {/* Header */}
       <div className="p-5 border-b-2 border-indigo-500/20 bg-indigo-500/5 rounded-t-[2rem] rounded-b-xl shadow-sm">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Sparkles className="h-5 w-5 text-indigo-400" />
-            <div>
-              <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz?.title || "Quiz"}</h3>
-              <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">
-                Nivel: {quiz?.difficulty || "—"} · {questions.length} reactivos
-              </p>
-            </div>
+        <div className="flex items-center gap-3">
+          <Sparkles className="h-5 w-5 text-indigo-400" />
+          <div>
+            <h3 className="text-base font-black text-white uppercase tracking-tighter">{quiz?.title || "Quiz"}</h3>
+            <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest mt-0.5">
+              Nivel: {quiz?.difficulty || "—"} · {questions.length} reactivos
+            </p>
           </div>
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest shrink-0">
-            {currentStep + 1} / {questions.length}
-          </span>
         </div>
       </div>
 
-      {/* Question card */}
-      <div className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
-        {answered && (
-          <div className={cn(
-            "absolute left-0 top-0 bottom-0 w-1.5",
-            isCorrect ? "bg-emerald-500" : "bg-rose-500"
-          )} />
-        )}
+      {/* All question cards */}
+      {questions.map((q, qIdx) => {
+        const actualId = q.id || `q${qIdx}`;
+        const selectedOption = answers[actualId];
+        const answered = selectedOption !== undefined;
+        const isCorrect = answered && selectedOption === Number(q.correctIndex ?? 0);
+        const opts = Array.isArray(q?.options) ? q.options : [];
+        const correctText = opts[Number(q.correctIndex ?? 0)] || '';
 
-        <h4 className="text-base md:text-lg font-bold text-white mb-5 leading-tight">
-          <span className="text-indigo-400 mr-1">{currentStep + 1}.</span>{" "}
-          {q.text || (q as any).question || (q as any).pregunta || ""}
-        </h4>
-
-        <div className="space-y-2.5">
-          {opts.map((opt, oi) => {
-            const isOptCorrect = oi === Number(q.correctIndex ?? 0);
-            const isSelected = oi === selectedOption;
-            return (
-              <button
-                key={oi}
-                onClick={() => !answered && handleAnswer(actualId, oi)}
-                disabled={answered}
-                className={cn(
-                  "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
-                  !answered && "border-white/5 bg-white/5 hover:border-indigo-500/40 hover:bg-indigo-500/5",
-                  answered && isOptCorrect && "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
-                  answered && isSelected && !isOptCorrect && "border-rose-500/50 bg-rose-500/10 text-rose-400",
-                  answered && !isSelected && !isOptCorrect && "border-white/5 bg-white/5 opacity-40"
-                )}
-              >
-                <span className="font-bold text-sm">{opt}</span>
-                {answered && isOptCorrect && <CheckCircle2 className="h-5 w-5 shrink-0" />}
-                {answered && isSelected && !isOptCorrect && <XCircle className="h-5 w-5 shrink-0" />}
-                {!answered && <Circle className="h-5 w-5 shrink-0 text-white/20 group-hover:text-white/40" />}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Immediate feedback — always shown after answering */}
-        {answered && (
-          <div className={cn(
-            "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
-            isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-rose-500/5 border-rose-500/20"
-          )}>
-            <div className="flex gap-3 mb-3">
+        return (
+          <div key={actualId} className="bg-slate-900 border border-white/5 rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
+            {answered && (
               <div className={cn(
-                "p-2 rounded-xl h-fit shrink-0",
-                isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"
-              )}>
-                {isCorrect ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-              </div>
-              <div className="space-y-1 min-w-0">
-                <p className={cn(
-                  "text-xs font-black uppercase tracking-widest",
-                  isCorrect ? "text-emerald-400" : "text-rose-400"
-                )}>
-                  {isCorrect ? "Correcto." : `Incorrecto. La respuesta correcta es: ${correctText}`}
-                </p>
-                {q.explanation && (
-                  <p className="text-xs font-medium text-slate-300 leading-relaxed">{q.explanation}</p>
-                )}
-              </div>
+                "absolute left-0 top-0 bottom-0 w-1.5",
+                isCorrect ? "bg-emerald-500" : "bg-rose-500"
+              )} />
+            )}
+
+            <h4 className="text-base md:text-lg font-bold text-white mb-5 leading-tight">
+              <span className="text-indigo-400 mr-1">{qIdx + 1}.</span>{" "}
+              {q.text || (q as any).question || (q as any).pregunta || ""}
+            </h4>
+
+            <div className="space-y-2.5">
+              {opts.map((opt, oi) => {
+                const isOptCorrect = oi === Number(q.correctIndex ?? 0);
+                const isSelected = oi === selectedOption;
+                return (
+                  <button
+                    key={oi}
+                    onClick={() => !answered && handleAnswer(actualId, oi)}
+                    disabled={answered}
+                    className={cn(
+                      "w-full text-left p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-between group",
+                      !answered && "border-white/5 bg-white/5 hover:border-indigo-500/40 hover:bg-indigo-500/5",
+                      answered && isOptCorrect && "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+                      answered && isSelected && !isOptCorrect && "border-rose-500/50 bg-rose-500/10 text-rose-400",
+                      answered && !isSelected && !isOptCorrect && "border-white/5 bg-white/5 opacity-40"
+                    )}
+                  >
+                    <span className="font-bold text-sm">{opt}</span>
+                    {answered && isOptCorrect && <CheckCircle2 className="h-5 w-5 shrink-0" />}
+                    {answered && isSelected && !isOptCorrect && <XCircle className="h-5 w-5 shrink-0" />}
+                    {!answered && <Circle className="h-5 w-5 shrink-0 text-white/20 group-hover:text-white/40" />}
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="flex justify-end">
-              <button
-                onClick={handleNext}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all text-white font-black text-xs uppercase tracking-wider"
-              >
-                {isLast ? "Ver Resultado" : "Siguiente pregunta"}
-                <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
+            {answered && (
+              <div className={cn(
+                "mt-5 p-4 rounded-2xl border shadow-lg animate-in fade-in slide-in-from-top-2 duration-300",
+                isCorrect ? "bg-emerald-500/5 border-emerald-500/20" : "bg-rose-500/5 border-rose-500/20"
+              )}>
+                <div className="flex gap-3">
+                  <div className={cn(
+                    "p-2 rounded-xl h-fit shrink-0",
+                    isCorrect ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"
+                  )}>
+                    {isCorrect ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
+                  </div>
+                  <div className="space-y-1 min-w-0">
+                    <p className={cn(
+                      "text-xs font-black uppercase tracking-widest",
+                      isCorrect ? "text-emerald-400" : "text-rose-400"
+                    )}>
+                      {isCorrect ? "Correcto." : `Incorrecto. La respuesta correcta es: ${correctText}`}
+                    </p>
+                    {q.explanation && (
+                      <p className="text-xs font-medium text-slate-300 leading-relaxed">{q.explanation}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        );
+      })}
+
+      {/* Ver Resultados — enabled only when all questions answered */}
+      <div className="flex justify-end pt-2">
+        <button
+          onClick={() => setShowResult(true)}
+          disabled={!allAnswered}
+          className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all text-white font-black text-xs uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Ver Resultados
+          <ChevronRight className="h-3.5 w-3.5" />
+        </button>
       </div>
     </div>
   );
