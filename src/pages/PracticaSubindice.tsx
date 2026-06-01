@@ -151,6 +151,15 @@ export default function PracticaSubindice() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 pt-24 space-y-8 relative">
+        {/* ── BACK TO HOME ── */}
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-1.5 text-sm font-bold text-slate-400 hover:text-white transition-colors group"
+        >
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
+          Inicio
+        </button>
+
         {/* ── HEADER ── */}
         <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -298,18 +307,19 @@ export default function PracticaSubindice() {
           >
             <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
               {/* Modal header */}
-              <div className="flex items-center gap-3">
+              <div className="space-y-2">
                 <button
                   onClick={() => setQuiz({ phase: "idle" })}
-                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors group"
                 >
-                  <ArrowLeft className="h-5 w-5 text-slate-400" />
+                  <ArrowLeft className="h-3.5 w-3.5 group-hover:-translate-x-0.5 transition-transform" />
+                  Volver a Práctica por Tema
                 </button>
-                <div className="flex-1 min-w-0">
+                <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                     Práctica por Subíndice
                   </p>
-                  <h2 className="text-lg font-black text-white leading-tight truncate">
+                  <h2 className="text-lg font-black text-white leading-tight">
                     {(quiz as any).subindice}
                   </h2>
                 </div>
@@ -491,16 +501,25 @@ export default function PracticaSubindice() {
                   })}
 
                   {/* Actions */}
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setQuiz({ phase: "idle" })}
-                      className="flex-1 h-12 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm transition-colors"
-                    >
-                      Volver al temario
-                    </button>
+                  <div className="space-y-3">
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setQuiz({ phase: "idle" })}
+                        className="flex-1 h-12 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                        Volver a Práctica por Tema
+                      </button>
+                      <button
+                        onClick={() => setQuiz({ phase: "idle" })}
+                        className="flex-1 h-12 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm transition-colors"
+                      >
+                        Practicar otro tema
+                      </button>
+                    </div>
                     <button
                       onClick={() => { const slug = createSlug((quiz as any).subindice); const qs = staticBank[slug]; if (qs) setQuiz({ phase: "quiz", subindice: (quiz as any).subindice, questions: shuffleArray(qs).map(shuffleQuizQuestion), answers: new Array(qs.length).fill(null) }); }}
-                      className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-primary/20"
+                      className="w-full h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-primary/20"
                     >
                       Repetir subíndice
                     </button>
