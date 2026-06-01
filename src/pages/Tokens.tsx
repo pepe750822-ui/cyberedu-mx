@@ -249,8 +249,8 @@ const TokensPage = () => {
 
   const handleBuy = async (packageId: string) => {
     if (!user) {
-        toast.error("Debes iniciar sesión para comprar tokens");
-        return;
+      navigate('/auth?ref=tokens');
+      return;
     }
 
     setLoadingPkg(packageId);
@@ -336,7 +336,7 @@ const TokensPage = () => {
           </motion.div>
         )}
 
-        {/* Header */}
+        {/* ——— HEADER ——— */}
         <div className="flex flex-col items-center text-center space-y-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -346,17 +346,17 @@ const TokensPage = () => {
             <Ticket className="h-4 w-4 text-primary" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Sistema de Tokens CyberEdu</span>
           </motion.div>
-          
+
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">
             🎟️ COMPRA <span className="text-primary not-italic">TOKENS</span>
           </h1>
-          
+
           <div className="max-w-2xl space-y-4">
             <p className="text-lg md:text-xl text-slate-400 font-medium leading-relaxed">
-              Desbloquea el poder total del <span className="text-white font-bold">CyberAgent IA</span>. 
+              Desbloquea el poder total del <span className="text-white font-bold">CyberAgent IA</span>.
               Sin suscripciones forzosas, solo paga por lo que usas.
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-4 pt-4">
                <Badge className="bg-white/5 text-slate-300 border-white/10 px-3 py-1.5 flex items-center gap-2">
                  <Zap className="h-3 w-3 text-amber-500" />
@@ -370,260 +370,465 @@ const TokensPage = () => {
           </div>
         </div>
 
-        {/* ——— SECCIÓN: CANJEA TUS TOKENS ——— */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6 max-w-4xl mx-auto"
-        >
-          {/* Encabezado */}
-          <div className="text-center space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <Gift className="h-5 w-5 text-purple-400" />
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Beneficios con Tokens</p>
-            </div>
-            <h2 className="text-2xl font-black uppercase tracking-tighter text-white">
-              🎁 Canjea tus Tokens por <span className="text-purple-400">Acceso Premium</span>
-            </h2>
-            <p className="text-slate-400 text-sm">Usa tu saldo de tokens para desbloquear simuladores y material exclusivo sin pagar con tarjeta.</p>
+        {/* ——— URGENCY COUNTDOWN — siempre visible ——— */}
+        {examDays > 0 && (
+          <div className="text-center p-5 bg-red-500/10 border border-red-500/30 rounded-2xl max-w-4xl mx-auto">
+            <p className="text-red-400 font-bold text-lg">⚠️ El ECOEMS es el 20 de junio</p>
+            <p className="text-4xl font-black text-white mt-1">{examDays} días para prepararte</p>
+            <p className="text-slate-400 text-sm mt-1">Cada día sin practicar es ventaja para los demás</p>
           </div>
+        )}
 
-          {/* Grid de tarjetas de canje */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
-            {/* ——— COMBO PREMIUM 100 TOKENS ——— */}
-            {(() => {
-              const isComboUnlocked = (profile as any)?.paquete_completo === true;
-              const canAfford = (profile?.tokens ?? 0) >= 100;
-              return (
-                <div className={`relative rounded-3xl border p-6 space-y-4 overflow-hidden transition-all ${
-                  isComboUnlocked
-                    ? "bg-emerald-500/10 border-emerald-500/30"
-                    : "bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30"
-                }`}>
-                  {/* Badge MEJOR VALOR */}
-                  <div className="absolute top-4 right-[-28px] rotate-45 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-black uppercase py-1 px-8 shadow-lg">
-                    MEJOR VALOR
+        {/* ——— PAQUETES DE TOKENS — siempre visible ——— */}
+        <div id="comprar" className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {tokenPackages.map((pkg, idx) => (
+            <motion.div
+              key={pkg.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * idx }}
+            >
+              <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] border-white/10 ${pkg.highlight ? "border-primary/40 ring-1 ring-primary/20" : ""}`}>
+                {pkg.badge && (
+                  <div className={`absolute top-6 right-[-35px] rotate-45 ${(pkg as any).badgeColor ?? 'bg-primary'} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
+                    {pkg.badge}
                   </div>
+                )}
 
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-2xl bg-purple-500/20 border border-purple-500/30 shrink-0">
-                      <Crown className="h-6 w-6 text-purple-400" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Combo Premium</p>
-                      <h3 className="text-lg font-black text-white">Todos los Simuladores + Guía 2026</h3>
-                      <p className="text-xs text-slate-400 mt-1">Bancos 5, 8, 9, 10 completos + 44 videos de estudio · acceso de por vida</p>
+                <CardHeader className="p-8 pb-4">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                      {pkg.icon}
                     </div>
                   </div>
+                  <CardTitle className="text-3xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
+                  <CardDescription className="text-slate-500 font-medium">{pkg.description}</CardDescription>
+                </CardHeader>
 
-                  <div className="space-y-1.5">
-                    {["Simulador Banco 5 — Guías UNAM 2024-25", "Simulador Banco 8 — Guía UNAM 2023", "Simulador Banco 9 — Guía UNAM 2024", "🆕 Simulador Banco 10 — Guía IPN/UNAM 2026", "🎬 44 videos Guía de Estudio 2026"].map(p => (
-                      <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
-                        <Check className="h-3 w-3 text-purple-400 shrink-0" />
-                        {p}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-2">
-                    {!user ? (
-                      <button
-                        onClick={() => navigate('/auth?ref=tokens')}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-purple-500/20 transition-all"
-                      >
-                        <Unlock className="h-4 w-4" /> Inicia Sesión para Canjear
-                      </button>
-                    ) : isComboUnlocked ? (
-                      <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
-                        <Check className="h-4 w-4 text-emerald-400" />
-                        <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
-                      </div>
-                    ) : canAfford ? (
-                      <button
-                        onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true })}
-                        disabled={redeemingPkg === 'combo_premium'}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
-                      >
-                        {redeemingPkg === 'combo_premium' ? (
-                          <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <>🔓 Canjear — 100 tokens</>
-                        )}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          const el = document.getElementById('comprar');
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-xs tracking-widest hover:bg-amber-500/20 transition-all"
-                      >
-                        🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/100)
-                      </button>
-                    )}
-                    {user && !isComboUnlocked && (
-                      <p className="text-gray-400 text-xs text-center mt-2">
-                        💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* ——— BANCO 10 INDIVIDUAL 50 TOKENS ——— */}
-            {(() => {
-              const isBank10Unlocked = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
-              const canAfford = (profile?.tokens ?? 0) >= 50;
-              return (
-                <div className={`relative rounded-3xl border p-6 space-y-4 transition-all ${
-                  isBank10Unlocked
-                    ? "bg-emerald-500/10 border-emerald-500/30"
-                    : "bg-amber-500/10 border-amber-500/30"
-                }`}>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/30 shrink-0">
-                      <Rocket className="h-6 w-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
-                      <h3 className="text-lg font-black text-white">🆕 Banco 10 — Guía IPN/UNAM 2026</h3>
-                      <p className="text-xs text-slate-400 mt-1">Acceso completo al simulador con preguntas de la guía oficial 2026 · acceso de por vida</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    {["128 reactivos oficiales Guía 2026", "Preguntas y opciones aleatorizadas", "Modo examen completo y práctica rápida"].map(p => (
-                      <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
-                        <Check className="h-3 w-3 text-amber-400 shrink-0" />
-                        {p}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-2">
-                    {!user ? (
-                      <button
-                        onClick={() => navigate('/auth?ref=tokens')}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase text-xs tracking-widest shadow-lg shadow-amber-500/20 transition-all"
-                      >
-                        <Unlock className="h-4 w-4" /> Inicia Sesión para Canjear
-                      </button>
-                    ) : isBank10Unlocked ? (
-                      <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
-                        <Check className="h-4 w-4 text-emerald-400" />
-                        <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
-                      </div>
-                    ) : canAfford ? (
-                      <button
-                        onClick={() => redeemTokens('banco10', 50, { bank10_unlocked: true })}
-                        disabled={redeemingPkg === 'banco10'}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
-                      >
-                        {redeemingPkg === 'banco10' ? (
-                          <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <>🔓 Canjear — 50 tokens</>
-                        )}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          const el = document.getElementById('comprar');
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-xs tracking-widest hover:bg-amber-500/20 transition-all"
-                      >
-                        🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/50)
-                      </button>
-                    )}
-                    {user && !isBank10Unlocked && (
-                      <p className="text-gray-400 text-xs text-center mt-2">
-                        💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* ——— BANCOS 5, 8, 9, 11 INDIVIDUALES 50 TOKENS c/u ——— */}
-            {[
-              { id: 'banco5',  bankKey: 'bank5_unlocked',  label: 'Banco 5 — Guías UNAM 2024-25', perks: ['128 preguntas guías oficiales UNAM 2024-25', 'Modo examen + práctica rápida'] },
-              { id: 'banco8',  bankKey: 'bank8_unlocked',  label: 'Banco 8 — Guía UNAM 2023',     perks: ['128 reactivos guía UNAM 2023', 'Preguntas y opciones aleatorizadas'] },
-              { id: 'banco9',  bankKey: 'bank9_unlocked',  label: 'Banco 9 — Guía UNAM 2024',     perks: ['128 reactivos guía UNAM 2024', 'Resultados por materia detallados'] },
-              { id: 'banco11', bankKey: 'bank11_unlocked', label: 'Banco 11 — 2do Examen Conocimientos Gen.', perks: ['128 reactivos Segundo Examen de Conocimientos Generales', 'Preguntas y opciones aleatorizadas'] },
-            ].map(({ id, bankKey, label, perks }) => {
-              const isUnlocked = (profile as any)?.[bankKey] === true || (profile as any)?.paquete_completo === true;
-              const canAfford = (profile?.tokens ?? 0) >= 50;
-              return (
-                <div key={id} className={`relative rounded-3xl border p-5 space-y-3 transition-all ${
-                  isUnlocked
-                    ? "bg-emerald-500/10 border-emerald-500/30"
-                    : "bg-indigo-500/10 border-indigo-500/30"
-                }`}>
-                  <div className="flex items-start gap-3">
-                    <div className="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 shrink-0">
-                      <Star className="h-5 w-5 text-indigo-400" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
-                      <h3 className="text-base font-black text-white">{label}</h3>
-                    </div>
-                  </div>
-
+                <CardContent className="p-8 pt-4 flex-grow space-y-6">
                   <div className="space-y-1">
-                    {perks.map(p => (
-                      <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
-                        <Check className="h-3 w-3 text-indigo-400 shrink-0" />
-                        {p}
-                      </div>
-                    ))}
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-5xl font-black text-white">{pkg.tokens}</span>
+                        <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">Tokens</span>
+                    </div>
+                    <p className="text-primary font-black text-2xl">${pkg.price} MXN</p>
+                    <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">${pkg.pricePerToken.toFixed(2)} por token</p>
                   </div>
 
-                  {isUnlocked ? (
-                    <div className="flex items-center gap-2 w-full h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
-                      <Check className="h-3.5 w-3.5 text-emerald-400" />
-                      <span className="text-emerald-300 font-black uppercase text-[10px] tracking-widest">✅ Desbloqueado</span>
+                  <div className="pt-4 border-t border-white/5 space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-slate-300">
+                        <Check className="h-4 w-4 text-emerald-500" />
+                        Acceso ilimitado al Tutor
                     </div>
-                  ) : canAfford ? (
-                    <button
-                      onClick={() => redeemTokens(id, 50, { [bankKey]: true })}
-                      disabled={redeemingPkg === id}
-                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-60"
+                    <div className="flex items-center gap-2 text-sm text-slate-300">
+                        <Check className="h-4 w-4 text-emerald-500" />
+                        Prioridad de respuesta
+                    </div>
+                  </div>
+                </CardContent>
+
+                <CardFooter className="p-8 pt-0 flex flex-col gap-2">
+                  <Button
+                    className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20" : "bg-white/10 hover:bg-white/20 border border-white/10"}`}
+                    onClick={() => handleBuy(pkg.id)}
+                    disabled={loadingPkg === pkg.id}
+                  >
+                    {loadingPkg === pkg.id ? (
+                      <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      `Comprar — $${pkg.price} MXN`
+                    )}
+                  </Button>
+                  {(pkg as any).urgency && (
+                    <p className="text-xs text-center text-slate-500 font-medium">{(pkg as any).urgency}</p>
+                  )}
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ——— PAQUETES PREMIUM — siempre visible ——— */}
+        <div className="space-y-4">
+          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">Paquetes Premium — Pago único</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {premiumPackages.map((pkg, idx) => (
+              <motion.div
+                key={pkg.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * idx }}
+              >
+                <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] ${pkg.highlight ? "border-purple-500/40 ring-1 ring-purple-500/20" : "border-white/10"}`}>
+                  {pkg.badge && (
+                    <div className={`absolute top-6 right-[-35px] rotate-45 ${pkg.badgeColor} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
+                      {pkg.badge}
+                    </div>
+                  )}
+                  <CardHeader className="p-8 pb-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        {pkg.icon}
+                      </div>
+                    </div>
+                    <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
+                    <CardDescription className="text-slate-400 font-medium text-xs">{pkg.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-8 pt-0 flex-grow space-y-4">
+                    <div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-4xl font-black text-white">${pkg.price}</span>
+                        <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">MXN</span>
+                      </div>
+                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Pago único — acceso de por vida</p>
+                    </div>
+                    <div className="pt-3 border-t border-white/5 space-y-2">
+                      {pkg.perks.map(perk => (
+                        <div key={perk} className="flex items-center gap-2 text-sm text-slate-300">
+                          <Check className="h-4 w-4 text-purple-400 shrink-0" />
+                          {perk}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-8 pt-0 flex flex-col gap-2">
+                    <Button
+                      className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 shadow-lg shadow-purple-500/20 text-white" : "bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 text-purple-300"}`}
+                      onClick={() => handleBuy(pkg.id)}
+                      disabled={loadingPkg === pkg.id}
                     >
-                      {redeemingPkg === id ? (
-                        <div className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      {loadingPkg === pkg.id ? (
+                        <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
-                        <>🔓 Canjear — 50 tokens</>
+                        `Comprar — $${pkg.price} MXN`
                       )}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        const el = document.getElementById('comprar');
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-black uppercase text-[10px] tracking-widest hover:bg-amber-500/20 transition-all"
-                    >
-                      🪙 Comprar tokens primero ({(profile?.tokens ?? 0)}/50)
-                    </button>
-                  )}
-                  {user && !isUnlocked && (
-                    <p className="text-gray-400 text-xs text-center mt-1">
-                      💡 Si ya tienes tokens suficientes usa "Canjear". Si no tienes tokens, primero recarga abajo.
-                    </p>
-                  )}
-                </div>
-              );
-            })}
+                    </Button>
+                    <p className="text-xs text-center text-slate-500 font-medium">{pkg.urgency}</p>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
           </div>
+        </div>
+
+        {/* ——— PLAN ILIMITADO — siempre visible ——— */}
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.4 }}
+           className="max-w-4xl mx-auto"
+        >
+            <Card className="glass-card-premium rounded-[3rem] border-amber-500/20 bg-amber-500/5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-12 opacity-5 scale-150 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
+                    <Crown className="h-48 w-48 text-amber-500" />
+                </div>
+
+                <CardContent className="p-8 md:p-12">
+                   <div className="flex flex-col md:flex-row gap-10 items-center">
+                      <div className="w-24 h-24 rounded-full bg-amber-500/20 border-2 border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xl shadow-amber-500/20">
+                         {unlimitedPackage.icon}
+                      </div>
+
+                      <div className="flex-1 space-y-4 text-center md:text-left">
+                         <Badge className="bg-amber-500 text-black font-black uppercase px-3 py-1 mb-2">Plan Maestro</Badge>
+                         <h3 className="text-4xl font-black uppercase tracking-tighter text-white">👑 {unlimitedPackage.name}</h3>
+                         <p className="text-slate-400 font-medium text-lg max-w-xl">
+                            {unlimitedPackage.description}. Ideal para quienes quieren asistencia total en su preparación ECOEMS.
+                         </p>
+                         <div className="flex flex-wrap items-end justify-center md:justify-start gap-4 pt-4">
+                             <div className="flex items-baseline gap-1">
+                                <span className="text-5xl font-black text-white">$250</span>
+                                <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">MXN / mes</span>
+                             </div>
+                             <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase">
+                                $0.25 por token
+                             </div>
+                         </div>
+                      </div>
+
+                      <div className="w-full md:w-auto flex flex-col items-center gap-2">
+                        <Button
+                            className="w-full md:w-56 h-16 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest text-xs shadow-xl shadow-amber-500/20"
+                            onClick={() => handleBuy(unlimitedPackage.id)}
+                            disabled={loadingPkg === unlimitedPackage.id}
+                        >
+                            {loadingPkg === unlimitedPackage.id ? (
+                                <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
+                            ) : (
+                                `Activar — $${unlimitedPackage.price} MXN/mes`
+                            )}
+                        </Button>
+                        <p className="text-xs text-slate-500 font-medium text-center">Acceso ilimitado hasta el examen</p>
+                      </div>
+                   </div>
+                </CardContent>
+            </Card>
         </motion.div>
 
-        {/* Balance Current & Telegram Link */}
-        <div className="max-w-4xl mx-auto space-y-4">
+        {/* ——— Nota de registro para usuarios no logueados ——— */}
+        {!user && (
+          <div className="text-center py-2 max-w-lg mx-auto">
+            <p className="text-slate-400 text-sm">
+              Al hacer clic en Comprar se te pedirá{" "}
+              <button
+                onClick={() => navigate('/auth?ref=tokens')}
+                className="text-primary font-bold hover:underline"
+              >
+                crear una cuenta gratis con Google
+              </button>
+              {" "}— solo 10 segundos.
+            </p>
+          </div>
+        )}
+
+        {/* ——— SECCIÓN: CANJEA TUS TOKENS — solo para usuarios logueados ——— */}
+        {user && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-6 max-w-4xl mx-auto"
+          >
+            {/* Encabezado */}
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center gap-2">
+                <Gift className="h-5 w-5 text-purple-400" />
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Beneficios con Tokens</p>
+              </div>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-white">
+                🎁 Canjea tus Tokens por <span className="text-purple-400">Acceso Premium</span>
+              </h2>
+              <p className="text-slate-400 text-sm">Usa tu saldo de tokens para desbloquear simuladores y material exclusivo sin pagar con tarjeta.</p>
+            </div>
+
+            {/* Grid de tarjetas de canje */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+
+              {/* ——— COMBO PREMIUM 100 TOKENS ——— */}
+              {(() => {
+                const isComboUnlocked = (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 100;
+                return (
+                  <div className={`relative rounded-3xl border p-6 space-y-4 overflow-hidden transition-all ${
+                    isComboUnlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30"
+                  }`}>
+                    {/* Badge MEJOR VALOR */}
+                    <div className="absolute top-4 right-[-28px] rotate-45 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-black uppercase py-1 px-8 shadow-lg">
+                      MEJOR VALOR
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-2xl bg-purple-500/20 border border-purple-500/30 shrink-0">
+                        <Crown className="h-6 w-6 text-purple-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Combo Premium</p>
+                        <h3 className="text-lg font-black text-white">Todos los Simuladores + Guía 2026</h3>
+                        <p className="text-xs text-slate-400 mt-1">Bancos 5, 8, 9, 10 completos + 44 videos de estudio · acceso de por vida</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {["Simulador Banco 5 — Guías UNAM 2024-25", "Simulador Banco 8 — Guía UNAM 2023", "Simulador Banco 9 — Guía UNAM 2024", "🆕 Simulador Banco 10 — Guía IPN/UNAM 2026", "🎬 44 videos Guía de Estudio 2026"].map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-purple-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-2 space-y-2">
+                      {isComboUnlocked ? (
+                        <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                          <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
+                        </div>
+                      ) : canAfford ? (
+                        <button
+                          onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true })}
+                          disabled={redeemingPkg === 'combo_premium'}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
+                        >
+                          {redeemingPkg === 'combo_premium' ? (
+                            <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : (
+                            <>🔓 Canjear — 100 tokens</>
+                          )}
+                        </button>
+                      ) : (
+                        <p className="text-amber-400 text-xs text-center font-semibold">Necesitas 100 tokens (tienes {profile?.tokens ?? 0})</p>
+                      )}
+                      {/* Botón de compra directa con pesos */}
+                      {!isComboUnlocked && (
+                        <button
+                          onClick={() => handleBuy('guia2026')}
+                          disabled={loadingPkg === 'guia2026'}
+                          className="flex items-center justify-center gap-2 w-full h-10 rounded-xl border border-purple-500/40 text-purple-300 hover:bg-purple-500/10 font-black uppercase text-[10px] tracking-widest transition-all"
+                        >
+                          {loadingPkg === 'guia2026' ? (
+                            <div className="h-3.5 w-3.5 border-2 border-purple-300/30 border-t-purple-300 rounded-full animate-spin" />
+                          ) : (
+                            '💳 Comprar con pesos — $90 MXN'
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ——— BANCO 10 INDIVIDUAL 50 TOKENS ——— */}
+              {(() => {
+                const isBank10Unlocked = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 50;
+                return (
+                  <div className={`relative rounded-3xl border p-6 space-y-4 transition-all ${
+                    isBank10Unlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-amber-500/10 border-amber-500/30"
+                  }`}>
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/30 shrink-0">
+                        <Rocket className="h-6 w-6 text-amber-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
+                        <h3 className="text-lg font-black text-white">🆕 Banco 10 — Guía IPN/UNAM 2026</h3>
+                        <p className="text-xs text-slate-400 mt-1">Acceso completo al simulador con preguntas de la guía oficial 2026 · acceso de por vida</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {["128 reactivos oficiales Guía 2026", "Preguntas y opciones aleatorizadas", "Modo examen completo y práctica rápida"].map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-amber-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-2 space-y-2">
+                      {isBank10Unlocked ? (
+                        <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                          <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
+                        </div>
+                      ) : canAfford ? (
+                        <button
+                          onClick={() => redeemTokens('banco10', 50, { bank10_unlocked: true })}
+                          disabled={redeemingPkg === 'banco10'}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
+                        >
+                          {redeemingPkg === 'banco10' ? (
+                            <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : (
+                            <>🔓 Canjear — 50 tokens</>
+                          )}
+                        </button>
+                      ) : (
+                        <p className="text-amber-400 text-xs text-center font-semibold">Necesitas 50 tokens (tienes {profile?.tokens ?? 0})</p>
+                      )}
+                      {/* Botón de compra directa con pesos */}
+                      {!isBank10Unlocked && (
+                        <button
+                          onClick={() => handleBuy('popular')}
+                          disabled={loadingPkg === 'popular'}
+                          className="flex items-center justify-center gap-2 w-full h-10 rounded-xl border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-black uppercase text-[10px] tracking-widest transition-all"
+                        >
+                          {loadingPkg === 'popular' ? (
+                            <div className="h-3.5 w-3.5 border-2 border-amber-300/30 border-t-amber-300 rounded-full animate-spin" />
+                          ) : (
+                            '💳 Comprar con pesos — $50 MXN'
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ——— BANCOS 5, 8, 9, 11 INDIVIDUALES 50 TOKENS c/u ——— */}
+              {[
+                { id: 'banco5',  bankKey: 'bank5_unlocked',  label: 'Banco 5 — Guías UNAM 2024-25', perks: ['128 preguntas guías oficiales UNAM 2024-25', 'Modo examen + práctica rápida'] },
+                { id: 'banco8',  bankKey: 'bank8_unlocked',  label: 'Banco 8 — Guía UNAM 2023',     perks: ['128 reactivos guía UNAM 2023', 'Preguntas y opciones aleatorizadas'] },
+                { id: 'banco9',  bankKey: 'bank9_unlocked',  label: 'Banco 9 — Guía UNAM 2024',     perks: ['128 reactivos guía UNAM 2024', 'Resultados por materia detallados'] },
+                { id: 'banco11', bankKey: 'bank11_unlocked', label: 'Banco 11 — 2do Examen Conocimientos Gen.', perks: ['128 reactivos Segundo Examen de Conocimientos Generales', 'Preguntas y opciones aleatorizadas'] },
+              ].map(({ id, bankKey, label, perks }) => {
+                const isUnlocked = (profile as any)?.[bankKey] === true || (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 50;
+                return (
+                  <div key={id} className={`relative rounded-3xl border p-5 space-y-3 transition-all ${
+                    isUnlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-indigo-500/10 border-indigo-500/30"
+                  }`}>
+                    <div className="flex items-start gap-3">
+                      <div className="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 shrink-0">
+                        <Star className="h-5 w-5 text-indigo-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Simulador Individual</p>
+                        <h3 className="text-base font-black text-white">{label}</h3>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      {perks.map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-indigo-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    {isUnlocked ? (
+                      <div className="flex items-center gap-2 w-full h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                        <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        <span className="text-emerald-300 font-black uppercase text-[10px] tracking-widest">✅ Desbloqueado</span>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {canAfford ? (
+                          <button
+                            onClick={() => redeemTokens(id, 50, { [bankKey]: true })}
+                            disabled={redeemingPkg === id}
+                            className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-60"
+                          >
+                            {redeemingPkg === id ? (
+                              <div className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <>🔓 Canjear — 50 tokens</>
+                            )}
+                          </button>
+                        ) : (
+                          <p className="text-amber-400 text-xs text-center font-semibold">Necesitas 50 tokens (tienes {profile?.tokens ?? 0})</p>
+                        )}
+                        {/* Botón de compra directa con pesos */}
+                        <button
+                          onClick={() => handleBuy('popular')}
+                          disabled={loadingPkg === 'popular'}
+                          className="flex items-center justify-center gap-2 w-full h-9 rounded-xl border border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10 font-black uppercase text-[10px] tracking-widest transition-all"
+                        >
+                          {loadingPkg === 'popular' ? (
+                            <div className="h-3.5 w-3.5 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full animate-spin" />
+                          ) : (
+                            '💳 Comprar con pesos — $50 MXN'
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ——— BALANCE & TELEGRAM — solo para usuarios logueados ——— */}
+        {user && (
+          <div className="max-w-4xl mx-auto space-y-4">
             <div className="glass-card-premium p-6 rounded-3xl border-primary/20 bg-primary/5 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-5">
                     <div className="w-16 h-16 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center">
@@ -642,7 +847,7 @@ const TokensPage = () => {
             </div>
 
             {/* Telegram Linking Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="glass-card-premium p-6 rounded-3xl border-sky-500/20 bg-sky-500/5 flex flex-col md:flex-row items-center justify-between gap-6"
@@ -657,15 +862,15 @@ const TokensPage = () => {
                         <p className="text-xs text-slate-400">Usa tus tokens directamente en el chat de Telegram.</p>
                     </div>
                 </div>
-                
+
                 <div className="flex w-full md:w-auto gap-2">
-                    <Input 
-                      placeholder="Código (ej: YGG65K)" 
+                    <Input
+                      placeholder="Código (ej: YGG65K)"
                       value={linkingCode}
                       onChange={(e) => setLinkingCode(e.target.value)}
                       className="bg-white/5 border-white/10 rounded-xl h-11 text-center font-black tracking-widest uppercase"
                     />
-                    <Button 
+                    <Button
                       onClick={handleLinkTelegram}
                       disabled={isLinking || !linkingCode}
                       className="bg-sky-500 hover:bg-sky-400 text-black font-black uppercase tracking-widest text-[10px] px-6 rounded-xl h-11 shrink-0"
@@ -674,9 +879,10 @@ const TokensPage = () => {
                     </Button>
                 </div>
             </motion.div>
-        </div>
+          </div>
+        )}
 
-        {/* Explanatory Section */}
+        {/* ——— EXPLICACIÓN ¿CÓMO FUNCIONA? — siempre visible ——— */}
         <div className="max-w-4xl mx-auto space-y-6 pt-4 pb-8">
           <h2 className="text-xl md:text-2xl font-black uppercase tracking-widest text-center text-slate-300">¿Cómo funciona el acceso al AITutor?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -698,335 +904,84 @@ const TokensPage = () => {
           </div>
         </div>
 
-        {/* Conditional Rendering: Auth Guard vs. Packages */}
-        {!user ? (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="max-w-4xl mx-auto"
-            id="comprar"
-          >
-            <Card className="glass-card-premium rounded-[3rem] border-primary/20 bg-primary/5 p-8 md:p-16 text-center space-y-8 overflow-hidden relative group">
-              {/* Background Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
-              
-              <div className="relative z-10 space-y-6">
-                <div className="flex justify-center">
-                  <div className="w-20 h-20 rounded-3xl bg-primary/20 border border-primary/30 flex items-center justify-center animate-bounce shadow-2xl shadow-primary/20">
-                    <Lock className="h-10 w-10 text-primary" />
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-tight text-white">
-                    Para comprar tokens <br />
-                    <span className="text-primary italic">primero crea tu cuenta</span>
-                  </h2>
-                  <p className="text-slate-400 font-medium text-lg max-w-xl mx-auto">
-                    Solo toma 10 segundos con Google. Tus tokens se acreditarán automáticamente a tu perfil para que nunca los pierdas.
-                  </p>
-                </div>
-
-                <div className="pt-4">
-                  <Button 
-                    onClick={handleGoogleLogin}
-                    disabled={isLoggingIn}
-                    className="h-16 px-10 rounded-2xl bg-white text-black hover:bg-slate-200 transition-all font-black uppercase tracking-widest text-xs flex items-center gap-3 mx-auto shadow-xl shadow-white/10"
-                  >
-                    {isLoggingIn ? (
-                      <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <Chrome className="h-5 w-5 text-red-500" />
-                        Registrarse con Google
-                      </>
-                    )}
-                  </Button>
-                </div>
-                
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">
-                  Protocolo de seguridad SSL/AES activado
-                </p>
-              </div>
-            </Card>
-          </motion.div>
-        ) : (
-          <>
-            {/* Urgency countdown */}
-            {examDays > 0 && (
-              <div className="text-center p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
-                <p className="text-red-400 font-bold text-lg">⚠️ El ECOEMS es el 20 de junio</p>
-                <p className="text-4xl font-black text-white mt-1">{examDays} días para prepararte</p>
-                <p className="text-slate-400 text-sm mt-1">Cada día sin practicar es ventaja para los demás</p>
-              </div>
-            )}
-
-            {/* Push notifications CTA */}
-            <div className="flex justify-center">
-              <button
-                onClick={handleSubscribePush}
-                disabled={subscribing || subscribed}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-300 hover:bg-violet-500/20 transition-colors text-sm font-semibold disabled:opacity-60"
-              >
-                <Bell className="h-4 w-4" />
-                {subscribed ? "✓ Recordatorios activados" : subscribing ? "Activando..." : "🔔 Activar recordatorios del ECOEMS"}
-              </button>
-            </div>
-
-            {/* Banner Referidos */}
-            {user && (
-              <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-4 mb-4">
-                <h3 className="text-green-400 font-black text-lg mb-3">🎁 Gana tokens gratis invitando amigos</h3>
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                    <span className="text-2xl">1️⃣</span>
-                    <div>
-                      <p className="text-white font-bold text-sm">Tu amigo se registra</p>
-                      <p className="text-gray-400 text-xs">Ambos reciben 50 tokens al instante</p>
-                    </div>
-                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
-                  </div>
-                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                    <span className="text-2xl">2️⃣</span>
-                    <div>
-                      <p className="text-white font-bold text-sm">Tu amigo vuelve a entrar</p>
-                      <p className="text-gray-400 text-xs">Recibes 50 tokens cuando regrese — solo una vez</p>
-                    </div>
-                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
-                  </div>
-                  <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
-                    <span className="text-2xl">3️⃣</span>
-                    <div>
-                      <p className="text-white font-bold text-sm">Tu amigo hace su primera compra</p>
-                      <p className="text-gray-400 text-xs">Recibes 50 tokens más — solo una vez</p>
-                    </div>
-                    <span className="ml-auto text-green-400 font-black">+50 🪙</span>
-                  </div>
-                </div>
-                <div className="bg-green-500/20 rounded-xl p-3 text-center mb-3">
-                  <p className="text-green-300 font-black">🏆 Máximo 150 tokens por cada amigo que invites</p>
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    value={`https://cyberedumx.com/auth?ref=${referralCode}`}
-                    readOnly
-                    className="flex-1 bg-gray-800 text-white rounded-lg px-3 py-2 text-xs border border-green-500/20"
-                  />
-                  <button
-                    onClick={copiarLinkReferido}
-                    className={`px-4 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
-                      copiado ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    }`}
-                  >
-                    {copiado ? '✅ ¡Copiado!' : '📋 Copiar'}
-                  </button>
-                </div>
-                <p className="text-gray-500 text-xs mt-2">
-                  Has referido {profile?.referral_count ?? 0} amigos = {(profile?.referral_count ?? 0) * 50} tokens ganados
-                </p>
-              </div>
-            )}
-
-            {/* Packages Grid */}
-            <div id="comprar" className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {tokenPackages.map((pkg, idx) => (
-                <motion.div
-                  key={pkg.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * idx }}
-                >
-                  <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] border-white/10 ${pkg.highlight ? "border-primary/40 ring-1 ring-primary/20" : ""}`}>
-                    {pkg.badge && (
-                      <div className={`absolute top-6 right-[-35px] rotate-45 ${(pkg as any).badgeColor ?? 'bg-primary'} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
-                        {pkg.badge}
-                      </div>
-                    )}
-
-                    <CardHeader className="p-8 pb-4">
-                      <div className="mb-4 flex items-center justify-between">
-                        <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                          {pkg.icon}
-                        </div>
-                      </div>
-                      <CardTitle className="text-3xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
-                      <CardDescription className="text-slate-500 font-medium">{pkg.description}</CardDescription>
-                    </CardHeader>
-
-                    <CardContent className="p-8 pt-4 flex-grow space-y-6">
-                      <div className="space-y-1">
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-black text-white">{pkg.tokens}</span>
-                            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">Tokens</span>
-                        </div>
-                        <p className="text-primary font-black text-2xl">${pkg.price} MXN</p>
-                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">${pkg.pricePerToken.toFixed(2)} por token</p>
-                      </div>
-
-                      <div className="pt-4 border-t border-white/5 space-y-3">
-                        <div className="flex items-center gap-2 text-sm text-slate-300">
-                            <Check className="h-4 w-4 text-emerald-500" />
-                            Acceso ilimitado al Tutor
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-300">
-                            <Check className="h-4 w-4 text-emerald-500" />
-                            Prioridad de respuesta
-                        </div>
-                      </div>
-                    </CardContent>
-
-                    <CardFooter className="p-8 pt-0 flex flex-col gap-2">
-                      <Button
-                        className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20" : "bg-white/10 hover:bg-white/20 border border-white/10"}`}
-                        onClick={() => handleBuy(pkg.id)}
-                        disabled={loadingPkg === pkg.id}
-                      >
-                        {loadingPkg === pkg.id ? (
-                          <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          "Comprar ahora"
-                        )}
-                      </Button>
-                      {(pkg as any).urgency && (
-                        <p className="text-xs text-center text-slate-500 font-medium">{(pkg as any).urgency}</p>
-                      )}
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Premium Packages — Guía 2026 & Paquete Completo */}
-            <div className="space-y-4">
-              <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500">Paquetes Premium — Pago único</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                {premiumPackages.map((pkg, idx) => (
-                  <motion.div
-                    key={pkg.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 * idx }}
-                  >
-                    <Card className={`relative h-full flex flex-col overflow-hidden transition-all duration-500 hover:scale-[1.02] glass-card-premium rounded-[2.5rem] ${pkg.highlight ? "border-purple-500/40 ring-1 ring-purple-500/20" : "border-white/10"}`}>
-                      {pkg.badge && (
-                        <div className={`absolute top-6 right-[-35px] rotate-45 ${pkg.badgeColor} text-white text-[10px] font-black uppercase py-1 px-10 shadow-xl z-20`}>
-                          {pkg.badge}
-                        </div>
-                      )}
-                      <CardHeader className="p-8 pb-4">
-                        <div className="mb-4 flex items-center justify-between">
-                          <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                            {pkg.icon}
-                          </div>
-                        </div>
-                        <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">{pkg.name}</CardTitle>
-                        <CardDescription className="text-slate-400 font-medium text-xs">{pkg.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-8 pt-0 flex-grow space-y-4">
-                        <div>
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-black text-white">${pkg.price}</span>
-                            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm">MXN</span>
-                          </div>
-                          <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Pago único — acceso de por vida</p>
-                        </div>
-                        <div className="pt-3 border-t border-white/5 space-y-2">
-                          {pkg.perks.map(perk => (
-                            <div key={perk} className="flex items-center gap-2 text-sm text-slate-300">
-                              <Check className="h-4 w-4 text-purple-400 shrink-0" />
-                              {perk}
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="p-8 pt-0 flex flex-col gap-2">
-                        <Button
-                          className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${pkg.highlight ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 shadow-lg shadow-purple-500/20 text-white" : "bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 text-purple-300"}`}
-                          onClick={() => handleBuy(pkg.id)}
-                          disabled={loadingPkg === pkg.id}
-                        >
-                          {loadingPkg === pkg.id ? (
-                            <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                          ) : (
-                            `🪙 ${pkg.tokens} tokens — Comprar ahora`
-                          )}
-                        </Button>
-                        <p className="text-xs text-center text-slate-500 font-medium">{pkg.urgency}</p>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Unlimited Plan */}
-            <motion.div
-               initial={{ opacity: 0, y: 30 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.4 }}
-               className="max-w-4xl mx-auto"
+        {/* ——— PUSH NOTIFICATIONS — solo logged ——— */}
+        {user && (
+          <div className="flex justify-center">
+            <button
+              onClick={handleSubscribePush}
+              disabled={subscribing || subscribed}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-300 hover:bg-violet-500/20 transition-colors text-sm font-semibold disabled:opacity-60"
             >
-                <Card className="glass-card-premium rounded-[3rem] border-amber-500/20 bg-amber-500/5 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-12 opacity-5 scale-150 rotate-12 group-hover:rotate-0 transition-transform duration-1000">
-                        <Crown className="h-48 w-48 text-amber-500" />
-                    </div>
-                    
-                    <CardContent className="p-8 md:p-12">
-                       <div className="flex flex-col md:flex-row gap-10 items-center">
-                          <div className="w-24 h-24 rounded-full bg-amber-500/20 border-2 border-amber-500/30 flex items-center justify-center shrink-0 shadow-2xl shadow-amber-500/20">
-                             {unlimitedPackage.icon}
-                          </div>
-                          
-                          <div className="flex-1 space-y-4 text-center md:text-left">
-                             <Badge className="bg-amber-500 text-black font-black uppercase px-3 py-1 mb-2">Plan Maestro</Badge>
-                             <h3 className="text-4xl font-black uppercase tracking-tighter text-white">👑 {unlimitedPackage.name}</h3>
-                             <p className="text-slate-400 font-medium text-lg max-w-xl">
-                                {unlimitedPackage.description}. Ideal para quienes quieren asistencia total en su preparación ECOEMS.
-                             </p>
-                             <div className="flex flex-wrap items-end justify-center md:justify-start gap-4 pt-4">
-                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-5xl font-black text-white">$250</span>
-                                    <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">MXN / mes</span>
-                                 </div>
-                                 <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase">
-                                    $0.25 por token
-                                 </div>
-                             </div>
-                          </div>
-
-                          <div className="w-full md:w-auto flex flex-col items-center gap-2">
-                            <Button
-                                className="w-full md:w-56 h-16 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest text-xs shadow-xl shadow-amber-500/20"
-                                onClick={() => handleBuy(unlimitedPackage.id)}
-                                disabled={loadingPkg === unlimitedPackage.id}
-                            >
-                                {loadingPkg === unlimitedPackage.id ? (
-                                    <div className="h-5 w-5 border-3 border-black/30 border-t-black rounded-full animate-spin" />
-                                ) : (
-                                    "Activar ilimitado"
-                                )}
-                            </Button>
-                            <p className="text-xs text-slate-500 font-medium text-center">Acceso ilimitado hasta el examen</p>
-                          </div>
-                       </div>
-                    </CardContent>
-                </Card>
-            </motion.div>
-          </>
+              <Bell className="h-4 w-4" />
+              {subscribed ? "✓ Recordatorios activados" : subscribing ? "Activando..." : "🔔 Activar recordatorios del ECOEMS"}
+            </button>
+          </div>
         )}
 
+        {/* ——— BANNER REFERIDOS — solo logged ——— */}
+        {user && (
+          <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-4 mb-4">
+            <h3 className="text-green-400 font-black text-lg mb-3">🎁 Gana tokens gratis invitando amigos</h3>
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                <span className="text-2xl">1️⃣</span>
+                <div>
+                  <p className="text-white font-bold text-sm">Tu amigo se registra</p>
+                  <p className="text-gray-400 text-xs">Ambos reciben 50 tokens al instante</p>
+                </div>
+                <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+              </div>
+              <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                <span className="text-2xl">2️⃣</span>
+                <div>
+                  <p className="text-white font-bold text-sm">Tu amigo vuelve a entrar</p>
+                  <p className="text-gray-400 text-xs">Recibes 50 tokens cuando regrese — solo una vez</p>
+                </div>
+                <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+              </div>
+              <div className="flex items-center gap-3 bg-green-500/10 rounded-xl p-3">
+                <span className="text-2xl">3️⃣</span>
+                <div>
+                  <p className="text-white font-bold text-sm">Tu amigo hace su primera compra</p>
+                  <p className="text-gray-400 text-xs">Recibes 50 tokens más — solo una vez</p>
+                </div>
+                <span className="ml-auto text-green-400 font-black">+50 🪙</span>
+              </div>
+            </div>
+            <div className="bg-green-500/20 rounded-xl p-3 text-center mb-3">
+              <p className="text-green-300 font-black">🏆 Máximo 150 tokens por cada amigo que invites</p>
+            </div>
+            <div className="flex gap-2">
+              <input
+                value={`https://cyberedumx.com/auth?ref=${referralCode}`}
+                readOnly
+                className="flex-1 bg-gray-800 text-white rounded-lg px-3 py-2 text-xs border border-green-500/20"
+              />
+              <button
+                onClick={copiarLinkReferido}
+                className={`px-4 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
+                  copiado ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                {copiado ? '✅ ¡Copiado!' : '📋 Copiar'}
+              </button>
+            </div>
+            <p className="text-gray-500 text-xs mt-2">
+              Has referido {profile?.referral_count ?? 0} amigos = {(profile?.referral_count ?? 0) * 50} tokens ganados
+            </p>
+          </div>
+        )}
 
-
-        {/* Info Footer */}
+        {/* ——— INFO FOOTER ——— */}
         <div className="max-w-2xl mx-auto text-center space-y-4 text-slate-500 pt-8 border-t border-white/5">
             <div className="flex items-center justify-center gap-2">
                 <Info className="h-4 w-4" />
                 <p className="text-xs font-bold uppercase tracking-widest">Preguntas frecuentes</p>
             </div>
             <p className="text-[10px] font-medium leading-relaxed">
-                Los tokens no expiran para los paquetes Básico, Popular y Pro. 
-                El Plan Ilimitado otorga 1,000 tokens cada mes y se cobra de forma recurrente. 
-                Cada interacción con la IA consume 1 token del balance disponible. 
+                Los tokens no expiran para los paquetes Básico, Popular y Pro.
+                El Plan Ilimitado otorga 1,000 tokens cada mes y se cobra de forma recurrente.
+                Cada interacción con la IA consume 1 token del balance disponible.
                 <span className="text-primary font-bold"> IMPORTANTE:</span> El acceso a videos, guías y simuladores básicos sigue siendo **absolutamente gratis** para todos.
             </p>
         </div>
@@ -1034,7 +989,7 @@ const TokensPage = () => {
 
       <style dangerouslySetInnerHTML={{ __html: `
         .cyber-grid {
-          background-image: 
+          background-image:
             radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
           background-size: 40px 40px;
         }
