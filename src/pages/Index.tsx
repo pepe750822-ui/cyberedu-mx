@@ -414,15 +414,23 @@ const Index = () => {
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <Video className="h-5 w-5 text-violet-400" />
-                  <span className="text-sm font-semibold text-white">135+ Videos Guía 2025 y 2026</span>
+                  <span className="text-sm font-semibold text-white">44 videos de estudio Guía 2026</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <Target className="h-5 w-5 text-violet-400" />
+                  <span className="text-sm font-semibold text-white">Simulador completo — bancos 1 al 10</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <BookOpen className="h-5 w-5 text-violet-400" />
-                  <span className="text-sm font-semibold text-white">10 Materias ECOEMS</span>
+                  <span className="text-sm font-semibold text-white">Acordeón 2026 completo</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <CheckCircle className="h-5 w-5 text-emerald-400" />
-                  <span className="text-sm font-semibold text-white">1,280+ Reactivos tipo examen</span>
+                  <span className="text-sm font-semibold text-white">Nueva área de Subíndices</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-lg" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <Zap className="h-5 w-5 text-amber-400" />
+                  <span className="text-sm font-semibold text-white">150 tokens de regalo para el Tutor IA</span>
                 </div>
               </div>
 
