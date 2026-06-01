@@ -1,164 +1,2361 @@
 {
-  "materia": "Biología",
-  "subindices": {
-    "Biodiversidad y evolución": [
+  "irritabilidad": {
+    "questions": [
       {
-        "question": "¿Cuál es la principal causa de pérdida de biodiversidad en México?",
-        "options": ["Contaminación del agua", "Venta clandestina de especies", "Cambio climático", "Deforestación por agricultura"],
+        "question": "¿Qué es la irritabilidad en los seres vivos?",
+        "options": [
+          "Capacidad de reproducirse",
+          "Capacidad de responder a estímulos del ambiente",
+          "Capacidad de obtener energía",
+          "Capacidad de crecer"
+        ],
         "correct": 1,
-        "explanation": "La venta clandestina de especies es la principal causa de pérdida de biodiversidad, ya que el tráfico ilegal de fauna y flora amenaza directamente las poblaciones silvestres."
+        "explanation": "La irritabilidad es la capacidad de los organismos para detectar y reaccionar ante cambios en su entorno, como la luz o el calor."
       },
       {
-        "question": "Según la teoría de Darwin, ¿qué determina cuáles organismos sobreviven y se reproducen?",
-        "options": ["La velocidad de mutación genética", "La selección natural basada en adaptaciones al ambiente", "La reproducción más rápida", "El tamaño corporal del organismo"],
+        "question": "¿Cuál de los siguientes es un ejemplo de irritabilidad en plantas?",
+        "options": [
+          "Una planta que produce flores",
+          "Una planta que crece hacia la luz",
+          "Una planta que absorbe agua",
+          "Una planta que realiza fotosíntesis"
+        ],
         "correct": 1,
-        "explanation": "Darwin propuso que la selección natural favorece a los organismos mejor adaptados a su ambiente, quienes sobreviven y transmiten sus características a la descendencia."
+        "explanation": "El crecimiento hacia la luz (fototropismo) es una respuesta a un estímulo luminoso, lo que demuestra irritabilidad."
       },
       {
-        "question": "¿Cuál de los siguientes estados NO se considera uno de los de mayor biodiversidad en México?",
-        "options": ["Oaxaca", "Chiapas", "Jalisco", "Veracruz"],
+        "question": "¿Qué estímulo provoca que un perro se acerque al escuchar el sonido de su comida?",
+        "options": [
+          "Estímulo químico",
+          "Estímulo mecánico (sonido)",
+          "Estímulo luminoso",
+          "Estímulo térmico"
+        ],
+        "correct": 1,
+        "explanation": "El sonido es un estímulo mecánico que el perro percibe a través del oído y responde acercándose."
+      },
+      {
+        "question": "¿Cómo se llama la respuesta de una planta al tacto, como en la mimosa?",
+        "options": [
+          "Fototropismo",
+          "Geotropismo",
+          "Tigmotropismo",
+          "Hidrotropismo"
+        ],
         "correct": 2,
-        "explanation": "Oaxaca, Chiapas, Veracruz y Guerrero son los estados con mayor biodiversidad en México; Jalisco no forma parte de este grupo principal."
+        "explanation": "El tigmotropismo es la respuesta de las plantas al contacto físico, como cuando la mimosa cierra sus hojas al tocarlas."
       },
       {
-        "question": "¿Qué característica de los seres vivos describe la capacidad de responder a estímulos del ambiente?",
-        "options": ["Reproducción", "Crecimiento", "Irritabilidad", "Excreción"],
-        "correct": 2,
-        "explanation": "La irritabilidad es la capacidad de los organismos de detectar y responder a cambios en el ambiente, como la luz, el calor o el contacto."
-      },
-      {
-        "question": "El desarrollo sustentable se define como:",
-        "options": ["Explotar los recursos naturales al máximo para el progreso económico", "Satisfacer las necesidades presentes sin comprometer las de las generaciones futuras", "Preservar la naturaleza sin ningún tipo de uso humano", "Usar tecnología para reemplazar los recursos naturales agotados"],
-        "correct": 1,
-        "explanation": "El desarrollo sustentable busca un equilibrio entre el uso de los recursos y su conservación, asegurando que las generaciones futuras también puedan satisfacer sus necesidades."
+        "question": "¿Qué tipo de irritabilidad permite a los animales moverse hacia un estímulo favorable?",
+        "options": [
+          "Taxis",
+          "Reflejo",
+          "Instinto",
+          "Hábito"
+        ],
+        "correct": 0,
+        "explanation": "La taxis es el movimiento de un animal hacia o en contra de un estímulo, como las polillas que vuelan hacia la luz."
       }
-    ],
-    "Transformación de energía (fotosíntesis y respiración)": [
+    ]
+  },
+  "biodiversidad-en-mexico": {
+    "questions": [
       {
-        "question": "¿En qué organelo celular ocurre la fotosíntesis?",
-        "options": ["Mitocondria", "Núcleo", "Ribosoma", "Cloroplasto"],
+        "question": "¿Por qué México es considerado un país megadiverso?",
+        "options": [
+          "Porque tiene muchos desiertos",
+          "Porque alberga una gran cantidad de especies de plantas y animales, muchas de ellas endémicas",
+          "Porque tiene pocos ecosistemas",
+          "Porque su población es muy grande"
+        ],
+        "correct": 1,
+        "explanation": "México es megadiverso porque posee una alta riqueza de especies y ecosistemas, y muchas especies solo se encuentran en su territorio."
+      },
+      {
+        "question": "¿Cuál de los siguientes estados mexicanos destaca por su alta biodiversidad?",
+        "options": [
+          "Nuevo León",
+          "Oaxaca",
+          "Baja California",
+          "Sonora"
+        ],
+        "correct": 1,
+        "explanation": "Oaxaca es uno de los estados con mayor biodiversidad en México debido a su variedad de climas y ecosistemas."
+      },
+      {
+        "question": "¿Qué factor contribuye a la megadiversidad de Chiapas?",
+        "options": [
+          "Su clima frío y seco",
+          "Su ubicación geográfica y variedad de altitudes",
+          "Su baja precipitación",
+          "Su suelo volcánico poco fértil"
+        ],
+        "correct": 1,
+        "explanation": "Chiapas tiene gran diversidad de altitudes y climas, lo que crea muchos hábitats diferentes para las especies."
+      },
+      {
+        "question": "¿Por qué Veracruz es considerado un estado con alta biodiversidad?",
+        "options": [
+          "Porque tiene muchos volcanes",
+          "Porque cuenta con diversos ecosistemas como selvas, manglares y arrecifes",
+          "Porque es el estado más grande",
+          "Porque tiene poca vegetación"
+        ],
+        "correct": 1,
+        "explanation": "Veracruz alberga ecosistemas costeros, selvas y montañas, lo que permite una gran variedad de especies."
+      },
+      {
+        "question": "¿Qué amenaza principal enfrenta la biodiversidad en Guerrero?",
+        "options": [
+          "La introducción de especies nativas",
+          "La deforestación y pérdida de hábitat",
+          "El aumento de áreas protegidas",
+          "La disminución de la población humana"
+        ],
+        "correct": 1,
+        "explanation": "La deforestación para agricultura y ganadería reduce los hábitats naturales, poniendo en riesgo a muchas especies."
+      }
+    ]
+  },
+  "adaptacion": {
+    "questions": [
+      {
+        "question": "¿Qué es una adaptación en el contexto de la evolución?",
+        "options": [
+          "Un cambio hereditario que mejora la supervivencia en el ambiente",
+          "Un cambio en el comportamiento aprendido durante la vida",
+          "Una característica que adquiere un organismo por uso constante",
+          "Una mutación que no se transmite a la descendencia"
+        ],
+        "correct": 0,
+        "explanation": "La adaptación es un cambio hereditario que permite a los organismos sobrevivir mejor en su ambiente, como el camuflaje de un insecto."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de adaptación estructural?",
+        "options": [
+          "El pelaje grueso de un oso polar",
+          "La migración de las aves",
+          "El instinto de cazar en leones",
+          "La hibernación de los osos"
+        ],
+        "correct": 0,
+        "explanation": "El pelaje grueso es una estructura física que ayuda al oso polar a conservar calor, lo que es una adaptación hereditaria."
+      },
+      {
+        "question": "¿Cómo se heredan las adaptaciones en una población?",
+        "options": [
+          "A través de los genes transmitidos de padres a hijos",
+          "Por aprendizaje de los padres",
+          "Por exposición al ambiente durante la vida",
+          "Por selección artificial del hombre"
+        ],
+        "correct": 0,
+        "explanation": "Las adaptaciones son cambios en los genes que se heredan, permitiendo que las características favorables pasen a la siguiente generación."
+      },
+      {
+        "question": "¿Qué proceso explica cómo se acumulan las adaptaciones en una especie?",
+        "options": [
+          "Selección natural",
+          "Deriva génica",
+          "Mutación dirigida",
+          "Lamarckismo"
+        ],
+        "correct": 0,
+        "explanation": "La selección natural favorece a los individuos con adaptaciones ventajosas, haciendo que estas se vuelvan más comunes en la población."
+      },
+      {
+        "question": "¿Por qué las adaptaciones no son perfectas?",
+        "options": [
+          "Porque el ambiente cambia y las adaptaciones son para condiciones pasadas",
+          "Porque los organismos no pueden adaptarse",
+          "Porque las mutaciones siempre son dañinas",
+          "Porque la selección natural no actúa"
+        ],
+        "correct": 0,
+        "explanation": "Las adaptaciones surgen para condiciones pasadas, y si el ambiente cambia, pueden volverse menos útiles o incluso perjudiciales."
+      }
+    ]
+  },
+  "nmricre": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes funciones vitales permite a los organismos obtener energía a partir de los alimentos?",
+        "options": [
+          "Nutrición",
+          "Movimiento",
+          "Reproducción",
+          "Excreción"
+        ],
+        "correct": 0,
+        "explanation": "La nutrición es el proceso mediante el cual los organismos obtienen y procesan los nutrientes para obtener energía y materia."
+      },
+      {
+        "question": "¿Qué característica de los seres vivos les permite responder a estímulos del ambiente?",
+        "options": [
+          "Irritabilidad",
+          "Crecimiento",
+          "Reproducción",
+          "Relación"
+        ],
+        "correct": 0,
+        "explanation": "La irritabilidad es la capacidad de los organismos de reaccionar ante cambios en su entorno."
+      },
+      {
+        "question": "¿Cuál es la principal diferencia entre la reproducción sexual y la asexual?",
+        "options": [
+          "En la sexual intervienen dos progenitores y hay variabilidad genética; en la asexual solo uno y los hijos son idénticos.",
+          "En la asexual intervienen dos progenitores y hay variabilidad genética; en la sexual solo uno y los hijos son idénticos.",
+          "Ambas producen descendencia genéticamente idéntica.",
+          "La reproducción sexual solo ocurre en plantas y la asexual en animales."
+        ],
+        "correct": 0,
+        "explanation": "La reproducción sexual requiere dos progenitores y genera variabilidad, mientras que la asexual produce clones a partir de un solo progenitor."
+      },
+      {
+        "question": "¿Qué proceso permite a las plantas crecer en longitud y grosor?",
+        "options": [
+          "Crecimiento",
+          "Movimiento",
+          "Nutrición",
+          "Reproducción"
+        ],
+        "correct": 0,
+        "explanation": "El crecimiento es el aumento de tamaño y desarrollo de los organismos, en plantas se da por división celular en meristemos."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones es un ejemplo de relación en los seres vivos?",
+        "options": [
+          "Un perro que se acerca a su dueño al escuchar su voz.",
+          "Una planta que realiza fotosíntesis.",
+          "Una bacteria que se reproduce por bipartición.",
+          "Un hongo que descompone materia orgánica."
+        ],
+        "correct": 0,
+        "explanation": "La relación implica la capacidad de interactuar con el entorno o con otros organismos, como el perro que responde al estímulo de la voz."
+      }
+    ]
+  },
+  "darwin": {
+    "questions": [
+      {
+        "question": "La teoría de la selección natural de Darwin establece que los organismos mejor adaptados a su ambiente tienen mayor probabilidad de:",
+        "options": [
+          "A) Sobrevivir y reproducirse",
+          "B) Migrar a otros lugares",
+          "C) Cambiar sus características físicas rápidamente",
+          "D) Desarrollar nuevas especies en una generación"
+        ],
+        "correct": 0,
+        "explanation": "La selección natural favorece a los individuos con características que les permiten sobrevivir y reproducirse en su entorno, transmitiendo esos rasgos a su descendencia."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos ilustra mejor la selección natural?",
+        "options": [
+          "A) Un perro aprende a abrir una puerta",
+          "B) Mariposas de color claro son más vistas por depredadores en un bosque oscuro, por lo que las de color oscuro se vuelven más comunes",
+          "C) Un atleta entrena para correr más rápido",
+          "D) Una planta crece más al recibir más agua"
+        ],
+        "correct": 1,
+        "explanation": "La selección natural ocurre cuando ciertos rasgos hereditarios aumentan la supervivencia y reproducción en un ambiente específico, como el color de las mariposas."
+      },
+      {
+        "question": "Según Darwin, la principal fuente de variación sobre la que actúa la selección natural es:",
+        "options": [
+          "A) El uso y desuso de órganos",
+          "B) Las mutaciones aleatorias y la recombinación genética",
+          "C) La necesidad de adaptarse",
+          "D) El esfuerzo de los organismos por cambiar"
+        ],
+        "correct": 1,
+        "explanation": "Darwin no conocía las mutaciones, pero hoy sabemos que la variación genética surge de mutaciones aleatorias y la recombinación, proporcionando materia prima para la selección natural."
+      },
+      {
+        "question": "En una población de insectos, algunos son resistentes a un pesticida. Tras aplicar el pesticida, la mayoría de los insectos mueren, pero los resistentes sobreviven y se reproducen. Esto es un ejemplo de:",
+        "options": [
+          "A) Deriva génica",
+          "B) Selección natural",
+          "C) Mutación inducida",
+          "D) Adaptación dirigida"
+        ],
+        "correct": 1,
+        "explanation": "La selección natural actúa cuando un rasgo (resistencia) confiere ventaja en un ambiente con pesticida, permitiendo a los portadores sobrevivir y reproducirse más."
+      },
+      {
+        "question": "Darwin observó que en las Islas Galápagos, los pinzones tenían picos de diferentes formas según el tipo de alimento disponible. Esto se explica porque:",
+        "options": [
+          "A) Los pinzones desarrollaron picos según su dieta",
+          "B) La selección natural favoreció picos adecuados para cada alimento",
+          "C) Todos los pinzones tenían el mismo pico pero lo modificaron",
+          "D) El ambiente no influyó en la forma del pico"
+        ],
+        "correct": 1,
+        "explanation": "La selección natural actuó sobre la variación existente en la forma del pico, favoreciendo aquellas que permitían aprovechar mejor los recursos disponibles en cada isla."
+      }
+    ]
+  },
+  "fotosintesis": {
+    "questions": [
+      {
+        "question": "¿Cuál es el principal producto de la fotosíntesis que utilizan las plantas como fuente de energía?",
+        "options": [
+          "Dióxido de carbono",
+          "Oxígeno",
+          "Glucosa",
+          "Agua"
+        ],
+        "correct": 2,
+        "explanation": "La glucosa (C6H12O6) es el azúcar que las plantas producen durante la fotosíntesis y que usan como energía para crecer."
+      },
+      {
+        "question": "¿En qué orgánulo de la célula vegetal ocurre la fotosíntesis?",
+        "options": [
+          "Mitocondria",
+          "Cloroplasto",
+          "Núcleo",
+          "Vacuola"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis ocurre en los cloroplastos, que contienen clorofila para capturar la luz solar."
+      },
+      {
+        "question": "¿Qué gas es liberado como subproducto durante la fotosíntesis?",
+        "options": [
+          "Dióxido de carbono",
+          "Oxígeno",
+          "Nitrógeno",
+          "Hidrógeno"
+        ],
+        "correct": 1,
+        "explanation": "En la fotosíntesis, el oxígeno (O2) se libera al ambiente cuando el agua se descompone."
+      },
+      {
+        "question": "¿Cuál es la fuente de energía que impulsa la fotosíntesis?",
+        "options": [
+          "Calor del suelo",
+          "Luz solar",
+          "Viento",
+          "Agua"
+        ],
+        "correct": 1,
+        "explanation": "La luz solar proporciona la energía necesaria para convertir el dióxido de carbono y el agua en glucosa."
+      },
+      {
+        "question": "¿Qué reactivos se necesitan para que ocurra la fotosíntesis?",
+        "options": [
+          "Oxígeno y glucosa",
+          "Dióxido de carbono y agua",
+          "Luz y oxígeno",
+          "Glucosa y dióxido de carbono"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis requiere dióxido de carbono (CO2) y agua (H2O) junto con la luz solar para producir glucosa."
+      }
+    ]
+  },
+  "almidon-en": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes alimentos contiene almidón?",
+        "options": [
+          "Papa",
+          "Mantequilla",
+          "Queso",
+          "Carne"
+        ],
+        "correct": 0,
+        "explanation": "La papa es rica en almidón, un carbohidrato de reserva en plantas. Los otros alimentos son de origen animal y no contienen almidón."
+      },
+      {
+        "question": "¿En qué parte de la planta de maíz se almacena principalmente el almidón?",
+        "options": [
+          "Raíz",
+          "Tallo",
+          "Hoja",
+          "Semilla"
+        ],
         "correct": 3,
-        "explanation": "La fotosíntesis ocurre en los cloroplastos, organelos que contienen clorofila, el pigmento capaz de capturar la energía luminosa."
+        "explanation": "El almidón se almacena en las semillas (granos) del maíz como reserva energética para la germinación."
       },
       {
-        "question": "¿Cuál es el producto principal de la respiración aerobia?",
-        "options": ["Glucosa y oxígeno", "CO₂, H₂O y energía (ATP)", "Alcohol etílico y CO₂", "Glucosa y CO₂"],
+        "question": "¿Cuál es la principal función del almidón en las plantas como la papa y el trigo?",
+        "options": [
+          "Proporcionar estructura",
+          "Almacenar energía",
+          "Absorber agua",
+          "Realizar fotosíntesis"
+        ],
         "correct": 1,
-        "explanation": "En la respiración aerobia, la glucosa se oxida en presencia de oxígeno para producir dióxido de carbono, agua y energía en forma de ATP."
+        "explanation": "El almidón es un polisacárido que las plantas usan para almacenar energía, la cual se libera cuando la planta la necesita."
       },
       {
-        "question": "¿Qué tipo de organismos son autótrofos?",
-        "options": ["Animales y hongos", "Hongos y la mayoría de las bacterias", "Plantas, algas y bacterias fotosintéticas", "Solo las plantas con flores"],
-        "correct": 2,
-        "explanation": "Los autótrofos producen su propio alimento mediante la fotosíntesis; este grupo incluye plantas, algas y ciertas bacterias fotosintéticas."
+        "question": "¿Cuál de estos alimentos NO es una fuente de almidón?",
+        "options": [
+          "Trigo",
+          "Maíz",
+          "Papa",
+          "Mantequilla"
+        ],
+        "correct": 3,
+        "explanation": "La mantequilla es una grasa de origen animal, no contiene almidón. El trigo, maíz y papa son fuentes vegetales ricas en almidón."
       },
       {
-        "question": "La fermentación láctica es responsable de la producción de:",
-        "options": ["Pan y cerveza", "Yogur y queso", "Vino y vinagre", "Alcohol y dióxido de carbono"],
+        "question": "¿Qué proceso biológico produce almidón en las plantas como el trigo?",
+        "options": [
+          "Respiración",
+          "Fotosíntesis",
+          "Digestión",
+          "Fermentación"
+        ],
         "correct": 1,
-        "explanation": "La fermentación láctica es realizada por bacterias que convierten la glucosa en ácido láctico, proceso clave en la elaboración de yogur y queso."
-      },
-      {
-        "question": "¿Qué proceso del ciclo del carbono libera CO₂ a la atmósfera?",
-        "options": ["Fotosíntesis", "Absorción por los océanos", "Respiración celular y combustión", "Formación de carbohidratos"],
-        "correct": 2,
-        "explanation": "La respiración celular y la combustión de combustibles fósiles liberan CO₂ a la atmósfera, mientras que la fotosíntesis lo absorbe para producir glucosa."
+        "explanation": "Durante la fotosíntesis, las plantas producen glucosa, que luego se convierte en almidón para almacenarse en órganos como semillas y tubérculos."
       }
-    ],
-    "Nutrición y salud ambiental": [
+    ]
+  },
+  "principal-causa-de-perdida-de-biodiversidad": {
+    "questions": [
       {
-        "question": "¿Cuál es la diferencia entre una dieta completa y una dieta equilibrada?",
-        "options": ["Son exactamente lo mismo", "La dieta completa incluye todos los nutrimentos; la equilibrada los tiene en proporción adecuada", "La dieta equilibrada excluye las grasas", "La dieta completa es solo para deportistas"],
+        "question": "¿Cuál es la principal causa de pérdida de biodiversidad relacionada con la venta ilegal de especies?",
+        "options": [
+          "La contaminación ambiental",
+          "La venta clandestina de especies",
+          "El cambio climático",
+          "La deforestación"
+        ],
         "correct": 1,
-        "explanation": "Una dieta completa incluye proteínas, carbohidratos, grasas, vitaminas y minerales, mientras que la equilibrada garantiza que estén en las proporciones correctas para el organismo."
+        "explanation": "La venta clandestina de especies extrae organismos de su hábitat de manera ilegal, reduciendo sus poblaciones y poniendo en riesgo la biodiversidad."
       },
       {
-        "question": "¿Cuál es la principal causa del calentamiento global?",
-        "options": ["El aumento de oxígeno en la atmósfera", "La acumulación de CO₂ y CH₄ como gases de invernadero", "La disminución de la capa de ozono", "El aumento de la actividad volcánica"],
+        "question": "¿Qué actividad humana contribuye directamente a la extinción de especies al comercializarlas ilegalmente?",
+        "options": [
+          "La agricultura intensiva",
+          "La venta clandestina de especies",
+          "La construcción de presas",
+          "La pesca deportiva"
+        ],
         "correct": 1,
-        "explanation": "El calentamiento global se debe principalmente al aumento de gases de invernadero como el CO₂ y el metano (CH₄), que atrapan el calor en la atmósfera terrestre."
+        "explanation": "La venta clandestina de especies captura y vende animales o plantas protegidas, disminuyendo sus números en la naturaleza."
       },
       {
-        "question": "Una persona que consume muchas calorías pero pocas vitaminas y minerales puede desarrollar:",
-        "options": ["Solo obesidad", "Solo desnutrición", "Obesidad y desnutrición simultáneamente", "Ningún problema de salud"],
-        "correct": 2,
-        "explanation": "Es posible padecer obesidad por exceso calórico y desnutrición por déficit de nutrimentos esenciales al mismo tiempo, ya que son condiciones independientes."
+        "question": "¿Cuál es el impacto principal de la venta ilegal de fauna y flora en la biodiversidad?",
+        "options": [
+          "Aumenta la competencia entre especies",
+          "Reduce las poblaciones silvestres",
+          "Mejora la diversidad genética",
+          "Introduce nuevas especies"
+        ],
+        "correct": 1,
+        "explanation": "Al extraer individuos de sus ecosistemas, la venta ilegal disminuye las poblaciones y puede llevar a la extinción local."
       },
       {
-        "question": "¿Qué característica define a una dieta higiénica?",
-        "options": ["Que sea baja en calorías", "Que esté libre de contaminantes y microorganismos patógenos", "Que contenga solo alimentos orgánicos", "Que excluya alimentos procesados"],
+        "question": "¿Por qué la venta clandestina de especies es una amenaza grave para la biodiversidad?",
+        "options": [
+          "Porque genera ingresos económicos",
+          "Porque elimina organismos clave de los ecosistemas",
+          "Porque promueve la conservación",
+          "Porque solo afecta a especies comunes"
+        ],
         "correct": 1,
-        "explanation": "Una dieta higiénica es aquella que se prepara y consume libre de agentes contaminantes y microorganismos que puedan causar enfermedades."
+        "explanation": "Al eliminar especies, se alteran las cadenas alimenticias y se pierden funciones ecológicas esenciales."
       },
       {
-        "question": "¿Qué enfermedades respiratorias se agravan con la contaminación ambiental?",
-        "options": ["Diabetes y obesidad", "Asma, bronquitis y EPOC", "Hipertensión y cardiopatías", "Alergias alimentarias y dermatitis"],
+        "question": "¿Qué tipo de comercio ilegal afecta más a las especies en peligro de extinción?",
+        "options": [
+          "Comercio de madera",
+          "Venta clandestina de especies",
+          "Tráfico de drogas",
+          "Comercio de minerales"
+        ],
         "correct": 1,
-        "explanation": "El asma, la bronquitis y la EPOC son enfermedades respiratorias cuyos síntomas se intensifican con la exposición a contaminantes atmosféricos como el smog y las partículas suspendidas."
+        "explanation": "La venta clandestina de especies se enfoca en organismos raros o protegidos, acelerando su desaparición."
       }
-    ],
-    "Reproducción y sexualidad": [
+    ]
+  },
+  "desarrollo-sustentable": {
+    "questions": [
       {
-        "question": "¿Cuántas células y con qué características se producen al final de la meiosis?",
-        "options": ["2 células idénticas con el mismo número de cromosomas", "4 células idénticas con el doble de cromosomas", "4 células diferentes con la mitad de cromosomas", "2 células diferentes con la mitad de cromosomas"],
-        "correct": 2,
-        "explanation": "La meiosis produce 4 células haploides (con la mitad de cromosomas) y genéticamente diferentes entre sí, destinadas a la reproducción sexual."
+        "question": "¿Qué es la biodiversidad?",
+        "options": [
+          "La variedad de especies de plantas y animales en un ecosistema",
+          "La cantidad de agua en un ecosistema",
+          "El clima de una región",
+          "La cantidad de dióxido de carbono en la atmósfera"
+        ],
+        "correct": 0,
+        "explanation": "La biodiversidad se refiere a la variedad de seres vivos en un ecosistema, incluyendo plantas, animales y microorganismos."
       },
       {
-        "question": "¿Cuál es el único método anticonceptivo que protege simultáneamente contra ITS y embarazo no deseado?",
-        "options": ["Pastillas anticonceptivas", "DIU (dispositivo intrauterino)", "Condón", "Abstinencia periódica"],
-        "correct": 2,
-        "explanation": "El condón es el único método que actúa como barrera física, protegiendo al mismo tiempo contra las infecciones de transmisión sexual y el embarazo no deseado."
-      },
-      {
-        "question": "La reproducción asexual genera descendencia:",
-        "options": ["Diferente genéticamente a ambos progenitores", "Con la mitad del material genético del progenitor", "Idéntica genéticamente al progenitor", "Con combinación de genes de dos progenitores"],
-        "correct": 2,
-        "explanation": "En la reproducción asexual no intervienen óvulos ni espermatozoides, por lo que la descendencia es genéticamente idéntica al organismo progenitor."
-      },
-      {
-        "question": "¿Cuál de las siguientes es una de las ITS más comunes?",
-        "options": ["Tuberculosis", "VPH (Virus del Papiloma Humano)", "Influenza", "Hepatitis A"],
+        "question": "¿Cuál es una causa principal de la pérdida de biodiversidad?",
+        "options": [
+          "La reforestación",
+          "La deforestación",
+          "La creación de reservas naturales",
+          "El reciclaje"
+        ],
         "correct": 1,
-        "explanation": "El VPH es una de las ITS más comunes; existe vacuna para prevenirlo y puede asociarse con el desarrollo de cáncer cervicouterino si no se atiende."
+        "explanation": "La deforestación destruye hábitats naturales, lo que reduce la biodiversidad al eliminar especies que dependen de esos ecosistemas."
       },
       {
-        "question": "¿Para qué proceso biológico sirve principalmente la mitosis?",
-        "options": ["Producción de gametos para reproducción sexual", "Crecimiento y reparación de tejidos", "Generación de diversidad genética", "Reducción del número de cromosomas"],
+        "question": "¿Qué es la evolución?",
+        "options": [
+          "El cambio en las características de las especies a lo largo del tiempo",
+          "El crecimiento de una planta",
+          "El movimiento de los animales",
+          "La descomposición de la materia"
+        ],
+        "correct": 0,
+        "explanation": "La evolución es el proceso mediante el cual las especies cambian y se adaptan a su ambiente a través de generaciones."
+      },
+      {
+        "question": "¿Cómo contribuye la selección natural a la evolución?",
+        "options": [
+          "Elimina a los individuos más débiles",
+          "Permite que los individuos mejor adaptados sobrevivan y se reproduzcan",
+          "Crea nuevas especies de inmediato",
+          "Impide cualquier cambio en las especies"
+        ],
         "correct": 1,
-        "explanation": "La mitosis produce dos células hijas idénticas a la célula madre, lo que permite el crecimiento del organismo y la reparación de tejidos dañados."
+        "explanation": "La selección natural favorece a los individuos con características ventajosas, que tienen más probabilidades de sobrevivir y transmitir sus genes."
+      },
+      {
+        "question": "¿Por qué es importante conservar la biodiversidad para el desarrollo sustentable?",
+        "options": [
+          "Porque proporciona recursos como alimentos y medicinas",
+          "Porque embellece el paisaje",
+          "Porque aumenta la contaminación",
+          "Porque reduce la cantidad de oxígeno"
+        ],
+        "correct": 0,
+        "explanation": "La biodiversidad nos brinda servicios esenciales como alimentos, medicinas y regulación del clima, necesarios para el bienestar presente y futuro."
       }
-    ],
-    "Genética": [
+    ]
+  },
+  "importancia-de-conservar-ecosistemas": {
+    "questions": [
       {
-        "question": "¿Cuántos cromosomas tiene una célula humana somática (no reproductiva)?",
-        "options": ["23 cromosomas", "46 cromosomas", "92 cromosomas", "44 cromosomas"],
+        "question": "¿Cuál es una de las principales razones por las que es importante conservar los ecosistemas?",
+        "options": [
+          "A) Para aumentar la cantidad de basura en el planeta",
+          "B) Porque regulan el clima, el agua y el aire, y proporcionan recursos",
+          "C) Para que los animales tengan más espacio para vivir en ciudades",
+          "D) Porque ayudan a eliminar todas las especies de plantas"
+        ],
         "correct": 1,
-        "explanation": "Las células somáticas humanas contienen 46 cromosomas organizados en 23 pares homólogos, uno de cada par heredado de cada progenitor."
+        "explanation": "Los ecosistemas regulan el clima, purifican el agua y el aire, y son fuente de recursos como alimentos y medicinas, por lo que su conservación es vital para la vida humana y de otras especies."
       },
       {
-        "question": "Si un organismo tiene el genotipo 'Aa', ¿cómo se denomina su constitución genética?",
-        "options": ["Fenotipo heterocigoto", "Genotipo heterocigoto", "Fenotipo homocigoto dominante", "Genotipo homocigoto recesivo"],
+        "question": "¿Qué servicio ecosistémico proporcionan los bosques al regular el ciclo del agua?",
+        "options": [
+          "A) Aumentan la evaporación del agua de los océanos",
+          "B) Favorecen la infiltración del agua al subsuelo y reducen inundaciones",
+          "C) Disminuyen la cantidad de lluvia en la región",
+          "D) Contaminan los ríos con sedimentos"
+        ],
         "correct": 1,
-        "explanation": "El genotipo describe la constitución genética del organismo; 'Aa' es un genotipo heterocigoto porque tiene dos alelos diferentes para ese gen."
+        "explanation": "Los bosques ayudan a que el agua se infiltre en el suelo, recargando mantos acuíferos y reduciendo el riesgo de inundaciones, lo cual es un servicio ecosistémico clave."
       },
       {
-        "question": "¿Cuándo se expresa un alelo recesivo en el fenotipo del organismo?",
-        "options": ["Siempre que esté presente al menos una copia", "Solo cuando existen dos copias del alelo recesivo (aa)", "Cuando el alelo dominante está ausente en todos los cromosomas", "Nunca se expresa en el fenotipo"],
+        "question": "¿Por qué la pérdida de biodiversidad afecta la regulación del clima?",
+        "options": [
+          "A) Porque las especies extintas ya no producen dióxido de carbono",
+          "B) Porque ecosistemas como selvas y océanos capturan y almacenan carbono",
+          "C) Porque la biodiversidad no tiene relación con el clima",
+          "D) Porque los animales migran a otros lugares"
+        ],
         "correct": 1,
-        "explanation": "Un alelo recesivo solo se manifiesta en el fenotipo cuando el organismo es homocigoto recesivo (aa), es decir, tiene dos copias del alelo recesivo."
+        "explanation": "Ecosistemas como selvas y océanos almacenan grandes cantidades de carbono; al perder biodiversidad, se reduce su capacidad para capturar CO2, contribuyendo al cambio climático."
       },
       {
-        "question": "¿Para qué se utiliza el cuadro de Punnett?",
-        "options": ["Para identificar mutaciones en el ADN", "Para predecir las probabilidades de fenotipos en la descendencia", "Para medir la expresión génica", "Para determinar el número de cromosomas de un organismo"],
+        "question": "¿Cuál de los siguientes es un recurso que obtenemos directamente de los ecosistemas?",
+        "options": [
+          "A) Plástico sintético",
+          "B) Medicamentos derivados de plantas",
+          "C) Teléfonos celulares",
+          "D) Automóviles"
+        ],
         "correct": 1,
-        "explanation": "El cuadro de Punnett es una herramienta que permite predecir, mediante combinaciones de alelos parentales, qué proporción de la descendencia tendrá cada fenotipo posible."
+        "explanation": "Muchos medicamentos se derivan de plantas y otros organismos de los ecosistemas, lo que muestra su importancia como fuente de recursos para la salud humana."
       },
+      {
+        "question": "¿Qué ocurre si se destruye un ecosistema como un manglar?",
+        "options": [
+          "A) Aumenta la protección contra huracanes",
+          "B) Se pierde un hábitat que filtra contaminantes y protege la costa",
+          "C) Mejora la calidad del agua en la zona",
+          "D) Disminuye la erosión del suelo"
+        ],
+        "correct": 1,
+        "explanation": "Los manglares filtran contaminantes, protegen la costa de la erosión y son hábitat de muchas especies; su destrucción causa pérdida de estos servicios ecosistémicos."
+      }
+    ]
+  },
+  "respiracion-aerobia": {
+    "questions": [
+      {
+        "question": "¿Cuál es la principal fuente de energía para la respiración aerobia en los seres vivos?",
+        "options": [
+          "A) Agua",
+          "B) Oxígeno",
+          "C) Glucosa",
+          "D) Dióxido de carbono"
+        ],
+        "correct": 2,
+        "explanation": "La glucosa es el combustible que se descompone en la respiración aerobia para liberar energía. El oxígeno es necesario para el proceso, pero no es la fuente de energía."
+      },
+      {
+        "question": "En la respiración aerobia, ¿qué molécula se produce como fuente de energía utilizable por la célula?",
+        "options": [
+          "A) CO₂",
+          "B) H₂O",
+          "C) ATP",
+          "D) O₂"
+        ],
+        "correct": 2,
+        "explanation": "El ATP (adenosín trifosfato) es la molécula que almacena y transporta energía química en las células. El CO₂ y H₂O son productos de desecho."
+      },
+      {
+        "question": "¿Qué gas es necesario para que ocurra la respiración aerobia?",
+        "options": [
+          "A) Dióxido de carbono",
+          "B) Oxígeno",
+          "C) Nitrógeno",
+          "D) Vapor de agua"
+        ],
+        "correct": 1,
+        "explanation": "El oxígeno (O₂) es el aceptor final de electrones en la cadena respiratoria, permitiendo la producción de ATP. Sin oxígeno, la respiración aerobia no puede completarse."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un producto de la respiración aerobia?",
+        "options": [
+          "A) Glucosa",
+          "B) Oxígeno",
+          "C) Agua",
+          "D) ATP"
+        ],
+        "correct": 2,
+        "explanation": "El agua (H₂O) se forma cuando el oxígeno acepta electrones al final de la cadena respiratoria. La glucosa y el oxígeno son reactivos, no productos."
+      },
+      {
+        "question": "¿En qué organelo celular ocurre principalmente la respiración aerobia?",
+        "options": [
+          "A) Cloroplasto",
+          "B) Núcleo",
+          "C) Mitocondria",
+          "D) Ribosoma"
+        ],
+        "correct": 2,
+        "explanation": "Las mitocondrias son las centrales energéticas de la célula, donde se lleva a cabo la mayor parte de la respiración aerobia y se produce ATP."
+      }
+    ]
+  },
+  "fermentacion-lactica": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes procesos es un ejemplo de fermentación láctica?",
+        "options": [
+          "A. Producción de vino",
+          "B. Elaboración de yogur",
+          "C. Fabricación de pan",
+          "D. Elaboración de cerveza"
+        ],
+        "correct": 1,
+        "explanation": "La fermentación láctica es realizada por bacterias que convierten la lactosa en ácido láctico, lo que da como resultado productos como yogur y queso."
+      },
+      {
+        "question": "En la fermentación alcohólica, ¿qué gas se libera y es fundamental para que el pan suba?",
+        "options": [
+          "A. Oxígeno",
+          "B. Dióxido de carbono",
+          "C. Nitrógeno",
+          "D. Hidrógeno"
+        ],
+        "correct": 1,
+        "explanation": "La levadura produce dióxido de carbono durante la fermentación alcohólica, creando burbujas que hacen que la masa del pan se expanda."
+      },
+      {
+        "question": "¿Qué organismo es el principal responsable de la fermentación alcohólica en la producción de cerveza?",
+        "options": [
+          "A. Bacterias lácticas",
+          "B. Hongos como el moho",
+          "C. Levaduras del género Saccharomyces",
+          "D. Algas unicelulares"
+        ],
+        "correct": 2,
+        "explanation": "Las levaduras del género Saccharomyces convierten los azúcares en alcohol etílico y dióxido de carbono durante la fermentación alcohólica."
+      },
+      {
+        "question": "¿Cuál de los siguientes alimentos se produce mediante fermentación láctica?",
+        "options": [
+          "A. Pan",
+          "B. Cerveza",
+          "C. Vino",
+          "D. Queso"
+        ],
+        "correct": 3,
+        "explanation": "El queso se obtiene por fermentación láctica, donde las bacterias convierten la lactosa en ácido láctico, cuajando la leche."
+      },
+      {
+        "question": "En la fermentación alcohólica, ¿cuál es el producto principal además del dióxido de carbono?",
+        "options": [
+          "A. Ácido láctico",
+          "B. Etanol",
+          "C. Glucosa",
+          "D. Oxígeno"
+        ],
+        "correct": 1,
+        "explanation": "La fermentación alcohólica produce etanol (alcohol) y dióxido de carbono a partir de azúcares, proceso utilizado en la elaboración de pan, cerveza y vino."
+      }
+    ]
+  },
+  "autotrofos": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes organismos es un autótrofo?",
+        "options": [
+          "Un hongo que descompone materia orgánica",
+          "Una bacteria que realiza fotosíntesis",
+          "Un animal que se alimenta de plantas",
+          "Un protozoario que ingiere bacterias"
+        ],
+        "correct": 1,
+        "explanation": "Los autótrofos producen su propio alimento mediante fotosíntesis o quimiosíntesis. Las bacterias fotosintéticas son autótrofas porque convierten la luz solar en energía química."
+      },
+      {
+        "question": "¿Qué proceso realizan las plantas para producir su alimento?",
+        "options": [
+          "Respiración celular",
+          "Fotosíntesis",
+          "Fermentación",
+          "Digestión"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis permite a las plantas convertir dióxido de carbono y agua en glucosa y oxígeno usando energía solar. Así producen su propio alimento."
+      },
+      {
+        "question": "¿Cuál es la principal fuente de energía para los autótrofos fotosintéticos?",
+        "options": [
+          "El oxígeno",
+          "La luz solar",
+          "El dióxido de carbono",
+          "Los nutrientes del suelo"
+        ],
+        "correct": 1,
+        "explanation": "Los autótrofos fotosintéticos, como las plantas y algas, capturan la energía de la luz solar para fabricar su alimento durante la fotosíntesis."
+      },
+      {
+        "question": "¿Qué producto de la fotosíntesis es utilizado por los organismos heterótrofos para obtener energía?",
+        "options": [
+          "Oxígeno",
+          "Glucosa",
+          "Dióxido de carbono",
+          "Agua"
+        ],
+        "correct": 1,
+        "explanation": "La glucosa producida en la fotosíntesis es un compuesto energético que los heterótrofos descomponen en la respiración celular para obtener energía."
+      },
+      {
+        "question": "¿En qué organelo de la célula vegetal ocurre la fotosíntesis?",
+        "options": [
+          "Mitocondria",
+          "Cloroplasto",
+          "Núcleo",
+          "Vacuola"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis se lleva a cabo en los cloroplastos, que contienen clorofila y capturan la energía luminosa para sintetizar glucosa."
+      }
+    ]
+  },
+  "respiracion-anaerobia": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes afirmaciones describe correctamente la respiración anaerobia?",
+        "options": [
+          "Requiere oxígeno y produce gran cantidad de energía.",
+          "Ocurre en ausencia de oxígeno y libera menos energía que la respiración aerobia.",
+          "Es el proceso de fotosíntesis en las plantas.",
+          "Produce dióxido de carbono y agua como únicos productos."
+        ],
+        "correct": 1,
+        "explanation": "La respiración anaerobia ocurre sin oxígeno y produce menos energía que la aerobia, como en la fermentación."
+      },
+      {
+        "question": "En la fermentación láctica, ¿qué molécula orgánica se produce a partir del ácido pirúvico?",
+        "options": [
+          "Etanol",
+          "Ácido láctico",
+          "Dióxido de carbono",
+          "Oxígeno"
+        ],
+        "correct": 1,
+        "explanation": "En la fermentación láctica, el ácido pirúvico se convierte en ácido láctico, como ocurre en los músculos durante ejercicio intenso."
+      },
+      {
+        "question": "¿Qué tipo de respiración realizan las levaduras al producir alcohol?",
+        "options": [
+          "Respiración aerobia",
+          "Fotosíntesis",
+          "Fermentación alcohólica",
+          "Fermentación láctica"
+        ],
+        "correct": 2,
+        "explanation": "Las levaduras realizan fermentación alcohólica, transformando azúcares en etanol y CO2 en ausencia de oxígeno."
+      },
+      {
+        "question": "¿Por qué la respiración anaerobia produce menos energía que la aerobia?",
+        "options": [
+          "Porque no utiliza glucosa.",
+          "Porque no oxida completamente la glucosa, dejando moléculas orgánicas con energía.",
+          "Porque requiere más oxígeno.",
+          "Porque ocurre solo en bacterias."
+        ],
+        "correct": 1,
+        "explanation": "En la respiración anaerobia la glucosa no se oxida completamente, quedando energía en productos como ácido láctico o alcohol."
+      },
+      {
+        "question": "¿En qué situación las células humanas pueden recurrir a la respiración anaerobia?",
+        "options": [
+          "Durante la fotosíntesis.",
+          "Cuando hay suficiente oxígeno en los pulmones.",
+          "Durante ejercicio intenso cuando el oxígeno escasea en los músculos.",
+          "Únicamente en el cerebro."
+        ],
+        "correct": 2,
+        "explanation": "Durante ejercicio intenso, los músculos pueden no recibir suficiente oxígeno y recurren a la fermentación láctica para obtener energía."
+      }
+    ]
+  },
+  "heterotrofos": {
+    "questions": [
+      {
+        "question": "¿Qué tipo de nutrición tienen los hongos?",
+        "options": [
+          "Autótrofa, porque producen su propio alimento mediante fotosíntesis",
+          "Heterótrofa, porque dependen de otros organismos para obtener materia orgánica",
+          "Mixótrofa, porque pueden realizar fotosíntesis y también absorber nutrientes",
+          "Quimiosintética, porque obtienen energía de reacciones químicas inorgánicas"
+        ],
+        "correct": 1,
+        "explanation": "Los hongos son heterótrofos, no pueden producir su propio alimento y dependen de otros seres vivos o materia orgánica en descomposición para obtener nutrientes."
+      },
+      {
+        "question": "¿Cuál es la principal fuente de energía para los organismos heterótrofos?",
+        "options": [
+          "La luz solar, que captan directamente",
+          "Las sustancias inorgánicas como el hierro",
+          "La materia orgánica producida por otros organismos",
+          "El dióxido de carbono del aire"
+        ],
+        "correct": 2,
+        "explanation": "Los heterótrofos obtienen energía al consumir materia orgánica (como carbohidratos, lípidos y proteínas) que otros organismos produjeron."
+      },
+      {
+        "question": "Durante la respiración celular, ¿qué molécula se descompone para liberar energía en los heterótrofos?",
+        "options": [
+          "Clorofila",
+          "Glucosa",
+          "Oxígeno",
+          "Agua"
+        ],
+        "correct": 1,
+        "explanation": "En la respiración celular, la glucosa se descompone en presencia de oxígeno para liberar energía en forma de ATP."
+      },
+      {
+        "question": "¿Qué proceso realizan los organismos heterótrofos para transformar la energía de los alimentos en ATP?",
+        "options": [
+          "Fotosíntesis",
+          "Respiración celular",
+          "Fermentación",
+          "Digestión"
+        ],
+        "correct": 1,
+        "explanation": "La respiración celular es el proceso mediante el cual los heterótrofos convierten la energía de la glucosa en ATP, la molécula energética que usan las células."
+      },
+      {
+        "question": "¿Por qué los animales son considerados heterótrofos?",
+        "options": [
+          "Porque pueden fabricar su alimento mediante fotosíntesis",
+          "Porque se alimentan de otros organismos o de materia orgánica",
+          "Porque viven en el suelo y absorben nutrientes minerales",
+          "Porque producen su propio alimento a partir de sustancias inorgánicas"
+        ],
+        "correct": 1,
+        "explanation": "Los animales son heterótrofos porque no pueden producir su alimento; deben consumir plantas u otros animales para obtener energía y nutrientes."
+      }
+    ]
+  },
+  "dieta-completa": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes alimentos forma parte de una dieta completa al aportar principalmente proteínas?",
+        "options": [
+          "Arroz",
+          "Pollo",
+          "Mantequilla",
+          "Manzana"
+        ],
+        "correct": 1,
+        "explanation": "El pollo es rico en proteínas, esenciales para construir y reparar tejidos. Una dieta completa debe incluir proteínas, carbohidratos, grasas, vitaminas y minerales."
+      },
+      {
+        "question": "¿Qué grupo de alimentos proporciona principalmente carbohidratos, necesarios para obtener energía?",
+        "options": [
+          "Carnes",
+          "Pastas",
+          "Aceites",
+          "Verduras"
+        ],
+        "correct": 1,
+        "explanation": "Las pastas son ricas en carbohidratos, que son la principal fuente de energía para el cuerpo. Una dieta completa incluye carbohidratos junto con otros nutrientes."
+      },
+      {
+        "question": "¿Cuál es una fuente saludable de grasas que debe incluirse en una dieta completa?",
+        "options": [
+          "Manteca de cerdo",
+          "Aguacate",
+          "Azúcar",
+          "Pan blanco"
+        ],
+        "correct": 1,
+        "explanation": "El aguacate contiene grasas insaturadas saludables para el corazón. Las grasas son necesarias en la dieta, pero deben elegirse opciones saludables."
+      },
+      {
+        "question": "¿Qué vitamina se obtiene principalmente de frutas cítricas como la naranja y es importante para prevenir enfermedades?",
+        "options": [
+          "Vitamina A",
+          "Vitamina C",
+          "Vitamina D",
+          "Vitamina K"
+        ],
+        "correct": 1,
+        "explanation": "La vitamina C, presente en cítricos, fortalece el sistema inmunológico y previene el escorbuto. Una dieta completa debe aportar todas las vitaminas."
+      },
+      {
+        "question": "¿Cuál de los siguientes minerales es esencial para la formación de huesos y dientes fuertes?",
+        "options": [
+          "Hierro",
+          "Calcio",
+          "Potasio",
+          "Magnesio"
+        ],
+        "correct": 1,
+        "explanation": "El calcio es fundamental para la salud ósea y dental. Una dieta completa debe incluir minerales como calcio, hierro y zinc."
+      }
+    ]
+  },
+  "dieta-equilibrada": {
+    "questions": [
+      {
+        "question": "¿Qué caracteriza a una dieta equilibrada?",
+        "options": [
+          "Incluir solo alimentos de origen vegetal",
+          "Contener todos los nutrimentos en las proporciones adecuadas",
+          "Evitar el consumo de carbohidratos",
+          "Consumir grandes cantidades de proteínas"
+        ],
+        "correct": 1,
+        "explanation": "Una dieta equilibrada debe proporcionar todos los nutrimentos (carbohidratos, proteínas, grasas, vitaminas y minerales) en las cantidades adecuadas para mantener la salud."
+      },
+      {
+        "question": "¿Cuál de los siguientes grupos de alimentos aporta principalmente vitaminas y minerales?",
+        "options": [
+          "Carnes y huevos",
+          "Frutas y verduras",
+          "Pan y arroz",
+          "Aceites y mantequilla"
+        ],
+        "correct": 1,
+        "explanation": "Las frutas y verduras son ricas en vitaminas y minerales esenciales para el funcionamiento del organismo."
+      },
+      {
+        "question": "En una dieta equilibrada, ¿qué nutrimento debe consumirse en mayor proporción?",
+        "options": [
+          "Proteínas",
+          "Carbohidratos",
+          "Grasas",
+          "Vitaminas"
+        ],
+        "correct": 1,
+        "explanation": "Los carbohidratos son la principal fuente de energía y deben constituir la mayor parte de la ingesta calórica diaria."
+      },
+      {
+        "question": "¿Cuál es una consecuencia de no consumir una dieta equilibrada?",
+        "options": [
+          "Mayor energía",
+          "Aumento de defensas",
+          "Desnutrición o enfermedades",
+          "Mejor digestión"
+        ],
+        "correct": 2,
+        "explanation": "Una dieta desequilibrada puede llevar a deficiencias nutrimentales, causando desnutrición o enfermedades como obesidad y diabetes."
+      },
+      {
+        "question": "¿Qué papel juegan las grasas en una dieta equilibrada?",
+        "options": [
+          "Son innecesarias y deben evitarse",
+          "Proporcionan energía y ayudan a absorber vitaminas",
+          "Solo sirven para dar sabor a los alimentos",
+          "Aumentan el riesgo de enfermedades siempre"
+        ],
+        "correct": 1,
+        "explanation": "Las grasas son necesarias en cantidades moderadas porque proporcionan energía y facilitan la absorción de vitaminas liposolubles."
+      }
+    ]
+  },
+  "ciencia-y-tecnologia": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes procesos libera energía química a partir de la glucosa?",
+        "options": [
+          "Fotosíntesis",
+          "Respiración celular",
+          "Fermentación alcohólica",
+          "Transpiración"
+        ],
+        "correct": 1,
+        "explanation": "La respiración celular descompone glucosa para liberar energía en forma de ATP. La fotosíntesis almacena energía, no la libera."
+      },
+      {
+        "question": "¿En qué organelo ocurre principalmente la fotosíntesis en las plantas?",
+        "options": [
+          "Mitocondria",
+          "Cloroplasto",
+          "Núcleo",
+          "Vacuola"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis ocurre en los cloroplastos, donde la clorofila captura la energía solar. Las mitocondrias son para la respiración."
+      },
+      {
+        "question": "¿Cuál es el producto principal de la fotosíntesis que se utiliza como fuente de energía en la respiración celular?",
+        "options": [
+          "Oxígeno",
+          "Agua",
+          "Glucosa",
+          "Dióxido de carbono"
+        ],
+        "correct": 2,
+        "explanation": "La fotosíntesis produce glucosa, que luego es usada en la respiración celular para obtener energía. El oxígeno es un subproducto."
+      },
+      {
+        "question": "¿Qué gas se libera durante la respiración celular y es necesario para la fotosíntesis?",
+        "options": [
+          "Oxígeno",
+          "Dióxido de carbono",
+          "Nitrógeno",
+          "Hidrógeno"
+        ],
+        "correct": 1,
+        "explanation": "La respiración celular libera dióxido de carbono, que las plantas usan en la fotosíntesis. El oxígeno es liberado por la fotosíntesis."
+      },
+      {
+        "question": "¿Cómo afecta la deforestación al equilibrio entre fotosíntesis y respiración en el ambiente?",
+        "options": [
+          "Aumenta el oxígeno atmosférico",
+          "Disminuye la captura de dióxido de carbono",
+          "Incrementa la producción de glucosa",
+          "Mejora la calidad del aire"
+        ],
+        "correct": 1,
+        "explanation": "Al eliminar árboles, se reduce la fotosíntesis, lo que disminuye la captura de CO2 y afecta el equilibrio. Esto puede aumentar el CO2 en la atmósfera."
+      }
+    ]
+  },
+  "ciclo-del-carbono": {
+    "questions": [
+      {
+        "question": "¿Qué proceso del ciclo del carbono absorbe CO₂ de la atmósfera?",
+        "options": [
+          "Fotosíntesis",
+          "Respiración",
+          "Combustión",
+          "Descomposición"
+        ],
+        "correct": 0,
+        "explanation": "La fotosíntesis es el proceso donde las plantas toman CO₂ del aire para producir glucosa y oxígeno, usando energía solar."
+      },
+      {
+        "question": "¿Cuál de los siguientes procesos libera CO₂ a la atmósfera?",
+        "options": [
+          "Fotosíntesis",
+          "Respiración",
+          "Formación de carbón",
+          "Sedimentación"
+        ],
+        "correct": 1,
+        "explanation": "La respiración celular de organismos vivos libera CO₂ como producto de desecho al descomponer glucosa para obtener energía."
+      },
+      {
+        "question": "La quema de combustibles fósiles, como el petróleo, libera CO₂. ¿Cómo se llama este proceso?",
+        "options": [
+          "Fotosíntesis",
+          "Respiración",
+          "Combustión",
+          "Transpiración"
+        ],
+        "correct": 2,
+        "explanation": "La combustión es la reacción química que quema materia orgánica, liberando CO₂ y otros gases a la atmósfera."
+      },
+      {
+        "question": "¿Qué proceso del ciclo del carbono es realizado por las plantas para incorporar carbono a la cadena alimenticia?",
+        "options": [
+          "Respiración",
+          "Fotosíntesis",
+          "Descomposición",
+          "Combustión"
+        ],
+        "correct": 1,
+        "explanation": "La fotosíntesis convierte CO₂ en compuestos orgánicos como la glucosa, que luego son consumidos por otros organismos."
+      },
+      {
+        "question": "En el ciclo del carbono, la respiración de los seres vivos y la combustión de combustibles fósiles tienen en común que:",
+        "options": [
+          "Absorben CO₂",
+          "Liberan CO₂",
+          "Transforman CO₂ en oxígeno",
+          "No afectan la atmósfera"
+        ],
+        "correct": 1,
+        "explanation": "Ambos procesos liberan CO₂ a la atmósfera, aunque la respiración es biológica y la combustión es química."
+      }
+    ]
+  },
+  "dieta-higienica": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes prácticas contribuye a mantener una dieta higiénica libre de contaminantes?",
+        "options": [
+          "Lavar frutas y verduras con agua potable",
+          "Consumir carnes crudas sin refrigerar",
+          "Usar la misma tabla para cortar carne y verduras sin lavar",
+          "Dejar los alimentos cocidos a temperatura ambiente por varias horas"
+        ],
+        "correct": 0,
+        "explanation": "Lavar frutas y verduras elimina residuos y microorganismos, reduciendo el riesgo de enfermedades transmitidas por alimentos."
+      },
+      {
+        "question": "¿Qué acción previene la contaminación cruzada en la cocina?",
+        "options": [
+          "Usar utensilios separados para alimentos crudos y cocidos",
+          "Lavar los platos solo con agua fría",
+          "Mezclar carnes crudas con verduras en el mismo recipiente",
+          "Almacenar alimentos crudos sobre los cocidos en el refrigerador"
+        ],
+        "correct": 0,
+        "explanation": "Usar utensilios separados evita que microorganismos de alimentos crudos pasen a los cocidos, previniendo infecciones."
+      },
+      {
+        "question": "¿Cuál es una medida adecuada para conservar alimentos perecederos?",
+        "options": [
+          "Refrigerar a temperaturas menores a 5 grados Celsius",
+          "Dejarlos a temperatura ambiente durante el día",
+          "Congelarlos y descongelarlos varias veces",
+          "Cubrirlos con un trapo húmedo"
+        ],
+        "correct": 0,
+        "explanation": "Refrigerar a baja temperatura retarda el crecimiento de microorganismos patógenos, manteniendo los alimentos seguros."
+      },
+      {
+        "question": "¿Qué práctica ayuda a eliminar microorganismos patógenos en los alimentos?",
+        "options": [
+          "Cocinar los alimentos a temperaturas internas adecuadas",
+          "Enjuagar rápidamente la carne cruda con agua",
+          "Almacenar los huevos a temperatura ambiente",
+          "Usar leche sin pasteurizar"
+        ],
+        "correct": 0,
+        "explanation": "Cocinar a temperaturas internas seguras (como 75 grados Celsius) mata bacterias y parásitos, haciendo los alimentos inocuos."
+      },
+      {
+        "question": "¿Cuál es una fuente común de contaminación de los alimentos en el hogar?",
+        "options": [
+          "Manos sucias al manipular alimentos",
+          "Usar agua embotellada sellada",
+          "Lavar los utensilios con agua caliente y jabón",
+          "Almacenar los alimentos en recipientes cerrados"
+        ],
+        "correct": 0,
+        "explanation": "Las manos sucias pueden transferir bacterias como Salmonella o E. coli a los alimentos, causando enfermedades."
+      }
+    ]
+  },
+  "mitosis": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado final de la mitosis?",
+        "options": [
+          "4 células hijas con la mitad de cromosomas",
+          "2 células hijas idénticas a la célula madre",
+          "2 células hijas con la mitad de cromosomas",
+          "4 células hijas idénticas a la célula madre"
+        ],
+        "correct": 1,
+        "explanation": "La mitosis produce dos células hijas genéticamente idénticas a la célula madre, cada una con el mismo número de cromosomas."
+      },
+      {
+        "question": "¿Para qué proceso es fundamental la mitosis en los organismos multicelulares?",
+        "options": [
+          "Producción de gametos",
+          "Crecimiento y reparación de tejidos",
+          "Digestión de alimentos",
+          "Producción de energía"
+        ],
+        "correct": 1,
+        "explanation": "La mitosis permite el crecimiento del organismo y la reparación de tejidos dañados al generar nuevas células idénticas."
+      },
+      {
+        "question": "En la mitosis, ¿cómo es el material genético de las células hijas respecto a la célula madre?",
+        "options": [
+          "Diferente y reducido a la mitad",
+          "Idéntico y con el mismo número de cromosomas",
+          "Diferente pero con el mismo número de cromosomas",
+          "Idéntico pero con la mitad de cromosomas"
+        ],
+        "correct": 1,
+        "explanation": "Las células hijas tienen material genético idéntico a la célula madre, con el mismo número de cromosomas."
+      },
+      {
+        "question": "¿Qué tipo de células se reproducen por mitosis?",
+        "options": [
+          "Solo células sexuales",
+          "Células del cuerpo (somáticas)",
+          "Solo células vegetales",
+          "Solo células animales"
+        ],
+        "correct": 1,
+        "explanation": "La mitosis ocurre en células somáticas (del cuerpo) tanto en animales como en plantas."
+      },
+      {
+        "question": "¿Cuántas células se obtienen al finalizar una mitosis?",
+        "options": [
+          "1",
+          "2",
+          "4",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "La mitosis produce dos células hijas a partir de una célula madre."
+      }
+    ]
+  },
+  "contaminacion-atmosferica": {
+    "questions": [
+      {
+        "question": "¿Cuál es la principal fuente de contaminación atmosférica en las grandes ciudades?",
+        "options": [
+          "Las industrias",
+          "Los vehículos automotores",
+          "La quema de basura",
+          "Los combustibles fósiles"
+        ],
+        "correct": 1,
+        "explanation": "Los vehículos automotores emiten grandes cantidades de gases contaminantes como monóxido de carbono y óxidos de nitrógeno, siendo la principal fuente en zonas urbanas."
+      },
+      {
+        "question": "¿Qué gas liberan principalmente los vehículos al quemar gasolina?",
+        "options": [
+          "Oxígeno",
+          "Nitrógeno",
+          "Dióxido de carbono",
+          "Vapor de agua"
+        ],
+        "correct": 2,
+        "explanation": "Al quemar gasolina, los vehículos emiten dióxido de carbono (CO2), un gas de efecto invernadero que contribuye al calentamiento global."
+      },
+      {
+        "question": "¿Qué contaminante se produce al quemar basura en tiraderos?",
+        "options": [
+          "Ozono",
+          "Dioxinas",
+          "Nitratos",
+          "Sulfatos"
+        ],
+        "correct": 1,
+        "explanation": "La quema de basura libera dioxinas, compuestos tóxicos que se acumulan en el ambiente y pueden causar problemas de salud."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un combustible fósil?",
+        "options": [
+          "Petróleo",
+          "Gas natural",
+          "Carbón",
+          "Biomasa"
+        ],
+        "correct": 3,
+        "explanation": "La biomasa proviene de materia orgánica reciente, mientras que los combustibles fósiles (petróleo, gas, carbón) se formaron hace millones de años."
+      },
+      {
+        "question": "¿Qué efecto tiene la contaminación atmosférica en la salud respiratoria?",
+        "options": [
+          "Mejora la capacidad pulmonar",
+          "Causa alergias y asma",
+          "Aumenta la producción de oxígeno",
+          "No tiene efecto"
+        ],
+        "correct": 1,
+        "explanation": "Los contaminantes como el ozono y las partículas finas irritan las vías respiratorias, provocando enfermedades como asma, bronquitis y alergias."
+      }
+    ]
+  },
+  "obesidad": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes afirmaciones describe mejor la obesidad?",
+        "options": [
+          "A) Exceso de nutrimentos esenciales en el cuerpo",
+          "B) Déficit de calorías en la dieta diaria",
+          "C) Exceso de consumo calórico respecto al gasto energético",
+          "D) Falta de vitaminas y minerales"
+        ],
+        "correct": 2,
+        "explanation": "La obesidad se produce cuando la ingesta de calorías supera el gasto energético, acumulándose grasa en el cuerpo."
+      },
+      {
+        "question": "La desnutrición es una condición que resulta principalmente de:",
+        "options": [
+          "A) Consumo excesivo de carbohidratos",
+          "B) Ingesta insuficiente de nutrimentos esenciales",
+          "C) Dieta alta en grasas saturadas",
+          "D) Exceso de proteínas en la alimentación"
+        ],
+        "correct": 1,
+        "explanation": "La desnutrición ocurre cuando el cuerpo no recibe los nutrimentos necesarios (como proteínas, vitaminas y minerales) para funcionar correctamente."
+      },
+      {
+        "question": "¿Qué problema de salud se asocia directamente con un balance energético positivo prolongado?",
+        "options": [
+          "A) Desnutrición",
+          "B) Obesidad",
+          "C) Anemia",
+          "D) Raquitismo"
+        ],
+        "correct": 1,
+        "explanation": "Un balance energético positivo significa que se consumen más calorías de las que se gastan, lo que lleva a la obesidad."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de déficit de nutrimentos esenciales?",
+        "options": [
+          "A) Consumir más calorías de las necesarias",
+          "B) No ingerir suficientes vitaminas y minerales",
+          "C) Hacer ejercicio en exceso",
+          "D) Comer alimentos con alto contenido de azúcar"
+        ],
+        "correct": 1,
+        "explanation": "El déficit de nutrimentos esenciales, como vitaminas y minerales, es característico de la desnutrición."
+      },
+      {
+        "question": "¿Cómo se relacionan la obesidad y la desnutrición con la salud ambiental?",
+        "options": [
+          "A) Ambas son causadas por la contaminación del aire",
+          "B) La obesidad se debe a la falta de ejercicio, y la desnutrición a la pobreza",
+          "C) Ambas pueden ser influenciadas por la disponibilidad y calidad de los alimentos en el entorno",
+          "D) Solo la desnutrición está relacionada con el ambiente"
+        ],
+        "correct": 2,
+        "explanation": "La salud ambiental afecta la disponibilidad de alimentos nutritivos y el acceso a opciones saludables, influyendo tanto en la obesidad como en la desnutrición."
+      }
+    ]
+  },
+  "calentamiento-global": {
+    "questions": [
+      {
+        "question": "¿Cuál es la principal causa del aumento de la temperatura global?",
+        "options": [
+          "A) El incremento de gases de efecto invernadero como CO2 y CH4",
+          "B) La disminución de la capa de ozono",
+          "C) El aumento de la radiación solar",
+          "D) La contaminación del agua"
+        ],
+        "correct": 0,
+        "explanation": "El aumento de gases como CO2 y CH4 atrapa más calor en la atmósfera, elevando la temperatura global."
+      },
+      {
+        "question": "¿Qué gas de efecto invernadero se produce principalmente por la descomposición de materia orgánica en ausencia de oxígeno?",
+        "options": [
+          "A) Dióxido de carbono (CO2)",
+          "B) Metano (CH4)",
+          "C) Óxido nitroso (N2O)",
+          "D) Vapor de agua (H2O)"
+        ],
+        "correct": 1,
+        "explanation": "El metano (CH4) se genera en procesos como la digestión del ganado y los vertederos, donde la materia orgánica se descompone sin oxígeno."
+      },
+      {
+        "question": "¿Cómo afecta el calentamiento global a la salud humana?",
+        "options": [
+          "A) Aumenta la producción de alimentos",
+          "B) Reduce la propagación de enfermedades",
+          "C) Incrementa las olas de calor y enfermedades respiratorias",
+          "D) Mejora la calidad del aire"
+        ],
+        "correct": 2,
+        "explanation": "El calentamiento global provoca olas de calor más frecuentes y empeora la calidad del aire, aumentando enfermedades respiratorias y golpes de calor."
+      },
+      {
+        "question": "¿Qué fuente de energía contribuye menos al aumento de CO2 atmosférico?",
+        "options": [
+          "A) Carbón",
+          "B) Petróleo",
+          "C) Gas natural",
+          "D) Energía solar"
+        ],
+        "correct": 3,
+        "explanation": "La energía solar es renovable y no produce emisiones de CO2 durante su operación, a diferencia de los combustibles fósiles."
+      },
+      {
+        "question": "¿Cuál es una consecuencia directa del calentamiento global en los ecosistemas?",
+        "options": [
+          "A) Mayor disponibilidad de agua dulce",
+          "B) Aumento de la biodiversidad",
+          "C) Derretimiento de los glaciares",
+          "D) Disminución de la temperatura media"
+        ],
+        "correct": 2,
+        "explanation": "El aumento de temperatura derrite los glaciares, lo que eleva el nivel del mar y afecta a las especies que dependen del hielo."
+      }
+    ]
+  },
+  "enfermedades-respiratorias": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes enfermedades respiratorias se caracteriza por la inflamación crónica de los bronquios y puede empeorar con la contaminación del aire?",
+        "options": [
+          "Asma",
+          "Bronquitis crónica",
+          "EPOC",
+          "Neumonía"
+        ],
+        "correct": 2,
+        "explanation": "La EPOC (Enfermedad Pulmonar Obstructiva Crónica) incluye bronquitis crónica y enfisema, y se agrava con contaminantes como el humo y el polvo."
+      },
+      {
+        "question": "¿Qué enfermedad respiratoria se desencadena por la exposición a alérgenos como el polen o el polvo, y puede empeorar con la contaminación del aire?",
+        "options": [
+          "Asma",
+          "Bronquitis aguda",
+          "EPOC",
+          "Fibrosis pulmonar"
+        ],
+        "correct": 0,
+        "explanation": "El asma es una enfermedad inflamatoria de las vías respiratorias que se agrava con alérgenos y contaminantes como el ozono y las partículas finas."
+      },
+      {
+        "question": "La inflamación de los bronquios causada por infecciones o irritantes como el humo del tabaco y la contaminación se conoce como:",
+        "options": [
+          "Asma",
+          "Bronquitis",
+          "EPOC",
+          "Enfisema"
+        ],
+        "correct": 1,
+        "explanation": "La bronquitis es la inflamación de los bronquios, a menudo por infecciones virales o irritantes como el humo y la contaminación."
+      },
+      {
+        "question": "¿Cuál de las siguientes enfermedades respiratorias es progresiva y se asocia principalmente con el tabaquismo, pero la contaminación del aire puede acelerar su avance?",
+        "options": [
+          "Asma",
+          "Bronquitis aguda",
+          "EPOC",
+          "Cáncer de pulmón"
+        ],
+        "correct": 2,
+        "explanation": "La EPOC es una enfermedad progresiva que daña los pulmones; el tabaquismo es la causa principal, pero la contaminación del aire empeora los síntomas."
+      },
+      {
+        "question": "Un estudiante con asma nota que sus ataques son más frecuentes en días con alta contaminación. ¿Qué componente del aire contaminado puede desencadenar estos ataques?",
+        "options": [
+          "Oxígeno",
+          "Ozono troposférico",
+          "Nitrógeno",
+          "Vapor de agua"
+        ],
+        "correct": 1,
+        "explanation": "El ozono troposférico es un contaminante que irrita las vías respiratorias y puede desencadenar ataques de asma."
+      }
+    ]
+  },
+  "meiosis": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado principal de la meiosis?",
+        "options": [
+          "4 células hijas con el mismo número de cromosomas que la célula madre",
+          "2 células hijas con la mitad de cromosomas",
+          "4 células hijas con la mitad de cromosomas",
+          "2 células hijas con el doble de cromosomas"
+        ],
+        "correct": 2,
+        "explanation": "La meiosis produce 4 células hijas, cada una con la mitad de cromosomas que la célula original, lo que permite la reproducción sexual."
+      },
+      {
+        "question": "¿En qué tipo de células ocurre la meiosis?",
+        "options": [
+          "Células de la piel",
+          "Células musculares",
+          "Células sexuales o gametos",
+          "Células nerviosas"
+        ],
+        "correct": 2,
+        "explanation": "La meiosis ocurre en las células sexuales (óvulos y espermatozoides) para formar gametos con la mitad de cromosomas."
+      },
+      {
+        "question": "¿Cuántas divisiones celulares ocurren durante la meiosis?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "La meiosis incluye dos divisiones celulares consecutivas: meiosis I y meiosis II."
+      },
+      {
+        "question": "¿Qué proceso ocurre durante la meiosis que aumenta la variabilidad genética?",
+        "options": [
+          "La replicación del ADN",
+          "El entrecruzamiento o crossing over",
+          "La citocinesis",
+          "La formación del huso mitótico"
+        ],
+        "correct": 1,
+        "explanation": "El entrecruzamiento intercambia segmentos de cromosomas homólogos, generando combinaciones genéticas únicas."
+      },
+      {
+        "question": "¿Cuál es la función de la meiosis en la reproducción sexual?",
+        "options": [
+          "Producir células idénticas para el crecimiento",
+          "Reducir el número de cromosomas a la mitad para formar gametos",
+          "Duplicar el ADN antes de la división celular",
+          "Reparar tejidos dañados"
+        ],
+        "correct": 1,
+        "explanation": "La meiosis reduce el número de cromosomas a la mitad, permitiendo que al fusionarse los gametos se restablezca el número original."
+      }
+    ]
+  },
+  "reproduccion-asexual": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes organismos se reproduce asexualmente por gemación?",
+        "options": [
+          "A. Bacteria",
+          "B. Estrella de mar",
+          "C. Levadura",
+          "D. Helecho"
+        ],
+        "correct": 2,
+        "explanation": "La levadura se reproduce por gemación, formando una yema que se separa del progenitor. Esto produce descendencia genéticamente idéntica."
+      },
+      {
+        "question": "En la reproducción asexual, la descendencia es genéticamente:",
+        "options": [
+          "A. Diferente al progenitor",
+          "B. Idéntica al progenitor",
+          "C. Una mezcla de ambos progenitores",
+          "D. Mitad de cada progenitor"
+        ],
+        "correct": 1,
+        "explanation": "En la reproducción asexual no hay combinación de material genético, por lo que los descendientes son clones del progenitor."
+      },
+      {
+        "question": "¿Qué proceso de reproducción asexual consiste en la división del organismo en dos partes iguales?",
+        "options": [
+          "A. Gemación",
+          "B. Fragmentación",
+          "C. Bipartición",
+          "D. Esporulación"
+        ],
+        "correct": 2,
+        "explanation": "La bipartición es la división de un organismo en dos células hijas idénticas, común en bacterias y protozoarios."
+      },
+      {
+        "question": "¿Cuál de las siguientes NO es una ventaja de la reproducción asexual?",
+        "options": [
+          "A. Rapidez en la reproducción",
+          "B. Descendencia genéticamente diversa",
+          "C. No requiere pareja",
+          "D. Produce muchos individuos en poco tiempo"
+        ],
+        "correct": 1,
+        "explanation": "La reproducción asexual produce descendencia idéntica, no diversa genéticamente; la diversidad es ventaja de la reproducción sexual."
+      },
+      {
+        "question": "¿Qué tipo de reproducción asexual utilizan las plantas como las papas para formar nuevos individuos a partir de un tubérculo?",
+        "options": [
+          "A. Gemación",
+          "B. Fragmentación",
+          "C. Esporulación",
+          "D. Propagación vegetativa"
+        ],
+        "correct": 3,
+        "explanation": "La propagación vegetativa es un tipo de reproducción asexual en plantas donde estructuras como tubérculos o estolones generan nuevos individuos idénticos."
+      }
+    ]
+  },
+  "anticonceptivos-naturales-ritmo-temperatura-mecanicos-condon-hormonales-pastilla": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes métodos anticonceptivos se considera de barrera?",
+        "options": [
+          "Ritmo",
+          "Condón",
+          "Pastilla anticonceptiva",
+          "Temperatura basal"
+        ],
+        "correct": 1,
+        "explanation": "El condón es un método de barrera que impide el paso de espermatozoides al útero, mientras que el ritmo y la temperatura son naturales y la pastilla es hormonal."
+      },
+      {
+        "question": "¿Qué método anticonceptivo natural se basa en el seguimiento del ciclo menstrual para evitar relaciones en días fértiles?",
+        "options": [
+          "Condón",
+          "Pastilla anticonceptiva",
+          "Método del ritmo",
+          "DIU"
+        ],
+        "correct": 2,
+        "explanation": "El método del ritmo consiste en calcular los días fértiles según la duración del ciclo y abstenerse de relaciones sexuales en esos días."
+      },
+      {
+        "question": "¿Cuál de los siguientes métodos anticonceptivos tiene mayor efectividad cuando se usa correctamente?",
+        "options": [
+          "Método del ritmo",
+          "Condón",
+          "Pastilla anticonceptiva",
+          "Temperatura basal"
+        ],
+        "correct": 2,
+        "explanation": "Las pastillas anticonceptivas hormonales tienen una efectividad mayor al 99% con uso perfecto, superando a los métodos naturales y de barrera."
+      },
+      {
+        "question": "¿Qué caracteriza a los métodos anticonceptivos hormonales como la pastilla?",
+        "options": [
+          "Crean una barrera física",
+          "Registran la temperatura corporal",
+          "Liberan hormonas que evitan la ovulación",
+          "Se basan en el ciclo menstrual"
+        ],
+        "correct": 2,
+        "explanation": "Las pastillas anticonceptivas contienen hormonas que inhiben la ovulación y espesan el moco cervical, impidiendo el embarazo."
+      },
+      {
+        "question": "¿Por qué el método de la temperatura basal se considera menos efectivo que el condón?",
+        "options": [
+          "Porque es más caro",
+          "Porque requiere registro diario y puede fallar por enfermedades",
+          "Porque no previene enfermedades de transmisión sexual",
+          "Porque solo lo pueden usar mujeres"
+        ],
+        "correct": 1,
+        "explanation": "El método de temperatura basal necesita medición diaria y puede alterarse por fiebre o estrés, mientras que el condón tiene menos margen de error si se usa adecuadamente."
+      }
+    ]
+  },
+  "reproduccion-sexual": {
+    "questions": [
+      {
+        "question": "¿Cuál es la principal característica de la reproducción sexual que la distingue de la asexual?",
+        "options": [
+          "Requiere un solo progenitor",
+          "Los descendientes son idénticos a los progenitores",
+          "Combina material genético de dos progenitores",
+          "Es más rápida y eficiente"
+        ],
+        "correct": 2,
+        "explanation": "La reproducción sexual implica la fusión de gametos de dos progenitores, lo que genera descendencia genéticamente diferente. En la asexual, un solo progenitor produce copias idénticas."
+      },
+      {
+        "question": "En la reproducción sexual, ¿cómo se genera la variabilidad genética en los descendientes?",
+        "options": [
+          "Por la replicación exacta del ADN",
+          "Por la combinación de genes de ambos padres",
+          "Por la exposición a radiación",
+          "Por la mutación inducida por el ambiente"
+        ],
+        "correct": 1,
+        "explanation": "La variabilidad genética surge de la combinación de alelos de ambos progenitores durante la fecundación, lo que produce individuos únicos."
+      },
+      {
+        "question": "¿Qué ventaja evolutiva tiene la reproducción sexual sobre la asexual?",
+        "options": [
+          "Mayor rapidez de reproducción",
+          "Mayor diversidad genética en la población",
+          "Menor consumo de energía",
+          "Mayor número de descendientes"
+        ],
+        "correct": 1,
+        "explanation": "La reproducción sexual genera diversidad genética, lo que permite a las poblaciones adaptarse mejor a cambios ambientales, a diferencia de la asexual que produce clones."
+      },
+      {
+        "question": "¿Cuál de los siguientes procesos ocurre exclusivamente en la reproducción sexual?",
+        "options": [
+          "Mitosis",
+          "Fecundación",
+          "Gemación",
+          "Fragmentación"
+        ],
+        "correct": 1,
+        "explanation": "La fecundación es la unión de gametos masculino y femenino, proceso exclusivo de la reproducción sexual. Los otros son formas de reproducción asexual."
+      },
+      {
+        "question": "En la reproducción sexual, los hijos son diferentes a sus padres porque:",
+        "options": [
+          "Heredan solo el ADN del padre",
+          "Heredan solo el ADN de la madre",
+          "Reciben una combinación única de genes de ambos",
+          "El ADN se duplica sin cambios"
+        ],
+        "correct": 2,
+        "explanation": "Cada progenitor aporta la mitad de su material genético, y la combinación aleatoria produce una mezcla única, generando descendencia diferente."
+      }
+    ]
+  },
+  "condon": {
+    "questions": [
+      {
+        "question": "¿Cuál es el único método anticonceptivo que protege tanto contra infecciones de transmisión sexual (ITS) como contra el embarazo no deseado?",
+        "options": [
+          "Pastilla anticonceptiva",
+          "Dispositivo intrauterino (DIU)",
+          "Condón",
+          "Inyección hormonal"
+        ],
+        "correct": 2,
+        "explanation": "El condón es el único método que forma una barrera física que impide el paso de espermatozoides y microorganismos, previniendo así tanto embarazos como ITS."
+      },
+      {
+        "question": "¿Por qué el condón es eficaz para prevenir ITS?",
+        "options": [
+          "Porque contiene hormonas que matan virus y bacterias",
+          "Porque impide el contacto directo con fluidos corporales infectados",
+          "Porque se aplica después de la relación sexual",
+          "Porque solo protege contra el VIH"
+        ],
+        "correct": 1,
+        "explanation": "El condón actúa como barrera que evita el intercambio de fluidos como semen, sangre o secreciones vaginales, donde se encuentran los agentes causantes de ITS."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones sobre el condón es correcta?",
+        "options": [
+          "Se puede reutilizar si se lava con agua",
+          "Debe usarse durante todo el acto sexual, desde el inicio",
+          "Su efectividad es del 100%",
+          "No protege contra el Virus del Papiloma Humano (VPH)"
+        ],
+        "correct": 1,
+        "explanation": "Para una protección efectiva, el condón debe colocarse antes de cualquier contacto genital y usarse durante toda la relación, ya que los fluidos pueden intercambiarse desde el principio."
+      },
+      {
+        "question": "¿Qué material se utiliza comúnmente para fabricar condones?",
+        "options": [
+          "Plástico reciclado",
+          "Látex o poliuretano",
+          "Algodón",
+          "Seda"
+        ],
+        "correct": 1,
+        "explanation": "La mayoría de los condones están hechos de látex, un material flexible y resistente que impide el paso de microorganismos y espermatozoides. También existen de poliuretano para personas alérgicas al látex."
+      },
+      {
+        "question": "¿Cuándo se debe retirar el condón después de la relación sexual?",
+        "options": [
+          "Inmediatamente después de la eyaculación, sujetando la base",
+          "Después de unos minutos, cuando el pene se haya relajado",
+          "Al día siguiente",
+          "No es necesario retirarlo, se deshace solo"
+        ],
+        "correct": 0,
+        "explanation": "Para evitar derrames, el condón debe retirarse inmediatamente después de la eyaculación, sujetando la base del condón contra el pene mientras se retira, y luego desecharlo."
+      }
+    ]
+  },
+  "genotipo": {
+    "questions": [
+      {
+        "question": "¿Qué representa el genotipo Aa?",
+        "options": [
+          "Heterocigoto",
+          "Homocigoto dominante",
+          "Homocigoto recesivo",
+          "Fenotipo"
+        ],
+        "correct": 0,
+        "explanation": "El genotipo Aa tiene dos alelos diferentes, por lo que es heterocigoto."
+      },
+      {
+        "question": "Un organismo con genotipo aa es:",
+        "options": [
+          "Homocigoto dominante",
+          "Heterocigoto",
+          "Homocigoto recesivo",
+          "Híbrido"
+        ],
+        "correct": 2,
+        "explanation": "El genotipo aa tiene dos alelos recesivos iguales, por lo que es homocigoto recesivo."
+      },
+      {
+        "question": "Si un individuo tiene genotipo AA, ¿cómo se le denomina?",
+        "options": [
+          "Heterocigoto",
+          "Homocigoto recesivo",
+          "Homocigoto dominante",
+          "Fenotipo recesivo"
+        ],
+        "correct": 2,
+        "explanation": "AA tiene dos alelos dominantes iguales, por lo que es homocigoto dominante."
+      },
+      {
+        "question": "¿Cuál de los siguientes genotipos representa a un heterocigoto?",
+        "options": [
+          "AA",
+          "Aa",
+          "aa",
+          "Ab"
+        ],
+        "correct": 1,
+        "explanation": "Aa tiene dos alelos diferentes, uno dominante y uno recesivo, por lo que es heterocigoto."
+      },
+      {
+        "question": "En genética, el genotipo se refiere a:",
+        "options": [
+          "La apariencia física del organismo",
+          "La constitución genética del organismo",
+          "El ambiente donde vive el organismo",
+          "El número de cromosomas"
+        ],
+        "correct": 1,
+        "explanation": "El genotipo es la combinación de alelos que posee un organismo, es decir, su constitución genética."
+      }
+    ]
+  },
+  "cromosoma": {
+    "questions": [
+      {
+        "question": "En los seres humanos, el número total de cromosomas en una célula somática es:",
+        "options": [
+          "23",
+          "46",
+          "92",
+          "22 pares"
+        ],
+        "correct": 1,
+        "explanation": "Los humanos tienen 46 cromosomas en sus células somáticas, organizados en 23 pares."
+      },
+      {
+        "question": "¿Cuántos pares de cromosomas posee un ser humano?",
+        "options": [
+          "46",
+          "23",
+          "22",
+          "24"
+        ],
+        "correct": 1,
+        "explanation": "Los humanos tienen 23 pares de cromosomas, sumando un total de 46 cromosomas."
+      },
+      {
+        "question": "Los cromosomas se encuentran en:",
+        "options": [
+          "el citoplasma",
+          "el núcleo de la célula",
+          "la membrana celular",
+          "las mitocondrias"
+        ],
+        "correct": 1,
+        "explanation": "Los cromosomas están dentro del núcleo celular, donde se almacena el material genético."
+      },
+      {
+        "question": "¿Qué estructuras contienen los genes?",
+        "options": [
+          "Proteínas",
+          "Cromosomas",
+          "Lípidos",
+          "Carbohidratos"
+        ],
+        "correct": 1,
+        "explanation": "Los genes son segmentos de ADN que se encuentran en los cromosomas."
+      },
+      {
+        "question": "En una célula humana normal, ¿cuántos cromosomas provienen del padre?",
+        "options": [
+          "23",
+          "46",
+          "22",
+          "24"
+        ],
+        "correct": 0,
+        "explanation": "De los 46 cromosomas totales, 23 provienen del padre (en el espermatozoide) y 23 de la madre."
+      }
+    ]
+  },
+  "its-mas-comunes": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes ITS es causada por una bacteria y puede tratarse con antibióticos?",
+        "options": [
+          "VIH/SIDA",
+          "Sífilis",
+          "Herpes genital",
+          "VPH"
+        ],
+        "correct": 1,
+        "explanation": "La sífilis es causada por la bacteria Treponema pallidum y se trata con antibióticos como la penicilina."
+      },
+      {
+        "question": "¿Qué ITS se caracteriza por la aparición de verrugas genitales y puede aumentar el riesgo de cáncer cervicouterino?",
+        "options": [
+          "Gonorrea",
+          "VIH/SIDA",
+          "VPH",
+          "Herpes genital"
+        ],
+        "correct": 2,
+        "explanation": "El VPH (virus del papiloma humano) causa verrugas genitales y algunos tipos de alto riesgo pueden provocar cáncer cervicouterino."
+      },
+      {
+        "question": "¿Cuál de las siguientes ITS es causada por un virus y actualmente no tiene cura, pero se controla con tratamiento antirretroviral?",
+        "options": [
+          "Sífilis",
+          "Gonorrea",
+          "VIH/SIDA",
+          "VPH"
+        ],
+        "correct": 2,
+        "explanation": "El VIH/SIDA es causado por el virus de la inmunodeficiencia humana; no tiene cura, pero los antirretrovirales controlan la infección."
+      },
+      {
+        "question": "¿Qué ITS produce ampollas dolorosas en los genitales y puede reaparecer periódicamente?",
+        "options": [
+          "Gonorrea",
+          "Herpes genital",
+          "Sífilis",
+          "VPH"
+        ],
+        "correct": 1,
+        "explanation": "El herpes genital es causado por el virus del herpes simple y causa ampollas dolorosas que pueden recurrir."
+      },
+      {
+        "question": "¿Cuál de las siguientes ITS puede causar secreción uretral y dolor al orinar, y se trata con antibióticos?",
+        "options": [
+          "VIH/SIDA",
+          "Herpes genital",
+          "VPH",
+          "Gonorrea"
+        ],
+        "correct": 3,
+        "explanation": "La gonorrea es una infección bacteriana que causa secreción y dolor al orinar, y se cura con antibióticos."
+      }
+    ]
+  },
+  "gen": {
+    "questions": [
       {
         "question": "¿Qué es un gen?",
-        "options": ["Un cromosoma completo que contiene toda la información hereditaria", "Un segmento de ADN que codifica una característica hereditaria", "La expresión visible de los cromosomas en el organismo", "Una proteína que regula la división celular"],
+        "options": [
+          "Un segmento de ADN que codifica una proteína o ARN funcional",
+          "Una molécula de ARN que transporta aminoácidos",
+          "Un tipo de célula especializada en la herencia",
+          "Una proteína que determina el color de los ojos"
+        ],
+        "correct": 0,
+        "explanation": "Un gen es un segmento de ADN que contiene la información para fabricar una proteína o ARN, determinando características hereditarias."
+      },
+      {
+        "question": "¿En qué estructura celular se encuentran los genes?",
+        "options": [
+          "En los ribosomas",
+          "En el núcleo de la célula",
+          "En la membrana celular",
+          "En el citoplasma"
+        ],
         "correct": 1,
-        "explanation": "Un gen es una secuencia específica de ADN que contiene la información para producir una proteína o controlar una característica hereditaria del organismo."
+        "explanation": "Los genes están en el ADN, que se localiza principalmente en el núcleo de las células eucariotas."
+      },
+      {
+        "question": "¿Cuál es la función principal de un gen?",
+        "options": [
+          "Almacenar energía",
+          "Codificar información para heredar características",
+          "Producir lípidos",
+          "Transportar oxígeno"
+        ],
+        "correct": 1,
+        "explanation": "La función principal de un gen es almacenar la información genética que se transmite de padres a hijos y determina rasgos hereditarios."
+      },
+      {
+        "question": "¿Cómo se llaman las diferentes versiones de un mismo gen?",
+        "options": [
+          "Alelos",
+          "Cromosomas",
+          "Genotipos",
+          "Fenotipos"
+        ],
+        "correct": 0,
+        "explanation": "Los alelos son las variantes de un gen que ocupan la misma posición en cromosomas homólogos y determinan características como el color de ojos."
+      },
+      {
+        "question": "¿Qué relación existe entre un gen y una proteína?",
+        "options": [
+          "El gen es la proteína misma",
+          "El gen contiene la instrucción para fabricar la proteína",
+          "La proteína se convierte en gen",
+          "No hay relación"
+        ],
+        "correct": 1,
+        "explanation": "Un gen es un segmento de ADN que lleva la información necesaria para sintetizar una proteína específica, la cual realiza funciones en el organismo."
+      }
+    ]
+  },
+  "prevencion-its": {
+    "questions": [
+      {
+        "question": "¿Cuál es el método más eficaz para prevenir las infecciones de transmisión sexual (ITS)?",
+        "options": [
+          "Uso correcto del condón",
+          "Lavarse después de tener relaciones",
+          "Tomar antibióticos antes de tener relaciones",
+          "Abstinencia sexual"
+        ],
+        "correct": 3,
+        "explanation": "La abstinencia es la única forma 100% efectiva de prevenir ITS, ya que evita cualquier contacto sexual que pueda transmitir infecciones."
+      },
+      {
+        "question": "¿Cómo se debe colocar correctamente un condón masculino?",
+        "options": [
+          "Desenrollarlo antes de colocarlo",
+          "Colocarlo cuando el pene está erecto y dejar espacio en la punta",
+          "Usar dos condones para mayor protección",
+          "Colocarlo después de la eyaculación"
+        ],
+        "correct": 1,
+        "explanation": "El condón se coloca cuando el pene está erecto, apretando la punta para dejar espacio y evitar que se rompa."
+      },
+      {
+        "question": "¿Contra qué enfermedad protege la vacuna del VPH?",
+        "options": [
+          "VIH/SIDA",
+          "Virus del papiloma humano",
+          "Herpes genital",
+          "Sífilis"
+        ],
+        "correct": 1,
+        "explanation": "La vacuna del VPH protege contra el virus del papiloma humano, que puede causar verrugas genitales y cáncer cervicouterino."
+      },
+      {
+        "question": "¿Cuándo se recomienda aplicar la vacuna contra el VPH?",
+        "options": [
+          "Después de iniciar vida sexual",
+          "Antes de iniciar vida sexual",
+          "Solo en mujeres",
+          "A cualquier edad sin límite"
+        ],
+        "correct": 1,
+        "explanation": "La vacuna es más efectiva si se aplica antes de iniciar la vida sexual, idealmente en la adolescencia."
+      },
+      {
+        "question": "¿Qué debe hacer una persona después de usar un condón?",
+        "options": [
+          "Tirarlo al inodoro",
+          "Lavarlo y reutilizarlo",
+          "Desecharlo en la basura",
+          "Guardarlo para usarlo otra vez"
+        ],
+        "correct": 2,
+        "explanation": "El condón debe desecharse en la basura después de un solo uso, nunca reutilizarse ni tirarse al inodoro."
+      }
+    ]
+  },
+  "alelo-recesivo-a": {
+    "questions": [
+      {
+        "question": "¿Qué condición se requiere para que se exprese un alelo recesivo?",
+        "options": [
+          "Que esté presente en el cromosoma X",
+          "Que haya dos copias del alelo",
+          "Que el alelo dominante esté ausente",
+          "Que esté en un gen dominante"
+        ],
+        "correct": 1,
+        "explanation": "Un alelo recesivo solo se expresa cuando hay dos copias (aa), ya que si hay un alelo dominante (Aa), este se expresa en su lugar."
+      },
+      {
+        "question": "Si una persona tiene el genotipo Aa para un rasgo, ¿qué fenotipo presentará?",
+        "options": [
+          "El fenotipo recesivo",
+          "El fenotipo dominante",
+          "Una mezcla de ambos",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "explanation": "Con el genotipo Aa, el alelo dominante (A) se expresa, por lo que la persona mostrará el fenotipo dominante."
+      },
+      {
+        "question": "¿Cuál de los siguientes genotipos representa un individuo homocigoto recesivo?",
+        "options": [
+          "AA",
+          "Aa",
+          "aA",
+          "aa"
+        ],
+        "correct": 3,
+        "explanation": "Homocigoto recesivo significa tener dos alelos recesivos iguales, representado como aa."
+      },
+      {
+        "question": "En un cruce entre dos padres heterocigotos (Aa), ¿cuál es la probabilidad de tener un hijo con fenotipo recesivo?",
+        "options": [
+          "0%",
+          "25%",
+          "50%",
+          "100%"
+        ],
+        "correct": 1,
+        "explanation": "Al cruzar Aa x Aa, la probabilidad de obtener aa es 1/4, es decir, 25%."
+      },
+      {
+        "question": "¿Qué significa que un alelo sea recesivo?",
+        "options": [
+          "Que siempre se expresa",
+          "Que se expresa solo en presencia de otro alelo recesivo",
+          "Que se expresa en ambos sexos",
+          "Que es más común en la población"
+        ],
+        "correct": 1,
+        "explanation": "Un alelo recesivo solo se expresa cuando hay dos copias, es decir, en homocigosis recesiva."
+      }
+    ]
+  },
+  "fenotipo": {
+    "questions": [
+      {
+        "question": "¿Qué es el fenotipo?",
+        "options": [
+          "La combinación de alelos que posee un individuo",
+          "La expresión física de los genes",
+          "El material genético en el núcleo",
+          "La secuencia de ADN"
+        ],
+        "correct": 1,
+        "explanation": "El fenotipo son las características observables de un organismo, como el color de ojos, que resultan de la interacción del genotipo con el ambiente."
+      },
+      {
+        "question": "Si una persona tiene ojos marrones (dominante) y su genotipo es Bb, ¿cuál es su fenotipo?",
+        "options": [
+          "Ojos azules",
+          "Ojos marrones",
+          "Ojos verdes",
+          "Ojos grises"
+        ],
+        "correct": 1,
+        "explanation": "El alelo B (marrón) es dominante sobre b (azul), por lo que el fenotipo es ojos marrones aunque tenga un alelo recesivo."
+      },
+      {
+        "question": "¿Qué determina el tipo de sangre en el sistema ABO?",
+        "options": [
+          "La presencia de antígenos en los glóbulos rojos",
+          "El color de la sangre",
+          "La cantidad de glóbulos blancos",
+          "El nivel de hemoglobina"
+        ],
+        "correct": 0,
+        "explanation": "El tipo de sangre se define por los antígenos presentes en la superficie de los glóbulos rojos, determinados por los alelos A, B y O."
+      },
+      {
+        "question": "Una persona con genotipo IAi tiene tipo de sangre A. ¿Qué expresa su fenotipo?",
+        "options": [
+          "Tipo de sangre A",
+          "Tipo de sangre B",
+          "Tipo de sangre AB",
+          "Tipo de sangre O"
+        ],
+        "correct": 0,
+        "explanation": "El alelo IA produce antígeno A, y como es dominante sobre i, el fenotipo es tipo de sangre A."
+      },
+      {
+        "question": "Si ambos padres tienen ojos marrones (Bb), ¿qué fenotipo puede tener su hijo?",
+        "options": [
+          "Solo ojos marrones",
+          "Solo ojos azules",
+          "Ojos marrones o azules",
+          "Ojos verdes"
+        ],
+        "correct": 2,
+        "explanation": "Al ser ambos heterocigotos (Bb), pueden heredar un alelo recesivo b de cada padre y tener ojos azules, o al menos un B y tener ojos marrones."
+      }
+    ]
+  },
+  "alelo-dominante-a": {
+    "questions": [
+      {
+        "question": "¿Qué significa que un alelo sea dominante?",
+        "options": [
+          "Que solo se expresa si hay dos copias del alelo",
+          "Que se expresa aunque solo haya una copia del alelo",
+          "Que nunca se expresa en los organismos",
+          "Que se expresa solo en presencia de otro alelo dominante"
+        ],
+        "correct": 1,
+        "explanation": "Un alelo dominante se expresa en el fenotipo incluso si solo hay una copia presente en el genotipo."
+      },
+      {
+        "question": "Si un organismo tiene genotipo Aa, donde A es dominante, ¿qué fenotipo se expresará?",
+        "options": [
+          "El fenotipo del alelo a",
+          "El fenotipo del alelo A",
+          "Un fenotipo intermedio",
+          "Ningún fenotipo"
+        ],
+        "correct": 1,
+        "explanation": "Como A es dominante, se expresa el fenotipo asociado al alelo A aunque haya un alelo recesivo a."
+      },
+      {
+        "question": "¿Cuál de los siguientes genotipos expresará el fenotipo dominante?",
+        "options": [
+          "aa",
+          "Aa",
+          "aa o Aa",
+          "Solo AA"
+        ],
+        "correct": 1,
+        "explanation": "Tanto AA como Aa expresan el fenotipo dominante, pero entre las opciones, Aa es correcto ya que aa expresa el recesivo."
+      },
+      {
+        "question": "En un cruce entre un individuo homocigoto dominante (AA) y uno homocigoto recesivo (aa), ¿qué proporción de la descendencia será heterocigota?",
+        "options": [
+          "0%",
+          "25%",
+          "50%",
+          "100%"
+        ],
+        "correct": 3,
+        "explanation": "Todos los descendientes serán Aa, es decir, 100% heterocigotos, y expresarán el fenotipo dominante."
+      },
+      {
+        "question": "¿Qué alelo se expresa en un individuo con genotipo Aa si el alelo A es dominante sobre a?",
+        "options": [
+          "Ambos alelos por igual",
+          "Solo el alelo A",
+          "Solo el alelo a",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "explanation": "El alelo dominante A se expresa, mientras que el recesivo a no se manifiesta en el fenotipo."
+      }
+    ]
+  },
+  "cuadro-de-punnett": {
+    "questions": [
+      {
+        "question": "En un cruce entre dos plantas heterocigotas para la altura (Tt x Tt), ¿cuál es la probabilidad de obtener descendencia enana (tt)?",
+        "options": [
+          "50%",
+          "25%",
+          "75%",
+          "0%"
+        ],
+        "correct": 1,
+        "explanation": "Según el cuadro de Punnett, la combinación tt aparece 1 de cada 4 veces, dando un 25% de probabilidad."
+      },
+      {
+        "question": "Si se cruzan un ratón negro homocigoto dominante (NN) con uno blanco homocigoto recesivo (nn), ¿qué fenotipos se esperan en la descendencia?",
+        "options": [
+          "Todos negros",
+          "75% negros y 25% blancos",
+          "50% negros y 50% blancos",
+          "Todos blancos"
+        ],
+        "correct": 0,
+        "explanation": "Todos los descendientes serán heterocigotos (Nn) y expresarán el color negro por ser dominante."
+      },
+      {
+        "question": "En un cruce entre un padre heterocigoto (Aa) y otro homocigoto recesivo (aa), ¿cuál es la probabilidad de que un hijo sea heterocigoto?",
+        "options": [
+          "25%",
+          "50%",
+          "75%",
+          "100%"
+        ],
+        "correct": 1,
+        "explanation": "En el cuadro de Punnett, la mitad de las combinaciones son Aa, dando un 50% de probabilidad."
+      },
+      {
+        "question": "¿Qué proporción fenotípica se obtiene al cruzar dos plantas de guisante heterocigotas para la forma de la semilla (Rr x Rr), donde R (redonda) es dominante sobre r (rugosa)?",
+        "options": [
+          "3:1 redondas a rugosas",
+          "1:2:1",
+          "1:1",
+          "Todas redondas"
+        ],
+        "correct": 0,
+        "explanation": "El cruce produce 3 genotipos con semilla redonda (RR, Rr) y 1 con rugosa (rr), dando proporción 3:1."
+      },
+      {
+        "question": "Si una planta de flores rojas (RR) se cruza con una de flores blancas (rr), y el color rojo es dominante, ¿cuál será el fenotipo de la descendencia?",
+        "options": [
+          "Todas rojas",
+          "Todas blancas",
+          "Rojas y blancas en igual proporción",
+          "Rosas"
+        ],
+        "correct": 0,
+        "explanation": "Todos los descendientes serán heterocigotos (Rr) y expresarán el color rojo dominante."
+      }
+    ]
+  },
+  "manipulacion-genetica": {
+    "questions": [
+      {
+        "question": "¿Cuál es un beneficio de la manipulación genética en la producción de vacunas?",
+        "options": [
+          "Permite crear vacunas más rápidamente y con mayor precisión",
+          "Elimina la necesidad de usar animales en pruebas",
+          "Hace que las vacunas sean más baratas de producir",
+          "Aumenta la efectividad de todas las vacunas existentes"
+        ],
+        "correct": 0,
+        "explanation": "La manipulación genética permite diseñar vacunas específicas contra patógenos, acelerando su desarrollo y mejorando su eficacia."
+      },
+      {
+        "question": "¿Qué es un riesgo ético asociado a los cultivos genéticamente modificados?",
+        "options": [
+          "Pueden causar alergias en algunas personas",
+          "Reducen la biodiversidad al desplazar cultivos nativos",
+          "Requieren más agua que los cultivos tradicionales",
+          "Aumentan el uso de pesticidas en el campo"
+        ],
+        "correct": 1,
+        "explanation": "Un riesgo ético es que los cultivos transgénicos pueden desplazar a variedades nativas, reduciendo la diversidad genética y afectando ecosistemas."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un beneficio de los cultivos resistentes a plagas?",
+        "options": [
+          "Disminuyen la necesidad de usar insecticidas",
+          "Aumentan la producción de alimentos sin modificar el ADN",
+          "Son más nutritivos que los cultivos convencionales",
+          "Crecen en cualquier tipo de suelo sin fertilizantes"
+        ],
+        "correct": 0,
+        "explanation": "Al ser resistentes a plagas, estos cultivos requieren menos insecticidas, lo que reduce costos y daños ambientales."
+      },
+      {
+        "question": "¿Qué riesgo ético se relaciona con la manipulación genética en humanos?",
+        "options": [
+          "Posibilidad de crear desigualdades sociales al acceder a mejoras genéticas",
+          "Aumento de la esperanza de vida en toda la población",
+          "Eliminación de enfermedades hereditarias graves",
+          "Mejora de la inteligencia en todas las personas"
+        ],
+        "correct": 0,
+        "explanation": "La manipulación genética podría estar disponible solo para quienes puedan pagarla, generando una brecha entre personas genéticamente modificadas y no modificadas."
+      },
+      {
+        "question": "¿Cómo ayuda la ingeniería genética en la producción de insulina?",
+        "options": [
+          "Permite producir insulina humana en bacterias, evitando usar animales",
+          "Crea insulina sintética que no necesita refrigeración",
+          "Aumenta la cantidad de insulina que produce el páncreas",
+          "Hace que la insulina sea más barata pero menos efectiva"
+        ],
+        "correct": 0,
+        "explanation": "Al insertar el gen de la insulina humana en bacterias, estas producen insulina idéntica a la humana, reduciendo riesgos de alergias."
       }
     ]
   }

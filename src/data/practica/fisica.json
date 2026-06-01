@@ -1,132 +1,2302 @@
 {
-  "materia": "Física",
-  "subindices": {
-    "El movimiento": [
+  "rapidez": {
+    "questions": [
       {
-        "question": "Un auto recorre 150 metros en 10 segundos. ¿Cuál es su rapidez?",
-        "options": ["1500 m/s", "15 m/s", "0.067 m/s", "150 m/s"],
+        "question": "Un auto recorre 120 km en 2 horas. ¿Cuál es su rapidez?",
+        "options": [
+          "60 km/h",
+          "240 km/h",
+          "60 m/s",
+          "120 km/h"
+        ],
+        "correct": 0,
+        "explanation": "La rapidez se calcula dividiendo la distancia entre el tiempo: 120 km / 2 h = 60 km/h."
+      },
+      {
+        "question": "¿Cuál de las siguientes magnitudes es escalar?",
+        "options": [
+          "Velocidad",
+          "Rapidez",
+          "Aceleración",
+          "Desplazamiento"
+        ],
         "correct": 1,
-        "explanation": "La rapidez se calcula dividiendo la distancia entre el tiempo: 150 m ÷ 10 s = 15 m/s. Es una magnitud escalar, sin dirección definida."
+        "explanation": "La rapidez solo tiene magnitud, a diferencia de la velocidad que también tiene dirección."
       },
       {
-        "question": "¿Cuál es la diferencia principal entre velocidad y rapidez?",
-        "options": ["La velocidad se mide en m/s y la rapidez en km/h", "La velocidad es una magnitud vectorial con dirección; la rapidez es escalar", "La rapidez es siempre mayor que la velocidad", "No hay diferencia, son sinónimos en física"],
-        "correct": 1,
-        "explanation": "La velocidad es una magnitud vectorial que incluye dirección y sentido, mientras que la rapidez es escalar y solo indica qué tan rápido se mueve un objeto."
+        "question": "Si un corredor avanza 100 metros en 10 segundos, su rapidez es:",
+        "options": [
+          "10 m/s",
+          "100 m/s",
+          "0.1 m/s",
+          "1 m/s"
+        ],
+        "correct": 0,
+        "explanation": "Rapidez = distancia / tiempo = 100 m / 10 s = 10 m/s."
       },
       {
-        "question": "En un Movimiento Rectilíneo Uniforme (MRU), ¿qué valor tiene la aceleración?",
-        "options": ["9.8 m/s²", "Es variable", "Es igual a la velocidad", "Es igual a cero"],
-        "correct": 3,
-        "explanation": "En el MRU la velocidad es constante, lo que implica que no hay cambio en la velocidad; por tanto la aceleración es igual a cero."
+        "question": "Un tren viaja a rapidez constante de 80 km/h. ¿Qué distancia recorre en 3 horas?",
+        "options": [
+          "240 km",
+          "80 km",
+          "160 km",
+          "320 km"
+        ],
+        "correct": 0,
+        "explanation": "Distancia = rapidez × tiempo = 80 km/h × 3 h = 240 km."
       },
       {
-        "question": "Un objeto cae libremente durante 3 segundos (g ≈ 10 m/s²). ¿Cuál es su velocidad al final de la caída?",
-        "options": ["3 m/s", "10 m/s", "30 m/s", "90 m/s"],
+        "question": "La rapidez se diferencia de la velocidad porque:",
+        "options": [
+          "Es una magnitud vectorial",
+          "Solo considera la dirección",
+          "Es una magnitud escalar",
+          "Depende del desplazamiento"
+        ],
         "correct": 2,
-        "explanation": "En caída libre, v = g × t = 10 m/s² × 3 s = 30 m/s. La velocidad aumenta constantemente por la aceleración de la gravedad."
-      },
-      {
-        "question": "En una gráfica de posición versus tiempo para un MRU, ¿qué representa la pendiente de la recta?",
-        "options": ["La aceleración del objeto", "La velocidad del objeto", "La distancia total recorrida", "El tiempo de trayectoria"],
-        "correct": 1,
-        "explanation": "En una gráfica posición-tiempo del MRU, la pendiente de la línea recta equivale a la velocidad constante del objeto: pendiente = Δposición/Δtiempo."
+        "explanation": "La rapidez es escalar, solo tiene magnitud; la velocidad es vectorial e incluye dirección."
       }
-    ],
-    "Fuerzas, Newton y energía": [
+    ]
+  },
+  "aceleracion-v-final-v-inicial-tiempo": {
+    "questions": [
       {
-        "question": "Una caja de 5 kg es empujada con una fuerza neta de 20 N. ¿Cuál es su aceleración?",
-        "options": ["100 m/s²", "0.25 m/s²", "4 m/s²", "25 m/s²"],
-        "correct": 2,
-        "explanation": "Aplicando la 2ª Ley de Newton: a = F/m = 20 N ÷ 5 kg = 4 m/s². La aceleración es directamente proporcional a la fuerza e inversamente proporcional a la masa."
-      },
-      {
-        "question": "¿Qué establece la Primera Ley de Newton (Ley de Inercia)?",
-        "options": ["La fuerza es igual a la masa por la aceleración", "Toda acción tiene una reacción igual y opuesta", "Un objeto en reposo permanece en reposo si la fuerza neta es cero", "La gravedad atrae a todos los cuerpos con masa"],
-        "correct": 2,
-        "explanation": "La Ley de Inercia establece que un cuerpo mantiene su estado de reposo o movimiento uniforme a menos que una fuerza neta actúe sobre él."
-      },
-      {
-        "question": "Un objeto de 4 kg se encuentra a 10 m de altura (g = 10 m/s²). ¿Cuál es su energía potencial gravitatoria?",
-        "options": ["40 J", "400 J", "4 J", "1000 J"],
+        "question": "Un automóvil aumenta su velocidad de 10 m/s a 30 m/s en 5 segundos. ¿Cuál es su aceleración?",
+        "options": [
+          "2 m/s²",
+          "4 m/s²",
+          "6 m/s²",
+          "8 m/s²"
+        ],
         "correct": 1,
-        "explanation": "La energía potencial se calcula con Ep = m × g × h = 4 kg × 10 m/s² × 10 m = 400 J."
+        "explanation": "Aplicando la fórmula: a = (30 - 10) / 5 = 20 / 5 = 4 m/s²."
       },
       {
-        "question": "Un automóvil de 1000 kg viaja a 20 m/s. ¿Cuál es su energía cinética?",
-        "options": ["10 000 J", "20 000 J", "200 000 J", "400 000 J"],
-        "correct": 2,
-        "explanation": "La energía cinética se calcula con Ec = (1/2) × m × v² = 0.5 × 1000 kg × (20 m/s)² = 200 000 J."
+        "question": "Un ciclista viaja a 15 m/s y frena hasta detenerse en 3 segundos. ¿Cuál es su aceleración?",
+        "options": [
+          "-5 m/s²",
+          "-3 m/s²",
+          "5 m/s²",
+          "3 m/s²"
+        ],
+        "correct": 0,
+        "explanation": "La velocidad final es 0, entonces a = (0 - 15) / 3 = -15 / 3 = -5 m/s² (desaceleración)."
       },
       {
-        "question": "Al empujar una pared con fuerza, ¿qué establece la Tercera Ley de Newton sobre la reacción de la pared?",
-        "options": ["La pared no ejerce ninguna fuerza sobre ti", "La pared ejerce una fuerza igual y opuesta sobre ti", "La pared ejerce una fuerza mayor que la tuya", "La reacción depende de la masa de la pared"],
-        "correct": 1,
-        "explanation": "La Tercera Ley de Newton establece que toda acción genera una reacción igual en magnitud pero opuesta en dirección; la pared te empuja con la misma fuerza con que tú la empujas."
+        "question": "Un objeto parte del reposo y alcanza una velocidad de 20 m/s en 4 segundos. ¿Cuál es su aceleración?",
+        "options": [
+          "5 m/s²",
+          "4 m/s²",
+          "10 m/s²",
+          "2 m/s²"
+        ],
+        "correct": 0,
+        "explanation": "Velocidad inicial 0, final 20 m/s, tiempo 4 s: a = (20 - 0) / 4 = 5 m/s²."
+      },
+      {
+        "question": "Un tren se mueve a 20 m/s y acelera a 2 m/s² durante 10 segundos. ¿Cuál es su velocidad final?",
+        "options": [
+          "40 m/s",
+          "30 m/s",
+          "20 m/s",
+          "10 m/s"
+        ],
+        "correct": 0,
+        "explanation": "Usando v_final = v_inicial + a*t = 20 + 2*10 = 40 m/s."
+      },
+      {
+        "question": "Si la aceleración de un móvil es 3 m/s² y su velocidad inicial es 5 m/s, ¿qué velocidad tendrá después de 4 segundos?",
+        "options": [
+          "17 m/s",
+          "12 m/s",
+          "9 m/s",
+          "7 m/s"
+        ],
+        "correct": 0,
+        "explanation": "v_final = 5 + 3*4 = 5 + 12 = 17 m/s."
       }
-    ],
-    "Modelo cinético, calor y presión": [
+    ]
+  },
+  "mru-rectilineo-uniforme": {
+    "questions": [
       {
-        "question": "¿Qué mide realmente la temperatura de un cuerpo según el modelo cinético?",
-        "options": ["La cantidad total de energía del cuerpo", "El movimiento promedio de las partículas que lo componen", "La cantidad de calor que puede transferir", "La densidad de las partículas del material"],
+        "question": "Un automóvil viaja a velocidad constante de 20 m/s. ¿Qué distancia recorre en 10 segundos?",
+        "options": [
+          "2 m",
+          "200 m",
+          "20 m",
+          "100 m"
+        ],
         "correct": 1,
-        "explanation": "Según el modelo cinético-molecular, la temperatura es una medida del movimiento (energía cinética promedio) de las partículas que conforman la materia."
+        "explanation": "La fórmula de MRU es d = v*t. Sustituyendo: d = 20 m/s * 10 s = 200 m."
       },
       {
-        "question": "Una fuerza de 50 N se aplica sobre una superficie de 2 m². ¿Cuál es la presión ejercida?",
-        "options": ["100 Pa", "52 Pa", "48 Pa", "25 Pa"],
-        "correct": 3,
-        "explanation": "La presión se calcula con P = F/A = 50 N ÷ 2 m² = 25 Pa. El Pascal (Pa) es la unidad de presión en el Sistema Internacional."
-      },
-      {
-        "question": "¿Cuál es la diferencia entre calor y temperatura?",
-        "options": ["Son exactamente la misma magnitud física", "El calor es la energía que se transfiere; la temperatura mide el movimiento de partículas", "La temperatura se mide en Joules y el calor en grados", "El calor solo existe en gases, la temperatura en sólidos"],
+        "question": "Un ciclista se mueve con MRU a 15 km/h. ¿Cuánto tiempo tarda en recorrer 30 km?",
+        "options": [
+          "0.5 h",
+          "2 h",
+          "45 h",
+          "15 h"
+        ],
         "correct": 1,
-        "explanation": "El calor es energía en tránsito que fluye del cuerpo caliente al frío, mientras que la temperatura es una propiedad del cuerpo que indica el movimiento promedio de sus partículas."
+        "explanation": "Despejando tiempo: t = d/v = 30 km / 15 km/h = 2 h."
       },
       {
-        "question": "¿Qué establece el Principio de Pascal sobre la presión en fluidos?",
-        "options": ["La presión disminuye con la profundidad", "La presión aplicada a un fluido se transmite íntegramente en todas direcciones", "Los fluidos solo transmiten presión hacia arriba", "La presión depende de la forma del recipiente"],
+        "question": "Si un objeto se mueve con MRU, ¿cuál de las siguientes afirmaciones es correcta?",
+        "options": [
+          "Su velocidad cambia constantemente.",
+          "Su aceleración es cero.",
+          "Su aceleración es constante y diferente de cero.",
+          "Su velocidad es cero."
+        ],
         "correct": 1,
-        "explanation": "El Principio de Pascal establece que cualquier cambio de presión aplicado a un fluido confinado se transmite con igual intensidad a todos los puntos del fluido."
+        "explanation": "En MRU la velocidad es constante, por lo tanto la aceleración es cero."
       },
       {
-        "question": "Según el Principio de Conservación de Energía, ¿qué sucede con la energía cuando se transforma?",
-        "options": ["Una parte siempre se destruye en el proceso", "Se crea nueva energía para compensar las pérdidas", "La energía ni se crea ni se destruye, solo se transforma", "La energía total disminuye con el tiempo"],
-        "correct": 2,
-        "explanation": "El Principio de Conservación de Energía establece que la energía total de un sistema aislado permanece constante; solo cambia de una forma a otra."
+        "question": "Un tren recorre 500 metros en 25 segundos con MRU. ¿Cuál es su velocidad?",
+        "options": [
+          "20 m/s",
+          "12.5 m/s",
+          "25 m/s",
+          "500 m/s"
+        ],
+        "correct": 0,
+        "explanation": "Velocidad = distancia / tiempo = 500 m / 25 s = 20 m/s."
+      },
+      {
+        "question": "Dos autos parten del mismo punto con MRU. El auto A va a 30 m/s y el auto B a 20 m/s. ¿Qué distancia los separa después de 10 segundos?",
+        "options": [
+          "100 m",
+          "500 m",
+          "50 m",
+          "10 m"
+        ],
+        "correct": 0,
+        "explanation": "Distancia de A: 30*10=300 m; de B: 20*10=200 m. Separación: 300-200=100 m."
       }
-    ],
-    "Electricidad, magnetismo y ondas": [
+    ]
+  },
+  "velocidad": {
+    "questions": [
       {
-        "question": "¿Qué ocurre cuando dos cargas eléctricas del mismo signo se acercan?",
-        "options": ["Se atraen mutuamente", "Se repelen mutuamente", "No interactúan entre sí", "Una anula a la otra"],
+        "question": "¿Cuál de las siguientes afirmaciones describe correctamente a la velocidad?",
+        "options": [
+          "Es una magnitud escalar que solo indica rapidez.",
+          "Es una magnitud vectorial que incluye dirección.",
+          "Es la distancia total recorrida entre el tiempo.",
+          "Es el cambio de posición sin importar la dirección."
+        ],
         "correct": 1,
-        "explanation": "Las cargas eléctricas del mismo signo (ambas positivas o ambas negativas) se repelen, mientras que las cargas de signos opuestos se atraen."
+        "explanation": "La velocidad es una magnitud vectorial porque requiere dirección, a diferencia de la rapidez que es escalar."
       },
       {
-        "question": "¿Qué fenómeno permite generar corriente eléctrica en un generador?",
-        "options": ["Electrización por frotamiento", "Inducción electromagnética", "Principio de Pascal", "Refracción de ondas"],
+        "question": "Un auto se desplaza 200 metros hacia el norte en 10 segundos. ¿Cuál es su velocidad?",
+        "options": [
+          "20 m/s al norte",
+          "20 m/s",
+          "200 m/s al norte",
+          "0.05 m/s al norte"
+        ],
+        "correct": 0,
+        "explanation": "La velocidad se calcula como desplazamiento (200 m) entre tiempo (10 s), resultando 20 m/s con dirección norte."
+      },
+      {
+        "question": "Si un objeto viaja 100 metros al este en 5 segundos y luego regresa al punto de partida en otros 5 segundos, ¿cuál es su velocidad promedio?",
+        "options": [
+          "10 m/s al este",
+          "0 m/s",
+          "20 m/s",
+          "10 m/s al oeste"
+        ],
         "correct": 1,
-        "explanation": "La inducción electromagnética consiste en generar una corriente eléctrica al mover un conductor dentro de un campo magnético, principio base de los generadores eléctricos."
+        "explanation": "El desplazamiento total es cero porque regresa al inicio, por lo tanto la velocidad promedio es cero."
       },
       {
-        "question": "En el espectro visible, ¿qué color tiene la mayor longitud de onda?",
-        "options": ["Violeta", "Azul", "Verde", "Rojo"],
-        "correct": 3,
-        "explanation": "El rojo tiene la mayor longitud de onda del espectro visible, mientras que el violeta tiene la menor; la frecuencia y la longitud de onda son inversamente proporcionales."
+        "question": "La velocidad de un tren es de 80 km/h hacia el sur. Esto significa que:",
+        "options": [
+          "Su rapidez es 80 km/h sin dirección.",
+          "Su desplazamiento es 80 km en 1 hora al sur.",
+          "Es una magnitud escalar.",
+          "No tiene dirección definida."
+        ],
+        "correct": 1,
+        "explanation": "La velocidad incluye magnitud y dirección; en este caso, 80 km/h al sur indica el desplazamiento en esa dirección por hora."
       },
       {
-        "question": "¿Qué propiedad fundamental tienen las ondas respecto a la materia?",
-        "options": ["Transportan materia de un punto a otro", "Requieren materia para propagarse en todos los casos", "Transfieren energía sin transportar materia", "Solo pueden propagarse en el vacío"],
+        "question": "¿Qué diferencia a la velocidad de la rapidez?",
+        "options": [
+          "La velocidad considera la dirección; la rapidez no.",
+          "La rapidez es vectorial; la velocidad es escalar.",
+          "Ambas son iguales.",
+          "La velocidad mide distancia; la rapidez mide desplazamiento."
+        ],
+        "correct": 0,
+        "explanation": "La velocidad es vectorial (incluye dirección), mientras que la rapidez es escalar (solo magnitud)."
+      }
+    ]
+  },
+  "mruv": {
+    "questions": [
+      {
+        "question": "Un automóvil parte del reposo y acelera a 2 m/s² durante 5 segundos. ¿Cuál es su velocidad final?",
+        "options": [
+          "5 m/s",
+          "10 m/s",
+          "2 m/s",
+          "20 m/s"
+        ],
+        "correct": 1,
+        "explanation": "Usamos v = v0 + at, con v0=0, a=2 m/s², t=5 s, obteniendo v=10 m/s."
+      },
+      {
+        "question": "Un objeto se mueve con MRUV. Si su velocidad inicial es 4 m/s y acelera a 3 m/s² durante 2 segundos, ¿qué distancia recorre?",
+        "options": [
+          "14 m",
+          "20 m",
+          "8 m",
+          "10 m"
+        ],
+        "correct": 0,
+        "explanation": "Distancia = v0*t + (1/2)*a*t² = 4*2 + 0.5*3*4 = 8+6=14 m."
+      },
+      {
+        "question": "Un tren reduce su velocidad de 20 m/s a 10 m/s en 5 segundos. ¿Cuál es su aceleración?",
+        "options": [
+          "2 m/s²",
+          "-2 m/s²",
+          "4 m/s²",
+          "-4 m/s²"
+        ],
+        "correct": 1,
+        "explanation": "a = (vf-vi)/t = (10-20)/5 = -10/5 = -2 m/s² (desaceleración)."
+      },
+      {
+        "question": "Un móvil parte del reposo con aceleración constante de 4 m/s². ¿Qué velocidad tiene después de recorrer 8 metros?",
+        "options": [
+          "8 m/s",
+          "4 m/s",
+          "16 m/s",
+          "6 m/s"
+        ],
+        "correct": 0,
+        "explanation": "Usamos v² = v0² + 2aΔx, con v0=0, a=4, Δx=8, v²=64, v=8 m/s."
+      },
+      {
+        "question": "Un auto viaja a 30 m/s y frena con aceleración constante de -5 m/s². ¿Qué distancia recorre hasta detenerse?",
+        "options": [
+          "90 m",
+          "180 m",
+          "45 m",
+          "60 m"
+        ],
+        "correct": 0,
+        "explanation": "Usamos v² = v0² + 2aΔx, con v=0, v0=30, a=-5, despejando Δx = -v0²/(2a) = -900/(-10)=90 m."
+      }
+    ]
+  },
+  "grafica-posicion-tiempo-en-reposo": {
+    "questions": [
+      {
+        "question": "En una gráfica posición-tiempo, si un objeto está en reposo, la línea que representa su movimiento es:",
+        "options": [
+          "Una línea recta inclinada hacia arriba",
+          "Una línea recta inclinada hacia abajo",
+          "Una línea horizontal",
+          "Una curva ascendente"
+        ],
         "correct": 2,
-        "explanation": "Las ondas transfieren energía de un lugar a otro sin que haya desplazamiento neto de la materia, como ocurre con las olas del mar o las ondas de sonido."
+        "explanation": "Cuando un objeto está en reposo, su posición no cambia con el tiempo, por lo que la gráfica es una línea horizontal."
       },
       {
-        "question": "¿Qué es la refracción de la luz?",
-        "options": ["El rebote de la luz al chocar con una superficie", "El cambio de velocidad y dirección de la luz al pasar entre medios diferentes", "La absorción total de la luz por un material", "La separación de la luz en sus componentes de color"],
+        "question": "¿Qué indica una línea horizontal en una gráfica posición-tiempo?",
+        "options": [
+          "Que el objeto se mueve a velocidad constante",
+          "Que el objeto está en reposo",
+          "Que el objeto acelera",
+          "Que el objeto retrocede"
+        ],
         "correct": 1,
-        "explanation": "La refracción ocurre cuando la luz cambia de velocidad al pasar de un medio a otro (por ejemplo, del aire al agua), lo que provoca un cambio en su dirección de propagación."
+        "explanation": "Una línea horizontal significa que la posición no varía, es decir, el objeto no se mueve."
+      },
+      {
+        "question": "Si en una gráfica posición-tiempo la línea es horizontal durante 5 segundos, ¿qué ocurre con el objeto?",
+        "options": [
+          "Se mueve a 5 m/s",
+          "Está en reposo durante 5 segundos",
+          "Se desplaza 5 metros",
+          "Su velocidad aumenta"
+        ],
+        "correct": 1,
+        "explanation": "La línea horizontal indica que la posición es constante, por lo que el objeto permanece en reposo todo ese tiempo."
+      },
+      {
+        "question": "En una gráfica posición-tiempo, la pendiente de la línea representa la velocidad. ¿Qué pendiente tiene una línea horizontal?",
+        "options": [
+          "Pendiente positiva",
+          "Pendiente negativa",
+          "Pendiente cero",
+          "Pendiente infinita"
+        ],
+        "correct": 2,
+        "explanation": "La pendiente de una línea horizontal es cero, lo que corresponde a velocidad cero, es decir, reposo."
+      },
+      {
+        "question": "Un objeto está en reposo. ¿Cómo se vería su gráfica posición-tiempo?",
+        "options": [
+          "Una línea recta que sube",
+          "Una línea recta que baja",
+          "Una línea horizontal",
+          "Una línea curva"
+        ],
+        "correct": 2,
+        "explanation": "En reposo, la posición no cambia, por lo que la gráfica es una línea recta horizontal."
+      }
+    ]
+  },
+  "grafica-posicion-tiempo-mru": {
+    "questions": [
+      {
+        "question": "En una gráfica posición-tiempo para un MRU, la línea recta que representa el movimiento tiene una pendiente de 5 m/s. ¿Qué indica este valor?",
+        "options": [
+          "La posición inicial del objeto",
+          "La velocidad del objeto",
+          "El tiempo transcurrido",
+          "La aceleración del objeto"
+        ],
+        "correct": 1,
+        "explanation": "En MRU, la pendiente de la gráfica posición-tiempo es igual a la velocidad constante del objeto."
+      },
+      {
+        "question": "Un objeto se mueve con MRU y su gráfica posición-tiempo es una recta que pasa por el origen. Si a los 4 segundos su posición es 20 metros, ¿cuál es su velocidad?",
+        "options": [
+          "4 m/s",
+          "5 m/s",
+          "20 m/s",
+          "0.2 m/s"
+        ],
+        "correct": 1,
+        "explanation": "La velocidad es la pendiente: cambio de posición entre cambio de tiempo, 20 m / 4 s = 5 m/s."
+      },
+      {
+        "question": "¿Qué forma tiene la gráfica posición-tiempo de un objeto en reposo?",
+        "options": [
+          "Una recta con pendiente positiva",
+          "Una recta con pendiente negativa",
+          "Una recta horizontal",
+          "Una curva"
+        ],
+        "correct": 2,
+        "explanation": "Si el objeto está en reposo, su posición no cambia con el tiempo, por lo que la gráfica es una línea recta horizontal."
+      },
+      {
+        "question": "En una gráfica posición-tiempo de MRU, dos rectas se cruzan. ¿Qué significa ese punto de intersección?",
+        "options": [
+          "Que los objetos tienen la misma velocidad",
+          "Que los objetos están en la misma posición al mismo tiempo",
+          "Que un objeto alcanza al otro",
+          "Que los objetos parten del mismo punto"
+        ],
+        "correct": 1,
+        "explanation": "La intersección indica que en ese instante ambos objetos tienen la misma posición."
+      },
+      {
+        "question": "Si la pendiente de una gráfica posición-tiempo es negativa, ¿qué tipo de movimiento representa?",
+        "options": [
+          "Movimiento hacia adelante",
+          "Movimiento hacia atrás",
+          "Reposo",
+          "Movimiento acelerado"
+        ],
+        "correct": 1,
+        "explanation": "Pendiente negativa significa que la posición disminuye con el tiempo, indicando movimiento en dirección opuesta al sentido positivo."
+      }
+    ]
+  },
+  "caida-libre": {
+    "questions": [
+      {
+        "question": "Un objeto se deja caer desde el reposo desde lo alto de un edificio. ¿Cuál es su velocidad después de 3 segundos? (Considera g = 10 m/s²)",
+        "options": [
+          "10 m/s",
+          "20 m/s",
+          "30 m/s",
+          "40 m/s"
+        ],
+        "correct": 2,
+        "explanation": "En caída libre, la velocidad se calcula como v = g*t, por lo que v = 10*3 = 30 m/s."
+      },
+      {
+        "question": "Desde un puente se deja caer una piedra y tarda 4 segundos en llegar al agua. ¿Cuál es la altura del puente? (g = 10 m/s²)",
+        "options": [
+          "40 m",
+          "60 m",
+          "80 m",
+          "100 m"
+        ],
+        "correct": 2,
+        "explanation": "La altura se obtiene con h = (1/2)*g*t² = 0.5*10*16 = 80 m."
+      },
+      {
+        "question": "Si un objeto se lanza hacia arriba con una velocidad inicial de 20 m/s, ¿cuánto tiempo tarda en alcanzar su altura máxima? (g = 10 m/s²)",
+        "options": [
+          "1 s",
+          "2 s",
+          "3 s",
+          "4 s"
+        ],
+        "correct": 1,
+        "explanation": "El tiempo de subida es t = v₀/g = 20/10 = 2 s."
+      },
+      {
+        "question": "Una pelota se deja caer desde una altura de 45 m. ¿Cuánto tiempo tarda en llegar al suelo? (g = 10 m/s²)",
+        "options": [
+          "2 s",
+          "3 s",
+          "4 s",
+          "5 s"
+        ],
+        "correct": 1,
+        "explanation": "Usando h = (1/2)*g*t², despejamos t = √(2h/g) = √(2*45/10) = √9 = 3 s."
+      },
+      {
+        "question": "Desde el suelo se lanza una piedra verticalmente hacia arriba con una velocidad de 30 m/s. ¿Cuál es su velocidad al regresar al punto de partida? (g = 10 m/s²)",
+        "options": [
+          "0 m/s",
+          "-30 m/s",
+          "30 m/s",
+          "-15 m/s"
+        ],
+        "correct": 1,
+        "explanation": "Por conservación de energía, la velocidad al regresar es igual en magnitud pero opuesta en dirección a la inicial, es decir, -30 m/s."
+      }
+    ]
+  },
+  "grafica-velocidad-tiempo-mru": {
+    "questions": [
+      {
+        "question": "En una gráfica velocidad-tiempo, ¿qué representa una línea horizontal?",
+        "options": [
+          "Que el objeto está acelerando",
+          "Que el objeto está en reposo",
+          "Que la velocidad es constante (MRU)",
+          "Que la velocidad disminuye"
+        ],
+        "correct": 2,
+        "explanation": "Una línea horizontal en velocidad-tiempo indica que la velocidad no cambia con el tiempo, por lo tanto es un Movimiento Rectilíneo Uniforme."
+      },
+      {
+        "question": "En el MRUV, la gráfica velocidad-tiempo es una línea inclinada. ¿Qué indica la pendiente de esa línea?",
+        "options": [
+          "La velocidad inicial",
+          "La aceleración",
+          "El tiempo transcurrido",
+          "La distancia recorrida"
+        ],
+        "correct": 1,
+        "explanation": "La pendiente de la recta en una gráfica v-t representa la aceleración, que es constante en el MRUV."
+      },
+      {
+        "question": "Si en una gráfica velocidad-tiempo la línea es recta con pendiente positiva, ¿qué tipo de movimiento describe?",
+        "options": [
+          "MRU con velocidad constante",
+          "MRUV con aceleración positiva",
+          "MRUV con aceleración negativa",
+          "Reposo"
+        ],
+        "correct": 1,
+        "explanation": "Una línea recta con pendiente positiva indica que la velocidad aumenta uniformemente, es decir, aceleración constante positiva (MRUV)."
+      },
+      {
+        "question": "¿Qué forma tiene la gráfica velocidad-tiempo de un objeto en MRUV con aceleración negativa?",
+        "options": [
+          "Línea horizontal",
+          "Línea inclinada hacia arriba",
+          "Línea inclinada hacia abajo",
+          "Curva parabólica"
+        ],
+        "correct": 2,
+        "explanation": "En MRUV con aceleración negativa, la velocidad disminuye linealmente, por lo que la gráfica es una línea recta con pendiente negativa (inclinada hacia abajo)."
+      },
+      {
+        "question": "En una gráfica velocidad-tiempo, ¿qué representa el área bajo la curva?",
+        "options": [
+          "La aceleración",
+          "La velocidad promedio",
+          "La distancia recorrida",
+          "El tiempo total"
+        ],
+        "correct": 2,
+        "explanation": "El área bajo la curva de una gráfica velocidad-tiempo es igual al desplazamiento o distancia recorrida por el objeto."
+      }
+    ]
+  },
+  "1-ley-inercia": {
+    "questions": [
+      {
+        "question": "Un libro está en reposo sobre una mesa. ¿Qué se puede afirmar sobre las fuerzas que actúan sobre él?",
+        "options": [
+          "La fuerza neta es cero, por lo que el libro permanece en reposo.",
+          "La fuerza neta es hacia abajo, por lo que el libro se mueve.",
+          "No hay fuerzas actuando sobre el libro.",
+          "La fuerza neta es hacia arriba, por lo que el libro flota."
+        ],
+        "correct": 0,
+        "explanation": "Según la primera ley de Newton, si la fuerza neta sobre un objeto es cero, este permanece en reposo o en movimiento rectilíneo uniforme. Aquí, el peso y la normal se equilibran."
+      },
+      {
+        "question": "Un carrito de juguete se mueve con velocidad constante sobre una superficie horizontal sin fricción. ¿Qué fuerza neta actúa sobre él?",
+        "options": [
+          "Una fuerza hacia adelante.",
+          "Una fuerza hacia atrás.",
+          "Fuerza neta cero.",
+          "Una fuerza hacia arriba."
+        ],
+        "correct": 2,
+        "explanation": "Si la velocidad es constante, la aceleración es cero, por lo que la fuerza neta debe ser cero según la primera ley de Newton."
+      },
+      {
+        "question": "Un astronauta empuja una caja en el espacio exterior, lejos de cualquier planeta. Después de soltarla, la caja:",
+        "options": [
+          "Se detiene inmediatamente.",
+          "Continúa moviéndose con velocidad constante.",
+          "Acelera hasta chocar con algo.",
+          "Se mueve en círculos."
+        ],
+        "correct": 1,
+        "explanation": "En ausencia de fuerzas externas, la caja mantiene su velocidad constante por inercia, según la primera ley de Newton."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos ilustra mejor el concepto de inercia?",
+        "options": [
+          "Un coche frena y los pasajeros se inclinan hacia adelante.",
+          "Una pelota cae al suelo por la gravedad.",
+          "Un imán atrae un clip metálico.",
+          "Un globo se infla al soplar aire."
+        ],
+        "correct": 0,
+        "explanation": "La inercia es la tendencia de un objeto a resistir cambios en su movimiento. Al frenar, los pasajeros continúan hacia adelante por inercia."
+      },
+      {
+        "question": "Si la fuerza neta sobre un objeto es cero, ¿cuál de las siguientes afirmaciones es verdadera?",
+        "options": [
+          "El objeto debe estar en reposo.",
+          "El objeto debe moverse con velocidad constante.",
+          "El objeto puede estar en reposo o moverse con velocidad constante.",
+          "El objeto siempre acelera."
+        ],
+        "correct": 2,
+        "explanation": "La primera ley de Newton establece que si la fuerza neta es cero, el objeto permanece en reposo o se mueve con velocidad constante."
+      }
+    ]
+  },
+  "2-ley": {
+    "questions": [
+      {
+        "question": "Si un objeto de 3 kg se acelera a 4 m/s², ¿qué fuerza neta actúa sobre él?",
+        "options": [
+          "7 N",
+          "12 N",
+          "0.75 N",
+          "1.33 N"
+        ],
+        "correct": 1,
+        "explanation": "Aplicamos la segunda ley de Newton: F = m × a = 3 kg × 4 m/s² = 12 N."
+      },
+      {
+        "question": "Una fuerza de 20 N se aplica a un cuerpo de 5 kg. ¿Qué aceleración experimenta?",
+        "options": [
+          "4 m/s²",
+          "100 m/s²",
+          "0.25 m/s²",
+          "15 m/s²"
+        ],
+        "correct": 0,
+        "explanation": "Despejamos a de F = m × a: a = F/m = 20 N / 5 kg = 4 m/s²."
+      },
+      {
+        "question": "Un auto de 1000 kg acelera a 2 m/s². ¿Cuál es la fuerza neta?",
+        "options": [
+          "500 N",
+          "2000 N",
+          "998 N",
+          "1002 N"
+        ],
+        "correct": 1,
+        "explanation": "F = m × a = 1000 kg × 2 m/s² = 2000 N."
+      },
+      {
+        "question": "¿Qué masa tiene un objeto si al aplicarle 50 N adquiere una aceleración de 10 m/s²?",
+        "options": [
+          "5 kg",
+          "0.2 kg",
+          "500 kg",
+          "60 kg"
+        ],
+        "correct": 0,
+        "explanation": "Despejamos m de F = m × a: m = F/a = 50 N / 10 m/s² = 5 kg."
+      },
+      {
+        "question": "Si la masa se duplica y la aceleración se mantiene constante, la fuerza:",
+        "options": [
+          "Se duplica",
+          "Se reduce a la mitad",
+          "Permanece igual",
+          "Se cuadruplica"
+        ],
+        "correct": 0,
+        "explanation": "Según F = m × a, si m se duplica y a es constante, F también se duplica."
+      }
+    ]
+  },
+  "ley-de-gravitacion-universal": {
+    "questions": [
+      {
+        "question": "La fuerza de atracción gravitacional entre dos cuerpos depende de:",
+        "options": [
+          "Sus masas y la distancia entre ellos",
+          "Sus masas y su velocidad",
+          "Su temperatura y su tamaño",
+          "Su color y su densidad"
+        ],
+        "correct": 0,
+        "explanation": "La Ley de Gravitación Universal establece que la fuerza es directamente proporcional al producto de las masas e inversamente proporcional al cuadrado de la distancia."
+      },
+      {
+        "question": "Si la distancia entre dos masas se duplica, la fuerza gravitacional entre ellas:",
+        "options": [
+          "Se duplica",
+          "Se reduce a la mitad",
+          "Se reduce a la cuarta parte",
+          "Se cuadruplica"
+        ],
+        "correct": 2,
+        "explanation": "Como la fuerza es inversamente proporcional al cuadrado de la distancia, al duplicar la distancia la fuerza se divide entre 4."
+      },
+      {
+        "question": "La constante de gravitación universal G tiene un valor de aproximadamente:",
+        "options": [
+          "6.67 × 10⁻¹¹ N·m²/kg²",
+          "9.8 m/s²",
+          "3 × 10⁸ m/s",
+          "1.6 × 10⁻¹⁹ C"
+        ],
+        "correct": 0,
+        "explanation": "G es la constante de proporcionalidad en la ley de gravitación universal, con un valor de 6.67 × 10⁻¹¹ N·m²/kg²."
+      },
+      {
+        "question": "¿Cuál es la fuerza gravitacional entre dos masas de 1 kg cada una separadas 1 m?",
+        "options": [
+          "6.67 × 10⁻¹¹ N",
+          "9.8 N",
+          "1 N",
+          "0 N"
+        ],
+        "correct": 0,
+        "explanation": "Usando F = G·m1·m2/r², con G = 6.67×10⁻¹¹, m1=m2=1 kg, r=1 m, resulta F = 6.67×10⁻¹¹ N."
+      },
+      {
+        "question": "La fuerza gravitacional que la Tierra ejerce sobre un objeto se llama:",
+        "options": [
+          "Peso",
+          "Masa",
+          "Inercia",
+          "Empuje"
+        ],
+        "correct": 0,
+        "explanation": "El peso es la fuerza con que la Tierra atrae a un objeto debido a la gravedad, y se calcula como mg."
+      }
+    ]
+  },
+  "fuerza-resultante": {
+    "questions": [
+      {
+        "question": "Dos personas jalan una caja con fuerzas de 30 N hacia el este y 40 N hacia el norte. ¿Cual es la magnitud de la fuerza resultante?",
+        "options": [
+          "50 N",
+          "70 N",
+          "10 N",
+          "1200 N"
+        ],
+        "correct": 0,
+        "explanation": "La fuerza resultante se obtiene sumando vectorialmente las fuerzas. Como son perpendiculares, se usa el teorema de Pitagoras: raiz de (30^2 + 40^2) = 50 N."
+      },
+      {
+        "question": "Una fuerza de 20 N hacia la derecha y otra de 15 N hacia la izquierda actuan sobre un objeto. ¿Cual es la fuerza resultante?",
+        "options": [
+          "35 N a la derecha",
+          "5 N a la izquierda",
+          "5 N a la derecha",
+          "35 N a la izquierda"
+        ],
+        "correct": 2,
+        "explanation": "Las fuerzas en direcciones opuestas se restan: 20 N - 15 N = 5 N hacia la derecha."
+      },
+      {
+        "question": "Si sobre un cuerpo actuan tres fuerzas: 10 N al este, 10 N al oeste y 5 N al norte. ¿Cual es la fuerza resultante?",
+        "options": [
+          "5 N al norte",
+          "15 N al norte",
+          "5 N al este",
+          "25 N"
+        ],
+        "correct": 0,
+        "explanation": "Las fuerzas de 10 N al este y oeste se cancelan entre si, quedando solo 5 N al norte."
+      },
+      {
+        "question": "Una fuerza de 8 N y otra de 6 N actuan en la misma direccion. ¿Cual es la magnitud de la fuerza resultante?",
+        "options": [
+          "2 N",
+          "14 N",
+          "10 N",
+          "48 N"
+        ],
+        "correct": 1,
+        "explanation": "Cuando las fuerzas actuan en la misma direccion, se suman: 8 N + 6 N = 14 N."
+      },
+      {
+        "question": "¿Que condicion debe cumplirse para que la fuerza resultante sobre un objeto sea cero?",
+        "options": [
+          "Todas las fuerzas deben ser iguales",
+          "Las fuerzas deben sumar cero vectorialmente",
+          "No debe haber fuerzas actuando",
+          "Las fuerzas deben ser perpendiculares"
+        ],
+        "correct": 1,
+        "explanation": "Para que la fuerza resultante sea cero, la suma vectorial de todas las fuerzas debe ser cero, es decir, deben equilibrarse."
+      }
+    ]
+  },
+  "equilibrio": {
+    "questions": [
+      {
+        "question": "Un libro reposa sobre una mesa. ¿Cuál es la fuerza resultante sobre el libro?",
+        "options": [
+          "La fuerza de gravedad",
+          "La fuerza normal",
+          "Cero",
+          "La fuerza de fricción"
+        ],
+        "correct": 2,
+        "explanation": "El libro está en equilibrio porque la fuerza de gravedad hacia abajo y la fuerza normal hacia arriba se cancelan, dando una fuerza resultante de cero."
+      },
+      {
+        "question": "Un automóvil avanza a velocidad constante en línea recta. ¿Qué podemos decir de la fuerza resultante?",
+        "options": [
+          "Es mayor que cero",
+          "Es cero",
+          "Es menor que cero",
+          "Depende de la masa"
+        ],
+        "correct": 1,
+        "explanation": "Si la velocidad es constante, no hay aceleración, por lo que la fuerza resultante es cero según la primera ley de Newton."
+      },
+      {
+        "question": "Dos personas jalan una caja con fuerzas de 50 N hacia la derecha y 30 N hacia la izquierda. ¿Cuál es la fuerza resultante?",
+        "options": [
+          "80 N hacia la derecha",
+          "20 N hacia la derecha",
+          "20 N hacia la izquierda",
+          "0 N"
+        ],
+        "correct": 1,
+        "explanation": "Las fuerzas se restan porque son opuestas: 50 N - 30 N = 20 N hacia la derecha, no hay equilibrio."
+      },
+      {
+        "question": "¿En cuál de las siguientes situaciones la fuerza resultante es cero?",
+        "options": [
+          "Un carrito que acelera cuesta abajo",
+          "Un avión que vuela a velocidad constante",
+          "Una pelota que cae libremente",
+          "Un resorte que se estira"
+        ],
+        "correct": 1,
+        "explanation": "Si la velocidad es constante, no hay cambio en el movimiento, por lo que la fuerza resultante es cero, indicando equilibrio."
+      },
+      {
+        "question": "Un objeto está en equilibrio. ¿Qué condición se cumple?",
+        "options": [
+          "Su velocidad cambia",
+          "La suma de fuerzas es cero",
+          "Hay una fuerza neta",
+          "Su aceleración es positiva"
+        ],
+        "correct": 1,
+        "explanation": "El equilibrio ocurre cuando la fuerza resultante es cero, lo que significa que todas las fuerzas se cancelan."
+      }
+    ]
+  },
+  "3-ley": {
+    "questions": [
+      {
+        "question": "Al patear un balón de fútbol, el pie ejerce una fuerza sobre el balón. Según la tercera ley de Newton, ¿qué ocurre?",
+        "options": [
+          "El balón ejerce una fuerza igual y opuesta sobre el pie.",
+          "El balón se mueve sin que el pie sienta nada.",
+          "La fuerza del pie se anula con la reacción del suelo.",
+          "El balón ejerce una fuerza menor sobre el pie."
+        ],
+        "correct": 0,
+        "explanation": "La tercera ley de Newton establece que a toda acción le corresponde una reacción igual y opuesta. Así, el balón ejerce sobre el pie una fuerza de igual magnitud pero en sentido contrario."
+      },
+      {
+        "question": "Un nadador empuja el agua hacia atrás con sus brazos. ¿Cuál es la reacción a esta fuerza?",
+        "options": [
+          "El agua empuja al nadador hacia adelante.",
+          "El nadador se hunde.",
+          "El agua se queda quieta.",
+          "El nadador gira en círculo."
+        ],
+        "correct": 0,
+        "explanation": "Al empujar el agua hacia atrás (acción), el agua reacciona empujando al nadador hacia adelante (reacción), permitiéndole avanzar."
+      },
+      {
+        "question": "¿Por qué al saltar desde un bote hacia un muelle, el bote se aleja de la orilla?",
+        "options": [
+          "Porque el bote ejerce una fuerza sobre la persona y la persona sobre el bote.",
+          "Porque el agua empuja el bote.",
+          "Porque la gravedad atrae el bote.",
+          "Porque el bote es más ligero que la persona."
+        ],
+        "correct": 0,
+        "explanation": "Al saltar, la persona empuja el bote hacia atrás (acción) y el bote empuja a la persona hacia adelante (reacción). Como el bote tiene menos masa, se mueve más."
+      },
+      {
+        "question": "Un cohete se impulsa en el espacio expulsando gases hacia atrás. ¿Qué ley de Newton explica su movimiento?",
+        "options": [
+          "Primera ley (inercia).",
+          "Segunda ley (F=ma).",
+          "Tercera ley (acción-reacción).",
+          "Ley de la gravitación universal."
+        ],
+        "correct": 2,
+        "explanation": "La tercera ley: los gases expulsados hacia atrás ejercen una fuerza de reacción hacia adelante sobre el cohete, impulsándolo."
+      },
+      {
+        "question": "Si golpeas una pared con tu mano, sientes dolor. Esto se debe a que:",
+        "options": [
+          "La pared ejerce una fuerza igual y opuesta sobre tu mano.",
+          "Tu mano es débil.",
+          "La pared absorbe el golpe.",
+          "La fuerza de tu mano se anula."
+        ],
+        "correct": 0,
+        "explanation": "Al golpear la pared (acción), la pared reacciona con una fuerza igual y opuesta sobre tu mano (reacción), causando dolor."
+      }
+    ]
+  },
+  "energia-cinetica": {
+    "questions": [
+      {
+        "question": "¿Cuál es la energía cinética de un automóvil de 1000 kg que viaja a 20 m/s?",
+        "options": [
+          "200,000 J",
+          "400,000 J",
+          "100,000 J",
+          "10,000 J"
+        ],
+        "correct": 0,
+        "explanation": "Se aplica la fórmula Ec = 0.5 × m × v² = 0.5 × 1000 × 400 = 200,000 J."
+      },
+      {
+        "question": "Si la velocidad de un objeto se duplica, ¿cómo cambia su energía cinética?",
+        "options": [
+          "Se duplica",
+          "Se cuadruplica",
+          "Se reduce a la mitad",
+          "No cambia"
+        ],
+        "correct": 1,
+        "explanation": "La energía cinética es proporcional al cuadrado de la velocidad, por lo que al duplicar la velocidad, la energía cinética se cuadruplica."
+      },
+      {
+        "question": "Un objeto de 2 kg tiene una energía cinética de 100 J. ¿Cuál es su velocidad?",
+        "options": [
+          "10 m/s",
+          "5 m/s",
+          "20 m/s",
+          "50 m/s"
+        ],
+        "correct": 0,
+        "explanation": "Despejando v de Ec = 0.5 × m × v², v = √(2×Ec/m) = √(200/2) = √100 = 10 m/s."
+      },
+      {
+        "question": "¿Qué factor afecta directamente la energía cinética de un cuerpo en movimiento?",
+        "options": [
+          "Masa y velocidad",
+          "Masa y altura",
+          "Velocidad y tiempo",
+          "Fuerza y distancia"
+        ],
+        "correct": 0,
+        "explanation": "La energía cinética depende de la masa y del cuadrado de la velocidad, según la fórmula Ec = 0.5 × m × v²."
+      },
+      {
+        "question": "Un cuerpo de 5 kg se mueve a 4 m/s. ¿Cuál es su energía cinética?",
+        "options": [
+          "40 J",
+          "20 J",
+          "10 J",
+          "80 J"
+        ],
+        "correct": 0,
+        "explanation": "Ec = 0.5 × 5 × 4² = 0.5 × 5 × 16 = 40 J."
+      }
+    ]
+  },
+  "trabajo": {
+    "questions": [
+      {
+        "question": "Un trabajador empuja una caja con una fuerza de 50 N a lo largo de 4 m, pero la fuerza forma un ángulo de 90° con el desplazamiento. ¿Cuánto trabajo realiza?",
+        "options": [
+          "200 J",
+          "0 J",
+          "50 J",
+          "4 J"
+        ],
+        "correct": 1,
+        "explanation": "Cuando la fuerza es perpendicular al desplazamiento (θ=90°), cos(90°)=0, por lo que el trabajo es cero."
+      },
+      {
+        "question": "Si una fuerza de 20 N se aplica horizontalmente para mover un objeto 5 m en la misma dirección, ¿cuánto trabajo se realiza?",
+        "options": [
+          "4 J",
+          "100 J",
+          "20 J",
+          "0 J"
+        ],
+        "correct": 1,
+        "explanation": "El trabajo es W = F×d×cos(0°) = 20 N × 5 m × 1 = 100 J."
+      },
+      {
+        "question": "¿En qué unidad se mide el trabajo en el Sistema Internacional?",
+        "options": [
+          "Newton",
+          "Joule",
+          "Watt",
+          "Metro"
+        ],
+        "correct": 1,
+        "explanation": "El trabajo se mide en joules (J), que es equivalente a N·m."
+      },
+      {
+        "question": "Un levantador de pesas sostiene una barra de 100 N sin moverla durante 10 segundos. ¿Qué trabajo realiza?",
+        "options": [
+          "1000 J",
+          "100 J",
+          "10 J",
+          "0 J"
+        ],
+        "correct": 3,
+        "explanation": "No hay desplazamiento (d=0), por lo que el trabajo es cero, independientemente de la fuerza aplicada."
+      },
+      {
+        "question": "Se aplica una fuerza de 30 N a un objeto, pero el desplazamiento es de 2 m en dirección perpendicular a la fuerza. ¿Cuál es el trabajo realizado?",
+        "options": [
+          "60 J",
+          "30 J",
+          "15 J",
+          "0 J"
+        ],
+        "correct": 3,
+        "explanation": "Al ser el ángulo de 90°, cos(90°)=0, entonces el trabajo es cero."
+      }
+    ]
+  },
+  "energia-potencial": {
+    "questions": [
+      {
+        "question": "Un objeto de 2 kg se encuentra a una altura de 10 m. ¿Cuál es su energía potencial? (Considera g=10 m/s²)",
+        "options": [
+          "20 J",
+          "200 J",
+          "100 J",
+          "50 J"
+        ],
+        "correct": 1,
+        "explanation": "La fórmula es Ep = m*g*h. Sustituyendo: Ep = 2 kg * 10 m/s² * 10 m = 200 J."
+      },
+      {
+        "question": "Si la masa de un objeto se duplica y la altura se mantiene constante, la energía potencial:",
+        "options": [
+          "se duplica",
+          "se reduce a la mitad",
+          "se cuadruplica",
+          "no cambia"
+        ],
+        "correct": 0,
+        "explanation": "La energía potencial es directamente proporcional a la masa, por lo que al duplicar la masa, la energía potencial también se duplica."
+      },
+      {
+        "question": "Un libro de 0.5 kg está en un estante a 2 m de altura. Si se baja a 1 m, ¿cuánto cambia su energía potencial? (g=10 m/s²)",
+        "options": [
+          "Disminuye 5 J",
+          "Aumenta 5 J",
+          "Disminuye 10 J",
+          "No cambia"
+        ],
+        "correct": 0,
+        "explanation": "Ep inicial = 0.5*10*2 = 10 J; Ep final = 0.5*10*1 = 5 J; cambio = 5 J de disminución."
+      },
+      {
+        "question": "¿Qué sucede con la energía potencial de un objeto si se triplica su altura y se mantiene la masa constante?",
+        "options": [
+          "Se triplica",
+          "Se reduce a un tercio",
+          "Se multiplica por 9",
+          "No cambia"
+        ],
+        "correct": 0,
+        "explanation": "La energía potencial es directamente proporcional a la altura, por lo que al triplicar la altura, la energía potencial se triplica."
+      },
+      {
+        "question": "Una maceta de 3 kg cae desde un balcón a 4 m de altura. ¿Cuál es su energía potencial justo antes de caer? (g=10 m/s²)",
+        "options": [
+          "120 J",
+          "12 J",
+          "40 J",
+          "60 J"
+        ],
+        "correct": 0,
+        "explanation": "Ep = m*g*h = 3 kg * 10 m/s² * 4 m = 120 J."
+      }
+    ]
+  },
+  "peso-masa-g-diferencia": {
+    "questions": [
+      {
+        "question": "Un objeto tiene una masa de 5 kg en la Tierra. ¿Cuál es su peso aproximado? (Considera g = 9.8 m/s²)",
+        "options": [
+          "5 N",
+          "49 N",
+          "0.51 N",
+          "9.8 N"
+        ],
+        "correct": 1,
+        "explanation": "El peso se calcula como P = masa × g = 5 kg × 9.8 m/s² = 49 N. La masa es intrínseca, el peso depende de la gravedad."
+      },
+      {
+        "question": "¿Cuál es la principal diferencia entre masa y peso?",
+        "options": [
+          "La masa se mide en newtons y el peso en kilogramos",
+          "La masa es una fuerza y el peso es una propiedad de la materia",
+          "La masa es la cantidad de materia y el peso es la fuerza debida a la gravedad",
+          "La masa varía con la ubicación, el peso es constante"
+        ],
+        "correct": 2,
+        "explanation": "La masa es una propiedad intrínseca de la materia medida en kg, mientras que el peso es la fuerza gravitacional sobre ella, medida en N y varía con la gravedad."
+      },
+      {
+        "question": "Si un astronauta tiene una masa de 70 kg en la Tierra, ¿cuál será su peso en la Luna donde g = 1.6 m/s²?",
+        "options": [
+          "112 N",
+          "70 N",
+          "686 N",
+          "43.75 N"
+        ],
+        "correct": 0,
+        "explanation": "Peso en la Luna = masa × g_luna = 70 kg × 1.6 m/s² = 112 N. La masa no cambia, pero el peso sí por la diferente gravedad."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones es correcta?",
+        "options": [
+          "El peso de un objeto es el mismo en cualquier lugar del universo",
+          "La masa de un objeto cambia según la gravedad",
+          "El peso se mide en kilogramos",
+          "La masa es una magnitud escalar y el peso es una fuerza vectorial"
+        ],
+        "correct": 3,
+        "explanation": "La masa es escalar (solo magnitud) y el peso es vectorial (tiene dirección hacia el centro de la Tierra), medido en newtons."
+      },
+      {
+        "question": "Un objeto pesa 98 N en la Tierra. ¿Cuál es su masa? (g = 9.8 m/s²)",
+        "options": [
+          "10 kg",
+          "960.4 kg",
+          "0.1 kg",
+          "98 kg"
+        ],
+        "correct": 0,
+        "explanation": "Despejando masa = peso / g = 98 N / 9.8 m/s² = 10 kg. La masa es la cantidad de materia, independiente de la gravedad."
+      }
+    ]
+  },
+  "conservacion": {
+    "questions": [
+      {
+        "question": "Un objeto de 2 kg se deja caer desde una altura de 10 m. ¿Qué afirmación es correcta sobre su energía mecánica durante la caída (sin fricción)?",
+        "options": [
+          "La energía cinética disminuye y la potencial aumenta.",
+          "La energía cinética aumenta y la potencial disminuye.",
+          "La energía mecánica total aumenta.",
+          "La energía mecánica total disminuye."
+        ],
+        "correct": 1,
+        "explanation": "Al caer, la energía potencial gravitatoria se transforma en energía cinética, por lo que la energía potencial disminuye y la cinética aumenta. La energía mecánica total se conserva si no hay fricción."
+      },
+      {
+        "question": "Si la energía mecánica de un sistema se conserva, ¿qué ocurre cuando la energía potencial disminuye?",
+        "options": [
+          "La energía cinética permanece igual.",
+          "La energía cinética disminuye.",
+          "La energía cinética aumenta.",
+          "La energía cinética se anula."
+        ],
+        "correct": 2,
+        "explanation": "Cuando la energía potencial disminuye, esa energía se convierte en cinética, por lo que la energía cinética aumenta para mantener constante la energía mecánica total."
+      },
+      {
+        "question": "Una pelota se lanza verticalmente hacia arriba. En el punto más alto de su trayectoria, sin considerar fricción, ¿cómo son sus energías?",
+        "options": [
+          "Máxima energía cinética y mínima potencial.",
+          "Mínima energía cinética y máxima potencial.",
+          "Ambas energías son iguales.",
+          "Ambas energías son cero."
+        ],
+        "correct": 1,
+        "explanation": "En el punto más alto, la velocidad es cero, por lo que la energía cinética es mínima (cero) y la energía potencial es máxima."
+      },
+      {
+        "question": "¿Qué principio explica que la energía no se crea ni se destruye, solo se transforma?",
+        "options": [
+          "Principio de conservación de la masa.",
+          "Primera ley de Newton.",
+          "Principio de conservación de la energía.",
+          "Segunda ley de Newton."
+        ],
+        "correct": 2,
+        "explanation": "El principio de conservación de la energía establece que la energía total de un sistema aislado permanece constante, solo se transforma de una forma a otra."
+      },
+      {
+        "question": "Un carrito de 0.5 kg se desliza sin fricción por una rampa. Si al inicio tiene una energía potencial de 20 J, ¿cuál será su energía cinética al llegar al suelo?",
+        "options": [
+          "0 J",
+          "10 J",
+          "20 J",
+          "40 J"
+        ],
+        "correct": 2,
+        "explanation": "Sin fricción, la energía mecánica se conserva. Al llegar al suelo, toda la energía potencial se convierte en cinética, por lo que la energía cinética es igual a la energía potencial inicial: 20 J."
+      }
+    ]
+  },
+  "temperatura": {
+    "questions": [
+      {
+        "question": "La temperatura de un cuerpo mide:",
+        "options": [
+          "La cantidad total de calor que contiene",
+          "El movimiento promedio de sus partículas",
+          "La presión que ejerce sobre otros cuerpos",
+          "La energía cinética total de todas sus partículas"
+        ],
+        "correct": 1,
+        "explanation": "La temperatura está relacionada con la energía cinética promedio de las partículas, no con la energía total."
+      },
+      {
+        "question": "Si la temperatura de un gas aumenta, ¿qué ocurre con el movimiento de sus partículas?",
+        "options": [
+          "Disminuye",
+          "Permanece igual",
+          "Aumenta",
+          "Se detiene"
+        ],
+        "correct": 2,
+        "explanation": "Al aumentar la temperatura, las partículas se mueven más rápido, incrementando su energía cinética promedio."
+      },
+      {
+        "question": "¿En qué unidad se mide la temperatura en el Sistema Internacional?",
+        "options": [
+          "Grados Celsius",
+          "Grados Fahrenheit",
+          "Kelvin",
+          "Joules"
+        ],
+        "correct": 2,
+        "explanation": "La unidad del Sistema Internacional para temperatura es el Kelvin (K)."
+      },
+      {
+        "question": "Dos cuerpos tienen la misma temperatura si:",
+        "options": [
+          "Tienen la misma cantidad de calor",
+          "Sus partículas tienen la misma energía cinética promedio",
+          "Tienen el mismo volumen",
+          "Están hechos del mismo material"
+        ],
+        "correct": 1,
+        "explanation": "La temperatura igual implica que la energía cinética promedio de las partículas es la misma."
+      },
+      {
+        "question": "Al calentar un gas en un recipiente cerrado, la presión aumenta porque:",
+        "options": [
+          "Las partículas se vuelven más pesadas",
+          "Aumenta el número de partículas",
+          "Las partículas chocan con más frecuencia y fuerza contra las paredes",
+          "El gas se expande"
+        ],
+        "correct": 2,
+        "explanation": "El aumento de temperatura incrementa la velocidad de las partículas, provocando más colisiones y mayor presión."
+      }
+    ]
+  },
+  "presion": {
+    "questions": [
+      {
+        "question": "¿Cuál es la presión ejercida sobre una superficie de 2 m² cuando se aplica una fuerza de 100 N?",
+        "options": [
+          "50 Pa",
+          "200 Pa",
+          "0.02 Pa",
+          "100 Pa"
+        ],
+        "correct": 0,
+        "explanation": "Presión = fuerza/área = 100 N / 2 m² = 50 Pa. La unidad es el pascal."
+      },
+      {
+        "question": "Si la fuerza aplicada sobre un área se duplica y el área se mantiene constante, ¿cómo cambia la presión?",
+        "options": [
+          "Se duplica",
+          "Se reduce a la mitad",
+          "No cambia",
+          "Se cuadruplica"
+        ],
+        "correct": 0,
+        "explanation": "Presión es directamente proporcional a la fuerza, por lo que al duplicar la fuerza, la presión también se duplica."
+      },
+      {
+        "question": "Una caja de 500 N de peso está apoyada sobre una superficie de 0.5 m². ¿Qué presión ejerce?",
+        "options": [
+          "250 Pa",
+          "1000 Pa",
+          "500 Pa",
+          "0.001 Pa"
+        ],
+        "correct": 1,
+        "explanation": "Presión = 500 N / 0.5 m² = 1000 Pa. La fuerza es el peso."
+      },
+      {
+        "question": "¿En cuál de las siguientes situaciones se ejerce mayor presión?",
+        "options": [
+          "Misma fuerza en área pequeña",
+          "Misma fuerza en área grande",
+          "Menor fuerza en área grande",
+          "Fuerza y área iguales"
+        ],
+        "correct": 0,
+        "explanation": "La presión es mayor cuando la fuerza se concentra en un área pequeña, como un clavo."
+      },
+      {
+        "question": "Un Pascal equivale a:",
+        "options": [
+          "1 N/m²",
+          "1 N·m",
+          "1 kg/m³",
+          "1 m/s²"
+        ],
+        "correct": 0,
+        "explanation": "1 Pa = 1 N/m², que es la unidad de presión en el Sistema Internacional."
+      }
+    ]
+  },
+  "modelo-cinetico": {
+    "questions": [
+      {
+        "question": "Según el modelo cinético de la materia, ¿qué ocurre con las partículas de un gas cuando se calienta?",
+        "options": [
+          "Disminuye su velocidad",
+          "Aumenta su velocidad",
+          "Se detienen por completo",
+          "Se vuelven más pesadas"
+        ],
+        "correct": 1,
+        "explanation": "Al calentar un gas, las partículas ganan energía cinética y se mueven más rápido."
+      },
+      {
+        "question": "En el modelo cinético, la presión de un gas se debe principalmente a:",
+        "options": [
+          "La atracción entre partículas",
+          "El peso de las partículas",
+          "Los choques de las partículas contra las paredes del recipiente",
+          "La temperatura del recipiente"
+        ],
+        "correct": 2,
+        "explanation": "La presión es causada por las colisiones de las partículas en movimiento contra las paredes."
+      },
+      {
+        "question": "Si la temperatura de un gas aumenta a volumen constante, ¿qué sucede con la presión?",
+        "options": [
+          "Disminuye",
+          "Permanece igual",
+          "Aumenta",
+          "Se vuelve cero"
+        ],
+        "correct": 2,
+        "explanation": "Al aumentar la temperatura, las partículas se mueven más rápido y chocan con más fuerza, aumentando la presión."
+      },
+      {
+        "question": "Según el modelo cinético, las partículas en un sólido:",
+        "options": [
+          "Están completamente inmóviles",
+          "Se mueven libremente en todas direcciones",
+          "Vibran alrededor de posiciones fijas",
+          "Se deslizan unas sobre otras"
+        ],
+        "correct": 2,
+        "explanation": "En los sólidos, las partículas vibran en posiciones fijas debido a las fuertes fuerzas de atracción."
+      },
+      {
+        "question": "¿Qué ocurre con la energía cinética promedio de las partículas cuando un gas se enfría?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "Se mantiene constante",
+          "Se convierte en energía potencial"
+        ],
+        "correct": 1,
+        "explanation": "Al enfriar, las partículas pierden energía cinética, por lo que se mueven más lentamente."
+      }
+    ]
+  },
+  "calor": {
+    "questions": [
+      {
+        "question": "¿Qué es el calor según el modelo cinético de la materia?",
+        "options": [
+          "Una sustancia que fluye entre los cuerpos",
+          "La energía cinética total de las partículas de un cuerpo",
+          "La energía que se transfiere de un cuerpo caliente a uno frío",
+          "La temperatura de un cuerpo"
+        ],
+        "correct": 2,
+        "explanation": "El calor es la transferencia de energía térmica entre cuerpos a diferente temperatura, no una sustancia ni la energía total de las partículas."
+      },
+      {
+        "question": "Si colocas una cuchara metálica fría en una taza de café caliente, ¿qué ocurre con el calor?",
+        "options": [
+          "El calor se transfiere del café a la cuchara",
+          "El calor se transfiere de la cuchara al café",
+          "No hay transferencia de calor",
+          "El calor se convierte en frío"
+        ],
+        "correct": 0,
+        "explanation": "El calor siempre fluye del cuerpo de mayor temperatura (café) al de menor temperatura (cuchara) hasta equilibrarse."
+      },
+      {
+        "question": "En el modelo cinético, ¿cómo se relaciona la temperatura con el movimiento de las partículas?",
+        "options": [
+          "A mayor temperatura, menor movimiento de partículas",
+          "A mayor temperatura, mayor movimiento de partículas",
+          "La temperatura no afecta el movimiento",
+          "Las partículas se detienen al aumentar la temperatura"
+        ],
+        "correct": 1,
+        "explanation": "La temperatura es una medida de la energía cinética promedio de las partículas: a mayor temperatura, más rápido se mueven."
+      },
+      {
+        "question": "¿Qué sucede con la presión de un gas si se aumenta su temperatura a volumen constante?",
+        "options": [
+          "Disminuye",
+          "Permanece igual",
+          "Aumenta",
+          "Se vuelve cero"
+        ],
+        "correct": 2,
+        "explanation": "Al aumentar la temperatura, las partículas se mueven más rápido y chocan con más fuerza contra las paredes, aumentando la presión."
+      },
+      {
+        "question": "Dos cuerpos A y B están en contacto. A está a 80°C y B a 50°C. ¿Hasta cuándo fluye el calor?",
+        "options": [
+          "Hasta que A alcance 0°C",
+          "Hasta que ambos tengan la misma temperatura",
+          "Hasta que B alcance 80°C",
+          "El calor fluye indefinidamente"
+        ],
+        "correct": 1,
+        "explanation": "El calor se transfiere hasta que los cuerpos alcanzan el equilibrio térmico, es decir, la misma temperatura."
+      }
+    ]
+  },
+  "calor-temperatura": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes afirmaciones describe correctamente la diferencia entre calor y temperatura?",
+        "options": [
+          "El calor es una propiedad de un objeto, mientras que la temperatura es la energía total.",
+          "La temperatura es la transferencia de energía, mientras que el calor es la energía cinética promedio.",
+          "El calor es la transferencia de energía térmica, mientras que la temperatura mide la energía cinética promedio de las partículas.",
+          "El calor y la temperatura son lo mismo, solo que se miden en diferentes unidades."
+        ],
+        "correct": 2,
+        "explanation": "El calor es energía en tránsito debido a una diferencia de temperatura, mientras que la temperatura es una medida de la energía cinética promedio de las partículas."
+      },
+      {
+        "question": "Dos objetos están en contacto térmico. Uno está a 80 °C y el otro a 50 °C. ¿Qué ocurre con el calor?",
+        "options": [
+          "El calor fluye del objeto a 50 °C al de 80 °C hasta que ambos alcanzan la misma temperatura.",
+          "El calor fluye del objeto a 80 °C al de 50 °C hasta que ambos alcanzan la misma temperatura.",
+          "No hay transferencia de calor porque ambos están en contacto.",
+          "El calor se transfiere solo si los objetos tienen la misma masa."
+        ],
+        "correct": 1,
+        "explanation": "El calor siempre fluye del objeto de mayor temperatura al de menor temperatura hasta que se alcanza el equilibrio térmico."
+      },
+      {
+        "question": "Una taza de café caliente se deja en una mesa. Con el tiempo, el café se enfría. ¿Qué afirmación es correcta?",
+        "options": [
+          "El café pierde temperatura, y esa pérdida es calor.",
+          "El café pierde calor, y su temperatura disminuye.",
+          "El café pierde calor, pero su temperatura permanece constante.",
+          "El café gana frío del ambiente, por eso se enfría."
+        ],
+        "correct": 1,
+        "explanation": "El café transfiere calor al ambiente, lo que hace que su temperatura disminuya. El calor es la energía transferida, no la temperatura."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos representa correctamente el concepto de calor?",
+        "options": [
+          "Un metal a 100 °C tiene más calor que uno a 50 °C.",
+          "Al tocar un objeto caliente, sentimos que nos transfiere calor.",
+          "La temperatura de un objeto es la cantidad de calor que contiene.",
+          "El calor es una propiedad que poseen los objetos calientes."
+        ],
+        "correct": 1,
+        "explanation": "El calor es energía en transferencia, no una propiedad almacenada. Al tocar un objeto caliente, el calor se transfiere a nuestra mano."
+      },
+      {
+        "question": "Se tienen dos bloques del mismo material: uno de 1 kg a 80 °C y otro de 2 kg a 80 °C. ¿Cuál tiene más calor?",
+        "options": [
+          "El de 2 kg, porque tiene mayor masa y por lo tanto más calor.",
+          "El de 1 kg, porque tiene menos masa y el calor es menor.",
+          "Ninguno, porque ambos están a la misma temperatura y el calor no es una propiedad.",
+          "Ambos tienen la misma cantidad de calor porque están a la misma temperatura."
+        ],
+        "correct": 2,
+        "explanation": "El calor no es una propiedad del objeto; es energía en transferencia. Ambos bloques están a la misma temperatura, pero no se puede decir que tengan cierta cantidad de calor."
+      }
+    ]
+  },
+  "electrizacion-por-frotamiento": {
+    "questions": [
+      {
+        "question": "Al frotar un globo con un suéter de lana, el globo adquiere carga negativa. ¿Qué ocurrió?",
+        "options": [
+          "El globo perdió electrones",
+          "El globo ganó electrones",
+          "El suéter ganó protones",
+          "El suéter perdió protones"
+        ],
+        "correct": 1,
+        "explanation": "El globo ganó electrones del suéter, quedando con carga negativa. El suéter perdió electrones, quedando con carga positiva."
+      },
+      {
+        "question": "¿Cuál de los siguientes materiales es más probable que se cargue positivamente al frotarlo con un paño de seda?",
+        "options": [
+          "Vidrio",
+          "Plástico",
+          "Goma",
+          "Metal"
+        ],
+        "correct": 0,
+        "explanation": "El vidrio tiende a perder electrones al frotarlo con seda, adquiriendo carga positiva. Los otros materiales suelen ganar electrones."
+      },
+      {
+        "question": "Dos objetos se frotan entre sí. Uno queda con carga positiva y el otro con carga negativa. ¿Qué se transfiere?",
+        "options": [
+          "Protones",
+          "Electrones",
+          "Neutrones",
+          "Átomos"
+        ],
+        "correct": 1,
+        "explanation": "Solo los electrones se transfieren por frotamiento, ya que los protones están fijos en el núcleo. Un objeto pierde electrones y el otro los gana."
+      },
+      {
+        "question": "Al frotar una barra de plástico con un paño de lana, la barra se carga negativamente. ¿Cómo queda el paño?",
+        "options": [
+          "Con carga positiva",
+          "Con carga negativa",
+          "Neutro",
+          "Con carga alterna"
+        ],
+        "correct": 0,
+        "explanation": "El paño de lana pierde electrones, por lo que queda con carga positiva. La barra de plástico gana esos electrones."
+      },
+      {
+        "question": "¿Qué sucede con las cargas eléctricas durante la electrización por frotamiento?",
+        "options": [
+          "Se crean cargas nuevas",
+          "Se destruyen cargas",
+          "Se transfieren electrones",
+          "Se transfieren protones"
+        ],
+        "correct": 2,
+        "explanation": "Las cargas no se crean ni destruyen, solo se transfieren electrones de un material a otro. Un material se carga positivamente y el otro negativamente."
+      }
+    ]
+  },
+  "cargas-electricas": {
+    "questions": [
+      {
+        "question": "Dos esferas tienen cargas electricas de +3 C y -3 C. Al acercarlas, ¿que ocurre?",
+        "options": [
+          "Se repelen",
+          "Se atraen",
+          "No interactuan",
+          "Se descargan"
+        ],
+        "correct": 1,
+        "explanation": "Las cargas opuestas (positiva y negativa) se atraen segun la ley de cargas electricas."
+      },
+      {
+        "question": "Si frotas un globo en tu cabello y luego lo acercas a un papel, ¿por que el papel es atraido?",
+        "options": [
+          "Porque el globo y el papel tienen cargas iguales",
+          "Porque el globo se carga y el papel tiene carga opuesta",
+          "Porque el papel tiene carga positiva",
+          "Porque el globo pierde electrones"
+        ],
+        "correct": 1,
+        "explanation": "Al frotar, el globo adquiere carga negativa y el papel tiene carga positiva u opuesta, causando atraccion."
+      },
+      {
+        "question": "Dos cargas de +2 C cada una se colocan cerca. ¿Que fuerza experimentan?",
+        "options": [
+          "Atraccion",
+          "Repulsion",
+          "No hay fuerza",
+          "Se neutralizan"
+        ],
+        "correct": 1,
+        "explanation": "Cargas del mismo signo (positivo-positivo) se repelen entre si."
+      },
+      {
+        "question": "Un atomo tiene 8 protones y 6 electrones. ¿Que tipo de carga tiene?",
+        "options": [
+          "Positiva",
+          "Negativa",
+          "Neutra",
+          "No se puede determinar"
+        ],
+        "correct": 0,
+        "explanation": "Tiene mas protones (positivos) que electrones (negativos), por lo que la carga neta es positiva."
+      },
+      {
+        "question": "Al acercar una barra de plastico cargada negativamente a una esfera metalica neutra, ¿que ocurre?",
+        "options": [
+          "La esfera se carga positivamente",
+          "La esfera se carga negativamente",
+          "La esfera permanece neutra",
+          "Se repelen inmediatamente"
+        ],
+        "correct": 0,
+        "explanation": "La barra negativa repele electrones de la esfera, dejando carga positiva en el lado cercano."
+      }
+    ]
+  },
+  "electrizacion-por-contacto": {
+    "questions": [
+      {
+        "question": "¿Qué sucede cuando un conductor con carga positiva toca un conductor neutro?",
+        "options": [
+          "El conductor neutro queda cargado positivamente",
+          "El conductor neutro queda cargado negativamente",
+          "Ambos conductores quedan neutros",
+          "La carga se transfiere al aire"
+        ],
+        "correct": 0,
+        "explanation": "Al tocar un conductor cargado con uno neutro, la carga se distribuye entre ambos, quedando el neutro con carga del mismo signo."
+      },
+      {
+        "question": "En la electrización por contacto, ¿cómo es la carga final de los dos conductores?",
+        "options": [
+          "Del mismo signo y magnitud igual",
+          "De signo opuesto y magnitud igual",
+          "Del mismo signo pero magnitud diferente",
+          "Utero queda neutro y el otro con carga"
+        ],
+        "correct": 2,
+        "explanation": "Al tocar un conductor cargado con otro neutro, la carga se reparte dependiendo del tamaño y capacidad, pero ambos quedan con el mismo signo."
+      },
+      {
+        "question": "Si un cuerpo A con carga negativa toca a un cuerpo B neutro, ¿qué carga adquiere B?",
+        "options": [
+          "Positiva",
+          "Negativa",
+          "Neutra",
+          "Depende del material"
+        ],
+        "correct": 1,
+        "explanation": "Al contacto, parte de los electrones de A pasan a B, por lo que B adquiere carga negativa."
+      },
+      {
+        "question": "¿Qué condición es necesaria para que ocurra electrización por contacto?",
+        "options": [
+          "Los cuerpos deben ser aislantes",
+          "Los cuerpos deben ser conductores",
+          "Los cuerpos deben estar aislados",
+          "Los cuerpos deben tener carga opuesta"
+        ],
+        "correct": 1,
+        "explanation": "La electrización por contacto se da principalmente en conductores, donde la carga puede moverse libremente."
+      },
+      {
+        "question": "Al electrizar por contacto un conductor esférico pequeño con otro grande cargado positivamente, ¿cómo queda la carga en el pequeño?",
+        "options": [
+          "Positiva",
+          "Negativa",
+          "Neutra",
+          "No se electriza"
+        ],
+        "correct": 0,
+        "explanation": "Al tocar un conductor cargado positivamente con uno neutro, este adquiere carga positiva por falta de electrones."
+      }
+    ]
+  },
+  "principio-de-conservacion-de-energia": {
+    "questions": [
+      {
+        "question": "¿Qué ocurre con la energía cuando un objeto en movimiento se detiene debido a la fricción?",
+        "options": [
+          "Se destruye completamente",
+          "Se transforma en energía térmica",
+          "Se almacena en el objeto",
+          "Se convierte en masa"
+        ],
+        "correct": 1,
+        "explanation": "La energía no se destruye, se transforma en calor debido a la fricción, aumentando la temperatura del objeto y el entorno."
+      },
+      {
+        "question": "Un automóvil consume gasolina para moverse. ¿Qué transformación de energía ocurre principalmente?",
+        "options": [
+          "Energía química a energía cinética",
+          "Energía cinética a energía potencial",
+          "Energía térmica a energía química",
+          "Energía nuclear a energía eléctrica"
+        ],
+        "correct": 0,
+        "explanation": "La gasolina contiene energía química que se libera en la combustión y se transforma en energía cinética que mueve el automóvil."
+      },
+      {
+        "question": "Al calentar agua en una estufa, la energía del gas se convierte en calor que eleva la temperatura del agua. ¿Qué principio se cumple?",
+        "options": [
+          "La energía se crea en la combustión",
+          "La energía se transforma sin perderse",
+          "La energía se destruye al calentar",
+          "La energía térmica se convierte en luz"
+        ],
+        "correct": 1,
+        "explanation": "La energía química del gas se transforma en energía térmica; la cantidad total de energía se conserva, solo cambia de forma."
+      },
+      {
+        "question": "Una pelota cae desde una altura y rebota cada vez más bajo hasta detenerse. ¿Dónde va la energía que pierde?",
+        "options": [
+          "Se destruye en el impacto",
+          "Se transforma en energía sonora y térmica",
+          "Se almacena en el suelo",
+          "Se convierte en energía potencial"
+        ],
+        "correct": 1,
+        "explanation": "En cada rebote, parte de la energía se disipa como sonido y calor debido a la deformación y fricción, conservándose la energía total."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de transformación de energía eléctrica en energía luminosa?",
+        "options": [
+          "Un motor eléctrico",
+          "Una licuadora",
+          "Un foco incandescente",
+          "Una batería recargándose"
+        ],
+        "correct": 2,
+        "explanation": "En un foco, la energía eléctrica se transforma en luz y algo de calor; la energía total se conserva."
+      }
+    ]
+  },
+  "principio-de-pascal": {
+    "questions": [
+      {
+        "question": "¿Qué establece el principio de Pascal?",
+        "options": [
+          "La presión en un fluido disminuye con la profundidad",
+          "La presión aplicada a un fluido se transmite íntegramente en todas direcciones",
+          "La presión depende únicamente de la densidad del fluido",
+          "La presión solo se transmite en la dirección de la fuerza aplicada"
+        ],
+        "correct": 1,
+        "explanation": "El principio de Pascal dice que la presión aplicada a un fluido confinado se transmite sin cambio a todas las partes del fluido y a las paredes del recipiente."
+      },
+      {
+        "question": "Un gato hidráulico utiliza el principio de Pascal. Si se aplica una fuerza pequeña en un pistón pequeño, ¿qué ocurre en el pistón grande?",
+        "options": [
+          "Se genera una fuerza menor",
+          "Se genera una fuerza igual",
+          "Se genera una fuerza mayor",
+          "No se genera fuerza"
+        ],
+        "correct": 2,
+        "explanation": "Al aplicar una fuerza pequeña en un área pequeña, la presión se transmite y produce una fuerza mayor en el área grande, multiplicando la fuerza."
+      },
+      {
+        "question": "En un sistema hidráulico, si el área del pistón grande es 5 veces el área del pistón pequeño, ¿cuántas veces mayor es la fuerza en el pistón grande?",
+        "options": [
+          "2 veces",
+          "5 veces",
+          "10 veces",
+          "25 veces"
+        ],
+        "correct": 1,
+        "explanation": "La fuerza es proporcional al área, por lo que si el área es 5 veces mayor, la fuerza también es 5 veces mayor."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos aplica el principio de Pascal?",
+        "options": [
+          "Un termómetro de mercurio",
+          "Un freno hidráulico de un automóvil",
+          "Una bomba de vacío",
+          "Un barómetro de mercurio"
+        ],
+        "correct": 1,
+        "explanation": "Los frenos hidráulicos transmiten la presión del pedal a las ruedas mediante un fluido, aplicando el principio de Pascal."
+      },
+      {
+        "question": "¿Por qué es posible levantar un automóvil con un gato hidráulico aplicando una fuerza pequeña?",
+        "options": [
+          "Porque el fluido se comprime",
+          "Porque la presión se transmite sin pérdida y se multiplica la fuerza",
+          "Porque el fluido se calienta",
+          "Porque la gravedad disminuye"
+        ],
+        "correct": 1,
+        "explanation": "La presión aplicada se transmite íntegramente y al actuar sobre un área mayor, produce una fuerza mayor que levanta el automóvil."
+      }
+    ]
+  },
+  "induccion-electromagnetica": {
+    "questions": [
+      {
+        "question": "¿Qué se genera al mover un conductor dentro de un campo magnético?",
+        "options": [
+          "Corriente eléctrica",
+          "Campo eléctrico",
+          "Resistencia",
+          "Calor"
+        ],
+        "correct": 0,
+        "explanation": "Al mover un conductor en un campo magnético, se induce una corriente eléctrica debido al cambio de flujo magnético, según la ley de Faraday."
+      },
+      {
+        "question": "¿De qué depende la magnitud de la corriente inducida en un conductor que se mueve en un campo magnético?",
+        "options": [
+          "Solo de la velocidad del conductor",
+          "De la velocidad y la intensidad del campo magnético",
+          "Solo de la longitud del conductor",
+          "De la resistencia del aire"
+        ],
+        "correct": 1,
+        "explanation": "La corriente inducida depende tanto de la velocidad del conductor como de la intensidad del campo magnético, ya que el cambio de flujo magnético es proporcional a ambos."
+      },
+      {
+        "question": "¿Qué ocurre si un conductor se mueve paralelamente a las líneas de campo magnético?",
+        "options": [
+          "Se genera la máxima corriente",
+          "No se genera corriente",
+          "Se genera corriente alterna",
+          "Se genera un campo eléctrico"
+        ],
+        "correct": 1,
+        "explanation": "Si el conductor se mueve paralelo a las líneas de campo, no hay cambio en el flujo magnético, por lo que no se induce corriente."
+      },
+      {
+        "question": "¿Cuál es la función de un generador eléctrico?",
+        "options": [
+          "Convertir energía eléctrica en mecánica",
+          "Convertir energía mecánica en eléctrica",
+          "Almacenar energía",
+          "Amplificar corriente"
+        ],
+        "correct": 1,
+        "explanation": "Un generador eléctrico convierte energía mecánica en eléctrica mediante inducción electromagnética, al mover un conductor en un campo magnético."
+      },
+      {
+        "question": "¿Qué ley explica la inducción electromagnética?",
+        "options": [
+          "Ley de Ohm",
+          "Ley de Coulomb",
+          "Ley de Faraday",
+          "Ley de Hooke"
+        ],
+        "correct": 2,
+        "explanation": "La ley de Faraday establece que un cambio en el flujo magnético a través de un circuito induce una fuerza electromotriz, generando corriente."
+      }
+    ]
+  },
+  "campo-magnetico": {
+    "questions": [
+      {
+        "question": "¿Qué genera un campo magnético alrededor de un conductor?",
+        "options": [
+          "Una corriente eléctrica",
+          "Un voltaje constante",
+          "Una resistencia eléctrica",
+          "Un capacitor cargado"
+        ],
+        "correct": 0,
+        "explanation": "Una corriente eléctrica que fluye por un conductor produce un campo magnético a su alrededor, según el electromagnetismo."
+      },
+      {
+        "question": "¿Cómo se llama el fenómeno en el que una corriente eléctrica produce un campo magnético?",
+        "options": [
+          "Inducción electromagnética",
+          "Electromagnetismo",
+          "Conducción eléctrica",
+          "Resistencia magnética"
+        ],
+        "correct": 1,
+        "explanation": "El electromagnetismo estudia la relación entre la electricidad y el magnetismo, donde una corriente genera un campo magnético."
+      },
+      {
+        "question": "Si aumentamos la corriente que circula por un alambre, ¿qué ocurre con el campo magnético que genera?",
+        "options": [
+          "Se reduce",
+          "Se mantiene igual",
+          "Aumenta",
+          "Desaparece"
+        ],
+        "correct": 2,
+        "explanation": "El campo magnético es directamente proporcional a la corriente; al aumentarla, el campo magnético se intensifica."
+      },
+      {
+        "question": "¿Qué forma tienen las líneas de campo magnético alrededor de un conductor rectilíneo con corriente?",
+        "options": [
+          "Líneas rectas paralelas al conductor",
+          "Círculos concéntricos alrededor del conductor",
+          "Espirales que se alejan del conductor",
+          "Líneas que van del conductor al exterior"
+        ],
+        "correct": 1,
+        "explanation": "Las líneas de campo magnético forman círculos concéntricos alrededor del conductor, como lo muestra la regla de la mano derecha."
+      },
+      {
+        "question": "¿Qué dispositivo convierte energía eléctrica en movimiento gracias al campo magnético generado por una corriente?",
+        "options": [
+          "Un generador",
+          "Un transformador",
+          "Un motor eléctrico",
+          "Una batería"
+        ],
+        "correct": 2,
+        "explanation": "Un motor eléctrico usa el campo magnético producido por corrientes para generar movimiento rotatorio."
+      }
+    ]
+  },
+  "onda": {
+    "questions": [
+      {
+        "question": "¿Qué caracteriza a una onda que transfiere energía sin transportar materia?",
+        "options": [
+          "A. La onda mueve partículas de un lugar a otro.",
+          "B. La onda solo transfiere energía, no materia.",
+          "C. La onda transporta materia y energía.",
+          "D. La onda no transfiere energía."
+        ],
+        "correct": 1,
+        "explanation": "Las ondas transfieren energía de un punto a otro sin mover la materia del medio, como en las ondas en una cuerda o el sonido."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos representa una onda que transfiere energía sin transportar materia?",
+        "options": [
+          "A. Un barco flotando en el mar.",
+          "B. Una piedra cayendo al agua.",
+          "C. Una onda en una cuerda tensa.",
+          "D. Un automóvil en movimiento."
+        ],
+        "correct": 2,
+        "explanation": "En una cuerda tensa, la onda se propaga pero la cuerda solo vibra en su lugar, sin desplazarse, transfiriendo energía."
+      },
+      {
+        "question": "¿Qué tipo de onda no requiere un medio material para propagarse y transfiere energía sin materia?",
+        "options": [
+          "A. Onda sonora.",
+          "B. Onda en el agua.",
+          "C. Onda electromagnética.",
+          "D. Onda en un resorte."
+        ],
+        "correct": 2,
+        "explanation": "Las ondas electromagnéticas, como la luz, se propagan en el vacío y transfieren energía sin necesidad de materia."
+      },
+      {
+        "question": "En una onda transversal, ¿cómo se mueven las partículas del medio respecto a la dirección de propagación?",
+        "options": [
+          "A. Se mueven en la misma dirección que la onda.",
+          "B. Se mueven perpendicularmente a la dirección de la onda.",
+          "C. No se mueven en absoluto.",
+          "D. Se mueven en círculos."
+        ],
+        "correct": 1,
+        "explanation": "En una onda transversal, las partículas vibran perpendicularmente a la dirección en que viaja la energía, sin desplazarse con la onda."
+      },
+      {
+        "question": "¿Qué sucede con la materia del medio cuando una onda mecánica se propaga?",
+        "options": [
+          "A. La materia se desplaza con la onda.",
+          "B. La materia solo vibra alrededor de su posición de equilibrio.",
+          "C. La materia se destruye.",
+          "D. La materia se transforma en energía."
+        ],
+        "correct": 1,
+        "explanation": "En una onda mecánica, las partículas del medio oscilan alrededor de su posición pero no viajan con la onda; solo la energía se transfiere."
+      }
+    ]
+  },
+  "electrizacion-por-induccion": {
+    "questions": [
+      {
+        "question": "¿Qué ocurre cuando un cuerpo cargado positivamente se acerca a un conductor neutro sin tocarlo?",
+        "options": [
+          "Los electrones del conductor se alejan del cuerpo cargado",
+          "Los electrones del conductor se acercan al cuerpo cargado",
+          "El conductor se descarga",
+          "No ocurre nada"
+        ],
+        "correct": 0,
+        "explanation": "Al acercar un cuerpo con carga positiva, atrae los electrones del conductor, que tienen carga negativa, provocando que se acumulen en la zona más cercana al cuerpo."
+      },
+      {
+        "question": "En la electrización por inducción, ¿cómo se polariza un objeto neutro?",
+        "options": [
+          "Separando sus cargas positivas y negativas",
+          "Añadiendo electrones al objeto",
+          "Quitando protones del objeto",
+          "Frotando el objeto con otro material"
+        ],
+        "correct": 0,
+        "explanation": "La polarización consiste en la separación de cargas dentro del objeto, sin que haya contacto, debido a la influencia de un cuerpo cargado cercano."
+      },
+      {
+        "question": "Si acercamos una barra de plástico electrizada negativamente a una esfera metálica neutra, ¿qué carga adquiere la parte de la esfera más cercana a la barra?",
+        "options": [
+          "Positiva",
+          "Negativa",
+          "Neutra",
+          "No adquiere carga"
+        ],
+        "correct": 1,
+        "explanation": "Al acercar la barra con carga negativa, los electrones de la esfera son repelidos hacia el lado opuesto, dejando la parte cercana con exceso de carga positiva."
+      },
+      {
+        "question": "¿Qué se requiere para que un objeto se electrice por inducción?",
+        "options": [
+          "Contacto directo con otro objeto cargado",
+          "Presencia de un campo eléctrico externo",
+          "Frotamiento con un paño",
+          "Calentamiento del objeto"
+        ],
+        "correct": 1,
+        "explanation": "La electrización por inducción solo necesita un campo eléctrico externo generado por un cuerpo cargado cercano, sin que haya contacto."
+      },
+      {
+        "question": "Después de electrizar por inducción un conductor, si se aleja el cuerpo inductor, ¿qué sucede con la carga del conductor?",
+        "options": [
+          "El conductor queda con carga neta",
+          "El conductor vuelve a ser neutro",
+          "El conductor queda con carga opuesta",
+          "El conductor se descarga completamente"
+        ],
+        "correct": 1,
+        "explanation": "Al alejar el cuerpo inductor, las cargas del conductor se redistribuyen y el conductor recupera su estado neutro original, a menos que se haya conectado a tierra."
+      }
+    ]
+  },
+  "brujula": {
+    "questions": [
+      {
+        "question": "¿Por qué la brújula apunta hacia el norte geográfico?",
+        "options": [
+          "Porque el norte geográfico tiene un imán gigante",
+          "Porque la Tierra tiene un campo magnético con polos cerca de los geográficos",
+          "Porque el Sol atrae la aguja de la brújula",
+          "Porque la brújula siempre busca el polo norte magnético, que coincide exactamente con el geográfico"
+        ],
+        "correct": 1,
+        "explanation": "La Tierra se comporta como un imán gigante con polos magnéticos cercanos a los polos geográficos; la aguja de la brújula se alinea con el campo magnético terrestre apuntando al norte magnético."
+      },
+      {
+        "question": "¿Qué tipo de fuerza permite que la brújula funcione?",
+        "options": [
+          "Fuerza gravitacional",
+          "Fuerza eléctrica",
+          "Fuerza magnética",
+          "Fuerza nuclear"
+        ],
+        "correct": 2,
+        "explanation": "La brújula usa una aguja imantada que responde a la fuerza magnética del campo terrestre, orientándose hacia el polo norte magnético."
+      },
+      {
+        "question": "Si acercas un imán a una brújula, ¿qué ocurre?",
+        "options": [
+          "La brújula deja de funcionar",
+          "La aguja se desvía hacia el imán",
+          "La aguja apunta al sur",
+          "No ocurre nada porque la brújula solo detecta el campo terrestre"
+        ],
+        "correct": 1,
+        "explanation": "El campo magnético del imán es más fuerte localmente que el terrestre, por lo que la aguja se alinea con el campo del imán, desviándose."
+      },
+      {
+        "question": "¿Qué sucede con la brújula si viajas al polo norte magnético?",
+        "options": [
+          "Apuntará hacia arriba",
+          "La aguja girará sin control",
+          "Apuntará al sur",
+          "Funcionará normalmente apuntando al norte"
+        ],
+        "correct": 1,
+        "explanation": "En el polo norte magnético, las líneas de campo son verticales, por lo que la aguja intenta apuntar hacia abajo o arriba, girando sin una dirección horizontal fija."
+      },
+      {
+        "question": "¿Qué característica del campo magnético terrestre es fundamental para que la brújula funcione?",
+        "options": [
+          "Que es uniforme en todo el planeta",
+          "Que tiene dos polos: norte y sur magnéticos",
+          "Que es generado por el viento solar",
+          "Que solo existe en el hemisferio norte"
+        ],
+        "correct": 1,
+        "explanation": "El campo magnético terrestre tiene polos norte y sur magnéticos; la brújula se alinea con las líneas de campo que van del polo sur al norte magnético."
+      }
+    ]
+  },
+  "espectro-visible": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes colores del espectro visible tiene la mayor longitud de onda?",
+        "options": [
+          "Violeta",
+          "Azul",
+          "Verde",
+          "Rojo"
+        ],
+        "correct": 3,
+        "explanation": "En el espectro visible, el rojo tiene la mayor longitud de onda y el violeta la menor."
+      },
+      {
+        "question": "¿Qué color del espectro visible posee la menor longitud de onda?",
+        "options": [
+          "Rojo",
+          "Naranja",
+          "Amarillo",
+          "Violeta"
+        ],
+        "correct": 3,
+        "explanation": "El violeta tiene la longitud de onda más corta dentro del espectro visible."
+      },
+      {
+        "question": "Si la longitud de onda de una onda electromagnética disminuye, ¿qué sucede con su frecuencia?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "Permanece igual",
+          "Se duplica"
+        ],
+        "correct": 0,
+        "explanation": "La frecuencia y la longitud de onda son inversamente proporcionales; al disminuir la longitud de onda, la frecuencia aumenta."
+      },
+      {
+        "question": "¿Qué color se encuentra entre el verde y el violeta en el espectro visible?",
+        "options": [
+          "Rojo",
+          "Amarillo",
+          "Azul",
+          "Naranja"
+        ],
+        "correct": 2,
+        "explanation": "El orden del espectro visible es rojo, naranja, amarillo, verde, azul, añil y violeta; el azul está entre verde y violeta."
+      },
+      {
+        "question": "¿Cuál de las siguientes ondas tiene la mayor frecuencia?",
+        "options": [
+          "Rojo",
+          "Verde",
+          "Azul",
+          "Violeta"
+        ],
+        "correct": 3,
+        "explanation": "La frecuencia aumenta de rojo a violeta; el violeta tiene la frecuencia más alta."
+      }
+    ]
+  },
+  "refraccion": {
+    "questions": [
+      {
+        "question": "Cuando la luz pasa del aire al agua, ¿qué ocurre con su velocidad?",
+        "options": [
+          "A. Aumenta",
+          "B. Disminuye",
+          "C. Permanece igual",
+          "D. Se duplica"
+        ],
+        "correct": 1,
+        "explanation": "La luz viaja más lento en el agua que en el aire porque el agua es un medio más denso ópticamente."
+      },
+      {
+        "question": "¿Qué propiedad de la luz cambia principalmente al refractarse?",
+        "options": [
+          "A. Su color",
+          "B. Su frecuencia",
+          "C. Su velocidad",
+          "D. Su intensidad"
+        ],
+        "correct": 2,
+        "explanation": "Al refractarse, la luz cambia de velocidad al pasar de un medio a otro, lo que provoca un cambio en su dirección."
+      },
+      {
+        "question": "Si la luz pasa de un medio menos denso a uno más denso, ¿cómo se desvía?",
+        "options": [
+          "A. Se aleja de la normal",
+          "B. Se acerca a la normal",
+          "C. No se desvía",
+          "D. Se refleja totalmente"
+        ],
+        "correct": 1,
+        "explanation": "Al entrar a un medio más denso, la luz reduce su velocidad y se desvía hacia la línea normal."
+      },
+      {
+        "question": "¿Cuál de los siguientes fenómenos se debe a la refracción de la luz?",
+        "options": [
+          "A. El arcoíris",
+          "B. La sombra",
+          "C. El eco",
+          "D. La polarización"
+        ],
+        "correct": 0,
+        "explanation": "El arcoíris se forma por la refracción y dispersión de la luz solar en las gotas de agua."
+      },
+      {
+        "question": "La ley de Snell relaciona la refracción con:",
+        "options": [
+          "A. Los ángulos de incidencia y reflexión",
+          "B. Los índices de refracción y los ángulos",
+          "C. La frecuencia y la longitud de onda",
+          "D. La velocidad y la energía"
+        ],
+        "correct": 1,
+        "explanation": "La ley de Snell establece que n1 senθ1 = n2 senθ2, donde n son los índices de refracción y θ los ángulos."
+      }
+    ]
+  },
+  "frecuencia-y-longitud-de-onda-son-inversamente-proporcionales": {
+    "questions": [
+      {
+        "question": "Si la frecuencia de una onda aumenta al doble, ¿qué sucede con su longitud de onda, suponiendo que la velocidad de propagación se mantiene constante?",
+        "options": [
+          "Aumenta al doble",
+          "Disminuye a la mitad",
+          "Permanece igual",
+          "Aumenta cuatro veces"
+        ],
+        "correct": 1,
+        "explanation": "La frecuencia y la longitud de onda son inversamente proporcionales, por lo que al duplicar la frecuencia, la longitud de onda se reduce a la mitad."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones describe correctamente la relación entre frecuencia y longitud de onda en una onda electromagnética?",
+        "options": [
+          "Son directamente proporcionales",
+          "Son inversamente proporcionales",
+          "No tienen relación",
+          "Son iguales en magnitud"
+        ],
+        "correct": 1,
+        "explanation": "En una onda electromagnética, la frecuencia y la longitud de onda son inversamente proporcionales, ya que su producto es igual a la velocidad de la luz."
+      },
+      {
+        "question": "Una onda de radio tiene una frecuencia de 100 MHz. Si la frecuencia se reduce a 50 MHz, ¿cómo cambia su longitud de onda?",
+        "options": [
+          "Se duplica",
+          "Se reduce a la mitad",
+          "No cambia",
+          "Se cuadriplica"
+        ],
+        "correct": 0,
+        "explanation": "Al disminuir la frecuencia a la mitad, la longitud de onda se duplica, manteniendo la velocidad constante."
+      },
+      {
+        "question": "La luz roja tiene una longitud de onda mayor que la luz azul. ¿Qué color tiene mayor frecuencia?",
+        "options": [
+          "Rojo",
+          "Azul",
+          "Ambos tienen la misma frecuencia",
+          "No se puede determinar"
+        ],
+        "correct": 1,
+        "explanation": "La frecuencia y la longitud de onda son inversamente proporcionales; por lo tanto, la luz azul, con menor longitud de onda, tiene mayor frecuencia."
+      },
+      {
+        "question": "Si la longitud de onda de una onda sonora se triplica, ¿cómo cambia su frecuencia, asumiendo que la velocidad del sonido es constante?",
+        "options": [
+          "Se triplica",
+          "Se reduce a un tercio",
+          "No cambia",
+          "Se reduce a la mitad"
+        ],
+        "correct": 1,
+        "explanation": "Al triplicar la longitud de onda, la frecuencia se reduce a un tercio, ya que son inversamente proporcionales."
+      }
+    ]
+  },
+  "prisma": {
+    "questions": [
+      {
+        "question": "¿Qué ocurre cuando la luz blanca pasa a través de un prisma?",
+        "options": [
+          "Se refleja completamente",
+          "Se descompone en los colores del arcoíris",
+          "Se convierte en luz ultravioleta",
+          "Se absorbe por el prisma"
+        ],
+        "correct": 1,
+        "explanation": "El prisma separa la luz blanca en sus colores componentes (rojo, naranja, amarillo, verde, azul, añil y violeta) debido a que cada color tiene una longitud de onda diferente y se refracta con un ángulo distinto."
+      },
+      {
+        "question": "¿Cuál es el fenómeno físico que explica la descomposición de la luz blanca en un prisma?",
+        "options": [
+          "Reflexión",
+          "Refracción",
+          "Difracción",
+          "Absorción"
+        ],
+        "correct": 1,
+        "explanation": "La refracción ocurre cuando la luz cambia de velocidad al pasar de un medio a otro, y como cada color se desvía de manera diferente, se separan formando el espectro visible."
+      },
+      {
+        "question": "¿Qué color del espectro visible se desvía más al pasar por un prisma?",
+        "options": [
+          "Rojo",
+          "Verde",
+          "Azul",
+          "Violeta"
+        ],
+        "correct": 3,
+        "explanation": "El violeta tiene la longitud de onda más corta y se refracta más que el rojo, que tiene la longitud de onda más larga, por lo que se desvía más."
+      },
+      {
+        "question": "¿Cómo se llama el conjunto de colores que se obtiene al descomponer la luz blanca con un prisma?",
+        "options": [
+          "Espectro electromagnético",
+          "Espectro visible",
+          "Espectro de absorción",
+          "Espectro de emisión"
+        ],
+        "correct": 1,
+        "explanation": "El espectro visible es la parte del espectro electromagnético que el ojo humano puede percibir, e incluye los colores del arcoíris."
+      },
+      {
+        "question": "¿Por qué un prisma puede descomponer la luz blanca?",
+        "options": [
+          "Porque la luz blanca es una mezcla de colores con diferentes velocidades en el vidrio",
+          "Porque el prisma absorbe algunos colores",
+          "Porque la luz blanca se refleja internamente",
+          "Porque el prisma calienta la luz"
+        ],
+        "correct": 0,
+        "explanation": "La luz blanca está compuesta por diferentes colores, cada uno con una velocidad distinta al atravesar el vidrio del prisma, lo que provoca que se separen."
       }
     ]
   }

@@ -1,0 +1,2074 @@
+{
+  "titulos-y-subtitulos": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal de los títulos en un texto?",
+        "options": [
+          "A) Decorar la página",
+          "B) Indicar el tema principal",
+          "C) Dar color al texto",
+          "D) Separar párrafos"
+        ],
+        "correct": 1,
+        "explanation": "Los títulos jerarquizan la información y señalan el tema principal del texto."
+      },
+      {
+        "question": "En un texto, los subtítulos sirven para:",
+        "options": [
+          "A) Cambiar el tamaño de la letra",
+          "B) Organizar subtemas dentro de un tema",
+          "C) Finalizar el texto",
+          "D) Agregar imágenes"
+        ],
+        "correct": 1,
+        "explanation": "Los subtítulos dividen el tema en partes más pequeñas y ayudan a organizar la información."
+      },
+      {
+        "question": "¿Qué diferencia a un título de un subtítulo?",
+        "options": [
+          "A) El subtítulo es más grande",
+          "B) El título es más general y el subtítulo más específico",
+          "C) El título tiene color",
+          "D) El subtítulo no tiene letras"
+        ],
+        "correct": 1,
+        "explanation": "El título abarca el tema general, mientras que el subtítulo se enfoca en un aspecto particular."
+      },
+      {
+        "question": "¿Qué elemento gráfico se utiliza para ordenar ideas de mayor a menor importancia?",
+        "options": [
+          "A) Negritas",
+          "B) Viñetas",
+          "C) Títulos y subtítulos",
+          "D) Cursivas"
+        ],
+        "correct": 2,
+        "explanation": "Los títulos y subtítulos jerarquizan la información, mostrando primero lo más importante."
+      },
+      {
+        "question": "¿Cómo se identifica visualmente un título principal en un texto?",
+        "options": [
+          "A) Con letra más pequeña",
+          "B) Con letra más grande y negritas",
+          "C) Con color rojo",
+          "D) Con subrayado"
+        ],
+        "correct": 1,
+        "explanation": "El título principal suele tener un tamaño de letra mayor y negritas para destacar."
+      }
+    ]
+  },
+  "tip-examen": {
+    "questions": [
+      {
+        "question": "¿Para qué sirve una ficha bibliográfica?",
+        "options": [
+          "A) Registrar datos de una fuente consultada",
+          "B) Escribir resúmenes de libros",
+          "C) Hacer dibujos de los libros",
+          "D) Guardar dinero"
+        ],
+        "correct": 0,
+        "explanation": "Una ficha bibliográfica sirve para registrar los datos principales de una fuente, como el autor, título y año, para poder localizarla después."
+      },
+      {
+        "question": "¿Qué dato va primero en una ficha bibliográfica de un libro?",
+        "options": [
+          "A) Título del libro",
+          "B) Apellido paterno del autor",
+          "C) Editorial",
+          "D) Año de publicación"
+        ],
+        "correct": 1,
+        "explanation": "En una ficha bibliográfica, primero se escribe el apellido paterno del autor, seguido del nombre."
+      },
+      {
+        "question": "¿Para qué sirve una ficha hemerográfica?",
+        "options": [
+          "A) Registrar datos de una revista o periódico",
+          "B) Anotar datos de un libro",
+          "C) Guardar información de una página web",
+          "D) Registrar datos de una entrevista"
+        ],
+        "correct": 0,
+        "explanation": "La ficha hemerográfica se usa para registrar datos de publicaciones periódicas como revistas o periódicos."
+      },
+      {
+        "question": "En una ficha bibliográfica, ¿qué dato va después del título del libro?",
+        "options": [
+          "A) Editorial",
+          "B) Año de publicación",
+          "C) Lugar de publicación",
+          "D) Número de edición"
+        ],
+        "correct": 2,
+        "explanation": "Después del título, se anota el lugar de publicación, seguido de la editorial y el año."
+      },
+      {
+        "question": "¿Qué tipo de ficha se usa para registrar datos de un artículo de revista?",
+        "options": [
+          "A) Ficha bibliográfica",
+          "B) Ficha hemerográfica",
+          "C) Ficha electrónica",
+          "D) Ficha de trabajo"
+        ],
+        "correct": 1,
+        "explanation": "La ficha hemerográfica es la adecuada para artículos de revistas o periódicos."
+      }
+    ]
+  },
+  "ficha-de-trabajo": {
+    "questions": [
+      {
+        "question": "¿Qué información NO debe incluirse en una ficha de trabajo?",
+        "options": [
+          "Datos del autor y título de la fuente",
+          "Resumen de las ideas principales",
+          "Opiniones personales del estudiante",
+          "Número de página de donde se extrajo la información"
+        ],
+        "correct": 2,
+        "explanation": "Las fichas de trabajo deben contener solo información objetiva de la fuente, sin opiniones personales del estudiante."
+      },
+      {
+        "question": "¿Cuál es la función principal de una ficha de trabajo?",
+        "options": [
+          "Decorar el trabajo escolar",
+          "Registrar y organizar información de fuentes consultadas",
+          "Sustituir la lectura de los libros",
+          "Servir como portada del proyecto"
+        ],
+        "correct": 1,
+        "explanation": "La ficha de trabajo sirve para extraer y organizar datos importantes de las fuentes, facilitando su uso posterior."
+      },
+      {
+        "question": "¿Qué dato es esencial en una ficha de trabajo?",
+        "options": [
+          "El color de la portada del libro",
+          "La fecha en que se leyó la fuente",
+          "El nombre del autor y título de la obra",
+          "El número de páginas totales del libro"
+        ],
+        "correct": 2,
+        "explanation": "Es indispensable registrar el autor y título para identificar la fuente de donde se tomó la información."
+      },
+      {
+        "question": "¿Cómo se relaciona una ficha de trabajo con una ficha bibliográfica?",
+        "options": [
+          "Son lo mismo",
+          "La ficha bibliográfica proporciona los datos de la fuente que se usan en la ficha de trabajo",
+          "La ficha de trabajo reemplaza a la bibliográfica",
+          "No tienen relación"
+        ],
+        "correct": 1,
+        "explanation": "La ficha bibliográfica contiene los datos completos de la fuente, mientras que la de trabajo registra información extraída de esa fuente."
+      },
+      {
+        "question": "¿Qué tipo de información se puede registrar en una ficha de trabajo?",
+        "options": [
+          "Solo definiciones",
+          "Citas textuales, paráfrasis y resúmenes",
+          "Únicamente opiniones del autor",
+          "Datos personales del estudiante"
+        ],
+        "correct": 1,
+        "explanation": "En una ficha de trabajo se pueden incluir citas directas, ideas parafraseadas o resúmenes de la fuente consultada."
+      }
+    ]
+  },
+  "ficha-de-cita-textual": {
+    "questions": [
+      {
+        "question": "¿Qué elemento es indispensable en una ficha de cita textual según el tema 'Fichas bibliográficas'?",
+        "options": [
+          "El resumen del texto",
+          "La opinión del autor",
+          "El fragmento entrecomillado",
+          "La fecha de publicación"
+        ],
+        "correct": 2,
+        "explanation": "La ficha de cita textual reproduce literalmente un fragmento del texto original, por lo que debe ir entrecomillado."
+      },
+      {
+        "question": "En una ficha de cita textual, ¿cómo se indica que el texto es una copia exacta?",
+        "options": [
+          "Con letra cursiva",
+          "Con comillas",
+          "Con negritas",
+          "Con subrayado"
+        ],
+        "correct": 1,
+        "explanation": "Las comillas se usan para señalar que el texto es una reproducción literal de la fuente."
+      },
+      {
+        "question": "¿Qué información adicional debe incluir una ficha de cita textual para ser completa?",
+        "options": [
+          "La editorial y el año",
+          "El número de página",
+          "La biografía del autor",
+          "El índice del libro"
+        ],
+        "correct": 1,
+        "explanation": "Para localizar la cita, es necesario indicar la página de donde se extrajo el fragmento."
+      },
+      {
+        "question": "¿Cuál es la función principal de una ficha de cita textual?",
+        "options": [
+          "Resumir el contenido",
+          "Criticar al autor",
+          "Respaldar una idea con evidencia",
+          "Organizar el índice"
+        ],
+        "correct": 2,
+        "explanation": "La cita textual sirve para apoyar lo que se dice con las palabras exactas del autor."
+      },
+      {
+        "question": "En una ficha de cita textual, ¿qué se debe hacer si se omite parte del texto original?",
+        "options": [
+          "Usar puntos suspensivos entre corchetes",
+          "Escribir la frase completa",
+          "Cambiar las palabras",
+          "Poner la cita en mayúsculas"
+        ],
+        "correct": 0,
+        "explanation": "Los puntos suspensivos entre corchetes [...] indican que se ha omitido una parte del texto."
+      }
+    ]
+  },
+  "ficha-bibliografica": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes elementos NO debe incluirse en una ficha bibliográfica de un libro?",
+        "options": [
+          "A) Apellido y nombre del autor",
+          "B) Título de la obra",
+          "C) Número de páginas",
+          "D) Editorial, año y lugar de publicación"
+        ],
+        "correct": 2,
+        "explanation": "La ficha bibliográfica registra los datos principales de identificación de una obra, como autor, título, editorial, año y lugar; el número de páginas no es un dato obligatorio."
+      },
+      {
+        "question": "En una ficha bibliográfica, ¿cuál es el orden correcto de los datos del autor?",
+        "options": [
+          "A) Nombre, Apellido",
+          "B) Apellido, Nombre",
+          "C) Solo el apellido",
+          "D) Solo el nombre"
+        ],
+        "correct": 1,
+        "explanation": "En las fichas bibliográficas, el apellido se escribe primero, seguido del nombre, para facilitar la ordenación alfabética."
+      },
+      {
+        "question": "¿Qué información debe ir después del título en una ficha bibliográfica?",
+        "options": [
+          "A) Lugar de publicación",
+          "B) Editorial, año y lugar",
+          "C) Año de publicación",
+          "D) Editorial y lugar"
+        ],
+        "correct": 1,
+        "explanation": "Después del título se anotan los datos de edición: editorial, año y lugar de publicación, en ese orden."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones presenta correctamente los datos de una ficha bibliográfica?",
+        "options": [
+          "A) García Márquez, Gabriel. Cien años de soledad. Editorial Sudamericana, 1967, Buenos Aires.",
+          "B) Gabriel García Márquez. Cien años de soledad. Buenos Aires, Editorial Sudamericana, 1967.",
+          "C) Cien años de soledad. García Márquez, Gabriel. Editorial Sudamericana, 1967, Buenos Aires.",
+          "D) García Márquez, Gabriel. Cien años de soledad. Buenos Aires, 1967, Editorial Sudamericana."
+        ],
+        "correct": 0,
+        "explanation": "El orden correcto es: apellido y nombre del autor, título, editorial, año y lugar. La opción A cumple con este formato."
+      },
+      {
+        "question": "¿Para qué sirve una ficha bibliográfica?",
+        "options": [
+          "A) Para resumir el contenido de un libro",
+          "B) Para registrar los datos de identificación de una obra",
+          "C) Para criticar una obra literaria",
+          "D) Para ilustrar un texto"
+        ],
+        "correct": 1,
+        "explanation": "La ficha bibliográfica tiene como propósito registrar los datos que permiten identificar y localizar una obra, como autor, título, editorial, etc."
+      }
+    ]
+  },
+  "subrayado-y-recuadros": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal del subrayado en un texto?",
+        "options": [
+          "A. Decorar el texto",
+          "B. Destacar información importante",
+          "C. Cambiar el significado del texto",
+          "D. Hacer el texto más largo"
+        ],
+        "correct": 1,
+        "explanation": "El subrayado sirve para resaltar las ideas clave que facilitan el estudio y la comprensión del texto."
+      },
+      {
+        "question": "¿Qué elemento gráfico se utiliza para encerrar información relevante en un texto?",
+        "options": [
+          "A. El subrayado",
+          "B. El recuadro",
+          "C. La cursiva",
+          "D. El negrita"
+        ],
+        "correct": 1,
+        "explanation": "El recuadro se usa para delimitar y destacar información importante, como definiciones o resúmenes."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones describe mejor el uso del subrayado?",
+        "options": [
+          "A. Se usa para marcar palabras desconocidas",
+          "B. Se usa para resaltar las ideas principales",
+          "C. Se usa para separar párrafos",
+          "D. Se usa para indicar el título"
+        ],
+        "correct": 1,
+        "explanation": "El subrayado es una técnica de estudio que permite identificar rápidamente las ideas principales de un texto."
+      },
+      {
+        "question": "¿Qué ventaja tiene usar recuadros al estudiar?",
+        "options": [
+          "A. Hacen el texto más colorido",
+          "B. Ayudan a organizar visualmente la información",
+          "C. Aumentan la cantidad de texto",
+          "D. Disminuyen la comprensión"
+        ],
+        "correct": 1,
+        "explanation": "Los recuadros agrupan conceptos relacionados, facilitando la memorización y el repaso."
+      },
+      {
+        "question": "¿Cuándo es recomendable utilizar el subrayado?",
+        "options": [
+          "A. Antes de leer el texto",
+          "B. Durante la primera lectura",
+          "C. Después de comprender el texto",
+          "D. Nunca es recomendable"
+        ],
+        "correct": 2,
+        "explanation": "Es mejor subrayar después de haber comprendido el texto para identificar con precisión la información relevante."
+      }
+    ]
+  },
+  "indice": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal del índice en un libro?",
+        "options": [
+          "A) Indicar el precio del libro",
+          "B) Localizar y organizar los temas del libro",
+          "C) Mostrar las ilustraciones del libro",
+          "D) Presentar la biografía del autor"
+        ],
+        "correct": 1,
+        "explanation": "El índice sirve para encontrar rápidamente los temas y saber en qué página están, organizando el contenido del libro."
+      },
+      {
+        "question": "En un índice, ¿qué información se incluye generalmente?",
+        "options": [
+          "A) Solo los títulos de los capítulos",
+          "B) Los títulos de los temas y el número de página donde comienzan",
+          "C) Las definiciones de palabras difíciles",
+          "D) Los nombres de los personajes"
+        ],
+        "correct": 1,
+        "explanation": "El índice enumera los títulos de los capítulos o temas junto con la página donde inician, para facilitar su localización."
+      },
+      {
+        "question": "¿Qué tipo de índice ordena alfabéticamente los conceptos o palabras clave de un libro?",
+        "options": [
+          "A) Índice general",
+          "B) Índice analítico",
+          "C) Índice onomástico",
+          "D) Índice de ilustraciones"
+        ],
+        "correct": 1,
+        "explanation": "El índice analítico presenta términos importantes en orden alfabético para localizar información específica."
+      },
+      {
+        "question": "Si un libro tiene un índice, ¿dónde se coloca generalmente?",
+        "options": [
+          "A) Al final del libro",
+          "B) Al principio del libro",
+          "C) En la contraportada",
+          "D) En medio del libro"
+        ],
+        "correct": 1,
+        "explanation": "El índice suele ir al inicio del libro, después de la portada, para que el lector pueda consultarlo antes de leer."
+      },
+      {
+        "question": "¿Qué componente gráfico del texto ayuda a organizar visualmente el índice?",
+        "options": [
+          "A) Las viñetas",
+          "B) Las tablas",
+          "C) Los números de página y las sangrías",
+          "D) Los gráficos"
+        ],
+        "correct": 2,
+        "explanation": "En el índice se usan números de página y sangrías para mostrar la jerarquía de los temas y facilitar la lectura."
+      }
+    ]
+  },
+  "parafrasis": {
+    "questions": [
+      {
+        "question": "¿Cuál es el propósito principal de la paráfrasis?",
+        "options": [
+          "Copiar exactamente el texto original",
+          "Reescribir una idea con otras palabras sin cambiar su significado",
+          "Añadir información nueva al texto original",
+          "Eliminar partes del texto original"
+        ],
+        "correct": 1,
+        "explanation": "La paráfrasis consiste en expresar una idea con palabras propias, manteniendo el significado original, sin copiar ni añadir información nueva."
+      },
+      {
+        "question": "¿Qué componente gráfico del texto ayuda a organizar la información en listas o pasos?",
+        "options": [
+          "La sangría",
+          "El título",
+          "La viñeta",
+          "El párrafo"
+        ],
+        "correct": 2,
+        "explanation": "Las viñetas se usan para listar elementos o pasos de manera ordenada y visualmente clara."
+      },
+      {
+        "question": "Al hacer una paráfrasis, ¿qué debes evitar?",
+        "options": [
+          "Usar sinónimos",
+          "Cambiar el orden de las ideas",
+          "Copiar textualmente frases del original",
+          "Simplificar el lenguaje"
+        ],
+        "correct": 2,
+        "explanation": "Copiar textualmente es plagio; la paráfrasis exige expresar la idea con tus propias palabras."
+      },
+      {
+        "question": "¿Qué función tiene el margen en un texto?",
+        "options": [
+          "Separar el texto del borde de la página",
+          "Indicar el inicio de un párrafo",
+          "Señalar una cita textual",
+          "Destacar palabras importantes"
+        ],
+        "correct": 0,
+        "explanation": "El margen es el espacio en blanco entre el texto y el borde de la página, que mejora la legibilidad."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones es un ejemplo de paráfrasis de la frase 'El sol ilumina la Tierra'?",
+        "options": [
+          "El sol alumbra el planeta",
+          "El sol es una estrella",
+          "La Tierra gira alrededor del sol",
+          "El sol calienta la Tierra"
+        ],
+        "correct": 0,
+        "explanation": "'El sol alumbra el planeta' mantiene el significado de iluminar, usando sinónimos y cambiando la estructura."
+      }
+    ]
+  },
+  "tema": {
+    "questions": [
+      {
+        "question": "¿Qué función cumplen los títulos y subtítulos en un texto?",
+        "options": [
+          "Decorar visualmente la página",
+          "Indicar la jerarquía y organización de la información",
+          "Aumentar el número de palabras del texto",
+          "Reemplazar las imágenes"
+        ],
+        "correct": 1,
+        "explanation": "Los títulos y subtítulos organizan el contenido y muestran la estructura del texto, facilitando la lectura."
+      },
+      {
+        "question": "¿Cuál es el propósito de los pies de figura en un texto?",
+        "options": [
+          "Indicar el número de página donde se encuentra la imagen",
+          "Explicar brevemente el contenido de una imagen o gráfico",
+          "Señalar el autor de la imagen",
+          "Decorar el margen inferior de la página"
+        ],
+        "correct": 1,
+        "explanation": "Los pies de figura proporcionan información adicional o aclaran el significado de una imagen o gráfico."
+      },
+      {
+        "question": "¿Qué elemento gráfico se utiliza para resaltar palabras clave o ideas principales?",
+        "options": [
+          "El subrayado",
+          "El pie de página",
+          "La sangría",
+          "La viñeta"
+        ],
+        "correct": 0,
+        "explanation": "El subrayado es un recurso gráfico que permite destacar visualmente información importante en un texto."
+      },
+      {
+        "question": "¿Para qué sirven las viñetas en un texto?",
+        "options": [
+          "Para enumerar elementos de una lista de forma ordenada o desordenada",
+          "Para indicar el final de un párrafo",
+          "Para separar capítulos",
+          "Para marcar citas textuales"
+        ],
+        "correct": 0,
+        "explanation": "Las viñetas organizan información en listas, facilitando la lectura y comprensión de ideas secuenciales."
+      },
+      {
+        "question": "¿Qué información proporciona el índice de un libro?",
+        "options": [
+          "El significado de las palabras difíciles",
+          "La lista de capítulos o temas con su número de página",
+          "Los datos bibliográficos del autor",
+          "Un resumen de cada capítulo"
+        ],
+        "correct": 1,
+        "explanation": "El índice muestra la estructura del contenido y las páginas donde se encuentra cada sección, ayudando a localizar información."
+      }
+    ]
+  },
+  "ilustraciones-graficas-y-tablas": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal de una gráfica de barras en un texto expositivo?",
+        "options": [
+          "Mostrar la relación entre dos variables numéricas",
+          "Comparar cantidades entre diferentes categorías",
+          "Representar la distribución de una variable continua",
+          "Indicar la frecuencia de datos en intervalos"
+        ],
+        "correct": 1,
+        "explanation": "Las gráficas de barras se utilizan para comparar cantidades entre distintas categorías, facilitando la comprensión visual de los datos."
+      },
+      {
+        "question": "¿Qué tipo de ilustración es más adecuada para mostrar el proceso de fotosíntesis en un libro de texto?",
+        "options": [
+          "Fotografía",
+          "Diagrama de flujo",
+          "Mapa conceptual",
+          "Tabla de datos"
+        ],
+        "correct": 1,
+        "explanation": "Un diagrama de flujo representa secuencias de pasos o procesos, ideal para explicar la fotosíntesis."
+      },
+      {
+        "question": "¿Para qué sirve una tabla en un texto informativo?",
+        "options": [
+          "Presentar información de manera ordenada y comparativa",
+          "Mostrar una imagen realista del tema",
+          "Explicar un proceso paso a paso",
+          "Resumir las ideas principales del texto"
+        ],
+        "correct": 0,
+        "explanation": "Las tablas organizan datos en filas y columnas, facilitando la comparación y comprensión de información numérica o categórica."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre una gráfica de líneas y una de barras?",
+        "options": [
+          "La gráfica de líneas muestra tendencias a lo largo del tiempo; la de barras compara categorías",
+          "La gráfica de líneas usa barras verticales; la de barras usa puntos conectados",
+          "La gráfica de barras es solo para datos numéricos; la de líneas para datos cualitativos",
+          "No hay diferencia, son lo mismo"
+        ],
+        "correct": 0,
+        "explanation": "Las gráficas de líneas son útiles para mostrar cambios en el tiempo, mientras que las de barras comparan categorías discretas."
+      },
+      {
+        "question": "¿Qué elemento gráfico es más útil para ilustrar la relación entre el consumo de agua y la temperatura en una ciudad durante un año?",
+        "options": [
+          "Fotografía del clima",
+          "Tabla con promedios mensuales",
+          "Gráfica de líneas con dos ejes",
+          "Diagrama de Venn"
+        ],
+        "correct": 2,
+        "explanation": "Una gráfica de líneas con dos ejes permite visualizar la correlación entre dos variables a lo largo del tiempo, como temperatura y consumo de agua."
+      }
+    ]
+  },
+  "orden-cronologico": {
+    "questions": [
+      {
+        "question": "¿Cuál es el orden cronológico correcto de los siguientes eventos en la elaboración de un texto?",
+        "options": [
+          "A. Revisión, borrador, planificación, edición final",
+          "B. Planificación, borrador, revisión, edición final",
+          "C. Borrador, planificación, revisión, edición final",
+          "D. Planificación, revisión, borrador, edición final"
+        ],
+        "correct": 1,
+        "explanation": "Primero se planifica el contenido, luego se escribe un borrador, se revisa y finalmente se edita la versión final."
+      },
+      {
+        "question": "¿Qué elemento gráfico se utiliza para organizar información en un texto de problema-solución?",
+        "options": [
+          "A. Diagrama de flujo",
+          "B. Tabla de dos columnas",
+          "C. Mapa mental",
+          "D. Línea del tiempo"
+        ],
+        "correct": 1,
+        "explanation": "La tabla de dos columnas permite contrastar el problema con sus posibles soluciones de manera clara."
+      },
+      {
+        "question": "¿Cuál es la secuencia temporal correcta al leer un texto argumentativo?",
+        "options": [
+          "A. Tesis, argumentos, conclusión",
+          "B. Argumentos, tesis, conclusión",
+          "C. Conclusión, tesis, argumentos",
+          "D. Tesis, conclusión, argumentos"
+        ],
+        "correct": 0,
+        "explanation": "Primero se presenta la tesis, luego los argumentos que la sostienen y finalmente la conclusión."
+      },
+      {
+        "question": "En un texto que aborda un problema y su solución, ¿qué componente gráfico ayuda a visualizar la relación causa-efecto?",
+        "options": [
+          "A. Organizador gráfico de causa y efecto",
+          "B. Cuadro sinóptico",
+          "C. Mapa conceptual",
+          "D. Esquema de llaves"
+        ],
+        "correct": 0,
+        "explanation": "El organizador gráfico de causa y efecto muestra claramente las causas de un problema y sus consecuencias o soluciones."
+      },
+      {
+        "question": "¿Qué orden cronológico siguen los pasos para resolver un problema en un texto expositivo?",
+        "options": [
+          "A. Identificar, evaluar, implementar, analizar",
+          "B. Identificar, analizar, implementar, evaluar",
+          "C. Analizar, identificar, evaluar, implementar",
+          "D. Implementar, evaluar, analizar, identificar"
+        ],
+        "correct": 1,
+        "explanation": "Primero se identifica el problema, luego se analiza, se implementa la solución y finalmente se evalúa el resultado."
+      }
+    ]
+  },
+  "nexos-adversativos": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes nexos es adversativo?",
+        "options": [
+          "y",
+          "pero",
+          "porque",
+          "además"
+        ],
+        "correct": 1,
+        "explanation": "Los nexos adversativos indican oposición o contraste entre ideas; 'pero' es un ejemplo clásico."
+      },
+      {
+        "question": "Completa la oración con el nexo adecuado: 'Estudió mucho, ______ no aprobó el examen.'",
+        "options": [
+          "y",
+          "aunque",
+          "sin embargo",
+          "además"
+        ],
+        "correct": 2,
+        "explanation": "'Sin embargo' introduce una idea que contrasta con la anterior, indicando que a pesar de estudiar, no aprobó."
+      },
+      {
+        "question": "¿En qué oración el nexo 'aunque' expresa una concesión?",
+        "options": [
+          "Aunque llueva, iremos al parque.",
+          "Aunque estudia, aprende rápido.",
+          "Aunque no lo creas, es verdad.",
+          "Aunque sea tarde, llegaremos."
+        ],
+        "correct": 0,
+        "explanation": "'Aunque' introduce una dificultad (lluvia) que no impide la acción principal (ir al parque), mostrando concesión."
+      },
+      {
+        "question": "Selecciona la oración que contiene un nexo adversativo:",
+        "options": [
+          "Compré pan y leche.",
+          "No me gusta el frío, pero vivo en el norte.",
+          "Estudia porque quiere aprender.",
+          "Terminó la tarea, luego salió."
+        ],
+        "correct": 1,
+        "explanation": "'Pero' une dos ideas opuestas: no gustarle el frío y vivir en el norte, por lo que es adversativo."
+      },
+      {
+        "question": "¿Cuál de los siguientes nexos NO es adversativo?",
+        "options": [
+          "sin embargo",
+          "a pesar de",
+          "aunque",
+          "por lo tanto"
+        ],
+        "correct": 3,
+        "explanation": "'Por lo tanto' es un nexo consecutivo, no adversativo; los otros expresan contraste o concesión."
+      }
+    ]
+  },
+  "nexos-temporales": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes nexos temporales indica que una acción ocurre antes que otra?",
+        "options": [
+          "Luego",
+          "Después",
+          "Primero",
+          "Finalmente"
+        ],
+        "correct": 2,
+        "explanation": "La opción correcta es 'Primero', ya que indica el inicio de una secuencia temporal, antes de las demás acciones."
+      },
+      {
+        "question": "Selecciona la oración que usa correctamente el nexo 'finalmente'.",
+        "options": [
+          "Finalmente, estudió para el examen.",
+          "Finalmente, antes de salir, revisó su mochila.",
+          "Finalmente, después de mucho esfuerzo, aprobó el curso.",
+          "Finalmente, primero terminó la tarea."
+        ],
+        "correct": 2,
+        "explanation": "'Finalmente' se usa para indicar el último paso de una secuencia, como en la opción C que cierra una serie de acciones."
+      },
+      {
+        "question": "¿Qué nexo temporal completa la siguiente oración? '______ de ir a la escuela, desayuné.','A) Luego, B) Después, C) Antes, D) Finalmente'",
+        "options": [
+          "Luego",
+          "Después",
+          "Antes",
+          "Finalmente"
+        ],
+        "correct": 2,
+        "explanation": "La oración indica que desayunar ocurre antes de ir a la escuela, por lo que el nexo adecuado es 'Antes'."
+      },
+      {
+        "question": "Identifica la oración donde 'luego' se usa como nexo temporal.",
+        "options": [
+          "Luego, nos vemos.",
+          "Primero come, luego juega.",
+          "Luego de la tormenta, salió el sol.",
+          "Luego, no sé qué hacer."
+        ],
+        "correct": 1,
+        "explanation": "En 'Primero come, luego juega', 'luego' indica el orden temporal entre las acciones de comer y jugar."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones presenta la secuencia temporal correcta usando nexos?",
+        "options": [
+          "Finalmente, primero, luego, después",
+          "Antes, primero, luego, finalmente",
+          "Primero, luego, después, finalmente",
+          "Después, antes, primero, finalmente"
+        ],
+        "correct": 2,
+        "explanation": "La secuencia lógica es: primero (inicio), luego (siguiente), después (posterior), finalmente (cierre)."
+      }
+    ],
+    "explanations": [
+      "La opción correcta es 'Primero', ya que indica el inicio de una secuencia temporal, antes de las demás acciones.",
+      "'Finalmente' se usa para indicar el último paso de una secuencia, como en la opción C que cierra una serie de acciones.",
+      "La oración indica que desayunar ocurre antes de ir a la escuela, por lo que el nexo adecuado es 'Antes'.",
+      "En 'Primero come, luego juega', 'luego' indica el orden temporal entre las acciones de comer y jugar.",
+      "La secuencia lógica es: primero (inicio), luego (siguiente), después (posterior), finalmente (cierre)."
+    ]
+  },
+  "concordancia": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones presenta concordancia correcta entre sujeto y predicado?",
+        "options": [
+          "El equipo de futbolistas entrenan todas las mañanas.",
+          "La mayoría de los estudiantes aprobó el examen.",
+          "Un grupo de vecinos protestan frente al ayuntamiento.",
+          "Las noticias que escuché ayer era falsas."
+        ],
+        "correct": 1,
+        "explanation": "En 'La mayoría de los estudiantes aprobó el examen', el sujeto es 'la mayoría' (singular), por lo que el verbo debe estar en singular: 'aprobó'. Las otras opciones tienen errores de concordancia."
+      },
+      {
+        "question": "Selecciona la oración con concordancia correcta de persona y número.",
+        "options": [
+          "Tú y yo iremos al cine mañana.",
+          "Tú y yo irán al cine mañana.",
+          "Tú y yo iré al cine mañana.",
+          "Tú y yo irás al cine mañana."
+        ],
+        "correct": 0,
+        "explanation": "El sujeto compuesto 'tú y yo' equivale a 'nosotros', por lo que el verbo debe conjugarse en primera persona del plural: 'iremos'."
+      },
+      {
+        "question": "¿En qué opción el verbo concuerda correctamente con el sujeto?",
+        "options": [
+          "El presidente, junto con sus ministros, viajan al extranjero.",
+          "El presidente, junto con sus ministros, viaja al extranjero.",
+          "El presidente, junto con sus ministros, viajamos al extranjero.",
+          "El presidente, junto con sus ministros, viajáis al extranjero."
+        ],
+        "correct": 1,
+        "explanation": "El sujeto es 'el presidente' (singular), por lo que el verbo debe ir en singular: 'viaja'. La expresión 'junto con sus ministros' no altera la concordancia."
+      },
+      {
+        "question": "Identifica la oración con error de concordancia.",
+        "options": [
+          "Ellos estudian para el examen.",
+          "Ella estudia para el examen.",
+          "Nosotros estudiamos para el examen.",
+          "Ellos estudia para el examen."
+        ],
+        "correct": 3,
+        "explanation": "El sujeto 'ellos' es plural, por lo que el verbo debe ser 'estudian', no 'estudia'. 'Estudia' es singular."
+      },
+      {
+        "question": "Completa con la opción correcta: 'El grupo de alumnos ___ a la excursión.'",
+        "options": [
+          "asistieron",
+          "asistió",
+          "asistimos",
+          "asististeis"
+        ],
+        "correct": 1,
+        "explanation": "El sujeto es 'el grupo' (singular), por lo que el verbo debe conjugarse en singular: 'asistió'. Aunque 'alumnos' sea plural, el núcleo del sujeto es 'grupo'."
+      }
+    ]
+  },
+  "nexos-causales": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones utiliza correctamente el nexo causal 'debido a'?",
+        "options": [
+          "Debido a que llegó tarde, perdió el autobús.",
+          "Debido a que estudió, aprobó el examen.",
+          "Debido a la lluvia, el partido se suspendió.",
+          "Debido a que no comió, tiene hambre."
+        ],
+        "correct": 2,
+        "explanation": "'Debido a' debe ir seguido de un sustantivo o sintagma nominal, no de una oración con 'que'. La opción correcta es 'Debido a la lluvia'."
+      },
+      {
+        "question": "Identifica la oración que emplea el nexo causal 'puesto que' de manera adecuada.",
+        "options": [
+          "Puesto que estudiaste, obtuviste buenas calificaciones.",
+          "Puesto que no tengo dinero, no puedo comprar el boleto.",
+          "Puesto que llegamos temprano, encontramos lugar.",
+          "Puesto que el agua hierve, el vapor sube."
+        ],
+        "correct": 1,
+        "explanation": "'Puesto que' introduce una causa real y lógica. En la opción B, la falta de dinero es la causa de no poder comprar el boleto."
+      },
+      {
+        "question": "Selecciona la oración que contiene un nexo causal correctamente usado.",
+        "options": [
+          "Ya que no estudió, reprobó el examen.",
+          "Ya que te gusta el chocolate, cómpralo.",
+          "Ya que es tarde, me voy a dormir.",
+          "Ya que no hay clases, podemos descansar."
+        ],
+        "correct": 0,
+        "explanation": "'Ya que' introduce la causa de algo. En la opción A, no estudiar es la causa de reprobar."
+      },
+      {
+        "question": "¿En cuál de las siguientes oraciones se usa 'porque' como nexo causal?",
+        "options": [
+          "No sé porque llegó tarde.",
+          "Llegó tarde porque el tráfico estaba pesado.",
+          "Dime porque no viniste.",
+          "¿Porque no estudiaste?"
+        ],
+        "correct": 1,
+        "explanation": "'Porque' sin tilde es un nexo causal. En la opción B, explica la causa de llegar tarde."
+      },
+      {
+        "question": "Elige la oración que usa 'debido a' correctamente.",
+        "options": [
+          "Debido a que no durmió, está cansado.",
+          "Debido a su esfuerzo, logró la meta.",
+          "Debido a que llovió, se mojó.",
+          "Debido a que estudió, pasó."
+        ],
+        "correct": 1,
+        "explanation": "'Debido a' debe ir seguido de un sustantivo. 'Debido a su esfuerzo' es correcto."
+      }
+    ]
+  },
+  "jerarquizadores": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes jerarquizadores indica la razón más importante?",
+        "options": [
+          "En primer lugar",
+          "Finalmente",
+          "La razón más importante es",
+          "También"
+        ],
+        "correct": 2,
+        "explanation": "'La razón más importante es' jerarquiza al señalar la causa principal, mientras que los otros ordenan o agregan información."
+      },
+      {
+        "question": "Selecciona el jerarquizador que se usa para comenzar una enumeración en un texto.",
+        "options": [
+          "Finalmente",
+          "En primer lugar",
+          "También",
+          "La razón más importante"
+        ],
+        "correct": 1,
+        "explanation": "'En primer lugar' introduce el primer elemento de una lista o secuencia."
+      },
+      {
+        "question": "¿Qué jerarquizador se emplea para añadir información de manera secundaria?",
+        "options": [
+          "En primer lugar",
+          "La razón más importante",
+          "Finalmente",
+          "También"
+        ],
+        "correct": 3,
+        "explanation": "'También' agrega información sin jerarquía principal, a diferencia de los otros que ordenan o destacan."
+      },
+      {
+        "question": "En un texto argumentativo, ¿cuál jerarquizador se usa para cerrar la exposición?",
+        "options": [
+          "En primer lugar",
+          "También",
+          "Finalmente",
+          "La razón más importante"
+        ],
+        "correct": 2,
+        "explanation": "'Finalmente' indica el último punto o conclusión de una serie."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un jerarquizador?",
+        "options": [
+          "En primer lugar",
+          "También",
+          "Finalmente",
+          "Entonces"
+        ],
+        "correct": 3,
+        "explanation": "'Entonces' es un conector de consecuencia, no un jerarquizador que ordene o priorice información."
+      }
+    ]
+  },
+  "nexos-condicionales": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes nexos condicionales se utiliza para expresar una condición necesaria?",
+        "options": [
+          "si",
+          "siempre que",
+          "con tal de que",
+          "aunque"
+        ],
+        "correct": 0,
+        "explanation": "El nexo 'si' es el más común para introducir una condición necesaria, como en 'Si estudias, aprobarás'."
+      },
+      {
+        "question": "Completa: 'Te prestaré el libro, ________ me lo devuelvas mañana.'",
+        "options": [
+          "si",
+          "siempre que",
+          "con tal de que",
+          "aunque"
+        ],
+        "correct": 1,
+        "explanation": "'Siempre que' indica una condición que debe cumplirse para que ocurra la acción principal, similar a 'con tal de que', pero en este contexto es la más adecuada."
+      },
+      {
+        "question": "¿En qué oración se usa correctamente 'con tal de que'?",
+        "options": [
+          "Con tal de que llegues temprano, iremos al cine.",
+          "Iremos al cine con tal de que llegues temprano.",
+          "Con tal de que llegues temprano, iremos al cine.",
+          "Todas son correctas."
+        ],
+        "correct": 3,
+        "explanation": "'Con tal de que' puede colocarse al inicio o en medio de la oración sin cambiar el significado, por lo que todas las opciones son válidas."
+      },
+      {
+        "question": "¿Cuál es el significado de 'siempre que' en la oración 'Siempre que estudies, aprobarás'?",
+        "options": [
+          "Condición",
+          "Causa",
+          "Tiempo",
+          "Concesión"
+        ],
+        "correct": 0,
+        "explanation": "'Siempre que' introduce una condición necesaria para que ocurra la acción principal, por lo que tiene valor condicional."
+      },
+      {
+        "question": "Identifica la oración condicional:",
+        "options": [
+          "Cuando llegues, avísame.",
+          "Si tienes tiempo, ven a verme.",
+          "Aunque llueva, saldré.",
+          "Como no estudias, reprobarás."
+        ],
+        "correct": 1,
+        "explanation": "La oración 'Si tienes tiempo, ven a verme' usa el nexo 'si' para expresar una condición, mientras que las otras usan nexos temporales o concesivos."
+      }
+    ]
+  },
+  "nexos-concesivos": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones utiliza correctamente el nexo concesivo 'aunque'?",
+        "options": [
+          "Aunque estudió mucho, reprobó el examen.",
+          "Aunque llovía, salió sin paraguas.",
+          "Aunque no tengo dinero, compraré un coche.",
+          "Todas las anteriores son correctas."
+        ],
+        "correct": 3,
+        "explanation": "Todas las oraciones usan 'aunque' para expresar una concesión, donde la acción principal contradice la expectativa de la subordinada."
+      },
+      {
+        "question": "Selecciona la oración que usa 'a pesar de que' de manera correcta:",
+        "options": [
+          "A pesar de que no tengo sueño, me dormí.",
+          "A pesar de que tenía hambre, no comió.",
+          "A pesar de que es rico, es humilde.",
+          "Todas son correctas."
+        ],
+        "correct": 3,
+        "explanation": "En todos los casos, 'a pesar de que' introduce una dificultad que no impide la acción principal, cumpliendo su función concesiva."
+      },
+      {
+        "question": "¿Qué nexo concesivo completa mejor la oración? '_____ tenía prisa, esperó el autobús.'",
+        "options": [
+          "Aunque",
+          "Porque",
+          "Ya que",
+          "Puesto que"
+        ],
+        "correct": 0,
+        "explanation": "'Aunque' indica que, a pesar de tener prisa, esperó, mientras que los otros nexos expresan causa."
+      },
+      {
+        "question": "Identifica la oración que NO contiene un nexo concesivo:",
+        "options": [
+          "Aunque no me gusta, lo haré.",
+          "A pesar de que llovía, salió.",
+          "Comió mucho porque tenía hambre.",
+          "Aunque es caro, lo compraré."
+        ],
+        "correct": 2,
+        "explanation": "'Porque' es un nexo causal, no concesivo; las otras opciones usan 'aunque' o 'a pesar de que'."
+      },
+      {
+        "question": "¿Cuál es la función de los nexos 'aunque' y 'a pesar de que'?",
+        "options": [
+          "Indicar causa",
+          "Indicar consecuencia",
+          "Indicar concesión (dificultad que no impide)",
+          "Indicar tiempo"
+        ],
+        "correct": 2,
+        "explanation": "Estos nexos expresan una objeción o dificultad que no evita que ocurra la acción principal."
+      }
+    ]
+  },
+  "coma": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones usa correctamente la coma para separar elementos de una enumeración?",
+        "options": [
+          "Compré manzanas, peras, y plátanos.",
+          "Compré manzanas peras y plátanos.",
+          "Compré manzanas, peras y, plátanos.",
+          "Compré manzanas, peras, plátanos."
+        ],
+        "correct": 0,
+        "explanation": "La opción A separa correctamente los elementos con coma, incluyendo la coma antes de 'y' (uso opcional pero aceptado en enumeraciones)."
+      },
+      {
+        "question": "Identifica la oración en la que la coma se usa para separar el vocativo.",
+        "options": [
+          "María, ven aquí.",
+          "María ven aquí.",
+          "María, ven, aquí.",
+          "María ven, aquí."
+        ],
+        "correct": 0,
+        "explanation": "En la opción A, la coma después de 'María' indica que es un vocativo (llamado directo)."
+      },
+      {
+        "question": "¿Cuál oración utiliza correctamente la coma para separar oraciones coordinadas?",
+        "options": [
+          "Estudió mucho, pero no aprobó.",
+          "Estudió mucho pero no aprobó.",
+          "Estudió mucho, pero, no aprobó.",
+          "Estudió mucho pero, no aprobó."
+        ],
+        "correct": 0,
+        "explanation": "La coma antes de 'pero' separa las oraciones coordinadas adversativas correctamente."
+      },
+      {
+        "question": "¿En qué opción la coma cumple la función de separar el vocativo?",
+        "options": [
+          "Señor, ¿puede ayudarme?",
+          "Señor ¿puede ayudarme?",
+          "Señor, ¿puede, ayudarme?",
+          "Señor ¿puede, ayudarme?"
+        ],
+        "correct": 0,
+        "explanation": "La coma después de 'Señor' indica que es un vocativo, es decir, la persona a quien se dirige el hablante."
+      },
+      {
+        "question": "Selecciona la oración que emplea correctamente la coma en una enumeración.",
+        "options": [
+          "Necesito lápiz, goma, y sacapuntas.",
+          "Necesito lápiz goma y sacapuntas.",
+          "Necesito lápiz, goma, y, sacapuntas.",
+          "Necesito lápiz, goma y, sacapuntas."
+        ],
+        "correct": 0,
+        "explanation": "La opción A separa los elementos enumerados con comas, incluyendo la coma opcional antes de 'y'."
+      }
+    ]
+  },
+  "punto-y-coma": {
+    "questions": [
+      {
+        "question": "¿En cuál de las siguientes oraciones se usa correctamente el punto y coma?",
+        "options": [
+          "A) El día estaba nublado; sin embargo, salimos a pasear.",
+          "B) El día estaba nublado, sin embargo; salimos a pasear.",
+          "C) El día estaba nublado; sin embargo salimos a pasear.",
+          "D) El día estaba nublado, sin embargo salimos; a pasear."
+        ],
+        "correct": 0,
+        "explanation": "El punto y coma se usa antes de conectores como 'sin embargo' cuando unen dos oraciones largas relacionadas. La opción A es la única que coloca correctamente el punto y coma antes del conector y la coma después."
+      },
+      {
+        "question": "Selecciona la oración que requiere punto y coma para separar sus partes:",
+        "options": [
+          "A) Juan estudia mucho pero no obtiene buenas calificaciones.",
+          "B) La casa es grande tiene un jardín hermoso.",
+          "C) María fue al mercado y compró frutas.",
+          "D) El perro ladró fuerte asustó a los vecinos."
+        ],
+        "correct": 1,
+        "explanation": "La opción B tiene dos oraciones largas relacionadas ('La casa es grande' y 'tiene un jardín hermoso') que deben separarse con punto y coma para evitar ambigüedad."
+      },
+      {
+        "question": "Completa: 'El examen fue difícil _____ todos aprobaron.'",
+        "options": [
+          "A) ; porque",
+          "B) ; no obstante,",
+          "C) , no obstante;",
+          "D) ; no obstante"
+        ],
+        "correct": 1,
+        "explanation": "Se necesita un conector como 'no obstante' para contrastar, y el punto y coma va antes del conector, seguido de coma. La opción B es la correcta."
+      },
+      {
+        "question": "¿Cuál de estas opciones usa punto y coma para separar elementos de una lista compleja?",
+        "options": [
+          "A) Los colores son: rojo, azul; y verde.",
+          "B) Los invitados son: Juan, el doctor; María, la abogada; y Luis, el ingeniero.",
+          "C) Los invitados son: Juan el doctor, María la abogada, y Luis el ingeniero.",
+          "D) Los invitados son: Juan, el doctor; María, la abogada, y Luis, el ingeniero."
+        ],
+        "correct": 1,
+        "explanation": "Cuando los elementos de una lista ya contienen comas, se usa punto y coma para separarlos. La opción B lo hace correctamente."
+      },
+      {
+        "question": "En la oración 'No estudió para el examen; por lo tanto, reprobó', el punto y coma se usa para:",
+        "options": [
+          "A) Separar dos oraciones independientes pero relacionadas.",
+          "B) Indicar una pausa menor que la coma.",
+          "C) Enumerar elementos de una lista.",
+          "D) Unir dos oraciones subordinadas."
+        ],
+        "correct": 0,
+        "explanation": "El punto y coma separa dos oraciones largas que tienen relación temática, como causa y consecuencia. En este caso, la primera oración explica la razón de la segunda."
+      }
+    ]
+  },
+  "oracion-principal": {
+    "questions": [
+      {
+        "question": "¿Cuál es la oración principal del siguiente texto? 'El agua es esencial para la vida. Sin ella, los seres vivos no podrían existir. Además, el agua ayuda a regular la temperatura del planeta.'",
+        "options": [
+          "El agua es esencial para la vida.",
+          "Sin ella, los seres vivos no podrían existir.",
+          "Además, el agua ayuda a regular la temperatura del planeta.",
+          "El agua es esencial para la vida y regula la temperatura."
+        ],
+        "correct": 0,
+        "explanation": "La oración principal expresa la idea central del texto: que el agua es esencial para la vida. Las otras oraciones la complementan."
+      },
+      {
+        "question": "Identifica la oración principal en el siguiente párrafo: 'Los perros son animales leales. Por eso, muchas personas los eligen como mascotas. Además, son excelentes compañeros.'",
+        "options": [
+          "Los perros son animales leales.",
+          "Por eso, muchas personas los eligen como mascotas.",
+          "Además, son excelentes compañeros.",
+          "Los perros son leales y excelentes compañeros."
+        ],
+        "correct": 0,
+        "explanation": "La oración principal es 'Los perros son animales leales', ya que expresa la idea central de la lealtad de los perros."
+      },
+      {
+        "question": "¿Qué tipo de nexo es 'porque' en la oración: 'No fui a la escuela porque estaba enfermo'?",
+        "options": [
+          "Nexo causal",
+          "Nexo consecutivo",
+          "Nexo adversativo",
+          "Nexo copulativo"
+        ],
+        "correct": 0,
+        "explanation": "'Porque' introduce la causa de la acción, por lo que es un nexo causal."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones contiene un nexo adversativo?",
+        "options": [
+          "Estudió mucho, pero no aprobó el examen.",
+          "Hizo la tarea y luego fue a jugar.",
+          "No vino porque estaba cansado.",
+          "Si estudias, aprobarás."
+        ],
+        "correct": 0,
+        "explanation": "'Pero' es un nexo adversativo que indica oposición entre las ideas."
+      },
+      {
+        "question": "Selecciona la opción que contiene la oración principal del texto: 'La lectura es fundamental para el aprendizaje. A través de ella, adquirimos conocimientos y desarrollamos nuestra imaginación.'",
+        "options": [
+          "La lectura es fundamental para el aprendizaje.",
+          "A través de ella, adquirimos conocimientos.",
+          "Desarrollamos nuestra imaginación.",
+          "La lectura es fundamental y desarrolla la imaginación."
+        ],
+        "correct": 0,
+        "explanation": "La oración principal es la que enuncia la idea central: la importancia de la lectura para el aprendizaje."
+      }
+    ]
+  },
+  "parentesis": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal de los paréntesis en un texto?",
+        "options": [
+          "Indicar el final de una oración",
+          "Encerrar información aclaratoria o secundaria",
+          "Separar elementos en una lista",
+          "Señalar una pregunta directa"
+        ],
+        "correct": 1,
+        "explanation": "Los paréntesis se usan para incluir datos o comentarios que aclaran o complementan la idea principal, sin alterar el sentido de la oración."
+      },
+      {
+        "question": "Selecciona la oración donde los paréntesis se usan correctamente para añadir información secundaria:",
+        "options": [
+          "El perro (corre) por el parque.",
+          "Mi amigo (el de la camisa azul) llegó tarde.",
+          "Estudia (para el examen) de matemáticas.",
+          "La casa (es) muy grande."
+        ],
+        "correct": 1,
+        "explanation": "En la opción B, los paréntesis encierran una aclaración sobre el amigo, que es información secundaria."
+      },
+      {
+        "question": "¿Qué tipo de información se suele encerrar entre paréntesis?",
+        "options": [
+          "Información esencial para entender la oración",
+          "Información secundaria o aclaratoria",
+          "El sujeto de la oración",
+          "El verbo principal"
+        ],
+        "correct": 1,
+        "explanation": "Los paréntesis se emplean para añadir datos complementarios que no son imprescindibles, como fechas, ejemplos o explicaciones."
+      },
+      {
+        "question": "En la oración 'El examen (que será el lunes) está difícil', ¿qué función cumplen los paréntesis?",
+        "options": [
+          "Indicar una pausa larga",
+          "Añadir una aclaración sobre cuándo es el examen",
+          "Separar el sujeto del predicado",
+          "Señalar una cita textual"
+        ],
+        "correct": 1,
+        "explanation": "Los paréntesis agregan la información de que el examen es el lunes, un dato secundario que aclara el contexto."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones utiliza paréntesis de manera incorrecta?",
+        "options": [
+          "La capital de Francia (París) es una ciudad hermosa.",
+          "El niño (que estudia) mucho aprobó el curso.",
+          "Mañana (si no llueve) iremos al parque.",
+          "El libro (de aventuras) es emocionante."
+        ],
+        "correct": 1,
+        "explanation": "En la opción B, 'que estudia' es una aclaración innecesaria que podría ir sin paréntesis, pero el uso no es incorrecto; sin embargo, la opción B es la menos adecuada porque la información no es secundaria sino parte del sujeto. Revisando, la opción correcta es la B porque 'que estudia' es esencial para identificar al niño, por lo que no debe ir entre paréntesis."
+      }
+    ]
+  },
+  "oracion-secundaria": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones contiene una oración subordinada adverbial causal?",
+        "options": [
+          "A. El libro que leíste es interesante.",
+          "B. Llegamos tarde porque el tráfico estaba pesado.",
+          "C. La casa donde vivo es antigua.",
+          "D. Cuando termines, avísame."
+        ],
+        "correct": 1,
+        "explanation": "La opción B contiene 'porque', que introduce una causa, por lo que es una subordinada causal que depende de la principal 'Llegamos tarde'."
+      },
+      {
+        "question": "Identifica la oración que incluye una subordinada adjetiva o relativa:",
+        "options": [
+          "A. Saldremos cuando deje de llover.",
+          "B. El perro que ladra no muerde.",
+          "C. Estudia para que apruebes.",
+          "D. Aunque llueva, iremos."
+        ],
+        "correct": 1,
+        "explanation": "La opción B tiene 'que ladra', un pronombre relativo que funciona como adjetivo, modificando a 'el perro'."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones presenta una subordinada adverbial temporal?",
+        "options": [
+          "A. Compré el libro que me recomendaste.",
+          "B. Como no estudió, reprobó.",
+          "C. Te llamaré cuando llegue a casa.",
+          "D. El niño, que es muy alto, juega básquet."
+        ],
+        "correct": 2,
+        "explanation": "La opción C usa 'cuando', que indica tiempo, por lo que la subordinada 'cuando llegue a casa' es temporal."
+      },
+      {
+        "question": "Selecciona la oración donde la subordinada es de tipo causal:",
+        "options": [
+          "A. La película que vimos fue aburrida.",
+          "B. No fuimos al parque porque estaba lloviendo.",
+          "C. Mientras cocino, escucho música.",
+          "D. El hombre que sonríe es mi tío."
+        ],
+        "correct": 1,
+        "explanation": "En la opción B, 'porque estaba lloviendo' expresa la causa de no ir al parque, por lo que es una subordinada causal."
+      },
+      {
+        "question": "¿Qué tipo de subordinada contiene la siguiente oración: 'El jardín donde jugamos es grande'?",
+        "options": [
+          "A. Causal",
+          "B. Temporal",
+          "C. Relativa",
+          "D. Condicional"
+        ],
+        "correct": 2,
+        "explanation": "La oración incluye 'donde jugamos', un adverbio relativo que introduce una subordinada adjetiva que modifica a 'el jardín'."
+      }
+    ]
+  },
+  "dos-puntos": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones utiliza correctamente el punto y coma antes de una enumeración?",
+        "options": [
+          "Los planetas del sistema solar son: Mercurio, Venus, Tierra, Marte, Júpiter, Saturno, Urano y Neptuno.",
+          "Los planetas del sistema solar son; Mercurio, Venus, Tierra, Marte, Júpiter, Saturno, Urano y Neptuno.",
+          "Los planetas del sistema solar son: Mercurio; Venus; Tierra; Marte; Júpiter; Saturno; Urano; Neptuno.",
+          "Los planetas del sistema solar son; Mercurio; Venus; Tierra; Marte; Júpiter; Saturno; Urano; Neptuno."
+        ],
+        "correct": 0,
+        "explanation": "Antes de una enumeración se usan dos puntos, no punto y coma. La opción A es la correcta porque emplea dos puntos."
+      },
+      {
+        "question": "Identifica la oración que usa correctamente los dos puntos en una cita textual.",
+        "options": [
+          "El profesor dijo: 'La práctica hace al maestro'.",
+          "El profesor dijo; 'La práctica hace al maestro'.",
+          "El profesor dijo. 'La práctica hace al maestro'.",
+          "El profesor dijo, 'La práctica hace al maestro'."
+        ],
+        "correct": 0,
+        "explanation": "Antes de una cita textual se usan dos puntos. La opción A es correcta porque coloca dos puntos antes de la cita."
+      },
+      {
+        "question": "Selecciona la oración donde se emplean correctamente los dos puntos para introducir un vocativo.",
+        "options": [
+          "Querido amigo: te escribo esta carta.",
+          "Querido amigo; te escribo esta carta.",
+          "Querido amigo. te escribo esta carta.",
+          "Querido amigo, te escribo esta carta."
+        ],
+        "correct": 0,
+        "explanation": "Después del vocativo en cartas se usan dos puntos. La opción A es la correcta porque usa dos puntos después de 'Querido amigo'."
+      },
+      {
+        "question": "¿En qué opción se usan correctamente los dos puntos antes de una enumeración?",
+        "options": [
+          "Necesito comprar: leche, pan y huevos.",
+          "Necesito comprar; leche, pan y huevos.",
+          "Necesito comprar: leche; pan; huevos.",
+          "Necesito comprar. leche, pan y huevos."
+        ],
+        "correct": 0,
+        "explanation": "Antes de una enumeración se usan dos puntos. La opción A es correcta porque los emplea adecuadamente."
+      },
+      {
+        "question": "Elige la opción que presenta el uso correcto de los dos puntos en una cita textual.",
+        "options": [
+          "Ella afirmó: 'El conocimiento es poder'.",
+          "Ella afirmó; 'El conocimiento es poder'.",
+          "Ella afirmó. 'El conocimiento es poder'.",
+          "Ella afirmó, 'El conocimiento es poder'."
+        ],
+        "correct": 0,
+        "explanation": "Antes de una cita textual se usan dos puntos. La opción A es la correcta porque los coloca antes de la cita."
+      }
+    ]
+  },
+  "comillas": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones utiliza correctamente las comillas para indicar una cita textual?",
+        "options": [
+          "A) El profesor dijo: “La lectura es fundamental”.",
+          "B) El profesor dijo: La lectura es fundamental.",
+          "C) El profesor dijo: «La lectura es fundamental».",
+          "D) El profesor dijo: 'La lectura es fundamental'."
+        ],
+        "correct": 0,
+        "explanation": "Las comillas dobles (“ ”) se usan para citas textuales. La opción A las emplea correctamente."
+      },
+      {
+        "question": "¿En cuál opción las comillas se usan para señalar un término especial o irónico?",
+        "options": [
+          "A) Leí el cuento “El principito”.",
+          "B) Su “generosidad” era en realidad interés.",
+          "C) El capítulo se titula “La aventura”.",
+          "D) Dijo: “Voy a llegar tarde”."
+        ],
+        "correct": 1,
+        "explanation": "Las comillas en ‘generosidad’ indican que se usa con ironía, no en sentido literal."
+      },
+      {
+        "question": "¿Qué oración usa correctamente comillas para el título de una obra corta?",
+        "options": [
+          "A) La novela Cien años de soledad es famosa.",
+          "B) El poema “Rima XXI” es de Bécquer.",
+          "C) La película El viaje de Chihiro ganó un Oscar.",
+          "D) El libro “La Odisea” es de Homero."
+        ],
+        "correct": 1,
+        "explanation": "Los títulos de obras cortas (poemas, cuentos) se escriben entre comillas. ‘Rima XXI’ es un poema."
+      },
+      {
+        "question": "Selecciona la oración que usa correctamente las comillas para un término técnico o especial:",
+        "options": [
+          "A) En informática, un “virus” es un programa malicioso.",
+          "B) El “árbol” del jardín es muy alto.",
+          "C) Compré “pan” en la tienda.",
+          "D) El “perro” de mi vecino ladra mucho."
+        ],
+        "correct": 0,
+        "explanation": "‘Virus’ se usa como término técnico en informática, por eso va entre comillas."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones presenta un uso incorrecto de las comillas?",
+        "options": [
+          "A) El artículo “Uso de nexos” es muy útil.",
+          "B) María exclamó: “¡Qué bonito!”.",
+          "C) El “libro” está sobre la mesa.",
+          "D) El cuento “El aleph” es de Borges."
+        ],
+        "correct": 2,
+        "explanation": "‘Libro’ es una palabra común, no un término especial ni cita, por lo que no requiere comillas."
+      }
+    ]
+  },
+  "texto-informativo": {
+    "questions": [
+      {
+        "question": "¿Cuál es la característica principal de un texto informativo?",
+        "options": [
+          "Presenta la opinión del autor",
+          "Incluye hechos objetivos sin opiniones",
+          "Utiliza lenguaje figurado",
+          "Narra una historia ficticia"
+        ],
+        "correct": 1,
+        "explanation": "Un texto informativo se basa en hechos reales y objetivos, sin incluir la opinión personal del autor."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de texto informativo?",
+        "options": [
+          "Un cuento de hadas",
+          "Una noticia periodística",
+          "Un poema de amor",
+          "Una novela de ciencia ficción"
+        ],
+        "correct": 1,
+        "explanation": "La noticia periodística presenta hechos de manera objetiva, sin opiniones del autor."
+      },
+      {
+        "question": "¿Qué tipo de texto busca principalmente informar sobre un tema?",
+        "options": [
+          "Texto literario",
+          "Texto informativo",
+          "Texto persuasivo",
+          "Texto dramático"
+        ],
+        "correct": 1,
+        "explanation": "El texto informativo tiene como propósito principal transmitir información objetiva sobre un tema."
+      },
+      {
+        "question": "En un texto informativo, ¿qué elemento NO debe estar presente?",
+        "options": [
+          "Datos verificables",
+          "Opiniones personales",
+          "Lenguaje claro",
+          "Estructura ordenada"
+        ],
+        "correct": 1,
+        "explanation": "Las opiniones personales son subjetivas y no corresponden a un texto informativo, que debe ser objetivo."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un tipo de texto informativo?",
+        "options": [
+          "Artículo enciclopédico",
+          "Reportaje",
+          "Cuento infantil",
+          "Noticia"
+        ],
+        "correct": 2,
+        "explanation": "El cuento infantil es un texto literario narrativo, no informativo, pues busca entretener."
+      }
+    ]
+  },
+  "noticia": {
+    "questions": [
+      {
+        "question": "¿Qué tipo de texto es una noticia?",
+        "options": [
+          "Un texto literario",
+          "Un texto informativo",
+          "Un texto argumentativo",
+          "Un texto instructivo"
+        ],
+        "correct": 1,
+        "explanation": "Una noticia es un texto informativo porque su propósito es informar sobre un hecho actual de manera objetiva."
+      },
+      {
+        "question": "¿Quién es el autor de una noticia?",
+        "options": [
+          "El editor",
+          "El periodista",
+          "El lector",
+          "El entrevistado"
+        ],
+        "correct": 1,
+        "explanation": "El periodista es quien investiga y redacta la noticia para darla a conocer al público."
+      },
+      {
+        "question": "¿Cuándo se publica una noticia?",
+        "options": [
+          "En cualquier momento, sin importar la actualidad",
+          "Solo los fines de semana",
+          "Generalmente después de que ocurre el hecho",
+          "Al final del año"
+        ],
+        "correct": 2,
+        "explanation": "Una noticia se publica poco después de que ocurre el suceso, para mantener su actualidad."
+      },
+      {
+        "question": "¿Dónde se encuentra la información más importante en una noticia?",
+        "options": [
+          "Al final del texto",
+          "En el primer párrafo o lead",
+          "En los subtítulos",
+          "En las imágenes"
+        ],
+        "correct": 1,
+        "explanation": "El primer párrafo o lead responde a las preguntas básicas (qué, quién, cuándo, dónde, cómo, por qué) y contiene lo esencial."
+      },
+      {
+        "question": "¿Por qué es importante que una noticia responda a las preguntas qué, quién, cuándo, dónde, cómo y por qué?",
+        "options": [
+          "Para que sea más larga",
+          "Para que el lector obtenga toda la información necesaria de forma clara y completa",
+          "Para que sea más entretenida",
+          "Para que el periodista pueda opinar"
+        ],
+        "correct": 1,
+        "explanation": "Al responder estas preguntas, la noticia proporciona una visión completa del hecho, permitiendo al lector entenderlo sin confusiones."
+      }
+    ]
+  },
+  "presente-habitual": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones utiliza el presente habitual?",
+        "options": [
+          "El agua hierve a 100°C.",
+          "Colón llega en 1492.",
+          "Los niños juegan en el parque.",
+          "La Tierra gira alrededor del Sol."
+        ],
+        "correct": 2,
+        "explanation": "El presente habitual expresa acciones que se repiten o son costumbre. 'Los niños juegan en el parque' indica una acción que ocurre con frecuencia."
+      },
+      {
+        "question": "¿Qué tipo de presente se emplea en 'El agua hierve a 100°C'?",
+        "options": [
+          "Presente habitual",
+          "Presente histórico",
+          "Presente atemporal",
+          "Presente continuo"
+        ],
+        "correct": 2,
+        "explanation": "El presente atemporal se usa para verdades científicas o hechos universales, como la temperatura de ebullición del agua."
+      },
+      {
+        "question": "Identifica la oración que usa presente histórico:",
+        "options": [
+          "Los niños juegan cada tarde.",
+          "Colón llega en 1492.",
+          "El agua hierve a 100 grados.",
+          "La Tierra es redonda."
+        ],
+        "correct": 1,
+        "explanation": "El presente histórico sitúa un hecho pasado como si ocurriera ahora, dándole actualidad. 'Colón llega en 1492' es un ejemplo claro."
+      },
+      {
+        "question": "¿Cuál de los siguientes enunciados corresponde al presente atemporal?",
+        "options": [
+          "Mi hermano juega futbol los sábados.",
+          "El sol sale por el este.",
+          "El presidente inaugura el museo ayer.",
+          "Los estudiantes estudian para el examen."
+        ],
+        "correct": 1,
+        "explanation": "El presente atemporal expresa verdades universales. 'El sol sale por el este' es un hecho científico que no cambia."
+      },
+      {
+        "question": "Selecciona la oración en presente habitual:",
+        "options": [
+          "El agua hierve a 100 grados.",
+          "Colón llega a América en 1492.",
+          "Los niños juegan en el parque.",
+          "La Tierra gira alrededor del Sol."
+        ],
+        "correct": 2,
+        "explanation": "El presente habitual describe acciones que se repiten. 'Los niños juegan en el parque' indica una actividad frecuente."
+      }
+    ]
+  },
+  "texto-narrativo": {
+    "questions": [
+      {
+        "question": "¿En cuál de las siguientes oraciones se usa el pretérito para narrar una acción principal?",
+        "options": [
+          "Mientras caminaba por el parque, el cielo estaba nublado.",
+          "El niño tenía un perro llamado Max.",
+          "Ayer, María compró un pastel para la fiesta.",
+          "La casa era grande y tenía un jardín hermoso."
+        ],
+        "correct": 2,
+        "explanation": "El pretérito 'compró' indica una acción puntual y terminada, típica de la narración de sucesos principales."
+      },
+      {
+        "question": "¿Qué tiempo verbal se emplea para describir el fondo o contexto en un texto narrativo?",
+        "options": [
+          "Pretérito",
+          "Copretérito",
+          "Futuro",
+          "Presente"
+        ],
+        "correct": 1,
+        "explanation": "El copretérito ('era', 'tenía') se usa para describir características o acciones que servían de fondo a la historia."
+      },
+      {
+        "question": "Identifica la oración que usa correctamente el copretérito para describir una situación de fondo.",
+        "options": [
+          "El héroe derrotó al dragón.",
+          "La princesa cantó una canción.",
+          "El castillo era antiguo y tenía torres altas.",
+          "El caballero llegó al amanecer."
+        ],
+        "correct": 2,
+        "explanation": "'Era' y 'tenía' están en copretérito, describiendo el castillo como parte del escenario."
+      },
+      {
+        "question": "En el siguiente fragmento: 'El sol brillaba intensamente. De repente, un trueno sacudió el cielo.', ¿qué tiempo verbal narra el suceso principal?",
+        "options": [
+          "Brillaba (copretérito)",
+          "Sacudió (pretérito)",
+          "Brillaba y sacudió (ambos)",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "explanation": "'Sacudió' está en pretérito y marca el evento principal que interrumpe la descripción de fondo."
+      },
+      {
+        "question": "¿Cuál es la función principal del copretérito en una narración?",
+        "options": [
+          "Indicar acciones futuras",
+          "Describir el ambiente o circunstancias pasadas",
+          "Expresar órdenes",
+          "Narrar hechos consecutivos"
+        ],
+        "correct": 1,
+        "explanation": "El copretérito sitúa al lector en el contexto pasado, describiendo cómo eran las cosas."
+      }
+    ]
+  },
+  "texto-legal-administrativo": {
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal de un contrato en el ámbito legal?",
+        "options": [
+          "A. Describir un evento histórico",
+          "B. Establecer acuerdos formales entre dos o más partes",
+          "C. Narrar una historia ficticia",
+          "D. Expresar emociones personales"
+        ],
+        "correct": 1,
+        "explanation": "Un contrato es un documento legal que formaliza acuerdos entre partes, estableciendo derechos y obligaciones. Las otras opciones corresponden a textos literarios o personales."
+      },
+      {
+        "question": "¿Qué tipo de lenguaje predomina en un oficio administrativo?",
+        "options": [
+          "A. Lenguaje coloquial con expresiones informales",
+          "B. Lenguaje formal y objetivo, con tecnicismos",
+          "C. Lenguaje poético con figuras retóricas",
+          "D. Lenguaje subjetivo con opiniones personales"
+        ],
+        "correct": 1,
+        "explanation": "Los oficios administrativos requieren un lenguaje formal y preciso para comunicar información oficial. El lenguaje coloquial, poético o subjetivo no es adecuado para este tipo de texto."
+      },
+      {
+        "question": "En una ley, ¿cuál es la estructura típica de sus artículos?",
+        "options": [
+          "A. Introducción, desarrollo y conclusión narrativa",
+          "B. Título, capítulos, artículos y disposiciones finales",
+          "C. Planteamiento, nudo y desenlace",
+          "D. Estrofas y versos"
+        ],
+        "correct": 1,
+        "explanation": "Las leyes se organizan jerárquicamente en títulos, capítulos y artículos para facilitar su consulta. Las otras opciones corresponden a textos narrativos o poéticos."
+      },
+      {
+        "question": "¿Qué característica del lenguaje formal es esencial en un contrato legal?",
+        "options": [
+          "A. Uso de jerga juvenil",
+          "B. Claridad y precisión en los términos",
+          "C. Inclusión de metáforas",
+          "D. Uso de preguntas retóricas"
+        ],
+        "correct": 1,
+        "explanation": "En los contratos, la claridad y precisión evitan ambigüedades y malentendidos. El lenguaje figurado o informal no es apropiado para documentos legales."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un ejemplo de texto administrativo?",
+        "options": [
+          "A. Un oficio de solicitud",
+          "B. Un poema de amor",
+          "C. Una circular informativa",
+          "D. Un memorándum"
+        ],
+        "correct": 1,
+        "explanation": "El poema de amor pertenece al género literario, no al administrativo. Los oficios, circulares y memorándums son textos administrativos formales."
+      }
+    ]
+  },
+  "texto-publicitario": {
+    "questions": [
+      {
+        "question": "¿Qué recurso lingüístico utiliza un anuncio que dice 'El mejor jugo del universo' para persuadir?",
+        "options": [
+          "Metáfora",
+          "Hipérbole",
+          "Comparación",
+          "Rima"
+        ],
+        "correct": 1,
+        "explanation": "La hipérbole es una exageración para llamar la atención, como decir 'el mejor del universo'."
+      },
+      {
+        "question": "¿Cuál es la función del lenguaje predominante en un texto publicitario que ordena '¡Compra ya!'?",
+        "options": [
+          "Función poética",
+          "Función apelativa",
+          "Función referencial",
+          "Función metalingüística"
+        ],
+        "correct": 1,
+        "explanation": "La función apelativa busca influir en el receptor, como dar órdenes o sugerencias."
+      },
+      {
+        "question": "¿Qué tipo de texto busca convencer al lector mediante exageraciones y llamados a la acción?",
+        "options": [
+          "Texto científico",
+          "Texto publicitario",
+          "Texto literario",
+          "Texto periodístico"
+        ],
+        "correct": 1,
+        "explanation": "El texto publicitario usa hipérboles y función apelativa para persuadir al consumidor."
+      },
+      {
+        "question": "En un anuncio que dice 'Este producto es milagroso, ¡pruébalo ya!', ¿qué figura retórica se emplea?",
+        "options": [
+          "Personificación",
+          "Hipérbole",
+          "Analogía",
+          "Ironía"
+        ],
+        "correct": 1,
+        "explanation": "Decir que un producto es 'milagroso' es una exageración (hipérbole) para persuadir."
+      },
+      {
+        "question": "¿Para qué sirve la función apelativa en un texto publicitario?",
+        "options": [
+          "Entretener al lector",
+          "Informar objetivamente",
+          "Convencer al lector de comprar",
+          "Describir un proceso"
+        ],
+        "correct": 2,
+        "explanation": "La función apelativa busca persuadir o incitar al receptor a realizar una acción."
+      }
+    ]
+  },
+  "funcion-expresiva": {
+    "questions": [
+      {
+        "question": "¿Cuál de los siguientes textos tiene una función expresiva?",
+        "options": [
+          "Un reportaje sobre la deforestación",
+          "Una carta de amor donde el autor expresa su tristeza",
+          "Un instructivo para armar un mueble",
+          "Un anuncio publicitario de un shampoo"
+        ],
+        "correct": 1,
+        "explanation": "La función expresiva se centra en el emisor y sus sentimientos, como en una carta de amor que expresa emociones."
+      },
+      {
+        "question": "¿Qué función del lenguaje predomina en un discurso político que busca convencer a la audiencia de votar por un candidato?",
+        "options": [
+          "Función expresiva",
+          "Función apelativa",
+          "Función referencial",
+          "Función poética"
+        ],
+        "correct": 1,
+        "explanation": "La función apelativa busca influir en el receptor, como cuando se intenta convencer a alguien de algo."
+      },
+      {
+        "question": "Un artículo de enciclopedia que describe las características de los planetas del sistema solar tiene una función:",
+        "options": [
+          "Apelativa",
+          "Expresiva",
+          "Referencial",
+          "Metalingüística"
+        ],
+        "correct": 2,
+        "explanation": "La función referencial se centra en informar sobre un tema de manera objetiva, como en un artículo enciclopédico."
+      },
+      {
+        "question": "¿En qué tipo de texto predomina la función apelativa?",
+        "options": [
+          "Un poema de amor",
+          "Una noticia periodística",
+          "Un anuncio publicitario",
+          "Una biografía"
+        ],
+        "correct": 2,
+        "explanation": "La función apelativa busca influir en el receptor, y los anuncios publicitarios intentan persuadir o llamar la atención."
+      },
+      {
+        "question": "Identifica el texto con función referencial:",
+        "options": [
+          "Un mensaje de texto diciendo 'Te extraño'",
+          "Un cartel que dice 'Compra ahora y ahorra'",
+          "Un reportaje sobre el cambio climático",
+          "Un cuento de terror"
+        ],
+        "correct": 2,
+        "explanation": "La función referencial informa sobre un tema, como un reportaje que presenta datos objetivos sobre el cambio climático."
+      }
+    ]
+  },
+  "reportaje": {
+    "questions": [
+      {
+        "question": "¿Cuál es la principal diferencia entre un reportaje y una noticia?",
+        "options": [
+          "La noticia es más larga que el reportaje",
+          "El reportaje investiga un tema con mayor profundidad",
+          "La noticia incluye opiniones del autor",
+          "El reportaje solo se publica en revistas"
+        ],
+        "correct": 1,
+        "explanation": "El reportaje profundiza en un tema con investigación detallada, mientras que la noticia se limita a informar hechos recientes de manera breve."
+      },
+      {
+        "question": "¿Qué tipo de texto periodístico busca ofrecer un análisis completo de un tema, incluyendo antecedentes y causas?",
+        "options": [
+          "Artículo de opinión",
+          "Noticia",
+          "Reportaje",
+          "Entrevista"
+        ],
+        "correct": 2,
+        "explanation": "El reportaje investiga a fondo un tema, presentando contexto, causas y consecuencias, a diferencia de otros géneros."
+      },
+      {
+        "question": "¿Cuál de las siguientes características es propia del reportaje?",
+        "options": [
+          "Brevedad y objetividad",
+          "Estructura de pirámide invertida",
+          "Uso de testimonios y datos",
+          "Solo responde a qué, quién, cuándo y dónde"
+        ],
+        "correct": 2,
+        "explanation": "El reportaje incluye testimonios, datos y análisis para dar una visión completa, no solo datos básicos."
+      },
+      {
+        "question": "¿En qué se diferencia la estructura de un reportaje de la de una noticia?",
+        "options": [
+          "El reportaje tiene una estructura libre, mientras que la noticia sigue la pirámide invertida",
+          "La noticia tiene introducción, desarrollo y conclusión",
+          "El reportaje siempre empieza con el dato más importante",
+          "No hay diferencia en la estructura"
+        ],
+        "correct": 0,
+        "explanation": "El reportaje permite una estructura narrativa más flexible, mientras que la noticia prioriza la información esencial al inicio."
+      },
+      {
+        "question": "¿Cuál es el propósito principal de un reportaje?",
+        "options": [
+          "Informar de manera inmediata",
+          "Persuadir al lector",
+          "Exponer un tema en profundidad",
+          "Entretener con ficción"
+        ],
+        "correct": 2,
+        "explanation": "El reportaje busca exponer un tema con detalle, investigación y análisis, no solo informar rápidamente."
+      }
+    ]
+  },
+  "articulo-de-opinion": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes oraciones corresponde a un artículo de opinión?",
+        "options": [
+          "El gobierno anunció nuevas medidas para combatir la contaminación.",
+          "Creo que la educación es la base para un futuro mejor.",
+          "La temperatura promedio global aumentó 1.2 grados en el último siglo.",
+          "El libro fue publicado en 2020 por una editorial reconocida."
+        ],
+        "correct": 1,
+        "explanation": "La opción B expresa una opinión personal con 'Creo que', mientras que las otras son enunciados objetivos o datos."
+      },
+      {
+        "question": "¿Qué característica principal tiene un artículo de opinión?",
+        "options": [
+          "Presenta datos verificables y objetivos.",
+          "Narra una historia ficticia con personajes.",
+          "Expresa el punto de vista del autor sobre un tema.",
+          "Describe un proceso paso a paso."
+        ],
+        "correct": 2,
+        "explanation": "El artículo de opinión busca persuadir al lector con la postura del autor, usando frases como 'pienso que'."
+      },
+      {
+        "question": "Identifica la frase que NO pertenece a un artículo de opinión:",
+        "options": [
+          "A mi juicio, la lectura es fundamental.",
+          "Pienso que el deporte mejora la salud.",
+          "Según la investigación, el 70% de los estudiantes lee diario.",
+          "Considero que la tecnología ayuda en el aprendizaje."
+        ],
+        "correct": 2,
+        "explanation": "La opción C presenta un dato estadístico objetivo, no una opinión personal del autor."
+      },
+      {
+        "question": "En un artículo de opinión, ¿cuál es la intención principal del autor?",
+        "options": [
+          "Informar sobre hechos recientes.",
+          "Expresar su postura y convencer al lector.",
+          "Entretener con una historia divertida.",
+          "Explicar el funcionamiento de algo."
+        ],
+        "correct": 1,
+        "explanation": "El autor busca compartir su punto de vista y persuadir al lector para que adopte su opinión."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones es propia de un artículo de opinión?",
+        "options": [
+          "El agua hierve a 100 grados Celsius.",
+          "Creo que debemos cuidar el medio ambiente.",
+          "La capital de México es la Ciudad de México.",
+          "El experimento se realizó en un laboratorio."
+        ],
+        "correct": 1,
+        "explanation": "La opción B inicia con 'Creo que', indicando una opinión personal, a diferencia de las otras que son afirmaciones objetivas."
+      }
+    ]
+  },
+  "hecho": {
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes afirmaciones es un hecho verificable?",
+        "options": [
+          "En mi opinión, la lectura es importante.",
+          "El agua hierve a 100 grados Celsius al nivel del mar.",
+          "Creo que los libros son aburridos.",
+          "Se cree que la poesía es difícil."
+        ],
+        "correct": 1,
+        "explanation": "El hecho es objetivo y se puede comprobar, como la temperatura de ebullición del agua. Las otras opciones expresan opiniones."
+      },
+      {
+        "question": "¿Qué característica distingue a una opinión de un hecho?",
+        "options": [
+          "La opinión es verificable con datos.",
+          "La opinión es subjetiva y expresa un punto de vista personal.",
+          "La opinión siempre es verdadera.",
+          "La opinión se basa en evidencia científica."
+        ],
+        "correct": 1,
+        "explanation": "La opinión es subjetiva, depende de creencias o sentimientos, mientras que el hecho es objetivo y comprobable."
+      },
+      {
+        "question": "Identifica la oración que expresa una opinión:",
+        "options": [
+          "La Tierra gira alrededor del Sol.",
+          "El Everest es la montaña más alta del mundo.",
+          "En mi opinión, la novela es mejor que el cuento.",
+          "El agua está compuesta por hidrógeno y oxígeno."
+        ],
+        "correct": 2,
+        "explanation": "'En mi opinión' indica subjetividad, por lo que es una opinión. Las demás son hechos comprobables."
+      },
+      {
+        "question": "¿Cuál de las siguientes frases contiene un marcador de opinión?",
+        "options": [
+          "El experimento demostró la teoría.",
+          "Se cree que el ejercicio mejora la memoria.",
+          "La capital de México es la Ciudad de México.",
+          "El año tiene 365 días."
+        ],
+        "correct": 1,
+        "explanation": "'Se cree que' es un marcador de opinión, pues indica una creencia no verificada. Las otras son hechos."
+      },
+      {
+        "question": "¿Qué enunciado es un hecho objetivo?",
+        "options": [
+          "Creo que la música clásica es relajante.",
+          "En mi opinión, el arte moderno es confuso.",
+          "El Sol sale por el este y se pone por el oeste.",
+          "Se cree que los sueños tienen significado."
+        ],
+        "correct": 2,
+        "explanation": "El movimiento del Sol es un hecho astronómico comprobable. Las otras expresan opiniones o creencias."
+      }
+    ]
+  }
+}

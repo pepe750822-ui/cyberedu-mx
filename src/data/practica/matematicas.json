@@ -1,164 +1,2420 @@
 {
-  "materia": "Matemáticas",
-  "subindices": {
-    "Números, fracciones y porcentajes": [
+  "multiplicacion": {
+    "questions": [
       {
-        "question": "Calcula: (-15) + (-8) + 23",
-        "options": ["0", "46", "-46", "30"],
+        "question": "¿Cuál es el resultado de multiplicar (-5) por (-3)?",
+        "options": [
+          "15",
+          "-15",
+          "8",
+          "-8"
+        ],
         "correct": 0,
-        "explanation": "Primero suma los negativos: -15 + (-8) = -23. Luego suma con el positivo: -23 + 23 = 0."
+        "explanation": "Menos por menos es más, entonces (-5)(-3)=15."
       },
       {
-        "question": "¿Cuánto es 3/7 + 2/7?",
-        "options": ["5/14", "6/49", "5/7", "1/7"],
-        "correct": 2,
-        "explanation": "Como tienen el mismo denominador, se suman los numeradores directamente: 3 + 2 = 5, conservando el denominador 7. Resultado: 5/7."
-      },
-      {
-        "question": "En una tienda, un artículo cuesta $350. Si se aplica un descuento del 20%, ¿cuál es el precio final?",
-        "options": ["$280", "$70", "$330", "$420"],
-        "correct": 0,
-        "explanation": "El descuento es 350 × 0.20 = $70. El precio final es 350 - 70 = $280."
-      },
-      {
-        "question": "Si 5 trabajadores construyen un muro en 12 días, ¿cuántos días tardarán 10 trabajadores? (proporcionalidad inversa)",
-        "options": ["24 días", "6 días", "60 días", "2 días"],
+        "question": "¿Qué producto se obtiene al multiplicar 7 por 0?",
+        "options": [
+          "7",
+          "0",
+          "-7",
+          "1"
+        ],
         "correct": 1,
-        "explanation": "Es proporcionalidad inversa: más trabajadores, menos días. 5 × 12 = 10 × x, entonces x = 60/10 = 6 días."
+        "explanation": "Cualquier número multiplicado por 0 es 0."
       },
       {
-        "question": "El precio de un libro se incrementó un 120%. Si antes costaba $200, ¿cuánto cuesta ahora?",
-        "options": ["$240", "$320", "$440", "$420"],
-        "correct": 2,
-        "explanation": "Un incremento del 120% significa que el nuevo precio es el original × 2.20: 200 × 2.20 = $440."
+        "question": "¿Cuánto es (+8) por (-2)?",
+        "options": [
+          "16",
+          "-16",
+          "10",
+          "-10"
+        ],
+        "correct": 1,
+        "explanation": "Más por menos es menos, entonces (+8)(-2)=-16."
+      },
+      {
+        "question": "¿Cuál es el resultado de (+4) por (+6)?",
+        "options": [
+          "24",
+          "-24",
+          "10",
+          "-10"
+        ],
+        "correct": 0,
+        "explanation": "Más por más es más, entonces (+4)(+6)=24."
+      },
+      {
+        "question": "¿Qué se obtiene al multiplicar (-9) por 0?",
+        "options": [
+          "-9",
+          "0",
+          "9",
+          "1"
+        ],
+        "correct": 1,
+        "explanation": "Cualquier número multiplicado por 0 es 0."
       }
-    ],
-    "Potencias y radicación": [
+    ]
+  },
+  "enteros": {
+    "questions": [
       {
-        "question": "Simplifica: 3^4 × 3^2",
-        "options": ["9^6", "3^8", "3^6", "9^8"],
-        "correct": 2,
-        "explanation": "Al multiplicar potencias de la misma base se suman los exponentes: 3^4 × 3^2 = 3^(4+2) = 3^6."
-      },
-      {
-        "question": "¿Cuánto es (2^3)^2?",
-        "options": ["2^5", "2^6", "4^5", "2^9"],
-        "correct": 1,
-        "explanation": "En potencia de potencia se multiplican los exponentes: (2^3)^2 = 2^(3×2) = 2^6 = 64."
-      },
-      {
-        "question": "¿Cuál es el valor de 5^0 + 3^(-1)?",
-        "options": ["1/3", "4/3", "0", "2"],
-        "correct": 1,
-        "explanation": "5^0 = 1 y 3^(-1) = 1/3, entonces la suma es 1 + 1/3 = 4/3."
-      },
-      {
-        "question": "Calcula: √(36 × 25)",
-        "options": ["61", "15", "30", "900"],
-        "correct": 2,
-        "explanation": "Usando √(a×b) = √a × √b: √36 × √25 = 6 × 5 = 30."
-      },
-      {
-        "question": "Simplifica: 2^7 ÷ 2^3",
-        "options": ["1^4", "2^4", "2^10", "4^4"],
-        "correct": 1,
-        "explanation": "Al dividir potencias de la misma base se restan los exponentes: 2^7 ÷ 2^3 = 2^(7-3) = 2^4 = 16."
-      }
-    ],
-    "Álgebra y ecuaciones": [
-      {
-        "question": "Resuelve la ecuación: 3x + 7 = 22",
-        "options": ["x = 10", "x = 7", "x = 5", "x = 3"],
-        "correct": 2,
-        "explanation": "Despejando x: 3x = 22 - 7 = 15, entonces x = 15/3 = 5."
-      },
-      {
-        "question": "¿Cuáles son las soluciones de x² - 5x + 6 = 0?",
-        "options": ["x = 2 y x = 3", "x = -2 y x = -3", "x = 1 y x = 6", "x = -1 y x = 6"],
+        "question": "¿Cuál es el resultado de (-5) + (-3)?",
+        "options": [
+          "-8",
+          "8",
+          "-2",
+          "2"
+        ],
         "correct": 0,
-        "explanation": "Factorizando: (x - 2)(x - 3) = 0, por lo tanto x = 2 o x = 3."
+        "explanation": "Ambos números tienen el mismo signo (negativo), por lo que se suman y se conserva el signo: 5+3=8, resultado -8."
       },
       {
-        "question": "Expande el producto notable: (x + 5)²",
-        "options": ["x² + 25", "x² + 10x + 25", "x² + 5x + 25", "x² - 10x + 25"],
+        "question": "¿Cuánto es 7 + (-4)?",
+        "options": [
+          "11",
+          "3",
+          "-11",
+          "-3"
+        ],
         "correct": 1,
-        "explanation": "Usando (a+b)² = a² + 2ab + b²: (x+5)² = x² + 2(x)(5) + 5² = x² + 10x + 25."
+        "explanation": "Tienen diferente signo, se resta el menor del mayor (7-4=3) y se conserva el signo del mayor (7 es positivo)."
       },
       {
-        "question": "Resuelve el sistema: x + y = 10 y x - y = 4",
-        "options": ["x=3, y=7", "x=7, y=3", "x=6, y=4", "x=4, y=6"],
-        "correct": 1,
-        "explanation": "Sumando las ecuaciones: 2x = 14, entonces x = 7. Sustituyendo: 7 + y = 10, por lo tanto y = 3."
-      },
-      {
-        "question": "¿Cuántas soluciones reales tiene la ecuación x² + 4x + 5 = 0?",
-        "options": ["Dos soluciones reales", "Una solución real", "Ninguna solución real", "Infinitas soluciones"],
-        "correct": 2,
-        "explanation": "El discriminante es b² - 4ac = 16 - 20 = -4 < 0, por lo tanto no tiene soluciones reales."
-      }
-    ],
-    "Estadística y probabilidad": [
-      {
-        "question": "Los puntajes de un examen son: 8, 6, 9, 7, 5, 9, 8, 6. ¿Cuál es la media aritmética?",
-        "options": ["7", "7.25", "8", "6.5"],
-        "correct": 1,
-        "explanation": "La suma de todos los datos es 8+6+9+7+5+9+8+6 = 58. La media es 58 ÷ 8 = 7.25."
-      },
-      {
-        "question": "Para los datos: 3, 7, 9, 12, 15, 18, ¿cuál es la mediana?",
-        "options": ["9", "10.5", "12", "9.5"],
-        "correct": 1,
-        "explanation": "Con 6 datos (cantidad par), la mediana es el promedio de los dos valores centrales (9 y 12): (9+12)/2 = 10.5."
-      },
-      {
-        "question": "En una bolsa hay 3 canicas rojas, 5 azules y 2 verdes. ¿Cuál es la probabilidad de sacar una canica azul?",
-        "options": ["1/2", "3/10", "5/10", "1/5"],
-        "correct": 2,
-        "explanation": "Hay 5 canicas azules de un total de 10 (3+5+2). P(azul) = 5/10 = 1/2."
-      },
-      {
-        "question": "Para la serie de datos: 4, 7, 7, 9, 3, 7, 5. ¿Cuál es la moda?",
-        "options": ["4", "9", "5", "7"],
-        "correct": 3,
-        "explanation": "La moda es el valor que más se repite; el número 7 aparece 3 veces, más que cualquier otro valor."
-      },
-      {
-        "question": "Al lanzar un dado de 6 caras, ¿cuál es la probabilidad de obtener un número mayor que 4?",
-        "options": ["1/6", "2/3", "1/3", "1/2"],
-        "correct": 2,
-        "explanation": "Los números mayores que 4 son 5 y 6, es decir 2 casos favorables de 6 posibles: P = 2/6 = 1/3."
-      }
-    ],
-    "Geometría": [
-      {
-        "question": "Un triángulo rectángulo tiene catetos de 6 cm y 8 cm. ¿Cuánto mide la hipotenusa?",
-        "options": ["14 cm", "12 cm", "10 cm", "100 cm"],
-        "correct": 2,
-        "explanation": "Por el teorema de Pitágoras: c² = 6² + 8² = 36 + 64 = 100, entonces c = √100 = 10 cm."
-      },
-      {
-        "question": "¿Cuál es el área de un círculo con radio de 5 cm? (usa π ≈ 3.14)",
-        "options": ["15.7 cm²", "31.4 cm²", "78.5 cm²", "314 cm²"],
-        "correct": 2,
-        "explanation": "Área = π × r² = 3.14 × 5² = 3.14 × 25 = 78.5 cm²."
-      },
-      {
-        "question": "En un triángulo, dos ángulos miden 55° y 75°. ¿Cuánto mide el tercer ángulo?",
-        "options": ["50°", "60°", "45°", "130°"],
+        "question": "Resuelve: (-12) + 5",
+        "options": [
+          "-7",
+          "7",
+          "-17",
+          "17"
+        ],
         "correct": 0,
-        "explanation": "Los ángulos internos de un triángulo suman 180°: tercer ángulo = 180° - 55° - 75° = 50°."
+        "explanation": "Diferente signo: resta 12-5=7, el mayor es 12 (negativo), resultado -7."
       },
       {
-        "question": "¿Cuál es el volumen de un cubo con arista de 4 cm?",
-        "options": ["16 cm³", "48 cm³", "64 cm³", "12 cm³"],
-        "correct": 2,
-        "explanation": "Volumen del cubo = lado³ = 4³ = 4 × 4 × 4 = 64 cm³."
-      },
-      {
-        "question": "En un triángulo rectángulo, el ángulo θ tiene sen(θ) = 3/5. ¿Cuánto mide cos(θ)?",
-        "options": ["4/5", "3/4", "5/3", "1/5"],
+        "question": "¿Cuál es el resultado de 15 + (-20)?",
+        "options": [
+          "-5",
+          "5",
+          "-35",
+          "35"
+        ],
         "correct": 0,
-        "explanation": "Si sen(θ) = opuesto/hipotenusa = 3/5, por Pitágoras el adyacente = 4. Entonces cos(θ) = adyacente/hipotenusa = 4/5."
+        "explanation": "Diferente signo: resta 20-15=5, el mayor es 20 (negativo), resultado -5."
+      },
+      {
+        "question": "Calcula: (-8) + (-2)",
+        "options": [
+          "-10",
+          "10",
+          "-6",
+          "6"
+        ],
+        "correct": 0,
+        "explanation": "Mismo signo: suma 8+2=10, conserva signo negativo, resultado -10."
+      }
+    ]
+  },
+  "fracciones-mismo-denominador": {
+    "questions": [
+      {
+        "question": "¿Cuánto es 3/8 + 2/8?",
+        "options": [
+          "5/16",
+          "5/8",
+          "6/8",
+          "1/8"
+        ],
+        "correct": 1,
+        "explanation": "Como los denominadores son iguales, se suman los numeradores: 3+2=5, y se conserva el denominador 8, dando 5/8."
+      },
+      {
+        "question": "¿Cuánto es 7/10 - 3/10?",
+        "options": [
+          "4/10",
+          "10/10",
+          "4/0",
+          "3/10"
+        ],
+        "correct": 0,
+        "explanation": "Se restan los numeradores: 7-3=4, y se conserva el denominador 10, resultando 4/10."
+      },
+      {
+        "question": "¿Cuánto es 5/12 + 5/12?",
+        "options": [
+          "10/12",
+          "10/24",
+          "5/12",
+          "25/12"
+        ],
+        "correct": 0,
+        "explanation": "Suma de numeradores: 5+5=10, denominador igual 12, da 10/12."
+      },
+      {
+        "question": "¿Cuánto es 9/15 - 4/15?",
+        "options": [
+          "5/0",
+          "13/15",
+          "5/15",
+          "5/30"
+        ],
+        "correct": 2,
+        "explanation": "Restando numeradores: 9-4=5, denominador 15, queda 5/15."
+      },
+      {
+        "question": "¿Cuánto es 2/6 + 3/6?",
+        "options": [
+          "5/12",
+          "5/6",
+          "6/6",
+          "1/6"
+        ],
+        "correct": 1,
+        "explanation": "Suma: 2+3=5, denominador 6, resultado 5/6."
+      }
+    ]
+  },
+  "tip": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de (-5)(2)(-3)(0)?",
+        "options": [
+          "-30",
+          "0",
+          "30",
+          "-15"
+        ],
+        "correct": 1,
+        "explanation": "Cualquier número multiplicado por cero da cero. Aquí hay un factor cero, así que el producto es 0."
+      },
+      {
+        "question": "Si en una multiplicación de varios números aparece un cero, ¿cuál es el producto final?",
+        "options": [
+          "Depende de los otros números",
+          "Cero",
+          "Uno",
+          "El número distinto de cero más grande"
+        ],
+        "correct": 1,
+        "explanation": "La propiedad del cero en la multiplicación dice que cualquier número multiplicado por cero es cero, sin importar los demás factores."
+      },
+      {
+        "question": "Calcula: (0)(-7)(4)(-2) = ?",
+        "options": [
+          "0",
+          "-56",
+          "56",
+          "-8"
+        ],
+        "correct": 0,
+        "explanation": "Como hay un factor cero, el producto total es cero."
+      },
+      {
+        "question": "¿Qué valor debe tener x para que (-3)(x)(2) = 0?",
+        "options": [
+          "Cualquier número",
+          "0",
+          "1",
+          "-1"
+        ],
+        "correct": 1,
+        "explanation": "Para que el producto sea cero, al menos un factor debe ser cero. Aquí, x debe ser cero."
+      },
+      {
+        "question": "El producto de (-1)(2)(0)(-5) es:",
+        "options": [
+          "10",
+          "-10",
+          "0",
+          "-2"
+        ],
+        "correct": 2,
+        "explanation": "La presencia del cero hace que todo el producto sea cero."
+      }
+    ]
+  },
+  "fracciones-distinto-denominador": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de 2/3 + 1/4?",
+        "options": [
+          "11/12",
+          "3/7",
+          "5/12",
+          "8/12"
+        ],
+        "correct": 0,
+        "explanation": "El MCM de 3 y 4 es 12. Convertimos: 2/3 = 8/12, 1/4 = 3/12, suma = 11/12."
+      },
+      {
+        "question": "Calcula 5/6 - 1/2.",
+        "options": [
+          "4/4",
+          "2/6",
+          "1/3",
+          "4/12"
+        ],
+        "correct": 2,
+        "explanation": "MCM de 6 y 2 es 6. 1/2 = 3/6, resta: 5/6 - 3/6 = 2/6 = 1/3."
+      },
+      {
+        "question": "Resuelve 3/8 + 2/5.",
+        "options": [
+          "5/13",
+          "31/40",
+          "5/40",
+          "15/40"
+        ],
+        "correct": 1,
+        "explanation": "MCM de 8 y 5 es 40. 3/8 = 15/40, 2/5 = 16/40, suma = 31/40."
+      },
+      {
+        "question": "¿Cuánto es 7/12 - 1/3?",
+        "options": [
+          "6/9",
+          "1/4",
+          "3/12",
+          "2/12"
+        ],
+        "correct": 1,
+        "explanation": "MCM de 12 y 3 es 12. 1/3 = 4/12, resta: 7/12 - 4/12 = 3/12 = 1/4."
+      },
+      {
+        "question": "Suma 2/9 + 1/6.",
+        "options": [
+          "3/15",
+          "7/18",
+          "5/18",
+          "1/3"
+        ],
+        "correct": 1,
+        "explanation": "MCM de 9 y 6 es 18. 2/9 = 4/18, 1/6 = 3/18, suma = 7/18."
+      }
+    ]
+  },
+  "ejemplo": {
+    "questions": [
+      {
+        "question": "¿Cuál es la probabilidad de obtener un número mayor que 4 al lanzar un dado de 6 caras?",
+        "options": [
+          "1/6",
+          "1/3",
+          "1/2",
+          "2/3"
+        ],
+        "correct": 1,
+        "explanation": "Los números mayores que 4 son 5 y 6, dos casos favorables de seis posibles, por lo que la probabilidad es 2/6 = 1/3."
+      },
+      {
+        "question": "En una bolsa hay 3 canicas rojas, 2 azules y 5 verdes. ¿Cuál es la probabilidad de sacar una canica azul?",
+        "options": [
+          "1/5",
+          "1/10",
+          "2/5",
+          "1/2"
+        ],
+        "correct": 0,
+        "explanation": "Hay 2 canicas azules de un total de 10, por lo que la probabilidad es 2/10 = 1/5."
+      },
+      {
+        "question": "Al lanzar dos monedas, ¿cuál es la probabilidad de obtener exactamente una cara?",
+        "options": [
+          "1/4",
+          "1/2",
+          "3/4",
+          "1/3"
+        ],
+        "correct": 1,
+        "explanation": "Los resultados posibles son CC, CX, XC, XX. Exactamente una cara ocurre en dos casos (CX y XC), probabilidad 2/4 = 1/2."
+      },
+      {
+        "question": "En un grupo de 30 estudiantes, 18 son mujeres. Si se elige al azar un estudiante, ¿cuál es la probabilidad de que sea hombre?",
+        "options": [
+          "3/5",
+          "2/5",
+          "1/5",
+          "4/5"
+        ],
+        "correct": 1,
+        "explanation": "Hay 30-18=12 hombres, probabilidad 12/30 = 2/5."
+      },
+      {
+        "question": "Se lanza un dado de 6 caras. ¿Cuál es la probabilidad de obtener un número primo?",
+        "options": [
+          "1/2",
+          "1/3",
+          "2/3",
+          "1/6"
+        ],
+        "correct": 0,
+        "explanation": "Los números primos en un dado son 2, 3 y 5, tres casos de seis, probabilidad 3/6 = 1/2."
+      }
+    ]
+  },
+  "incremento-120": {
+    "questions": [
+      {
+        "question": "Si un artículo cuesta originalmente $500 y su precio aumenta un 120%, ¿cuál es el nuevo precio?",
+        "options": [
+          "$600",
+          "$1,100",
+          "$1,200",
+          "$1,000"
+        ],
+        "correct": 1,
+        "explanation": "El nuevo precio se calcula multiplicando el original por 2.20: 500 x 2.20 = 1,100."
+      },
+      {
+        "question": "Un número se incrementa en un 120% y se obtiene 440. ¿Cuál era el número original?",
+        "options": [
+          "200",
+          "220",
+          "240",
+          "180"
+        ],
+        "correct": 0,
+        "explanation": "El número original se obtiene dividiendo el resultado entre 2.20: 440 / 2.20 = 200."
+      },
+      {
+        "question": "El precio de un producto era $800 y ahora cuesta $1,760. ¿Qué porcentaje de incremento representa?",
+        "options": [
+          "120%",
+          "220%",
+          "80%",
+          "100%"
+        ],
+        "correct": 0,
+        "explanation": "El incremento es de 1,760 - 800 = 960, que equivale al 120% de 800."
+      },
+      {
+        "question": "Si aplicas un incremento del 120% a 150, ¿cuál es el nuevo valor?",
+        "options": [
+          "330",
+          "300",
+          "270",
+          "360"
+        ],
+        "correct": 0,
+        "explanation": "Multiplicar 150 por 2.20 da 330."
+      },
+      {
+        "question": "Un salario de $2,000 se incrementa un 120%. ¿Cuál es el nuevo salario?",
+        "options": [
+          "$4,400",
+          "$2,400",
+          "$4,000",
+          "$3,200"
+        ],
+        "correct": 0,
+        "explanation": "2,000 x 2.20 = 4,400."
+      }
+    ]
+  },
+  "proporcionalidad-directa": {
+    "questions": [
+      {
+        "question": "Si 5 kilos de manzanas cuestan $60, ¿cuánto costarán 8 kilos?",
+        "options": [
+          "$96",
+          "$90",
+          "$100",
+          "$80"
+        ],
+        "correct": 0,
+        "explanation": "La constante de proporcionalidad es 60/5=12, entonces 8 kilos cuestan 8x12=96."
+      },
+      {
+        "question": "Un automóvil recorre 120 km en 2 horas. ¿Qué distancia recorrerá en 5 horas a la misma velocidad?",
+        "options": [
+          "300 km",
+          "240 km",
+          "360 km",
+          "280 km"
+        ],
+        "correct": 0,
+        "explanation": "La constante es 120/2=60 km/h, entonces en 5 horas recorre 5x60=300 km."
+      },
+      {
+        "question": "En una receta, para 4 personas se necesitan 200 g de harina. ¿Cuántos gramos se necesitan para 10 personas?",
+        "options": [
+          "500 g",
+          "400 g",
+          "600 g",
+          "450 g"
+        ],
+        "correct": 0,
+        "explanation": "La constante es 200/4=50 g por persona, entonces para 10 personas son 10x50=500 g."
+      },
+      {
+        "question": "Si 3 metros de tela cuestan $45, ¿cuánto costarán 7 metros?",
+        "options": [
+          "$105",
+          "$90",
+          "$120",
+          "$95"
+        ],
+        "correct": 0,
+        "explanation": "La constante es 45/3=15, entonces 7 metros cuestan 7x15=105."
+      },
+      {
+        "question": "Una máquina produce 80 piezas en 4 horas. ¿Cuántas piezas produce en 9 horas?",
+        "options": [
+          "180",
+          "160",
+          "200",
+          "140"
+        ],
+        "correct": 0,
+        "explanation": "La constante es 80/4=20 piezas por hora, entonces en 9 horas produce 9x20=180."
+      }
+    ]
+  },
+  "porcentaje": {
+    "questions": [
+      {
+        "question": "En una escuela, 45 de los 180 estudiantes obtuvieron calificación de 10 en el examen de matemáticas. ¿Qué porcentaje representa este grupo?",
+        "options": [
+          "20%",
+          "25%",
+          "30%",
+          "35%"
+        ],
+        "correct": 1,
+        "explanation": "El porcentaje se calcula como (45/180)*100 = 25%. Esto significa que 25 de cada 100 estudiantes obtuvieron 10."
+      },
+      {
+        "question": "Un pantalón cuesta $400 y tiene un descuento del 15%. ¿Cuánto se paga después del descuento?",
+        "options": [
+          "$340",
+          "$360",
+          "$380",
+          "$60"
+        ],
+        "correct": 0,
+        "explanation": "El descuento es 15% de $400 = $60, por lo que el precio final es $400 - $60 = $340."
+      },
+      {
+        "question": "En una encuesta, el 30% de los alumnos prefieren el fútbol. Si hay 500 alumnos, ¿cuántos prefieren fútbol?",
+        "options": [
+          "100",
+          "120",
+          "150",
+          "180"
+        ],
+        "correct": 2,
+        "explanation": "Se calcula como el 30% de 500: (30/100)*500 = 150 alumnos prefieren fútbol."
+      },
+      {
+        "question": "Si el 20% de un número es 40, ¿cuál es el número?",
+        "options": [
+          "200",
+          "180",
+          "160",
+          "240"
+        ],
+        "correct": 0,
+        "explanation": "El número total es 40 / (20/100) = 40 / 0.2 = 200, ya que parte = total * (porcentaje/100)."
+      },
+      {
+        "question": "Una tienda vende un artículo en $250, que incluye un 16% de IVA. ¿Cuál es el precio sin IVA?",
+        "options": [
+          "$215.52",
+          "$210",
+          "$200",
+          "$234"
+        ],
+        "correct": 0,
+        "explanation": "El precio con IVA es 116% del precio base, entonces precio base = $250 / 1.16 = $215.52 aproximadamente."
+      }
+    ]
+  },
+  "proporcionalidad-inversa": {
+    "questions": [
+      {
+        "question": "Si 4 obreros tardan 6 días en pintar una casa, ¿cuántos días tardarán 8 obreros en pintar la misma casa, trabajando al mismo ritmo?",
+        "options": [
+          "3 días",
+          "4 días",
+          "12 días",
+          "2 días"
+        ],
+        "correct": 0,
+        "explanation": "Es una proporcionalidad inversa: a más obreros, menos días. 4×6 = 24, constante; 8×días = 24, días = 3."
+      },
+      {
+        "question": "Un coche a 60 km/h tarda 3 horas en recorrer una distancia. ¿Cuánto tardará a 90 km/h?",
+        "options": [
+          "2 horas",
+          "4.5 horas",
+          "1.5 horas",
+          "3 horas"
+        ],
+        "correct": 0,
+        "explanation": "Inversa: velocidad × tiempo = constante. 60×3 = 180; 90×t = 180, t = 2 horas."
+      },
+      {
+        "question": "Si 5 máquinas producen 200 piezas en 4 horas, ¿cuántas máquinas se necesitan para producir 200 piezas en 2 horas?",
+        "options": [
+          "10 máquinas",
+          "8 máquinas",
+          "12 máquinas",
+          "6 máquinas"
+        ],
+        "correct": 0,
+        "explanation": "Inversa: máquinas × horas = constante. 5×4 = 20; máquinas×2 = 20, máquinas = 10."
+      },
+      {
+        "question": "Un depósito se llena con 3 grifos en 2 horas. ¿Cuántos grifos se necesitan para llenarlo en 1 hora?",
+        "options": [
+          "6 grifos",
+          "5 grifos",
+          "4 grifos",
+          "7 grifos"
+        ],
+        "correct": 0,
+        "explanation": "Inversa: grifos × horas = constante. 3×2 = 6; grifos×1 = 6, grifos = 6."
+      },
+      {
+        "question": "Si 10 obreros construyen un muro en 8 días, ¿cuántos obreros se requieren para construir el mismo muro en 4 días?",
+        "options": [
+          "20 obreros",
+          "15 obreros",
+          "25 obreros",
+          "30 obreros"
+        ],
+        "correct": 0,
+        "explanation": "Inversa: obreros × días = constante. 10×8 = 80; obreros×4 = 80, obreros = 20."
+      }
+    ]
+  },
+  "a-m-n-a-m-n-potencia-de-potencia-multiplica-exponentes": {
+    "questions": [
+      {
+        "question": "Simplifica (x^3)^4:",
+        "options": [
+          "x^7",
+          "x^12",
+          "x^81",
+          "x^64"
+        ],
+        "correct": 1,
+        "explanation": "Se multiplican los exponentes: 3 × 4 = 12, resultando x^12."
+      },
+      {
+        "question": "¿Cuál es el resultado de (2^2)^3?",
+        "options": [
+          "2^5",
+          "2^6",
+          "2^8",
+          "2^9"
+        ],
+        "correct": 1,
+        "explanation": "Se multiplican los exponentes: 2 × 3 = 6, resultando 2^6."
+      },
+      {
+        "question": "Simplifica (a^5)^2:",
+        "options": [
+          "a^7",
+          "a^10",
+          "a^25",
+          "a^3"
+        ],
+        "correct": 1,
+        "explanation": "Se multiplican los exponentes: 5 × 2 = 10, resultando a^10."
+      },
+      {
+        "question": "¿Cuál es el valor de (3^2)^4?",
+        "options": [
+          "3^6",
+          "3^8",
+          "3^16",
+          "3^2"
+        ],
+        "correct": 1,
+        "explanation": "Se multiplican los exponentes: 2 × 4 = 8, resultando 3^8."
+      },
+      {
+        "question": "Simplifica (b^4)^5:",
+        "options": [
+          "b^9",
+          "b^20",
+          "b^4",
+          "b^5"
+        ],
+        "correct": 1,
+        "explanation": "Se multiplican los exponentes: 4 × 5 = 20, resultando b^20."
+      }
+    ]
+  },
+  "a-m-a-n-a-m-n-misma-base-suma-exponentes": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de simplificar (2^3)(2^4)?",
+        "options": [
+          "2^7",
+          "2^12",
+          "4^7",
+          "8^7"
+        ],
+        "correct": 0,
+        "explanation": "Al multiplicar potencias con la misma base, se suman los exponentes: 3+4=7, por lo que queda 2^7."
+      },
+      {
+        "question": "Simplifica: (x^5)(x^2)",
+        "options": [
+          "x^10",
+          "x^7",
+          "x^3",
+          "2x^7"
+        ],
+        "correct": 1,
+        "explanation": "Suma los exponentes: 5+2=7, resultado x^7."
+      },
+      {
+        "question": "¿Cuál es el valor de (3^2)(3^3)?",
+        "options": [
+          "3^5",
+          "3^6",
+          "9^5",
+          "27^5"
+        ],
+        "correct": 0,
+        "explanation": "Se suman los exponentes: 2+3=5, por lo que es 3^5."
+      },
+      {
+        "question": "Simplifica: (a^4)(a^1)",
+        "options": [
+          "a^5",
+          "a^4",
+          "a^3",
+          "a^6"
+        ],
+        "correct": 0,
+        "explanation": "Suma de exponentes: 4+1=5, resultado a^5."
+      },
+      {
+        "question": "¿Cuál es el resultado de (5^0)(5^3)?",
+        "options": [
+          "5^3",
+          "5^0",
+          "5^4",
+          "25^3"
+        ],
+        "correct": 0,
+        "explanation": "Cualquier número elevado a la 0 es 1, pero aquí se suma exponentes: 0+3=3, queda 5^3."
+      }
+    ]
+  },
+  "a-0-1-cualquier-base-distinta-de-0-elevada-a-0-es-1": {
+    "questions": [
+      {
+        "question": "¿Cuál es el valor de 5^0?",
+        "options": [
+          "0",
+          "1",
+          "5",
+          "Indefinido"
+        ],
+        "correct": 1,
+        "explanation": "Cualquier número distinto de cero elevado a la potencia cero es igual a 1. Por lo tanto, 5^0 = 1."
+      },
+      {
+        "question": "¿Cuál es el resultado de (-3)^0?",
+        "options": [
+          "-3",
+          "0",
+          "1",
+          "-1"
+        ],
+        "correct": 2,
+        "explanation": "Cualquier base distinta de cero, incluso negativa, elevada a 0 da como resultado 1."
+      },
+      {
+        "question": "¿Cuánto vale (1/2)^0?",
+        "options": [
+          "0",
+          "1/2",
+          "1",
+          "Indefinido"
+        ],
+        "correct": 2,
+        "explanation": "Cualquier número diferente de cero elevado a la potencia 0 es igual a 1, sin importar que sea fracción."
+      },
+      {
+        "question": "¿Cuál es el valor de 100^0?",
+        "options": [
+          "0",
+          "1",
+          "100",
+          "10"
+        ],
+        "correct": 1,
+        "explanation": "Cien elevado a la cero es 1, porque toda base no nula elevada a 0 es 1."
+      },
+      {
+        "question": "¿Qué sucede con 0^0?",
+        "options": [
+          "Es 0",
+          "Es 1",
+          "Es indefinido",
+          "Es infinito"
+        ],
+        "correct": 2,
+        "explanation": "0^0 es una forma indeterminada, no tiene un valor definido en matemáticas."
+      }
+    ]
+  },
+  "a-m-a-n-a-m-n-misma-base-resta-exponentes": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de simplificar (5^7) / (5^4)?",
+        "options": [
+          "5^3",
+          "5^11",
+          "5^28",
+          "5^2"
+        ],
+        "correct": 0,
+        "explanation": "Al dividir potencias con la misma base, se restan los exponentes: 7 - 4 = 3, por lo que queda 5^3."
+      },
+      {
+        "question": "Simplifica la expresión (2^8) / (2^3).",
+        "options": [
+          "2^5",
+          "2^11",
+          "2^24",
+          "2^4"
+        ],
+        "correct": 0,
+        "explanation": "Se restan los exponentes: 8 - 3 = 5, resultado 2^5."
+      },
+      {
+        "question": "Calcula: (10^6) / (10^2).",
+        "options": [
+          "10^4",
+          "10^3",
+          "10^8",
+          "10^12"
+        ],
+        "correct": 0,
+        "explanation": "Restando exponentes: 6 - 2 = 4, queda 10^4."
+      },
+      {
+        "question": "¿Cuánto es (3^9) / (3^5)?",
+        "options": [
+          "3^4",
+          "3^14",
+          "3^45",
+          "3^3"
+        ],
+        "correct": 0,
+        "explanation": "9 - 5 = 4, por lo tanto es 3^4."
+      },
+      {
+        "question": "Simplifica: (x^12) / (x^7).",
+        "options": [
+          "x^5",
+          "x^19",
+          "x^84",
+          "x^4"
+        ],
+        "correct": 0,
+        "explanation": "Se restan los exponentes: 12 - 7 = 5, resultado x^5."
+      }
+    ]
+  },
+  "a-n-1-a-n-exponente-negativo-fraccion": {
+    "questions": [
+      {
+        "question": "¿Cuál es el valor de 2^(-3)?",
+        "options": [
+          "-8",
+          "-6",
+          "1/8",
+          "8"
+        ],
+        "correct": 2,
+        "explanation": "2^(-3) = 1/(2^3) = 1/8, ya que un exponente negativo indica el recíproco de la base elevada al exponente positivo."
+      },
+      {
+        "question": "Expresa 5^(-2) como fracción.",
+        "options": [
+          "1/25",
+          "-25",
+          "1/10",
+          "25"
+        ],
+        "correct": 0,
+        "explanation": "5^(-2) = 1/(5^2) = 1/25, porque el exponente negativo convierte la potencia en una fracción."
+      },
+      {
+        "question": "¿Cuál es el resultado de (-3)^(-2)?",
+        "options": [
+          "-1/9",
+          "1/9",
+          "-9",
+          "9"
+        ],
+        "correct": 1,
+        "explanation": "(-3)^(-2) = 1/((-3)^2) = 1/9, ya que el cuadrado de -3 es 9 y el exponente negativo invierte."
+      },
+      {
+        "question": "Simplifica: 10^(-4)",
+        "options": [
+          "0.0001",
+          "-10000",
+          "1/10000",
+          "-0.0001"
+        ],
+        "correct": 2,
+        "explanation": "10^(-4) = 1/(10^4) = 1/10000, pues el exponente negativo indica el recíproco de 10^4."
+      },
+      {
+        "question": "¿Cuánto es 4^(-1) + 4^(-2)?",
+        "options": [
+          "1/16",
+          "5/16",
+          "1/4",
+          "3/4"
+        ],
+        "correct": 1,
+        "explanation": "4^(-1)=1/4, 4^(-2)=1/16, sumando: 4/16+1/16=5/16."
+      }
+    ]
+  },
+  "ecuacion-1-grado": {
+    "questions": [
+      {
+        "question": "Resuelve la ecuación: 3x + 5 = 20. ¿Cuál es el valor de x?",
+        "options": [
+          "x = 3",
+          "x = 5",
+          "x = 7",
+          "x = 10"
+        ],
+        "correct": 1,
+        "explanation": "Restamos 5 a ambos lados: 3x = 15; luego dividimos entre 3: x = 5."
+      },
+      {
+        "question": "Encuentra x en la ecuación: 2x - 7 = 13.",
+        "options": [
+          "x = 3",
+          "x = 6",
+          "x = 10",
+          "x = 20"
+        ],
+        "correct": 2,
+        "explanation": "Sumamos 7: 2x = 20; dividimos entre 2: x = 10."
+      },
+      {
+        "question": "Resuelve: 4x + 8 = 0.",
+        "options": [
+          "x = -2",
+          "x = 2",
+          "x = 4",
+          "x = -4"
+        ],
+        "correct": 0,
+        "explanation": "Restamos 8: 4x = -8; dividimos entre 4: x = -2."
+      },
+      {
+        "question": "¿Cuál es la solución de 5x - 3 = 12?",
+        "options": [
+          "x = 1.8",
+          "x = 3",
+          "x = 5",
+          "x = 9"
+        ],
+        "correct": 1,
+        "explanation": "Sumamos 3: 5x = 15; dividimos entre 5: x = 3."
+      },
+      {
+        "question": "Resuelve: 6x + 2 = 20.",
+        "options": [
+          "x = 2",
+          "x = 3",
+          "x = 4",
+          "x = 6"
+        ],
+        "correct": 1,
+        "explanation": "Restamos 2: 6x = 18; dividimos entre 6: x = 3."
+      }
+    ]
+  },
+  "sqrt-a-b-sqrt-a-sqrt-b-sqrt-a-b-sqrt-a-sqrt-b": {
+    "questions": [
+      {
+        "question": "Simplifica: √(25 × 4) usando la propiedad √(a×b) = √a × √b.",
+        "options": [
+          "√25 × √4 = 5 × 2 = 10",
+          "√25 × √4 = 5 × 2 = 10, pero no es correcto",
+          "√(25×4) = √100 = 10, pero no aplica propiedad",
+          "√25 × √4 = 5 × 2 = 10, y también √100 = 10"
+        ],
+        "correct": 0,
+        "explanation": "Aplicando la propiedad, √(25×4) = √25 × √4 = 5 × 2 = 10."
+      },
+      {
+        "question": "¿Cuál es el resultado de √(36/9) usando la propiedad √(a/b) = √a / √b?",
+        "options": [
+          "√36 / √9 = 6/3 = 2",
+          "√36 / √9 = 6/3 = 2, pero también √4 = 2",
+          "√(36/9) = √4 = 2",
+          "√36 / √9 = 6/3 = 2, y √(36/9) = √4 = 2"
+        ],
+        "correct": 0,
+        "explanation": "Usando la propiedad: √(36/9) = √36 / √9 = 6/3 = 2."
+      },
+      {
+        "question": "Simplifica: √(49 × 16) aplicando la propiedad de la raíz de un producto.",
+        "options": [
+          "√49 × √16 = 7 × 4 = 28",
+          "√49 × √16 = 7 × 4 = 28, pero √(49×16) = √784 = 28",
+          "√49 × √16 = 7 × 4 = 28, y también √784 = 28",
+          "√49 × √16 = 7 × 4 = 28, comprobado"
+        ],
+        "correct": 0,
+        "explanation": "√(49×16) = √49 × √16 = 7 × 4 = 28."
+      },
+      {
+        "question": "Calcula: √(81/9) utilizando la propiedad de la raíz de un cociente.",
+        "options": [
+          "√81 / √9 = 9/3 = 3",
+          "√81 / √9 = 9/3 = 3, y √(81/9) = √9 = 3",
+          "√81 / √9 = 9/3 = 3, correcto",
+          "√81 / √9 = 9/3 = 3, también √9 = 3"
+        ],
+        "correct": 0,
+        "explanation": "Aplicamos: √(81/9) = √81 / √9 = 9/3 = 3."
+      },
+      {
+        "question": "¿Cuál es el valor de √(144 × 25)?",
+        "options": [
+          "√144 × √25 = 12 × 5 = 60",
+          "√144 × √25 = 12 × 5 = 60, y √(144×25) = √3600 = 60",
+          "√144 × √25 = 12 × 5 = 60, correcto",
+          "√144 × √25 = 12 × 5 = 60, comprobado"
+        ],
+        "correct": 0,
+        "explanation": "Usando la propiedad: √(144×25) = √144 × √25 = 12 × 5 = 60."
+      }
+    ]
+  },
+  "sistema-por-sustitucion": {
+    "questions": [
+      {
+        "question": "Resuelve el sistema por sustitución: x + y = 5, 2x - y = 4. ¿Cuál es el valor de x?",
+        "options": [
+          "x = 1",
+          "x = 2",
+          "x = 3",
+          "x = 4"
+        ],
+        "correct": 2,
+        "explanation": "Despejando y = 5 - x de la primera ecuación y sustituyendo en la segunda: 2x - (5 - x) = 4, resulta 3x = 9, por lo que x = 3."
+      },
+      {
+        "question": "Resuelve por sustitución: 3x + 2y = 12, y = 2x - 1. ¿Cuál es el valor de y?",
+        "options": [
+          "y = 1",
+          "y = 2",
+          "y = 3",
+          "y = 4"
+        ],
+        "correct": 2,
+        "explanation": "Sustituyendo y = 2x - 1 en la primera ecuación: 3x + 2(2x - 1) = 12, resulta 7x = 14, x = 2. Luego y = 2(2) - 1 = 3."
+      },
+      {
+        "question": "Resuelve por sustitución: x - 2y = 3, 2x + y = 11. ¿Cuál es el valor de x?",
+        "options": [
+          "x = 3",
+          "x = 4",
+          "x = 5",
+          "x = 6"
+        ],
+        "correct": 2,
+        "explanation": "Despejando x = 2y + 3 de la primera ecuación y sustituyendo en la segunda: 2(2y + 3) + y = 11, resulta 5y = 5, y = 1. Luego x = 2(1) + 3 = 5."
+      },
+      {
+        "question": "Resuelve por sustitución: 2x + 3y = 7, x = 4 - y. ¿Cuál es el valor de y?",
+        "options": [
+          "y = 1",
+          "y = 2",
+          "y = 3",
+          "y = 4"
+        ],
+        "correct": 1,
+        "explanation": "Sustituyendo x = y + 1 en x + y = 5: (y+1) + y = 5, 2y = 4, y = 2."
+      },
+      {
+        "question": "Resuelve por sustitución: 4x - y = 6, x = 2y. ¿Cuál es el valor de x?",
+        "options": [
+          "x = 2",
+          "x = 3",
+          "x = 4",
+          "x = 5"
+        ],
+        "correct": 1,
+        "explanation": "Sustituyendo x = y + 1 en 2x + y = 8: 2(y+1) + y = 8, 3y + 2 = 8, y = 2, entonces x = 3."
+      }
+    ]
+  },
+  "discriminante": {
+    "questions": [
+      {
+        "question": "¿Cuántas soluciones reales tiene la ecuación x² - 5x + 6 = 0?",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "No se puede determinar"
+        ],
+        "correct": 2,
+        "explanation": "El discriminante es b²-4ac = (-5)²-4(1)(6)=25-24=1>0, por lo que tiene dos soluciones reales."
+      },
+      {
+        "question": "Si el discriminante de una ecuación cuadrática es igual a cero, ¿cuántas soluciones reales tiene?",
+        "options": [
+          "Dos soluciones",
+          "Una solución",
+          "Ninguna solución",
+          "Tres soluciones"
+        ],
+        "correct": 1,
+        "explanation": "Cuando el discriminante es cero, la ecuación tiene una única solución real (raíz doble)."
+      },
+      {
+        "question": "¿Cuál es el valor del discriminante de la ecuación 2x² + 3x + 5 = 0?",
+        "options": [
+          "31",
+          "-31",
+          "9",
+          "-9"
+        ],
+        "correct": 1,
+        "explanation": "b²-4ac = 3²-4(2)(5)=9-40=-31, que es menor que cero, indicando que no tiene soluciones reales."
+      },
+      {
+        "question": "Para la ecuación x² - 4x + 4 = 0, el discriminante es:",
+        "options": [
+          "16",
+          "0",
+          "-16",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "b²-4ac = (-4)²-4(1)(4)=16-16=0, por lo que tiene una solución real."
+      },
+      {
+        "question": "Si el discriminante de una ecuación cuadrática es menor que cero, ¿qué ocurre?",
+        "options": [
+          "Tiene dos soluciones reales",
+          "Tiene una solución real",
+          "No tiene solución real",
+          "Tiene infinitas soluciones"
+        ],
+        "correct": 2,
+        "explanation": "Un discriminante negativo indica que la ecuación no tiene raíces reales, solo soluciones complejas."
+      }
+    ]
+  },
+  "ecuacion-2-grado": {
+    "questions": [
+      {
+        "question": "Resuelve la ecuación cuadrática: x² - 5x + 6 = 0",
+        "options": [
+          "x = 2 y x = 3",
+          "x = -2 y x = -3",
+          "x = 1 y x = 6",
+          "x = -1 y x = -6"
+        ],
+        "correct": 0,
+        "explanation": "Factorizando (x-2)(x-3)=0, obtenemos x=2 y x=3."
+      },
+      {
+        "question": "La ecuación 2x² + 4x - 6 = 0 tiene como soluciones:",
+        "options": [
+          "x = 1 y x = -3",
+          "x = -1 y x = 3",
+          "x = 2 y x = -1",
+          "x = -2 y x = 1"
+        ],
+        "correct": 0,
+        "explanation": "Dividiendo entre 2: x²+2x-3=0, factorizando (x+3)(x-1)=0, soluciones x=1 y x=-3."
+      },
+      {
+        "question": "¿Cuál es el discriminante de la ecuación x² + 4x + 4 = 0?",
+        "options": [
+          "0",
+          "16",
+          "-16",
+          "8"
+        ],
+        "correct": 0,
+        "explanation": "Discriminante = b²-4ac = 16-16=0, indica una raíz doble."
+      },
+      {
+        "question": "Resuelve usando fórmula general: 3x² - 6x + 3 = 0",
+        "options": [
+          "x = 1 (doble)",
+          "x = -1 (doble)",
+          "x = 1 y x = -1",
+          "x = 0 y x = 2"
+        ],
+        "correct": 0,
+        "explanation": "Discriminante = 36-36=0, solución única x=1."
+      },
+      {
+        "question": "La ecuación x² - 4 = 0 tiene soluciones:",
+        "options": [
+          "x = 2 y x = -2",
+          "x = 4 y x = -4",
+          "x = 2 (doble)",
+          "x = 0 y x = 4"
+        ],
+        "correct": 0,
+        "explanation": "Despejando x²=4, raíz cuadrada da x=±2."
+      }
+    ]
+  },
+  "formula-general": {
+    "questions": [
+      {
+        "question": "¿Cuál es el valor del discriminante en la ecuación x² - 5x + 6 = 0?",
+        "options": [
+          "1",
+          "25",
+          "24",
+          "49"
+        ],
+        "correct": 0,
+        "explanation": "El discriminante es b² - 4ac = (-5)² - 4(1)(6) = 25 - 24 = 1."
+      },
+      {
+        "question": "Resuelve la ecuación x² - 4x + 4 = 0 usando la fórmula general.",
+        "options": [
+          "x = 2",
+          "x = -2",
+          "x = 2 y x = -2",
+          "No tiene solución real"
+        ],
+        "correct": 0,
+        "explanation": "El discriminante es cero, por lo que tiene una solución doble: x = 2."
+      },
+      {
+        "question": "Para la ecuación 2x² + 3x - 5 = 0, ¿cuál es el valor de a, b y c?",
+        "options": [
+          "a=2, b=3, c=-5",
+          "a=2, b=3, c=5",
+          "a=2, b=-3, c=-5",
+          "a=-2, b=3, c=5"
+        ],
+        "correct": 0,
+        "explanation": "En la ecuación cuadrática ax² + bx + c = 0, los coeficientes son a=2, b=3, c=-5."
+      },
+      {
+        "question": "¿Cuántas soluciones reales tiene la ecuación x² + x + 1 = 0?",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "Infinitas"
+        ],
+        "correct": 0,
+        "explanation": "El discriminante es 1 - 4 = -3, negativo, por lo que no tiene soluciones reales."
+      },
+      {
+        "question": "Al aplicar la fórmula general a 3x² - 6x + 3 = 0, se obtiene:",
+        "options": [
+          "x = 1",
+          "x = -1",
+          "x = 1 y x = -1",
+          "x = 2"
+        ],
+        "correct": 0,
+        "explanation": "El discriminante es 36 - 36 = 0, solución doble x = 1."
+      }
+    ]
+  },
+  "sistema-por-eliminacion": {
+    "questions": [
+      {
+        "question": "Resuelve el sistema por eliminación: 2x + y = 7, 3x - y = 3",
+        "options": [
+          "x=2, y=3",
+          "x=3, y=1",
+          "x=1, y=5",
+          "x=4, y=-1"
+        ],
+        "correct": 0,
+        "explanation": "Sumando las ecuaciones eliminamos y: (2x+y)+(3x-y)=7+3 → 5x=10 → x=2. Sustituyendo en 2(2)+y=7 → y=3."
+      },
+      {
+        "question": "Resuelve por eliminación: x + 2y = 8, x - 2y = 4",
+        "options": [
+          "x=6, y=1",
+          "x=4, y=2",
+          "x=5, y=1.5",
+          "x=6, y=2"
+        ],
+        "correct": 0,
+        "explanation": "Sumando: (x+2y)+(x-2y)=8+4 → 2x=12 → x=6. Sustituyendo en 6+2y=8 → 2y=2 → y=1."
+      },
+      {
+        "question": "Resuelve por eliminación: 3x + y = 11, 2x - y = 4",
+        "options": [
+          "x=3, y=2",
+          "x=2, y=5",
+          "x=4, y=-1",
+          "x=1, y=8"
+        ],
+        "correct": 0,
+        "explanation": "Sumando: (3x+y)+(2x-y)=11+4 → 5x=15 → x=3. Sustituyendo en 3(3)+y=11 → y=2."
+      },
+      {
+        "question": "Resuelve por eliminación: 4x + 3y = 10, 2x - 3y = 8",
+        "options": [
+          "x=3, y=-2/3",
+          "x=2, y=2/3",
+          "x=1, y=2",
+          "x=5, y=-2"
+        ],
+        "correct": 0,
+        "explanation": "Sumando: (4x+3y)+(2x-3y)=10+8 → 6x=18 → x=3. Sustituyendo en 4(3)+3y=10 → 12+3y=10 → 3y=-2 → y=-2/3."
+      },
+      {
+        "question": "Resuelve por eliminación: 5x - 2y = 1, 3x + 2y = 7",
+        "options": [
+          "x=1, y=2",
+          "x=2, y=4.5",
+          "x=3, y=7",
+          "x=0, y=-0.5"
+        ],
+        "correct": 0,
+        "explanation": "Sumando: (5x-2y)+(3x+2y)=1+7 → 8x=8 → x=1. Sustituyendo en 5(1)-2y=1 → 5-2y=1 → -2y=-4 → y=2."
+      }
+    ]
+  },
+  "proporcionalidad-en-plano-cartesiano": {
+    "questions": [
+      {
+        "question": "¿Cuál es la pendiente de la recta que pasa por los puntos (1,2) y (3,6)?",
+        "options": [
+          "A) 1",
+          "B) 2",
+          "C) 3",
+          "D) 4"
+        ],
+        "correct": 1,
+        "explanation": "La pendiente se calcula como (6-2)/(3-1)=4/2=2."
+      },
+      {
+        "question": "Si una recta tiene pendiente m=0 y pasa por el punto (2,5), ¿cuál es su ecuación?",
+        "options": [
+          "A) y=5",
+          "B) x=2",
+          "C) y=2x+1",
+          "D) y=5x"
+        ],
+        "correct": 0,
+        "explanation": "Pendiente cero significa recta horizontal, por lo que y es constante igual a 5."
+      },
+      {
+        "question": "¿Qué representa la pendiente en una gráfica de distancia vs tiempo?",
+        "options": [
+          "A) La distancia total",
+          "B) La velocidad",
+          "C) El tiempo total",
+          "D) La aceleración"
+        ],
+        "correct": 1,
+        "explanation": "La pendiente en distancia vs tiempo es la velocidad, cambio de distancia entre cambio de tiempo."
+      },
+      {
+        "question": "Calcula la pendiente de la recta que pasa por (-1,4) y (2,-2).",
+        "options": [
+          "A) -2",
+          "B) 2",
+          "C) -1/2",
+          "D) 1/2"
+        ],
+        "correct": 0,
+        "explanation": "Usando la fórmula: (-2-4)/(2-(-1)) = -6/3 = -2."
+      },
+      {
+        "question": "Dada la recta y=3x-2, ¿cuál es su pendiente?",
+        "options": [
+          "A) -2",
+          "B) 3",
+          "C) 1/3",
+          "D) -3"
+        ],
+        "correct": 1,
+        "explanation": "En la ecuación y=mx+b, m es la pendiente, aquí m=3."
+      }
+    ]
+  },
+  "mediana": {
+    "questions": [
+      {
+        "question": "¿Cuál es la mediana del siguiente conjunto de datos: 3, 7, 9, 12, 15?",
+        "options": [
+          "7",
+          "9",
+          "10",
+          "12"
+        ],
+        "correct": 1,
+        "explanation": "Los datos ya están ordenados. El valor central es 9 porque hay dos números a la izquierda y dos a la derecha."
+      },
+      {
+        "question": "Se tienen las edades: 12, 15, 14, 10, 13. ¿Cuál es la mediana?",
+        "options": [
+          "12",
+          "13",
+          "14",
+          "15"
+        ],
+        "correct": 1,
+        "explanation": "Ordenando: 10, 12, 13, 14, 15. El valor central es 13."
+      },
+      {
+        "question": "Las calificaciones son: 6, 8, 7, 9, 5, 10. ¿Cuál es la mediana?",
+        "options": [
+          "7",
+          "7.5",
+          "8",
+          "8.5"
+        ],
+        "correct": 1,
+        "explanation": "Ordenando: 5, 6, 7, 8, 9, 10. Hay dos valores centrales (7 y 8), se promedian: (7+8)/2 = 7.5."
+      },
+      {
+        "question": "Encuentra la mediana de: 4, 8, 6, 5, 9, 7, 3.",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "Ordenando: 3, 4, 5, 6, 7, 8, 9. El valor central es 6."
+      },
+      {
+        "question": "Dados los números: 2, 4, 4, 6, 8, 10, 12. ¿Cuál es la mediana?",
+        "options": [
+          "4",
+          "6",
+          "7",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "Ordenando: 2, 4, 4, 6, 8, 10, 12. El valor central es 6."
+      }
+    ]
+  },
+  "media-aritmetica": {
+    "questions": [
+      {
+        "question": "¿Cuál es la media aritmética de los números 4, 8, 12 y 16?",
+        "options": [
+          "8",
+          "10",
+          "12",
+          "14"
+        ],
+        "correct": 1,
+        "explanation": "Se suman los datos: 4+8+12+16=40, y se divide entre 4 (cantidad de datos), dando 10."
+      },
+      {
+        "question": "Las calificaciones de Juan en 5 exámenes son: 7, 8, 9, 6, 10. ¿Cuál es su promedio?",
+        "options": [
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "correct": 1,
+        "explanation": "Suma total: 7+8+9+6+10=40, dividido entre 5 es igual a 8."
+      },
+      {
+        "question": "En un grupo, las edades son: 12, 13, 12, 14, 15. ¿Cuál es la media?",
+        "options": [
+          "12",
+          "13",
+          "14",
+          "15"
+        ],
+        "correct": 1,
+        "explanation": "Suma: 12+13+12+14+15=66, dividido entre 5 es 13.2, pero redondeando a entero es 13."
+      },
+      {
+        "question": "Si la media de tres números es 10 y dos de ellos son 8 y 12, ¿cuál es el tercer número?",
+        "options": [
+          "10",
+          "12",
+          "14",
+          "16"
+        ],
+        "correct": 0,
+        "explanation": "La suma total debe ser 10*3=30, entonces 8+12=20, el tercero es 30-20=10."
+      },
+      {
+        "question": "Las temperaturas en una semana son: 20, 22, 19, 21, 23, 20, 22. ¿Cuál es la media?",
+        "options": [
+          "20",
+          "21",
+          "22",
+          "23"
+        ],
+        "correct": 1,
+        "explanation": "Suma total: 20+22+19+21+23+20+22=147, dividido entre 7 es 21."
+      }
+    ]
+  },
+  "factorizacion-a-1": {
+    "questions": [
+      {
+        "question": "Factoriza x^2 + 5x + 6",
+        "options": [
+          "(x+2)(x+3)",
+          "(x+1)(x+6)",
+          "(x+2)(x+4)",
+          "(x+3)(x+2)"
+        ],
+        "correct": 0,
+        "explanation": "Buscamos dos números que multiplicados den 6 y sumados den 5: 2 y 3. Por lo tanto, la factorización es (x+2)(x+3)."
+      },
+      {
+        "question": "Factoriza x^2 - 7x + 12",
+        "options": [
+          "(x-3)(x-4)",
+          "(x+3)(x+4)",
+          "(x-2)(x-6)",
+          "(x-1)(x-12)"
+        ],
+        "correct": 0,
+        "explanation": "Dos números que multiplicados den 12 y sumados den -7 son -3 y -4. Así, (x-3)(x-4)."
+      },
+      {
+        "question": "Factoriza x^2 + 2x - 15",
+        "options": [
+          "(x+5)(x-3)",
+          "(x+3)(x-5)",
+          "(x+1)(x-15)",
+          "(x-5)(x+3)"
+        ],
+        "correct": 0,
+        "explanation": "Buscamos dos números que multiplicados den -15 y sumados den 2: 5 y -3. La factorización es (x+5)(x-3)."
+      },
+      {
+        "question": "Factoriza x^2 - 9x + 20",
+        "options": [
+          "(x-4)(x-5)",
+          "(x+4)(x+5)",
+          "(x-2)(x-10)",
+          "(x-1)(x-20)"
+        ],
+        "correct": 0,
+        "explanation": "Dos números que multiplicados den 20 y sumados den -9 son -4 y -5. Entonces (x-4)(x-5)."
+      },
+      {
+        "question": "Factoriza x^2 + 8x + 15",
+        "options": [
+          "(x+3)(x+5)",
+          "(x+1)(x+15)",
+          "(x+5)(x+3)",
+          "(x+2)(x+7.5)"
+        ],
+        "correct": 0,
+        "explanation": "Buscamos dos números que multiplicados den 15 y sumados den 8: 3 y 5. La factorización es (x+3)(x+5)."
+      }
+    ]
+  },
+  "productos-notables": {
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de (x + 3)^2?",
+        "options": [
+          "x^2 + 6x + 9",
+          "x^2 + 9",
+          "x^2 + 3x + 9",
+          "x^2 + 6x + 3"
+        ],
+        "correct": 0,
+        "explanation": "Usando (a+b)^2 = a^2 + 2ab + b^2, con a=x y b=3, obtenemos x^2 + 2(x)(3) + 3^2 = x^2 + 6x + 9."
+      },
+      {
+        "question": "¿Cuál es el resultado de (2y - 5)^2?",
+        "options": [
+          "4y^2 - 20y + 25",
+          "4y^2 + 20y + 25",
+          "4y^2 - 10y + 25",
+          "2y^2 - 20y + 5"
+        ],
+        "correct": 0,
+        "explanation": "Usando (a-b)^2 = a^2 - 2ab + b^2, con a=2y y b=5, obtenemos (2y)^2 - 2(2y)(5) + 5^2 = 4y^2 - 20y + 25."
+      },
+      {
+        "question": "¿Cuál es el resultado de (m + 4)(m - 4)?",
+        "options": [
+          "m^2 - 16",
+          "m^2 + 16",
+          "m^2 - 8m + 16",
+          "m^2 - 4"
+        ],
+        "correct": 0,
+        "explanation": "Usando (a+b)(a-b) = a^2 - b^2, con a=m y b=4, obtenemos m^2 - 4^2 = m^2 - 16."
+      },
+      {
+        "question": "¿Cuál es el resultado de (3a + 2b)^2?",
+        "options": [
+          "9a^2 + 12ab + 4b^2",
+          "9a^2 + 6ab + 4b^2",
+          "3a^2 + 12ab + 2b^2",
+          "9a^2 + 12ab + 2b^2"
+        ],
+        "correct": 0,
+        "explanation": "Usando (a+b)^2 = a^2 + 2ab + b^2, con a=3a y b=2b, obtenemos (3a)^2 + 2(3a)(2b) + (2b)^2 = 9a^2 + 12ab + 4b^2."
+      },
+      {
+        "question": "¿Cuál es el resultado de (x - 7)(x + 7)?",
+        "options": [
+          "x^2 - 49",
+          "x^2 + 49",
+          "x^2 - 14x + 49",
+          "x^2 - 7"
+        ],
+        "correct": 0,
+        "explanation": "Usando (a-b)(a+b) = a^2 - b^2, con a=x y b=7, obtenemos x^2 - 7^2 = x^2 - 49."
+      }
+    ]
+  },
+  "si-hay-cantidad-par-de-datos": {
+    "questions": [
+      {
+        "question": "¿Cuál es la mediana del conjunto de datos: 2, 4, 6, 8?",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "correct": 1,
+        "explanation": "Hay 4 datos (par), la mediana es el promedio de los dos valores centrales: (4+6)/2 = 5."
+      },
+      {
+        "question": "Dados los números 3, 7, 9, 12, ¿cuál es la mediana?",
+        "options": [
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "correct": 1,
+        "explanation": "Los dos valores centrales son 7 y 9, su promedio es (7+9)/2 = 8."
+      },
+      {
+        "question": "Encuentra la mediana de: 5, 10, 15, 20, 25, 30.",
+        "options": [
+          "15",
+          "17.5",
+          "20",
+          "22.5"
+        ],
+        "correct": 1,
+        "explanation": "Con 6 datos, los centrales son 15 y 20; su promedio es (15+20)/2 = 17.5."
+      },
+      {
+        "question": "¿Cuál es la mediana de los datos: 1, 3, 5, 7, 9, 11?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "Los valores centrales son 5 y 7, su promedio es (5+7)/2 = 6."
+      },
+      {
+        "question": "Halla la mediana de: 4, 8, 12, 16.",
+        "options": [
+          "8",
+          "10",
+          "12",
+          "14"
+        ],
+        "correct": 1,
+        "explanation": "Los dos datos centrales son 8 y 12; (8+12)/2 = 10."
+      }
+    ]
+  },
+  "moda": {
+    "questions": [
+      {
+        "question": "En un conjunto de datos, ¿qué representa la moda?",
+        "options": [
+          "El valor que más se repite",
+          "El valor que está en medio",
+          "El promedio de todos los valores",
+          "El valor más grande"
+        ],
+        "correct": 0,
+        "explanation": "La moda es el valor que aparece con mayor frecuencia en un conjunto de datos. Puede haber más de una moda si varios valores se repiten igual número de veces."
+      },
+      {
+        "question": "Las edades de un grupo de amigos son: 12, 13, 12, 14, 13, 12. ¿Cuál es la moda?",
+        "options": [
+          "12",
+          "13",
+          "14",
+          "12 y 13"
+        ],
+        "correct": 0,
+        "explanation": "El número 12 aparece tres veces, más que cualquier otro, por lo que es la moda."
+      },
+      {
+        "question": "En una encuesta sobre el número de mascotas, se obtuvieron: 1, 2, 2, 3, 1, 2, 4. ¿Cuál es la moda?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "El número 2 aparece tres veces, mientras que los otros aparecen una o dos veces, por lo que 2 es la moda."
+      },
+      {
+        "question": "¿Cuál de los siguientes conjuntos de datos tiene más de una moda?",
+        "options": [
+          "2, 3, 4, 5, 6",
+          "1, 1, 2, 2, 3",
+          "3, 3, 3, 4, 5",
+          "5, 5, 6, 7, 8"
+        ],
+        "correct": 1,
+        "explanation": "En el conjunto 1, 1, 2, 2, 3, tanto el 1 como el 2 aparecen dos veces, por lo que hay dos modas."
+      },
+      {
+        "question": "Las calificaciones de 5 alumnos son: 8, 9, 8, 7, 10. ¿Cuál es la moda?",
+        "options": [
+          "8",
+          "9",
+          "7",
+          "No hay moda"
+        ],
+        "correct": 0,
+        "explanation": "El número 8 aparece dos veces, mientras que los demás una sola vez, por lo que la moda es 8."
+      }
+    ]
+  },
+  "probabilidad": {
+    "questions": [
+      {
+        "question": "En una bolsa hay 3 canicas rojas, 4 azules y 5 verdes. ¿Cuál es la probabilidad de sacar una canica azul?",
+        "options": [
+          "A) 1/3",
+          "B) 1/4",
+          "C) 1/5",
+          "D) 4/12"
+        ],
+        "correct": 0,
+        "explanation": "Casos favorables: 4 azules. Casos totales: 3+4+5=12. P = 4/12 = 1/3."
+      },
+      {
+        "question": "Se lanza un dado de 6 caras. ¿Cuál es la probabilidad de obtener un número par?",
+        "options": [
+          "A) 1/2",
+          "B) 1/3",
+          "C) 2/3",
+          "D) 1/6"
+        ],
+        "correct": 0,
+        "explanation": "Números pares: 2,4,6 (3 casos). Total: 6. P = 3/6 = 1/2."
+      },
+      {
+        "question": "De un grupo de 10 alumnos, 6 son mujeres y 4 son hombres. Si se elige uno al azar, ¿cuál es la probabilidad de que sea hombre?",
+        "options": [
+          "A) 0.4",
+          "B) 0.6",
+          "C) 0.5",
+          "D) 0.2"
+        ],
+        "correct": 0,
+        "explanation": "Casos favorables: 4 hombres. Total: 10. P = 4/10 = 0.4."
+      },
+      {
+        "question": "En una baraja de 52 cartas, ¿cuál es la probabilidad de sacar un as?",
+        "options": [
+          "A) 1/13",
+          "B) 1/52",
+          "C) 4/52",
+          "D) 1/4"
+        ],
+        "correct": 0,
+        "explanation": "Hay 4 ases en 52 cartas. P = 4/52 = 1/13."
+      },
+      {
+        "question": "Si se lanzan dos monedas, ¿cuál es la probabilidad de obtener dos caras?",
+        "options": [
+          "A) 1/4",
+          "B) 1/2",
+          "C) 1/3",
+          "D) 3/4"
+        ],
+        "correct": 0,
+        "explanation": "Resultados posibles: CC, CS, SC, SS (4). Favorable: CC (1). P = 1/4."
+      }
+    ]
+  },
+  "angulos-internos-de-triangulo-suman-180-de-cuadrilatero-suman-360": {
+    "questions": [
+      {
+        "question": "En un triángulo, dos ángulos miden 45° y 75°. ¿Cuánto mide el tercer ángulo?",
+        "options": [
+          "60°",
+          "70°",
+          "50°",
+          "80°"
+        ],
+        "correct": 0,
+        "explanation": "La suma de los ángulos internos de un triángulo es 180°, entonces 180° - 45° - 75° = 60°."
+      },
+      {
+        "question": "Un cuadrilátero tiene tres ángulos que miden 90°, 80° y 110°. ¿Cuánto mide el cuarto ángulo?",
+        "options": [
+          "80°",
+          "70°",
+          "60°",
+          "90°"
+        ],
+        "correct": 0,
+        "explanation": "La suma de los ángulos internos de un cuadrilátero es 360°, entonces 360° - (90°+80°+110°) = 80°."
+      },
+      {
+        "question": "Si un triángulo tiene un ángulo recto (90°) y otro de 30°, ¿cuál es la medida del tercer ángulo?",
+        "options": [
+          "60°",
+          "50°",
+          "70°",
+          "40°"
+        ],
+        "correct": 0,
+        "explanation": "180° - 90° - 30° = 60°."
+      },
+      {
+        "question": "En un cuadrilátero, dos ángulos miden 100° cada uno y otro mide 60°. ¿Cuánto mide el cuarto ángulo?",
+        "options": [
+          "100°",
+          "90°",
+          "80°",
+          "110°"
+        ],
+        "correct": 0,
+        "explanation": "360° - (100°+100°+60°) = 100°."
+      },
+      {
+        "question": "Un triángulo tiene ángulos de 2x, 3x y 4x. ¿Cuánto vale x?",
+        "options": [
+          "20°",
+          "30°",
+          "40°",
+          "10°"
+        ],
+        "correct": 0,
+        "explanation": "2x+3x+4x=180°, entonces 9x=180°, x=20°."
+      }
+    ]
+  },
+  "pitagoras": {
+    "questions": [
+      {
+        "question": "En un triángulo rectángulo, los catetos miden 3 cm y 4 cm. ¿Cuánto mide la hipotenusa?",
+        "options": [
+          "5 cm",
+          "6 cm",
+          "7 cm",
+          "8 cm"
+        ],
+        "correct": 0,
+        "explanation": "Aplicamos Pitágoras: a²+b²=c², entonces 3²+4²=9+16=25, luego c=√25=5 cm."
+      },
+      {
+        "question": "Si la hipotenusa de un triángulo rectángulo mide 10 cm y un cateto mide 6 cm, ¿cuánto mide el otro cateto?",
+        "options": [
+          "8 cm",
+          "7 cm",
+          "9 cm",
+          "12 cm"
+        ],
+        "correct": 0,
+        "explanation": "Por Pitágoras: c² - a² = b², entonces 10²-6²=100-36=64, luego b=√64=8 cm."
+      },
+      {
+        "question": "¿Cuál de los siguientes conjuntos de medidas corresponde a un triángulo rectángulo?",
+        "options": [
+          "5, 12, 13",
+          "6, 8, 11",
+          "7, 10, 12",
+          "8, 9, 15"
+        ],
+        "correct": 0,
+        "explanation": "Verificamos: 5²+12²=25+144=169=13², por lo tanto es rectángulo."
+      },
+      {
+        "question": "Un triángulo rectángulo tiene catetos de 9 cm y 12 cm. ¿Cuánto mide la hipotenusa?",
+        "options": [
+          "15 cm",
+          "18 cm",
+          "21 cm",
+          "24 cm"
+        ],
+        "correct": 0,
+        "explanation": "Aplicamos: 9²+12²=81+144=225, luego c=√225=15 cm."
+      },
+      {
+        "question": "En un triángulo rectángulo, la hipotenusa mide 13 cm y un cateto mide 5 cm. ¿Cuánto mide el otro cateto?",
+        "options": [
+          "12 cm",
+          "10 cm",
+          "14 cm",
+          "11 cm"
+        ],
+        "correct": 0,
+        "explanation": "Usamos: 13²-5²=169-25=144, luego b=√144=12 cm."
+      }
+    ]
+  },
+  "tabla-de-frecuencia-relativa": {
+    "questions": [
+      {
+        "question": "En una encuesta a 50 personas sobre su fruta favorita, 20 prefirieron manzana. ¿Cuál es la frecuencia relativa de quienes prefieren manzana?",
+        "options": [
+          "0.2",
+          "0.4",
+          "0.5",
+          "0.8"
+        ],
+        "correct": 1,
+        "explanation": "La frecuencia relativa se calcula dividiendo la frecuencia absoluta (20) entre el total (50), lo que da 0.4."
+      },
+      {
+        "question": "Las frecuencias relativas de una tabla suman:",
+        "options": [
+          "0",
+          "1",
+          "100",
+          "Depende de los datos"
+        ],
+        "correct": 1,
+        "explanation": "La suma de todas las frecuencias relativas siempre es igual a 1, ya que representan proporciones del total."
+      },
+      {
+        "question": "Si la frecuencia relativa de un dato es 0.25 y el total de datos es 80, ¿cuál es su frecuencia absoluta?",
+        "options": [
+          "10",
+          "20",
+          "25",
+          "40"
+        ],
+        "correct": 1,
+        "explanation": "La frecuencia absoluta se obtiene multiplicando la frecuencia relativa (0.25) por el total (80), resultando 20."
+      },
+      {
+        "question": "En una tabla de frecuencias de las calificaciones de 30 alumnos, la frecuencia relativa de '8' es 0.3. ¿Cuántos alumnos obtuvieron 8?",
+        "options": [
+          "3",
+          "6",
+          "9",
+          "12"
+        ],
+        "correct": 2,
+        "explanation": "Multiplicando 0.3 por 30 obtenemos 9 alumnos con calificación 8."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones sobre la frecuencia relativa es correcta?",
+        "options": [
+          "Puede ser mayor que 1",
+          "Siempre es un número entero",
+          "Se expresa como fracción del total",
+          "Nunca es igual a 0"
+        ],
+        "correct": 2,
+        "explanation": "La frecuencia relativa es la proporción de cada valor respecto al total, por lo que siempre es una fracción entre 0 y 1."
+      }
+    ]
+  },
+  "frecuencia-absoluta": {
+    "questions": [
+      {
+        "question": "En una encuesta sobre el número de mascotas en casa, se preguntó a 10 familias. Las respuestas fueron: 1, 2, 0, 1, 3, 1, 2, 1, 0, 2. ¿Cuál es la frecuencia absoluta del dato '1 mascota'?",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "2"
+        ],
+        "correct": 1,
+        "explanation": "El dato '1' aparece 4 veces en la lista, por lo que su frecuencia absoluta es 4."
+      },
+      {
+        "question": "Se registraron las calificaciones de 8 alumnos: 7, 8, 7, 9, 7, 10, 8, 7. ¿Cuál es la frecuencia absoluta de la calificación 7?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 2,
+        "explanation": "El número 7 aparece 4 veces en la lista de calificaciones, así que su frecuencia absoluta es 4."
+      },
+      {
+        "question": "En una tienda se vendieron los siguientes colores de camisas: rojo, azul, rojo, verde, azul, rojo, azul, azul. ¿Cuál es la frecuencia absoluta del color azul?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 2,
+        "explanation": "El color azul aparece 4 veces en la lista de ventas, por lo tanto su frecuencia absoluta es 4."
+      },
+      {
+        "question": "Las edades de 6 personas son: 12, 15, 12, 14, 12, 13. ¿Cuál es la frecuencia absoluta de la edad 12?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 2,
+        "explanation": "La edad 12 aparece 3 veces en el conjunto de datos, por lo que su frecuencia absoluta es 3."
+      },
+      {
+        "question": "En un examen, las puntuaciones obtenidas por 7 estudiantes fueron: 85, 90, 85, 95, 85, 90, 85. ¿Cuál es la frecuencia absoluta de la puntuación 85?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 2,
+        "explanation": "La puntuación 85 aparece 4 veces en la lista, así que su frecuencia absoluta es 4."
+      }
+    ]
+  },
+  "semejanza-de-triangulos": {
+    "questions": [
+      {
+        "question": "Dos triángulos tienen sus tres ángulos iguales. ¿Qué condición adicional se cumple?",
+        "options": [
+          "Sus lados son iguales",
+          "Sus lados son proporcionales",
+          "Sus áreas son iguales",
+          "Sus perímetros son iguales"
+        ],
+        "correct": 1,
+        "explanation": "Si dos triángulos tienen los mismos ángulos, entonces son semejantes, lo que implica que sus lados correspondientes son proporcionales."
+      },
+      {
+        "question": "Un triángulo tiene lados de 3, 4 y 5 cm. Otro triángulo semejante tiene el lado más pequeño de 6 cm. ¿Cuánto mide el lado más grande del segundo triángulo?",
+        "options": [
+          "8 cm",
+          "10 cm",
+          "12 cm",
+          "15 cm"
+        ],
+        "correct": 1,
+        "explanation": "La razón de semejanza es 6/3 = 2, por lo que el lado más grande del segundo triángulo es 5 × 2 = 10 cm."
+      },
+      {
+        "question": "¿Cuál de los siguientes pares de triángulos son siempre semejantes?",
+        "options": [
+          "Dos triángulos rectángulos",
+          "Dos triángulos equiláteros",
+          "Dos triángulos isósceles",
+          "Dos triángulos escalenos"
+        ],
+        "correct": 1,
+        "explanation": "Todos los triángulos equiláteros tienen ángulos de 60°, por lo que son semejantes entre sí."
+      },
+      {
+        "question": "En dos triángulos semejantes, la razón de semejanza es 3:1. Si el área del triángulo pequeño es 4 cm², ¿cuál es el área del grande?",
+        "options": [
+          "12 cm²",
+          "24 cm²",
+          "36 cm²",
+          "48 cm²"
+        ],
+        "correct": 2,
+        "explanation": "Las áreas de figuras semejantes están en razón del cuadrado de la razón de semejanza: 3² = 9, entonces 4 × 9 = 36 cm²."
+      },
+      {
+        "question": "Para que dos triángulos sean semejantes, basta con que tengan:",
+        "options": [
+          "Dos lados proporcionales y un ángulo igual",
+          "Dos ángulos iguales",
+          "Los tres lados iguales",
+          "Un lado y un ángulo iguales"
+        ],
+        "correct": 1,
+        "explanation": "Si dos triángulos tienen dos ángulos iguales, el tercero también es igual, por lo que son semejantes (criterio AA)."
+      }
+    ]
+  },
+  "area-triangulo": {
+    "questions": [
+      {
+        "question": "¿Cuál es el área de un triángulo con base de 8 cm y altura de 5 cm?",
+        "options": [
+          "20 cm²",
+          "40 cm²",
+          "13 cm²",
+          "26 cm²"
+        ],
+        "correct": 0,
+        "explanation": "Área del triángulo = base × altura / 2 = 8 × 5 / 2 = 20 cm²."
+      },
+      {
+        "question": "Si el radio de un círculo es 3 cm, ¿cuál es su área? (π ≈ 3.14)",
+        "options": [
+          "28.26 cm²",
+          "18.84 cm²",
+          "9.42 cm²",
+          "113.04 cm²"
+        ],
+        "correct": 0,
+        "explanation": "Área del círculo = π × r² = 3.14 × 9 = 28.26 cm²."
+      },
+      {
+        "question": "Un triángulo tiene área de 24 m² y base de 6 m. ¿Cuál es su altura?",
+        "options": [
+          "8 m",
+          "4 m",
+          "12 m",
+          "6 m"
+        ],
+        "correct": 0,
+        "explanation": "Despejando: altura = (2 × área) / base = (2 × 24) / 6 = 8 m."
+      },
+      {
+        "question": "¿Cuál es el área de un círculo con diámetro de 10 cm? (π ≈ 3.14)",
+        "options": [
+          "78.5 cm²",
+          "31.4 cm²",
+          "314 cm²",
+          "15.7 cm²"
+        ],
+        "correct": 0,
+        "explanation": "Radio = diámetro/2 = 5 cm. Área = 3.14 × 25 = 78.5 cm²."
+      },
+      {
+        "question": "Un triángulo tiene base de 12 cm y altura de 7 cm. ¿Cuánto mide su área?",
+        "options": [
+          "42 cm²",
+          "84 cm²",
+          "21 cm²",
+          "19 cm²"
+        ],
+        "correct": 0,
+        "explanation": "Área = base × altura / 2 = 12 × 7 / 2 = 42 cm²."
+      }
+    ]
+  },
+  "circunferencia": {
+    "questions": [
+      {
+        "question": "Si el radio de una circunferencia mide 5 cm, ¿cuánto mide su longitud?",
+        "options": [
+          "10π cm",
+          "20π cm",
+          "25π cm",
+          "5π cm"
+        ],
+        "correct": 0,
+        "explanation": "La longitud de la circunferencia es 2πr, sustituyendo r=5 queda 2π(5)=10π cm."
+      },
+      {
+        "question": "Un rectángulo tiene base de 8 m y altura de 3 m. ¿Cuál es su área?",
+        "options": [
+          "11 m²",
+          "24 m²",
+          "16 m²",
+          "32 m²"
+        ],
+        "correct": 1,
+        "explanation": "El área del rectángulo es base por altura: 8×3=24 m²."
+      },
+      {
+        "question": "¿Cuál es la longitud de una circunferencia con radio de 3.5 cm? (Considera π=3.14)",
+        "options": [
+          "21.98 cm",
+          "10.99 cm",
+          "7 cm",
+          "38.465 cm"
+        ],
+        "correct": 0,
+        "explanation": "Longitud = 2πr = 2×3.14×3.5 = 21.98 cm."
+      },
+      {
+        "question": "El área de un rectángulo es 36 m² y su base mide 9 m. ¿Cuánto mide su altura?",
+        "options": [
+          "4 m",
+          "27 m",
+          "45 m",
+          "324 m"
+        ],
+        "correct": 0,
+        "explanation": "Área = base × altura, entonces altura = área / base = 36 / 9 = 4 m."
+      },
+      {
+        "question": "Si el diámetro de una circunferencia es 10 cm, ¿cuál es su longitud? (Considera π=3.14)",
+        "options": [
+          "31.4 cm",
+          "15.7 cm",
+          "62.8 cm",
+          "78.5 cm"
+        ],
+        "correct": 0,
+        "explanation": "Radio = diámetro/2 = 5 cm; longitud = 2πr = 2×3.14×5 = 31.4 cm."
+      }
+    ]
+  },
+  "area-trapecio": {
+    "questions": [
+      {
+        "question": "Un trapecio tiene bases de 8 cm y 4 cm, y una altura de 5 cm. ¿Cuál es su área?",
+        "options": [
+          "20 cm²",
+          "30 cm²",
+          "40 cm²",
+          "60 cm²"
+        ],
+        "correct": 1,
+        "explanation": "Aplicamos la fórmula: (B+b)×h/2 = (8+4)×5/2 = 12×5/2 = 60/2 = 30 cm²."
+      },
+      {
+        "question": "Un rombo tiene diagonales de 6 cm y 8 cm. ¿Cuál es su área?",
+        "options": [
+          "24 cm²",
+          "48 cm²",
+          "14 cm²",
+          "28 cm²"
+        ],
+        "correct": 0,
+        "explanation": "Usamos la fórmula: d1×d2/2 = 6×8/2 = 48/2 = 24 cm²."
+      },
+      {
+        "question": "¿Cuál es el área de un trapecio con base mayor 12 m, base menor 6 m y altura 4 m?",
+        "options": [
+          "36 m²",
+          "72 m²",
+          "24 m²",
+          "48 m²"
+        ],
+        "correct": 0,
+        "explanation": "Área = (12+6)×4/2 = 18×4/2 = 72/2 = 36 m²."
+      },
+      {
+        "question": "Las diagonales de un rombo miden 10 cm y 7 cm. ¿Cuál es su área?",
+        "options": [
+          "70 cm²",
+          "35 cm²",
+          "17 cm²",
+          "140 cm²"
+        ],
+        "correct": 1,
+        "explanation": "Área = 10×7/2 = 70/2 = 35 cm²."
+      },
+      {
+        "question": "Un trapecio tiene área de 45 cm², base mayor 10 cm y base menor 5 cm. ¿Cuál es su altura?",
+        "options": [
+          "3 cm",
+          "6 cm",
+          "9 cm",
+          "15 cm"
+        ],
+        "correct": 1,
+        "explanation": "Despejamos altura: h = 2A/(B+b) = 2×45/(10+5) = 90/15 = 6 cm."
+      }
+    ]
+  },
+  "volumen-cubo": {
+    "questions": [
+      {
+        "question": "Un cubo tiene lados de 5 cm. ¿Cuál es su volumen?",
+        "options": [
+          "125 cm³",
+          "25 cm³",
+          "15 cm³",
+          "100 cm³"
+        ],
+        "correct": 0,
+        "explanation": "El volumen de un cubo es lado al cubo: 5³ = 125 cm³."
+      },
+      {
+        "question": "Un cilindro tiene radio de 2 cm y altura de 10 cm. ¿Cuál es su volumen? (π ≈ 3.14)",
+        "options": [
+          "125.6 cm³",
+          "62.8 cm³",
+          "40 cm³",
+          "31.4 cm³"
+        ],
+        "correct": 0,
+        "explanation": "Volumen = π × r² × h = 3.14 × 4 × 10 = 125.6 cm³."
+      },
+      {
+        "question": "Si el volumen de un cubo es 64 cm³, ¿cuánto mide cada lado?",
+        "options": [
+          "8 cm",
+          "4 cm",
+          "16 cm",
+          "6 cm"
+        ],
+        "correct": 1,
+        "explanation": "La raíz cúbica de 64 es 4, porque 4³ = 64."
+      },
+      {
+        "question": "Un cilindro tiene volumen de 157 cm³ y radio de 5 cm. ¿Cuál es su altura? (π ≈ 3.14)",
+        "options": [
+          "2 cm",
+          "4 cm",
+          "10 cm",
+          "5 cm"
+        ],
+        "correct": 0,
+        "explanation": "Despejando h = V / (π × r²) = 157 / (3.14 × 25) = 157 / 78.5 = 2 cm."
+      },
+      {
+        "question": "¿Cuál es la fórmula del volumen de un cilindro?",
+        "options": [
+          "π × r² × h",
+          "lado³",
+          "π × d × h",
+          "base × altura / 2"
+        ],
+        "correct": 0,
+        "explanation": "La fórmula del volumen del cilindro es π × r² × h."
+      }
+    ]
+  },
+  "volumen-cono": {
+    "questions": [
+      {
+        "question": "Un cono tiene radio de 3 cm y altura de 5 cm. ¿Cuál es su volumen? (Considera π ≈ 3.14)",
+        "options": [
+          "47.1 cm³",
+          "47.1 cm³",
+          "141.3 cm³",
+          "15.7 cm³"
+        ],
+        "correct": 0,
+        "explanation": "El volumen del cono es (1/3)*π*r²*h = (1/3)*3.14*9*5 = 47.1 cm³."
+      },
+      {
+        "question": "El volumen de una esfera de radio 6 cm es: (π ≈ 3.14)",
+        "options": [
+          "904.32 cm³",
+          "113.04 cm³",
+          "288 cm³",
+          "904.32 cm³"
+        ],
+        "correct": 0,
+        "explanation": "Volumen es (4/3)*π*r³ = (4/3)*3.14*216 = 904.32 cm³."
+      },
+      {
+        "question": "Si el volumen de un cono es 100.48 cm³ y su radio es 4 cm, ¿cuál es su altura? (π ≈ 3.14)",
+        "options": [
+          "6 cm",
+          "8 cm",
+          "4 cm",
+          "2 cm"
+        ],
+        "correct": 0,
+        "explanation": "Despejando h de V = (1/3)*π*r²*h: h = 3V/(πr²) = 3*100.48/(3.14*16) = 6 cm."
+      },
+      {
+        "question": "¿Cuántas veces mayor es el volumen de una esfera de radio 3 cm que el de un cono de radio 3 cm y altura 6 cm? (π ≈ 3.14)",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "1.5"
+        ],
+        "correct": 1,
+        "explanation": "Volumen esfera = (4/3)*π*27 = 113.04 cm³; volumen cono = (1/3)*π*9*6 = 56.52 cm³; 113.04/56.52 = 2."
+      },
+      {
+        "question": "Un cono y una esfera tienen el mismo radio de 5 cm. Si el volumen del cono es 130.83 cm³, ¿cuál es la altura del cono? (π ≈ 3.14)",
+        "options": [
+          "5 cm",
+          "10 cm",
+          "2.5 cm",
+          "7.5 cm"
+        ],
+        "correct": 0,
+        "explanation": "Despejando h: h = 3V/(πr²) = 3*130.83/(3.14*25) = 5 cm."
+      }
+    ]
+  },
+  "sen-opuesto-hipotenusa-cos-adyacente-hipotenusa-tan-opuesto-adyacente": {
+    "questions": [
+      {
+        "question": "En un triángulo rectángulo, el lado opuesto al ángulo θ mide 3 cm y la hipotenusa mide 5 cm. ¿Cuál es el valor de sen(θ)?",
+        "options": [
+          "3/5",
+          "4/5",
+          "3/4",
+          "5/3"
+        ],
+        "correct": 0,
+        "explanation": "sen(θ) = opuesto/hipotenusa = 3/5."
+      },
+      {
+        "question": "Si cos(θ) = 0.6 y la hipotenusa mide 10 cm, ¿cuánto mide el lado adyacente?",
+        "options": [
+          "6 cm",
+          "8 cm",
+          "4 cm",
+          "10 cm"
+        ],
+        "correct": 0,
+        "explanation": "cos(θ) = adyacente/hipotenusa, entonces adyacente = 0.6 * 10 = 6 cm."
+      },
+      {
+        "question": "En un triángulo rectángulo, el lado opuesto a θ mide 4 y el adyacente mide 3. ¿Cuál es el valor de tan(θ)?",
+        "options": [
+          "4/3",
+          "3/4",
+          "4/5",
+          "3/5"
+        ],
+        "correct": 0,
+        "explanation": "tan(θ) = opuesto/adyacente = 4/3."
+      },
+      {
+        "question": "Si sen(θ) = 0.8 y la hipotenusa es 15, ¿cuánto mide el cateto opuesto?",
+        "options": [
+          "12",
+          "9",
+          "10",
+          "8"
+        ],
+        "correct": 0,
+        "explanation": "sen(θ) = opuesto/hipotenusa, entonces opuesto = 0.8 * 15 = 12."
+      },
+      {
+        "question": "¿Cuál es el valor de cos(θ) si el cateto adyacente mide 8 y la hipotenusa mide 10?",
+        "options": [
+          "0.8",
+          "0.6",
+          "1.25",
+          "0.75"
+        ],
+        "correct": 0,
+        "explanation": "cos(θ) = adyacente/hipotenusa = 8/10 = 0.8."
       }
     ]
   }

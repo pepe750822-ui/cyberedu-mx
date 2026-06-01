@@ -15,7 +15,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { areas, colorMap } from "@/data/temarioData";
 
-import españolData from "@/data/practica/español.json";
+import españolData from "@/data/practica/espanol.json";
 import habilidadVerbalData from "@/data/practica/habilidad-verbal.json";
 import matematicasData from "@/data/practica/matematicas.json";
 import habilidadMateData from "@/data/practica/habilidad-matematica.json";
@@ -24,7 +24,7 @@ import fisicaData from "@/data/practica/fisica.json";
 import quimicaData from "@/data/practica/quimica.json";
 import historiaData from "@/data/practica/historia.json";
 import geografiaData from "@/data/practica/geografia.json";
-import civicaData from "@/data/practica/civica.json";
+import civicaData from "@/data/practica/formacion-civica-y-etica.json";
 
 interface QuizQuestion {
   question: string;
@@ -33,14 +33,22 @@ interface QuizQuestion {
   explanation: string;
 }
 
-// Build lookup: subíndice title → questions[]
+// Genera slug igual que el script generador
+function createSlug(text: string): string {
+  return text.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Build lookup: slug → questions[]
 const staticBank: Record<string, QuizQuestion[]> = {};
 for (const bank of [
   españolData, habilidadVerbalData, matematicasData, habilidadMateData,
   biologiaData, fisicaData, quimicaData, historiaData, geografiaData, civicaData,
-]) {
-  for (const [titulo, preguntas] of Object.entries(bank.subindices)) {
-    staticBank[titulo] = preguntas as QuizQuestion[];
+] as Record<string, { questions: QuizQuestion[] }>[]) {
+  for (const [slug, data] of Object.entries(bank)) {
+    if (data?.questions) staticBank[slug] = data.questions;
   }
 }
 
@@ -91,15 +99,16 @@ export default function PracticaSubindice() {
       prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]
     );
 
-  const handlePractice = (subindice: string) => {
-    const questions = staticBank[subindice];
+  const handlePractice = (concepto: string) => {
+    const slug = createSlug(concepto.split(":")[0]);
+    const questions = staticBank[slug];
     if (!questions || questions.length === 0) return;
 
     const randomizedQuestions = shuffleArray(questions).map(shuffleQuizQuestion);
 
     setQuiz({
       phase: "quiz",
-      subindice,
+      subindice: concepto.split(":")[0],
       questions: randomizedQuestions,
       answers: new Array(randomizedQuestions.length).fill(null),
     });
@@ -203,7 +212,7 @@ export default function PracticaSubindice() {
                     <span className="text-lg">{area.icono}</span>
                     {area.nombre}
                     <span className="text-[10px] font-bold opacity-70 normal-case tracking-normal">
-                      ({area.subtemas.length} subíndices)
+                      ({area.subtemas.reduce((acc, s) => acc + s.contenido.length, 0)} subíndices)
                     </span>
                   </span>
                   {isOpen ? (
@@ -213,7 +222,7 @@ export default function PracticaSubindice() {
                   )}
                 </button>
 
-                {/* Subtemas */}
+                {/* Subtemas + Subíndices individuales */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -224,31 +233,50 @@ export default function PracticaSubindice() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="divide-y divide-white/5">
-                        {area.subtemas.map((subtema, sIdx) => (
-                          <div
-                            key={sIdx}
-                            className="flex items-center justify-between px-5 py-3 gap-4 hover:bg-white/3 transition-colors"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-white truncate">
-                                {subtema.titulo}
-                              </p>
-                              <p className="text-[11px] text-slate-500 mt-0.5">
-                                {subtema.contenido.length} conceptos clave
-                              </p>
-                            </div>
-
-                            <button
-                              onClick={() => handlePractice(subtema.titulo)}
-                              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black uppercase tracking-wide shrink-0 transition-all hover:scale-105 active:scale-95 shadow-sm ${colors.btn}`}
-                            >
-                              <Zap className="h-3 w-3" />
-                              Practicar
-                            </button>
+                      {area.subtemas.map((subtema, sIdx) => (
+                        <div key={sIdx}>
+                          {/* Encabezado del subtema */}
+                          <div className="px-5 py-2 bg-white/3 border-t border-white/5">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                              {subtema.titulo}
+                            </p>
                           </div>
-                        ))}
-                      </div>
+                          {/* Cada concepto clave */}
+                          <div className="divide-y divide-white/5">
+                            {subtema.contenido.map((concepto, cIdx) => {
+                              const slug = createSlug(concepto.split(":")[0]);
+                              const hasQuestions = !!staticBank[slug];
+                              const label = concepto.split(":")[0];
+                              return (
+                                <div
+                                  key={cIdx}
+                                  className="flex items-center justify-between px-5 py-3 gap-4 hover:bg-white/3 transition-colors"
+                                >
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-white leading-snug">
+                                      {label}
+                                    </p>
+                                    {concepto.includes(":") && (
+                                      <p className="text-[11px] text-slate-500 mt-0.5 leading-snug line-clamp-1">
+                                        {concepto.split(":").slice(1).join(":").trim()}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  <button
+                                    onClick={() => handlePractice(concepto)}
+                                    disabled={!hasQuestions}
+                                    className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black uppercase tracking-wide shrink-0 transition-all hover:scale-105 active:scale-95 shadow-sm disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 ${colors.btn}`}
+                                  >
+                                    <Zap className="h-3 w-3" />
+                                    Practicar
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -440,7 +468,7 @@ export default function PracticaSubindice() {
                       Volver al temario
                     </button>
                     <button
-                      onClick={() => handlePractice((quiz as any).subindice)}
+                      onClick={() => { const slug = createSlug((quiz as any).subindice); const qs = staticBank[slug]; if (qs) setQuiz({ phase: "quiz", subindice: (quiz as any).subindice, questions: shuffleArray(qs).map(shuffleQuizQuestion), answers: new Array(qs.length).fill(null) }); }}
                       className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-primary/20"
                     >
                       Repetir subíndice
