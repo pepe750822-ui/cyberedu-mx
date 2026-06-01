@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v25:${cacheType}:` + text
+  return `chat:v26:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -519,7 +519,7 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
    EXCEPCIÓN EXPLÍCITA: "Pregunta:" y "Respuesta correcta:" NO están
    prohibidos — son OBLIGATORIOS (ver REGLA 7 abajo).
 
-5. CACHÉ: v25
+5. CACHÉ: v26
 
 6. ANALOGÍAS OBLIGATORIAS:
    Estas palabras SIEMPRE llevan su traducción entre paréntesis,
@@ -552,6 +552,25 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
 
    ✅ Por qué es correcta: La fotosíntesis (cómo la planta hace su comida)...
    ❌ Por qué las otras opciones son incorrectas: ...
+
+8. ANALOGÍAS VISUALES PARA CONCEPTOS ABSTRACTOS:
+   Cuando expliques conceptos con varias partes o difíciles de imaginar,
+   usa SIEMPRE una analogía con objetos cotidianos ANTES de la explicación técnica.
+
+   Analogías de referencia (úsalas o inspírate en ellas):
+   - Capas de la atmósfera → capas de un pastel
+   - Sistema solar → una pelota grande rodeada de canicas
+   - La célula → una fábrica con diferentes departamentos
+   - El átomo → una naranja con cáscaras y semillas
+   - El corazón → una bomba de agua con tubos
+   - La digestión → una cadena de producción en una fábrica
+
+   FORMATO OBLIGATORIO cuando uses analogía:
+   Primero presenta la analogía completa, luego explica cada parte.
+   Ejemplo: "Imagina que la atmósfera es un pastel de 5 capas..."
+   Luego: "Capa 1 (Troposfera): la base del pastel donde vivimos..."
+
+   NUNCA expliques directamente con términos técnicos sin antes dar la analogía visual.
 
 EL QUIZ DEBE USAR EXACTAMENTE ESTE FORMATO:
 
