@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   ChevronDown,
-  ChevronRight,
   Zap,
   Crown,
   Check,
@@ -86,7 +85,7 @@ function shuffleQuizQuestion(q: QuizQuestion): QuizQuestion {
 export default function PracticaSubindice() {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
-  const [openAreas, setOpenAreas] = useState<number[]>([]);
+  const [openArea, setOpenArea] = useState<number | null>(null);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
 
   const isFree =
@@ -95,9 +94,7 @@ export default function PracticaSubindice() {
     (profile as any)?.is_premium === true;
 
   const toggleArea = (i: number) =>
-    setOpenAreas((prev) =>
-      prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]
-    );
+    setOpenArea((prev) => (prev === i ? null : i));
 
   const handlePractice = (concepto: string) => {
     const slug = createSlug(concepto.split(":")[0]);
@@ -198,7 +195,7 @@ export default function PracticaSubindice() {
         <div className="space-y-3">
           {areas.map((area, aIdx) => {
             const colors = colorMap[area.color] ?? colorMap.blue;
-            const isOpen = openAreas.includes(aIdx);
+            const isOpen = openArea === aIdx;
             return (
               <div
                 key={aIdx}
@@ -216,11 +213,13 @@ export default function PracticaSubindice() {
                       ({area.subtemas.reduce((acc, s) => acc + s.contenido.length, 0)} subíndices)
                     </span>
                   </span>
-                  {isOpen ? (
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center"
+                  >
                     <ChevronDown className="h-4 w-4 opacity-80" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4 opacity-80" />
-                  )}
+                  </motion.span>
                 </button>
 
                 {/* Subtemas + Subíndices individuales */}
