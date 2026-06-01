@@ -8,7 +8,8 @@ const WhatsAppButton: React.FC = () => {
   const { pathname } = useLocation();
 
   // SimuladorPro and PracticaSubindice handle their own WA button with mobile restrictions
-  if (pathname === "/simulador-pro" || pathname === "/practica-subindice") return null;
+  // Index hides it to avoid visual interference with hero CTAs
+  if (pathname === "/" || pathname === "/simulador-pro" || pathname === "/practica-subindice") return null;
 
   return (
     <a
