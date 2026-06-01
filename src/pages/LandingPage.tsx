@@ -229,7 +229,7 @@ const LandingPage = () => {
           </div>
           <p className="text-center text-[11px] text-slate-500 mt-3 font-medium animate-in fade-in duration-1000 delay-400">
             Sin registro: <span className="text-slate-300 font-bold">15 preguntas gratis al instante</span> · También en{" "}
-            <span className="text-cyan-400 font-bold">@CyberEduMXBot</span> en Telegram
+            <a href="https://wa.me/5215523269241" target="_blank" rel="noopener noreferrer" className="text-green-400 font-bold hover:text-green-300 no-underline">Grupo de WhatsApp</a>
           </p>
 
           {/* Social proof */}
@@ -265,7 +265,7 @@ const LandingPage = () => {
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-sky-500/30 hover:bg-sky-500/5 transition-all">
               <MessageCircle className="h-3.5 w-3.5 text-sky-400" />
-              Bot Telegram 24/7
+              Grupo WhatsApp
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
@@ -340,7 +340,7 @@ const LandingPage = () => {
                         { label: "⚛️ Estructura de Lewis", color: "#06b6d4" },
                         { label: "🌍 Mapa Interactivo", color: "#6366f1" },
                         { label: "📐 Diagramas de Fuerzas", color: "#8b5cf6" },
-                        { label: "🤖 Bot Telegram 24/7", color: "#0ea5e9" },
+                        { label: "💬 Grupo WhatsApp", color: "#0ea5e9" },
                         { label: "🎮 Simulador ECOEMS", color: "#ec4899" }
                       ].map((tag) => (
                         <span
