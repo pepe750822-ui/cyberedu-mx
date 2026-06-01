@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,8 +10,11 @@ import {
   CheckCircle2,
   XSquare,
   ArrowLeft,
+  Lock,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { areas, colorMap } from "@/data/temarioData";
 
 import españolData from "@/data/practica/espanol.json";
@@ -83,7 +86,7 @@ function shuffleQuizQuestion(q: QuizQuestion): QuizQuestion {
 }
 
 export default function PracticaSubindice() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [openArea, setOpenArea] = useState<number | null>(null);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
@@ -92,6 +95,52 @@ export default function PracticaSubindice() {
     (profile as any)?.paquete_completo === true ||
     (profile as any)?.subscription_status === "active" ||
     (profile as any)?.is_premium === true;
+
+  const hasUnlimitedAccess =
+    (profile as any)?.practica_ilimitada === true ||
+    (profile as any)?.paquete_completo === true ||
+    (profile as any)?.subscription_status === "active" ||
+    (profile as any)?.is_premium === true;
+
+  const [lockModal, setLockModal] = useState(false);
+  const [unlocking, setUnlocking] = useState(false);
+
+  // Pre-compute unlock status per [areaIdx][subIdx][contenidoIdx]
+  const unlockMap = useMemo(() =>
+    areas.map(area => {
+      let n = 0;
+      return area.subtemas.map(sub =>
+        sub.contenido.map(() => {
+          const idx = n++;
+          if (!user) return false;
+          if (hasUnlimitedAccess) return true;
+          return idx < 10;
+        })
+      );
+    }),
+    [user, hasUnlimitedAccess]
+  );
+
+  const handleUnlock = async () => {
+    if (!user || !profile) { navigate("/auth?ref=practica-subindice"); return; }
+    const balance = profile.tokens ?? 0;
+    if (balance < 100) { navigate("/tokens"); return; }
+    setUnlocking(true);
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ practica_ilimitada: true, tokens: balance - 100, updated_at: new Date().toISOString() })
+        .eq("id", user.id);
+      if (error) throw error;
+      await refreshProfile();
+      setLockModal(false);
+      toast.success("¡Desbloqueado! Acceso ilimitado a los 371 subíndices. 🎉");
+    } catch {
+      toast.error("Error al desbloquear. Intenta de nuevo.");
+    } finally {
+      setUnlocking(false);
+    }
+  };
 
   const toggleArea = (i: number) =>
     setOpenArea((prev) => (prev === i ? null : i));
@@ -177,25 +226,42 @@ export default function PracticaSubindice() {
         </div>
 
         {/* ── ACCESS BANNER ── */}
-        {user ? (
-          isFree && (
-            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl border bg-emerald-500/10 border-emerald-500/30">
-              <Crown className="h-5 w-5 text-emerald-400 shrink-0" />
-              <span className="text-sm font-bold text-emerald-300">
-                Paquete Completo activo — acceso ilimitado
-              </span>
+        {!user ? (
+          <div className="flex items-center justify-between gap-4 px-5 py-4 rounded-2xl border bg-violet-500/10 border-violet-500/30">
+            <div className="flex items-center gap-3">
+              <Lock className="h-5 w-5 text-violet-400 shrink-0" />
+              <div>
+                <p className="text-sm font-black text-white">Crea tu cuenta gratis para practicar</p>
+                <p className="text-xs text-slate-400 mt-0.5">Los primeros 10 subíndices de cada materia son gratuitos</p>
+              </div>
             </div>
-          )
-        ) : (
-          <div className="flex items-center justify-between gap-4 px-5 py-3 rounded-2xl border bg-white/5 border-white/10">
-            <span className="text-sm font-bold text-slate-300">
-              Practica gratis — inicia sesión para guardar tu progreso
-            </span>
             <button
               onClick={() => navigate("/auth?ref=practica-subindice")}
-              className="text-xs font-black uppercase tracking-widest text-primary hover:text-primary/80 underline underline-offset-2 shrink-0"
+              className="text-xs font-black uppercase tracking-widest px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shrink-0 transition-colors"
             >
-              Entrar →
+              Registrarse →
+            </button>
+          </div>
+        ) : hasUnlimitedAccess ? (
+          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl border bg-emerald-500/10 border-emerald-500/30">
+            <Crown className="h-5 w-5 text-emerald-400 shrink-0" />
+            <span className="text-sm font-bold text-emerald-300">
+              Acceso ilimitado activo — 371 subíndices desbloqueados
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-4 px-5 py-3 rounded-2xl border bg-amber-500/10 border-amber-500/30">
+            <div className="flex items-center gap-3">
+              <Lock className="h-4 w-4 text-amber-400 shrink-0" />
+              <span className="text-sm font-bold text-amber-300">
+                10 subíndices gratis por materia — desbloquea los 371 completos
+              </span>
+            </div>
+            <button
+              onClick={() => setLockModal(true)}
+              className="text-xs font-black uppercase tracking-widest text-amber-300 hover:text-amber-200 underline underline-offset-2 shrink-0 transition-colors"
+            >
+              100 tokens →
             </button>
           </div>
         )}
@@ -256,6 +322,51 @@ export default function PracticaSubindice() {
                               const slug = createSlug(concepto.split(":")[0]);
                               const hasQuestions = !!staticBank[slug];
                               const label = concepto.split(":")[0];
+                              const unlocked = unlockMap[aIdx]?.[sIdx]?.[cIdx] ?? false;
+
+                              if (!user) {
+                                return (
+                                  <div
+                                    key={cIdx}
+                                    className="flex items-center justify-between px-5 py-3 gap-4 opacity-60"
+                                  >
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium text-white leading-snug">{label}</p>
+                                    </div>
+                                    <button
+                                      onClick={() => navigate("/auth?ref=practica-subindice")}
+                                      className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/10 text-slate-400 text-xs font-black uppercase tracking-wide shrink-0 hover:bg-white/15 transition-all"
+                                    >
+                                      <Lock className="h-3 w-3" />
+                                      Entrar
+                                    </button>
+                                  </div>
+                                );
+                              }
+
+                              if (!unlocked) {
+                                return (
+                                  <div
+                                    key={cIdx}
+                                    className="flex items-center justify-between px-5 py-3 gap-4 opacity-50 hover:opacity-70 transition-opacity cursor-pointer"
+                                    onClick={() => setLockModal(true)}
+                                  >
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium text-white leading-snug">{label}</p>
+                                      {concepto.includes(":") && (
+                                        <p className="text-[11px] text-slate-500 mt-0.5 leading-snug line-clamp-1">
+                                          {concepto.split(":").slice(1).join(":").trim()}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <span className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-slate-500 text-xs font-black uppercase tracking-wide shrink-0">
+                                      <Lock className="h-3 w-3" />
+                                      Bloqueado
+                                    </span>
+                                  </div>
+                                );
+                              }
+
                               return (
                                 <div
                                   key={cIdx}
@@ -527,6 +638,81 @@ export default function PracticaSubindice() {
                 </div>
               )}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── LOCK MODAL ── */}
+      <AnimatePresence>
+        {lockModal && (
+          <motion.div
+            key="lock-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-slate-950/90 backdrop-blur-sm flex items-center justify-center px-4"
+            onClick={() => setLockModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              onClick={e => e.stopPropagation()}
+              className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-3xl p-6 space-y-5 shadow-2xl"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/30">
+                  <Lock className="h-6 w-6 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Acceso bloqueado</p>
+                  <h3 className="text-lg font-black text-white leading-tight">Práctica Ilimitada por Tema</h3>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {["371 subíndices del temario oficial ECOEMS", "1,855 preguntas de opción múltiple", "Preguntas y opciones aleatorizadas", "Acceso permanente — pago único"].map(f => (
+                  <div key={f} className="flex items-center gap-2 text-xs text-slate-300">
+                    <Check className="h-3 w-3 text-amber-400 shrink-0" />
+                    {f}
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-white/5 rounded-2xl px-4 py-3 flex items-center justify-between">
+                <span className="text-xs text-slate-400 font-semibold">Tu balance actual</span>
+                <span className="text-sm font-black text-white">{profile?.tokens ?? 0} tokens</span>
+              </div>
+
+              <div className="space-y-2">
+                {(profile?.tokens ?? 0) >= 100 ? (
+                  <button
+                    onClick={handleUnlock}
+                    disabled={unlocking}
+                    className="w-full h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-amber-500/20 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                  >
+                    {unlocking
+                      ? <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      : <>🔓 Desbloquear — 100 tokens</>
+                    }
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => { setLockModal(false); navigate("/tokens"); }}
+                    className="w-full h-12 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-black uppercase text-xs tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    Obtener tokens →
+                  </button>
+                )}
+                <button
+                  onClick={() => setLockModal(false)}
+                  className="w-full h-10 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 font-bold text-sm transition-colors"
+                >
+                  Ahora no
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

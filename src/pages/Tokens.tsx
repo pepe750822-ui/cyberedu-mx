@@ -625,13 +625,13 @@ const TokensPage = () => {
                       </div>
                       <div>
                         <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Combo Premium</p>
-                        <h3 className="text-lg font-black text-white">Todos los Simuladores + Guía 2026</h3>
-                        <p className="text-xs text-slate-400 mt-1">Bancos 5, 8, 9, 10 completos + 44 videos de estudio · acceso de por vida</p>
+                        <h3 className="text-lg font-black text-white">Todos los Simuladores + Guía + Práctica</h3>
+                        <p className="text-xs text-slate-400 mt-1">Bancos 5, 8, 9, 10 · 44 videos · 371 subíndices de práctica · acceso de por vida</p>
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
-                      {["Simulador Banco 5 — Guías UNAM 2024-25", "Simulador Banco 8 — Guía UNAM 2023", "Simulador Banco 9 — Guía UNAM 2024", "🆕 Simulador Banco 10 — Guía IPN/UNAM 2026", "🎬 44 videos Guía de Estudio 2026"].map(p => (
+                      {["Simulador Banco 5 — Guías UNAM 2024-25", "Simulador Banco 8 — Guía UNAM 2023", "Simulador Banco 9 — Guía UNAM 2024", "🆕 Simulador Banco 10 — Guía IPN/UNAM 2026", "🎬 44 videos Guía de Estudio 2026", "📚 Práctica por Subíndice — 371 temas · 1,855 preguntas"].map(p => (
                         <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
                           <Check className="h-3 w-3 text-purple-400 shrink-0" />
                           {p}
@@ -647,7 +647,7 @@ const TokensPage = () => {
                         </div>
                       ) : canAfford ? (
                         <button
-                          onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true })}
+                          onClick={() => redeemTokens('combo_premium', 100, { bank5_unlocked: true, bank8_unlocked: true, bank9_unlocked: true, bank10_unlocked: true, guia2026_unlocked: true, paquete_completo: true, practica_ilimitada: true })}
                           disabled={redeemingPkg === 'combo_premium'}
                           className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
                         >

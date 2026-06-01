@@ -28,6 +28,7 @@ interface UserProfile {
   referral_code?: string | null;
   referred_by?: string | null;
   referral_count?: number;
+  practica_ilimitada?: boolean;
 }
 
 const generateReferralCode = (name: string, userId: string) => {
