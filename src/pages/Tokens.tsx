@@ -952,6 +952,7 @@ const TokensPage = () => {
                 El Plan Ilimitado otorga 1,000 tokens cada mes y se cobra de forma recurrente.
                 Cada interacción con la IA consume 1 token del balance disponible.
                 <span className="text-primary font-bold"> IMPORTANTE:</span> El acceso a videos, guías y simuladores básicos sigue siendo **absolutamente gratis** para todos.
+                El paquete Guía 2026 incluye 150 tokens de regalo para el Tutor IA. Para uso ilimitado, adquiere tokens adicionales desde tu perfil.
             </p>
         </div>
       </div>

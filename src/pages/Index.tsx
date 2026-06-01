@@ -213,7 +213,7 @@ const Index = () => {
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Domina el ECOEMS 2026 con CyberEdu MX. Tutor IA 24/7, 19 Laboratorios Virtuales, simuladores inteligentes y 90+ videos. ¡15 preguntas gratis al día!");
+      metaDescription.setAttribute("content", "Prepárate para el COMIPEMS 2026 con 44 videos, simulador completo de todos los bancos, Acordeón 2026, área de Subíndices y 150 tokens de Tutor IA. Pago único $90 MXN.");
     }
 
     const structuredData = {
