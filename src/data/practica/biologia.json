@@ -1,0 +1,165 @@
+{
+  "materia": "Biología",
+  "subindices": {
+    "Biodiversidad y evolución": [
+      {
+        "question": "¿Cuál es la principal causa de pérdida de biodiversidad en México?",
+        "options": ["Contaminación del agua", "Venta clandestina de especies", "Cambio climático", "Deforestación por agricultura"],
+        "correct": 1,
+        "explanation": "La venta clandestina de especies es la principal causa de pérdida de biodiversidad, ya que el tráfico ilegal de fauna y flora amenaza directamente las poblaciones silvestres."
+      },
+      {
+        "question": "Según la teoría de Darwin, ¿qué determina cuáles organismos sobreviven y se reproducen?",
+        "options": ["La velocidad de mutación genética", "La selección natural basada en adaptaciones al ambiente", "La reproducción más rápida", "El tamaño corporal del organismo"],
+        "correct": 1,
+        "explanation": "Darwin propuso que la selección natural favorece a los organismos mejor adaptados a su ambiente, quienes sobreviven y transmiten sus características a la descendencia."
+      },
+      {
+        "question": "¿Cuál de los siguientes estados NO se considera uno de los de mayor biodiversidad en México?",
+        "options": ["Oaxaca", "Chiapas", "Jalisco", "Veracruz"],
+        "correct": 2,
+        "explanation": "Oaxaca, Chiapas, Veracruz y Guerrero son los estados con mayor biodiversidad en México; Jalisco no forma parte de este grupo principal."
+      },
+      {
+        "question": "¿Qué característica de los seres vivos describe la capacidad de responder a estímulos del ambiente?",
+        "options": ["Reproducción", "Crecimiento", "Irritabilidad", "Excreción"],
+        "correct": 2,
+        "explanation": "La irritabilidad es la capacidad de los organismos de detectar y responder a cambios en el ambiente, como la luz, el calor o el contacto."
+      },
+      {
+        "question": "El desarrollo sustentable se define como:",
+        "options": ["Explotar los recursos naturales al máximo para el progreso económico", "Satisfacer las necesidades presentes sin comprometer las de las generaciones futuras", "Preservar la naturaleza sin ningún tipo de uso humano", "Usar tecnología para reemplazar los recursos naturales agotados"],
+        "correct": 1,
+        "explanation": "El desarrollo sustentable busca un equilibrio entre el uso de los recursos y su conservación, asegurando que las generaciones futuras también puedan satisfacer sus necesidades."
+      }
+    ],
+    "Transformación de energía (fotosíntesis y respiración)": [
+      {
+        "question": "¿En qué organelo celular ocurre la fotosíntesis?",
+        "options": ["Mitocondria", "Núcleo", "Ribosoma", "Cloroplasto"],
+        "correct": 3,
+        "explanation": "La fotosíntesis ocurre en los cloroplastos, organelos que contienen clorofila, el pigmento capaz de capturar la energía luminosa."
+      },
+      {
+        "question": "¿Cuál es el producto principal de la respiración aerobia?",
+        "options": ["Glucosa y oxígeno", "CO₂, H₂O y energía (ATP)", "Alcohol etílico y CO₂", "Glucosa y CO₂"],
+        "correct": 1,
+        "explanation": "En la respiración aerobia, la glucosa se oxida en presencia de oxígeno para producir dióxido de carbono, agua y energía en forma de ATP."
+      },
+      {
+        "question": "¿Qué tipo de organismos son autótrofos?",
+        "options": ["Animales y hongos", "Hongos y la mayoría de las bacterias", "Plantas, algas y bacterias fotosintéticas", "Solo las plantas con flores"],
+        "correct": 2,
+        "explanation": "Los autótrofos producen su propio alimento mediante la fotosíntesis; este grupo incluye plantas, algas y ciertas bacterias fotosintéticas."
+      },
+      {
+        "question": "La fermentación láctica es responsable de la producción de:",
+        "options": ["Pan y cerveza", "Yogur y queso", "Vino y vinagre", "Alcohol y dióxido de carbono"],
+        "correct": 1,
+        "explanation": "La fermentación láctica es realizada por bacterias que convierten la glucosa en ácido láctico, proceso clave en la elaboración de yogur y queso."
+      },
+      {
+        "question": "¿Qué proceso del ciclo del carbono libera CO₂ a la atmósfera?",
+        "options": ["Fotosíntesis", "Absorción por los océanos", "Respiración celular y combustión", "Formación de carbohidratos"],
+        "correct": 2,
+        "explanation": "La respiración celular y la combustión de combustibles fósiles liberan CO₂ a la atmósfera, mientras que la fotosíntesis lo absorbe para producir glucosa."
+      }
+    ],
+    "Nutrición y salud ambiental": [
+      {
+        "question": "¿Cuál es la diferencia entre una dieta completa y una dieta equilibrada?",
+        "options": ["Son exactamente lo mismo", "La dieta completa incluye todos los nutrimentos; la equilibrada los tiene en proporción adecuada", "La dieta equilibrada excluye las grasas", "La dieta completa es solo para deportistas"],
+        "correct": 1,
+        "explanation": "Una dieta completa incluye proteínas, carbohidratos, grasas, vitaminas y minerales, mientras que la equilibrada garantiza que estén en las proporciones correctas para el organismo."
+      },
+      {
+        "question": "¿Cuál es la principal causa del calentamiento global?",
+        "options": ["El aumento de oxígeno en la atmósfera", "La acumulación de CO₂ y CH₄ como gases de invernadero", "La disminución de la capa de ozono", "El aumento de la actividad volcánica"],
+        "correct": 1,
+        "explanation": "El calentamiento global se debe principalmente al aumento de gases de invernadero como el CO₂ y el metano (CH₄), que atrapan el calor en la atmósfera terrestre."
+      },
+      {
+        "question": "Una persona que consume muchas calorías pero pocas vitaminas y minerales puede desarrollar:",
+        "options": ["Solo obesidad", "Solo desnutrición", "Obesidad y desnutrición simultáneamente", "Ningún problema de salud"],
+        "correct": 2,
+        "explanation": "Es posible padecer obesidad por exceso calórico y desnutrición por déficit de nutrimentos esenciales al mismo tiempo, ya que son condiciones independientes."
+      },
+      {
+        "question": "¿Qué característica define a una dieta higiénica?",
+        "options": ["Que sea baja en calorías", "Que esté libre de contaminantes y microorganismos patógenos", "Que contenga solo alimentos orgánicos", "Que excluya alimentos procesados"],
+        "correct": 1,
+        "explanation": "Una dieta higiénica es aquella que se prepara y consume libre de agentes contaminantes y microorganismos que puedan causar enfermedades."
+      },
+      {
+        "question": "¿Qué enfermedades respiratorias se agravan con la contaminación ambiental?",
+        "options": ["Diabetes y obesidad", "Asma, bronquitis y EPOC", "Hipertensión y cardiopatías", "Alergias alimentarias y dermatitis"],
+        "correct": 1,
+        "explanation": "El asma, la bronquitis y la EPOC son enfermedades respiratorias cuyos síntomas se intensifican con la exposición a contaminantes atmosféricos como el smog y las partículas suspendidas."
+      }
+    ],
+    "Reproducción y sexualidad": [
+      {
+        "question": "¿Cuántas células y con qué características se producen al final de la meiosis?",
+        "options": ["2 células idénticas con el mismo número de cromosomas", "4 células idénticas con el doble de cromosomas", "4 células diferentes con la mitad de cromosomas", "2 células diferentes con la mitad de cromosomas"],
+        "correct": 2,
+        "explanation": "La meiosis produce 4 células haploides (con la mitad de cromosomas) y genéticamente diferentes entre sí, destinadas a la reproducción sexual."
+      },
+      {
+        "question": "¿Cuál es el único método anticonceptivo que protege simultáneamente contra ITS y embarazo no deseado?",
+        "options": ["Pastillas anticonceptivas", "DIU (dispositivo intrauterino)", "Condón", "Abstinencia periódica"],
+        "correct": 2,
+        "explanation": "El condón es el único método que actúa como barrera física, protegiendo al mismo tiempo contra las infecciones de transmisión sexual y el embarazo no deseado."
+      },
+      {
+        "question": "La reproducción asexual genera descendencia:",
+        "options": ["Diferente genéticamente a ambos progenitores", "Con la mitad del material genético del progenitor", "Idéntica genéticamente al progenitor", "Con combinación de genes de dos progenitores"],
+        "correct": 2,
+        "explanation": "En la reproducción asexual no intervienen óvulos ni espermatozoides, por lo que la descendencia es genéticamente idéntica al organismo progenitor."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una de las ITS más comunes?",
+        "options": ["Tuberculosis", "VPH (Virus del Papiloma Humano)", "Influenza", "Hepatitis A"],
+        "correct": 1,
+        "explanation": "El VPH es una de las ITS más comunes; existe vacuna para prevenirlo y puede asociarse con el desarrollo de cáncer cervicouterino si no se atiende."
+      },
+      {
+        "question": "¿Para qué proceso biológico sirve principalmente la mitosis?",
+        "options": ["Producción de gametos para reproducción sexual", "Crecimiento y reparación de tejidos", "Generación de diversidad genética", "Reducción del número de cromosomas"],
+        "correct": 1,
+        "explanation": "La mitosis produce dos células hijas idénticas a la célula madre, lo que permite el crecimiento del organismo y la reparación de tejidos dañados."
+      }
+    ],
+    "Genética": [
+      {
+        "question": "¿Cuántos cromosomas tiene una célula humana somática (no reproductiva)?",
+        "options": ["23 cromosomas", "46 cromosomas", "92 cromosomas", "44 cromosomas"],
+        "correct": 1,
+        "explanation": "Las células somáticas humanas contienen 46 cromosomas organizados en 23 pares homólogos, uno de cada par heredado de cada progenitor."
+      },
+      {
+        "question": "Si un organismo tiene el genotipo 'Aa', ¿cómo se denomina su constitución genética?",
+        "options": ["Fenotipo heterocigoto", "Genotipo heterocigoto", "Fenotipo homocigoto dominante", "Genotipo homocigoto recesivo"],
+        "correct": 1,
+        "explanation": "El genotipo describe la constitución genética del organismo; 'Aa' es un genotipo heterocigoto porque tiene dos alelos diferentes para ese gen."
+      },
+      {
+        "question": "¿Cuándo se expresa un alelo recesivo en el fenotipo del organismo?",
+        "options": ["Siempre que esté presente al menos una copia", "Solo cuando existen dos copias del alelo recesivo (aa)", "Cuando el alelo dominante está ausente en todos los cromosomas", "Nunca se expresa en el fenotipo"],
+        "correct": 1,
+        "explanation": "Un alelo recesivo solo se manifiesta en el fenotipo cuando el organismo es homocigoto recesivo (aa), es decir, tiene dos copias del alelo recesivo."
+      },
+      {
+        "question": "¿Para qué se utiliza el cuadro de Punnett?",
+        "options": ["Para identificar mutaciones en el ADN", "Para predecir las probabilidades de fenotipos en la descendencia", "Para medir la expresión génica", "Para determinar el número de cromosomas de un organismo"],
+        "correct": 1,
+        "explanation": "El cuadro de Punnett es una herramienta que permite predecir, mediante combinaciones de alelos parentales, qué proporción de la descendencia tendrá cada fenotipo posible."
+      },
+      {
+        "question": "¿Qué es un gen?",
+        "options": ["Un cromosoma completo que contiene toda la información hereditaria", "Un segmento de ADN que codifica una característica hereditaria", "La expresión visible de los cromosomas en el organismo", "Una proteína que regula la división celular"],
+        "correct": 1,
+        "explanation": "Un gen es una secuencia específica de ADN que contiene la información para producir una proteína o controlar una característica hereditaria del organismo."
+      }
+    ]
+  }
+}

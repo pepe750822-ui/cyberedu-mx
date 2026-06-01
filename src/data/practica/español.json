@@ -1,0 +1,233 @@
+{
+  "materia": "Español",
+  "subindices": {
+    "Fichas bibliográficas": [
+      {
+        "question": "¿Cuál es el orden correcto de los datos en una ficha bibliográfica?",
+        "options": [
+          "Apellido, Nombre. Título. Editorial, año, lugar",
+          "Nombre, Apellido. Editorial. Título, año, lugar",
+          "Título. Apellido, Nombre. Lugar, año, editorial",
+          "Editorial, año. Apellido, Nombre. Título, lugar"
+        ],
+        "correct": 0,
+        "explanation": "La ficha bibliográfica registra los datos en el orden: Apellido, Nombre. Título. Editorial, año, lugar. Este formato permite identificar y localizar la obra de manera estandarizada."
+      },
+      {
+        "question": "¿Para qué sirve una ficha de trabajo?",
+        "options": [
+          "Registrar únicamente los datos de identificación de una obra",
+          "Contener información extraída y procesada de la fuente consultada",
+          "Reproducir literalmente un fragmento entre comillas",
+          "Organizar alfabéticamente los títulos de un archivo"
+        ],
+        "correct": 1,
+        "explanation": "La ficha de trabajo contiene información que el investigador ha extraído y procesado de la fuente, puede incluir resúmenes, comentarios o análisis propios del lector."
+      },
+      {
+        "question": "Un estudiante copia exactamente este fragmento de un libro: 'La lectura enriquece el pensamiento crítico.' y lo coloca entre comillas en su ficha. ¿Qué tipo de ficha elaboró?",
+        "options": [
+          "Ficha bibliográfica",
+          "Ficha de trabajo",
+          "Ficha de cita textual",
+          "Ficha de resumen"
+        ],
+        "correct": 2,
+        "explanation": "La ficha de cita textual reproduce literalmente un fragmento del texto original y lo presenta entre comillas, tal como se describe en el ejemplo."
+      },
+      {
+        "question": "¿Cuál es la diferencia principal entre una ficha bibliográfica y una ficha de cita textual?",
+        "options": [
+          "La ficha bibliográfica incluye opiniones del lector; la de cita textual no",
+          "La ficha de cita textual organiza temas; la bibliográfica los resume",
+          "La ficha bibliográfica registra datos de la obra; la de cita textual reproduce literalmente un fragmento",
+          "Ambas fichas tienen la misma función y se usan indistintamente"
+        ],
+        "correct": 2,
+        "explanation": "La ficha bibliográfica sirve para registrar los datos de identificación de una obra, mientras que la ficha de cita textual reproduce de forma literal un fragmento de la obra entre comillas."
+      },
+      {
+        "question": "En una ficha bibliográfica, ¿qué dato se escribe en primer lugar?",
+        "options": [
+          "El título de la obra",
+          "El nombre de la editorial",
+          "El año de publicación",
+          "El apellido del autor"
+        ],
+        "correct": 3,
+        "explanation": "Según el formato estándar, el primer dato que se registra en la ficha bibliográfica es el apellido del autor, seguido de su nombre, lo que facilita la ordenación alfabética."
+      }
+    ],
+    "Componentes gráficos del texto": [
+      {
+        "question": "¿Cuál es la función principal de los títulos y subtítulos en un texto?",
+        "options": [
+          "Reproducir literalmente fragmentos importantes del contenido",
+          "Jerarquizar y organizar la información del texto",
+          "Sustituir las ilustraciones cuando no hay imágenes disponibles",
+          "Indicar el número de páginas de cada sección"
+        ],
+        "correct": 1,
+        "explanation": "Los títulos y subtítulos tienen la función de jerarquizar y organizar la información, permitiendo al lector identificar la estructura y la importancia relativa de cada sección."
+      },
+      {
+        "question": "Un alumno reescribe con sus propias palabras la idea central de un párrafo sin cambiar su significado. ¿Qué técnica está utilizando?",
+        "options": [
+          "Resumen",
+          "Cita textual",
+          "Paráfrasis",
+          "Síntesis"
+        ],
+        "correct": 2,
+        "explanation": "La paráfrasis consiste en reescribir una idea con otras palabras sin perder el significado original."
+      },
+      {
+        "question": "¿Para qué sirve el índice de un libro?",
+        "options": [
+          "Destacar con color las palabras más importantes del texto",
+          "Localizar y organizar los temas de un libro o documento",
+          "Presentar las conclusiones del autor al final de la obra",
+          "Mostrar las ilustraciones y gráficas incluidas en el texto"
+        ],
+        "correct": 1,
+        "explanation": "El índice tiene la función de localizar y organizar los temas de un libro o documento, indicando en qué página se encuentra cada tema o sección."
+      },
+      {
+        "question": "Lee el fragmento: 'Primero llegaron los exploradores, luego se establecieron los colonos y finalmente se fundaron las ciudades.' ¿Qué tipo de orden presenta este texto?",
+        "options": [
+          "Orden de problema-solución",
+          "Orden de causa-efecto",
+          "Orden cronológico",
+          "Orden de lo general a lo particular"
+        ],
+        "correct": 2,
+        "explanation": "El texto presenta un orden cronológico porque narra una secuencia de eventos en el tiempo usando nexos temporales como 'primero', 'luego' y 'finalmente'."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre tema y subtema de un texto?",
+        "options": [
+          "El tema es una cita textual; el subtema es una paráfrasis del mismo",
+          "El tema abarca de qué trata todo el texto; el subtema es una parte específica del tema",
+          "El tema aparece al final del texto; el subtema al principio",
+          "El tema se expresa con ilustraciones; el subtema con palabras"
+        ],
+        "correct": 1,
+        "explanation": "El tema se refiere a de qué trata todo el texto en su conjunto, mientras que el subtema es una parte específica o aspecto particular dentro de ese tema general."
+      }
+    ],
+    "Gramática y nexos": [
+      {
+        "question": "Identifica el nexo adversativo en la siguiente oración: 'Estudió toda la noche; sin embargo, no aprobó el examen.'",
+        "options": [
+          "Estudió",
+          "toda la noche",
+          "sin embargo",
+          "no aprobó"
+        ],
+        "correct": 2,
+        "explanation": "'Sin embargo' es un nexo adversativo porque introduce una idea que contrasta con lo expresado en la primera parte de la oración."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones contiene un nexo causal?",
+        "options": [
+          "Llegó tarde, pero aun así entró al salón",
+          "Primero estudia y luego descansa",
+          "No pudo salir debido a la lluvia intensa",
+          "Si terminas pronto, podrás jugar"
+        ],
+        "correct": 2,
+        "explanation": "'Debido a' es un nexo causal porque indica la razón o causa de un hecho. Los nexos causales incluyen: porque, ya que, debido a, puesto que."
+      },
+      {
+        "question": "¿En qué caso se usan correctamente los dos puntos?",
+        "options": [
+          "Para separar oraciones largas que se relacionan temáticamente",
+          "Antes de una enumeración o lista de elementos",
+          "Para encerrar palabras que expresan duda del autor",
+          "Para indicar una pausa breve entre dos ideas independientes"
+        ],
+        "correct": 1,
+        "explanation": "Los dos puntos se usan antes de una enumeración, una cita textual o un vocativo, anunciando que a continuación se presentará una lista o aclaración."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones tiene un error de concordancia?",
+        "options": [
+          "Los estudiantes entregaron sus trabajos a tiempo",
+          "La maestra explicó el tema con claridad",
+          "Los niño jugaron en el parque toda la tarde",
+          "Mi hermano y yo fuimos al cine el sábado"
+        ],
+        "correct": 2,
+        "explanation": "Existe un error de concordancia en 'Los niño jugaron' porque el artículo 'Los' (plural) no concuerda con el sustantivo 'niño' (singular). La forma correcta sería 'Los niños jugaron'."
+      },
+      {
+        "question": "¿Qué tipo de oración expresa la idea central y puede mantenerse sola con sentido completo?",
+        "options": [
+          "Oración relativa",
+          "Oración secundaria",
+          "Oración subordinada",
+          "Oración principal"
+        ],
+        "correct": 3,
+        "explanation": "La oración principal expresa la idea central del enunciado y puede estar sola con sentido completo, a diferencia de la oración secundaria que depende de la principal."
+      }
+    ],
+    "Tipos de textos": [
+      {
+        "question": "¿Cuál es la característica principal de un texto informativo?",
+        "options": [
+          "Expresa el punto de vista personal del autor sobre un tema",
+          "Usa el pretérito para narrar sucesos de forma cronológica",
+          "Presenta hechos objetivos sin incluir la opinión del autor",
+          "Persuade al lector mediante el uso de hipérbole y figuras retóricas"
+        ],
+        "correct": 2,
+        "explanation": "El texto informativo se caracteriza por presentar hechos objetivos sin incluir la opinión o punto de vista personal del autor."
+      },
+      {
+        "question": "Lee el enunciado: 'Creo que el gobierno debería invertir más en educación pública.' ¿Se trata de un hecho o una opinión?",
+        "options": [
+          "Hecho, porque habla de educación pública que es un tema verificable",
+          "Opinión, porque usa la expresión 'creo que', lo que indica subjetividad",
+          "Hecho, porque puede comprobarse con estadísticas del gobierno",
+          "Opinión, porque habla del gobierno, que es un tema político"
+        ],
+        "correct": 1,
+        "explanation": "Es una opinión porque el enunciado contiene la expresión 'creo que', una marca lingüística de subjetividad. Las opiniones expresan puntos de vista personales y no son verificables."
+      },
+      {
+        "question": "¿Cuáles son las seis preguntas básicas que debe responder una noticia periodística?",
+        "options": [
+          "¿Qué? ¿Quién? ¿Cuándo? ¿Dónde? ¿Cómo? ¿Por qué?",
+          "¿Qué? ¿Cómo? ¿Para qué? ¿Cuánto? ¿Con qué? ¿Quién?",
+          "¿Quién? ¿Cuándo? ¿Dónde? ¿Para qué? ¿Con quién? ¿Cómo?",
+          "¿Qué? ¿Por qué? ¿Para qué? ¿Con qué? ¿Cuándo? ¿Cómo?"
+        ],
+        "correct": 0,
+        "explanation": "La noticia periodística debe responder: ¿Qué? (el hecho), ¿Quién? (los involucrados), ¿Cuándo? (el tiempo), ¿Dónde? (el lugar), ¿Cómo? (la manera) y ¿Por qué? (la causa)."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre una noticia y un reportaje?",
+        "options": [
+          "La noticia expresa opiniones; el reportaje solo presenta hechos",
+          "El reportaje investiga un tema con mayor profundidad que la noticia",
+          "La noticia es más extensa y documentada que el reportaje",
+          "El reportaje responde las seis preguntas básicas; la noticia no"
+        ],
+        "correct": 1,
+        "explanation": "El reportaje investiga un tema con mayor profundidad que la noticia, incluyendo contexto, antecedentes, entrevistas y análisis."
+      },
+      {
+        "question": "¿Cuál de las siguientes funciones del lenguaje se centra en influir en la conducta o actitudes del receptor?",
+        "options": [
+          "Función referencial",
+          "Función expresiva",
+          "Función apelativa",
+          "Función poética"
+        ],
+        "correct": 2,
+        "explanation": "La función apelativa tiene como objetivo influir en el receptor o modificar su conducta. Es la función predominante en los textos publicitarios y mensajes persuasivos."
+      }
+    ]
+  }
+}

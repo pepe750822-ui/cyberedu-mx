@@ -1,0 +1,293 @@
+{
+  "materia": "Historia",
+  "subindices": {
+    "S.XVI-XVIII: Renacimiento, humanismo y conquistas": [
+      {
+        "question": "¿Por qué los europeos buscaron nuevas rutas marítimas hacia Asia a partir de 1453?",
+        "options": ["Porque querían conquistar nuevos territorios para sus reyes", "Porque los turcos otomanos tomaron Constantinopla y bloquearon la ruta terrestre", "Porque la Iglesia les prohibió comerciar con los árabes", "Porque querían expandir el humanismo a nuevas culturas"],
+        "correct": 1,
+        "explanation": "En 1453 los turcos otomanos conquistaron Constantinopla, bloqueando la ruta comercial terrestre hacia Asia. Esto impulsó a España y Portugal a financiar expediciones marítimas para llegar a las especias de Oriente."
+      },
+      {
+        "question": "¿Cuál es la característica principal del humanismo renacentista?",
+        "options": ["Colocar a Dios como centro absoluto de la existencia (teocentrismo)", "Considerar al ser humano como centro del universo, valorando la razón y el individuo", "Rechazar el conocimiento científico en favor de la fe religiosa", "Promover el poder absoluto de los reyes sobre los ciudadanos"],
+        "correct": 1,
+        "explanation": "El humanismo renacentista colocó al ser humano en el centro del universo (antropocentrismo), en contraposición al teocentrismo medieval. Valoraba la razón, la ciencia y la cultura clásica grecolatina."
+      },
+      {
+        "question": "¿En qué año llegó Cristóbal Colón a América?",
+        "options": ["1453", "1488", "1492", "1519"],
+        "correct": 2,
+        "explanation": "Cristóbal Colón llegó a América el 12 de octubre de 1492, al servicio de los Reyes Católicos de España. Su viaje abrió el llamado Nuevo Mundo al conocimiento europeo."
+      },
+      {
+        "question": "¿Qué navegante completó por primera vez la vuelta al mundo entre 1519 y 1522?",
+        "options": ["Cristóbal Colón", "Américo Vespucio", "Vasco da Gama", "Fernando de Magallanes"],
+        "correct": 3,
+        "explanation": "Fernando de Magallanes inició la primera circunnavegación del globo en 1519; su tripulación completó el viaje en 1522. Vasco da Gama llegó a la India en 1498 por otra ruta."
+      },
+      {
+        "question": "¿Qué factor facilitó la Conquista de México por Hernán Cortés entre 1519 y 1521?",
+        "options": ["La superioridad numérica absoluta del ejército español", "Las alianzas con pueblos indígenas oprimidos por los aztecas", "El apoyo directo del Papa a la conquista española", "La ausencia de un ejército azteca organizado"],
+        "correct": 1,
+        "explanation": "Cortés logró la conquista gracias a las alianzas con pueblos como los tlaxcaltecas, que estaban oprimidos por el Imperio Azteca. Sin estos aliados, la derrota de Tenochtitlan hubiera sido imposible."
+      }
+    ],
+    "S.XVIII-XIX: Ilustración y revoluciones": [
+      {
+        "question": "¿Cuál es el principio fundamental de la Ilustración del siglo XVIII?",
+        "options": ["La fe religiosa debe guiar todas las decisiones políticas y científicas", "La tradición y las costumbres son la base de una sociedad justa", "La razón y la ciencia deben predominar sobre la fe y la tradición", "El rey debe concentrar todo el poder para garantizar el orden social"],
+        "correct": 2,
+        "explanation": "La Ilustración afirmaba que la razón y la ciencia eran las herramientas para comprender el mundo y organizar la sociedad, cuestionando el poder absoluto y la autoridad religiosa."
+      },
+      {
+        "question": "¿Qué importancia histórica tuvo la Independencia de Estados Unidos en 1776?",
+        "options": ["Fue la primera revolución industrial del mundo moderno", "Fue el primer Estado moderno democrático basado en derechos individuales", "Eliminó definitivamente el sistema monárquico en todo el continente americano", "Inspiró directamente la Revolución Francesa antes de que ocurriera"],
+        "correct": 1,
+        "explanation": "La Independencia de EE.UU. en 1776 representó la creación del primer Estado moderno democrático, basado en los principios ilustrados de soberanía popular y derechos individuales."
+      },
+      {
+        "question": "¿Cuáles fueron los tres principios de la Revolución Francesa de 1789?",
+        "options": ["Fe, esperanza y caridad", "Libertad, igualdad y fraternidad", "Nación, patria y soberanía", "Razón, progreso y ciencia"],
+        "correct": 1,
+        "explanation": "Los tres principios de la Revolución Francesa fueron libertad, igualdad y fraternidad, que se convirtieron en el lema de la república y pusieron fin al absolutismo monárquico en Francia."
+      },
+      {
+        "question": "¿Qué caracterizó principalmente a la Revolución Industrial de los siglos XVIII y XIX?",
+        "options": ["El predominio de la agricultura como motor económico", "La aparición de la máquina de vapor, el trabajo asalariado y la urbanización", "La expansión del comercio marítimo entre Europa y América", "El desarrollo de la imprenta como herramienta de producción masiva"],
+        "correct": 1,
+        "explanation": "La Revolución Industrial transformó la economía con la máquina de vapor, surgió el trabajo asalariado en fábricas y se aceleró la urbanización al concentrarse la población en ciudades industriales."
+      },
+      {
+        "question": "¿Cómo influyeron la Ilustración y la Revolución Francesa en América Latina?",
+        "options": ["Fomentaron la alianza entre las colonias y la Iglesia católica", "Inspiraron los movimientos de independencia latinoamericanos al promover la soberanía popular", "Provocaron que España reforzara su control sobre sus colonias americanas", "Generaron un rechazo al liberalismo en las élites criollas latinoamericanas"],
+        "correct": 1,
+        "explanation": "Los ideales ilustrados de libertad, igualdad y soberanía popular inspiraron a los criollos latinoamericanos a luchar por su independencia a principios del siglo XIX."
+      }
+    ],
+    "S.XIX-1920: Nacionalismo, imperialismo y 1ª GM": [
+      {
+        "question": "¿Qué evento detonó el inicio de la Primera Guerra Mundial en 1914?",
+        "options": ["La invasión alemana a Francia", "El asesinato del Archiduque Francisco Fernando en Sarajevo", "La declaración de guerra de Gran Bretaña a Alemania", "La firma de la Triple Alianza entre Alemania, Austria e Italia"],
+        "correct": 1,
+        "explanation": "El 28 de junio de 1914, el asesinato del Archiduque Francisco Fernando en Sarajevo activó una cadena de alianzas que arrastró a Europa a la guerra."
+      },
+      {
+        "question": "¿Cuáles eran los países que conformaban la Triple Entente en la Primera Guerra Mundial?",
+        "options": ["Alemania, Austria-Hungría e Italia", "Francia, Gran Bretaña y Rusia", "Alemania, Italia y el Imperio Otomano", "Francia, España y Bélgica"],
+        "correct": 1,
+        "explanation": "La Triple Entente estaba formada por Francia, Gran Bretaña y Rusia, que se enfrentaron a la Triple Alianza (Alemania, Austria-Hungría e Italia)."
+      },
+      {
+        "question": "¿Qué consecuencias tuvo el Tratado de Versalles (1919) para Alemania?",
+        "options": ["Alemania recibió compensaciones económicas por los daños sufridos", "Alemania fue reconocida como la gran potencia vencedora de la guerra", "Alemania fue declarada culpable y cargó con enormes reparaciones de guerra", "Alemania conservó todos sus territorios pero perdió sus colonias africanas"],
+        "correct": 2,
+        "explanation": "El Tratado de Versalles responsabilizó a Alemania de toda la guerra, imponiéndole enormes reparaciones económicas y pérdida de territorios. Este trato humillante generó resentimiento que contribuyó al ascenso del nazismo."
+      },
+      {
+        "question": "¿Qué es el imperialismo del siglo XIX?",
+        "options": ["El sistema político en que un emperador gobierna un solo país", "La expansión de potencias europeas que colonizaron África y Asia para obtener recursos", "El movimiento que buscaba la unificación política de los países europeos", "La política económica de proteger la industria nacional frente a la competencia extranjera"],
+        "correct": 1,
+        "explanation": "El imperialismo del siglo XIX fue el proceso por el cual las potencias europeas conquistaron y colonizaron amplios territorios en África y Asia para explotar sus recursos y expandir su influencia política."
+      },
+      {
+        "question": "¿En qué se basa el nacionalismo como ideología política?",
+        "options": ["En la supremacía de una raza sobre las demás", "En la identidad colectiva basada en lengua, cultura e historia común", "En la expansión territorial de un Estado sobre sus vecinos", "En la obediencia absoluta al monarca como representante de la nación"],
+        "correct": 1,
+        "explanation": "El nacionalismo une a las personas mediante una identidad colectiva basada en lengua, historia y cultura compartidas, generando el deseo de tener un Estado propio."
+      }
+    ],
+    "1920-1960: Fascismo, nazismo y 2ª GM": [
+      {
+        "question": "¿Cuál es la principal diferencia entre el fascismo italiano y el nazismo alemán?",
+        "options": ["El fascismo era democrático; el nazismo era totalitario", "El fascismo ponía al Estado por encima de todo; el nazismo ponía a la raza por encima de todo", "El fascismo surgió después de la Segunda Guerra Mundial; el nazismo antes", "El fascismo perseguía a los judíos; el nazismo perseguía a los comunistas"],
+        "correct": 1,
+        "explanation": "El fascismo de Mussolini colocaba al Estado como valor supremo, mientras que el nazismo de Hitler colocaba la pureza racial como objetivo central, justificando la persecución de grupos étnicos."
+      },
+      {
+        "question": "¿Con qué evento comenzó la Segunda Guerra Mundial en 1939?",
+        "options": ["El bombardeo japonés a Pearl Harbor", "La invasión alemana a Polonia", "La declaración de guerra de Francia a Alemania", "La anexión de Austria al Tercer Reich"],
+        "correct": 1,
+        "explanation": "La Segunda Guerra Mundial comenzó el 1 de septiembre de 1939 con la invasión alemana a Polonia, lo que llevó a Francia y Gran Bretaña a declarar la guerra a Alemania dos días después."
+      },
+      {
+        "question": "¿Quiénes formaban el bando de los Aliados durante la Segunda Guerra Mundial?",
+        "options": ["Alemania, Italia y Japón", "Alemania, Austria y el Imperio Otomano", "Estados Unidos, Gran Bretaña, URSS y Francia", "España, Portugal e Italia"],
+        "correct": 2,
+        "explanation": "Los Aliados principales fueron Estados Unidos, Gran Bretaña, la Unión Soviética y Francia, que se enfrentaron al Eje formado por Alemania, Italia y Japón."
+      },
+      {
+        "question": "¿Qué fue el Holocausto?",
+        "options": ["La guerra de trincheras en la Primera Guerra Mundial", "El bombardeo atómico de Hiroshima y Nagasaki", "El genocidio de aproximadamente 6 millones de judíos y otros grupos por el régimen nazi", "La destrucción de Berlín durante la Segunda Guerra Mundial"],
+        "correct": 2,
+        "explanation": "El Holocausto fue el genocidio sistemático organizado por el régimen nazi que exterminó aproximadamente 6 millones de judíos, además de millones de otros grupos. Es considerado uno de los crímenes más graves de la historia."
+      },
+      {
+        "question": "¿Cómo terminó la guerra en el Pacífico en 1945?",
+        "options": ["Con la rendición incondicional de Alemania ante los Aliados", "Con las bombas atómicas lanzadas sobre Hiroshima y Nagasaki en agosto de 1945", "Con la invasión aliada de Japón desde las islas del Pacífico", "Con el suicidio de Hitler y la caída de Berlín en mayo de 1945"],
+        "correct": 1,
+        "explanation": "El 6 y 9 de agosto de 1945, EE.UU. lanzó bombas atómicas sobre Hiroshima y Nagasaki, lo que llevó a la rendición de Japón y puso fin a la Segunda Guerra Mundial."
+      }
+    ],
+    "Guerra Fría y mundo contemporáneo": [
+      {
+        "question": "¿Cuál fue la principal característica de la Guerra Fría entre 1947 y 1991?",
+        "options": ["Un conflicto armado directo entre EE.UU. y la URSS en suelo europeo", "Una tensión ideológica y geopolítica sin guerra directa entre las superpotencias", "Una guerra económica que resultó en el colapso de EE.UU.", "Un conflicto militar que se resolvió con tratados de paz firmados en Berlín"],
+        "correct": 1,
+        "explanation": "La Guerra Fría fue una rivalidad ideológica y geopolítica entre EE.UU. (capitalismo) y la URSS (socialismo) que nunca derivó en un enfrentamiento armado directo. Se libró mediante la carrera armamentista, espacial y guerras proxy."
+      },
+      {
+        "question": "¿Qué representó la Caída del Muro de Berlín en 1989?",
+        "options": ["El inicio de la Guerra Fría entre EE.UU. y la URSS", "El comienzo de la unificación de las dos Alemanias y el fin simbólico de la Guerra Fría", "La derrota militar de la URSS en Afganistán", "La creación de la Unión Europea como bloque económico unificado"],
+        "correct": 1,
+        "explanation": "La Caída del Muro de Berlín el 9 de noviembre de 1989 simbolizó el fin del bloque soviético. Dos años después, en 1991, la URSS se disolvió, marcando el fin oficial de la Guerra Fría."
+      },
+      {
+        "question": "¿Cuáles fueron las principales herramientas de confrontación durante la Guerra Fría?",
+        "options": ["Invasiones directas, tratados de paz y tribunales internacionales", "Carrera armamentista, carrera espacial y apoyo a regímenes aliados (guerras proxy)", "Bloqueos comerciales, sanciones diplomáticas y guerras nucleares limitadas", "Alianzas militares directas y ocupaciones territoriales en Europa"],
+        "correct": 1,
+        "explanation": "EE.UU. y la URSS compitieron mediante la carrera armamentista y espacial, y apoyaron regímenes aliados en conflictos en Corea, Vietnam y Cuba, conocidos como guerras proxy."
+      },
+      {
+        "question": "¿En qué año se disolvió la Unión Soviética, poniendo fin oficialmente a la Guerra Fría?",
+        "options": ["1985", "1989", "1991", "1995"],
+        "correct": 2,
+        "explanation": "La URSS se disolvió oficialmente en diciembre de 1991, dando lugar a 15 repúblicas independientes. Este evento marcó el fin de la Guerra Fría."
+      },
+      {
+        "question": "¿Qué es la globalización en el contexto del mundo contemporáneo?",
+        "options": ["La extensión del socialismo a todos los países del mundo", "La interdependencia económica, cultural y política entre naciones a escala mundial", "La dominación política de EE.UU. sobre el resto de los países", "El proceso de formación de bloques regionales cerrados al comercio exterior"],
+        "correct": 1,
+        "explanation": "La globalización es el proceso de creciente interdependencia económica, cultural y política entre las naciones, acelerado tras el fin de la Guerra Fría. Implica el libre flujo de capitales, mercancías e información entre países."
+      }
+    ],
+    "México prehispánico y colonial": [
+      {
+        "question": "¿Cuál era la capital del Imperio Azteca?",
+        "options": ["Texcoco", "Tlacopan", "Tenochtitlan", "Tlaxcala"],
+        "correct": 2,
+        "explanation": "Tenochtitlan era la capital del Imperio Azteca (Triple Alianza), fundada en 1325 sobre un islote en el lago de Texcoco. Hoy en día, la Ciudad de México se asienta sobre sus ruinas."
+      },
+      {
+        "question": "¿En qué año se estableció formalmente el Virreinato de Nueva España?",
+        "options": ["1521", "1535", "1542", "1550"],
+        "correct": 1,
+        "explanation": "El Virreinato de Nueva España fue establecido formalmente en 1535, cuando Antonio de Mendoza fue designado como su primer virrey."
+      },
+      {
+        "question": "¿Cuál fue la principal fuente de riqueza de la economía novohispana?",
+        "options": ["La agricultura de exportación de cacao y vainilla", "La ganadería extensiva en las grandes haciendas del norte", "La minería de plata, especialmente en Zacatecas y Guanajuato", "El comercio marítimo con las Filipinas"],
+        "correct": 2,
+        "explanation": "La minería de plata, explotada en centros como Zacatecas y Guanajuato, fue el motor económico del Virreinato y la principal fuente de ingresos para la Corona española durante tres siglos."
+      },
+      {
+        "question": "¿Cómo se denominaba a los hijos de españoles nacidos en América durante la época colonial?",
+        "options": ["Peninsulares", "Mestizos", "Criollos", "Mulatos"],
+        "correct": 2,
+        "explanation": "Los criollos eran personas nacidas en América de padres españoles. Aunque tenían sangre española, ocupaban un estatus inferior al de los peninsulares (nacidos en España)."
+      },
+      {
+        "question": "¿Cuál era la función de la Audiencia en el Virreinato de Nueva España?",
+        "options": ["Organizar las expediciones militares de conquista", "Administrar los recursos mineros de la Corona", "Actuar como tribunal superior que impartía justicia en nombre del rey", "Supervisar la evangelización de los pueblos indígenas"],
+        "correct": 2,
+        "explanation": "La Audiencia era el principal órgano judicial del virreinato, que administraba justicia en nombre del rey de España y también tenía funciones de gobierno cuando el cargo de virrey quedaba vacante."
+      }
+    ],
+    "México independiente: 1821-1910": [
+      {
+        "question": "¿Quién consumó la Independencia de México en 1821 y mediante qué documento?",
+        "options": ["Miguel Hidalgo, mediante el Grito de Independencia en Dolores", "José María Morelos, mediante los Sentimientos de la Nación", "Agustín de Iturbide, mediante el Plan de Iguala", "Guadalupe Victoria, mediante la Constitución de 1824"],
+        "correct": 2,
+        "explanation": "Agustín de Iturbide consumó la Independencia el 27 de septiembre de 1821 mediante el Plan de Iguala, que proclamaba las tres garantías: religión, independencia y unión."
+      },
+      {
+        "question": "¿Cuál fue la consecuencia territorial más grave de la Guerra México-Estados Unidos de 1846-1847?",
+        "options": ["México perdió únicamente el territorio de Texas, que ya era independiente", "México perdió Texas y aproximadamente la mitad de su territorio nacional", "México fue ocupado militarmente por EE.UU. durante 50 años", "México perdió su salida al Océano Pacífico"],
+        "correct": 1,
+        "explanation": "Con el Tratado de Guadalupe-Hidalgo (1848), México cedió a EE.UU. territorios que hoy forman California, Nuevo México, Arizona, Nevada, Utah y Colorado, más de la mitad del territorio nacional."
+      },
+      {
+        "question": "¿Qué presidente mexicano promovió la Constitución de 1857 y la separación entre la Iglesia y el Estado?",
+        "options": ["Agustín de Iturbide", "Anastasio Bustamante", "Benito Juárez", "Sebastián Lerdo de Tejada"],
+        "correct": 2,
+        "explanation": "Benito Juárez fue el líder liberal que impulsó las Leyes de Reforma y la Constitución de 1857, que establecieron la separación entre la Iglesia y el Estado y la libertad de cultos."
+      },
+      {
+        "question": "¿Quién fue el gobernante impuesto en México durante la Intervención Francesa (1862-1867)?",
+        "options": ["Napoleón III de Francia", "Maximiliano de Habsburgo", "Antonio López de Santa Anna", "Porfirio Díaz"],
+        "correct": 1,
+        "explanation": "Maximiliano de Habsburgo fue instalado como Emperador de México en 1864 con el apoyo del ejército francés de Napoleón III. Fue ejecutado en 1867 tras la retirada francesa."
+      },
+      {
+        "question": "¿Cómo se caracterizó el Porfiriato (1876-1910)?",
+        "options": ["Por la democratización política y la distribución de tierras entre campesinos", "Por la paz y el progreso económico acompañados de represión política", "Por la industrialización sin inversión extranjera ni ferrocarriles", "Por la alianza con la Iglesia católica para gobernar México"],
+        "correct": 1,
+        "explanation": "El Porfiriato se caracterizó por la estabilidad política y el crecimiento económico (ferrocarriles, minería, capital extranjero), pero también por la represión de la oposición y la concentración de la tierra."
+      }
+    ],
+    "Revolución y Constitución de 1917": [
+      {
+        "question": "¿Qué documento lanzó Francisco I. Madero para iniciar la insurrección contra Porfirio Díaz en 1910?",
+        "options": ["Plan de Ayala", "Plan de Iguala", "Plan de San Luis", "Plan de Guadalupe"],
+        "correct": 2,
+        "explanation": "El Plan de San Luis (1910) fue el documento con el que Madero llamó a los mexicanos a levantarse en armas el 20 de noviembre contra la dictadura de Porfirio Díaz."
+      },
+      {
+        "question": "¿Qué demandaba el Plan de Ayala promulgado por Emiliano Zapata?",
+        "options": ["La instauración de una república federal democrática", "La restitución de las tierras a los campesinos despojados", "El reconocimiento de Madero como legítimo presidente de México", "La expulsión de todos los extranjeros con propiedades en México"],
+        "correct": 1,
+        "explanation": "El Plan de Ayala (1911) exigía la devolución de tierras a los pueblos y campesinos despojados por los hacendados, reflejado en el lema zapatista 'Tierra y Libertad'."
+      },
+      {
+        "question": "¿Qué establece el Artículo 27 de la Constitución de 1917?",
+        "options": ["La jornada laboral máxima de 8 horas y el salario mínimo", "La educación laica, gratuita y obligatoria para todos los mexicanos", "Las tierras y recursos naturales son propiedad originaria de la Nación", "La libertad de expresión y el derecho a la información"],
+        "correct": 2,
+        "explanation": "El Artículo 27 estableció que las tierras, aguas y recursos naturales son propiedad originaria de la Nación. Fue la base legal para la reforma agraria posterior."
+      },
+      {
+        "question": "¿Qué derechos laborales establece el Artículo 123 de la Constitución de 1917?",
+        "options": ["La libertad de culto y la separación Iglesia-Estado", "La propiedad originaria de la Nación sobre sus recursos naturales", "Jornada de 8 horas, salario mínimo, descanso semanal y seguridad social", "La educación laica, gratuita y obligatoria en todo el país"],
+        "correct": 2,
+        "explanation": "El Artículo 123 fue pionero al establecer derechos laborales como la jornada máxima de 8 horas, el salario mínimo, el descanso semanal obligatorio y la seguridad social."
+      },
+      {
+        "question": "¿Cuál fue el origen de la Guerra Cristera (1926-1929)?",
+        "options": ["La invasión estadounidense a territorio mexicano", "El conflicto entre el gobierno mexicano y la Iglesia católica por la aplicación de la Constitución de 1917", "La resistencia de los hacendados a la reforma agraria zapatista", "El levantamiento de Emiliano Zapata contra el gobierno de Carranza"],
+        "correct": 1,
+        "explanation": "La Guerra Cristera surgió del conflicto entre el gobierno del presidente Calles y la Iglesia católica, que se resistía a los artículos anticlericales de la Constitución de 1917."
+      }
+    ],
+    "México en la era global (1970-2000)": [
+      {
+        "question": "¿Qué ocurrió el 2 de octubre de 1968 en Tlatelolco, Ciudad de México?",
+        "options": ["Se firmó el Tratado de Libre Comercio con EE.UU. y Canadá", "El gobierno masacró a estudiantes en una manifestación, en un hecho que impulsó la democratización", "Se realizó la ceremonia inaugural de los Juegos Olímpicos de México 1968", "El EZLN tomó varias ciudades de Chiapas en protesta por el TLCAN"],
+        "correct": 1,
+        "explanation": "El 2 de octubre de 1968, el ejército mexicano masacró a estudiantes en la Plaza de las Tres Culturas en Tlatelolco. Este evento se convirtió en símbolo de la lucha por la democratización del país."
+      },
+      {
+        "question": "¿Qué fue el TLCAN y cuándo entró en vigor?",
+        "options": ["Un tratado de defensa militar entre México, EE.UU. y Canadá, firmado en 1985", "El Tratado de Libre Comercio de América del Norte entre México, EE.UU. y Canadá, en vigor desde 1994", "Un acuerdo de cooperación cultural entre los países latinoamericanos, firmado en 1990", "Un tratado económico entre México y la Unión Europea, vigente desde 2000"],
+        "correct": 1,
+        "explanation": "El TLCAN (Tratado de Libre Comercio de América del Norte) entró en vigor el 1 de enero de 1994 entre México, Estados Unidos y Canadá, eliminando aranceles y barreras comerciales."
+      },
+      {
+        "question": "¿Qué significó la victoria de Vicente Fox en las elecciones del año 2000?",
+        "options": ["El regreso del PRI al poder después de varios años de alternancia política", "El primer triunfo del PRD en una elección presidencial federal", "La alternancia política que terminó con 71 años consecutivos del PRI en el poder", "La consolidación del sistema de partido único en México"],
+        "correct": 2,
+        "explanation": "La victoria de Vicente Fox del PAN en julio de 2000 representó la primera alternancia política en México, poniendo fin a 71 años ininterrumpidos de gobiernos del PRI."
+      },
+      {
+        "question": "¿Cuál fue el motivo del levantamiento del EZLN en Chiapas el 1 de enero de 1994?",
+        "options": ["Protestar contra la masacre estudiantil de Tlatelolco de 1968", "Oponerse al TLCAN y exigir derechos para los pueblos indígenas de Chiapas", "Apoyar la candidatura del PRD a la presidencia de la República", "Rechazar la creación del IFE como institución electoral autónoma"],
+        "correct": 1,
+        "explanation": "El EZLN se levantó en armas el día que entró en vigor el TLCAN para protestar contra las políticas neoliberales y demandar justicia y derechos para los pueblos indígenas de Chiapas."
+      },
+      {
+        "question": "¿Cuál fue el objetivo principal de la creación del IFE (Instituto Federal Electoral) en 1990?",
+        "options": ["Administrar los recursos económicos del gobierno federal", "Garantizar la transparencia y legitimidad de los procesos electorales en México", "Supervisar las actividades de los partidos políticos extranjeros en México", "Organizar las consultas populares para reformas constitucionales"],
+        "correct": 1,
+        "explanation": "El IFE fue creado en 1990 como organismo ciudadano autónomo para garantizar elecciones limpias y transparentes, en respuesta a las denuncias de fraude electoral que habían manchado comicios anteriores."
+      }
+    ]
+  }
+}

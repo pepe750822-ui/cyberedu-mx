@@ -1,0 +1,165 @@
+{
+  "materia": "Geografía",
+  "subindices": {
+    "Espacio geográfico y mapas": [
+      {
+        "question": "¿Cuál de los siguientes es un componente económico del espacio geográfico?",
+        "options": ["El relieve montañoso", "La densidad de población", "Las rutas de transporte", "El clima tropical"],
+        "correct": 2,
+        "explanation": "Los componentes económicos del espacio geográfico incluyen la producción, el transporte y el comercio. El relieve y el clima son componentes naturales, la densidad de población es un componente social."
+      },
+      {
+        "question": "La latitud de un punto en la Tierra se mide como la distancia angular desde:",
+        "options": ["El meridiano de Greenwich", "El ecuador terrestre", "El polo norte", "El trópico de Cáncer"],
+        "correct": 1,
+        "explanation": "La latitud es la distancia angular medida en grados desde el ecuador (0°) hacia el norte o sur hasta un máximo de 90°. La longitud, en cambio, se mide desde el meridiano de Greenwich."
+      },
+      {
+        "question": "Un SIG (Sistema de Información Geográfica) se caracteriza principalmente por:",
+        "options": ["Determinar coordenadas exactas mediante satélites", "Superponer capas de datos temáticos en mapas digitales", "Medir la velocidad del viento en distintas regiones", "Registrar los movimientos de placas tectónicas"],
+        "correct": 1,
+        "explanation": "Los SIG permiten integrar y analizar distintas capas de información geográfica en formato digital. El GPS es la tecnología que determina coordenadas exactas mediante satélites."
+      },
+      {
+        "question": "Si la Ciudad de México está en UTC-6, ¿qué hora es en una ciudad 3 husos horarios al este?",
+        "options": ["UTC-9", "UTC-3", "UTC+3", "UTC-6"],
+        "correct": 1,
+        "explanation": "Cada huso horario representa una diferencia de 1 hora; avanzar 3 husos al este suma 3 horas: UTC-6 + 3 = UTC-3. Los 24 husos horarios dividen el globo en zonas de 15° cada una."
+      },
+      {
+        "question": "¿Cuál categoría de análisis geográfico describe un área con características físicas, culturales o económicas comunes que la distinguen de otras zonas?",
+        "options": ["Lugar", "Paisaje", "Región", "Territorio"],
+        "correct": 2,
+        "explanation": "La región es la categoría que agrupa áreas con características comunes (climáticas, económicas, culturales). El territorio implica control político; el paisaje es la percepción visual del espacio."
+      }
+    ],
+    "Recursos naturales y ambiente": [
+      {
+        "question": "¿Qué movimiento de la Tierra es responsable de la sucesión de las estaciones del año?",
+        "options": ["Rotación", "Traslación", "Precesión", "Nutación"],
+        "correct": 1,
+        "explanation": "El movimiento de traslación, que dura aproximadamente 365 días, provoca las estaciones del año al cambiar el ángulo de incidencia de los rayos solares. La rotación (24 horas) es responsable del ciclo día-noche."
+      },
+      {
+        "question": "En el ciclo hidrológico, el proceso mediante el cual el agua lluvia penetra en el suelo y recarga los mantos freáticos se denomina:",
+        "options": ["Evaporación", "Condensación", "Escurrimiento", "Infiltración"],
+        "correct": 3,
+        "explanation": "La infiltración es el proceso por el cual el agua desciende a través del suelo y recarga los acuíferos. El escurrimiento, en cambio, es el agua que fluye superficialmente hacia ríos y lagos."
+      },
+      {
+        "question": "La capa de la atmósfera donde se concentra el ozono que protege a la Tierra de la radiación ultravioleta es:",
+        "options": ["Troposfera", "Mesosfera", "Termosfera", "Estratosfera"],
+        "correct": 3,
+        "explanation": "La estratosfera contiene la capa de ozono (O₃) que absorbe la radiación ultravioleta del Sol. La troposfera es donde ocurren los fenómenos climáticos y meteorológicos."
+      },
+      {
+        "question": "México es considerado un país megadiverso porque:",
+        "options": ["Tiene la mayor extensión territorial de América Latina", "Se encuentra entre los cinco países con mayor número de especies del mundo", "Posee el mayor número de lenguas indígenas del planeta", "Cuenta con más áreas naturales protegidas que ningún otro país"],
+        "correct": 1,
+        "explanation": "México forma parte del grupo de países megadiversos por albergar una gran proporción de la biodiversidad mundial, ubicándose entre los cinco países con más especies debido a su variedad de climas y ecosistemas."
+      },
+      {
+        "question": "Las zonas de mayor actividad sísmica y volcánica del planeta coinciden principalmente con:",
+        "options": ["Los límites convergentes de placas tectónicas", "Las llanuras costeras de baja altitud", "Las regiones de clima desértico", "Las áreas de mayor densidad de población"],
+        "correct": 0,
+        "explanation": "En los límites convergentes, las placas tectónicas chocan y una subduce bajo la otra, generando sismos y vulcanismo intensos. El Anillo de Fuego del Pacífico es el ejemplo más claro."
+      }
+    ],
+    "Población y riesgos": [
+      {
+        "question": "La densidad de población relativa se calcula dividiendo:",
+        "options": ["El número de nacimientos entre el número de muertes", "El número de habitantes entre la superficie en km²", "El PIB nacional entre el número de habitantes", "El total de migrantes entre la población total"],
+        "correct": 1,
+        "explanation": "La densidad relativa de población expresa cuántos habitantes existen por cada kilómetro cuadrado de territorio. Es un indicador clave para entender la distribución espacial de la población."
+      },
+      {
+        "question": "El crecimiento de la población de un país se calcula tomando en cuenta:",
+        "options": ["Solo la natalidad y la mortalidad", "La natalidad, la mortalidad y el saldo migratorio", "Únicamente el saldo migratorio internacional", "La densidad de población y el IDH"],
+        "correct": 1,
+        "explanation": "El crecimiento poblacional resulta de restar la mortalidad a la natalidad y sumar el saldo migratorio (inmigrantes menos emigrantes). Ninguno de los tres componentes por sí solo refleja el crecimiento real."
+      },
+      {
+        "question": "Una familia que abandona su comunidad rural para instalarse en la Ciudad de México en busca de trabajo realiza un tipo de migración:",
+        "options": ["Internacional por razones ambientales", "Interna por causas económicas", "Internacional por causas sociales", "Interna por causas ambientales"],
+        "correct": 1,
+        "explanation": "La migración interna ocurre dentro del mismo país, y cuando la causa es la búsqueda de empleo o mejores ingresos se clasifica como económica."
+      },
+      {
+        "question": "¿Qué estado o región de México presenta mayor vulnerabilidad ante los huracanes?",
+        "options": ["Ciudad de México", "Chihuahua", "Yucatán", "Zacatecas"],
+        "correct": 2,
+        "explanation": "La Península de Yucatán, por su ubicación en el Mar Caribe y el Golfo de México, es una de las zonas con mayor frecuencia e impacto de huracanes. La Ciudad de México es más vulnerable a los sismos."
+      },
+      {
+        "question": "La vulnerabilidad ante un riesgo natural se define como:",
+        "options": ["La magnitud de un fenómeno natural como un sismo o huracán", "El grado de exposición al daño que tiene una población ante un riesgo", "La frecuencia con que ocurren desastres en una región", "La distancia entre una comunidad y la zona de peligro"],
+        "correct": 1,
+        "explanation": "La vulnerabilidad mide qué tan expuesta y susceptible al daño está una comunidad ante un fenómeno. A mayor vulnerabilidad, mayor es el impacto potencial del riesgo."
+      }
+    ],
+    "Espacios económicos y desigualdad": [
+      {
+        "question": "¿A qué sector económico pertenece la actividad pesquera?",
+        "options": ["Sector secundario", "Sector terciario", "Sector primario", "Sector cuaternario"],
+        "correct": 2,
+        "explanation": "El sector primario agrupa todas las actividades que extraen recursos directamente de la naturaleza, como la agricultura, la ganadería, la pesca y la minería."
+      },
+      {
+        "question": "El Índice de Desarrollo Humano (IDH) combina indicadores de:",
+        "options": ["Exportaciones, importaciones e inversión extranjera", "Salud, educación e ingreso", "Territorio, población y gobierno", "Biodiversidad, clima y relieve"],
+        "correct": 1,
+        "explanation": "El IDH integra la esperanza de vida (salud), los años de escolaridad (educación) y el ingreso per cápita para medir el bienestar de la población de un país."
+      },
+      {
+        "question": "¿Cuál medio de transporte es el más utilizado a nivel mundial para movilizar grandes volúmenes de mercancías entre continentes?",
+        "options": ["Aéreo", "Ferroviario", "Marítimo", "Por carretera"],
+        "correct": 2,
+        "explanation": "El transporte marítimo es el más empleado para el comercio internacional de grandes volúmenes debido a su bajo costo por tonelada. Más del 80% del comercio mundial en volumen se mueve por barco."
+      },
+      {
+        "question": "Una empresa que tiene sus oficinas en Estados Unidos, fábricas en México y puntos de venta en Europa se clasifica como:",
+        "options": ["Empresa pública nacional", "Empresa transnacional", "Cooperativa de producción", "Empresa del sector primario"],
+        "correct": 1,
+        "explanation": "Las empresas transnacionales operan en múltiples países simultáneamente, concentrando capital y distribuyendo sus procesos productivos según ventajas de cada nación."
+      },
+      {
+        "question": "Un maestro de escuela, un médico de hospital y un guía de turismo pertenecen al mismo sector económico porque todos:",
+        "options": ["Transforman materias primas en productos elaborados", "Extraen recursos directamente de la naturaleza", "Prestan servicios a la población", "Trabajan para el gobierno federal"],
+        "correct": 2,
+        "explanation": "El sector terciario agrupa las actividades de servicios como la educación, la salud y el turismo. A diferencia del sector primario (extracción) y secundario (transformación), el terciario no produce bienes materiales."
+      }
+    ],
+    "Cultura, patrimonio y soberanía": [
+      {
+        "question": "¿Cuántas lenguas indígenas se reconocen aproximadamente en México además del español?",
+        "options": ["Alrededor de 10", "Alrededor de 30", "Alrededor de 68", "Alrededor de 120"],
+        "correct": 2,
+        "explanation": "México reconoce alrededor de 68 lenguas indígenas nacionales, lo que lo convierte en uno de los países con mayor diversidad lingüística del mundo."
+      },
+      {
+        "question": "La zona donde el Estado mexicano ejerce soberanía plena sobre el mar y el espacio aéreo adyacente a sus costas se extiende hasta:",
+        "options": ["200 millas náuticas", "12 millas náuticas", "50 millas náuticas", "24 millas náuticas"],
+        "correct": 1,
+        "explanation": "El mar territorial comprende las 12 millas náuticas desde la línea de costa, zona donde el Estado ejerce soberanía plena. Las 200 millas corresponden a la Zona Económica Exclusiva, donde solo hay derechos de explotación."
+      },
+      {
+        "question": "El concepto de interculturalidad se diferencia de la multiculturalidad en que implica:",
+        "options": ["La existencia de varias culturas en un mismo territorio sin que se relacionen", "El predominio de una cultura sobre las demás", "El diálogo activo e intercambio entre culturas diferentes", "La eliminación de las diferencias culturales mediante la globalización"],
+        "correct": 2,
+        "explanation": "La interculturalidad promueve el intercambio y el diálogo entre culturas. La multiculturalidad solo describe la presencia de varias culturas en un territorio, no necesariamente su interacción."
+      },
+      {
+        "question": "¿Cuál de los siguientes sitios mexicanos forma parte del Patrimonio de la Humanidad reconocido por la UNESCO?",
+        "options": ["La Barranca del Cobre", "El Cerro del Cubilete", "Teotihuacán", "El Popocatépetl"],
+        "correct": 2,
+        "explanation": "Teotihuacán es uno de los sitios arqueológicos mexicanos declarados Patrimonio de la Humanidad por la UNESCO, junto con Chichén Itzá y Monte Albán, entre otros."
+      },
+      {
+        "question": "La homogenización de costumbres, modas y valores a escala mundial impulsada por los medios de comunicación masiva es un efecto de:",
+        "options": ["La interculturalidad", "La globalización cultural", "La soberanía territorial", "La diversidad lingüística"],
+        "correct": 1,
+        "explanation": "La globalización cultural genera una tendencia a la uniformización de prácticas y consumos culturales en todo el mundo, principalmente a través de los medios de comunicación y las industrias culturales transnacionales."
+      }
+    ]
+  }
+}

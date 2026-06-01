@@ -1,0 +1,101 @@
+{
+  "materia": "Química",
+  "subindices": {
+    "Propiedades de la materia": [
+      {
+        "question": "¿Cuál de las siguientes es una propiedad física de la materia?",
+        "options": ["Combustibilidad", "Punto de fusión", "Oxidación", "Corrosión"],
+        "correct": 1,
+        "explanation": "El punto de fusión es una propiedad física porque puede observarse sin cambiar la composición química de la sustancia. La combustibilidad, oxidación y corrosión son propiedades químicas."
+      },
+      {
+        "question": "Al triturar sal de mesa en un mortero, ¿qué tipo de cambio ocurre?",
+        "options": ["Cambio químico, porque se forman nuevas sustancias", "Cambio físico, porque solo cambia la forma pero no la composición", "Cambio químico, porque se libera energía", "Cambio físico, porque cambia el color de la sustancia"],
+        "correct": 1,
+        "explanation": "Triturar sal es un cambio físico porque únicamente se reduce el tamaño de las partículas; la composición química del cloruro de sodio no se altera. No se forman nuevas sustancias."
+      },
+      {
+        "question": "Según la Ley de Conservación de la Masa, si 10 g de madera se queman en presencia de 30 g de oxígeno, ¿cuánto suman los productos obtenidos?",
+        "options": ["10 g", "20 g", "30 g", "40 g"],
+        "correct": 3,
+        "explanation": "La Ley de Conservación de la Masa establece que la masa de los reactivos es igual a la masa de los productos. Por lo tanto, 10 g + 30 g = 40 g de productos."
+      },
+      {
+        "question": "¿Qué método de separación se utiliza para separar dos líquidos miscibles con diferentes puntos de ebullición?",
+        "options": ["Filtración", "Decantación", "Destilación", "Cristalización"],
+        "correct": 2,
+        "explanation": "La destilación aprovecha las diferencias en los puntos de ebullición de los líquidos para separarlos mediante evaporación y condensación sucesivas."
+      },
+      {
+        "question": "El agua con azúcar disuelta es un ejemplo de:",
+        "options": ["Mezcla heterogénea, porque tiene dos sustancias distintas", "Mezcla homogénea, porque su composición es uniforme en toda la muestra", "Compuesto puro, porque el azúcar y el agua se unen químicamente", "Mezcla heterogénea, porque el azúcar puede separarse fácilmente"],
+        "correct": 1,
+        "explanation": "El agua con azúcar es una mezcla homogénea (solución) porque la composición es uniforme en cualquier punto de la muestra y no se distinguen las fases a simple vista."
+      }
+    ],
+    "Estructura atómica y tabla periódica": [
+      {
+        "question": "¿Qué partículas se encuentran en el núcleo del átomo?",
+        "options": ["Electrones y protones", "Protones y neutrones", "Electrones y neutrones", "Solo protones"],
+        "correct": 1,
+        "explanation": "El núcleo atómico está formado por protones (carga positiva) y neutrones (sin carga). Los electrones se encuentran en los orbitales que rodean al núcleo."
+      },
+      {
+        "question": "Un átomo de aluminio tiene número de masa A = 27 y número atómico Z = 13. ¿Cuántos neutrones posee?",
+        "options": ["13", "14", "27", "40"],
+        "correct": 1,
+        "explanation": "Los neutrones se calculan restando el número atómico al número de masa: A − Z = 27 − 13 = 14 neutrones."
+      },
+      {
+        "question": "En la tabla periódica, ¿qué indica el número atómico (Z) de un elemento?",
+        "options": ["La cantidad de neutrones en el núcleo", "La masa del átomo en gramos", "La cantidad de protones en el núcleo, que define al elemento", "El número de electrones en el último nivel de energía"],
+        "correct": 2,
+        "explanation": "El número atómico Z indica la cantidad de protones en el núcleo y es el que define e identifica a cada elemento químico de manera única. Si Z cambia, el elemento cambia."
+      },
+      {
+        "question": "Los elementos del mismo grupo (columna) en la tabla periódica comparten:",
+        "options": ["El mismo número de masa", "El mismo número de neutrones", "El mismo periodo de energía", "Propiedades químicas similares"],
+        "correct": 3,
+        "explanation": "Los elementos del mismo grupo tienen la misma cantidad de electrones de valencia, lo que les confiere propiedades químicas similares."
+      },
+      {
+        "question": "¿Qué tipo de enlace se forma entre un metal y un no metal?",
+        "options": ["Enlace covalente, porque comparten electrones", "Enlace iónico, porque uno cede y el otro recibe electrones", "Enlace metálico, porque los electrones son libres", "Enlace covalente polar"],
+        "correct": 1,
+        "explanation": "El enlace iónico se forma cuando un metal cede electrones a un no metal, generando un catión y un anión que se atraen electrostáticamente."
+      }
+    ],
+    "Reacciones químicas": [
+      {
+        "question": "¿Cuál de las siguientes ecuaciones químicas está correctamente balanceada?",
+        "options": ["H₂ + O₂ → H₂O", "2H₂ + O₂ → 2H₂O", "H₂ + 2O₂ → H₂O₂", "2H + O → H₂O"],
+        "correct": 1,
+        "explanation": "En 2H₂ + O₂ → 2H₂O hay 4 átomos de H y 2 de O en los reactivos, e igual en los productos. Las demás opciones no cumplen la ley de conservación de la masa."
+      },
+      {
+        "question": "¿Cuántas partículas contiene exactamente 1 mol de cualquier sustancia?",
+        "options": ["1.000 × 10¹⁰", "3.011 × 10²³", "6.022 × 10²³", "12.044 × 10²⁴"],
+        "correct": 2,
+        "explanation": "Un mol equivale al número de Avogadro: 6.022 × 10²³ partículas. Esta cantidad es la unidad base para contar partículas en química."
+      },
+      {
+        "question": "El jugo de limón tiene pH 2. ¿Qué indica esto sobre su naturaleza química?",
+        "options": ["Es una base, porque libera OH⁻ en agua", "Es neutro, porque su pH está entre 0 y 7", "Es un ácido, porque su pH es menor que 7", "Es una base débil, porque su pH no llega a 14"],
+        "correct": 2,
+        "explanation": "Las sustancias con pH menor a 7 son ácidas; el jugo de limón tiene pH 2, indicando alta concentración de H⁺. El pH 7 corresponde a sustancias neutras y mayor a 7 a bases."
+      },
+      {
+        "question": "En una reacción redox, un átomo que pierde electrones está siendo:",
+        "options": ["Reducido", "Neutralizado", "Oxidado", "Ionizado negativamente"],
+        "correct": 2,
+        "explanation": "Según la regla OIL RIG, la Oxidación es pérdida de electrones. Un átomo que pierde electrones se oxida y actúa como agente reductor."
+      },
+      {
+        "question": "¿Cuál de las siguientes sustancias es una base?",
+        "options": ["Vinagre (ácido acético)", "Jugo de naranja", "Cloruro de hidrógeno (HCl)", "Bicarbonato de sodio"],
+        "correct": 3,
+        "explanation": "El bicarbonato de sodio es una base porque libera OH⁻ en agua y tiene pH mayor a 7. El vinagre, el jugo de naranja y el HCl son ácidos con pH menor a 7."
+      }
+    ]
+  }
+}

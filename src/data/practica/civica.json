@@ -1,0 +1,133 @@
+{
+  "materia": "Formación Cívica y Ética",
+  "subindices": {
+    "Ética personal y autonomía moral": [
+      {
+        "question": "Una persona que decide actuar conforme a sus propios valores y reflexión ética, sin depender de órdenes externas, ejerce:",
+        "options": ["Heteronomía moral", "Autonomía moral", "Obediencia jurídica", "Norma social"],
+        "correct": 1,
+        "explanation": "La autonomía moral implica que el individuo gobierna su conducta a partir de su propia conciencia y valores razonados. La heteronomía consiste en seguir normas impuestas desde afuera sin reflexión personal."
+      },
+      {
+        "question": "Las normas jurídicas se distinguen de las normas morales principalmente porque las jurídicas son:",
+        "options": ["Voluntarias y no tienen sanción", "Impuestas por el Estado y de cumplimiento obligatorio y coercitivo", "Dictadas únicamente por la costumbre y la tradición", "Aplicables solo en el ámbito privado del individuo"],
+        "correct": 1,
+        "explanation": "Las normas jurídicas son establecidas por el Estado, su cumplimiento es obligatorio y su incumplimiento puede derivar en sanciones legales. Las normas morales son reguladas por la propia conciencia."
+      },
+      {
+        "question": "Cuando alguien se pone en el lugar del otro para comprender sus sentimientos y perspectiva, está ejerciendo:",
+        "options": ["Heteronomía", "Autonomía", "Empatía", "Asertividad"],
+        "correct": 2,
+        "explanation": "La empatía es la capacidad de comprender y compartir los sentimientos ajenos, colocándose en la situación del otro. Es un valor fundamental para la convivencia ética y el respeto a la dignidad humana."
+      },
+      {
+        "question": "¿Cuál de los siguientes enunciados describe mejor los valores morales?",
+        "options": ["Son impuestos por el gobierno y sancionados por la ley", "Se orientan por ideales de justicia, dignidad y bien común", "Se basan exclusivamente en las tradiciones culturales de cada región", "Son reglas que cambian cada año según las modas sociales"],
+        "correct": 1,
+        "explanation": "Los valores morales tienen como referencia ideales universales como la justicia, la dignidad humana y el bien común. A diferencia de las normas jurídicas, no son impuestos por el Estado sino asumidos libremente."
+      },
+      {
+        "question": "La libertad de decisión personal tiene como límite fundamental:",
+        "options": ["Las preferencias de la mayoría de la sociedad", "Los derechos y la libertad de los demás", "Las normas religiosas de la comunidad", "Los intereses económicos del Estado"],
+        "correct": 1,
+        "explanation": "La libertad individual se ejerce plenamente mientras no afecte los derechos y la libertad de otras personas. Este principio es la base del respeto a la dignidad humana y del orden democrático."
+      }
+    ],
+    "Identidad y adolescencia": [
+      {
+        "question": "La identidad personal se construye a partir de:",
+        "options": ["Únicamente los rasgos físicos heredados de los padres", "Los grupos de pertenencia, tradiciones e historias compartidas", "Las calificaciones escolares obtenidas durante la infancia", "El nivel socioeconómico de la familia"],
+        "correct": 1,
+        "explanation": "La identidad personal es un proceso que integra la pertenencia a grupos, la cultura, las tradiciones y las experiencias vividas en comunidad. No se reduce a características físicas."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un derecho específico de las y los adolescentes?",
+        "options": ["Elegir a sus gobernantes mediante el voto", "Celebrar contratos comerciales de manera independiente", "Recibir protección contra toda forma de violencia y maltrato", "Desempeñar cualquier trabajo sin restricción de horario"],
+        "correct": 2,
+        "explanation": "Los adolescentes tienen derecho a la protección contra la violencia, el maltrato y el abuso, reconocido en la Convención sobre los Derechos del Niño de la ONU."
+      },
+      {
+        "question": "Cuando un empleador paga a un joven trabajador menos del salario mínimo legal, esto es un ejemplo de:",
+        "options": ["Violencia psicológica", "Violencia física", "Violencia económica", "Norma social aceptable"],
+        "correct": 2,
+        "explanation": "La violencia económica incluye la explotación laboral y el pago injusto, como negar a un trabajador el salario mínimo al que tiene derecho."
+      },
+      {
+        "question": "Una adolescente que comunica con claridad y firmeza sus límites ante una situación de acoso sin agredir a quien la acosa, está empleando:",
+        "options": ["Respuesta agresiva", "Respuesta pasiva", "Respuesta asertiva", "Heteronomía moral"],
+        "correct": 2,
+        "explanation": "La respuesta asertiva permite expresar los propios derechos y límites con claridad y firmeza, respetando al mismo tiempo a la otra persona. Es la forma más saludable de enfrentar situaciones de conflicto o acoso."
+      },
+      {
+        "question": "La pubertad es el conjunto de cambios que caracterizan la adolescencia en el ámbito:",
+        "options": ["Exclusivamente social y cultural", "Físico o corporal", "Solo psicológico y emocional", "Únicamente económico y laboral"],
+        "correct": 1,
+        "explanation": "La pubertad se refiere específicamente a los cambios físicos y biológicos que ocurren durante la adolescencia. La adolescencia también implica cambios sociales y afectivos, pero la pubertad alude al componente físico."
+      }
+    ],
+    "Democracia, Estado y ciudadanía": [
+      {
+        "question": "En una democracia, la soberanía reside en:",
+        "options": ["El presidente de la República", "Los partidos políticos con mayor número de votos", "El pueblo, que la delega mediante el voto", "El Poder Judicial"],
+        "correct": 2,
+        "explanation": "El principio democrático establece que el poder soberano pertenece al pueblo, quien lo delega a sus representantes a través de elecciones libres y periódicas."
+      },
+      {
+        "question": "¿Cuál es la función del Poder Legislativo en el Estado mexicano?",
+        "options": ["Ejecutar las leyes y dirigir la administración pública", "Crear y aprobar las leyes del país", "Impartir justicia y resolver controversias constitucionales", "Representar al país en el extranjero"],
+        "correct": 1,
+        "explanation": "El Poder Legislativo (Congreso de la Unión) tiene como función principal elaborar, discutir y aprobar las leyes. El Ejecutivo las aplica y el Judicial las interpreta."
+      },
+      {
+        "question": "¿Cuál de los siguientes mecanismos de participación ciudadana permite a la población pronunciarse directamente sobre una decisión de gobierno?",
+        "options": ["La campaña electoral de un partido", "El referéndum", "La designación de magistrados", "El informe presidencial"],
+        "correct": 1,
+        "explanation": "El referéndum es un mecanismo de democracia directa mediante el cual la ciudadanía vota para aprobar o rechazar una decisión o norma del gobierno."
+      },
+      {
+        "question": "El pluralismo político es una característica esencial de la democracia porque:",
+        "options": ["Garantiza que un solo partido gobierne de forma permanente", "Permite la coexistencia y competencia de diversas corrientes ideológicas", "Elimina la necesidad de celebrar elecciones periódicas", "Asegura que todos los ciudadanos piensen igual"],
+        "correct": 1,
+        "explanation": "El pluralismo reconoce la diversidad de ideas, partidos e intereses en la sociedad y garantiza que todos puedan competir en igualdad de condiciones. Sin pluralismo, no existe democracia real."
+      },
+      {
+        "question": "El abstencionismo electoral es considerado un reto para la democracia porque:",
+        "options": ["Aumenta el número de partidos políticos", "Reduce la legitimidad de los gobernantes electos con baja participación", "Fortalece la división de poderes", "Disminuye la corrupción en el gobierno"],
+        "correct": 1,
+        "explanation": "Cuando pocos ciudadanos votan, los gobernantes son elegidos por una minoría, lo que debilita su representatividad y legitimidad democrática."
+      }
+    ],
+    "Constitución, derechos y convivencia": [
+      {
+        "question": "Según el Artículo 3° de la Constitución mexicana, la educación que imparte el Estado debe ser:",
+        "options": ["Religiosa, gratuita y voluntaria", "Laica, gratuita y obligatoria hasta nivel medio superior", "Privada, arancelada y opcional a partir de secundaria", "Bilingüe, pagada y obligatoria solo hasta primaria"],
+        "correct": 1,
+        "explanation": "El Artículo 3° Constitucional establece que la educación pública en México es laica, gratuita y obligatoria desde preescolar hasta el nivel medio superior (preparatoria)."
+      },
+      {
+        "question": "El Artículo 27° de la Constitución establece que las tierras, aguas y recursos naturales son propiedad originaria de:",
+        "options": ["Los municipios donde se encuentran", "Las empresas que los explotan comercialmente", "La Nación mexicana", "Los ejidatarios y comunidades agrarias"],
+        "correct": 2,
+        "explanation": "El Artículo 27° Constitucional declara que originalmente la propiedad de tierras, aguas y recursos naturales corresponde a la Nación, que puede transmitir su dominio a particulares."
+      },
+      {
+        "question": "De acuerdo con el Artículo 123° Constitucional, la jornada laboral máxima diurna en México es de:",
+        "options": ["6 horas", "10 horas", "8 horas", "12 horas"],
+        "correct": 2,
+        "explanation": "El Artículo 123° establece que la jornada diurna máxima es de 8 horas. También garantiza el descanso semanal, el salario mínimo y la seguridad social."
+      },
+      {
+        "question": "En el proceso de negociación, las partes involucradas buscan llegar a un acuerdo mediante:",
+        "options": ["La imposición de la voluntad de la parte más fuerte", "El recurso inmediato a los tribunales", "Ceder mutuamente en sus posiciones hasta alcanzar un consenso", "La intervención obligatoria de una autoridad externa"],
+        "correct": 2,
+        "explanation": "La negociación es un proceso en el que dos o más partes con intereses distintos dialogan y ceden en sus posiciones para alcanzar un acuerdo satisfactorio para ambas."
+      },
+      {
+        "question": "¿Cuál es una función social de los medios de comunicación en una democracia?",
+        "options": ["Concentrar el poder político en un solo grupo", "Ejercer vigilancia social e informar a la ciudadanía sobre los actos de gobierno", "Promover exclusivamente los intereses comerciales de sus propietarios", "Sustituir al Poder Judicial en la resolución de conflictos"],
+        "correct": 1,
+        "explanation": "En una democracia, los medios de comunicación cumplen la función de informar, educar, entretener y ejercer vigilancia sobre el poder público, contribuyendo a la transparencia y la rendición de cuentas."
+      }
+    ]
+  }
+}

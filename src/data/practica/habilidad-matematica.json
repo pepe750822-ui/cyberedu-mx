@@ -1,0 +1,133 @@
+{
+  "materia": "Habilidad Matemática",
+  "subindices": {
+    "1. Sucesiones numéricas": [
+      {
+        "question": "¿Cuál es el siguiente número en la sucesión: 5, 8, 11, 14, 17, ___?",
+        "options": ["19", "20", "21", "22"],
+        "correct": 1,
+        "explanation": "Es una sucesión aritmética con diferencia constante de +3: 17 + 3 = 20."
+      },
+      {
+        "question": "¿Cuál es el siguiente número en la sucesión: 2, 6, 18, 54, ___?",
+        "options": ["108", "72", "162", "216"],
+        "correct": 2,
+        "explanation": "Es una sucesión geométrica con razón constante de ×3: 54 × 3 = 162."
+      },
+      {
+        "question": "Continúa la sucesión de Fibonacci: 1, 1, 2, 3, 5, 8, 13, ___",
+        "options": ["18", "19", "21", "24"],
+        "correct": 2,
+        "explanation": "En la sucesión Fibonacci cada término es la suma de los dos anteriores: 8 + 13 = 21."
+      },
+      {
+        "question": "¿Qué número falta en la sucesión: 100, 81, 64, ___, 36, 25?",
+        "options": ["52", "49", "45", "48"],
+        "correct": 1,
+        "explanation": "Es la sucesión de cuadrados perfectos en orden decreciente: 10², 9², 8², 7², 6², 5². El número faltante es 7² = 49."
+      },
+      {
+        "question": "¿Cuál es el siguiente término en la sucesión: 3, 7, 13, 21, 31, ___?",
+        "options": ["41", "43", "45", "42"],
+        "correct": 1,
+        "explanation": "Las diferencias entre términos son 4, 6, 8, 10, 12 (aumentan de 2 en 2). El siguiente es 31 + 12 = 43."
+      }
+    ],
+    "2. Series espaciales": [
+      {
+        "question": "Una figura tiene una flecha apuntando hacia arriba (↑). Si se rota 90° en sentido horario, ¿hacia dónde apuntará la flecha?",
+        "options": ["Hacia arriba", "Hacia abajo", "Hacia la izquierda", "Hacia la derecha"],
+        "correct": 3,
+        "explanation": "En una rotación de 90° horario, lo que apuntaba hacia arriba ahora apunta hacia la derecha."
+      },
+      {
+        "question": "Una figura tiene una flecha apuntando hacia la derecha (→). Si se rota 180°, ¿hacia dónde apuntará?",
+        "options": ["Hacia arriba", "Hacia la derecha", "Hacia abajo", "Hacia la izquierda"],
+        "correct": 3,
+        "explanation": "Una rotación de 180° invierte completamente la dirección: una flecha que apunta a la derecha pasará a apuntar hacia la izquierda."
+      },
+      {
+        "question": "En una secuencia de figuras, un triángulo se refleja horizontalmente. Si el vértice apuntaba hacia la derecha, ¿hacia dónde apuntará después de la reflexión?",
+        "options": ["Hacia arriba", "Hacia la derecha", "Hacia abajo", "Hacia la izquierda"],
+        "correct": 3,
+        "explanation": "Una reflexión horizontal actúa como un espejo vertical, invirtiendo la dirección izquierda-derecha: el vértice que apuntaba a la derecha ahora apunta a la izquierda."
+      },
+      {
+        "question": "¿Cuántos triángulos hay en una figura formada por un triángulo grande dividido en 4 triángulos más pequeños iguales?",
+        "options": ["4", "5", "6", "7"],
+        "correct": 1,
+        "explanation": "Hay 4 triángulos pequeños más 1 triángulo grande que los contiene a todos, dando un total de 5 triángulos."
+      },
+      {
+        "question": "Una figura cuadrada tiene una línea diagonal de la esquina superior izquierda a la inferior derecha. Si se rota 90° horario, ¿de qué esquina a qué esquina irá la diagonal?",
+        "options": ["De superior izquierda a inferior derecha", "De inferior izquierda a superior derecha", "De superior derecha a inferior izquierda", "De inferior derecha a superior izquierda"],
+        "correct": 1,
+        "explanation": "Al rotar 90° horario, la esquina superior izquierda pasa a ser inferior izquierda, y la inferior derecha pasa a ser superior derecha, por lo que la diagonal quedará de inferior izquierda a superior derecha."
+      }
+    ],
+    "3. Imaginación espacial": [
+      {
+        "question": "Si se dobla una cruz formada por 6 cuadrados iguales (1 central con 4 adyacentes y 1 encima del superior), ¿qué figura tridimensional se forma?",
+        "options": ["Pirámide cuadrangular", "Cubo", "Prisma rectangular", "Cilindro"],
+        "correct": 1,
+        "explanation": "El desarrollo plano en forma de cruz con 6 cuadrados es el patrón clásico que al doblar forma un cubo con sus 6 caras."
+      },
+      {
+        "question": "Una caja tiene forma de cubo. Si la ves directamente desde arriba, ¿qué figura observas?",
+        "options": ["Triángulo", "Círculo", "Cuadrado", "Rectángulo"],
+        "correct": 2,
+        "explanation": "La vista superior ortogonal de un cubo muestra un cuadrado, que es la forma de la cara superior."
+      },
+      {
+        "question": "Un cilindro se observa desde un lado (vista lateral). ¿Qué figura se aprecia?",
+        "options": ["Círculo", "Triángulo", "Rectángulo", "Trapecio"],
+        "correct": 2,
+        "explanation": "La vista lateral de un cilindro muestra un rectángulo, cuyo ancho corresponde al diámetro y cuya altura corresponde a la del cilindro."
+      },
+      {
+        "question": "¿Cuántas caras tiene un prisma triangular (cuerpo con dos bases triangulares)?",
+        "options": ["4", "5", "6", "7"],
+        "correct": 1,
+        "explanation": "Un prisma triangular tiene 2 caras triangulares (las bases) y 3 caras rectangulares laterales, sumando un total de 5 caras."
+      },
+      {
+        "question": "Si un cubo tiene su cara frontal pintada de rojo y se rota 90° hacia atrás, ¿qué cara queda ahora al frente?",
+        "options": ["La cara de atrás original", "La cara superior original", "La cara inferior original", "La cara derecha original"],
+        "correct": 2,
+        "explanation": "Al rotar el cubo 90° hacia atrás, la cara inferior sube para quedar en la posición frontal."
+      }
+    ],
+    "4. Problemas de razonamiento": [
+      {
+        "question": "Si 4 impresoras imprimen 200 páginas en 10 minutos, ¿cuántas páginas imprimirán 6 impresoras en el mismo tiempo?",
+        "options": ["250 páginas", "300 páginas", "350 páginas", "400 páginas"],
+        "correct": 1,
+        "explanation": "Es proporcionalidad directa: más impresoras, más páginas. Regla de tres: 4 → 200, entonces 6 → x = (200 × 6) / 4 = 300 páginas."
+      },
+      {
+        "question": "Ana tiene el doble de edad que su hermano. Dentro de 5 años, la suma de sus edades será 37. ¿Cuántos años tiene el hermano actualmente?",
+        "options": ["7 años", "9 años", "12 años", "14 años"],
+        "correct": 1,
+        "explanation": "Si el hermano tiene x años, Ana tiene 2x. En 5 años: (x+5)+(2x+5) = 37 → 3x+10 = 37 → x = 9 años."
+      },
+      {
+        "question": "¿Cuál es el Mínimo Común Múltiplo (MCM) de 12 y 18?",
+        "options": ["6", "24", "36", "72"],
+        "correct": 2,
+        "explanation": "Descomponiendo: 12 = 2²×3 y 18 = 2×3². El MCM toma los factores con mayor exponente: 2²×3² = 4×9 = 36."
+      },
+      {
+        "question": "Un grifo llena un depósito en 6 horas. Otro grifo lo vacía en 9 horas. Si se abren los dos al mismo tiempo con el depósito vacío, ¿en cuántas horas se llenará?",
+        "options": ["15 horas", "18 horas", "3 horas", "12 horas"],
+        "correct": 1,
+        "explanation": "Por hora, el grifo llena 1/6 y el otro vacía 1/9. Tasa neta = 1/6 - 1/9 = 1/18. Se llena en 18 horas."
+      },
+      {
+        "question": "¿Cuál es el Máximo Común Divisor (MCD) de 48 y 36?",
+        "options": ["6", "8", "12", "18"],
+        "correct": 2,
+        "explanation": "Descomponiendo: 48 = 2⁴×3 y 36 = 2²×3². El MCD toma los factores comunes con menor exponente: 2²×3 = 4×3 = 12."
+      }
+    ]
+  }
+}

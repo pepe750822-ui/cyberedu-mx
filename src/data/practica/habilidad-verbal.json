@@ -1,0 +1,119 @@
+{
+  "materia": "Habilidad Verbal",
+  "subindices": {
+    "Comprensión lectora": [
+      {
+        "question": "Lee el siguiente texto: 'Los murciélagos son los únicos mamíferos capaces de volar de forma sostenida. Utilizan la ecolocalización para orientarse en la oscuridad.' ¿Cuál es la idea principal?",
+        "options": [
+          "La ecolocalización es un sistema usado por varios animales nocturnos",
+          "Los murciélagos son mamíferos voladores que usan ecolocalización para orientarse",
+          "Todos los mamíferos tienen capacidades especiales de orientación",
+          "Los murciélagos viven en la oscuridad y no pueden ver"
+        ],
+        "correct": 1,
+        "explanation": "La idea principal abarca de qué trata todo el texto. El fragmento habla de los murciélagos como mamíferos voladores y su capacidad de ecolocalización, lo que sintetiza ambas oraciones."
+      },
+      {
+        "question": "¿Qué diferencia existe entre información explícita e información inferida en un texto?",
+        "options": [
+          "La información explícita aparece en tablas; la inferida en el cuerpo del texto",
+          "La información explícita se dice directamente; la inferida se deduce de pistas del texto",
+          "La información explícita es subjetiva; la inferida es objetiva y verificable",
+          "Ambas se expresan con las mismas palabras pero en secciones distintas"
+        ],
+        "correct": 1,
+        "explanation": "La información explícita es la que se expresa directamente con palabras en el texto, mientras que la información inferida no está escrita pero se puede deducir a partir de las pistas o datos presentes."
+      },
+      {
+        "question": "Lee el fragmento: 'La ciudad presentaba graves problemas de tráfico. Las autoridades implementaron un sistema de transporte público eficiente y las calles volvieron a fluir con normalidad.' ¿Qué estructura textual sigue?",
+        "options": [
+          "Secuencia cronológica de eventos históricos",
+          "Comparación entre dos sistemas de transporte",
+          "Estructura de problema-solución",
+          "Descripción de causa y consecuencia negativa"
+        ],
+        "correct": 2,
+        "explanation": "El fragmento presenta primero un problema (tráfico grave) y luego su solución (implementar transporte público eficiente), lo que corresponde a la estructura de problema-solución."
+      },
+      {
+        "question": "¿Cuál de los siguientes enunciados expresa una opinión y no un hecho?",
+        "options": [
+          "México tiene más de 120 millones de habitantes",
+          "El partido terminó con marcador de 3 a 1",
+          "En mi opinión, este libro es el mejor del año",
+          "La reunión se celebró el lunes a las 10 de la mañana"
+        ],
+        "correct": 2,
+        "explanation": "El enunciado 'En mi opinión, este libro es el mejor del año' expresa una opinión porque contiene la marca subjetiva 'en mi opinión' y hace un juicio de valor que no puede verificarse objetivamente."
+      },
+      {
+        "question": "Lee la oración: 'La situación era tan caótica que nadie podía encontrar una salida viable.' ¿Qué significa la palabra 'caótica' según el contexto?",
+        "options": [
+          "Organizada y sistemática",
+          "Completamente desordenada y confusa",
+          "Peligrosa y violenta",
+          "Aburrida y monótona"
+        ],
+        "correct": 1,
+        "explanation": "El contexto indica que 'nadie podía encontrar una salida viable', lo que sugiere desorden y confusión. Por tanto, 'caótica' significa completamente desordenada y confusa."
+      }
+    ],
+    "Vocabulario y analogías": [
+      {
+        "question": "¿Cuál es el sinónimo correcto de la palabra 'súplica'?",
+        "options": [
+          "Insulto",
+          "Ruego",
+          "Amenaza",
+          "Consejo"
+        ],
+        "correct": 1,
+        "explanation": "'Súplica' y 'ruego' son sinónimos porque ambas palabras significan la acción de pedir algo con humildad o insistencia."
+      },
+      {
+        "question": "Completa la analogía: BISTURÍ : CIRUJANO = PINCEL : ___",
+        "options": [
+          "Cuadro",
+          "Paleta",
+          "Pintor",
+          "Pintura"
+        ],
+        "correct": 2,
+        "explanation": "La relación en la analogía es instrumento-usuario: el bisturí es el instrumento del cirujano. Aplicando la misma relación, el pincel es el instrumento del pintor."
+      },
+      {
+        "question": "¿Cuál es el antónimo de la palabra 'árido'?",
+        "options": [
+          "Seco",
+          "Fértil",
+          "Desértico",
+          "Caluroso"
+        ],
+        "correct": 1,
+        "explanation": "'Árido' significa seco y estéril. Su antónimo es 'fértil', que significa productivo y con abundante vegetación, es decir, el significado opuesto."
+      },
+      {
+        "question": "Completa la analogía: ABEJA : ENJAMBRE = PEZ : ___",
+        "options": [
+          "Acuario",
+          "Escama",
+          "Aleta",
+          "Cardumen"
+        ],
+        "correct": 3,
+        "explanation": "La relación es individuo-colectivo: el enjambre es el grupo colectivo de abejas. Aplicando la misma relación, el cardumen es el nombre colectivo para un grupo de peces."
+      },
+      {
+        "question": "Identifica el tipo de relación en la analogía: HONRADEZ : VIRTUD = VANIDAD : DEFECTO",
+        "options": [
+          "Causa-efecto",
+          "Instrumento-uso",
+          "Tipo-categoría",
+          "Parte-todo"
+        ],
+        "correct": 2,
+        "explanation": "La relación es de tipo-categoría: la honradez es un tipo de virtud, así como la vanidad es un tipo de defecto. El primer elemento pertenece a la categoría que indica el segundo."
+      }
+    ]
+  }
+}

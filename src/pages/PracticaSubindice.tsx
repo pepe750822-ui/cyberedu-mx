@@ -6,18 +6,25 @@ import {
   ChevronRight,
   Zap,
   Crown,
-  Lock,
   Check,
   X,
   CheckCircle2,
   XSquare,
-  Ticket,
   ArrowLeft,
-  Loader2,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
 import { areas, colorMap } from "@/data/temarioData";
+
+import españolData from "@/data/practica/español.json";
+import habilidadVerbalData from "@/data/practica/habilidad-verbal.json";
+import matematicasData from "@/data/practica/matematicas.json";
+import habilidadMateData from "@/data/practica/habilidad-matematica.json";
+import biologiaData from "@/data/practica/biologia.json";
+import fisicaData from "@/data/practica/fisica.json";
+import quimicaData from "@/data/practica/quimica.json";
+import historiaData from "@/data/practica/historia.json";
+import geografiaData from "@/data/practica/geografia.json";
+import civicaData from "@/data/practica/civica.json";
 
 interface QuizQuestion {
   question: string;
@@ -26,9 +33,19 @@ interface QuizQuestion {
   explanation: string;
 }
 
+// Build lookup: subíndice title → questions[]
+const staticBank: Record<string, QuizQuestion[]> = {};
+for (const bank of [
+  españolData, habilidadVerbalData, matematicasData, habilidadMateData,
+  biologiaData, fisicaData, quimicaData, historiaData, geografiaData, civicaData,
+]) {
+  for (const [titulo, preguntas] of Object.entries(bank.subindices)) {
+    staticBank[titulo] = preguntas as QuizQuestion[];
+  }
+}
+
 type QuizPhase =
   | { phase: "idle" }
-  | { phase: "loading"; subindice: string }
   | {
       phase: "quiz";
       subindice: string;
@@ -39,10 +56,8 @@ type QuizPhase =
     }
   | { phase: "results"; subindice: string; questions: QuizQuestion[]; answers: number[] };
 
-const TOKEN_COST = 10;
-
 export default function PracticaSubindice() {
-  const { user, profile, session, refreshProfile } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
@@ -51,66 +66,24 @@ export default function PracticaSubindice() {
     (profile as any)?.paquete_completo === true ||
     (profile as any)?.subscription_status === "active" ||
     (profile as any)?.is_premium === true;
-  const tokens = profile?.tokens ?? 0;
-  const canPractice = isFree || tokens >= TOKEN_COST;
 
   const toggleArea = (i: number) =>
     setOpenAreas((prev) =>
       prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]
     );
 
-  const handlePractice = async (subindice: string) => {
-    if (!user) {
-      navigate("/auth?ref=practica-subindice");
-      return;
-    }
-    if (!canPractice) {
-      toast.error(`Necesitas ${TOKEN_COST} tokens. Tienes ${tokens}.`);
-      return;
-    }
+  const handlePractice = (subindice: string) => {
+    const questions = staticBank[subindice];
+    if (!questions || questions.length === 0) return;
 
-    setQuiz({ phase: "loading", subindice });
-
-    try {
-      const resp = await fetch("/api/practica-subindice", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({ subindice }),
-      });
-
-      const data = await resp.json();
-
-      if (!resp.ok) {
-        if (data.code === "insufficient_tokens") {
-          toast.error(`Necesitas ${TOKEN_COST} tokens. Tienes ${data.currentTokens ?? tokens}.`);
-          setQuiz({ phase: "idle" });
-          return;
-        }
-        throw new Error(data.error || "Error al cargar preguntas");
-      }
-
-      if (!Array.isArray(data.questions) || data.questions.length === 0) {
-        throw new Error("No se recibieron preguntas");
-      }
-
-      if (data.tokensDeducted > 0) refreshProfile();
-
-      setQuiz({
-        phase: "quiz",
-        subindice,
-        questions: data.questions as QuizQuestion[],
-        currentIdx: 0,
-        answers: new Array(data.questions.length).fill(null),
-        feedbackIdx: null,
-      });
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
-      setQuiz({ phase: "idle" });
-    }
+    setQuiz({
+      phase: "quiz",
+      subindice,
+      questions,
+      currentIdx: 0,
+      answers: new Array(questions.length).fill(null),
+      feedbackIdx: null,
+    });
   };
 
   // Called when user taps an option — immediately lock in and show feedback
@@ -173,54 +146,26 @@ export default function PracticaSubindice() {
             <span className="text-primary not-italic">Subíndice</span>
           </h1>
           <p className="text-slate-400 text-base max-w-xl mx-auto">
-            5 preguntas generadas por IA para cada tema del temario oficial.
+            5 preguntas de opción múltiple para cada tema del temario oficial.
             Practica exactamente donde más lo necesitas.
           </p>
         </div>
 
-        {/* ── TOKEN / ACCESS BANNER ── */}
+        {/* ── ACCESS BANNER ── */}
         {user ? (
-          <div className={`flex items-center justify-between gap-4 px-5 py-3 rounded-2xl border ${
-            isFree
-              ? "bg-emerald-500/10 border-emerald-500/30"
-              : canPractice
-              ? "bg-primary/10 border-primary/30"
-              : "bg-amber-500/10 border-amber-500/30"
-          }`}>
-            <div className="flex items-center gap-3">
-              {isFree ? (
-                <>
-                  <Crown className="h-5 w-5 text-emerald-400 shrink-0" />
-                  <span className="text-sm font-bold text-emerald-300">
-                    Acceso ilimitado — Paquete Completo activo
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Ticket className="h-5 w-5 text-primary shrink-0" />
-                  <span className="text-sm font-bold text-white">
-                    {tokens} tokens · {TOKEN_COST} por sesión
-                  </span>
-                </>
-              )}
-            </div>
-            {!isFree && !canPractice && (
-              <button
-                onClick={() => navigate("/tokens#comprar")}
-                className="text-xs font-black uppercase tracking-widest text-amber-400 hover:text-amber-300 underline underline-offset-2 shrink-0"
-              >
-                Comprar tokens →
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="flex items-center justify-between gap-4 px-5 py-3 rounded-2xl border bg-white/5 border-white/10">
-            <div className="flex items-center gap-3">
-              <Lock className="h-5 w-5 text-slate-400 shrink-0" />
-              <span className="text-sm font-bold text-slate-300">
-                Inicia sesión para practicar · {TOKEN_COST} tokens por subíndice
+          isFree && (
+            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl border bg-emerald-500/10 border-emerald-500/30">
+              <Crown className="h-5 w-5 text-emerald-400 shrink-0" />
+              <span className="text-sm font-bold text-emerald-300">
+                Paquete Completo activo — acceso ilimitado
               </span>
             </div>
+          )
+        ) : (
+          <div className="flex items-center justify-between gap-4 px-5 py-3 rounded-2xl border bg-white/5 border-white/10">
+            <span className="text-sm font-bold text-slate-300">
+              Practica gratis — inicia sesión para guardar tu progreso
+            </span>
             <button
               onClick={() => navigate("/auth?ref=practica-subindice")}
               className="text-xs font-black uppercase tracking-widest text-primary hover:text-primary/80 underline underline-offset-2 shrink-0"
@@ -271,35 +216,29 @@ export default function PracticaSubindice() {
                       className="overflow-hidden"
                     >
                       <div className="divide-y divide-white/5">
-                        {area.subtemas.map((subtema, sIdx) => {
-                          const isLoading =
-                            quiz.phase === "loading" &&
-                            quiz.subindice === subtema.titulo;
-                          return (
-                            <div
-                              key={sIdx}
-                              className="flex items-center justify-between px-5 py-3 gap-4 hover:bg-white/3 transition-colors"
-                            >
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-white truncate">
-                                  {subtema.titulo}
-                                </p>
-                                <p className="text-[11px] text-slate-500 mt-0.5">
-                                  {subtema.contenido.length} conceptos clave
-                                </p>
-                              </div>
-
-                              <PracticeButton
-                                user={user}
-                                isFree={isFree}
-                                canPractice={canPractice}
-                                isLoading={isLoading}
-                                colorBtn={colors.btn}
-                                onClick={() => handlePractice(subtema.titulo)}
-                              />
+                        {area.subtemas.map((subtema, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="flex items-center justify-between px-5 py-3 gap-4 hover:bg-white/3 transition-colors"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-white truncate">
+                                {subtema.titulo}
+                              </p>
+                              <p className="text-[11px] text-slate-500 mt-0.5">
+                                {subtema.contenido.length} conceptos clave
+                              </p>
                             </div>
-                          );
-                        })}
+
+                            <button
+                              onClick={() => handlePractice(subtema.titulo)}
+                              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black uppercase tracking-wide shrink-0 transition-all hover:scale-105 active:scale-95 shadow-sm ${colors.btn}`}
+                            >
+                              <Zap className="h-3 w-3" />
+                              Practicar
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     </motion.div>
                   )}
@@ -326,7 +265,6 @@ export default function PracticaSubindice() {
                 <button
                   onClick={() => setQuiz({ phase: "idle" })}
                   className="p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-                  disabled={quiz.phase === "loading"}
                 >
                   <ArrowLeft className="h-5 w-5 text-slate-400" />
                 </button>
@@ -335,7 +273,7 @@ export default function PracticaSubindice() {
                     Práctica por Subíndice
                   </p>
                   <h2 className="text-lg font-black text-white leading-tight truncate">
-                    {quiz.phase !== "idle" && (quiz as any).subindice}
+                    {(quiz as any).subindice}
                   </h2>
                 </div>
                 {quiz.phase === "quiz" && (
@@ -352,17 +290,6 @@ export default function PracticaSubindice() {
                     className="h-full bg-primary rounded-full transition-all duration-300"
                     style={{ width: `${((quiz.currentIdx + (quiz.feedbackIdx !== null ? 1 : 0)) / quiz.questions.length) * 100}%` }}
                   />
-                </div>
-              )}
-
-              {/* Loading */}
-              {quiz.phase === "loading" && (
-                <div className="flex flex-col items-center justify-center py-20 gap-4">
-                  <Loader2 className="h-10 w-10 text-primary animate-spin" />
-                  <p className="text-slate-400 font-medium text-sm">
-                    Generando 5 preguntas con IA…
-                  </p>
-                  <p className="text-slate-600 text-xs">Esto puede tardar 5-10 segundos</p>
                 </div>
               )}
 
@@ -390,12 +317,6 @@ export default function PracticaSubindice() {
 
                 return (
                   <div className="space-y-4">
-                    {!isFree && quiz.currentIdx === 0 && (
-                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 text-right">
-                        −{TOKEN_COST} tokens deducidos
-                      </p>
-                    )}
-
                     {/* Question */}
                     <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
                       <p className="text-sm md:text-base font-semibold text-white leading-snug">
@@ -600,62 +521,5 @@ export default function PracticaSubindice() {
         }
       `}} />
     </div>
-  );
-}
-
-// ── Sub-components ──────────────────────────────────────────────────
-
-interface PracticeButtonProps {
-  user: unknown;
-  isFree: boolean;
-  canPractice: boolean;
-  isLoading: boolean;
-  colorBtn: string;
-  onClick: () => void;
-}
-
-function PracticeButton({ user, isFree, canPractice, isLoading, colorBtn, onClick }: PracticeButtonProps) {
-  if (isLoading) {
-    return (
-      <div className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 text-slate-500 text-xs font-bold shrink-0">
-        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        Generando…
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <button
-        onClick={onClick}
-        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs font-bold shrink-0 transition-colors border border-white/10"
-      >
-        <Lock className="h-3 w-3" />
-        Iniciar sesión
-      </button>
-    );
-  }
-
-  if (!canPractice) {
-    return (
-      <button
-        onClick={onClick}
-        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 text-xs font-bold shrink-0 border border-amber-500/20 cursor-not-allowed opacity-60"
-        disabled
-      >
-        <Lock className="h-3 w-3" />
-        Sin tokens
-      </button>
-    );
-  }
-
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-xs font-black uppercase tracking-wide shrink-0 transition-all hover:scale-105 active:scale-95 shadow-sm ${colorBtn}`}
-    >
-      <Zap className="h-3 w-3" />
-      {isFree ? "Practicar" : `Practicar · 10 🪙`}
-    </button>
   );
 }
