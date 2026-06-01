@@ -780,7 +780,10 @@ function parsePlainTextQuiz(quizText: string): PersonalizedQuiz | null {
 function parseQuizFromContent(content: string): { quiz: PersonalizedQuiz | null; cleanContent: string } {
   const regex = /<quiz>([\s\S]*?)(?:<\/quiz>|$)/g;
   const quizMatch = regex.exec(content);
-  if (!quizMatch) return { quiz: null, cleanContent: content };
+  if (!quizMatch) {
+    console.warn('[QuizParser] No <quiz> block found in AI response. Model did not include required quiz.');
+    return { quiz: null, cleanContent: content };
+  }
 
   const rawQuizContent = quizMatch[1];
   const cleanedContent = content.replace(/<quiz>[\s\S]*?(?:<\/quiz>|$)/g, "").trim();

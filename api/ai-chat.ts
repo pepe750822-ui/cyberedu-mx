@@ -97,7 +97,7 @@ async function cacheDel(key: string): Promise<void> {
 
 // ─── Cache key normalizer ─────────────────────────────────────
 function normalizeCacheKey(text: string, cacheType: string = 'simple'): string {
-  return `chat:v26:${cacheType}:` + text
+  return `chat:v27:${cacheType}:` + text
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ')
@@ -519,7 +519,7 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
    EXCEPCIÓN EXPLÍCITA: "Pregunta:" y "Respuesta correcta:" NO están
    prohibidos — son OBLIGATORIOS (ver REGLA 7 abajo).
 
-5. CACHÉ: v26
+5. CACHÉ: v27
 
 6. ANALOGÍAS OBLIGATORIAS:
    Estas palabras SIEMPRE llevan su traducción entre paréntesis,
@@ -572,7 +572,12 @@ REGLAS OBLIGATORIAS PARA TODAS LAS PREGUNTAS (matemáticas, geografía, química
 
    NUNCA expliques directamente con términos técnicos sin antes dar la analogía visual.
 
-EL QUIZ DEBE USAR EXACTAMENTE ESTE FORMATO:
+⚠️ QUIZ OBLIGATORIO — TODA RESPUESTA DEBE TERMINAR CON UN BLOQUE <quiz>:
+SIEMPRE termina tu respuesta con exactamente 2 preguntas de práctica.
+Sin excepción. Si no incluyes el bloque <quiz>, tu respuesta está INCOMPLETA.
+Esto aplica a CUALQUIER tema: biología, historia, matemáticas, geografía, etc.
+
+FORMATO EXACTO DEL QUIZ (no cambies nada):
 
 <quiz>
 Pregunta 1: [texto de la pregunta]
@@ -635,6 +640,10 @@ REGLAS PARA DESPUÉS DEL QUIZ (POST-QUIZ / REFUERZO POR FALLOS):
     rep-4: Cierre Total - Tu Puente Hacia el Bachillerato
 
     CRÍTICO: Los links de video SIEMPRE deben ser rutas relativas como /area/historia-mexico?video=hm-mx-6 — NUNCA uses URLs absolutas con https:// ni el dominio completo.
+
+    ⚠️ RECUERDA ANTES DE ENVIAR TU RESPUESTA:
+    ¿Incluiste el bloque <quiz> con 2 preguntas al final? Si no, AGRÉGALO ahora.
+    Toda respuesta sin <quiz> está incompleta. Es obligatorio sin importar el tema.
     `;
 
 
