@@ -116,6 +116,7 @@ export default function PracticaSubindice() {
 
   const handleSelectOption = (qIdx: number, aIdx: number) => {
     if (quiz.phase !== "quiz") return;
+    if (quiz.answers[qIdx] !== null) return;
     const newAnswers = [...quiz.answers];
     newAnswers[qIdx] = aIdx;
     setQuiz({ ...quiz, answers: newAnswers });
@@ -320,6 +321,9 @@ export default function PracticaSubindice() {
                 <div className="space-y-8">
                   {quiz.questions.map((q, qIdx) => {
                     const selectedIdx = quiz.answers[qIdx];
+                    const answered = selectedIdx !== null;
+                    const isCorrect = answered && selectedIdx === q.correct;
+
                     return (
                       <div key={qIdx} className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
                         <p className="text-sm md:text-base font-semibold text-white leading-snug">
@@ -330,19 +334,28 @@ export default function PracticaSubindice() {
                         {/* Options */}
                         <div className="space-y-3">
                           {q.options.map((opt, oIdx) => {
-                            const isSelected = selectedIdx === oIdx;
-                            const optionClass = isSelected
-                              ? "bg-indigo-500/20 border-indigo-500/60 text-white"
-                              : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
-                            const badgeClass = isSelected
-                              ? "bg-indigo-500 text-white"
-                              : "bg-white/10 text-slate-400";
+                            let optionClass: string;
+                            let badgeClass: string;
+                            if (!answered) {
+                              optionClass = "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
+                              badgeClass = "bg-white/10 text-slate-400";
+                            } else if (oIdx === q.correct) {
+                              optionClass = "bg-green-500/20 border-green-500/60 text-white";
+                              badgeClass = "bg-green-500 text-white";
+                            } else if (oIdx === selectedIdx) {
+                              optionClass = "bg-red-500/20 border-red-500/60 text-white";
+                              badgeClass = "bg-red-500 text-white";
+                            } else {
+                              optionClass = "bg-white/5 border-white/5 text-slate-500 opacity-40";
+                              badgeClass = "bg-white/5 text-slate-500";
+                            }
 
                             return (
                               <button
                                 key={oIdx}
                                 onClick={() => handleSelectOption(qIdx, oIdx)}
-                                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border flex items-center gap-3 ${optionClass}`}
+                                disabled={answered}
+                                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border flex items-center gap-3 disabled:cursor-default ${optionClass}`}
                               >
                                 <span className={`h-7 w-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors ${badgeClass}`}>
                                   {String.fromCharCode(65 + oIdx)}
@@ -352,6 +365,28 @@ export default function PracticaSubindice() {
                             );
                           })}
                         </div>
+
+                        {/* Inline feedback + always-visible tutor button */}
+                        {answered && (
+                          <div className={`rounded-xl p-4 border ${isCorrect ? "bg-green-500/15 border-green-500/40" : "bg-red-500/15 border-red-500/40"}`}>
+                            <div className="flex items-center gap-2 mb-2">
+                              {isCorrect
+                                ? <CheckCircle2 className="h-4 w-4 text-green-400 shrink-0" />
+                                : <XSquare className="h-4 w-4 text-red-400 shrink-0" />
+                              }
+                              <p className={`font-black text-sm ${isCorrect ? "text-green-300" : "text-red-300"}`}>
+                                {isCorrect ? "¡Correcto!" : `Incorrecto — correcta: ${q.options[q.correct]}`}
+                              </p>
+                            </div>
+                            <p className="text-slate-300 text-xs leading-relaxed">{q.explanation}</p>
+                            <button
+                              onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
+                              className="mt-3 w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
+                            >
+                              🧠 Preguntar al Tutor IA
+                            </button>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -444,17 +479,14 @@ export default function PracticaSubindice() {
                           {q.explanation}
                         </div>
 
-                        {/* Ask Tutor — only for wrong answers, SimuladorPro pattern */}
-                        {!isCorrect && (
-                          <div className="pl-9">
-                            <button
-                              onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
-                              className="w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
-                            >
-                              🧠 Preguntar al Tutor IA
-                            </button>
-                          </div>
-                        )}
+                        <div className="pl-9">
+                          <button
+                            onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
+                            className="w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
+                          >
+                            🧠 Preguntar al Tutor IA
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
