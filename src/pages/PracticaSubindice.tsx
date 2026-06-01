@@ -9,7 +9,8 @@ import {
   Lock,
   Check,
   X,
-  Bot,
+  CheckCircle2,
+  XSquare,
   Ticket,
   ArrowLeft,
   Loader2,
@@ -28,7 +29,14 @@ interface QuizQuestion {
 type QuizPhase =
   | { phase: "idle" }
   | { phase: "loading"; subindice: string }
-  | { phase: "quiz"; subindice: string; questions: QuizQuestion[]; answers: (number | null)[] }
+  | {
+      phase: "quiz";
+      subindice: string;
+      questions: QuizQuestion[];
+      currentIdx: number;
+      answers: (number | null)[];
+      feedbackIdx: number | null;
+    }
   | { phase: "results"; subindice: string; questions: QuizQuestion[]; answers: number[] };
 
 const TOKEN_COST = 10;
@@ -94,7 +102,9 @@ export default function PracticaSubindice() {
         phase: "quiz",
         subindice,
         questions: data.questions as QuizQuestion[],
+        currentIdx: 0,
         answers: new Array(data.questions.length).fill(null),
+        feedbackIdx: null,
       });
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -103,34 +113,39 @@ export default function PracticaSubindice() {
     }
   };
 
-  const handleAnswer = (qIdx: number, aIdx: number) => {
-    if (quiz.phase !== "quiz") return;
-    const next = [...quiz.answers];
-    next[qIdx] = aIdx;
-    setQuiz({ ...quiz, answers: next });
+  // Called when user taps an option — immediately lock in and show feedback
+  const handleSelectOption = (aIdx: number) => {
+    if (quiz.phase !== "quiz" || quiz.feedbackIdx !== null) return;
+    setQuiz({ ...quiz, feedbackIdx: aIdx });
   };
 
-  const handleSubmit = () => {
-    if (quiz.phase !== "quiz") return;
-    if (quiz.answers.some((a) => a === null)) {
-      toast.error("Responde todas las preguntas antes de enviar");
-      return;
+  // Advance to next question or show results
+  const handleNext = () => {
+    if (quiz.phase !== "quiz" || quiz.feedbackIdx === null) return;
+    const newAnswers = [...quiz.answers];
+    newAnswers[quiz.currentIdx] = quiz.feedbackIdx;
+
+    if (quiz.currentIdx === quiz.questions.length - 1) {
+      setQuiz({
+        phase: "results",
+        subindice: quiz.subindice,
+        questions: quiz.questions,
+        answers: newAnswers as number[],
+      });
+    } else {
+      setQuiz({
+        ...quiz,
+        currentIdx: quiz.currentIdx + 1,
+        answers: newAnswers,
+        feedbackIdx: null,
+      });
     }
-    setQuiz({
-      phase: "results",
-      subindice: quiz.subindice,
-      questions: quiz.questions,
-      answers: quiz.answers as number[],
-    });
   };
 
-  const askTutor = (question: string, explanation: string) => {
-    const msg = `Explícame esta pregunta del ECOEMS sobre el tema "${quiz.phase !== "idle" && quiz.phase !== "loading" ? quiz.subindice : ""}": ${question}. La respuesta correcta es: ${explanation}`;
-    localStorage.setItem(
-      "cyberedu_pending_question",
-      JSON.stringify({ text: msg, timestamp: Date.now() })
-    );
-    window.dispatchEvent(new CustomEvent("cyberedu:open-chat"));
+  // Open AITutor with question context — same pattern as SimuladorPro
+  const askTutor = (question: string, correctOption: string, explanation: string) => {
+    const message = `Explícame esta pregunta del ECOEMS:\n"${question}"\n\nLa respuesta correcta es: "${correctOption}"\n\n${explanation}`;
+    window.dispatchEvent(new CustomEvent("cyberedu:open-chat", { detail: { message } }));
   };
 
   const correctCount =
@@ -315,15 +330,30 @@ export default function PracticaSubindice() {
                 >
                   <ArrowLeft className="h-5 w-5 text-slate-400" />
                 </button>
-                <div>
+                <div className="flex-1 min-w-0">
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                     Práctica por Subíndice
                   </p>
-                  <h2 className="text-lg font-black text-white leading-tight">
+                  <h2 className="text-lg font-black text-white leading-tight truncate">
                     {quiz.phase !== "idle" && (quiz as any).subindice}
                   </h2>
                 </div>
+                {quiz.phase === "quiz" && (
+                  <span className="shrink-0 text-xs font-black text-slate-500 tabular-nums">
+                    {quiz.currentIdx + 1} / {quiz.questions.length}
+                  </span>
+                )}
               </div>
+
+              {/* Progress bar */}
+              {quiz.phase === "quiz" && (
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-300"
+                    style={{ width: `${((quiz.currentIdx + (quiz.feedbackIdx !== null ? 1 : 0)) / quiz.questions.length) * 100}%` }}
+                  />
+                </div>
+              )}
 
               {/* Loading */}
               {quiz.phase === "loading" && (
@@ -336,38 +366,117 @@ export default function PracticaSubindice() {
                 </div>
               )}
 
-              {/* Quiz */}
-              {quiz.phase === "quiz" && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-slate-400">
-                      {quiz.answers.filter((a) => a !== null).length} / {quiz.questions.length} respondidas
-                    </p>
-                    {!isFree && (
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">
+              {/* Quiz — one question at a time */}
+              {quiz.phase === "quiz" && (() => {
+                const q = quiz.questions[quiz.currentIdx];
+                const feedbackIdx = quiz.feedbackIdx;
+                const isCorrect = feedbackIdx !== null && feedbackIdx === q.correct;
+
+                const optionClass = (idx: number) => {
+                  if (feedbackIdx === null) {
+                    return "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
+                  }
+                  if (idx === q.correct) return "bg-green-500/20 border-green-500/60 text-white";
+                  if (idx === feedbackIdx) return "bg-red-500/20 border-red-500/60 text-white";
+                  return "bg-white/5 border-white/5 text-slate-500 opacity-40";
+                };
+
+                const badgeClass = (idx: number) => {
+                  if (feedbackIdx === null) return "bg-white/10 text-slate-400";
+                  if (idx === q.correct) return "bg-green-500 text-white";
+                  if (idx === feedbackIdx) return "bg-red-500 text-white";
+                  return "bg-white/5 text-slate-500";
+                };
+
+                return (
+                  <div className="space-y-4">
+                    {!isFree && quiz.currentIdx === 0 && (
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 text-right">
                         −{TOKEN_COST} tokens deducidos
-                      </span>
+                      </p>
                     )}
+
+                    {/* Question */}
+                    <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
+                      <p className="text-sm md:text-base font-semibold text-white leading-snug">
+                        <span className="text-primary font-black mr-2">{quiz.currentIdx + 1}.</span>
+                        {q.question}
+                      </p>
+
+                      {/* Options */}
+                      <div className="space-y-3">
+                        {q.options.map((opt, oIdx) => (
+                          <button
+                            key={oIdx}
+                            onClick={() => handleSelectOption(oIdx)}
+                            disabled={feedbackIdx !== null}
+                            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border flex items-center gap-3 disabled:cursor-default ${optionClass(oIdx)}`}
+                          >
+                            <span className={`h-7 w-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0 transition-colors ${badgeClass(oIdx)}`}>
+                              {String.fromCharCode(65 + oIdx)}
+                            </span>
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Immediate feedback panel — appears after selecting */}
+                    <AnimatePresence>
+                      {feedbackIdx !== null && (
+                        <motion.div
+                          key="feedback"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className={`rounded-2xl p-5 border ${
+                            isCorrect
+                              ? "bg-green-500/15 border-green-500/40"
+                              : "bg-red-500/15 border-red-500/40"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-2">
+                            {isCorrect
+                              ? <CheckCircle2 className="h-5 w-5 text-green-400 shrink-0" />
+                              : <XSquare className="h-5 w-5 text-red-400 shrink-0" />
+                            }
+                            <p className={`font-black text-base ${isCorrect ? "text-green-300" : "text-red-300"}`}>
+                              {isCorrect
+                                ? "¡Correcto!"
+                                : `Incorrecto. La respuesta correcta es: ${q.options[q.correct]}`
+                              }
+                            </p>
+                          </div>
+                          <p className="text-slate-300 text-sm leading-relaxed">
+                            {q.explanation}
+                          </p>
+
+                          {/* Next / Finish button */}
+                          <button
+                            onClick={handleNext}
+                            className="mt-4 w-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white font-black text-[11px] uppercase tracking-widest px-6 py-3 rounded-xl transition-all"
+                          >
+                            {quiz.currentIdx === quiz.questions.length - 1
+                              ? "Ver resultados finales"
+                              : "Siguiente pregunta →"}
+                          </button>
+
+                          {/* Ask Tutor — only on wrong answers, exact SimuladorPro pattern */}
+                          {!isCorrect && (
+                            <button
+                              onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
+                              className="mt-2 w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
+                            >
+                              🧠 Preguntar al Tutor IA
+                            </button>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-
-                  {quiz.questions.map((q, qIdx) => (
-                    <QuizCard
-                      key={qIdx}
-                      question={q}
-                      qIdx={qIdx}
-                      selected={quiz.answers[qIdx]}
-                      onSelect={(aIdx) => handleAnswer(qIdx, aIdx)}
-                    />
-                  ))}
-
-                  <button
-                    onClick={handleSubmit}
-                    className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-widest text-sm transition-all shadow-lg shadow-primary/20"
-                  >
-                    Ver resultados
-                  </button>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Results */}
               {quiz.phase === "results" && (
@@ -412,7 +521,7 @@ export default function PracticaSubindice() {
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <div className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
+                          <div className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 ${
                             isCorrect ? "bg-emerald-500" : "bg-red-500"
                           }`}>
                             {isCorrect
@@ -447,14 +556,14 @@ export default function PracticaSubindice() {
                           {q.explanation}
                         </div>
 
+                        {/* Ask Tutor — only for wrong answers, SimuladorPro pattern */}
                         {!isCorrect && (
                           <div className="pl-9">
                             <button
-                              onClick={() => askTutor(q.question, q.explanation)}
-                              className="flex items-center gap-2 text-xs font-bold text-violet-400 hover:text-violet-300 transition-colors"
+                              onClick={() => askTutor(q.question, q.options[q.correct], q.explanation)}
+                              className="w-full bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/40 hover:border-violet-400/60 text-violet-300 hover:text-violet-200 font-bold text-[11px] py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95"
                             >
-                              <Bot className="h-3.5 w-3.5" />
-                              Preguntar al AITutor
+                              🧠 Preguntar al Tutor IA
                             </button>
                           </div>
                         )}
@@ -548,38 +657,5 @@ function PracticeButton({ user, isFree, canPractice, isLoading, colorBtn, onClic
       <Zap className="h-3 w-3" />
       {isFree ? "Practicar" : `Practicar · 10 🪙`}
     </button>
-  );
-}
-
-interface QuizCardProps {
-  question: QuizQuestion;
-  qIdx: number;
-  selected: number | null;
-  onSelect: (aIdx: number) => void;
-}
-
-function QuizCard({ question, qIdx, selected, onSelect }: QuizCardProps) {
-  return (
-    <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
-      <p className="text-sm font-semibold text-white leading-snug">
-        <span className="text-primary font-black mr-2">{qIdx + 1}.</span>
-        {question.question}
-      </p>
-      <div className="space-y-2">
-        {question.options.map((opt, oIdx) => (
-          <button
-            key={oIdx}
-            onClick={() => onSelect(oIdx)}
-            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
-              selected === oIdx
-                ? "bg-primary/20 border-primary/60 text-white"
-                : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20"
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
-      </div>
-    </div>
   );
 }
