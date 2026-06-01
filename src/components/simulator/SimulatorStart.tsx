@@ -263,8 +263,8 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                                             ✅ INCLUIDO
                                         </span>
                                     ) : (
-                                        <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-amber-500/10 text-amber-400 border-amber-500/30">
-                                            🆓 10 gratis · 🔒 50 tokens
+                                        <span className="ml-0.5 text-[9px] px-1.5 py-0.5 rounded-full border font-black bg-purple-500/10 text-purple-400 border-purple-500/30">
+                                            🔒 Regístrate gratis
                                         </span>
                                     )}
                                 </button>
@@ -349,21 +349,21 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                             <span className="text-green-400 font-semibold">✅ Banco desbloqueado — ¡Practica sin límite!</span>
                         </div>
                     )}
-                    {/* Banner bank10 — preview o incluido en Guía 2026 */}
+                    {/* Banner bank10 — solo visible para usuarios sin cuenta */}
                     {selectedBank === 'bank10' && !(bank10Unlocked || guia2026Unlocked || paqueteCompleto) && (
                         <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-center text-sm space-y-2">
                             <span className="text-purple-400 font-semibold block">
-                                🆓 Prueba 10 preguntas gratis — Banco Guía 2026
+                                🔒 Banco 10 — Guía IPN/UNAM 2026
                             </span>
                             <span className="text-slate-400 text-xs block">
-                                50 tokens · Acceso de por vida a este banco. ¡También incluido en el Combo Premium 100 tokens!
+                                Regístrate gratis para acceder a todas las preguntas de este banco sin costo.
                             </span>
-                            {onRedeemUnlock && isLoggedIn && userTokens >= 50 && (
+                            {onNavigateToGuias && (
                                 <button
-                                    onClick={() => onRedeemUnlock('bank10_unlocked', 50, { bank10_unlocked: true })}
+                                    onClick={onNavigateToGuias}
                                     className="mt-1 px-4 py-1.5 rounded-lg bg-purple-500 hover:bg-purple-400 text-white text-[10px] font-black uppercase tracking-widest transition-all"
                                 >
-                                    🔓 Desbloquear — 50 tokens
+                                    ✨ Crear cuenta gratis
                                 </button>
                             )}
                         </div>

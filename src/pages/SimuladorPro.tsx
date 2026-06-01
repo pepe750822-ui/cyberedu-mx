@@ -540,6 +540,7 @@ const SimuladorPro = () => {
         const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank9Unlocked  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank10Unlocked =
+            !!user ||
             (profile as any)?.bank10_unlocked === true ||
             (profile as any)?.guia2026_unlocked === true ||
             (profile as any)?.paquete_completo === true;
@@ -725,7 +726,7 @@ const SimuladorPro = () => {
             fullModeCount={(() => {
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
-                const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b10u = !!user || (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b12u = (profile as any)?.bank12_unlocked === true || (profile as any)?.paquete_completo === true;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
@@ -738,7 +739,7 @@ const SimuladorPro = () => {
             practiceModeCount={(() => {
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
-                const b10u = (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
+                const b10u = !!user || (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b11u = (profile as any)?.bank11_unlocked === true || (profile as any)?.paquete_completo === true;
                 const b12u = (profile as any)?.bank12_unlocked === true || (profile as any)?.paquete_completo === true;
                 if (selectedBank === 'bank8'  && !b8u)  return 10;
@@ -754,7 +755,7 @@ const SimuladorPro = () => {
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}
             bank8Unlocked={(profile as any)?.bank8_unlocked === true}
             bank9Unlocked={(profile as any)?.bank9_unlocked === true}
-            bank10Unlocked={(profile as any)?.bank10_unlocked === true}
+            bank10Unlocked={!!user || (profile as any)?.bank10_unlocked === true}
             bank11Unlocked={(profile as any)?.bank11_unlocked === true}
             bank12Unlocked={(profile as any)?.bank12_unlocked === true}
             guia2026Unlocked={(profile as any)?.guia2026_unlocked === true}
