@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, ChevronRight, Trophy, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -33,7 +33,36 @@ function updateAgentMemory(updater: (mem: any) => any) {
     } catch { /* ignore */ }
 }
 
-export const AITutorQuiz: React.FC<Props> = ({ quiz, videoId, onComplete }) => {
+// Helper to shuffle an array (Fisher-Yates)
+function shuffleArray<T>(array: T[]): T[] {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
+function shuffleQuizQuestion(q: QuizQuestion): QuizQuestion {
+  const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct_index }));
+  const shuffledOptions = shuffleArray(optionsWithIndex);
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+  return {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correct_index: newCorrectIndex
+  };
+}
+
+export const AITutorQuiz: React.FC<Props> = ({ quiz: originalQuiz, videoId, onComplete }) => {
+    const quiz = useMemo(() => {
+        if (!originalQuiz || !originalQuiz.questions) return originalQuiz;
+        return {
+            ...originalQuiz,
+            questions: shuffleArray(originalQuiz.questions).map(shuffleQuizQuestion)
+        };
+    }, [originalQuiz]);
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);

@@ -56,6 +56,27 @@ type QuizPhase =
     }
   | { phase: "results"; subindice: string; questions: QuizQuestion[]; answers: number[] };
 
+// Helper to shuffle an array (Fisher-Yates)
+function shuffleArray<T>(array: T[]): T[] {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
+function shuffleQuizQuestion(q: QuizQuestion): QuizQuestion {
+  const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct }));
+  const shuffledOptions = shuffleArray(optionsWithIndex);
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+  return {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correct: newCorrectIndex
+  };
+}
+
 export default function PracticaSubindice() {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
@@ -76,12 +97,14 @@ export default function PracticaSubindice() {
     const questions = staticBank[subindice];
     if (!questions || questions.length === 0) return;
 
+    const randomizedQuestions = shuffleArray(questions).map(shuffleQuizQuestion);
+
     setQuiz({
       phase: "quiz",
       subindice,
-      questions,
+      questions: randomizedQuestions,
       currentIdx: 0,
-      answers: new Array(questions.length).fill(null),
+      answers: new Array(randomizedQuestions.length).fill(null),
       feedbackIdx: null,
     });
   };
