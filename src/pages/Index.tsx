@@ -434,19 +434,30 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Primary CTA — violet glow */}
-              <button
-                onClick={() => navigate("/simulador-pro")}
-                className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
-                style={{
-                  background: "linear-gradient(135deg,#7c3aed,#6d28d9)",
-                  boxShadow: "0 0 40px rgba(124,58,237,0.5), 0 0 80px rgba(124,58,237,0.15)",
-                }}
-              >
-                {etapa === 'registro' || etapa === 'preparacion'
-                  ? `🚀 Practica ahora — El examen es en ${daysToExam} días`
-                  : '🚀 Practica ahora — Prepárate para el siguiente ciclo'}
-              </button>
+              {/* Primary CTAs — two buttons side by side */}
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <button
+                  onClick={() => navigate("/simulador-pro")}
+                  className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "linear-gradient(135deg,#7c3aed,#6d28d9)",
+                    boxShadow: "0 0 40px rgba(124,58,237,0.5), 0 0 80px rgba(124,58,237,0.15)",
+                  }}
+                >
+                  🚀 Simulador Pro
+                </button>
+                <button
+                  onClick={() => navigate("/practica-subindice")}
+                  className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "transparent",
+                    border: "2px solid rgba(124,58,237,0.7)",
+                    boxShadow: "0 0 20px rgba(124,58,237,0.2)",
+                  }}
+                >
+                  📚 Práctica por Tema
+                </button>
+              </div>
 
               {/* Guía 2026 promo — hero inline */}
               <div
