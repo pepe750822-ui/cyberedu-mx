@@ -72,12 +72,20 @@ const premiumPackages = [
     tokens: 100,
     price: 90,
     pricePerToken: 0.90,
-    badge: "PAQUETE",
+    badge: "PAGO ÚNICO",
     badgeColor: "bg-purple-600",
     icon: <Rocket className="h-6 w-6 text-purple-400" />,
-    description: "44 videos + Simulador Guía 2026 sin límite · Pago único",
+    description: "Pago único — acceso de por vida",
     urgency: "Todo lo que necesitas para el examen",
-    perks: ["44 videos de estudio Guía 2026", "Simulador banco 10 completo", "Tutor IA incluido"],
+    perks: [
+      "44 videos de estudio Guía 2026",
+      "Simulador completo — todos los bancos (1 al 10)",
+      "Acordeón 2026 completo",
+      "Nueva área de Subíndices",
+      "150 tokens de regalo para el Tutor IA",
+    ],
+    note: "*El Tutor IA ilimitado no está incluido. Los 150 tokens de regalo te permiten hacer consultas al tutor desde el primer día.",
+    ctaLabel: "Obtener Guía 2026",
   },
   {
     id: "paquete_completo",
@@ -385,6 +393,9 @@ const TokensPage = () => {
                         </div>
                       ))}
                     </div>
+                    {(pkg as any).note && (
+                      <p className="text-[10px] text-slate-500 leading-relaxed pt-1">{(pkg as any).note}</p>
+                    )}
                   </CardContent>
                   <CardFooter className="p-8 pt-0 flex flex-col gap-2">
                     <Button
@@ -395,7 +406,7 @@ const TokensPage = () => {
                       {loadingPkg === pkg.id ? (
                         <div className="h-5 w-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
-                        `Comprar — $${pkg.price} MXN`
+                        (pkg as any).ctaLabel ?? `Comprar — $${pkg.price} MXN`
                       )}
                     </Button>
                     <p className="text-xs text-center text-slate-500 font-medium">{pkg.urgency}</p>
