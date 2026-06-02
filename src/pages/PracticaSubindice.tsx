@@ -92,6 +92,58 @@ function shuffleQuizQuestion(q: QuizQuestion): QuizQuestion {
   };
 }
 
+function renderProgressBadge(concepto: string, areaNombre: string) {
+  const slug = createSlug(concepto.split(":")[0]);
+  const materiaSlug = createSlug(areaNombre);
+  const storageKey = `practica_resultado_${materiaSlug}_${slug}`;
+  
+  let savedResult: {
+    set1: { correct: number; incorrect: number } | null;
+    set2: { correct: number; incorrect: number } | null;
+  } = { set1: null, set2: null };
+
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) savedResult = JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+
+  const s1 = savedResult.set1;
+  const s2 = savedResult.set2;
+
+  if (!s1 && !s2) return null;
+
+  // Si solo completó el Set 1
+  if (s1 && !s2) {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-[10px] shrink-0">
+        5/10 · Set 2 pendiente
+      </span>
+    );
+  }
+
+  // Si completó ambos Sets
+  const totalCorrectas = (s1?.correct ?? 0) + (s2?.correct ?? 0);
+  const totalPorcentaje = Math.round((totalCorrectas / 10) * 100);
+
+  let badgeColor = "bg-red-500/10 border-red-500/30 text-red-400";
+  let symbol = "🔄";
+  if (totalPorcentaje >= 80) {
+    badgeColor = "bg-emerald-500/10 border-emerald-500/30 text-emerald-400";
+    symbol = "✅";
+  } else if (totalPorcentaje >= 60) {
+    badgeColor = "bg-amber-500/10 border-amber-500/30 text-amber-400";
+    symbol = "📈";
+  }
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold shrink-0 ${badgeColor}`}>
+      {totalPorcentaje}% {symbol}
+    </span>
+  );
+}
+
 export default function PracticaSubindice() {
   const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
@@ -433,9 +485,12 @@ export default function PracticaSubindice() {
                                   className="flex items-center justify-between px-5 py-3 gap-4 hover:bg-white/3 transition-colors"
                                 >
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-white leading-snug">
-                                      {label}
-                                    </p>
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <p className="text-sm font-medium text-white leading-snug">
+                                        {label}
+                                      </p>
+                                      {renderProgressBadge(concepto, area.nombre)}
+                                    </div>
                                     {concepto.includes(":") && (
                                       <p className="text-[11px] text-slate-500 mt-0.5 leading-snug line-clamp-1">
                                         {concepto.split(":").slice(1).join(":").trim()}
