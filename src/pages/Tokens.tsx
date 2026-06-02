@@ -334,6 +334,13 @@ const TokensPage = () => {
             🎟️ COMPRA <span className="text-primary not-italic">TOKENS</span>
           </h1>
 
+          <p className="text-center text-sm text-gray-500 mt-2 mb-6 px-4">
+            💙 CyberEdu MX siempre tendrá recursos gratuitos.
+            Los planes premium nos ayudan a cubrir los costos de
+            servidores, IA y desarrollo continuo. ¡Gracias por
+            apoyar el proyecto!
+          </p>
+
           <div className="max-w-2xl space-y-4">
             <p className="text-lg md:text-xl text-slate-400 font-medium leading-relaxed">
               Desbloquea el poder total del <span className="text-white font-bold">CyberAgent IA</span>.
@@ -1033,6 +1040,10 @@ const TokensPage = () => {
                 Cada interacción con la IA consume 1 token del balance disponible.
                 <span className="text-primary font-bold"> IMPORTANTE:</span> El acceso a videos, guías y simuladores básicos sigue siendo **absolutamente gratis** para todos.
                 El paquete Guía 2026 incluye 150 tokens de regalo para el Tutor IA. Para uso ilimitado, adquiere tokens adicionales desde tu perfil.
+            </p>
+            <p className="text-[10px] font-medium leading-relaxed text-emerald-600">
+                🌱 CyberEdu MX siempre tendrá recursos gratuitos para todos los estudiantes.
+                Los tokens y paquetes premium son opcionales y están pensados para quienes quieren llevar su preparación al siguiente nivel.
             </p>
         </div>
       </div>
