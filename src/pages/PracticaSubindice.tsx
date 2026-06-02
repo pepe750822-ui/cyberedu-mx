@@ -191,6 +191,46 @@ export default function PracticaSubindice() {
     if (quiz.phase !== "quiz") return;
     // Fill unanswered with -1 to allow seeing results even if incomplete
     const completeAnswers = quiz.answers.map(a => a === null ? -1 : a);
+
+    // Persist result in localStorage
+    const correctCount = completeAnswers.filter((a, i) => a === quiz.questions[i].correct).length;
+    const incorrectCount = quiz.questions.length - correctCount;
+
+    const slug = createSlug(quiz.subindice);
+    const foundArea = areas.find(area => 
+      area.subtemas.some(subtema => 
+        subtema.contenido.some(conceptoStr => 
+          conceptoStr.split(":")[0] === quiz.subindice
+        )
+      )
+    );
+    const materiaSlug = foundArea ? createSlug(foundArea.nombre) : "general";
+    const storageKey = `practica_resultado_${materiaSlug}_${slug}`;
+
+    let savedResult: {
+      set1: { correct: number; incorrect: number } | null;
+      set2: { correct: number; incorrect: number } | null;
+    } = { set1: null, set2: null };
+
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) savedResult = JSON.parse(raw);
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (quiz.currentSet === 1) {
+      savedResult.set1 = { correct: correctCount, incorrect: incorrectCount };
+    } else {
+      savedResult.set2 = { correct: correctCount, incorrect: incorrectCount };
+    }
+
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(savedResult));
+    } catch (e) {
+      console.error(e);
+    }
+
     setQuiz({
       phase: "results",
       subindice: quiz.subindice,
@@ -630,6 +670,135 @@ export default function PracticaSubindice() {
                       </div>
                     );
                   })}
+
+                  {/* 📊 RESUMEN ACUMULADO DEL SUBÍNDICE */}
+                  {(() => {
+                    const slug = createSlug(quiz.subindice);
+                    const foundArea = areas.find(area => 
+                      area.subtemas.some(subtema => 
+                        subtema.contenido.some(conceptoStr => 
+                          conceptoStr.split(":")[0] === quiz.subindice
+                        )
+                      )
+                    );
+                    const materiaSlug = foundArea ? createSlug(foundArea.nombre) : "general";
+                    const storageKey = `practica_resultado_${materiaSlug}_${slug}`;
+                    
+                    let savedResult: {
+                      set1: { correct: number; incorrect: number } | null;
+                      set2: { correct: number; incorrect: number } | null;
+                    } = { set1: null, set2: null };
+
+                    try {
+                      const raw = localStorage.getItem(storageKey);
+                      if (raw) savedResult = JSON.parse(raw);
+                    } catch (e) {
+                      console.error(e);
+                    }
+
+                    // Fallback para el caso actual si no hay datos en localStorage aún
+                    if (!savedResult.set1 && !savedResult.set2) {
+                      const correctCount = quiz.answers.filter((a, i) => a === quiz.questions[i].correct).length;
+                      const incorrectCount = quiz.questions.length - correctCount;
+                      if (quiz.currentSet === 1) {
+                        savedResult.set1 = { correct: correctCount, incorrect: incorrectCount };
+                      } else {
+                        savedResult.set2 = { correct: correctCount, incorrect: incorrectCount };
+                      }
+                    }
+
+                    const s1 = savedResult.set1;
+                    const s2 = savedResult.set2;
+
+                    const totalResueltas = (s1 ? 5 : 0) + (s2 ? 5 : 0);
+                    const totalCorrectas = (s1?.correct ?? 0) + (s2?.correct ?? 0);
+                    const totalIncorrectas = (s1?.incorrect ?? 0) + (s2?.incorrect ?? 0);
+                    const totalPorcentaje = totalResueltas > 0 ? Math.round((totalCorrectas / totalResueltas) * 100) : 0;
+
+                    let colorClasses = {
+                      border: "border-red-500/30",
+                      bg: "bg-red-500/5",
+                      text: "text-red-400",
+                      message: "Repasa este tema",
+                    };
+                    if (totalPorcentaje >= 80) {
+                      colorClasses = {
+                        border: "border-emerald-500/30",
+                        bg: "bg-emerald-500/5",
+                        text: "text-emerald-400",
+                        message: "¡Excelente dominio!",
+                      };
+                    } else if (totalPorcentaje >= 60) {
+                      colorClasses = {
+                        border: "border-amber-500/30",
+                        bg: "bg-amber-500/5",
+                        text: "text-amber-400",
+                        message: "Buen avance, sigue practicando",
+                      };
+                    }
+
+                    return (
+                      <div className={`rounded-2xl border ${colorClasses.border} ${colorClasses.bg} p-5 space-y-4`}>
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                            📊 Tu avance en este tema
+                          </h3>
+                          {totalResueltas === 10 && (
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 border border-white/10 ${colorClasses.text}`}>
+                              {colorClasses.message}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-slate-400">
+                          <div className="p-3 bg-white/3 border border-white/5 rounded-xl space-y-1">
+                            <p className="font-bold text-slate-300">Set 1 (Primeras 5):</p>
+                            {s1 ? (
+                              <p className="flex items-center gap-2">
+                                <span className="text-emerald-400 font-bold">✅ {s1.correct} correctas</span>
+                                <span className="text-red-400 font-bold">❌ {s1.incorrect} mal</span>
+                              </p>
+                            ) : (
+                              <p className="text-slate-500 italic">🔒 Pendiente</p>
+                            )}
+                          </div>
+
+                          <div className="p-3 bg-white/3 border border-white/5 rounded-xl space-y-1">
+                            <p className="font-bold text-slate-300">Set 2 (Segundas 5):</p>
+                            {s2 ? (
+                              <p className="flex items-center gap-2">
+                                <span className="text-emerald-400 font-bold">✅ {s2.correct} correctas</span>
+                                <span className="text-red-400 font-bold">❌ {s2.incorrect} mal</span>
+                              </p>
+                            ) : (
+                              <p className="text-slate-500 italic">🔒 Pendiente</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="pt-2 border-t border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-2 text-xs">
+                          <div>
+                            {totalResueltas < 10 ? (
+                              <p className="text-slate-300 font-bold">
+                                Total: <span className="text-primary font-black text-sm">{totalCorrectas} de {totalResueltas} resueltas</span>
+                              </p>
+                            ) : (
+                              <p className="text-slate-300 font-bold">
+                                Total: <span className="text-emerald-400 font-black text-sm">{totalCorrectas} ✅</span> · <span className="text-red-400 font-black text-sm">{totalIncorrectas} ❌</span> de 10
+                              </p>
+                            )}
+                          </div>
+
+                          {totalResueltas === 10 && (
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-slate-300">🏆 Dominio:</span>
+                              <span className={`text-base font-black ${colorClasses.text}`}>{totalPorcentaje}%</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Actions */}
                   <div className="space-y-3">
