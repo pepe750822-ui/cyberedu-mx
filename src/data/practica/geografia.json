@@ -55,6 +55,61 @@
         ],
         "correct": 2,
         "explanation": "La producción agrícola es una actividad económica, no un componente natural; el relieve, el clima y la hidrografía son elementos naturales del espacio geográfico."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de componente económico del espacio geográfico?",
+        "options": [
+          "La vegetación",
+          "Las vías de comunicación",
+          "La densidad de población",
+          "El relieve"
+        ],
+        "correct": 1,
+        "explanation": "Las vías de comunicación forman parte del componente económico, ya que facilitan el transporte y el comercio."
+      },
+      {
+        "question": "El conjunto de montañas, llanuras y mesetas de una región corresponde a un componente:",
+        "options": [
+          "Social",
+          "Económico",
+          "Natural",
+          "Cultural"
+        ],
+        "correct": 2,
+        "explanation": "Las formas del relieve son elementos naturales del espacio geográfico."
+      },
+      {
+        "question": "¿Qué componente del espacio geográfico se relaciona con las características de la población, como su distribución y crecimiento?",
+        "options": [
+          "Natural",
+          "Social",
+          "Económico",
+          "Político"
+        ],
+        "correct": 1,
+        "explanation": "La población es un componente social del espacio geográfico."
+      },
+      {
+        "question": "La producción de maíz en una región agrícola es un ejemplo de componente:",
+        "options": [
+          "Natural",
+          "Social",
+          "Económico",
+          "Cultural"
+        ],
+        "correct": 2,
+        "explanation": "La producción de bienes es una actividad económica que forma parte del componente económico."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un componente social del espacio geográfico?",
+        "options": [
+          "La densidad de población",
+          "Las tradiciones",
+          "El clima",
+          "La migración"
+        ],
+        "correct": 2,
+        "explanation": "El clima es un componente natural, no social."
       }
     ]
   },
@@ -114,6 +169,61 @@
         ],
         "correct": 1,
         "explanation": "La latitud es una medida angular, por lo que se expresa en grados, minutos y segundos."
+      },
+      {
+        "question": "¿Qué coordenada geográfica mide la distancia angular desde el ecuador hasta un punto de la superficie terrestre?",
+        "options": [
+          "Longitud",
+          "Latitud",
+          "Altitud",
+          "Meridiano"
+        ],
+        "correct": 1,
+        "explanation": "La latitud es la distancia angular medida en grados desde el ecuador (0°) hasta los polos (90° N o S)."
+      },
+      {
+        "question": "Un punto con latitud 45° S se ubica en el hemisferio:",
+        "options": [
+          "Norte",
+          "Sur",
+          "Este",
+          "Oeste"
+        ],
+        "correct": 1,
+        "explanation": "El hemisferio sur abarca desde el ecuador (0°) hasta el polo sur (90° S)."
+      },
+      {
+        "question": "¿Cuántos grados de latitud hay desde el ecuador hasta el polo norte?",
+        "options": [
+          "180°",
+          "90°",
+          "360°",
+          "45°"
+        ],
+        "correct": 1,
+        "explanation": "La latitud máxima es 90° hacia el norte o hacia el sur, desde el ecuador hasta cada polo."
+      },
+      {
+        "question": "¿Qué tipo de líneas representan la latitud en un mapa?",
+        "options": [
+          "Meridianos",
+          "Paralelos",
+          "Ecuador",
+          "Trópicos"
+        ],
+        "correct": 1,
+        "explanation": "Los paralelos son líneas imaginarias que miden la latitud, siendo el ecuador el principal."
+      },
+      {
+        "question": "¿Cuál de los siguientes puntos tiene mayor latitud?",
+        "options": [
+          "30° N",
+          "45° S",
+          "15° N",
+          "60° S"
+        ],
+        "correct": 3,
+        "explanation": "La latitud aumenta desde el ecuador hacia los polos; 60° S está más cerca del polo sur que 45° S."
       }
     ]
   },
@@ -173,6 +283,61 @@
         ],
         "correct": 1,
         "explanation": "120° E indica que el lugar se encuentra 120 grados al este del meridiano de Greenwich, medido sobre los meridianos."
+      },
+      {
+        "question": "¿Cuál es la longitud de un lugar ubicado a 45° al este del meridiano de Greenwich?",
+        "options": [
+          "45° N",
+          "45° S",
+          "45° E",
+          "45° O"
+        ],
+        "correct": 2,
+        "explanation": "La longitud se mide en grados este (E) u oeste (O) desde el meridiano de Greenwich, por lo que 45° al este corresponde a 45° E."
+      },
+      {
+        "question": "¿Qué meridiano divide la Tierra en hemisferio este y hemisferio oeste?",
+        "options": [
+          "Ecuador",
+          "Meridiano de Greenwich",
+          "Trópico de Cáncer",
+          "Círculo Polar Ártico"
+        ],
+        "correct": 1,
+        "explanation": "El meridiano de Greenwich es el meridiano principal (0°) que divide la Tierra en hemisferios este y oeste."
+      },
+      {
+        "question": "Si un punto tiene longitud 180°, ¿en qué meridiano se encuentra?",
+        "options": [
+          "Meridiano de Greenwich",
+          "Antimeridiano",
+          "Ecuador",
+          "Trópico de Capricornio"
+        ],
+        "correct": 1,
+        "explanation": "El antimeridiano es el meridiano opuesto al de Greenwich, ubicado a 180° de longitud."
+      },
+      {
+        "question": "¿Qué indica la longitud de 90° O?",
+        "options": [
+          "90 grados al oeste del meridiano de Greenwich",
+          "90 grados al este del meridiano de Greenwich",
+          "90 grados al norte del ecuador",
+          "90 grados al sur del ecuador"
+        ],
+        "correct": 0,
+        "explanation": "La longitud 90° O significa que el lugar está 90 grados al oeste del meridiano de Greenwich."
+      },
+      {
+        "question": "¿Cuál es la longitud de un punto ubicado a 150° al oeste del meridiano de Greenwich?",
+        "options": [
+          "150° E",
+          "150° O",
+          "30° O",
+          "30° E"
+        ],
+        "correct": 1,
+        "explanation": "La longitud se mide en grados al este (E) u oeste (O) del meridiano de Greenwich. Al estar al oeste, se indica como 150° O."
       }
     ]
   },
@@ -232,6 +397,61 @@
         ],
         "correct": 2,
         "explanation": "La diferencia es de 15 horas (de -6 a +9), por lo que debes adelantar el reloj 15 horas."
+      },
+      {
+        "question": "Si en la Ciudad de México (huso -6) son las 8:00 a.m., ¿qué hora es en Madrid (huso +1)?",
+        "options": [
+          "2:00 p.m.",
+          "3:00 p.m.",
+          "1:00 p.m.",
+          "4:00 p.m."
+        ],
+        "correct": 1,
+        "explanation": "La diferencia es de 7 horas (de -6 a +1), por lo que se suman 7 horas a las 8:00 a.m., resultando las 3:00 p.m."
+      },
+      {
+        "question": "¿Cuál es la razón principal por la que se crearon los husos horarios?",
+        "options": [
+          "Facilitar los viajes espaciales",
+          "Estandarizar la hora en diferentes regiones",
+          "Aumentar las horas de luz solar",
+          "Dividir la Tierra en continentes"
+        ],
+        "correct": 1,
+        "explanation": "Los husos horarios se crearon para que todos los lugares tuvieran una hora similar a la del sol, evitando confusiones en los horarios."
+      },
+      {
+        "question": "Si en el huso horario -5 son las 10:00 p.m., ¿qué hora es en el huso horario +8?",
+        "options": [
+          "11:00 a.m. del día siguiente",
+          "1:00 a.m. del día siguiente",
+          "3:00 a.m. del día siguiente",
+          "7:00 a.m. del día siguiente"
+        ],
+        "correct": 0,
+        "explanation": "La diferencia es de 13 horas (de -5 a +8), sumando 13 horas a las 10:00 p.m. se obtienen las 11:00 a.m. del día siguiente."
+      },
+      {
+        "question": "¿Qué ocurre con la hora al cruzar la Línea Internacional de Cambio de Fecha de oeste a este?",
+        "options": [
+          "Se adelanta un día",
+          "Se retrasa un día",
+          "Se adelanta una hora",
+          "Se retrasa una hora"
+        ],
+        "correct": 1,
+        "explanation": "Al cruzar de oeste a este se resta un día, es decir, se retrocede al día anterior."
+      },
+      {
+        "question": "Si un avión sale de Londres (huso 0) a las 12:00 p.m. y vuela hacia el oeste durante 6 horas, ¿qué hora es en el lugar de destino si está en el huso -6?",
+        "options": [
+          "6:00 a.m.",
+          "12:00 p.m.",
+          "6:00 p.m.",
+          "12:00 a.m."
+        ],
+        "correct": 0,
+        "explanation": "Al volar hacia el oeste, se resta la diferencia horaria. La diferencia es de 6 horas, por lo que 12:00 p.m. menos 6 horas son las 6:00 a.m."
       }
     ]
   },
@@ -291,6 +511,61 @@
         ],
         "correct": 0,
         "explanation": "Los mapas de coropletas usan colores o tramas para mostrar datos estadísticos por áreas, como la densidad de población."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos representa mejor una región geográfica?",
+        "options": [
+          "El Volcán Popocatépetl",
+          "La ciudad de Monterrey",
+          "El desierto de Sonora",
+          "El río Grijalva"
+        ],
+        "correct": 2,
+        "explanation": "Una región es un área con características comunes, como el clima y la vegetación. El desierto de Sonora comparte condiciones áridas que lo definen como región."
+      },
+      {
+        "question": "¿Qué concepto geográfico se refiere al espacio que es percibido y valorado por las personas por su significado cultural o histórico?",
+        "options": [
+          "Región",
+          "Territorio",
+          "Lugar",
+          "Paisaje"
+        ],
+        "correct": 2,
+        "explanation": "El lugar tiene un significado subjetivo, como la casa de la abuela o un sitio histórico. Se diferencia de otros conceptos por su carga emocional o cultural."
+      },
+      {
+        "question": "¿Cuál de los siguientes elementos es indispensable para delimitar un territorio?",
+        "options": [
+          "Un clima homogéneo",
+          "Una frontera o límite",
+          "Un relieve montañoso",
+          "Una alta densidad de población"
+        ],
+        "correct": 1,
+        "explanation": "El territorio se define por un espacio delimitado por fronteras, ya sean políticas o naturales, sobre el cual se ejerce control o soberanía."
+      },
+      {
+        "question": "Si en un mapa la escala es 1:250,000, ¿cuántos kilómetros reales representa 1 centímetro en el mapa?",
+        "options": [
+          "2.5 km",
+          "25 km",
+          "250 km",
+          "0.25 km"
+        ],
+        "correct": 0,
+        "explanation": "1 cm en el mapa equivale a 250,000 cm reales. Al convertir a kilómetros (dividir entre 100,000), obtenemos 2.5 km."
+      },
+      {
+        "question": "¿Qué tipo de mapa usarías para identificar las principales carreteras y caminos de un país?",
+        "options": [
+          "Mapa topográfico",
+          "Mapa de vías de comunicación",
+          "Mapa climático",
+          "Mapa político"
+        ],
+        "correct": 1,
+        "explanation": "Los mapas de vías de comunicación muestran carreteras, ferrocarriles y otras rutas de transporte. Son útiles para planificar viajes o conocer la infraestructura."
       }
     ]
   },
@@ -350,6 +625,61 @@
         ],
         "correct": 3,
         "explanation": "Los mapas culturales muestran aspectos como lenguas, religiones o tradiciones."
+      },
+      {
+        "question": "¿Qué tipo de mapa temático muestra la distribución de los recursos minerales en una región?",
+        "options": [
+          "Mapa económico",
+          "Mapa político",
+          "Mapa cultural",
+          "Mapa social"
+        ],
+        "correct": 0,
+        "explanation": "Los mapas económicos representan actividades productivas como la minería, agricultura o industria."
+      },
+      {
+        "question": "Un mapa que representa las regiones de habla náhuatl en México es un ejemplo de mapa temático:",
+        "options": [
+          "Cultural",
+          "Natural",
+          "Económico",
+          "Político"
+        ],
+        "correct": 0,
+        "explanation": "Los mapas culturales muestran aspectos como lenguas, religiones o tradiciones de la población."
+      },
+      {
+        "question": "¿Cuál de los siguientes mapas temáticos muestra la densidad de carreteras y vías de comunicación?",
+        "options": [
+          "Mapa económico",
+          "Mapa social",
+          "Mapa político",
+          "Mapa natural"
+        ],
+        "correct": 0,
+        "explanation": "Las vías de comunicación son infraestructura que apoya las actividades económicas, por eso pertenecen a mapas económicos."
+      },
+      {
+        "question": "Un mapa que indica las zonas con mayor índice de pobreza es un mapa temático:",
+        "options": [
+          "Social",
+          "Natural",
+          "Cultural",
+          "Político"
+        ],
+        "correct": 0,
+        "explanation": "Los mapas sociales representan características de la población como salud, educación o nivel de ingresos."
+      },
+      {
+        "question": "¿Qué tipo de mapa temático representaría los tipos de suelo en México?",
+        "options": [
+          "Mapa natural",
+          "Mapa económico",
+          "Mapa político",
+          "Mapa cultural"
+        ],
+        "correct": 0,
+        "explanation": "Los mapas naturales muestran elementos del medio físico como relieve, clima, vegetación o suelos."
       }
     ]
   },
@@ -409,6 +739,61 @@
         ],
         "correct": 1,
         "explanation": "El GPS se usa para navegación y localización, como en aplicaciones de mapas en teléfonos o en vehículos para encontrar direcciones."
+      },
+      {
+        "question": "¿Qué nombre recibe la red de satélites que orbita la Tierra y permite el funcionamiento del GPS?",
+        "options": [
+          "Constelación de satélites",
+          "Estrella artificial",
+          "Sonda espacial",
+          "Estación orbital"
+        ],
+        "correct": 0,
+        "explanation": "La red de satélites del GPS se llama constelación de satélites, ya que trabajan juntos como un grupo para cubrir toda la Tierra."
+      },
+      {
+        "question": "¿Cuál es la función principal de los satélites GPS en la determinación de coordenadas?",
+        "options": [
+          "Enviar señales de radio con su posición y tiempo",
+          "Tomar fotografías de la superficie terrestre",
+          "Medir la temperatura atmosférica",
+          "Transmitir señales de televisión"
+        ],
+        "correct": 0,
+        "explanation": "Los satélites GPS envían señales de radio que contienen su ubicación exacta y la hora, permitiendo a los receptores calcular distancias y coordenadas."
+      },
+      {
+        "question": "¿Qué tecnología utiliza el GPS para calcular la distancia entre el satélite y el receptor?",
+        "options": [
+          "Triangulación",
+          "Trilateración",
+          "Radar",
+          "Ecolocalización"
+        ],
+        "correct": 1,
+        "explanation": "El GPS usa trilateración, que calcula distancias a partir del tiempo que tardan las señales en viajar desde varios satélites."
+      },
+      {
+        "question": "¿Qué información adicional proporciona el GPS además de latitud y longitud?",
+        "options": [
+          "Altitud",
+          "Velocidad del viento",
+          "Presión atmosférica",
+          "Humedad relativa"
+        ],
+        "correct": 0,
+        "explanation": "Además de latitud y longitud, el GPS puede calcular la altitud (elevación sobre el nivel del mar) usando señales de al menos cuatro satélites."
+      },
+      {
+        "question": "¿En qué año se completó la constelación de satélites GPS con cobertura global?",
+        "options": [
+          "1995",
+          "2000",
+          "1985",
+          "2010"
+        ],
+        "correct": 0,
+        "explanation": "El sistema GPS alcanzó su capacidad operativa total en 1995, cuando hubo suficientes satélites para dar cobertura global."
       }
     ]
   },
@@ -468,6 +853,61 @@
         ],
         "correct": 1,
         "explanation": "Sin rotación, un hemisferio quedaría permanentemente iluminado por el Sol y el otro en oscuridad constante."
+      },
+      {
+        "question": "¿Qué fenómeno natural se debe al movimiento de rotación de la Tierra?",
+        "options": [
+          "Las estaciones del año",
+          "El ciclo día-noche",
+          "Los eclipses",
+          "Las mareas"
+        ],
+        "correct": 1,
+        "explanation": "El movimiento de rotación de la Tierra sobre su eje cada 24 horas causa el ciclo de día y noche."
+      },
+      {
+        "question": "¿Cuánto tiempo aproximadamente tarda la Tierra en completar su movimiento de traslación alrededor del Sol?",
+        "options": [
+          "24 horas",
+          "30 días",
+          "365 días",
+          "12 horas"
+        ],
+        "correct": 2,
+        "explanation": "La Tierra tarda aproximadamente 365 días en dar una vuelta completa al Sol, lo que define un año."
+      },
+      {
+        "question": "¿Qué movimiento de la Tierra origina las estaciones del año?",
+        "options": [
+          "Rotación",
+          "Traslación",
+          "Precesión",
+          "Nutación"
+        ],
+        "correct": 1,
+        "explanation": "El movimiento de traslación, junto con la inclinación del eje terrestre, produce las estaciones del año."
+      },
+      {
+        "question": "Si la Tierra no tuviera inclinación en su eje, ¿qué ocurriría con las estaciones?",
+        "options": [
+          "Serían más extremas",
+          "No existirían",
+          "Serían iguales",
+          "Durarían más"
+        ],
+        "correct": 1,
+        "explanation": "Sin inclinación, los rayos solares incidirían siempre de forma similar, eliminando las estaciones."
+      },
+      {
+        "question": "¿Qué consecuencia tiene el movimiento de traslación de la Tierra en los recursos naturales?",
+        "options": [
+          "Provoca la sucesión de días y noches",
+          "Influye en los ciclos de cultivo y cosecha",
+          "Genera las mareas oceánicas",
+          "Causa los terremotos"
+        ],
+        "correct": 1,
+        "explanation": "Las estaciones del año, causadas por la traslación, determinan los ciclos agrícolas y la disponibilidad de recursos."
       }
     ]
   },
@@ -527,6 +967,61 @@
         ],
         "correct": 1,
         "explanation": "Las capas se superponen en un mapa digital, permitiendo analizar cómo se relacionan los diferentes temas, como la cercanía de escuelas a carreteras."
+      },
+      {
+        "question": "¿Qué nombre recibe la superposición de varias capas de datos en un SIG para analizar relaciones espaciales?",
+        "options": [
+          "A. Georreferenciación",
+          "B. Superposición de capas",
+          "C. Digitalización",
+          "D. Teledetección"
+        ],
+        "correct": 1,
+        "explanation": "La superposición de capas permite combinar información de diferentes temas, como ríos y carreteras, para identificar relaciones."
+      },
+      {
+        "question": "¿Cuál de los siguientes ejemplos representa una capa de datos en un SIG?",
+        "options": [
+          "A. Una fotografía aérea de una ciudad",
+          "B. Un mapa de calles de una colonia",
+          "C. Un archivo con las altitudes de una montaña",
+          "D. Una tabla con nombres de países"
+        ],
+        "correct": 2,
+        "explanation": "Una capa de datos contiene información geográfica específica, como altitudes, que se puede visualizar en un mapa digital."
+      },
+      {
+        "question": "¿Qué herramienta de un SIG permite agregar coordenadas geográficas a una imagen o mapa escaneado?",
+        "options": [
+          "A. Georreferenciación",
+          "B. Superposición de capas",
+          "C. Análisis espacial",
+          "D. Consulta de atributos"
+        ],
+        "correct": 0,
+        "explanation": "La georreferenciación asigna coordenadas reales a una imagen para que coincida con la ubicación en la Tierra."
+      },
+      {
+        "question": "En un SIG, ¿qué se entiende por 'consulta de atributos'?",
+        "options": [
+          "A. Buscar datos en una capa según características como nombre o altura",
+          "B. Cambiar el color de las capas en el mapa",
+          "C. Medir distancias entre puntos en el mapa",
+          "D. Superponer capas para crear un nuevo mapa"
+        ],
+        "correct": 0,
+        "explanation": "La consulta de atributos permite seleccionar elementos de una capa que cumplan condiciones, como 'ríos con más de 100 km de longitud'."
+      },
+      {
+        "question": "¿Cuál es la función principal de un SIG en el análisis del espacio geográfico?",
+        "options": [
+          "A. Almacenar y procesar datos geográficos para resolver problemas espaciales",
+          "B. Dibujar mapas a mano alzada",
+          "C. Tomar fotografías desde satélites",
+          "D. Medir la temperatura de la Tierra"
+        ],
+        "correct": 0,
+        "explanation": "Un SIG integra datos de diferentes fuentes para analizar patrones y relaciones en el espacio geográfico."
       }
     ]
   },
@@ -586,6 +1081,61 @@
         ],
         "correct": 1,
         "explanation": "La subducción es el proceso donde una placa oceánica se hunde bajo otra, generando fusión de rocas y actividad volcánica."
+      },
+      {
+        "question": "¿Qué fenómeno natural está directamente asociado a las zonas de subducción en los límites convergentes de placas tectónicas?",
+        "options": [
+          "Formación de dorsales oceánicas",
+          "Terremotos y erupciones volcánicas",
+          "Expansión del fondo oceánico",
+          "Desplazamiento de continentes"
+        ],
+        "correct": 1,
+        "explanation": "En las zonas de subducción, el roce y la fricción entre placas generan sismos, y el magma asciende produciendo volcanes."
+      },
+      {
+        "question": "¿Cuál es el principal factor que determina la alta sismicidad en los límites convergentes de placas?",
+        "options": [
+          "La velocidad de desplazamiento de las placas",
+          "La acumulación de tensión por la fricción entre placas",
+          "La temperatura del magma en el manto",
+          "La profundidad del océano"
+        ],
+        "correct": 1,
+        "explanation": "Cuando las placas chocan, se acumula energía que se libera en forma de terremotos al vencerse la fricción."
+      },
+      {
+        "question": "¿Qué tipo de placa se hunde en una zona de subducción típica?",
+        "options": [
+          "Placa continental",
+          "Placa oceánica",
+          "Placa mixta",
+          "Placa litosférica"
+        ],
+        "correct": 1,
+        "explanation": "La placa oceánica es más densa que la continental y se hunde en el manto en las zonas de subducción."
+      },
+      {
+        "question": "¿Cuál de los siguientes países se encuentra en una zona de convergencia de placas con alta actividad sísmica y volcánica?",
+        "options": [
+          "Brasil",
+          "Australia",
+          "Japón",
+          "Canadá"
+        ],
+        "correct": 2,
+        "explanation": "Japón está ubicado en el Cinturón de Fuego del Pacífico, donde convergen varias placas tectónicas."
+      },
+      {
+        "question": "¿Qué proceso geológico ocurre cuando dos placas continentales convergen?",
+        "options": [
+          "Formación de una dorsal oceánica",
+          "Creación de nueva corteza oceánica",
+          "Formación de montañas como el Himalaya",
+          "Expansión del fondo marino"
+        ],
+        "correct": 2,
+        "explanation": "Cuando dos placas continentales chocan, se comprimen y elevan formando cadenas montañosas."
       }
     ]
   },
@@ -645,6 +1195,61 @@
         ],
         "correct": 2,
         "explanation": "México es uno de los países con mayor diversidad de reptiles en el mundo, con muchas especies endémicas."
+      },
+      {
+        "question": "¿Qué porcentaje aproximado de las especies del mundo alberga México?",
+        "options": [
+          "5%",
+          "10%",
+          "15%",
+          "20%"
+        ],
+        "correct": 1,
+        "explanation": "México posee alrededor del 10% de la biodiversidad mundial, lo que lo coloca entre los países megadiversos."
+      },
+      {
+        "question": "¿Cuál de los siguientes países NO está en el top 5 de países megadiversos junto con México?",
+        "options": [
+          "Brasil",
+          "Colombia",
+          "India",
+          "Canadá"
+        ],
+        "correct": 3,
+        "explanation": "Canadá no está entre los países megadiversos; los otros sí forman parte del top 5 junto con México."
+      },
+      {
+        "question": "¿Qué grupo de vertebrados tiene la mayor cantidad de especies en México?",
+        "options": [
+          "Aves",
+          "Reptiles",
+          "Mamíferos",
+          "Anfibios"
+        ],
+        "correct": 0,
+        "explanation": "México es el país con mayor diversidad de reptiles, pero en número total de especies de vertebrados, las aves son el grupo más numeroso."
+      },
+      {
+        "question": "¿Cuántas especies de plantas vasculares se estima que existen en México?",
+        "options": [
+          "10,000",
+          "20,000",
+          "30,000",
+          "40,000"
+        ],
+        "correct": 1,
+        "explanation": "México alberga alrededor de 23,000 especies de plantas vasculares, lo que lo sitúa entre los primeros lugares mundiales."
+      },
+      {
+        "question": "¿Qué factor geográfico contribuye a la megadiversidad de México?",
+        "options": [
+          "Su clima polar",
+          "Su relieve montañoso",
+          "Su lejanía del ecuador",
+          "Su escasa extensión territorial"
+        ],
+        "correct": 1,
+        "explanation": "El relieve montañoso de México crea diversos climas y ecosistemas, favoreciendo una gran variedad de especies."
       }
     ]
   },
@@ -704,6 +1309,61 @@
         ],
         "correct": 3,
         "explanation": "En la termosfera, las partículas cargadas interactúan con el campo magnético terrestre, produciendo auroras, y la EEI orbita en esta capa."
+      },
+      {
+        "question": "¿Cuál es la capa de la atmósfera que se extiende desde la superficie terrestre hasta aproximadamente 12 km de altitud y contiene la mayor parte del vapor de agua?",
+        "options": [
+          "Troposfera",
+          "Estratosfera",
+          "Mesosfera",
+          "Termosfera"
+        ],
+        "correct": 0,
+        "explanation": "La troposfera es la capa más cercana a la Tierra, donde ocurren los fenómenos climáticos y contiene casi todo el vapor de agua."
+      },
+      {
+        "question": "¿Qué capa de la atmósfera se caracteriza por tener un aumento de temperatura con la altitud debido a la absorción de radiación ultravioleta por el ozono?",
+        "options": [
+          "Troposfera",
+          "Estratosfera",
+          "Mesosfera",
+          "Exosfera"
+        ],
+        "correct": 1,
+        "explanation": "En la estratosfera se encuentra la capa de ozono que absorbe la radiación UV, calentando esta capa."
+      },
+      {
+        "question": "¿En qué capa de la atmósfera la temperatura disminuye hasta alcanzar los -90°C, siendo la más fría?",
+        "options": [
+          "Troposfera",
+          "Estratosfera",
+          "Mesosfera",
+          "Termosfera"
+        ],
+        "correct": 2,
+        "explanation": "La mesosfera es la capa más fría de la atmósfera, donde los meteoros se desintegran por la fricción."
+      },
+      {
+        "question": "¿Cuál es la capa atmosférica donde los gases se ionizan y permiten la propagación de ondas de radio?",
+        "options": [
+          "Estratosfera",
+          "Mesosfera",
+          "Termosfera",
+          "Exosfera"
+        ],
+        "correct": 2,
+        "explanation": "En la termosfera, las partículas están ionizadas, formando la ionosfera que refleja las ondas de radio."
+      },
+      {
+        "question": "¿Qué capa de la atmósfera es la más delgada y marca el límite con el espacio exterior?",
+        "options": [
+          "Mesosfera",
+          "Termosfera",
+          "Exosfera",
+          "Estratosfera"
+        ],
+        "correct": 2,
+        "explanation": "La exosfera es la capa más externa, donde las moléculas de gas pueden escapar al espacio."
       }
     ]
   },
@@ -763,6 +1423,61 @@
         ],
         "correct": 3,
         "explanation": "El escurrimiento es el movimiento del agua sobre la superficie terrestre, generalmente hacia cuerpos de agua como ríos."
+      },
+      {
+        "question": "¿Qué cambio de estado ocurre durante la evaporación en el ciclo hidrológico?",
+        "options": [
+          "De líquido a gas",
+          "De gas a líquido",
+          "De líquido a sólido",
+          "De sólido a gas"
+        ],
+        "correct": 0,
+        "explanation": "La evaporación es el paso de agua líquida a vapor de agua (gas) por acción del calor solar."
+      },
+      {
+        "question": "¿Qué factor es esencial para que ocurra la condensación en la atmósfera?",
+        "options": [
+          "Enfriamiento del vapor",
+          "Calentamiento del aire",
+          "Aumento de la presión",
+          "Presencia de vientos fuertes"
+        ],
+        "correct": 0,
+        "explanation": "La condensación ocurre cuando el vapor de agua se enfría y se convierte en gotitas, formando nubes."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un tipo de precipitación?",
+        "options": [
+          "Lluvia",
+          "Nieve",
+          "Granizo",
+          "Evaporación"
+        ],
+        "correct": 3,
+        "explanation": "La evaporación es el proceso contrario a la precipitación; los tipos de precipitación son lluvia, nieve y granizo."
+      },
+      {
+        "question": "¿Qué ocurre con el agua que se infiltra en el suelo?",
+        "options": [
+          "Se evapora inmediatamente",
+          "Recarga los mantos acuíferos",
+          "Forma ríos superficiales",
+          "Se convierte en vapor"
+        ],
+        "correct": 1,
+        "explanation": "El agua infiltrada se almacena en el subsuelo, recargando acuíferos que luego pueden dar origen a manantiales."
+      },
+      {
+        "question": "¿Qué proceso del ciclo hidrológico es responsable de transportar el agua desde los océanos hacia los continentes?",
+        "options": [
+          "Evaporación",
+          "Condensación",
+          "Precipitación",
+          "Escurrimiento"
+        ],
+        "correct": 0,
+        "explanation": "La evaporación en los océanos produce vapor que el viento transporta a los continentes, donde luego precipita."
       }
     ]
   },
@@ -822,6 +1537,61 @@
         ],
         "correct": 2,
         "explanation": "Las islas y montañas aisladas suelen tener un alto número de especies endémicas debido a su aislamiento geográfico y condiciones únicas."
+      },
+      {
+        "question": "¿Cuál de las siguientes especies es endémica de la región de Baja California?",
+        "options": [
+          "Cóndor de California",
+          "Pez sapo de Baja California",
+          "Lobo mexicano",
+          "Quetzal"
+        ],
+        "correct": 1,
+        "explanation": "El pez sapo de Baja California es una especie que solo se encuentra en esa región de México, lo que lo hace endémico."
+      },
+      {
+        "question": "¿Qué característica define a una especie endémica?",
+        "options": [
+          "Se encuentra en todos los continentes",
+          "Existe únicamente en una zona geográfica limitada",
+          "Es introducida por el ser humano",
+          "Migra estacionalmente"
+        ],
+        "correct": 1,
+        "explanation": "Una especie endémica es aquella que habita de forma natural solo en un área específica y no en otras partes del mundo."
+      },
+      {
+        "question": "¿Cuál de los siguientes no es un factor que amenace a las especies endémicas?",
+        "options": [
+          "Destrucción de su hábitat",
+          "Introducción de especies invasoras",
+          "Cambio climático",
+          "Migración natural"
+        ],
+        "correct": 3,
+        "explanation": "La migración natural es un proceso normal de las especies, no una amenaza. La destrucción del hábitat, especies invasoras y cambio climático sí son amenazas."
+      },
+      {
+        "question": "¿Por qué las especies endémicas son más vulnerables a la extinción?",
+        "options": [
+          "Porque tienen una distribución geográfica muy amplia",
+          "Porque están adaptadas a condiciones específicas de su hábitat",
+          "Porque se reproducen rápidamente",
+          "Porque son resistentes a cambios ambientales"
+        ],
+        "correct": 1,
+        "explanation": "Al estar adaptadas a condiciones muy particulares, cualquier alteración en su entorno puede afectarlas gravemente, aumentando su riesgo de extinción."
+      },
+      {
+        "question": "¿En qué tipo de ecosistema es más común encontrar especies endémicas en México?",
+        "options": [
+          "Bosques templados",
+          "Islas y zonas aisladas",
+          "Zonas urbanas",
+          "Praderas"
+        ],
+        "correct": 1,
+        "explanation": "Las islas y zonas aisladas, como las Islas Galápagos o la Península de Yucatán, tienen altos niveles de endemismo debido a su aislamiento geográfico."
       }
     ]
   },
@@ -881,6 +1651,61 @@
         ],
         "correct": 1,
         "explanation": "El manto freático o acuífero es la capa subterránea saturada de agua que se recarga mediante la infiltración."
+      },
+      {
+        "question": "¿Qué actividad humana reduce la infiltración y la recarga de mantos freáticos?",
+        "options": [
+          "Construcción de áreas pavimentadas",
+          "Reforestación",
+          "Uso de terrazas agrícolas",
+          "Perforación de pozos"
+        ],
+        "correct": 0,
+        "explanation": "Las áreas pavimentadas impermeabilizan el suelo, impidiendo que el agua se infiltre y recargue los mantos freáticos."
+      },
+      {
+        "question": "¿En qué tipo de relieve es más común la infiltración de agua hacia los mantos freáticos?",
+        "options": [
+          "Montañas escarpadas",
+          "Llanuras con suelo permeable",
+          "Valles profundos",
+          "Mesetas rocosas"
+        ],
+        "correct": 1,
+        "explanation": "En llanuras con suelo permeable, el agua puede filtrarse fácilmente, favoreciendo la recarga de los mantos freáticos."
+      },
+      {
+        "question": "¿Qué papel tienen los bosques en la infiltración del agua?",
+        "options": [
+          "Aumentan la evaporación del agua",
+          "Disminuyen la filtración al suelo",
+          "Ayudan a retener y filtrar el agua",
+          "No influyen en la infiltración"
+        ],
+        "correct": 2,
+        "explanation": "Los bosques retienen el agua de lluvia con sus raíces y hojas, facilitando su infiltración lenta hacia los mantos freáticos."
+      },
+      {
+        "question": "¿Cuál es la principal fuente de recarga de los mantos freáticos?",
+        "options": [
+          "Ríos y lagos",
+          "Lluvia",
+          "Aguas residuales",
+          "Deshielo de glaciares"
+        ],
+        "correct": 1,
+        "explanation": "La lluvia es la principal fuente de recarga, ya que el agua de precipitación se infiltra en el suelo y llega a los mantos freáticos."
+      },
+      {
+        "question": "¿Qué ocurre cuando la extracción de agua subterránea supera la recarga natural?",
+        "options": [
+          "El manto freático se recupera rápidamente",
+          "Se produce un descenso del nivel freático",
+          "Aumenta la infiltración de agua",
+          "El suelo se vuelve más permeable"
+        ],
+        "correct": 1,
+        "explanation": "Si se extrae más agua de la que se infiltra, el nivel del agua subterránea baja, lo que puede agotar el recurso."
       }
     ]
   },
@@ -940,6 +1765,61 @@
         ],
         "correct": 1,
         "explanation": "La densidad de población se obtiene dividiendo el número total de habitantes entre la superficie en km²."
+      },
+      {
+        "question": "¿Qué significa que un país tenga una densidad de población de 150 hab/km²?",
+        "options": [
+          "Que hay 150 habitantes por cada metro cuadrado",
+          "Que hay 150 habitantes por cada kilómetro cuadrado",
+          "Que hay 150 kilómetros cuadrados por cada habitante",
+          "Que la población total es de 150 personas"
+        ],
+        "correct": 1,
+        "explanation": "La densidad de población se mide en habitantes por kilómetro cuadrado, por lo que 150 hab/km² indica que hay 150 personas por cada km² de superficie."
+      },
+      {
+        "question": "Si un estado tiene una superficie de 10,000 km² y una población de 2,500,000 habitantes, ¿cuál es su densidad de población?",
+        "options": [
+          "25 hab/km²",
+          "250 hab/km²",
+          "2,500 hab/km²",
+          "25,000 hab/km²"
+        ],
+        "correct": 1,
+        "explanation": "Se divide la población entre la superficie: 2,500,000 / 10,000 = 250 hab/km²."
+      },
+      {
+        "question": "¿Cuál de las siguientes regiones suele tener una densidad de población más baja?",
+        "options": [
+          "El centro de una gran ciudad",
+          "Una zona desértica",
+          "Una zona costera turística",
+          "Un valle agrícola fértil"
+        ],
+        "correct": 1,
+        "explanation": "Las zonas desérticas tienen condiciones extremas que dificultan la vida, por lo que suelen tener baja densidad de población."
+      },
+      {
+        "question": "Una densidad de población muy alta puede aumentar el riesgo de:",
+        "options": [
+          "Contaminación del aire y escasez de recursos",
+          "Mayor disponibilidad de agua potable",
+          "Menos tráfico vehicular",
+          "Aumento de áreas verdes"
+        ],
+        "correct": 0,
+        "explanation": "La alta concentración de personas genera más contaminación y demanda de recursos, lo que puede provocar escasez y problemas ambientales."
+      },
+      {
+        "question": "Si dos países tienen la misma población, ¿cuál tendrá mayor densidad?",
+        "options": [
+          "El de mayor superficie",
+          "El de menor superficie",
+          "El que tenga más recursos naturales",
+          "El que esté más cerca del mar"
+        ],
+        "correct": 1,
+        "explanation": "La densidad se calcula dividiendo la población entre la superficie. A menor superficie, mayor densidad si la población es igual."
       }
     ]
   },
@@ -999,6 +1879,61 @@
         ],
         "correct": 2,
         "explanation": "El calentador de gas LP quema un combustible fósil, lo que genera emisiones contaminantes, a diferencia de las ecotecnias que buscan reducir el impacto ambiental."
+      },
+      {
+        "question": "¿Cuál de las siguientes ecotecnias permite reducir el consumo de agua potable en los hogares?",
+        "options": [
+          "Sistema de captación de agua de lluvia",
+          "Biodigestor",
+          "Panel solar",
+          "Aerogenerador"
+        ],
+        "correct": 0,
+        "explanation": "Los sistemas de captación de agua de lluvia recolectan y almacenan agua para usos no potables, disminuyendo la demanda de agua tratada."
+      },
+      {
+        "question": "¿Qué ecotecnia convierte la luz solar directamente en electricidad mediante celdas fotovoltaicas?",
+        "options": [
+          "Calentador solar",
+          "Panel solar fotovoltaico",
+          "Biodigestor",
+          "Turbina eólica"
+        ],
+        "correct": 1,
+        "explanation": "Los paneles solares fotovoltaicos transforman la energía lumínica del sol en electricidad mediante el efecto fotovoltaico."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una ecotecnia que aprovecha el calor del sol para calentar agua?",
+        "options": [
+          "Panel solar fotovoltaico",
+          "Calentador solar",
+          "Biodigestor",
+          "Aerogenerador"
+        ],
+        "correct": 1,
+        "explanation": "Los calentadores solares utilizan la energía térmica del sol para aumentar la temperatura del agua, reduciendo el uso de gas o electricidad."
+      },
+      {
+        "question": "¿Qué ecotecnia permite generar electricidad a partir de la energía cinética del agua en movimiento?",
+        "options": [
+          "Panel solar",
+          "Biodigestor",
+          "Turbina hidroeléctrica",
+          "Aerogenerador"
+        ],
+        "correct": 2,
+        "explanation": "Las turbinas hidroeléctricas convierten la energía del agua en movimiento (ríos, corrientes) en electricidad de forma renovable."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una ecotecnia que reduce la contaminación del aire al evitar la quema de combustibles fósiles?",
+        "options": [
+          "Biodigestor",
+          "Panel solar",
+          "Ambas son correctas",
+          "Ninguna es correcta"
+        ],
+        "correct": 2,
+        "explanation": "Tanto los paneles solares como los biodigestores evitan la quema de combustibles fósiles: los paneles generan electricidad limpia y los biodigestores producen biogás a partir de desechos."
       }
     ]
   },
@@ -1058,6 +1993,61 @@
         ],
         "correct": 0,
         "explanation": "La población absoluta es el total de personas que residen en el país, en este caso 126 millones."
+      },
+      {
+        "question": "¿Cuál de los siguientes países tiene la mayor población absoluta según datos recientes?",
+        "options": [
+          "Canadá",
+          "China",
+          "Australia",
+          "Argentina"
+        ],
+        "correct": 1,
+        "explanation": "China tiene la mayor población absoluta del mundo, superando los 1,400 millones de habitantes."
+      },
+      {
+        "question": "Si la población absoluta de un país es de 10 millones, ¿cuántos habitantes tiene?",
+        "options": [
+          "100,000",
+          "1,000,000",
+          "10,000,000",
+          "100,000,000"
+        ],
+        "correct": 2,
+        "explanation": "La población absoluta se expresa en números totales, por lo que 10 millones equivale a 10,000,000 de personas."
+      },
+      {
+        "question": "¿Qué dato proporciona la población absoluta de una ciudad?",
+        "options": [
+          "La cantidad de nacimientos en un año",
+          "El número total de habitantes en ese momento",
+          "La densidad de población por km²",
+          "El porcentaje de población urbana"
+        ],
+        "correct": 1,
+        "explanation": "La población absoluta es el número total de personas que viven en un lugar en un momento determinado."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un ejemplo de población absoluta?",
+        "options": [
+          "125 millones de personas en México",
+          "33 millones en Canadá",
+          "50 habitantes por km² en Uruguay",
+          "8 millones en la Ciudad de México"
+        ],
+        "correct": 2,
+        "explanation": "'50 habitantes por km²' es un dato de densidad de población, no de población absoluta."
+      },
+      {
+        "question": "La población absoluta de Japón es de aproximadamente 125 millones. ¿Qué significa ese número?",
+        "options": [
+          "Que nacen 125 millones de personas al año",
+          "Que viven 125 millones de personas en Japón",
+          "Que mueren 125 millones de personas al año",
+          "Que hay 125 millones de km² en Japón"
+        ],
+        "correct": 1,
+        "explanation": "La población absoluta indica el total de personas que residen en un territorio, en este caso Japón."
       }
     ]
   },
@@ -1117,6 +2107,61 @@
         ],
         "correct": 1,
         "explanation": "El ecoturismo se basa en el respeto por el entorno natural y cultural, minimizando el impacto negativo."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones contradice los principios del ecoturismo?",
+        "options": [
+          "Contratar guías locales",
+          "Usar transporte colectivo",
+          "Dejar basura en senderos",
+          "Respetar la flora y fauna"
+        ],
+        "correct": 2,
+        "explanation": "Dejar basura daña el ecosistema, mientras que las otras opciones apoyan la sostenibilidad y beneficio local."
+      },
+      {
+        "question": "¿Qué impacto tiene el ecoturismo en el medio ambiente cuando se realiza correctamente?",
+        "options": [
+          "Aumenta la contaminación",
+          "Reduce la biodiversidad",
+          "Minimiza la huella ecológica",
+          "Promueve la deforestación"
+        ],
+        "correct": 2,
+        "explanation": "El ecoturismo busca minimizar el impacto ambiental, reduciendo la huella ecológica mediante prácticas responsables."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un destino típico de ecoturismo en México?",
+        "options": [
+          "Centro comercial Santa Fe",
+          "Reserva de la Biosfera Sian Ka'an",
+          "Estadio Azteca",
+          "Palacio de Bellas Artes"
+        ],
+        "correct": 1,
+        "explanation": "Sian Ka'an es un área natural protegida donde se practica ecoturismo, a diferencia de los otros sitios urbanos."
+      },
+      {
+        "question": "¿Cómo beneficia el ecoturismo a la conservación de áreas naturales protegidas?",
+        "options": [
+          "Genera ingresos para su mantenimiento",
+          "Permite la caza deportiva",
+          "Construye hoteles dentro de la reserva",
+          "Introduce especies exóticas"
+        ],
+        "correct": 0,
+        "explanation": "Los ingresos del ecoturismo se destinan a la conservación y vigilancia de las áreas protegidas."
+      },
+      {
+        "question": "¿Qué práctica es fundamental en el ecoturismo para apoyar a las comunidades locales?",
+        "options": [
+          "Comprar artesanías locales",
+          "Llevar comida de otro lugar",
+          "Alojarse en cadenas hoteleras internacionales",
+          "Usar vehículos todoterreno"
+        ],
+        "correct": 0,
+        "explanation": "Comprar artesanías locales genera ingresos directos para la comunidad, fomentando el desarrollo sostenible."
       }
     ]
   },
@@ -1176,6 +2221,61 @@
         ],
         "correct": 1,
         "explanation": "El calentamiento global derrite los glaciares y casquetes polares, lo que eleva el nivel del mar y afecta ecosistemas."
+      },
+      {
+        "question": "¿Cuál de los siguientes gases de invernadero tiene el mayor potencial de calentamiento global?",
+        "options": [
+          "Dióxido de carbono (CO₂)",
+          "Metano (CH₄)",
+          "Óxido nitroso (N₂O)",
+          "Vapor de agua (H₂O)"
+        ],
+        "correct": 2,
+        "explanation": "El óxido nitroso tiene un potencial de calentamiento global aproximadamente 300 veces mayor que el CO₂, aunque su concentración es menor."
+      },
+      {
+        "question": "¿Qué fuente natural produce metano (CH₄) y contribuye al efecto invernadero?",
+        "options": [
+          "Volcanes",
+          "Océanos",
+          "Humedales",
+          "Incendios forestales"
+        ],
+        "correct": 2,
+        "explanation": "Los humedales, como pantanos y ciénagas, liberan metano por la descomposición de materia orgánica en ausencia de oxígeno."
+      },
+      {
+        "question": "¿Cuál es el principal gas de efecto invernadero emitido por la actividad humana?",
+        "options": [
+          "Metano",
+          "Dióxido de carbono",
+          "Óxido nitroso",
+          "Clorofluorocarbonos"
+        ],
+        "correct": 1,
+        "explanation": "El dióxido de carbono es el gas de invernadero más abundante emitido por la quema de combustibles fósiles y la deforestación."
+      },
+      {
+        "question": "¿Qué sector económico es el mayor emisor de metano (CH₄) en México?",
+        "options": [
+          "Transporte",
+          "Agricultura y ganadería",
+          "Generación de electricidad",
+          "Industria manufacturera"
+        ],
+        "correct": 1,
+        "explanation": "La agricultura y ganadería, especialmente la fermentación entérica del ganado y el cultivo de arroz, son las principales fuentes de metano."
+      },
+      {
+        "question": "¿Cómo contribuye la deforestación al calentamiento global?",
+        "options": [
+          "Reduce la absorción de CO₂ por los árboles",
+          "Libera metano almacenado en el suelo",
+          "Aumenta la reflectividad de la superficie",
+          "Disminuye la evaporación de agua"
+        ],
+        "correct": 0,
+        "explanation": "Los árboles absorben CO₂; al talarlos, se libera el carbono almacenado y se reduce la capacidad de absorber más CO₂."
       }
     ]
   },
@@ -1235,6 +2335,61 @@
         ],
         "correct": 1,
         "explanation": "La persecución por pertenecer a un grupo étnico es una causa social, ya que implica discriminación y violencia hacia ciertos grupos."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones describe una causa económica de migración?",
+        "options": [
+          "Buscar empleo en otra ciudad",
+          "Escapar de un huracán",
+          "Reunirse con la familia",
+          "Evitar la violencia criminal"
+        ],
+        "correct": 0,
+        "explanation": "La búsqueda de empleo es una necesidad económica que lleva a las personas a migrar para mejorar su situación laboral y salarial."
+      },
+      {
+        "question": "¿Qué situación es un ejemplo de migración por causas sociales?",
+        "options": [
+          "Una sequía que destruye cosechas",
+          "La falta de hospitales en una región",
+          "La persecución por diferencias políticas",
+          "La construcción de una presa"
+        ],
+        "correct": 2,
+        "explanation": "La persecución política obliga a las personas a huir para proteger su vida y libertad, siendo una causa social de migración."
+      },
+      {
+        "question": "¿Cuál de los siguientes eventos ambientales puede provocar migración?",
+        "options": [
+          "El aumento de salarios en una ciudad",
+          "La construcción de escuelas",
+          "Un terremoto que destruye viviendas",
+          "La celebración de una feria"
+        ],
+        "correct": 2,
+        "explanation": "Un terremoto causa daños materiales y pone en riesgo la vida, forzando a las personas a desplazarse a zonas seguras."
+      },
+      {
+        "question": "¿Por qué una persona puede emigrar por razones económicas?",
+        "options": [
+          "Para escapar de una guerra",
+          "Para buscar mejores oportunidades de trabajo",
+          "Para reunirse con su pareja",
+          "Para evitar una inundación"
+        ],
+        "correct": 1,
+        "explanation": "La búsqueda de mejores oportunidades laborales es una de las principales causas económicas de migración."
+      },
+      {
+        "question": "¿Qué tipo de migración se da cuando las personas huyen de la violencia del crimen organizado?",
+        "options": [
+          "Migración económica",
+          "Migración social",
+          "Migración ambiental",
+          "Migración estacional"
+        ],
+        "correct": 1,
+        "explanation": "La violencia del crimen organizado es un factor social que obliga a las personas a migrar para proteger su integridad."
       }
     ]
   },
@@ -1294,6 +2449,61 @@
         ],
         "correct": 2,
         "explanation": "El saldo migratorio puede ser negativo si hay más emigrantes que inmigrantes."
+      },
+      {
+        "question": "En una ciudad, durante un año, nacieron 1200 personas, fallecieron 600 y llegaron 200 inmigrantes, mientras que 100 emigraron. ¿Cuál es el crecimiento total de la población?",
+        "options": [
+          "600",
+          "700",
+          "800",
+          "900"
+        ],
+        "correct": 1,
+        "explanation": "El crecimiento total se calcula como natalidad - mortalidad + saldo migratorio. El saldo migratorio es inmigrantes - emigrantes = 200 - 100 = 100. Entonces: 1200 - 600 + 100 = 700."
+      },
+      {
+        "question": "¿Qué indica un saldo migratorio negativo en el crecimiento de una población?",
+        "options": [
+          "Que nacen más personas de las que mueren",
+          "Que emigran más personas de las que inmigran",
+          "Que la población está creciendo rápidamente",
+          "Que la mortalidad es mayor que la natalidad"
+        ],
+        "correct": 1,
+        "explanation": "El saldo migratorio negativo significa que salen más personas de las que entran, lo que reduce el crecimiento poblacional."
+      },
+      {
+        "question": "Si en un país la natalidad es de 8000, la mortalidad de 5000 y el saldo migratorio es de -2000, ¿cuál es el crecimiento poblacional?",
+        "options": [
+          "1000",
+          "2000",
+          "3000",
+          "5000"
+        ],
+        "correct": 0,
+        "explanation": "Aplicando la fórmula: 8000 - 5000 + (-2000) = 1000. El crecimiento es de 1000 personas."
+      },
+      {
+        "question": "¿Cuál de los siguientes factores puede hacer que el crecimiento total de una población sea cero?",
+        "options": [
+          "Natalidad igual a mortalidad y saldo migratorio cero",
+          "Natalidad mayor que mortalidad y saldo migratorio negativo",
+          "Mortalidad mayor que natalidad y saldo migratorio positivo",
+          "Saldo migratorio positivo y natalidad menor que mortalidad"
+        ],
+        "correct": 0,
+        "explanation": "Si la natalidad es igual a la mortalidad y no hay migración (saldo migratorio cero), el crecimiento total es cero."
+      },
+      {
+        "question": "En una región, la tasa de natalidad es de 15 por cada 1000 habitantes, la tasa de mortalidad de 10 por cada 1000 y el saldo migratorio es de -2 por cada 1000. ¿Cuál es la tasa de crecimiento total por cada 1000 habitantes?",
+        "options": [
+          "3",
+          "5",
+          "7",
+          "27"
+        ],
+        "correct": 0,
+        "explanation": "Tasa de crecimiento = natalidad - mortalidad + saldo migratorio = 15 - 10 + (-2) = 3 por cada 1000 habitantes."
       }
     ]
   },
@@ -1353,6 +2563,61 @@
         ],
         "correct": 2,
         "explanation": "Los simulacros y rutas de evacuación ayudan a la población a saber cómo actuar durante un sismo."
+      },
+      {
+        "question": "¿Qué tipo de riesgo natural es más frecuente en las costas del Pacífico mexicano?",
+        "options": [
+          "Huracanes",
+          "Sismos",
+          "Tsunamis",
+          "Inundaciones fluviales"
+        ],
+        "correct": 2,
+        "explanation": "Las costas del Pacífico se encuentran en una zona de subducción, lo que genera terremotos que pueden provocar tsunamis."
+      },
+      {
+        "question": "¿Cuál de los siguientes estados no presenta alto riesgo de huracanes?",
+        "options": [
+          "Yucatán",
+          "Quintana Roo",
+          "Campeche",
+          "Ciudad de México"
+        ],
+        "correct": 3,
+        "explanation": "La Ciudad de México está en el interior del país, lejos de la influencia de ciclones tropicales, por lo que no tiene alto riesgo de huracanes."
+      },
+      {
+        "question": "¿Qué factor geográfico hace que Yucatán sea propenso a huracanes?",
+        "options": [
+          "Su altitud elevada",
+          "Su ubicación en el Golfo de México",
+          "Su cercanía al Eje Neovolcánico",
+          "Su zona de subducción"
+        ],
+        "correct": 1,
+        "explanation": "Yucatán se encuentra en el Golfo de México, una región donde se forman y llegan huracanes con frecuencia."
+      },
+      {
+        "question": "¿Cuál es la principal causa de los sismos en la Ciudad de México?",
+        "options": [
+          "Huracanes del Golfo",
+          "Actividad volcánica",
+          "Choque de placas tectónicas",
+          "Erosión del suelo"
+        ],
+        "correct": 2,
+        "explanation": "La CDMX está cerca de la zona de subducción de la Placa de Cocos, lo que genera sismos por el movimiento de placas."
+      },
+      {
+        "question": "¿Qué medida de prevención es clave ante tsunamis en las costas del Pacífico?",
+        "options": [
+          "Reforzar techos",
+          "Tener rutas de evacuación a zonas altas",
+          "Sellar ventanas",
+          "Construir muros contra viento"
+        ],
+        "correct": 1,
+        "explanation": "Ante un tsunami, lo más importante es evacuar hacia terrenos elevados para evitar ser arrastrado por el agua."
       }
     ]
   },
@@ -1412,6 +2677,61 @@
         ],
         "correct": 2,
         "explanation": "La migración masiva a ciudades puede provocar la formación de asentamientos irregulares sin servicios básicos, aumentando la vulnerabilidad social."
+      },
+      {
+        "question": "¿Qué tipo de migración ocurre cuando una persona se muda de Veracruz a la Ciudad de México?",
+        "options": [
+          "Migración internacional",
+          "Migración interna",
+          "Migración forzada",
+          "Migración circular"
+        ],
+        "correct": 1,
+        "explanation": "La migración interna se refiere al movimiento de personas dentro de un mismo país."
+      },
+      {
+        "question": "¿Cuál de las siguientes NO es una consecuencia de la migración internacional?",
+        "options": [
+          "Envío de remesas",
+          "Disminución de la población en el país de origen",
+          "Aumento de la diversidad cultural en el país de destino",
+          "Desaparición de fronteras"
+        ],
+        "correct": 3,
+        "explanation": "Las fronteras existen independientemente de la migración; la migración no las hace desaparecer."
+      },
+      {
+        "question": "¿Qué factor económico impulsa principalmente la migración interna en México?",
+        "options": [
+          "Búsqueda de mejores oportunidades laborales",
+          "Clima más templado",
+          "Menor densidad de población",
+          "Mayor número de escuelas"
+        ],
+        "correct": 0,
+        "explanation": "La búsqueda de empleo y mejores ingresos es la causa principal de la migración interna."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un riesgo social asociado a la migración internacional?",
+        "options": [
+          "Mayor acceso a servicios de salud",
+          "Discriminación y xenofobia",
+          "Aumento de la natalidad",
+          "Mejora de la infraestructura"
+        ],
+        "correct": 1,
+        "explanation": "Los migrantes internacionales pueden enfrentar rechazo y discriminación en el país de destino."
+      },
+      {
+        "question": "¿Qué tipo de migración se presenta cuando una persona sale de México para radicar en Estados Unidos?",
+        "options": [
+          "Migración interna",
+          "Migración internacional",
+          "Migración rural-urbana",
+          "Migración estacional"
+        ],
+        "correct": 1,
+        "explanation": "Se trata de un movimiento entre países, por lo que es migración internacional."
       }
     ]
   },
@@ -1471,6 +2791,61 @@
         ],
         "correct": 1,
         "explanation": "México se ubica en la zona de subducción de la placa de Cocos bajo la placa Norteamericana, parte del Anillo de Fuego, lo que genera sismos."
+      },
+      {
+        "question": "¿Cuál es el proceso geológico que ocurre en los límites convergentes de placas tectónicas y que genera sismos y volcanes en el Anillo de Fuego del Pacífico?",
+        "options": [
+          "Subducción de una placa bajo otra",
+          "Separación de placas tectónicas",
+          "Deslizamiento lateral entre placas",
+          "Choque de placas continentales"
+        ],
+        "correct": 0,
+        "explanation": "En los límites convergentes, una placa oceánica se introduce bajo otra (subducción), generando fricción que produce sismos y magma que forma volcanes."
+      },
+      {
+        "question": "¿Cuál de las siguientes regiones se ubica en el Anillo de Fuego del Pacífico y presenta alta actividad sísmica debido a la subducción de la placa de Nazca?",
+        "options": [
+          "La costa oeste de Sudamérica",
+          "La costa este de Estados Unidos",
+          "El centro de África",
+          "La península de la India"
+        ],
+        "correct": 0,
+        "explanation": "La costa oeste de Sudamérica, como Chile y Perú, está sobre la zona de subducción de la placa de Nazca bajo la placa Sudamericana, parte del Anillo de Fuego."
+      },
+      {
+        "question": "¿Qué tipo de estructura geológica se forma típicamente en los límites convergentes donde ocurre subducción?",
+        "options": [
+          "Fosas oceánicas y arcos volcánicos",
+          "Dorsales oceánicas",
+          "Fallas transformantes",
+          "Mesetas continentales"
+        ],
+        "correct": 0,
+        "explanation": "La subducción forma fosas oceánicas profundas y cadenas de volcanes (arcos volcánicos) en la placa superior."
+      },
+      {
+        "question": "¿Por qué Japón experimenta frecuentes terremotos y tsunamis?",
+        "options": [
+          "Por estar en la convergencia de varias placas tectónicas en el Anillo de Fuego",
+          "Por estar en el centro de una placa tectónica",
+          "Por su ubicación cerca del ecuador",
+          "Por la presencia de grandes ríos"
+        ],
+        "correct": 0,
+        "explanation": "Japón se encuentra en la confluencia de las placas del Pacífico, Filipinas y Euroasiática, donde la subducción genera sismos y tsunamis."
+      },
+      {
+        "question": "¿Cuál es la principal razón por la que el Anillo de Fuego del Pacífico concentra el 90% de los terremotos del mundo?",
+        "options": [
+          "Es una zona de intensa actividad tectónica con múltiples límites convergentes",
+          "Tiene la mayor cantidad de volcanes activos",
+          "Está cerca del ecuador",
+          "Es la región más poblada del planeta"
+        ],
+        "correct": 0,
+        "explanation": "El Anillo de Fuego es un cinturón de subducción donde las placas oceánicas se hunden bajo las continentales, generando constantes sismos."
       }
     ]
   },
@@ -1530,6 +2905,61 @@
         ],
         "correct": 1,
         "explanation": "La minería a menudo extrae recursos que benefician principalmente a grandes empresas, sin que la población local reciba una parte justa de las ganancias."
+      },
+      {
+        "question": "¿Cuál de las siguientes actividades NO forma parte del sector primario?",
+        "options": [
+          "A. Agricultura",
+          "B. Ganadería",
+          "C. Industria textil",
+          "D. Pesca"
+        ],
+        "correct": 2,
+        "explanation": "La industria textil transforma materias primas en productos, por lo que pertenece al sector secundario."
+      },
+      {
+        "question": "¿Qué tipo de agricultura se caracteriza por usar tecnología avanzada y altos rendimientos?",
+        "options": [
+          "A. Agricultura de subsistencia",
+          "B. Agricultura comercial",
+          "C. Agricultura de temporal",
+          "D. Agricultura de roza"
+        ],
+        "correct": 1,
+        "explanation": "La agricultura comercial emplea maquinaria, fertilizantes y riego para maximizar la producción y generar ganancias."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de minería en México que genera fuertes contrastes regionales?",
+        "options": [
+          "A. Pesca de camarón en Sinaloa",
+          "B. Extracción de plata en Zacatecas",
+          "C. Ganadería extensiva en Chihuahua",
+          "D. Cultivo de maíz en Oaxaca"
+        ],
+        "correct": 1,
+        "explanation": "La minería de plata en Zacatecas concentra riqueza en pocas empresas, mientras las comunidades locales a menudo carecen de servicios básicos."
+      },
+      {
+        "question": "¿Qué actividad del sector primario es esencial para la alimentación de la población y se practica en todo el país?",
+        "options": [
+          "A. Minería",
+          "B. Pesca",
+          "C. Agricultura",
+          "D. Silvicultura"
+        ],
+        "correct": 2,
+        "explanation": "La agricultura produce alimentos básicos como maíz, frijol y trigo, fundamentales para la dieta mexicana."
+      },
+      {
+        "question": "¿Cómo afecta la desigualdad en el acceso a la tierra a los productores del sector primario?",
+        "options": [
+          "A. Favorece la inversión en tecnología",
+          "B. Concentra la producción en grandes latifundios",
+          "C. Promueve la agricultura orgánica",
+          "D. Aumenta la productividad de los pequeños agricultores"
+        ],
+        "correct": 1,
+        "explanation": "La desigualdad en la tenencia de la tierra permite que grandes extensiones estén en manos de unos pocos, limitando las oportunidades de los pequeños productores."
       }
     ]
   },
@@ -1589,6 +3019,61 @@
         ],
         "correct": 1,
         "explanation": "La desigualdad económica se refleja en el territorio: regiones con más industrias tienen mejores servicios y oportunidades, mientras que otras quedan marginadas."
+      },
+      {
+        "question": "¿Qué actividad pertenece al sector secundario de la economía?",
+        "options": [
+          "La pesca",
+          "La construcción de viviendas",
+          "El transporte de mercancías",
+          "La venta de ropa"
+        ],
+        "correct": 1,
+        "explanation": "La construcción de viviendas es una actividad del sector secundario, que transforma materias primas en productos elaborados."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de industria pesada?",
+        "options": [
+          "Fábrica de muebles",
+          "Fábrica de acero",
+          "Panadería",
+          "Taller de costura"
+        ],
+        "correct": 1,
+        "explanation": "La industria pesada, como la fábrica de acero, transforma grandes cantidades de materias primas en productos semielaborados para otras industrias."
+      },
+      {
+        "question": "¿Qué factor natural influye en la ubicación de una fábrica de papel?",
+        "options": [
+          "Cercanía a un bosque",
+          "Disponibilidad de mano de obra calificada",
+          "Cercanía a un mercado consumidor",
+          "Bajo costo de renta"
+        ],
+        "correct": 0,
+        "explanation": "La cercanía a un bosque es clave para una fábrica de papel, ya que necesita madera como materia prima principal."
+      },
+      {
+        "question": "¿Cómo se manifiesta la desigualdad económica en el sector secundario?",
+        "options": [
+          "Todas las regiones tienen el mismo número de fábricas",
+          "Algunas regiones concentran más industrias que otras",
+          "Los salarios son iguales en todas las fábricas",
+          "Las materias primas se distribuyen uniformemente"
+        ],
+        "correct": 1,
+        "explanation": "La desigualdad económica se refleja en que algunas regiones tienen más industrias, mientras que otras carecen de ellas, generando diferencias en empleo e ingresos."
+      },
+      {
+        "question": "¿Qué tipo de industria transforma materias primas en productos semielaborados?",
+        "options": [
+          "Industria de base",
+          "Industria ligera",
+          "Industria de bienes de consumo",
+          "Industria de alta tecnología"
+        ],
+        "correct": 0,
+        "explanation": "La industria de base, como la siderúrgica, transforma materias primas en productos semielaborados para otras industrias."
       }
     ]
   },
@@ -1648,6 +3133,61 @@
         ],
         "correct": 1,
         "explanation": "Las personas con mayores ingresos pueden pagar atención médica privada de mejor calidad, mientras que los de bajos recursos dependen de servicios públicos limitados."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones es un ejemplo de actividad del sector terciario en el ámbito del comercio?",
+        "options": [
+          "Venta de ropa en una tienda departamental",
+          "Cultivo de maíz en un campo agrícola",
+          "Fabricación de muebles en una fábrica",
+          "Extracción de petróleo en un pozo"
+        ],
+        "correct": 0,
+        "explanation": "La venta de ropa en una tienda departamental es una actividad comercial, que pertenece al sector terciario. Las otras opciones corresponden a los sectores primario y secundario."
+      },
+      {
+        "question": "¿Cómo afecta la desigualdad económica al acceso a servicios turísticos en México?",
+        "options": [
+          "Las personas con mayores ingresos pueden viajar a destinos exclusivos, mientras que las de bajos ingresos tienen pocas opciones",
+          "Todos los mexicanos tienen las mismas oportunidades de viajar",
+          "El turismo solo beneficia a las zonas rurales",
+          "Los servicios turísticos son gratuitos para todos"
+        ],
+        "correct": 0,
+        "explanation": "La desigualdad económica limita el acceso a servicios turísticos de calidad para las personas de bajos ingresos, mientras que los de altos ingresos pueden pagar destinos exclusivos."
+      },
+      {
+        "question": "¿Qué servicio educativo ayuda a reducir la desigualdad al ofrecer oportunidades a estudiantes de bajos recursos?",
+        "options": [
+          "Becas escolares para estudiantes de comunidades marginadas",
+          "Clases particulares de pago",
+          "Escuelas privadas de alto costo",
+          "Cursos en el extranjero"
+        ],
+        "correct": 0,
+        "explanation": "Las becas escolares permiten que estudiantes de bajos recursos accedan a la educación, reduciendo la desigualdad. Las otras opciones son exclusivas para quienes pueden pagarlas."
+      },
+      {
+        "question": "¿Por qué el acceso a servicios de salud privados puede aumentar la desigualdad en México?",
+        "options": [
+          "Porque solo las personas con altos ingresos pueden costearlos, mientras que los de bajos ingresos dependen de servicios públicos limitados",
+          "Porque los servicios privados son de peor calidad que los públicos",
+          "Porque el gobierno prohíbe el acceso a servicios privados",
+          "Porque todos los mexicanos tienen seguro médico gratuito"
+        ],
+        "correct": 0,
+        "explanation": "Los servicios de salud privados son costosos, por lo que solo quienes tienen altos ingresos pueden acceder a ellos, mientras que los de bajos ingresos enfrentan limitaciones en el sistema público, profundizando la desigualdad."
+      },
+      {
+        "question": "¿Cuál es una consecuencia de la desigualdad en el sector terciario para las zonas rurales de México?",
+        "options": [
+          "Menor acceso a servicios como bancos, escuelas y hospitales",
+          "Mayor inversión en infraestructura turística",
+          "Igualdad de oportunidades laborales que en las ciudades",
+          "Mayor oferta de servicios de lujo"
+        ],
+        "correct": 0,
+        "explanation": "En las zonas rurales, la desigualdad se refleja en la falta de servicios básicos como bancos, escuelas y hospitales, lo que limita el desarrollo económico y social."
       }
     ]
   },
@@ -1707,6 +3247,61 @@
         ],
         "correct": 1,
         "explanation": "El transporte marítimo es más lento que el aéreo o terrestre, lo que puede ser una desventaja para mercancías urgentes."
+      },
+      {
+        "question": "¿Qué producto se transporta principalmente en buques cisterna?",
+        "options": [
+          "Granos",
+          "Petróleo",
+          "Automóviles",
+          "Ropa"
+        ],
+        "correct": 1,
+        "explanation": "Los buques cisterna están diseñados para transportar líquidos a granel, principalmente petróleo y sus derivados."
+      },
+      {
+        "question": "¿Cuál es el puerto más importante de México para el comercio marítimo?",
+        "options": [
+          "Puerto de Veracruz",
+          "Puerto de Acapulco",
+          "Puerto de Manzanillo",
+          "Puerto de Mazatlán"
+        ],
+        "correct": 2,
+        "explanation": "El Puerto de Manzanillo es el más importante por el volumen de carga que maneja, especialmente contenedores."
+      },
+      {
+        "question": "¿Cómo afecta el transporte marítimo a los países sin litoral?",
+        "options": [
+          "Los beneficia con rutas directas",
+          "Los perjudica al depender de otros países",
+          "No tiene impacto",
+          "Reduce sus costos de exportación"
+        ],
+        "correct": 1,
+        "explanation": "Los países sin litoral dependen de puertos de otros países, lo que aumenta costos y tiempos, generando desventajas económicas."
+      },
+      {
+        "question": "¿Qué tipo de carga se transporta en buques portacontenedores?",
+        "options": [
+          "Petróleo",
+          "Granos",
+          "Productos manufacturados",
+          "Minerales"
+        ],
+        "correct": 2,
+        "explanation": "Los portacontenedores transportan mercancías variadas en contenedores estandarizados, como electrónicos y ropa."
+      },
+      {
+        "question": "¿Cuál es una desventaja del transporte marítimo para el comercio de productos perecederos?",
+        "options": [
+          "Alta velocidad",
+          "Bajo costo",
+          "Largo tiempo de tránsito",
+          "Gran capacidad"
+        ],
+        "correct": 2,
+        "explanation": "El transporte marítimo es lento, lo que puede provocar que productos perecederos como frutas se echen a perder."
       }
     ]
   },
@@ -1766,6 +3361,61 @@
         ],
         "correct": 2,
         "explanation": "La falta de organización comunitaria dificulta la coordinación para enfrentar emergencias, aumentando la vulnerabilidad social."
+      },
+      {
+        "question": "¿Cuál de los siguientes factores NO incrementa la vulnerabilidad de una comunidad ante inundaciones?",
+        "options": [
+          "Viviendas construidas en zonas bajas cercanas a ríos",
+          "Sistemas de alerta temprana eficientes",
+          "Falta de drenaje pluvial adecuado",
+          "Deforestación de cuencas hidrográficas"
+        ],
+        "correct": 1,
+        "explanation": "Los sistemas de alerta temprana ayudan a reducir la vulnerabilidad al permitir evacuaciones oportunas, mientras que los otros factores aumentan la exposición al daño."
+      },
+      {
+        "question": "¿Qué característica de una vivienda aumenta la vulnerabilidad ante un terremoto?",
+        "options": [
+          "Construcción con materiales ligeros y flexibles",
+          "Cimientos profundos y reforzados",
+          "Techos de concreto sin anclaje adecuado",
+          "Muros de ladrillo con varillas de acero"
+        ],
+        "correct": 2,
+        "explanation": "Los techos de concreto mal anclados pueden colapsar fácilmente durante un sismo, mientras que las otras características brindan mayor resistencia."
+      },
+      {
+        "question": "La vulnerabilidad de una población ante un desastre natural depende de:",
+        "options": [
+          "Únicamente de la magnitud del fenómeno natural",
+          "La capacidad de la sociedad para anticipar, resistir y recuperarse",
+          "Exclusivamente de la ubicación geográfica",
+          "Del número de habitantes en la zona"
+        ],
+        "correct": 1,
+        "explanation": "La vulnerabilidad considera factores sociales, económicos y de infraestructura que determinan la capacidad de respuesta y recuperación, no solo el peligro natural."
+      },
+      {
+        "question": "¿Cuál de los siguientes grupos sociales presenta mayor vulnerabilidad ante un huracán?",
+        "options": [
+          "Personas con viviendas de concreto en zonas altas",
+          "Comunidades indígenas en laderas con acceso limitado a servicios",
+          "Familias con automóvil y seguro de vivienda",
+          "Población urbana con sistemas de drenaje eficientes"
+        ],
+        "correct": 1,
+        "explanation": "Las comunidades indígenas en laderas suelen tener menor acceso a infraestructura, información y recursos, lo que aumenta su exposición al daño."
+      },
+      {
+        "question": "¿Qué acción reduce la vulnerabilidad ante deslizamientos de tierra?",
+        "options": [
+          "Construir viviendas en pendientes pronunciadas",
+          "Reforestar laderas con vegetación nativa",
+          "Eliminar la vegetación para cultivar",
+          "Realizar cortes en laderas para nivelar terrenos"
+        ],
+        "correct": 1,
+        "explanation": "La reforestación ayuda a fijar el suelo con raíces, disminuyendo el riesgo de deslizamientos, mientras que las otras acciones aumentan la inestabilidad."
       }
     ]
   },
@@ -1825,6 +3475,61 @@
         ],
         "correct": 0,
         "explanation": "La diversidad cultural y lingüística forma parte del patrimonio cultural de México, protegido por la ley."
+      },
+      {
+        "question": "¿Cuál de las siguientes lenguas indígenas es una de las más habladas en México, después del náhuatl y el maya?",
+        "options": [
+          "Zapoteco",
+          "Purépecha",
+          "Seri",
+          "Kiliwa"
+        ],
+        "correct": 0,
+        "explanation": "El zapoteco es una de las lenguas indígenas con mayor número de hablantes en México, superando a otras como el purépecha, seri y kiliwa."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución Mexicana reconoce la composición pluricultural de la nación basada en sus pueblos indígenas?",
+        "options": [
+          "Artículo 2",
+          "Artículo 3",
+          "Artículo 4",
+          "Artículo 27"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 2 de la Constitución reconoce la composición pluricultural de México, protegiendo las lenguas y culturas indígenas."
+      },
+      {
+        "question": "¿En qué región de México se concentra la mayor diversidad de lenguas indígenas?",
+        "options": [
+          "Noroeste (Sonora, Chihuahua)",
+          "Centro (Estado de México, Puebla)",
+          "Sureste (Oaxaca, Chiapas)",
+          "Noreste (Nuevo León, Tamaulipas)"
+        ],
+        "correct": 2,
+        "explanation": "El sureste de México, especialmente Oaxaca y Chiapas, alberga la mayor diversidad lingüística indígena del país."
+      },
+      {
+        "question": "¿Cuál de las siguientes lenguas indígenas es hablada principalmente en la península de Yucatán?",
+        "options": [
+          "Náhuatl",
+          "Maya",
+          "Zapoteco",
+          "Mixteco"
+        ],
+        "correct": 1,
+        "explanation": "El maya es la lengua indígena predominante en la península de Yucatán, hablada en estados como Yucatán, Quintana Roo y Campeche."
+      },
+      {
+        "question": "La diversidad cultural de México, incluyendo sus lenguas indígenas, se considera parte de su:",
+        "options": [
+          "Patrimonio cultural inmaterial",
+          "Patrimonio natural",
+          "Recursos económicos",
+          "Infraestructura educativa"
+        ],
+        "correct": 0,
+        "explanation": "Las lenguas indígenas son parte del patrimonio cultural inmaterial de México, protegido por la UNESCO y la legislación nacional."
       }
     ]
   },
@@ -1884,6 +3589,61 @@
         ],
         "correct": 1,
         "explanation": "La baja inversión en educación y salud limita el desarrollo humano, perpetuando la desigualdad."
+      },
+      {
+        "question": "¿Qué indicador se utiliza principalmente para clasificar a los países como centrales o periféricos en el contexto de la desigualdad económica?",
+        "options": [
+          "Producto Interno Bruto (PIB) per cápita",
+          "Índice de Desarrollo Humano (IDH)",
+          "Tasa de alfabetización",
+          "Esperanza de vida"
+        ],
+        "correct": 1,
+        "explanation": "El IDH mide el desarrollo humano combinando ingresos, educación y salud, y es el indicador clave para clasificar países centrales (IDH alto) y periféricos (IDH bajo)."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una consecuencia de la desigualdad económica entre países centrales y periféricos?",
+        "options": [
+          "Mayor inversión en tecnología en países periféricos",
+          "Dependencia económica de los países periféricos hacia los centrales",
+          "Igualdad en el acceso a la educación",
+          "Reducción de la migración internacional"
+        ],
+        "correct": 1,
+        "explanation": "Los países periféricos suelen depender de los centrales para tecnología, inversión y mercados, lo que perpetúa la desigualdad."
+      },
+      {
+        "question": "¿Qué país de África subsahariana es un ejemplo típico de país periférico con IDH bajo?",
+        "options": [
+          "Sudáfrica",
+          "Nigeria",
+          "Kenia",
+          "Etiopía"
+        ],
+        "correct": 3,
+        "explanation": "Etiopía tiene un IDH bajo (alrededor de 0.498) y es representativo de los países periféricos de África subsahariana con limitado desarrollo económico."
+      },
+      {
+        "question": "¿Cuál de las siguientes características es típica de los países centrales con IDH alto?",
+        "options": [
+          "Economía basada en agricultura de subsistencia",
+          "Alta industrialización y servicios avanzados",
+          "Baja esperanza de vida",
+          "Alta tasa de analfabetismo"
+        ],
+        "correct": 1,
+        "explanation": "Los países centrales como EE.UU. y Alemania tienen economías industrializadas y de servicios, con alto IDH, esperanza de vida y educación."
+      },
+      {
+        "question": "¿Qué relación existe entre los países centrales y periféricos en el comercio internacional?",
+        "options": [
+          "Los países periféricos exportan productos manufacturados de alto valor",
+          "Los países centrales exportan materias primas a los periféricos",
+          "Los países periféricos exportan materias primas y los centrales productos industrializados",
+          "Ambos exportan productos similares en igualdad de condiciones"
+        ],
+        "correct": 2,
+        "explanation": "En el comercio global, los periféricos suelen vender materias primas a bajo precio, mientras que los centrales venden productos industrializados de mayor valor, generando desigualdad."
       }
     ]
   },
@@ -1943,6 +3703,61 @@
         ],
         "correct": 1,
         "explanation": "El FMI tiene 190 miembros y su objetivo principal es asegurar la estabilidad del sistema financiero internacional y facilitar el comercio."
+      },
+      {
+        "question": "¿Qué requisito debe cumplir un país para ser miembro del FMI?",
+        "options": [
+          "Tener una economía desarrollada",
+          "Pagar una cuota de membresía basada en su economía",
+          "Ser miembro de la ONU",
+          "Tener un sistema bancario privado"
+        ],
+        "correct": 1,
+        "explanation": "Para ser miembro del FMI, un país debe pagar una cuota (o suscripción) que se determina según el tamaño de su economía; esto le da derecho a votar y acceder a financiamiento."
+      },
+      {
+        "question": "¿Cómo ayuda el FMI a países con problemas de balanza de pagos?",
+        "options": [
+          "Otorgando préstamos condicionados a reformas económicas",
+          "Donando dinero sin condiciones",
+          "Comprando sus productos para estabilizar su economía",
+          "Eliminando sus deudas externas"
+        ],
+        "correct": 0,
+        "explanation": "El FMI otorga préstamos a países con déficit en balanza de pagos, pero exige que implementen reformas económicas para corregir los desequilibrios y garantizar la devolución del préstamo."
+      },
+      {
+        "question": "¿Qué indicador refleja mejor la desigualdad económica entre países?",
+        "options": [
+          "Producto Interno Bruto (PIB) per cápita",
+          "Tasa de inflación",
+          "Número de miembros del FMI",
+          "Volumen de comercio internacional"
+        ],
+        "correct": 0,
+        "explanation": "El PIB per cápita mide el ingreso promedio por persona y permite comparar el nivel de desarrollo económico entre países, evidenciando desigualdades."
+      },
+      {
+        "question": "¿Cuál es una crítica común al FMI respecto a la desigualdad?",
+        "options": [
+          "Impone condiciones que pueden aumentar la pobreza en países en desarrollo",
+          "No presta suficiente dinero a los países ricos",
+          "Exige que todos los países tengan la misma moneda",
+          "Prohíbe el comercio entre países miembros"
+        ],
+        "correct": 0,
+        "explanation": "Se critica que las condiciones de los préstamos del FMI, como recortes en gasto social, pueden afectar negativamente a los más pobres y aumentar la desigualdad."
+      },
+      {
+        "question": "¿Qué espacio económico suele tener mayor acceso a los recursos del FMI?",
+        "options": [
+          "Países con economías grandes y estables",
+          "Países con economías pequeñas y aisladas",
+          "Regiones con alto endeudamiento externo",
+          "Zonas con economías de subsistencia"
+        ],
+        "correct": 0,
+        "explanation": "Los países con economías grandes y estables tienen mayor influencia en el FMI debido a su mayor cuota de membresía, lo que les da más acceso a recursos y poder de decisión."
       }
     ]
   },
@@ -2002,6 +3817,61 @@
         ],
         "correct": 1,
         "explanation": "La concentración de capital en pocas empresas profundiza las diferencias económicas entre países ricos y pobres."
+      },
+      {
+        "question": "¿Cuál es una ventaja principal que buscan las empresas transnacionales al instalarse en países en desarrollo?",
+        "options": [
+          "Mano de obra calificada y cara",
+          "Salarios bajos y regulaciones ambientales laxas",
+          "Alta tecnología local",
+          "Mercados cerrados a la competencia"
+        ],
+        "correct": 1,
+        "explanation": "Las empresas transnacionales buscan reducir costos, por eso prefieren países con salarios bajos y regulaciones ambientales menos estrictas."
+      },
+      {
+        "question": "¿Qué relación existe entre las empresas transnacionales y la desigualdad económica en los países donde operan?",
+        "options": [
+          "Disminuyen la desigualdad al crear empleos bien pagados",
+          "Aumentan la desigualdad al concentrar ingresos en pocas personas",
+          "No tienen efecto en la desigualdad",
+          "Distribuyen equitativamente las ganancias entre todos los trabajadores"
+        ],
+        "correct": 1,
+        "explanation": "Las transnacionales suelen generar grandes ganancias que se concentran en los dueños y accionistas, mientras que los trabajadores locales reciben salarios bajos, aumentando la desigualdad."
+      },
+      {
+        "question": "¿Cómo afecta la presencia de empresas transnacionales a las empresas locales en un país?",
+        "options": [
+          "Las fortalecen al compartir tecnología",
+          "Las debilitan al competir con mayores recursos",
+          "No tienen impacto en las empresas locales",
+          "Las compran y las integran como sucursales"
+        ],
+        "correct": 1,
+        "explanation": "Las transnacionales tienen más capital y tecnología, lo que les permite ofrecer productos más baratos o de mejor calidad, dificultando la competencia de las empresas locales."
+      },
+      {
+        "question": "¿Qué es un espacio económico globalizado?",
+        "options": [
+          "Un área donde solo comercian empresas nacionales",
+          "Un espacio donde las empresas transnacionales integran producción y mercados de varios países",
+          "Una región sin intercambio comercial",
+          "Un país con economía cerrada"
+        ],
+        "correct": 1,
+        "explanation": "En un espacio económico globalizado, las transnacionales organizan su producción en diferentes países y venden sus productos en todo el mundo, integrando economías."
+      },
+      {
+        "question": "¿Por qué las empresas transnacionales concentran su capital en países con baja tributación?",
+        "options": [
+          "Para pagar más impuestos y apoyar al gobierno",
+          "Para reducir su carga fiscal y aumentar ganancias",
+          "Para invertir en infraestructura local",
+          "Para cumplir con las leyes internacionales"
+        ],
+        "correct": 1,
+        "explanation": "Al establecerse en países con impuestos bajos, las transnacionales pagan menos impuestos, lo que les permite aumentar sus ganancias y concentrar más capital."
       }
     ]
   },
@@ -2061,6 +3931,61 @@
         ],
         "correct": 1,
         "explanation": "El IDH va más allá del ingreso al incluir salud y educación, dando una visión más completa del bienestar humano."
+      },
+      {
+        "question": "¿Qué dimensión del IDH se mide a través de la tasa de alfabetización y la tasa de matriculación escolar?",
+        "options": [
+          "Salud",
+          "Educación",
+          "Ingreso",
+          "Bienestar"
+        ],
+        "correct": 1,
+        "explanation": "El IDH mide la educación mediante la tasa de alfabetización de adultos y la tasa bruta de matriculación en todos los niveles educativos."
+      },
+      {
+        "question": "Un país con un IDH bajo probablemente presenta:",
+        "options": [
+          "Alta esperanza de vida",
+          "Bajo ingreso per cápita",
+          "Alta tasa de alfabetización",
+          "Baja mortalidad infantil"
+        ],
+        "correct": 1,
+        "explanation": "El IDH bajo indica carencias en salud, educación e ingreso; el bajo ingreso per cápita es un indicador común en estos países."
+      },
+      {
+        "question": "¿Cuál de los siguientes componentes NO forma parte del cálculo del IDH?",
+        "options": [
+          "Esperanza de vida al nacer",
+          "Ingreso nacional bruto per cápita",
+          "Tasa de desempleo",
+          "Años promedio de escolaridad"
+        ],
+        "correct": 2,
+        "explanation": "El IDH considera salud (esperanza de vida), educación (años de escolaridad) e ingreso (INB per cápita), pero no el desempleo."
+      },
+      {
+        "question": "Si un país tiene un IDH de 0.950, se clasifica como:",
+        "options": [
+          "Desarrollo humano bajo",
+          "Desarrollo humano medio",
+          "Desarrollo humano alto",
+          "Desarrollo humano muy alto"
+        ],
+        "correct": 3,
+        "explanation": "El IDH se clasifica en cuatro niveles: muy alto (0.800 o más), alto, medio y bajo. Un valor de 0.950 corresponde a muy alto."
+      },
+      {
+        "question": "¿Qué indicador representa la dimensión de 'ingreso' en el IDH?",
+        "options": [
+          "PIB total del país",
+          "Ingreso nacional bruto per cápita",
+          "Salario mínimo",
+          "Tasa de empleo"
+        ],
+        "correct": 1,
+        "explanation": "El IDH utiliza el ingreso nacional bruto (INB) per cápita ajustado por paridad de poder adquisitivo para medir el nivel de vida."
       }
     ]
   },
@@ -2120,6 +4045,61 @@
         ],
         "correct": 1,
         "explanation": "En la ZEE, México puede regular la investigación científica y proteger el patrimonio cultural, como parte de su soberanía sobre los recursos."
+      },
+      {
+        "question": "¿Qué límite máximo de extensión tiene la Zona Económica Exclusiva (ZEE) de México desde la costa?",
+        "options": [
+          "12 millas náuticas",
+          "24 millas náuticas",
+          "200 millas náuticas",
+          "350 millas náuticas"
+        ],
+        "correct": 2,
+        "explanation": "La ZEE se extiende hasta 200 millas náuticas desde la línea de base costera, según la Convención del Mar."
+      },
+      {
+        "question": "¿Qué tipo de recursos puede explotar México exclusivamente en su ZEE?",
+        "options": [
+          "Solo recursos vivos como peces",
+          "Solo recursos no vivos como petróleo",
+          "Tanto recursos vivos como no vivos",
+          "Ningún recurso, solo tránsito"
+        ],
+        "correct": 2,
+        "explanation": "En la ZEE, México tiene derechos exclusivos para explorar y explotar todos los recursos naturales, tanto vivos como no vivos."
+      },
+      {
+        "question": "¿Cuál de las siguientes actividades está permitida a otros países en la ZEE de México sin su consentimiento?",
+        "options": [
+          "Pesca comercial",
+          "Extracción de petróleo",
+          "Navegación pacífica",
+          "Construcción de islas artificiales"
+        ],
+        "correct": 2,
+        "explanation": "La navegación pacífica está permitida, pero otras actividades como pesca o extracción requieren autorización de México."
+      },
+      {
+        "question": "¿Cómo protege la ZEE el patrimonio cultural de México?",
+        "options": [
+          "Permite que cualquier país investigue sitios arqueológicos",
+          "Otorga derechos exclusivos sobre recursos culturales sumergidos",
+          "Prohíbe la entrada de barcos extranjeros",
+          "No tiene relación con el patrimonio cultural"
+        ],
+        "correct": 1,
+        "explanation": "México tiene derechos exclusivos para proteger y gestionar el patrimonio cultural subacuático, como naufragios, dentro de su ZEE."
+      },
+      {
+        "question": "¿Qué implica la soberanía de México en su ZEE para la investigación científica?",
+        "options": [
+          "Cualquier país puede investigar sin permiso",
+          "México debe autorizar toda investigación científica",
+          "Solo México puede investigar, sin excepción",
+          "La investigación está prohibida en la ZEE"
+        ],
+        "correct": 1,
+        "explanation": "México tiene soberanía para regular la investigación científica en su ZEE, y los países extranjeros necesitan su consentimiento."
       }
     ]
   },
@@ -2179,6 +4159,61 @@
         ],
         "correct": 1,
         "explanation": "La soberanía sobre el mar territorial permite al Estado proteger sus recursos naturales y culturales, fortaleciendo su identidad y patrimonio nacional."
+      },
+      {
+        "question": "¿A partir de qué línea se miden las 12 millas náuticas del mar territorial?",
+        "options": [
+          "Desde el borde exterior de la plataforma continental",
+          "Desde la línea de baja marea a lo largo de la costa",
+          "Desde el límite de la zona económica exclusiva",
+          "Desde el centro del océano"
+        ],
+        "correct": 1,
+        "explanation": "El mar territorial se mide desde la línea de base, que generalmente es la línea de baja marea a lo largo de la costa."
+      },
+      {
+        "question": "¿Qué derecho tiene un buque extranjero al navegar por el mar territorial de otro país?",
+        "options": [
+          "Paso inocente",
+          "Paso libre sin restricciones",
+          "Paso solo con permiso previo",
+          "No tiene permitido navegar"
+        ],
+        "correct": 0,
+        "explanation": "Los buques extranjeros tienen derecho de paso inocente, siempre que no sea perjudicial para la paz, el orden o la seguridad del Estado costero."
+      },
+      {
+        "question": "¿En qué documento internacional se establece la extensión del mar territorial?",
+        "options": [
+          "Tratado de Tordesillas",
+          "Convención de las Naciones Unidas sobre el Derecho del Mar (CONVEMAR)",
+          "Acuerdo de París",
+          "Declaración Universal de los Derechos Humanos"
+        ],
+        "correct": 1,
+        "explanation": "La CONVEMAR, firmada en 1982, define el mar territorial como 12 millas náuticas desde la línea de base."
+      },
+      {
+        "question": "¿Qué actividades puede realizar un Estado en su mar territorial sin interferencia extranjera?",
+        "options": [
+          "Solo pesca y navegación",
+          "Explotación de recursos, aplicación de leyes y defensa",
+          "Únicamente investigación científica",
+          "Ninguna, es de libre acceso"
+        ],
+        "correct": 1,
+        "explanation": "En el mar territorial, el Estado ejerce soberanía plena, incluyendo explotación de recursos, aplicación de leyes y defensa."
+      },
+      {
+        "question": "¿Por qué el mar territorial es considerado parte del patrimonio cultural de una nación?",
+        "options": [
+          "Porque contiene restos arqueológicos submarinos y tradiciones marítimas",
+          "Porque es una fuente de ingresos turísticos",
+          "Porque es una ruta de navegación internacional",
+          "Porque alberga especies marinas"
+        ],
+        "correct": 0,
+        "explanation": "El mar territorial resguarda elementos del patrimonio cultural como naufragios, sitios arqueológicos y prácticas culturales vinculadas al mar."
       }
     ]
   },
@@ -2238,6 +4273,61 @@
         ],
         "correct": 0,
         "explanation": "Preservar el patrimonio indígena reconoce la diversidad cultural y refuerza la soberanía al proteger las raíces históricas del país."
+      },
+      {
+        "question": "¿Qué característica define a una sociedad multicultural?",
+        "options": [
+          "La existencia de una sola cultura dominante",
+          "La coexistencia de diversas culturas en un mismo territorio",
+          "La eliminación de diferencias culturales",
+          "La imposición de una lengua oficial"
+        ],
+        "correct": 1,
+        "explanation": "La multiculturalidad se refiere a la convivencia de varias culturas en un mismo espacio, respetando sus diferencias."
+      },
+      {
+        "question": "¿Cómo se relaciona la multiculturalidad con la soberanía de un país?",
+        "options": [
+          "La soberanía se debilita al tener muchas culturas",
+          "La soberanía se fortalece al reconocer y proteger la diversidad cultural",
+          "La soberanía ignora las diferencias culturales",
+          "La soberanía solo aplica a una cultura mayoritaria"
+        ],
+        "correct": 1,
+        "explanation": "Reconocer la diversidad cultural enriquece la soberanía al integrar distintas tradiciones y saberes."
+      },
+      {
+        "question": "¿Qué ejemplo representa el patrimonio cultural inmaterial de México?",
+        "options": [
+          "La Pirámide del Sol en Teotihuacán",
+          "La música de mariachi",
+          "El Palacio de Bellas Artes",
+          "La Catedral de Morelia"
+        ],
+        "correct": 1,
+        "explanation": "El patrimonio cultural inmaterial incluye tradiciones como la música, danzas y festividades, como el mariachi."
+      },
+      {
+        "question": "¿Cuál es un beneficio de la multiculturalidad para un país?",
+        "options": [
+          "Genera conflictos entre grupos",
+          "Disminuye la diversidad lingüística",
+          "Enriquece la cultura con diversas tradiciones",
+          "Limita el intercambio comercial"
+        ],
+        "correct": 2,
+        "explanation": "La multiculturalidad aporta riqueza cultural al compartir costumbres, gastronomía y arte de diferentes grupos."
+      },
+      {
+        "question": "¿Qué acción promueve la soberanía cultural en un país multicultural?",
+        "options": [
+          "Prohibir expresiones culturales minoritarias",
+          "Fomentar el diálogo y respeto entre culturas",
+          "Imponer una sola religión",
+          "Eliminar lenguas indígenas"
+        ],
+        "correct": 1,
+        "explanation": "La soberanía cultural se fortalece al valorar y proteger la diversidad mediante el respeto mutuo."
       }
     ]
   },
@@ -2297,6 +4387,61 @@
         ],
         "correct": 1,
         "explanation": "Al adoptar costumbres globales, las comunidades pueden perder sus tradiciones y valores propios, lo que afecta su identidad cultural."
+      },
+      {
+        "question": "¿Qué es la globalización cultural?",
+        "options": [
+          "Un proceso que unifica las culturas del mundo",
+          "El aislamiento de las culturas nacionales",
+          "La desaparición de todas las culturas",
+          "El fortalecimiento de las culturas locales"
+        ],
+        "correct": 0,
+        "explanation": "La globalización cultural se refiere a la difusión de costumbres, valores y productos a escala mundial, lo que tiende a homogeneizar las culturas."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de cómo los medios de comunicación promueven la homogenización cultural?",
+        "options": [
+          "La transmisión de programas locales en idiomas indígenas",
+          "La difusión de series y películas estadounidenses en todo el mundo",
+          "La promoción de festivales tradicionales regionales",
+          "El fomento de la artesanía local"
+        ],
+        "correct": 1,
+        "explanation": "La difusión masiva de contenido de países dominantes, como las series de Estados Unidos, hace que muchas personas adopten esas costumbres, reduciendo la diversidad cultural."
+      },
+      {
+        "question": "¿Qué impacto tiene la homogenización cultural en la identidad de los pueblos?",
+        "options": [
+          "Fortalece su identidad única",
+          "Puede debilitar sus tradiciones y lengua",
+          "No tiene ningún efecto",
+          "Aumenta el respeto por las culturas locales"
+        ],
+        "correct": 1,
+        "explanation": "Al adoptar costumbres globales, las comunidades pueden perder prácticas tradicionales y su lengua, afectando su identidad cultural."
+      },
+      {
+        "question": "¿Por qué la homogenización cultural puede considerarse una amenaza para la soberanía cultural de un país?",
+        "options": [
+          "Porque enriquece la cultura nacional",
+          "Porque impone valores extranjeros y reduce la diversidad local",
+          "Porque promueve el intercambio cultural equitativo",
+          "Porque fortalece las industrias culturales nacionales"
+        ],
+        "correct": 1,
+        "explanation": "La imposición de valores y productos culturales extranjeros puede desplazar las expresiones locales, limitando la capacidad del país para preservar su propia cultura."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones ayudaría a preservar la diversidad cultural frente a la globalización?",
+        "options": [
+          "Consumir solo productos culturales extranjeros",
+          "Apoyar la producción y difusión de contenidos locales",
+          "Prohibir el acceso a medios internacionales",
+          "Ignorar las tradiciones propias"
+        ],
+        "correct": 1,
+        "explanation": "Fomentar la creación y difusión de contenidos culturales locales ayuda a mantener vivas las tradiciones y contrarresta la influencia homogeneizadora de la globalización."
       }
     ]
   },
@@ -2356,6 +4501,61 @@
         ],
         "correct": 1,
         "explanation": "Al promover el diálogo y difundir su patrimonio, México reafirma su identidad cultural y soberanía, participando activamente en el intercambio global."
+      },
+      {
+        "question": "¿Cuál de las siguientes prácticas fomenta un diálogo intercultural activo?",
+        "options": [
+          "Imponer una cultura dominante sobre las minorías",
+          "Organizar festivales donde se compartan tradiciones de diferentes grupos étnicos",
+          "Aislar a las comunidades indígenas para preservar su cultura",
+          "Prohibir el uso de lenguas extranjeras en espacios públicos"
+        ],
+        "correct": 1,
+        "explanation": "Los festivales multiculturales permiten el intercambio de tradiciones y conocimientos entre diversas culturas, promoviendo el respeto y la convivencia."
+      },
+      {
+        "question": "¿Qué elemento del patrimonio cultural es más vulnerable a perderse si no se fomenta el diálogo intercultural?",
+        "options": [
+          "Monumentos históricos",
+          "Lenguas indígenas",
+          "Edificios coloniales",
+          "Obras de arte contemporáneo"
+        ],
+        "correct": 1,
+        "explanation": "Las lenguas indígenas son parte del patrimonio inmaterial y, sin intercambio y valoración, pueden desaparecer al no transmitirse a nuevas generaciones."
+      },
+      {
+        "question": "¿Cómo contribuye la interculturalidad a la soberanía cultural de un país?",
+        "options": [
+          "Eliminando influencias externas para proteger la cultura local",
+          "Permitiendo que todas las culturas dialoguen y enriquezcan la identidad nacional",
+          "Adoptando completamente culturas extranjeras para modernizarse",
+          "Restringiendo el acceso a expresiones culturales de otros países"
+        ],
+        "correct": 1,
+        "explanation": "El diálogo intercultural fortalece la identidad nacional al integrar diversas influencias de manera respetuosa, sin perder la esencia propia."
+      },
+      {
+        "question": "¿Qué acción representa un intercambio cultural respetuoso?",
+        "options": [
+          "Copiar danzas tradicionales de otra cultura sin reconocer su origen",
+          "Invitar a artesanos de una comunidad indígena a enseñar su técnica en una escuela",
+          "Obligar a estudiantes a vestir ropa típica de una región que no es la suya",
+          "Comercializar símbolos sagrados sin permiso de la comunidad originaria"
+        ],
+        "correct": 1,
+        "explanation": "Invitar a artesanos a compartir su conocimiento de manera voluntaria y respetuosa promueve el diálogo y el aprendizaje mutuo."
+      },
+      {
+        "question": "¿Por qué la diversidad cultural es importante para la soberanía de México?",
+        "options": [
+          "Porque debilita la identidad nacional al tener muchas diferencias",
+          "Porque enriquece la cultura nacional y la hace única frente a otros países",
+          "Porque permite que otros países decidan qué es lo mejor para México",
+          "Porque facilita la imposición de una sola lengua y costumbres"
+        ],
+        "correct": 1,
+        "explanation": "La diversidad cultural es un patrimonio que distingue a México y fortalece su soberanía al mostrar su riqueza y autenticidad."
       }
     ]
   },
@@ -2415,6 +4615,61 @@
         ],
         "correct": 0,
         "explanation": "Chiapas comparte frontera con Guatemala, mientras que Quintana Roo limita con Belice."
+      },
+      {
+        "question": "¿Cuál de los siguientes tratados definió los límites actuales entre México y Estados Unidos tras la guerra de 1846-1848?",
+        "options": [
+          "Tratado de Guadalupe Hidalgo",
+          "Tratado de La Mesilla",
+          "Tratado de Versalles",
+          "Tratado de Tlatelolco"
+        ],
+        "correct": 0,
+        "explanation": "El Tratado de Guadalupe Hidalgo, firmado en 1848, estableció la frontera entre México y Estados Unidos, cediendo México gran parte de su territorio."
+      },
+      {
+        "question": "¿Qué río forma parte de la frontera entre México y Guatemala en el estado de Chiapas?",
+        "options": [
+          "Río Suchiate",
+          "Río Usumacinta",
+          "Río Grijalva",
+          "Río Bravo"
+        ],
+        "correct": 0,
+        "explanation": "El río Suchiate marca la frontera entre México y Guatemala en su parte más occidental, cerca del océano Pacífico."
+      },
+      {
+        "question": "¿Cuál de los siguientes estados mexicanos no comparte frontera con Estados Unidos?",
+        "options": [
+          "Tamaulipas",
+          "Nuevo León",
+          "Sonora",
+          "Chihuahua"
+        ],
+        "correct": 1,
+        "explanation": "Nuevo León no colinda con Estados Unidos; su frontera es con Texas, pero no hay contacto directo porque Tamaulipas y Coahuila están entre ambos."
+      },
+      {
+        "question": "¿Qué país centroamericano limita con México al sureste, además de Guatemala?",
+        "options": [
+          "Belice",
+          "Honduras",
+          "El Salvador",
+          "Nicaragua"
+        ],
+        "correct": 0,
+        "explanation": "México comparte frontera con Belice al sureste, en un tramo de aproximadamente 193 km, principalmente en el estado de Quintana Roo."
+      },
+      {
+        "question": "¿Qué accidente geográfico sirve como límite natural entre México y Guatemala en la región de la península de Yucatán?",
+        "options": [
+          "Río Hondo",
+          "Río Suchiate",
+          "Río Usumacinta",
+          "Río Bravo"
+        ],
+        "correct": 0,
+        "explanation": "El río Hondo marca la frontera entre México y Belice, no con Guatemala. La frontera con Guatemala en esa zona es terrestre y definida por tratados."
       }
     ]
   },
@@ -2474,6 +4729,61 @@
         ],
         "correct": 1,
         "explanation": "Guanajuato fue declarada Patrimonio Mundial por su importancia minera y su centro histórico bien conservado."
+      },
+      {
+        "question": "¿Qué civilización prehispánica construyó la ciudad de Teotihuacán, Patrimonio de la Humanidad?",
+        "options": [
+          "A. Maya",
+          "B. Zapoteca",
+          "C. Teotihuacana",
+          "D. Mexica"
+        ],
+        "correct": 2,
+        "explanation": "Teotihuacán fue construida por la cultura teotihuacana, que floreció entre los siglos I y VII d.C., antes de los mexicas."
+      },
+      {
+        "question": "¿Cuál de las siguientes zonas arqueológicas es Patrimonio de la Humanidad y se localiza en Oaxaca?",
+        "options": [
+          "A. Chichén Itzá",
+          "B. Monte Albán",
+          "C. Teotihuacán",
+          "D. Palenque"
+        ],
+        "correct": 1,
+        "explanation": "Monte Albán, en Oaxaca, fue la capital de la cultura zapoteca y es Patrimonio de la Humanidad desde 1987."
+      },
+      {
+        "question": "El centro histórico de Puebla fue declarado Patrimonio de la Humanidad por la UNESCO en 1987. ¿Qué estilo arquitectónico predomina en sus edificios coloniales?",
+        "options": [
+          "A. Gótico",
+          "B. Renacentista",
+          "C. Barroco",
+          "D. Neoclásico"
+        ],
+        "correct": 2,
+        "explanation": "Puebla es famosa por su arquitectura barroca, especialmente en la Catedral y la Capilla del Rosario."
+      },
+      {
+        "question": "¿Qué ciudad minera de Guanajuato es Patrimonio de la Humanidad y destaca por sus calles subterráneas?",
+        "options": [
+          "A. Guanajuato capital",
+          "B. San Miguel de Allende",
+          "C. Dolores Hidalgo",
+          "D. León"
+        ],
+        "correct": 0,
+        "explanation": "La ciudad de Guanajuato, con sus minas de plata y calles subterráneas, fue declarada Patrimonio de la Humanidad en 1988."
+      },
+      {
+        "question": "La zona arqueológica de Chichén Itzá, Patrimonio de la Humanidad, se ubica en la península de Yucatán. ¿Qué cultura la construyó?",
+        "options": [
+          "A. Olmeca",
+          "B. Maya",
+          "C. Tolteca",
+          "D. Azteca"
+        ],
+        "correct": 1,
+        "explanation": "Chichén Itzá fue una importante ciudad maya, aunque muestra influencia tolteca en su arquitectura."
       }
     ]
   }

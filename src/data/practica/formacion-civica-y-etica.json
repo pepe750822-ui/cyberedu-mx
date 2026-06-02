@@ -55,6 +55,61 @@
         ],
         "correct": 0,
         "explanation": "Al entender a los demás, podemos colaborar y respetar sus necesidades, mejorando la convivencia en sociedad."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones demuestra empatía en el contexto escolar?",
+        "options": [
+          "Ignorar a un compañero que está triste",
+          "Ayudar a un compañero que no entendió la tarea",
+          "Copiar la tarea de un compañero",
+          "Reírse de un compañero que se equivocó"
+        ],
+        "correct": 1,
+        "explanation": "Ayudar a un compañero muestra que te pones en su lugar y entiendes su necesidad, lo que fortalece los lazos sociales."
+      },
+      {
+        "question": "¿Cómo se relaciona la empatía con la autonomía moral?",
+        "options": [
+          "La empatía evita que tomes decisiones propias",
+          "La empatía te permite considerar el impacto de tus decisiones en los demás",
+          "La empatía solo sirve para sentir lástima",
+          "La empatía no tiene relación con la moral"
+        ],
+        "correct": 1,
+        "explanation": "Al ponerse en el lugar del otro, puedes evaluar mejor las consecuencias de tus acciones y decidir de manera más ética."
+      },
+      {
+        "question": "¿Por qué es importante la empatía para el desarrollo moral de una persona?",
+        "options": [
+          "Porque ayuda a entender las emociones ajenas y actuar con justicia",
+          "Porque permite obtener beneficios personales",
+          "Porque hace que las personas sean más populares",
+          "Porque evita que tengas que reflexionar sobre tus actos"
+        ],
+        "correct": 0,
+        "explanation": "La empatía te permite comprender cómo se sienten los demás, lo que es clave para desarrollar un sentido de justicia y moral."
+      },
+      {
+        "question": "En una situación de conflicto entre dos amigos, ¿cómo aplicarías la empatía?",
+        "options": [
+          "Tomando partido por uno sin escuchar al otro",
+          "Ignorando el conflicto para no involucrarte",
+          "Escuchando a ambos y tratando de entender sus puntos de vista",
+          "Decidiendo quién tiene la razón sin más"
+        ],
+        "correct": 2,
+        "explanation": "Escuchar a ambos y entender sus perspectivas es una forma de ponerse en el lugar del otro, lo que ayuda a resolver conflictos de manera justa."
+      },
+      {
+        "question": "¿Cuál es un beneficio social de practicar la empatía en tu comunidad?",
+        "options": [
+          "Aumenta la competencia entre las personas",
+          "Fomenta la cooperación y la solidaridad",
+          "Crea desigualdad al favorecer a algunos",
+          "Reduce la comunicación entre vecinos"
+        ],
+        "correct": 1,
+        "explanation": "La empatía promueve la comprensión mutua y la ayuda, fortaleciendo la cooperación y la solidaridad en la comunidad."
       }
     ]
   },
@@ -114,6 +169,61 @@
         ],
         "correct": 1,
         "explanation": "Ayudar a un compañero porque crees que es correcto muestra que actúas según tu propio valor de solidaridad, no por presión social."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones muestra una decisión basada en la autonomía moral?",
+        "options": [
+          "Seguir una moda solo porque todos lo hacen.",
+          "Dejar de fumar por presión de los amigos.",
+          "Ayudar a un compañero porque consideras que es lo correcto, aunque nadie más lo haga.",
+          "Copiar en un examen para no defraudar a tus padres."
+        ],
+        "correct": 2,
+        "explanation": "La autonomía moral implica decidir según tus propios valores, no por presión externa. Ayudar por convicción propia es un ejemplo claro."
+      },
+      {
+        "question": "¿Qué elemento es indispensable para ejercer la autonomía moral?",
+        "options": [
+          "Seguir las normas sin cuestionarlas.",
+          "Actuar según lo que dicta la mayoría.",
+          "Reflexionar sobre las consecuencias de tus actos.",
+          "Evitar tomar decisiones difíciles."
+        ],
+        "correct": 2,
+        "explanation": "La reflexión permite analizar situaciones desde tus valores, lo que es clave para decidir con autonomía moral."
+      },
+      {
+        "question": "¿Por qué la autonomía moral se relaciona con la responsabilidad?",
+        "options": [
+          "Porque al decidir por ti mismo, debes asumir las consecuencias.",
+          "Porque siempre debes seguir las reglas establecidas.",
+          "Porque evita que tomes decisiones equivocadas.",
+          "Porque te libera de rendir cuentas a otros."
+        ],
+        "correct": 0,
+        "explanation": "Al decidir autónomamente, eres responsable de tus actos y sus resultados, lo que fortalece tu sentido de responsabilidad."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones contradice la autonomía moral?",
+        "options": [
+          "Defender a un compañero de bullying porque crees que es injusto.",
+          "Elegir una carrera por vocación propia.",
+          "Fumar porque tus amigos te presionan.",
+          "Donar juguetes a niños necesitados por iniciativa propia."
+        ],
+        "correct": 2,
+        "explanation": "Ceder a la presión social sin reflexión va en contra de la autonomía moral, que requiere decisiones basadas en valores personales."
+      },
+      {
+        "question": "¿Cómo se relaciona la autonomía moral con la dignidad humana?",
+        "options": [
+          "La autonomía moral no tiene relación con la dignidad.",
+          "Al decidir por ti mismo, reconoces tu valor como persona.",
+          "La dignidad se logra solo siguiendo a la mayoría.",
+          "La autonomía moral limita la libertad de otros."
+        ],
+        "correct": 1,
+        "explanation": "Ejercer autonomía moral implica respetarte a ti mismo y a los demás, lo que refleja y fortalece la dignidad de cada persona."
       }
     ]
   },
@@ -173,6 +283,61 @@
         ],
         "correct": 1,
         "explanation": "Cuando obedeces las reglas solo para evitar un castigo, sin reflexionar sobre su sentido, actúas con heteronomía."
+      },
+      {
+        "question": "¿Qué caracteriza a una persona que actúa con heteronomía moral?",
+        "options": [
+          "Sigue normas por temor al castigo o por costumbre",
+          "Reflexiona y decide por sí misma lo que es correcto",
+          "Cuestiona las reglas antes de seguirlas",
+          "Actúa según sus propios principios éticos"
+        ],
+        "correct": 0,
+        "explanation": "La heteronomía moral implica que la persona obedece reglas externas sin cuestionarlas, por miedo o hábito."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones refleja heteronomía moral?",
+        "options": [
+          "Un estudiante decide estudiar porque comprende la importancia del aprendizaje",
+          "Un niño no roba porque sus padres le dijeron que está mal y le da miedo el castigo",
+          "Un joven ayuda a un amigo porque cree en la solidaridad",
+          "Una persona respeta las señales de tránsito por convicción propia"
+        ],
+        "correct": 1,
+        "explanation": "Actuar por miedo al castigo sin reflexión propia es un ejemplo claro de heteronomía moral."
+      },
+      {
+        "question": "En el desarrollo de la autonomía moral, es fundamental:",
+        "options": [
+          "Aceptar todas las normas sin preguntar",
+          "Cuestionar y analizar las reglas para actuar según la propia conciencia",
+          "Seguir siempre la opinión de la mayoría",
+          "Evitar tomar decisiones para no equivocarse"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral se basa en la reflexión personal para decidir qué es correcto, no en la aceptación pasiva."
+      },
+      {
+        "question": "¿Por qué la heteronomía moral puede limitar el desarrollo ético de una persona?",
+        "options": [
+          "Porque fomenta la reflexión y el pensamiento crítico",
+          "Porque impide que la persona cuestione y forme su propio criterio",
+          "Porque ayuda a seguir las leyes sin dudas",
+          "Porque permite actuar según los valores propios"
+        ],
+        "correct": 1,
+        "explanation": "Al no reflexionar, la persona no desarrolla su propio juicio moral, lo que limita su crecimiento ético."
+      },
+      {
+        "question": "Un ejemplo de heteronomía moral en la vida cotidiana es:",
+        "options": [
+          "Elegir una carrera por vocación personal",
+          "No mentir porque se considera incorrecto tras reflexionar",
+          "Usar el cinturón de seguridad solo para evitar una multa",
+          "Donar a una causa porque se cree en la justicia social"
+        ],
+        "correct": 2,
+        "explanation": "Actuar solo para evitar una sanción, sin convencimiento propio, es un ejemplo de heteronomía."
       }
     ]
   },
@@ -232,6 +397,61 @@
         ],
         "correct": 1,
         "explanation": "Desarrollar la conciencia moral ayuda a los adolescentes a reflexionar sobre sus acciones y actuar de manera coherente con sus valores, fomentando la responsabilidad."
+      },
+      {
+        "question": "¿Qué significa actuar con autonomía moral?",
+        "options": [
+          "Seguir las reglas sin cuestionarlas",
+          "Tomar decisiones basadas en principios propios",
+          "Actuar según lo que otros esperan",
+          "Evitar pensar en las consecuencias"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral implica decidir por uno mismo lo que es correcto, basándose en la reflexión personal y principios éticos."
+      },
+      {
+        "question": "Si una persona actúa solo por miedo al castigo, ¿en qué etapa del desarrollo moral se encuentra según Kohlberg?",
+        "options": [
+          "Postconvencional",
+          "Convencional",
+          "Preconvencional",
+          "Autónoma"
+        ],
+        "correct": 2,
+        "explanation": "En la etapa preconvencional, las personas se guían por el castigo y la obediencia, sin internalizar principios morales."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones muestra un conflicto entre la conciencia moral y las normas sociales?",
+        "options": [
+          "Un estudiante obedece a su maestro sin dudar",
+          "Un joven se niega a hacer trampa en un examen porque cree que está mal",
+          "Una persona asiste a una fiesta porque todos van",
+          "Un niño comparte sus juguetes porque sus padres lo obligan"
+        ],
+        "correct": 1,
+        "explanation": "Aquí la conciencia moral del joven (no hacer trampa) entra en conflicto con la posible presión social de obtener una buena nota."
+      },
+      {
+        "question": "¿Qué característica define a una persona con una ética personal sólida?",
+        "options": [
+          "Actúa de manera coherente con sus valores",
+          "Siempre busca la aprobación de los demás",
+          "Cambia sus principios según la situación",
+          "Evita tomar decisiones difíciles"
+        ],
+        "correct": 0,
+        "explanation": "Una ética personal sólida implica actuar de acuerdo con los propios valores y principios, incluso en situaciones adversas."
+      },
+      {
+        "question": "¿Por qué la autonomía moral es importante en la adolescencia?",
+        "options": [
+          "Porque permite seguir a la mayoría sin pensar",
+          "Porque ayuda a formar un criterio propio para tomar decisiones éticas",
+          "Porque facilita la obediencia a las autoridades",
+          "Porque evita conflictos con los padres"
+        ],
+        "correct": 1,
+        "explanation": "En la adolescencia se desarrolla la capacidad de reflexionar críticamente y actuar según principios propios, lo que fortalece la autonomía moral."
       }
     ]
   },
@@ -291,6 +511,61 @@
         ],
         "correct": 1,
         "explanation": "Los límites evitan conflictos y protegen los derechos de todos, permitiendo una convivencia armoniosa."
+      },
+      {
+        "question": "¿En qué situación la libertad de decisión de una persona está correctamente limitada?",
+        "options": [
+          "Cuando decide no hacer su tarea",
+          "Cuando decide mentir para obtener un beneficio propio",
+          "Cuando decide vestirse de una forma que no le gusta a otros",
+          "Cuando decide estudiar una carrera que no es popular"
+        ],
+        "correct": 1,
+        "explanation": "Mentir para obtener un beneficio propio afecta el derecho de otros a la verdad y puede causar daño, por lo que la libertad de decisión está limitada éticamente."
+      },
+      {
+        "question": "Un grupo de amigos decide excluir a un compañero por su forma de vestir. ¿Qué límite ético se está violando?",
+        "options": [
+          "La libertad de expresión del grupo",
+          "El derecho a la privacidad del compañero",
+          "El derecho a la igualdad y no discriminación del compañero",
+          "La autonomía moral del grupo"
+        ],
+        "correct": 2,
+        "explanation": "Excluir a alguien por su forma de vestir es una forma de discriminación que atenta contra el derecho a la igualdad, limitando la libertad de decisión del grupo."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones demuestra autonomía moral?",
+        "options": [
+          "Seguir una moda porque todos lo hacen",
+          "Decidir no robar aunque nadie te vea",
+          "Obedecer a tus padres sin preguntar",
+          "Hacer lo que un amigo te dice para ser aceptado"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral implica actuar según tus propios principios éticos, no por presión externa. Decidir no robar aunque nadie te vea muestra un razonamiento moral propio."
+      },
+      {
+        "question": "Si un estudiante quiere publicar un rumor falso sobre un compañero en redes sociales, ¿qué límite debe considerar?",
+        "options": [
+          "Su derecho a la libertad de expresión",
+          "El derecho a la reputación del compañero",
+          "La popularidad que puede ganar",
+          "Las reglas de la escuela"
+        ],
+        "correct": 1,
+        "explanation": "Publicar un rumor falso daña la reputación del compañero, violando su derecho al honor. La libertad de expresión tiene límites cuando afecta los derechos de otros."
+      },
+      {
+        "question": "¿Por qué la libertad de decisión no es absoluta en una sociedad?",
+        "options": [
+          "Porque las leyes siempre la limitan",
+          "Porque puede entrar en conflicto con los derechos de otras personas",
+          "Porque las personas no son capaces de decidir bien",
+          "Porque la sociedad impone reglas arbitrarias"
+        ],
+        "correct": 1,
+        "explanation": "La libertad de decisión termina donde comienzan los derechos de los demás. En sociedad, es necesario equilibrar las libertades individuales para que todos puedan ejercer sus derechos."
       }
     ]
   },
@@ -350,6 +625,61 @@
         ],
         "correct": 1,
         "explanation": "La ética personal permite reflexionar sobre las normas sociales y decidir si son justas o no, ejerciendo autonomía moral."
+      },
+      {
+        "question": "¿Cuál de las siguientes es un ejemplo de norma social en México?",
+        "options": [
+          "Saludar con un beso en la mejilla",
+          "No mentir",
+          "Respetar a los padres",
+          "Ayudar a quien lo necesita"
+        ],
+        "correct": 0,
+        "explanation": "Saludar con un beso en la mejilla es una costumbre cultural, no una obligación moral, por lo que es una norma social."
+      },
+      {
+        "question": "La autonomía moral se refiere a:",
+        "options": [
+          "Seguir las reglas sin cuestionarlas",
+          "Actuar según principios propios razonados",
+          "Cumplir con lo que dicta la mayoría",
+          "Evitar conflictos con los demás"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral implica que la persona decide por sí misma, basándose en su razón y valores, no en presiones externas."
+      },
+      {
+        "question": "¿Por qué una persona puede sentir conflicto entre su ética personal y una norma social?",
+        "options": [
+          "Porque las normas sociales siempre son correctas",
+          "Porque la ética personal es subjetiva y puede chocar con creencias colectivas",
+          "Porque no existen normas sociales universales",
+          "Porque la ética personal es impuesta por la sociedad"
+        ],
+        "correct": 1,
+        "explanation": "La ética personal se basa en valores individuales, mientras que las normas sociales reflejan costumbres del grupo, pudiendo haber discrepancia."
+      },
+      {
+        "question": "¿Qué característica distingue a una norma social de una norma jurídica?",
+        "options": [
+          "La norma social es escrita",
+          "La norma social no tiene sanción formal",
+          "La norma social es universal",
+          "La norma social es obligatoria"
+        ],
+        "correct": 1,
+        "explanation": "Las normas sociales se imponen por presión social o costumbre, sin castigo legal, a diferencia de las jurídicas."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de actuar con autonomía moral ante una norma social discriminatoria?",
+        "options": [
+          "Aceptarla para evitar problemas",
+          "Cuestionarla y rechazarla por considerarla injusta",
+          "Ignorarla y seguir la corriente",
+          "Denunciarla ante la autoridad"
+        ],
+        "correct": 1,
+        "explanation": "Actuar con autonomía moral implica reflexionar críticamente y decidir en congruencia con los propios principios éticos, aunque vaya contra la costumbre."
       }
     ]
   },
@@ -409,6 +739,61 @@
         ],
         "correct": 2,
         "explanation": "Las normas morales se sancionan internamente con emociones como la culpa, no con castigos externos."
+      },
+      {
+        "question": "¿Qué significa que las normas morales sean autónomas?",
+        "options": [
+          "Que son impuestas por una autoridad externa",
+          "Que la persona las acepta libremente desde su conciencia",
+          "Que están escritas en un código legal",
+          "Que se aplican solo en la escuela"
+        ],
+        "correct": 1,
+        "explanation": "Las normas morales son autónomas porque cada persona las elige y sigue según su propia conciencia, sin que nadie las obligue desde afuera."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones muestra una acción basada en la conciencia moral?",
+        "options": [
+          "Dejar de comer carne porque la ley lo prohíbe",
+          "Ayudar a un compañero porque el maestro lo ordena",
+          "Decir la verdad aunque nadie se dé cuenta",
+          "Usar uniforme porque es obligatorio"
+        ],
+        "correct": 2,
+        "explanation": "Decir la verdad aunque nadie lo sepa es un acto guiado por la conciencia moral, no por una autoridad externa, lo que refleja autonomía."
+      },
+      {
+        "question": "¿Por qué las normas morales no son sancionadas por el Estado?",
+        "options": [
+          "Porque no son importantes para la sociedad",
+          "Porque solo regulan la conducta interna de la persona",
+          "Porque el Estado no tiene poder para hacerlo",
+          "Porque son iguales a las normas jurídicas"
+        ],
+        "correct": 1,
+        "explanation": "Las normas morales se centran en la conciencia y la intención personal, por lo que el Estado no las sanciona; estas dependen de la propia reflexión."
+      },
+      {
+        "question": "¿Qué característica distingue a una persona con autonomía moral?",
+        "options": [
+          "Sigue las reglas por miedo al castigo",
+          "Actúa según lo que otros esperan de ella",
+          "Toma decisiones basadas en sus propios valores",
+          "Obediente a toda autoridad sin cuestionar"
+        ],
+        "correct": 2,
+        "explanation": "La autonomía moral implica actuar según los propios principios y valores, no por presión externa o miedo."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una norma moral?",
+        "options": [
+          "No robar porque es un delito",
+          "Respetar a los mayores porque es correcto",
+          "Usar cinturón de seguridad por ley",
+          "Pagar impuestos porque es obligatorio"
+        ],
+        "correct": 1,
+        "explanation": "Respetar a los mayores por considerarlo correcto es una norma moral, ya que surge de la conciencia, no de una ley."
       }
     ]
   },
@@ -468,6 +853,61 @@
         ],
         "correct": 1,
         "explanation": "Organizar una asamblea donde todos participen con respeto permite encontrar soluciones consensuadas y justas para todos."
+      },
+      {
+        "question": "¿Qué habilidad es fundamental para que el diálogo sea efectivo en la resolución de conflictos morales?",
+        "options": [
+          "Imponer la propia opinión",
+          "Escuchar activamente",
+          "Evitar el contacto visual",
+          "Hablar sin pausas"
+        ],
+        "correct": 1,
+        "explanation": "Escuchar activamente permite entender los puntos de vista de los demás, facilitando acuerdos basados en el respeto mutuo."
+      },
+      {
+        "question": "En un conflicto social, el diálogo ético debe basarse en:",
+        "options": [
+          "La ley del más fuerte",
+          "El respeto a los derechos humanos",
+          "Las creencias personales de una sola persona",
+          "La indiferencia hacia las diferencias"
+        ],
+        "correct": 1,
+        "explanation": "El respeto a los derechos humanos garantiza que todas las voces sean escuchadas y se busquen soluciones justas para todos."
+      },
+      {
+        "question": "¿Qué elemento es indispensable para que una persona actúe con autonomía moral al dialogar?",
+        "options": [
+          "Seguir siempre la opinión de la mayoría",
+          "Reflexionar de manera crítica sobre sus valores",
+          "Evitar expresar sus ideas",
+          "Actuar por impulso"
+        ],
+        "correct": 1,
+        "explanation": "La reflexión crítica permite tomar decisiones propias basadas en principios éticos, no en presiones externas."
+      },
+      {
+        "question": "¿Cuál es un obstáculo común para el diálogo en la resolución de conflictos morales?",
+        "options": [
+          "La disposición a negociar",
+          "La falta de empatía",
+          "El respeto por las diferencias",
+          "La comunicación clara"
+        ],
+        "correct": 1,
+        "explanation": "La falta de empatía impide comprender las emociones y perspectivas de los demás, dificultando llegar a acuerdos."
+      },
+      {
+        "question": "En un debate sobre un dilema moral, ¿qué actitud favorece la autonomía moral?",
+        "options": [
+          "Aceptar sin cuestionar las ideas de otros",
+          "Defender la propia postura sin considerar otras",
+          "Analizar diferentes puntos de vista y decidir con base en principios propios",
+          "Evitar participar para no conflictuarse"
+        ],
+        "correct": 2,
+        "explanation": "Analizar distintos puntos de vista permite formar un juicio propio y responsable, esencial para la autonomía moral."
       }
     ]
   },
@@ -527,6 +967,61 @@
         ],
         "correct": 1,
         "explanation": "La autonomía moral es la capacidad de una persona para reflexionar y decidir sus propios principios éticos, sin depender de imposiciones externas."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones ejemplifica el cumplimiento de una norma jurídica?",
+        "options": [
+          "A) Devolver un billete encontrado en la calle porque 'es lo correcto'.",
+          "B) Pagar impuestos al SAT porque la ley lo exige y hay multas por no hacerlo.",
+          "C) Ayudar a un anciano a cruzar la calle por compasión.",
+          "D) No mentirle a un amigo para no lastimar sus sentimientos."
+        ],
+        "correct": 1,
+        "explanation": "Pagar impuestos es una obligación legal respaldada por el Estado, con sanciones en caso de incumplimiento, a diferencia de las acciones basadas en valores personales."
+      },
+      {
+        "question": "¿Qué implica que una norma jurídica sea 'heterónoma'?",
+        "options": [
+          "A) Que la norma es creada por la propia persona que la sigue.",
+          "B) Que la norma es impuesta por una autoridad externa al individuo.",
+          "C) Que la norma solo aplica a ciertos grupos sociales.",
+          "D) Que la norma puede ser modificada por acuerdo entre particulares."
+        ],
+        "correct": 1,
+        "explanation": "La heteronomía significa que la norma proviene de una fuente externa, como el Estado, y no de la voluntad del individuo."
+      },
+      {
+        "question": "¿Cuál es la principal consecuencia de no cumplir con una norma jurídica?",
+        "options": [
+          "A) Sentir remordimiento o culpa personal.",
+          "B) Recibir una sanción impuesta por el Estado, como una multa o cárcel.",
+          "C) Ser rechazado por la comunidad.",
+          "D) Perder la confianza de los amigos."
+        ],
+        "correct": 1,
+        "explanation": "Las normas jurídicas son coercitivas, lo que significa que su incumplimiento conlleva una sanción legal, no solo moral o social."
+      },
+      {
+        "question": "¿En qué se diferencia la autonomía moral de la heteronomía?",
+        "options": [
+          "A) La autonomía implica seguir reglas impuestas por otros; la heteronomía, reglas propias.",
+          "B) La autonomía es la capacidad de darse normas a uno mismo; la heteronomía es recibir normas de otros.",
+          "C) Ambas son lo mismo, solo cambia el nombre.",
+          "D) La autonomía se aplica solo a normas religiosas; la heteronomía a normas legales."
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral es la capacidad de autogobernarse según principios propios, mientras que la heteronomía implica someterse a normas externas."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones es un ejemplo de autonomía moral?",
+        "options": [
+          "A) No robar porque la ley lo prohíbe y castiga.",
+          "B) Decidir no robar porque consideras que está mal, basado en tu propio razonamiento.",
+          "C) No robar porque tus padres te lo ordenan.",
+          "D) No robar porque todos a tu alrededor lo evitan."
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral implica actuar según principios propios, no por presión externa o temor a castigos."
       }
     ]
   },
@@ -586,6 +1081,61 @@
         ],
         "correct": 1,
         "explanation": "Ser abierto y respetuoso con diversas expresiones artísticas permite una apreciación más rica y auténtica."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones describe mejor un juicio estético autónomo?",
+        "options": [
+          "A. Aceptar que una obra es bella porque todos lo dicen.",
+          "B. Decidir que una obra es fea sin haberla visto.",
+          "C. Opinar sobre una obra basándose en la propia experiencia y criterio.",
+          "D. Preferir siempre el arte clásico porque es el más valorado."
+        ],
+        "correct": 2,
+        "explanation": "La autonomía moral implica formar juicios propios; en lo estético, significa apreciar el arte con base en la reflexión personal, no en la opinión mayoritaria."
+      },
+      {
+        "question": "¿Qué valor estético se relaciona con la capacidad de encontrar belleza en la naturaleza y en las creaciones humanas?",
+        "options": [
+          "A. La utilidad",
+          "B. La verdad",
+          "C. La bondad",
+          "D. La sensibilidad estética"
+        ],
+        "correct": 3,
+        "explanation": "La sensibilidad estética es la capacidad de percibir y valorar la belleza en diversas manifestaciones, tanto naturales como artísticas."
+      },
+      {
+        "question": "¿Por qué la apreciación del arte puede contribuir al desarrollo de la autonomía moral?",
+        "options": [
+          "A. Porque el arte siempre enseña lecciones morales explícitas.",
+          "B. Porque al interpretar una obra, ejercitamos el pensamiento crítico y la reflexión personal.",
+          "C. Porque todas las obras de arte son moralmente correctas.",
+          "D. Porque el arte nos dice qué está bien y qué está mal."
+        ],
+        "correct": 1,
+        "explanation": "Interpretar arte requiere que analicemos y formemos nuestras propias opiniones, lo que fortalece la capacidad de decidir de manera autónoma."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una manifestación de autonomía moral al valorar una obra de arte?",
+        "options": [
+          "A. Repetir la opinión de un crítico famoso.",
+          "B. Rechazar una obra solo porque es moderna.",
+          "C. Formar una opinión después de analizar la obra y reflexionar sobre ella.",
+          "D. Aceptar la obra porque está en un museo importante."
+        ],
+        "correct": 2,
+        "explanation": "La autonomía moral se demuestra al tomar decisiones basadas en la propia reflexión y análisis, no en la autoridad o moda."
+      },
+      {
+        "question": "¿Qué actitud ética es necesaria para apreciar la belleza en expresiones artísticas de culturas diferentes a la propia?",
+        "options": [
+          "A. Superioridad cultural",
+          "B. Tolerancia y apertura",
+          "C. Indiferencia",
+          "D. Rechazo a lo desconocido"
+        ],
+        "correct": 1,
+        "explanation": "La tolerancia y apertura permiten valorar la diversidad estética sin imponer los propios criterios, respetando la autonomía de otras culturas."
       }
     ]
   },
@@ -645,6 +1195,61 @@
         ],
         "correct": 1,
         "explanation": "La justicia garantiza igualdad de oportunidades y trato, evitando discriminación y abusos, lo que fortalece la convivencia armónica."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de actuar con autonomía moral?",
+        "options": [
+          "Seguir las reglas sin cuestionarlas",
+          "Tomar decisiones basadas en principios propios",
+          "Hacer lo que la mayoría opina",
+          "Actuar por miedo al castigo"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía moral implica decidir según nuestros propios valores y principios, no por presión externa."
+      },
+      {
+        "question": "¿Por qué es importante el bien común en una sociedad?",
+        "options": [
+          "Para beneficiar solo a ciertos grupos",
+          "Para que todos tengan las mismas oportunidades y derechos",
+          "Para que el gobierno tenga más poder",
+          "Para eliminar las diferencias individuales"
+        ],
+        "correct": 1,
+        "explanation": "El bien común busca el beneficio de toda la sociedad, garantizando igualdad de oportunidades y derechos para todos."
+      },
+      {
+        "question": "¿Qué significa tratar a alguien con dignidad?",
+        "options": [
+          "Ignorar sus opiniones",
+          "Reconocer su valor como persona",
+          "Darle lo que pide sin importar qué",
+          "Juzgarlo por sus errores"
+        ],
+        "correct": 1,
+        "explanation": "La dignidad implica respetar el valor inherente de cada persona, independientemente de sus acciones."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones promueve la justicia social?",
+        "options": [
+          "Pagar impuestos de manera equitativa",
+          "Acumular riqueza sin compartir",
+          "Excluir a personas por su origen",
+          "Ignorar las necesidades de los demás"
+        ],
+        "correct": 0,
+        "explanation": "Pagar impuestos de manera equitativa contribuye a financiar servicios públicos que benefician a toda la sociedad."
+      },
+      {
+        "question": "¿Qué valor moral se relaciona con actuar según principios propios, basados en la razón y no solo por presión social?",
+        "options": [
+          "Autonomía moral",
+          "Justicia",
+          "Bien común",
+          "Dignidad"
+        ],
+        "correct": 0,
+        "explanation": "La autonomía moral implica tomar decisiones éticas de forma libre y razonada, sin dejarse llevar por la opinión de los demás."
       }
     ]
   },
@@ -704,6 +1309,61 @@
         ],
         "correct": 2,
         "explanation": "El grupo de pares es fundamental para que los adolescentes exploren valores, conductas y definan su identidad, buscando aceptación y pertenencia."
+      },
+      {
+        "question": "¿Qué cambio físico característico de la pubertad ocurre en las mujeres?",
+        "options": [
+          "Aumento de la masa muscular",
+          "Ensanchamiento de caderas",
+          "Engrosamiento de la voz",
+          "Crecimiento de vello facial"
+        ],
+        "correct": 1,
+        "explanation": "En las mujeres, la pubertad incluye el desarrollo de mamas y ensanchamiento de caderas, mientras que el aumento de masa muscular y vello facial son más comunes en varones."
+      },
+      {
+        "question": "Durante la adolescencia, ¿cómo cambian las relaciones con los amigos?",
+        "options": [
+          "Se vuelven menos importantes",
+          "Se basan principalmente en intereses comunes y confianza",
+          "Son impuestas por los padres",
+          "Desaparecen por completo"
+        ],
+        "correct": 1,
+        "explanation": "En la adolescencia, las amistades se fortalecen al compartir intereses y confianza, volviéndose una parte clave del desarrollo social."
+      },
+      {
+        "question": "¿Por qué los adolescentes experimentan cambios de humor repentinos?",
+        "options": [
+          "Porque quieren llamar la atención",
+          "Debido a cambios hormonales y desarrollo cerebral",
+          "Porque no tienen control emocional",
+          "Por influencia de las redes sociales"
+        ],
+        "correct": 1,
+        "explanation": "Las hormonas de la pubertad y la maduración del cerebro afectan la regulación emocional, causando cambios de humor repentinos."
+      },
+      {
+        "question": "¿Qué emoción es común sentir durante la adolescencia cuando se enfrenta un conflicto con los padres?",
+        "options": [
+          "Indiferencia",
+          "Felicidad",
+          "Frustración",
+          "Tranquilidad"
+        ],
+        "correct": 2,
+        "explanation": "Los conflictos con los padres suelen generar frustración en los adolescentes, ya que buscan mayor independencia mientras aún dependen de ellos."
+      },
+      {
+        "question": "En la adolescencia, ¿qué aspecto social ayuda a definir la identidad personal?",
+        "options": [
+          "Aceptar sin cuestionar las normas familiares",
+          "Explorar diferentes grupos y roles sociales",
+          "Evitar todo contacto con otros adolescentes",
+          "Seguir siempre las modas sin pensarlo"
+        ],
+        "correct": 1,
+        "explanation": "Explorar distintos grupos y roles permite a los adolescentes descubrir sus propios valores y gustos, formando así su identidad."
       }
     ]
   },
@@ -763,6 +1423,61 @@
         ],
         "correct": 2,
         "explanation": "Las tradiciones ofrecen un sentido de pertenencia y conexión con el pasado, lo que ayuda a los adolescentes a entender su lugar en el mundo."
+      },
+      {
+        "question": "¿Qué aspecto de la identidad personal se fortalece al participar en tradiciones familiares?",
+        "options": [
+          "El sentido de pertenencia y continuidad",
+          "La independencia total de la familia",
+          "El rechazo a las costumbres",
+          "La individualidad absoluta"
+        ],
+        "correct": 0,
+        "explanation": "Participar en tradiciones familiares fortalece el sentido de pertenencia y la conexión con el pasado, lo que ayuda a construir la identidad personal."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de historia compartida que influye en la identidad de un grupo?",
+        "options": [
+          "Relatos sobre los fundadores de la comunidad",
+          "Un libro de texto de matemáticas",
+          "El menú de un restaurante",
+          "Una canción popular del momento"
+        ],
+        "correct": 0,
+        "explanation": "Los relatos sobre los fundadores son historias compartidas que transmiten valores y experiencias comunes, fortaleciendo la identidad del grupo."
+      },
+      {
+        "question": "¿Cómo pueden los grupos de pertenencia en la adolescencia influir en la identidad personal?",
+        "options": [
+          "Proporcionando modelos de comportamiento y valores",
+          "Impidiendo el desarrollo de la individualidad",
+          "Aislándote de otras personas",
+          "Eliminando las tradiciones familiares"
+        ],
+        "correct": 0,
+        "explanation": "Los grupos de pertenencia ofrecen modelos y valores que los adolescentes adoptan o rechazan, contribuyendo a la formación de su identidad."
+      },
+      {
+        "question": "¿Qué función cumplen las tradiciones en la transmisión de la identidad cultural?",
+        "options": [
+          "Preservar y transmitir costumbres y valores",
+          "Crear nuevas modas cada año",
+          "Impedir el cambio social",
+          "Fomentar el individualismo"
+        ],
+        "correct": 0,
+        "explanation": "Las tradiciones mantienen vivas las costumbres y valores de una cultura, permitiendo que se transmitan de generación en generación."
+      },
+      {
+        "question": "¿De qué manera las historias compartidas pueden unir a un grupo de adolescentes?",
+        "options": [
+          "Creando un sentido de identidad colectiva y pertenencia",
+          "Generando competencia entre ellos",
+          "Fomentando el aislamiento individual",
+          "Estableciendo reglas estrictas"
+        ],
+        "correct": 0,
+        "explanation": "Las historias compartidas generan un sentido de comunidad y pertenencia, uniendo a los adolescentes al identificarse con experiencias comunes."
       }
     ]
   },
@@ -822,6 +1537,61 @@
         ],
         "correct": 1,
         "explanation": "La Ley General de los Derechos de Niñas, Niños y Adolescentes establece y protege sus derechos, incluyendo identidad, salud, educación y protección contra violencia."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un derecho de los adolescentes en México relacionado con la recreación?",
+        "options": [
+          "Acceder a espacios públicos para el esparcimiento",
+          "Trabajar en lugar de estudiar",
+          "Consumir bebidas alcohólicas en eventos",
+          "Saltarse clases para divertirse"
+        ],
+        "correct": 0,
+        "explanation": "Los adolescentes tienen derecho a la recreación, que incluye acceder a espacios públicos y actividades culturales, deportivas y de esparcimiento."
+      },
+      {
+        "question": "¿Qué derecho protege a los adolescentes contra la violencia en su comunidad?",
+        "options": [
+          "Derecho a la protección contra la violencia",
+          "Derecho a la libre expresión",
+          "Derecho a la privacidad",
+          "Derecho a la información"
+        ],
+        "correct": 0,
+        "explanation": "El derecho a la protección contra la violencia garantiza que los adolescentes estén seguros en su comunidad, escuela y hogar."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones vulnera el derecho a la salud de los adolescentes?",
+        "options": [
+          "Recibir atención médica gratuita en centros de salud",
+          "Negar información sobre salud sexual y reproductiva",
+          "Acceder a campañas de vacunación",
+          "Recibir orientación sobre nutrición"
+        ],
+        "correct": 1,
+        "explanation": "Negar información sobre salud sexual y reproductiva vulnera el derecho a la salud, ya que los adolescentes tienen derecho a recibir información completa para cuidar su bienestar."
+      },
+      {
+        "question": "¿Qué derecho de los adolescentes se relaciona con su identidad y desarrollo personal?",
+        "options": [
+          "Derecho a la educación",
+          "Derecho a la recreación",
+          "Derecho a la identidad y a ser escuchados",
+          "Derecho a la protección contra la violencia"
+        ],
+        "correct": 2,
+        "explanation": "El derecho a la identidad y a ser escuchados permite a los adolescentes expresar sus opiniones y desarrollar su personalidad, siendo fundamentales para su desarrollo."
+      },
+      {
+        "question": "¿Cuál es un derecho de los adolescentes en México en el ámbito educativo?",
+        "options": [
+          "Recibir educación laica y gratuita",
+          "Elegir el contenido de las materias",
+          "Decidir no asistir a la escuela",
+          "Recibir calificaciones sin estudiar"
+        ],
+        "correct": 0,
+        "explanation": "Los adolescentes tienen derecho a recibir educación laica y gratuita, garantizada por la Constitución, para su desarrollo integral."
       }
     ]
   },
@@ -881,6 +1651,61 @@
         ],
         "correct": 1,
         "explanation": "El agua embotellada puede ser más escasa en ciertos lugares y su utilidad es alta, lo que le da un mayor valor económico."
+      },
+      {
+        "question": "¿Qué significa que un bien tenga 'utilidad' en términos económicos?",
+        "options": [
+          "Que es escaso y difícil de obtener",
+          "Que satisface una necesidad o deseo humano",
+          "Que tiene un precio muy alto",
+          "Que es producido por el gobierno"
+        ],
+        "correct": 1,
+        "explanation": "La utilidad se refiere a la capacidad de un bien o servicio para satisfacer una necesidad o deseo, lo que le da valor económico."
+      },
+      {
+        "question": "Si un producto es muy escaso pero nadie lo necesita, ¿qué ocurre con su valor económico?",
+        "options": [
+          "Será muy alto por la escasez",
+          "Será bajo porque no tiene utilidad",
+          "Será igual que otros productos",
+          "No se puede determinar"
+        ],
+        "correct": 1,
+        "explanation": "El valor económico depende tanto de la utilidad como de la escasez. Si no hay utilidad, el valor es bajo aunque sea escaso."
+      },
+      {
+        "question": "¿Por qué un diamante tiene mayor valor económico que una botella de agua en la mayoría de las situaciones?",
+        "options": [
+          "Porque el diamante es más útil para la supervivencia",
+          "Porque el diamante es más escaso y deseado",
+          "Porque el agua no tiene utilidad",
+          "Porque el diamante es más grande"
+        ],
+        "correct": 1,
+        "explanation": "El diamante es más escaso y muchas personas lo desean, mientras que el agua es abundante, por lo que su valor económico es mayor."
+      },
+      {
+        "question": "¿Cómo influye la percepción de escasez en el valor económico de un bien?",
+        "options": [
+          "No influye, solo importa la utilidad",
+          "Hace que el valor disminuya",
+          "Hace que el valor aumente si el bien es útil",
+          "Solo influye en bienes de lujo"
+        ],
+        "correct": 2,
+        "explanation": "La escasez, combinada con la utilidad, incrementa el valor económico porque las personas están dispuestas a pagar más por algo difícil de obtener."
+      },
+      {
+        "question": "¿Qué determina principalmente que un servicio tenga valor económico?",
+        "options": [
+          "Que sea gratuito",
+          "Que sea útil para las personas y tenga demanda",
+          "Que lo ofrezca el gobierno",
+          "Que sea difícil de realizar"
+        ],
+        "correct": 1,
+        "explanation": "Un servicio tiene valor económico si satisface una necesidad y hay personas dispuestas a pagar por él, es decir, si tiene utilidad y demanda."
       }
     ]
   },
@@ -940,6 +1765,61 @@
         ],
         "correct": 1,
         "explanation": "La exclusión social es una forma de violencia psicológica que provoca daño emocional y puede afectar la autoestima y el sentido de pertenencia."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones constituye un acto de violencia física en la escuela?",
+        "options": [
+          "Pegar a un compañero",
+          "Decirle apodos ofensivos",
+          "Excluirlo de un grupo",
+          "Enviarle mensajes amenazantes"
+        ],
+        "correct": 0,
+        "explanation": "Pegar a un compañero causa daño corporal directo, por lo que es violencia física."
+      },
+      {
+        "question": "Un profesor que constantemente humilla a un alumno frente a sus compañeros está ejerciendo:",
+        "options": [
+          "Violencia física",
+          "Violencia psicológica",
+          "Violencia económica",
+          "Violencia sexual"
+        ],
+        "correct": 1,
+        "explanation": "Humillar causa daño emocional, por lo que es violencia psicológica."
+      },
+      {
+        "question": "¿Cómo puede afectar la violencia psicológica la identidad de un adolescente?",
+        "options": [
+          "Mejorando su autoestima",
+          "Generando inseguridad y baja autoestima",
+          "Aumentando su popularidad",
+          "Fortalecer su carácter"
+        ],
+        "correct": 1,
+        "explanation": "La violencia psicológica daña la autoestima y la percepción de uno mismo, afectando la identidad."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones es un ejemplo de violencia psicológica?",
+        "options": [
+          "Un golpe en el brazo",
+          "Un empujón en el pasillo",
+          "Un insulto repetido sobre la apariencia",
+          "Robar la tarea a un compañero"
+        ],
+        "correct": 2,
+        "explanation": "Insultar repetidamente causa daño emocional, por lo que es violencia psicológica."
+      },
+      {
+        "question": "En la adolescencia, la identidad se construye también a través de la interacción social. ¿Qué tipo de violencia puede impedir este proceso?",
+        "options": [
+          "Violencia física",
+          "Violencia psicológica",
+          "Ambas pueden afectar",
+          "Ninguna de las anteriores"
+        ],
+        "correct": 2,
+        "explanation": "Tanto la violencia física como la psicológica generan un ambiente hostil que dificulta el desarrollo saludable de la identidad."
       }
     ]
   },
@@ -999,6 +1879,61 @@
         ],
         "correct": 0,
         "explanation": "La responsabilidad implica asumir obligaciones que beneficien a uno mismo y a la comunidad."
+      },
+      {
+        "question": "¿Qué obligación tienen los adolescentes al formar parte de un grupo escolar?",
+        "options": [
+          "A) Asistir puntualmente a clases",
+          "B) Elegir a sus compañeros",
+          "C) Ignorar las reglas del salón",
+          "D) Decidir el horario escolar"
+        ],
+        "correct": 0,
+        "explanation": "Asistir puntualmente a clases es una obligación básica para cumplir con los estudios y respetar el tiempo de los demás."
+      },
+      {
+        "question": "¿Cuál es una forma de respetar las normas en la comunidad escolar?",
+        "options": [
+          "A) Usar el celular durante clases",
+          "B) Seguir las indicaciones del profesor",
+          "C) Llegar tarde sin avisar",
+          "D) Hacer ruido en la biblioteca"
+        ],
+        "correct": 1,
+        "explanation": "Seguir las indicaciones del profesor demuestra respeto por las normas establecidas para el aprendizaje."
+      },
+      {
+        "question": "¿Qué beneficio trae participar en actividades de la comunidad escolar?",
+        "options": [
+          "A) Aislarse de los demás",
+          "B) Desarrollar sentido de pertenencia",
+          "C) Evitar responsabilidades",
+          "D) Obtener privilegios exclusivos"
+        ],
+        "correct": 1,
+        "explanation": "Participar ayuda a sentirse parte del grupo y a colaborar en un ambiente de respeto."
+      },
+      {
+        "question": "¿Qué obligación tienen los adolescentes con su propio desarrollo académico?",
+        "options": [
+          "A) Estudiar solo para exámenes",
+          "B) Cumplir con las tareas y trabajos",
+          "C) Copiar tareas de compañeros",
+          "D) Faltar a clases con frecuencia"
+        ],
+        "correct": 1,
+        "explanation": "Cumplir con tareas y trabajos es parte de la responsabilidad de aprovechar la educación."
+      },
+      {
+        "question": "¿Cómo contribuye un adolescente al respeto de las normas en su comunidad?",
+        "options": [
+          "A) Criticando las reglas en público",
+          "B) Siguiendo las reglas de convivencia",
+          "C) Haciendo excepciones para amigos",
+          "D) Ignorando las indicaciones"
+        ],
+        "correct": 1,
+        "explanation": "Seguir las reglas de convivencia muestra compromiso con el bienestar colectivo."
       }
     ]
   },
@@ -1058,6 +1993,61 @@
         ],
         "correct": 1,
         "explanation": "Estos delitos pueden ocurrir en cualquier entorno, incluyendo la escuela, el hogar o la comunidad, y a menudo por personas conocidas."
+      },
+      {
+        "question": "¿Cuál de las siguientes acciones constituye un delito de maltrato?",
+        "options": [
+          "Un padre que no permite a su hijo salir con amigos por una semana",
+          "Un maestro que insulta y humilla a un alumno frente a la clase",
+          "Un amigo que critica la forma de vestir de otro",
+          "Un hermano mayor que le quita el teléfono a su hermano menor por una hora"
+        ],
+        "correct": 1,
+        "explanation": "Insultar y humillar a una persona de manera repetida es una forma de maltrato psicológico, que es un delito. Las otras opciones pueden ser medidas disciplinarias o conflictos leves, no constitutivos de delito."
+      },
+      {
+        "question": "¿En qué lugares puede ocurrir el acoso sexual?",
+        "options": [
+          "Solo en la escuela",
+          "Solo en el trabajo",
+          "Solo en la calle",
+          "En cualquier lugar, incluyendo la escuela, el trabajo, la calle y el hogar"
+        ],
+        "correct": 3,
+        "explanation": "El acoso sexual puede ocurrir en cualquier entorno, como la escuela, el trabajo, la calle o incluso en el hogar. No está limitado a un solo lugar."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de abuso sexual?",
+        "options": [
+          "Un adulto pide a un menor que guarde un secreto sobre un juego",
+          "Un adulto muestra imágenes íntimas a un menor sin su consentimiento",
+          "Un adolescente le da un abrazo a su amigo",
+          "Un profesor toca el hombro de un estudiante para llamar su atención"
+        ],
+        "correct": 1,
+        "explanation": "Mostrar imágenes íntimas a un menor sin su consentimiento es una forma de abuso sexual, ya que involucra contenido sexual sin el permiso del menor. Las otras opciones son acciones normales o no sexuales."
+      },
+      {
+        "question": "Si una persona sufre acoso sexual, ¿cuál es una acción adecuada?",
+        "options": [
+          "Ignorar la situación y esperar que pare sola",
+          "Enfrentar al agresor físicamente",
+          "Buscar ayuda de un adulto de confianza o denunciar a las autoridades",
+          "Publicarlo en redes sociales para que todos se enteren"
+        ],
+        "correct": 2,
+        "explanation": "Buscar ayuda de un adulto de confianza o denunciar a las autoridades es la acción más segura y efectiva. Ignorar puede empeorar la situación, enfrentar físicamente es peligroso, y publicar en redes puede violar la privacidad de la víctima."
+      },
+      {
+        "question": "¿Cuál de las siguientes conductas se considera acoso sexual incluso si no hay contacto físico?",
+        "options": [
+          "A. Enviar mensajes con contenido sexual no deseados",
+          "B. Pedir ayuda para una tarea escolar",
+          "C. Hacer un cumplido sobre la vestimenta",
+          "D. Invitar a alguien a un partido de fútbol"
+        ],
+        "correct": 0,
+        "explanation": "El acoso sexual incluye conductas verbales o escritas de naturaleza sexual no deseadas, como mensajes con contenido sexual, aunque no haya contacto físico."
       }
     ]
   },
@@ -1117,6 +2107,61 @@
         ],
         "correct": 2,
         "explanation": "Recibir menos del salario mínimo por su trabajo es explotación laboral, una forma de violencia económica."
+      },
+      {
+        "question": "¿Qué práctica laboral hacia un adolescente constituye violencia económica según la ley mexicana?",
+        "options": [
+          "Pagarle el salario mínimo establecido por la ley",
+          "Exigirle trabajar horas extras sin pago adicional",
+          "Proporcionarle equipo de protección gratuito",
+          "Darle un día de descanso a la semana"
+        ],
+        "correct": 1,
+        "explanation": "Exigir horas extras sin pago es una forma de explotación laboral, ya que el adolescente no recibe una compensación justa por su trabajo."
+      },
+      {
+        "question": "¿Cómo afecta la violencia económica a la identidad de un adolescente que trabaja?",
+        "options": [
+          "Fortalecer su autoestima al sentirse independiente",
+          "Generar inseguridad y baja autoestima al no valorar su esfuerzo",
+          "Aumentar su sentido de responsabilidad",
+          "Mejorar sus habilidades sociales"
+        ],
+        "correct": 1,
+        "explanation": "La violencia económica, como pagar menos de lo justo, hace que el adolescente sienta que su trabajo no vale, afectando su autoestima y percepción de sí mismo."
+      },
+      {
+        "question": "Un adolescente trabaja en un taller de mecánica 8 horas diarias y solo recibe 500 pesos a la semana, cuando el salario mínimo semanal es de 1,500 pesos. ¿Qué tipo de violencia económica está presente?",
+        "options": [
+          "No hay violencia porque recibe un pago",
+          "Explotación laboral y pago menor al salario mínimo",
+          "Es legal porque el adolescente aceptó el pago",
+          "Solo es falta de experiencia"
+        ],
+        "correct": 1,
+        "explanation": "Recibir menos del salario mínimo y trabajar jornada completa sin pago justo es explotación laboral y violencia económica."
+      },
+      {
+        "question": "¿Cuál de las siguientes situaciones NO es violencia económica hacia un adolescente?",
+        "options": [
+          "Obligarlo a trabajar sin pago a cambio de comida",
+          "Pagarle el salario mínimo por hora de trabajo",
+          "Exigirle trabajar en horario nocturno sin pago extra",
+          "Descontarle parte de su salario por errores pequeños"
+        ],
+        "correct": 1,
+        "explanation": "Pagar el salario mínimo es un derecho laboral; las otras opciones implican explotación o pagos injustos, lo que constituye violencia económica."
+      },
+      {
+        "question": "Un adolescente de 15 años trabaja en una fábrica 10 horas diarias, pero le pagan como si fuera medio tiempo. ¿Qué derechos se están violando?",
+        "options": [
+          "Derecho a la educación y al descanso",
+          "Solo el derecho a un salario justo",
+          "Derecho a la salud y a la recreación",
+          "Derecho a la libertad de expresión"
+        ],
+        "correct": 0,
+        "explanation": "Trabajar más horas de las permitidas para su edad afecta su educación y descanso, además de recibir pago injusto, violando múltiples derechos."
       }
     ]
   },
@@ -1176,6 +2221,61 @@
         ],
         "correct": 0,
         "explanation": "La opción A comunica el malestar de manera clara y directa, estableciendo un límite sin insultar ni agredir."
+      },
+      {
+        "question": "Si un amigo te pide que copies su tarea, ¿cuál es una respuesta asertiva?",
+        "options": [
+          "Claro, dámela para copiarla rápido.",
+          "No, prefiero hacerla yo mismo para aprender.",
+          "Está bien, pero no se lo digas a nadie.",
+          "No tengo tiempo, mejor pídesela a otro."
+        ],
+        "correct": 1,
+        "explanation": "La opción B comunica un límite claro y firme sin agredir, mostrando respeto por uno mismo y por el amigo."
+      },
+      {
+        "question": "¿Qué debes hacer si un compañero insiste en que participes en un juego que te incomoda?",
+        "options": [
+          "Aceptar para no ser excluido del grupo.",
+          "Decir 'no' y alejarte si es necesario.",
+          "Ignorarlo y esperar que deje de insistir.",
+          "Decir que sí pero con condiciones."
+        ],
+        "correct": 1,
+        "explanation": "Decir 'no' y alejarte es una respuesta asertiva que establece un límite claro y protege tu bienestar."
+      },
+      {
+        "question": "¿Cuál es una forma asertiva de expresar desacuerdo con una opinión de un amigo?",
+        "options": [
+          "Estás equivocado, no sabes nada.",
+          "No estoy de acuerdo, pero respeto tu punto de vista.",
+          "Mejor cambiemos de tema.",
+          "Tienes razón, aunque no lo crea."
+        ],
+        "correct": 1,
+        "explanation": "Expresar desacuerdo con respeto muestra asertividad al comunicar tu postura sin agredir al otro."
+      },
+      {
+        "question": "Cuando un amigo te pide que guardes un secreto que te incomoda, una respuesta asertiva es:",
+        "options": [
+          "Está bien, lo guardaré.",
+          "No me siento cómodo guardando ese secreto, prefiero no saberlo.",
+          "Dímelo, pero no prometo nada.",
+          "Si me lo dices, se lo contaré a otros."
+        ],
+        "correct": 1,
+        "explanation": "Comunicar tu incomodidad de manera honesta y firme establece un límite saludable en la amistad."
+      },
+      {
+        "question": "¿Cómo responderías asertivamente si un grupo de amigos te presiona para que uses tu celular para hacer trampa en un examen?",
+        "options": [
+          "Está bien, pero solo esta vez.",
+          "No, no voy a hacer trampa porque quiero ser honesto.",
+          "No tengo batería, sorry.",
+          "Déjenme pensarlo un momento."
+        ],
+        "correct": 1,
+        "explanation": "Negarse de manera clara y firme, explicando tu razón, es una respuesta asertiva que defiende tus valores."
       }
     ]
   },
@@ -1235,6 +2335,61 @@
         ],
         "correct": 1,
         "explanation": "La población está sujeta a la autoridad del gobierno y a las leyes del Estado, independientemente de su diversidad."
+      },
+      {
+        "question": "¿Qué aspecto del territorio mexicano está reconocido en la Constitución?",
+        "options": [
+          "Su extensión territorial",
+          "Su división política en estados y municipios",
+          "Su ubicación geográfica",
+          "Sus recursos naturales"
+        ],
+        "correct": 1,
+        "explanation": "La Constitución reconoce la división política del territorio en estados y municipios, que son base de la organización federal."
+      },
+      {
+        "question": "La población mexicana, como componente del Estado, se distingue por:",
+        "options": [
+          "Ser homogénea en cultura y lengua",
+          "Tener derechos y obligaciones establecidos en la Constitución",
+          "Estar formada solo por ciudadanos",
+          "Ser la misma que la población mundial"
+        ],
+        "correct": 1,
+        "explanation": "La población mexicana goza de derechos y obligaciones según la Constitución, que la define como el conjunto de personas bajo la jurisdicción del Estado."
+      },
+      {
+        "question": "¿Qué poder del gobierno mexicano se encarga de hacer las leyes?",
+        "options": [
+          "Ejecutivo",
+          "Legislativo",
+          "Judicial",
+          "Federal"
+        ],
+        "correct": 1,
+        "explanation": "El Poder Legislativo, conformado por el Congreso de la Unión, es el encargado de crear y modificar las leyes."
+      },
+      {
+        "question": "El territorio nacional mexicano incluye:",
+        "options": [
+          "Solo el suelo continental",
+          "El suelo, subsuelo, aguas territoriales y espacio aéreo",
+          "Únicamente las islas",
+          "Las fronteras terrestres y marítimas"
+        ],
+        "correct": 1,
+        "explanation": "El territorio abarca el suelo, subsuelo, aguas territoriales y espacio aéreo, según lo establece la Constitución."
+      },
+      {
+        "question": "¿Cuál es la función principal del gobierno como componente del Estado?",
+        "options": [
+          "Organizar la economía",
+          "Garantizar la seguridad y el bienestar de la población",
+          "Definir las fronteras",
+          "Promover la cultura"
+        ],
+        "correct": 1,
+        "explanation": "El gobierno tiene la función de garantizar la seguridad, el orden y el bienestar de la población, así como administrar los recursos del Estado."
       }
     ]
   },
@@ -1294,6 +2449,61 @@
         ],
         "correct": 1,
         "explanation": "La ciudadanía implica derechos como votar y ser votado, así como obligaciones como participar en la vida pública y respetar las leyes."
+      },
+      {
+        "question": "¿Qué significa que el pueblo elige a sus gobernantes mediante el voto en una democracia?",
+        "options": [
+          "Que solo los ricos pueden votar",
+          "Que los ciudadanos participan en la selección de sus representantes",
+          "Que los gobernantes son elegidos por sorteo",
+          "Que el voto es obligatorio solo para hombres"
+        ],
+        "correct": 1,
+        "explanation": "En una democracia, el voto permite a los ciudadanos participar en la elección de sus gobernantes, lo que asegura que el gobierno represente la voluntad popular."
+      },
+      {
+        "question": "¿Cuál es la función principal del principio de mayoría en una votación democrática?",
+        "options": [
+          "Garantizar que todos estén de acuerdo",
+          "Decidir la opción con más votos",
+          "Eliminar a los candidatos con menos apoyo",
+          "Permitir que una minoría imponga su decisión"
+        ],
+        "correct": 1,
+        "explanation": "El principio de mayoría establece que la opción con más votos es la que se adopta, respetando la voluntad de la mayoría sin eliminar los derechos de las minorías."
+      },
+      {
+        "question": "¿Qué característica es esencial para que una elección sea considerada democrática?",
+        "options": [
+          "Que solo voten los ciudadanos con propiedades",
+          "Que sea libre y secreta",
+          "Que los candidatos sean designados por el gobierno",
+          "Que se realice cada 10 años"
+        ],
+        "correct": 1,
+        "explanation": "Una elección democrática debe ser libre (sin coacción) y secreta (para proteger la privacidad del votante), garantizando así la autenticidad del voto."
+      },
+      {
+        "question": "¿Qué derecho político permite a los ciudadanos participar en la elección de sus gobernantes?",
+        "options": [
+          "Derecho a la educación",
+          "Derecho al voto",
+          "Derecho a la salud",
+          "Derecho a la libre expresión"
+        ],
+        "correct": 1,
+        "explanation": "El derecho al voto es el mecanismo mediante el cual los ciudadanos eligen a sus representantes en una democracia."
+      },
+      {
+        "question": "¿Qué implica la ciudadanía en el contexto de la democracia?",
+        "options": [
+          "Solo pagar impuestos",
+          "Participar activamente en la vida política y social",
+          "Obedecer las leyes sin cuestionarlas",
+          "Ser mayor de 18 años y tener empleo"
+        ],
+        "correct": 1,
+        "explanation": "La ciudadanía implica derechos y responsabilidades, como votar y participar en asuntos públicos, para contribuir al funcionamiento de la democracia."
       }
     ]
   },
@@ -1353,6 +2563,61 @@
         ],
         "correct": 2,
         "explanation": "El derecho al voto es el mecanismo principal mediante el cual los ciudadanos ejercen su soberanía al elegir a sus representantes."
+      },
+      {
+        "question": "¿Quién ejerce la soberanía en México según el artículo 39 de la Constitución?",
+        "options": [
+          "El presidente de la república",
+          "El pueblo",
+          "Los diputados y senadores",
+          "El poder judicial"
+        ],
+        "correct": 1,
+        "explanation": "El artículo 39 establece que la soberanía nacional reside esencial y originariamente en el pueblo."
+      },
+      {
+        "question": "¿Cuál es el mecanismo principal para que el pueblo delegue su soberanía en los representantes?",
+        "options": [
+          "El plebiscito",
+          "El voto",
+          "La consulta popular",
+          "La iniciativa ciudadana"
+        ],
+        "correct": 1,
+        "explanation": "El voto es el mecanismo mediante el cual los ciudadanos eligen a sus representantes, delegando así su soberanía."
+      },
+      {
+        "question": "¿Qué forma de gobierno se basa en la soberanía popular?",
+        "options": [
+          "Monarquía absoluta",
+          "Democracia",
+          "Dictadura",
+          "Oligarquía"
+        ],
+        "correct": 1,
+        "explanation": "En una democracia, el poder reside en el pueblo, quien lo ejerce directamente o a través de representantes."
+      },
+      {
+        "question": "¿Qué implica que la soberanía sea 'indeleble'?",
+        "options": [
+          "Que puede transferirse a otro país",
+          "Que no puede perderse ni renunciarse",
+          "Que se delega para siempre",
+          "Que solo la ejerce el gobierno"
+        ],
+        "correct": 1,
+        "explanation": "La soberanía es indeleble porque el pueblo nunca pierde su derecho a decidir sobre su gobierno."
+      },
+      {
+        "question": "¿En qué documento se reconoce que la soberanía nacional reside en el pueblo mexicano?",
+        "options": [
+          "Declaración Universal de Derechos Humanos",
+          "Constitución Política de los Estados Unidos Mexicanos",
+          "Ley de Instituciones y Procedimientos Electorales",
+          "Código Civil Federal"
+        ],
+        "correct": 1,
+        "explanation": "La Constitución mexicana, en su artículo 39, establece que la soberanía nacional reside esencial y originariamente en el pueblo."
       }
     ]
   },
@@ -1412,6 +2677,61 @@
         ],
         "correct": 2,
         "explanation": "La democracia mexicana se basa en el pluralismo, el respeto a minorías, la separación de poderes y el estado de derecho para garantizar un gobierno justo."
+      },
+      {
+        "question": "¿Qué implica el pluralismo político en un sistema democrático?",
+        "options": [
+          "La existencia de un solo partido político",
+          "La competencia entre diversas ideas y partidos",
+          "La eliminación de las minorías",
+          "La concentración del poder en una sola persona"
+        ],
+        "correct": 1,
+        "explanation": "El pluralismo permite que diferentes ideas y partidos compitan por el poder, reflejando la diversidad de la sociedad."
+      },
+      {
+        "question": "¿Cómo se protege a las minorías en una democracia?",
+        "options": [
+          "Ignorando sus opiniones",
+          "Garantizando sus derechos y participación",
+          "Eliminando sus diferencias",
+          "Obligándolas a seguir a la mayoría"
+        ],
+        "correct": 1,
+        "explanation": "En una democracia, se respetan los derechos de las minorías y se les permite participar, evitando la tiranía de la mayoría."
+      },
+      {
+        "question": "¿Cuál es la función principal de la separación de poderes?",
+        "options": [
+          "Concentrar el poder en el presidente",
+          "Evitar abusos al dividir el poder en tres ramas",
+          "Eliminar el poder legislativo",
+          "Unificar los tres poderes en uno solo"
+        ],
+        "correct": 1,
+        "explanation": "La separación de poderes divide el gobierno en ejecutivo, legislativo y judicial para evitar la concentración de poder y los abusos."
+      },
+      {
+        "question": "¿Qué caracteriza a un Estado de derecho?",
+        "options": [
+          "El gobierno actúa sin leyes",
+          "Todos, incluidos gobernantes, deben obedecer la ley",
+          "Solo los ciudadanos cumplen la ley",
+          "Las leyes pueden ser ignoradas por autoridades"
+        ],
+        "correct": 1,
+        "explanation": "En un Estado de derecho, tanto gobernantes como gobernados están sujetos a las leyes, garantizando justicia y orden."
+      },
+      {
+        "question": "¿Por qué es importante que en una democracia exista separación de poderes?",
+        "options": [
+          "Para que el presidente tenga más poder",
+          "Para garantizar el equilibrio y control entre ramas",
+          "Para eliminar el poder judicial",
+          "Para que un solo partido gobierne"
+        ],
+        "correct": 1,
+        "explanation": "La separación de poderes permite que cada rama vigile a las otras, evitando abusos y protegiendo los derechos ciudadanos."
       }
     ]
   },
@@ -1471,6 +2791,61 @@
         ],
         "correct": 1,
         "explanation": "La información veraz permite reconocer riesgos y tomar decisiones que protejan la salud."
+      },
+      {
+        "question": "¿Qué método anticonceptivo es más eficaz para prevenir tanto el embarazo como las ITS?",
+        "options": [
+          "Pastillas anticonceptivas",
+          "Condón masculino",
+          "DIU",
+          "Método del ritmo"
+        ],
+        "correct": 1,
+        "explanation": "El condón es el único método que protege contra ITS y embarazos; los demás solo previenen embarazos."
+      },
+      {
+        "question": "¿Cuál es un signo de adicción a una sustancia?",
+        "options": [
+          "Consumo ocasional en fiestas",
+          "Necesidad de aumentar la dosis para sentir el mismo efecto",
+          "Dejar de consumir sin problemas",
+          "Preferir el consumo en soledad"
+        ],
+        "correct": 1,
+        "explanation": "La tolerancia, que requiere mayor dosis para el mismo efecto, es un indicador de adicción."
+      },
+      {
+        "question": "¿Qué tipo de violencia incluye insultos, humillaciones y amenazas?",
+        "options": [
+          "Violencia física",
+          "Violencia psicológica",
+          "Violencia sexual",
+          "Violencia económica"
+        ],
+        "correct": 1,
+        "explanation": "La violencia psicológica daña la autoestima mediante agresiones verbales y emocionales."
+      },
+      {
+        "question": "¿Qué factor influye más en la formación de la identidad durante la adolescencia?",
+        "options": [
+          "La herencia genética",
+          "Las experiencias con amigos y familia",
+          "El rendimiento escolar",
+          "El lugar de nacimiento"
+        ],
+        "correct": 1,
+        "explanation": "Las interacciones sociales y experiencias personales moldean la identidad en esta etapa."
+      },
+      {
+        "question": "¿Cuál es una estrategia de prevención de adicciones en la escuela?",
+        "options": [
+          "Prohibir la entrada a cualquier persona",
+          "Talleres sobre habilidades para resistir presión de grupo",
+          "Castigar a quienes consuman",
+          "Ignorar el tema para no llamar la atención"
+        ],
+        "correct": 1,
+        "explanation": "Los talleres enseñan a los adolescentes a decir no y tomar decisiones informadas."
       }
     ]
   },
@@ -1530,6 +2905,61 @@
         ],
         "correct": 2,
         "explanation": "El Poder Judicial, a través de la SCJN, puede declarar una ley inconstitucional si contradice la Constitución."
+      },
+      {
+        "question": "¿Qué poder del Estado mexicano tiene la facultad de aprobar el presupuesto de egresos de la federación?",
+        "options": [
+          "Poder Ejecutivo",
+          "Poder Legislativo",
+          "Poder Judicial",
+          "Suprema Corte de Justicia"
+        ],
+        "correct": 1,
+        "explanation": "El Poder Legislativo, a través de la Cámara de Diputados, aprueba el presupuesto de egresos que propone el Ejecutivo."
+      },
+      {
+        "question": "¿Cuál es la función principal del Presidente de la República en México?",
+        "options": [
+          "Crear leyes",
+          "Administrar el país y ejecutar las leyes",
+          "Interpretar la Constitución",
+          "Organizar las elecciones"
+        ],
+        "correct": 1,
+        "explanation": "El Presidente encabeza el Poder Ejecutivo y su función es administrar el país y hacer cumplir las leyes."
+      },
+      {
+        "question": "¿Qué poder del Estado se encarga de resolver controversias entre los otros poderes?",
+        "options": [
+          "Poder Ejecutivo",
+          "Poder Legislativo",
+          "Poder Judicial",
+          "Instituto Nacional Electoral"
+        ],
+        "correct": 2,
+        "explanation": "El Poder Judicial, específicamente la SCJN, resuelve controversias entre poderes o entre niveles de gobierno."
+      },
+      {
+        "question": "¿Qué principio garantiza que cada poder del Estado tenga funciones distintas y no se interfieran?",
+        "options": [
+          "División de poderes",
+          "Federalismo",
+          "Sufragio efectivo",
+          "Rendición de cuentas"
+        ],
+        "correct": 0,
+        "explanation": "La división de poderes separa las funciones ejecutiva, legislativa y judicial para evitar la concentración de poder."
+      },
+      {
+        "question": "¿Qué poder del Estado tiene la facultad de nombrar a los ministros de la Suprema Corte de Justicia?",
+        "options": [
+          "Poder Ejecutivo",
+          "Poder Legislativo",
+          "Poder Judicial",
+          "El pueblo mediante voto"
+        ],
+        "correct": 0,
+        "explanation": "El Presidente propone una terna al Senado, que ratifica el nombramiento; pero la iniciativa es del Ejecutivo."
       }
     ]
   },
@@ -1589,6 +3019,61 @@
         ],
         "correct": 2,
         "explanation": "La autonomía es la capacidad de una persona para decidir por sí misma y ser responsable de sus actos."
+      },
+      {
+        "question": "¿Qué principio de los derechos humanos sostiene que todas las personas tienen el mismo valor y merecen el mismo trato?",
+        "options": [
+          "Libertad",
+          "Igualdad",
+          "Autonomía",
+          "Justicia social"
+        ],
+        "correct": 1,
+        "explanation": "La igualdad es el principio que reconoce el mismo valor y trato para todas las personas, sin discriminación."
+      },
+      {
+        "question": "¿Cuál de los siguientes derechos humanos permite a una persona decidir sobre su propio proyecto de vida?",
+        "options": [
+          "Libertad",
+          "Igualdad",
+          "Dignidad",
+          "Justicia social"
+        ],
+        "correct": 0,
+        "explanation": "La libertad es el derecho humano que permite a cada persona tomar decisiones sobre su vida y actuar según su propia voluntad."
+      },
+      {
+        "question": "¿Qué principio de los derechos humanos se refiere a que cada persona tiene un valor inherente que debe ser respetado?",
+        "options": [
+          "Autonomía",
+          "Dignidad",
+          "Igualdad",
+          "Justicia social"
+        ],
+        "correct": 1,
+        "explanation": "La dignidad es el valor intrínseco de cada persona, que debe ser respetado sin importar su origen o condición."
+      },
+      {
+        "question": "¿Cuál de los siguientes busca garantizar que todas las personas tengan acceso a oportunidades y recursos básicos?",
+        "options": [
+          "Autonomía",
+          "Libertad",
+          "Igualdad",
+          "Justicia social"
+        ],
+        "correct": 3,
+        "explanation": "La justicia social busca distribuir equitativamente los recursos y oportunidades para que todas las personas puedan vivir dignamente."
+      },
+      {
+        "question": "¿Qué derecho humano implica que una persona puede gobernarse a sí misma y ser independiente?",
+        "options": [
+          "Dignidad",
+          "Autonomía",
+          "Igualdad",
+          "Justicia social"
+        ],
+        "correct": 1,
+        "explanation": "La autonomía es la capacidad de una persona para tomar sus propias decisiones y regir su vida sin depender de otros."
       }
     ]
   },
@@ -1648,6 +3133,61 @@
         ],
         "correct": 1,
         "explanation": "Denunciar la corrupción permite sancionar a los responsables y promueve la rendición de cuentas en el gobierno."
+      },
+      {
+        "question": "¿Qué práctica contribuye al abstencionismo electoral en México?",
+        "options": [
+          "La desconfianza en los partidos políticos",
+          "El aumento de la participación juvenil",
+          "La difusión de información sobre candidatos",
+          "La reducción de la edad para votar"
+        ],
+        "correct": 0,
+        "explanation": "La desconfianza en los partidos políticos y en el sistema electoral desalienta a los ciudadanos a votar, aumentando el abstencionismo."
+      },
+      {
+        "question": "¿Cómo afecta la corrupción a la democracia en México?",
+        "options": [
+          "Fortalecimiento de las instituciones",
+          "Mayor confianza en el gobierno",
+          "Desigualdad en el acceso a servicios públicos",
+          "Aumento de la participación ciudadana"
+        ],
+        "correct": 2,
+        "explanation": "La corrupción desvía recursos públicos y favorece a unos pocos, generando desigualdad en servicios como salud y educación."
+      },
+      {
+        "question": "¿Cuál es una consecuencia de la violencia política en una democracia?",
+        "options": [
+          "Mayor estabilidad institucional",
+          "Intimidación de votantes y candidatos",
+          "Incremento en la participación electoral",
+          "Fortalecimiento del Estado de derecho"
+        ],
+        "correct": 1,
+        "explanation": "La violencia política busca amedrentar a ciudadanos y candidatos, afectando su derecho a participar libremente."
+      },
+      {
+        "question": "¿Qué factor puede reducir la desigualdad económica en una democracia?",
+        "options": [
+          "Eliminar los impuestos progresivos",
+          "Privatizar todos los servicios públicos",
+          "Políticas de redistribución del ingreso",
+          "Reducir el gasto en educación"
+        ],
+        "correct": 2,
+        "explanation": "Las políticas de redistribución, como impuestos justos y programas sociales, ayudan a disminuir la brecha entre ricos y pobres."
+      },
+      {
+        "question": "¿Qué indica un alto nivel de abstencionismo en una democracia?",
+        "options": [
+          "Aprobación del gobierno",
+          "Descontento o apatía ciudadana",
+          "Alta participación juvenil",
+          "Fortalecimiento del sistema electoral"
+        ],
+        "correct": 1,
+        "explanation": "El abstencionismo refleja que muchos ciudadanos no se sienten representados o no confían en el proceso electoral."
       }
     ]
   },
@@ -1707,6 +3247,61 @@
         ],
         "correct": 3,
         "explanation": "La consulta popular es un mecanismo amplio que puede incluir plebiscitos y referéndums, pero en este caso se refiere a preguntar a la ciudadanía sobre un tema específico."
+      },
+      {
+        "question": "¿Qué mecanismo de participación ciudadana permite a los ciudadanos proponer leyes al Congreso?",
+        "options": [
+          "Iniciativa popular",
+          "Plebiscito",
+          "Referéndum",
+          "Consulta popular"
+        ],
+        "correct": 0,
+        "explanation": "La iniciativa popular es un mecanismo mediante el cual los ciudadanos pueden presentar propuestas de ley al poder legislativo, requiriendo un número mínimo de firmas."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de participación ciudadana indirecta?",
+        "options": [
+          "Votar en elecciones para elegir diputados",
+          "Asistir a una manifestación",
+          "Participar en un plebiscito",
+          "Firmar una petición"
+        ],
+        "correct": 0,
+        "explanation": "La participación indirecta ocurre cuando los ciudadanos eligen representantes que toman decisiones en su nombre, como al votar por diputados."
+      },
+      {
+        "question": "¿Qué se necesita para que un referéndum sea vinculante en México?",
+        "options": [
+          "Que participe al menos el 40% de los ciudadanos en la lista nominal",
+          "Que lo apruebe el Presidente",
+          "Que lo solicite el Congreso",
+          "Que sea aprobado por la Suprema Corte"
+        ],
+        "correct": 0,
+        "explanation": "Para que un referéndum sea vinculante, debe participar al menos el 40% de los ciudadanos inscritos en la lista nominal de electores."
+      },
+      {
+        "question": "¿Qué derecho político se ejerce al votar en una consulta popular?",
+        "options": [
+          "Derecho a la información",
+          "Derecho de petición",
+          "Derecho de asociación",
+          "Derecho al voto"
+        ],
+        "correct": 3,
+        "explanation": "Al participar en una consulta popular, los ciudadanos ejercen su derecho al voto para expresar su opinión sobre un tema de interés nacional."
+      },
+      {
+        "question": "¿Cuál es el propósito principal de las manifestaciones como forma de participación ciudadana?",
+        "options": [
+          "Expresar opiniones y presionar al gobierno",
+          "Elegir a los gobernantes",
+          "Aprobar leyes",
+          "Revocar mandatos"
+        ],
+        "correct": 0,
+        "explanation": "Las manifestaciones permiten a los ciudadanos expresar públicamente sus opiniones y demandas, buscando influir en las decisiones del gobierno."
       }
     ]
   },
@@ -1766,6 +3361,61 @@
         ],
         "correct": 1,
         "explanation": "Los partidos políticos representan a los ciudadanos, presentan candidatos y propuestas, y facilitan la participación en el gobierno."
+      },
+      {
+        "question": "¿Qué ideología política defiende la propiedad privada y la libre competencia económica?",
+        "options": [
+          "Liberalismo",
+          "Socialismo",
+          "Comunismo",
+          "Anarquismo"
+        ],
+        "correct": 0,
+        "explanation": "El liberalismo defiende la propiedad privada y la libre competencia, mientras que el socialismo y comunismo promueven la propiedad colectiva."
+      },
+      {
+        "question": "¿Cuál es una diferencia clave entre un partido político y un movimiento social?",
+        "options": [
+          "Los partidos buscan ocupar cargos públicos; los movimientos no necesariamente.",
+          "Los movimientos siempre tienen estructura jerárquica; los partidos no.",
+          "Los partidos no pueden hacer protestas; los movimientos sí.",
+          "Los movimientos solo participan en elecciones; los partidos no."
+        ],
+        "correct": 0,
+        "explanation": "Los partidos políticos tienen como objetivo ganar elecciones y gobernar, mientras que los movimientos sociales buscan influir en temas específicos sin necesariamente competir por el poder."
+      },
+      {
+        "question": "¿Qué función cumple la oposición política en un sistema democrático?",
+        "options": [
+          "Criticar y vigilar al gobierno en turno.",
+          "Apoyar incondicionalmente al partido gobernante.",
+          "Impedir la aprobación de todas las leyes.",
+          "Organizar golpes de Estado."
+        ],
+        "correct": 0,
+        "explanation": "La oposición política tiene el papel de fiscalizar al gobierno y proponer alternativas, fortaleciendo la democracia."
+      },
+      {
+        "question": "¿Cuál de las siguientes NO es una función de los partidos políticos?",
+        "options": [
+          "Formar ciudadanos críticos y participativos.",
+          "Seleccionar candidatos para cargos de elección popular.",
+          "Administrar los recursos del Estado.",
+          "Elaborar programas de gobierno."
+        ],
+        "correct": 2,
+        "explanation": "Administrar los recursos del Estado es función del gobierno, no de los partidos, aunque estos puedan proponer cómo hacerlo si llegan al poder."
+      },
+      {
+        "question": "¿Cómo se relacionan los partidos políticos con la ciudadanía?",
+        "options": [
+          "Canalizan las demandas ciudadanas y proponen soluciones.",
+          "Imponen sus ideas sin consultar a la gente.",
+          "Solo trabajan durante las campañas electorales.",
+          "Reemplazan la participación directa de los ciudadanos."
+        ],
+        "correct": 0,
+        "explanation": "Los partidos sirven como vínculo entre la sociedad y el gobierno, recogiendo inquietudes y transformándolas en propuestas de política pública."
       }
     ]
   },
@@ -1825,6 +3475,61 @@
         ],
         "correct": 1,
         "explanation": "La jornada nocturna, por su desgaste adicional, tiene un límite de 7 horas según el Artículo 123."
+      },
+      {
+        "question": "¿Qué derecho establece el Artículo 123 respecto al descanso obligatorio durante la jornada laboral?",
+        "options": [
+          "Un descanso de al menos 30 minutos",
+          "Un descanso de al menos 1 hora",
+          "Un descanso de al menos 15 minutos",
+          "El descanso no está regulado"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 123 establece que durante la jornada continua de trabajo se concederá un descanso de media hora, como mínimo."
+      },
+      {
+        "question": "¿Cuál es la duración máxima de la jornada laboral nocturna según el Artículo 123?",
+        "options": [
+          "8 horas",
+          "7 horas",
+          "6 horas",
+          "9 horas"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 123 señala que la jornada nocturna no excederá de 7 horas, pues el trabajo nocturno es más desgastante."
+      },
+      {
+        "question": "¿Qué tipo de salario mínimo garantiza el Artículo 123?",
+        "options": [
+          "Salario mínimo general y profesional",
+          "Salario mínimo general únicamente",
+          "Salario mínimo profesional únicamente",
+          "Salario mínimo por hora"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 123 establece dos tipos de salario mínimo: el general y el profesional, que varía según la actividad."
+      },
+      {
+        "question": "¿Qué beneficio de seguridad social menciona el Artículo 123 para los trabajadores?",
+        "options": [
+          "Seguro de desempleo",
+          "Seguro social obligatorio",
+          "Seguro de vida voluntario",
+          "Seguro de gastos médicos privado"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 123 establece la obligación de los patrones de proporcionar a los trabajadores seguro social, que cubre enfermedades, accidentes, etc."
+      },
+      {
+        "question": "¿Qué establece el Artículo 123 sobre el trabajo de menores de edad?",
+        "options": [
+          "Prohíbe el trabajo a menores de 15 años",
+          "Permite el trabajo a partir de los 14 años",
+          "Prohíbe el trabajo a menores de 18 años",
+          "Permite el trabajo a partir de los 16 años"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 123 prohíbe el trabajo de menores de 15 años y establece condiciones especiales para mayores de 15 y menores de 18."
       }
     ]
   },
@@ -1884,6 +3589,61 @@
         ],
         "correct": 1,
         "explanation": "El Estado es laico, por lo que la educación pública debe ser neutra en materia religiosa para respetar la libertad de creencias de todos."
+      },
+      {
+        "question": "¿Cuál de los siguientes principios NO está incluido en el Artículo 3° constitucional sobre la educación?",
+        "options": [
+          "Gratuidad",
+          "Laicidad",
+          "Obligatoriedad hasta nivel superior",
+          "Obligatoriedad hasta nivel medio superior"
+        ],
+        "correct": 2,
+        "explanation": "El Artículo 3° establece que la educación es obligatoria hasta el nivel medio superior, no hasta el nivel superior."
+      },
+      {
+        "question": "¿Qué implica que la educación impartida por el Estado sea gratuita según el Artículo 3°?",
+        "options": [
+          "Que los estudiantes reciben becas",
+          "Que el Estado no puede cobrar cuotas por la educación básica y media superior",
+          "Que los padres no deben comprar útiles escolares",
+          "Que solo las escuelas públicas son gratuitas"
+        ],
+        "correct": 1,
+        "explanation": "La gratuidad significa que el Estado no puede cobrar cuotas por la educación básica y media superior en escuelas públicas."
+      },
+      {
+        "question": "¿A quiénes garantiza el Artículo 3° el derecho a la educación?",
+        "options": [
+          "Solo a los ciudadanos mexicanos",
+          "A todas las personas, sin importar su nacionalidad",
+          "Solo a los que viven en zonas urbanas",
+          "A los mayores de 18 años"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 3° garantiza el derecho a la educación a todas las personas en México, sin discriminación."
+      },
+      {
+        "question": "¿Qué característica de la educación según el Artículo 3° asegura que no se favorezca ninguna religión?",
+        "options": [
+          "Gratuidad",
+          "Laicidad",
+          "Obligatoriedad",
+          "Democracia"
+        ],
+        "correct": 1,
+        "explanation": "La laicidad implica que la educación es ajena a cualquier doctrina religiosa, garantizando la libertad de creencias."
+      },
+      {
+        "question": "¿Hasta qué nivel el Estado debe proporcionar educación obligatoria según el Artículo 3°?",
+        "options": [
+          "Primaria",
+          "Secundaria",
+          "Media superior",
+          "Superior"
+        ],
+        "correct": 2,
+        "explanation": "El Artículo 3° establece que la educación obligatoria comprende desde preescolar hasta el nivel medio superior."
       }
     ]
   },
@@ -1943,6 +3703,61 @@
         ],
         "correct": 2,
         "explanation": "La seguridad social incluye el acceso a servicios de salud, educación y otros beneficios que el gobierno debe garantizar para el bienestar de la población."
+      },
+      {
+        "question": "¿Qué obligación tiene el gobierno mexicano respecto a la educación según el artículo 3° constitucional?",
+        "options": [
+          "Garantizar la educación privada exclusivamente",
+          "Impartir educación gratuita, laica y obligatoria",
+          "Solo proporcionar educación en zonas urbanas",
+          "Delegar la educación a los estados sin supervisión"
+        ],
+        "correct": 1,
+        "explanation": "El artículo 3° establece que la educación que imparta el Estado debe ser gratuita, laica y obligatoria en los niveles básicos."
+      },
+      {
+        "question": "¿Cuál es una obligación del gobierno en materia de seguridad pública según la Constitución?",
+        "options": [
+          "Proteger solo a los funcionarios públicos",
+          "Prevenir la comisión de delitos y salvaguardar la integridad de las personas",
+          "Garantizar la seguridad solo en zonas fronterizas",
+          "Mantener el orden mediante la fuerza sin límites"
+        ],
+        "correct": 1,
+        "explanation": "La seguridad pública incluye la prevención de delitos y la protección de la integridad y derechos de todas las personas."
+      },
+      {
+        "question": "¿Qué implica la obligación gubernamental de proporcionar salud?",
+        "options": [
+          "Solo atender emergencias médicas",
+          "Garantizar el acceso a servicios de salud para toda la población",
+          "Proveer medicamentos únicamente a personas de bajos recursos",
+          "Construir hospitales solo en la capital del país"
+        ],
+        "correct": 1,
+        "explanation": "El gobierno debe asegurar que todas las personas tengan acceso a servicios de salud, sin discriminación."
+      },
+      {
+        "question": "¿Qué derecho busca garantizar el gobierno al proporcionar servicios de justicia?",
+        "options": [
+          "El derecho a la propiedad privada",
+          "El derecho a un juicio justo y acceso a tribunales",
+          "El derecho a la libertad de expresión sin límites",
+          "El derecho a portar armas"
+        ],
+        "correct": 1,
+        "explanation": "La impartición de justicia garantiza que todas las personas puedan defender sus derechos ante tribunales imparciales."
+      },
+      {
+        "question": "¿Cuál es la principal obligación del gobierno en materia de derechos humanos?",
+        "options": [
+          "Promover, respetar, proteger y garantizar los derechos humanos",
+          "Solo respetar los derechos de los ciudadanos mayores de edad",
+          "Limitar los derechos en situaciones de emergencia sin control",
+          "Delegar la protección de derechos a organizaciones privadas"
+        ],
+        "correct": 0,
+        "explanation": "El gobierno tiene la obligación de promover, respetar, proteger y garantizar los derechos humanos de todas las personas."
       }
     ]
   },
@@ -2002,6 +3817,61 @@
         ],
         "correct": 1,
         "explanation": "Al establecer que los recursos son de la Nación, se busca garantizar su distribución y uso en beneficio de todos los mexicanos, promoviendo la justicia social."
+      },
+      {
+        "question": "¿Qué tipo de propiedad establece el Artículo 27 sobre los recursos naturales en México?",
+        "options": [
+          "Propiedad privada absoluta",
+          "Propiedad originaria de la Nación",
+          "Propiedad de los estados",
+          "Propiedad municipal"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 27 señala que la propiedad de las tierras, aguas y recursos naturales corresponde originariamente a la Nación, quien tiene el derecho de transmitir el dominio a particulares."
+      },
+      {
+        "question": "¿Qué puede hacer la Nación con los recursos naturales según el Artículo 27?",
+        "options": [
+          "Venderlos a extranjeros sin restricción",
+          "Explotarlos solo a través de empresas privadas",
+          "Regular su aprovechamiento y establecer limitaciones",
+          "Dejarlos sin uso para preservarlos"
+        ],
+        "correct": 2,
+        "explanation": "La Nación, como propietaria originaria, tiene la facultad de regular el aprovechamiento de los recursos naturales y establecer las modalidades que dicte el interés público."
+      },
+      {
+        "question": "¿Cuál de los siguientes NO es un recurso mencionado en el Artículo 27?",
+        "options": [
+          "El petróleo",
+          "Los minerales",
+          "El aire atmosférico",
+          "Las aguas"
+        ],
+        "correct": 2,
+        "explanation": "El Artículo 27 menciona tierras, aguas y recursos naturales como minerales y petróleo, pero no incluye el aire atmosférico como recurso sujeto a propiedad originaria."
+      },
+      {
+        "question": "¿Qué implica que la Nación pueda imponer modalidades a la propiedad privada según el Artículo 27?",
+        "options": [
+          "Que los dueños pueden hacer lo que quieran",
+          "Que la propiedad privada es absoluta",
+          "Que el interés público puede limitar el uso de la propiedad",
+          "Que el gobierno puede expropiar sin indemnización"
+        ],
+        "correct": 2,
+        "explanation": "El Artículo 27 permite a la Nación imponer modalidades a la propiedad privada para proteger el interés público, como limitaciones al uso de recursos."
+      },
+      {
+        "question": "¿Qué derecho tiene la Nación sobre los recursos del subsuelo según el Artículo 27?",
+        "options": [
+          "Son propiedad del dueño del terreno superficial",
+          "Son propiedad exclusiva de la Nación",
+          "Son propiedad de los estados",
+          "Son propiedad de las comunidades indígenas"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 27 establece que los recursos del subsuelo, como minerales y petróleo, son propiedad originaria de la Nación, independientemente de la propiedad superficial."
       }
     ]
   },
@@ -2061,6 +3931,61 @@
         ],
         "correct": 1,
         "explanation": "La Constitución permite la libertad de expresión pero prohíbe ataques a la moral, la vida privada o los derechos de otros, así como incitar a la violencia."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución Mexicana establece que nadie puede ser molestado en su persona, familia, domicilio, papeles o posesiones, sino en virtud de mandamiento escrito de la autoridad competente?",
+        "options": [
+          "Artículo 14",
+          "Artículo 16",
+          "Artículo 19",
+          "Artículo 29"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 16 constitucional establece que nadie puede ser detenido sin orden judicial, protegiendo la libertad personal contra detenciones arbitrarias."
+      },
+      {
+        "question": "Si una persona es detenida sin orden judicial por un policía, ¿qué derecho fundamental se está violando?",
+        "options": [
+          "Derecho a la libertad de expresión",
+          "Derecho a la legalidad en detenciones",
+          "Derecho a la propiedad privada",
+          "Derecho a la libre circulación"
+        ],
+        "correct": 1,
+        "explanation": "El derecho a la legalidad en detenciones, previsto en el Artículo 16 constitucional, garantiza que nadie puede ser detenido sin orden judicial, salvo flagrancia."
+      },
+      {
+        "question": "¿Cuál de las siguientes NO es una limitación constitucional a la libertad de expresión en México?",
+        "options": [
+          "Ataques a la moral",
+          "Incitación a la violencia",
+          "Críticas al gobierno",
+          "Difamación"
+        ],
+        "correct": 2,
+        "explanation": "La libertad de expresión protege las críticas al gobierno, siempre que no inciten a la violencia o constituyan difamación o ataques a la moral."
+      },
+      {
+        "question": "En México, una persona puede ser detenida sin orden judicial si:",
+        "options": [
+          "Se le encuentra cometiendo un delito en flagrancia",
+          "Es sospechosa de un delito",
+          "Un policía lo considera peligroso",
+          "Por orden verbal de un juez"
+        ],
+        "correct": 0,
+        "explanation": "La única excepción a la orden judicial es la flagrancia, es decir, cuando una persona es sorprendida cometiendo un delito en el momento."
+      },
+      {
+        "question": "¿Qué derecho protege la libertad de los ciudadanos para buscar y recibir información sin censura previa?",
+        "options": [
+          "Derecho a la privacidad",
+          "Derecho a la libertad de expresión e información",
+          "Derecho a la libre circulación",
+          "Derecho de petición"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 6 constitucional protege la libertad de expresión e información, garantizando que las personas puedan buscar y recibir información sin censura previa, aunque con límites."
       }
     ]
   },
@@ -2120,6 +4045,61 @@
         ],
         "correct": 1,
         "explanation": "El artículo 6° constitucional garantiza el derecho a la información, que los medios deben cumplir de manera veraz y oportuna."
+      },
+      {
+        "question": "¿Qué artículo constitucional garantiza la libertad de expresión y el derecho a la información, base de la función de los medios?",
+        "options": [
+          "Artículo 3°",
+          "Artículo 6°",
+          "Artículo 24°",
+          "Artículo 123°"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 6° de la Constitución Mexicana garantiza la libertad de expresión y el derecho a la información, fundamentales para que los medios cumplan su función social."
+      },
+      {
+        "question": "¿Cómo pueden los medios de comunicación fomentar la convivencia democrática?",
+        "options": [
+          "Promoviendo el consumo de productos",
+          "Difundiendo solo noticias de entretenimiento",
+          "Incluyendo diversas opiniones y fomentando el diálogo",
+          "Evitando hablar de problemas sociales"
+        ],
+        "correct": 2,
+        "explanation": "Al incluir diversas opiniones y fomentar el diálogo, los medios contribuyen a una convivencia democrática basada en el respeto y la participación."
+      },
+      {
+        "question": "¿Cuál es un ejemplo de la función educativa de los medios?",
+        "options": [
+          "Transmitir un partido de fútbol",
+          "Anunciar un nuevo producto",
+          "Presentar un documental sobre derechos humanos",
+          "Publicar un chiste"
+        ],
+        "correct": 2,
+        "explanation": "Un documental sobre derechos humanos educa a la audiencia, cumpliendo con la función educativa de los medios de comunicación."
+      },
+      {
+        "question": "¿Qué implica la función de vigilancia social de los medios?",
+        "options": [
+          "Controlar lo que la gente piensa",
+          "Supervisar y denunciar actos de corrupción o abuso de poder",
+          "Censurar información que no les guste",
+          "Promover solo las ideas del gobierno"
+        ],
+        "correct": 1,
+        "explanation": "La vigilancia social implica que los medios supervisan y denuncian actos que afectan a la sociedad, como la corrupción, para proteger el interés público."
+      },
+      {
+        "question": "¿Por qué es importante que los medios informen de manera veraz y objetiva?",
+        "options": [
+          "Para aumentar sus ganancias publicitarias",
+          "Para que la ciudadanía tome decisiones informadas en una democracia",
+          "Para entretener al público",
+          "Para cumplir con la ley electoral"
+        ],
+        "correct": 1,
+        "explanation": "La información veraz y objetiva permite a la ciudadanía tomar decisiones informadas, lo cual es esencial para el funcionamiento de una democracia."
       }
     ]
   },
@@ -2179,6 +4159,61 @@
         ],
         "correct": 2,
         "explanation": "El desarrollo sustentable busca satisfacer necesidades actuales sin comprometer los recursos de las generaciones futuras, como lo promueve la Constitución."
+      },
+      {
+        "question": "¿Qué implica el principio de responsabilidad intergeneracional en la Constitución mexicana respecto al medio ambiente?",
+        "options": [
+          "Que solo el gobierno debe cuidar el medio ambiente",
+          "Que las generaciones actuales deben preservar los recursos para las futuras",
+          "Que las generaciones futuras pagarán por los daños ambientales",
+          "Que se puede usar la naturaleza sin límites"
+        ],
+        "correct": 1,
+        "explanation": "El principio de responsabilidad intergeneracional establece que debemos cuidar el medio ambiente para que las generaciones futuras también puedan disfrutarlo."
+      },
+      {
+        "question": "¿Cuál de los siguientes derechos está directamente vinculado con la preservación del entorno para futuras generaciones?",
+        "options": [
+          "Derecho a la propiedad privada",
+          "Derecho a un medio ambiente sano",
+          "Derecho al libre tránsito",
+          "Derecho a la libertad de expresión"
+        ],
+        "correct": 1,
+        "explanation": "El derecho a un medio ambiente sano implica que debemos cuidar el entorno para que las futuras generaciones también puedan gozar de un ambiente saludable."
+      },
+      {
+        "question": "¿Cómo se relaciona la Constitución mexicana con la responsabilidad de preservar el entorno para generaciones futuras?",
+        "options": [
+          "No menciona el tema ambiental",
+          "Establece que el Estado debe garantizar un medio ambiente sano para el desarrollo",
+          "Solo protege los derechos de las generaciones actuales",
+          "Permite la explotación ilimitada de recursos"
+        ],
+        "correct": 1,
+        "explanation": "La Constitución, en su artículo 4, señala que toda persona tiene derecho a un medio ambiente sano, lo que implica responsabilidad con las futuras generaciones."
+      },
+      {
+        "question": "¿Por qué la relación humano-naturaleza debe considerar a las generaciones futuras?",
+        "options": [
+          "Porque los recursos naturales son infinitos",
+          "Porque las decisiones actuales afectan la calidad de vida de quienes vivirán después",
+          "Porque solo importa el presente",
+          "Porque la tecnología resolverá todos los problemas"
+        ],
+        "correct": 1,
+        "explanation": "Nuestras acciones actuales, como la contaminación o el agotamiento de recursos, impactan directamente en las condiciones de vida de las generaciones futuras."
+      },
+      {
+        "question": "¿Qué acción cotidiana refleja mejor la responsabilidad intergeneracional con el medio ambiente?",
+        "options": [
+          "Usar bolsas de plástico desechables",
+          "Separar los residuos para reciclar",
+          "Dejar la llave del agua abierta al lavarse los dientes",
+          "Comprar productos con mucho empaque"
+        ],
+        "correct": 1,
+        "explanation": "Separar los residuos para reciclar ayuda a reducir la contaminación y conservar recursos, beneficiando a las generaciones futuras."
       }
     ]
   },
@@ -2238,6 +4273,61 @@
         ],
         "correct": 1,
         "explanation": "Al dividir horarios, ambos grupos ceden algo (tiempo) para lograr un acuerdo que beneficie a los dos."
+      },
+      {
+        "question": "En una negociación sobre la organización de un evento escolar, un grupo quiere música alta y otro quiere silencio. ¿Qué acción representa una concesión mutua?",
+        "options": [
+          "Un grupo impone su decisión",
+          "Acuerdan un volumen moderado en horarios específicos",
+          "Cada grupo organiza su propio evento por separado",
+          "El maestro decide sin consultar"
+        ],
+        "correct": 1,
+        "explanation": "Una concesión mutua implica que ambas partes ceden parcialmente para llegar a un acuerdo que beneficie a todos."
+      },
+      {
+        "question": "¿Cuál de los siguientes derechos humanos se relaciona directamente con la negociación para resolver conflictos de convivencia?",
+        "options": [
+          "Derecho a la propiedad privada",
+          "Derecho a la libertad de expresión y a ser escuchado",
+          "Derecho a portar armas",
+          "Derecho a un juicio justo"
+        ],
+        "correct": 1,
+        "explanation": "La negociación requiere que ambas partes expresen sus puntos de vista y sean escuchadas, lo que se vincula con la libertad de expresión."
+      },
+      {
+        "question": "En una negociación sobre el uso del patio escolar, dos grupos tienen intereses distintos. ¿Qué artículo de la Constitución Mexicana promueve la solución pacífica de controversias?",
+        "options": [
+          "Artículo 3° (derecho a la educación)",
+          "Artículo 17° (prohibición de la violencia y fomento de la mediación)",
+          "Artículo 4° (igualdad de género)",
+          "Artículo 123° (derechos laborales)"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 17° establece que las controversias deben resolverse mediante el diálogo y la mediación, evitando la violencia."
+      },
+      {
+        "question": "Durante una negociación sobre la distribución de tareas en un equipo, una parte no respeta los acuerdos previos. ¿Qué valor cívico se está afectando?",
+        "options": [
+          "La honestidad",
+          "La responsabilidad",
+          "La solidaridad",
+          "La tolerancia"
+        ],
+        "correct": 1,
+        "explanation": "La responsabilidad implica cumplir con los acuerdos y compromisos asumidos en la negociación."
+      },
+      {
+        "question": "En una negociación sobre la convivencia en la comunidad, las partes deciden ceder en algunos puntos. ¿Cuál es el beneficio principal de esta acción?",
+        "options": [
+          "Obtener todo lo que se desea",
+          "Evitar el conflicto y lograr un acuerdo justo",
+          "Demostrar debilidad",
+          "Ganar una discusión"
+        ],
+        "correct": 1,
+        "explanation": "Ceder mutuamente permite llegar a un acuerdo que respete los intereses de ambas partes y mejore la convivencia."
       }
     ]
   },
@@ -2297,6 +4387,61 @@
         ],
         "correct": 2,
         "explanation": "Sin pensamiento crítico, las personas pueden creer noticias falsas y actuar basándose en información incorrecta, perjudicando la convivencia."
+      },
+      {
+        "question": "¿Qué estrategia utilizan algunos medios para influir en la opinión pública sobre temas constitucionales?",
+        "options": [
+          "Presentar todos los puntos de vista de manera equitativa",
+          "Repetir una misma idea de forma constante sin contrastarla",
+          "Citar fuentes oficiales verificadas",
+          "Incluir análisis de expertos independientes"
+        ],
+        "correct": 1,
+        "explanation": "La repetición constante de una idea sin contraste busca que el público la acepte como verdadera, lo que es una forma de manipulación mediática."
+      },
+      {
+        "question": "¿Qué característica del pensamiento crítico ayuda a identificar noticias falsas sobre derechos constitucionales?",
+        "options": [
+          "Aceptar toda la información que se comparte en redes sociales",
+          "Verificar la fuente y buscar datos oficiales",
+          "Compartir la noticia de inmediato para alertar a otros",
+          "Ignorar las noticias que parecen sospechosas"
+        ],
+        "correct": 1,
+        "explanation": "Verificar la fuente y buscar datos oficiales permite confirmar la veracidad de la información y evitar ser engañado."
+      },
+      {
+        "question": "¿Por qué los medios pueden presentar información parcial sobre la Constitución?",
+        "options": [
+          "Porque la Constitución es muy extensa y no se puede cubrir toda",
+          "Para favorecer una postura política o ideológica específica",
+          "Porque los periodistas no entienden la Constitución",
+          "Para cumplir con las leyes de transparencia"
+        ],
+        "correct": 1,
+        "explanation": "Al presentar solo una parte de la información, los medios pueden orientar la opinión pública hacia una posición determinada, lo que constituye manipulación."
+      },
+      {
+        "question": "¿Qué derecho constitucional se ve más afectado cuando los medios difunden información falsa?",
+        "options": [
+          "Derecho a la educación",
+          "Derecho a la libertad de expresión",
+          "Derecho a la información veraz y oportuna",
+          "Derecho a la salud"
+        ],
+        "correct": 2,
+        "explanation": "La difusión de información falsa vulnera el derecho de los ciudadanos a recibir información veraz y oportuna, establecido en la Constitución."
+      },
+      {
+        "question": "¿Cómo puede un ciudadano ejercer pensamiento crítico al leer una noticia sobre un derecho constitucional?",
+        "options": [
+          "Compartir la noticia con todos sus contactos",
+          "Cuestionar si la información proviene de fuentes confiables",
+          "Aceptar la noticia porque aparece en un medio conocido",
+          "Buscar solo opiniones que coincidan con las suyas"
+        ],
+        "correct": 1,
+        "explanation": "Cuestionar la confiabilidad de la fuente es una práctica esencial del pensamiento crítico para evitar la manipulación."
       }
     ]
   }

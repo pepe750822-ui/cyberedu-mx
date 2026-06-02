@@ -55,6 +55,61 @@
         ],
         "correct": 1,
         "explanation": "La llegada de los europeos resultó en la conquista militar y colonización de América, imponiendo su cultura y explotando recursos."
+      },
+      {
+        "question": "¿Qué ruta comercial quedó bloqueada para los europeos tras la caída de Constantinopla en 1453?",
+        "options": [
+          "La Ruta de la Seda hacia China",
+          "La ruta marítima hacia América",
+          "La ruta terrestre hacia la India",
+          "La ruta del Atlántico Norte"
+        ],
+        "correct": 2,
+        "explanation": "La caída de Constantinopla en manos de los turcos otomanos bloqueó la ruta terrestre que conectaba Europa con Asia, dificultando el comercio de especias y seda."
+      },
+      {
+        "question": "¿Qué invento chino fue fundamental para que los europeos se lanzaran a explorar nuevas rutas marítimas?",
+        "options": [
+          "La pólvora",
+          "El papel",
+          "La brújula",
+          "La imprenta"
+        ],
+        "correct": 2,
+        "explanation": "La brújula, inventada en China, permitió a los navegantes orientarse en alta mar, facilitando las exploraciones oceánicas."
+      },
+      {
+        "question": "¿Qué país europeo firmó el Tratado de Tordesillas en 1494 para dividir las tierras descubiertas?",
+        "options": [
+          "Inglaterra y Francia",
+          "España y Portugal",
+          "Italia y Alemania",
+          "Países Bajos y Suecia"
+        ],
+        "correct": 1,
+        "explanation": "España y Portugal firmaron el Tratado de Tordesillas para repartirse las tierras descubiertas al oeste y este de una línea imaginaria."
+      },
+      {
+        "question": "¿Qué movimiento intelectual del siglo XVI impulsó la crítica a las tradiciones medievales y el valor de la razón?",
+        "options": [
+          "El Romanticismo",
+          "El Humanismo",
+          "El Barroco",
+          "El Escolasticismo"
+        ],
+        "correct": 1,
+        "explanation": "El Humanismo, surgido en el Renacimiento, puso al ser humano y la razón en el centro, criticando las ideas medievales."
+      },
+      {
+        "question": "¿Cuál fue el principal objetivo de Cristóbal Colón al emprender su viaje en 1492?",
+        "options": [
+          "Descubrir un nuevo continente",
+          "Llegar a Asia navegando hacia el oeste",
+          "Encontrar una ruta directa a África",
+          "Buscar oro en el Atlántico"
+        ],
+        "correct": 1,
+        "explanation": "Colón buscaba una ruta hacia Asia por el oeste para restablecer el comercio de especias, bloqueado por los turcos."
       }
     ]
   },
@@ -114,6 +169,61 @@
         ],
         "correct": 1,
         "explanation": "Las expediciones permitieron el intercambio de productos, ideas y personas entre América, Europa, Asia y África, conocido como intercambio colombino."
+      },
+      {
+        "question": "¿Qué monarca español apoyó la expedición de Cristóbal Colón en 1492?",
+        "options": [
+          "Carlos I",
+          "Fernando e Isabel",
+          "Felipe II",
+          "Juana la Loca"
+        ],
+        "correct": 1,
+        "explanation": "Los Reyes Católicos, Fernando de Aragón e Isabel de Castilla, apoyaron el viaje de Colón."
+      },
+      {
+        "question": "¿Qué producto buscaba principalmente Vasco da Gama en su viaje a la India?",
+        "options": [
+          "Oro",
+          "Especias",
+          "Seda",
+          "Esclavos"
+        ],
+        "correct": 1,
+        "explanation": "Vasco da Gama buscaba especias como pimienta, canela y clavo, muy valiosas en Europa."
+      },
+      {
+        "question": "¿Qué estrecho descubrió Magallanes en el extremo sur de América?",
+        "options": [
+          "Estrecho de Gibraltar",
+          "Estrecho de Magallanes",
+          "Estrecho de Bering",
+          "Estrecho de Drake"
+        ],
+        "correct": 1,
+        "explanation": "Magallanes descubrió el estrecho que hoy lleva su nombre, al sur de la Patagonia."
+      },
+      {
+        "question": "¿Cuántos barcos completaron la vuelta al mundo de Magallanes?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "5"
+        ],
+        "correct": 0,
+        "explanation": "Solo la nao Victoria regresó a España en 1522, completando la primera vuelta al mundo."
+      },
+      {
+        "question": "¿Qué civilización precolombina encontró Hernán Cortés en México?",
+        "options": [
+          "Inca",
+          "Maya",
+          "Azteca",
+          "Chibcha"
+        ],
+        "correct": 2,
+        "explanation": "Cortés conquistó el Imperio azteca, gobernado por Moctezuma II."
       }
     ]
   },
@@ -173,6 +283,61 @@
         ],
         "correct": 2,
         "explanation": "La imprenta permitió la producción masiva de libros, facilitando la difusión del conocimiento y las nuevas ideas renacentistas."
+      },
+      {
+        "question": "¿Cuál de las siguientes características corresponde al humanismo, movimiento intelectual del Renacimiento?",
+        "options": [
+          "Exaltación de la fe y la religión como centro del pensamiento",
+          "Valoración del ser humano y la razón, inspirándose en la cultura grecolatina",
+          "Rechazo total de los avances científicos y tecnológicos",
+          "Promoción del arte exclusivamente religioso"
+        ],
+        "correct": 1,
+        "explanation": "El humanismo se caracterizó por poner al ser humano en el centro y recuperar los valores de la antigüedad clásica, como la razón y la dignidad humana."
+      },
+      {
+        "question": "¿Qué técnica artística, desarrollada durante el Renacimiento, permite crear la ilusión de profundidad en una superficie plana?",
+        "options": [
+          "Perspectiva lineal",
+          "Mosaico bizantino",
+          "Estilo gótico",
+          "Puntillismo"
+        ],
+        "correct": 0,
+        "explanation": "La perspectiva lineal fue una técnica revolucionaria que daba sensación de tridimensionalidad, muy usada por artistas renacentistas como Brunelleschi."
+      },
+      {
+        "question": "¿Cuál de los siguientes fue un importante mecenas de las artes durante el Renacimiento italiano?",
+        "options": [
+          "Carlomagno",
+          "Lorenzo de Médici",
+          "Julio César",
+          "Enrique VIII"
+        ],
+        "correct": 1,
+        "explanation": "Lorenzo de Médici, de la familia Médici en Florencia, patrocinó a artistas como Miguel Ángel y Leonardo da Vinci."
+      },
+      {
+        "question": "¿Cuál de estos avances científicos ocurrió durante el Renacimiento?",
+        "options": [
+          "Descubrimiento de la penicilina",
+          "Desarrollo de la teoría de la relatividad",
+          "Demostración de la circulación sanguínea por William Harvey",
+          "Invención del teléfono"
+        ],
+        "correct": 2,
+        "explanation": "William Harvey descubrió cómo circula la sangre en el cuerpo humano, un gran avance médico del Renacimiento."
+      },
+      {
+        "question": "¿Qué obra de Miguel Ángel se encuentra en la bóveda de la Capilla Sixtina?",
+        "options": [
+          "La Última Cena",
+          "La creación de Adán",
+          "El nacimiento de Venus",
+          "La escuela de Atenas"
+        ],
+        "correct": 1,
+        "explanation": "La creación de Adán es una famosa pintura de Miguel Ángel en el techo de la Capilla Sixtina, que muestra a Dios dando vida al primer hombre."
       }
     ]
   },
@@ -232,6 +397,61 @@
         ],
         "correct": 0,
         "explanation": "El discurso sobre la dignidad del hombre es una obra clave del humanismo que exalta la libertad y grandeza del ser humano."
+      },
+      {
+        "question": "Durante el Renacimiento, el humanismo colocó al ser humano como centro del universo. ¿Qué concepto medieval se oponía directamente a esta idea?",
+        "options": [
+          "Teocentrismo",
+          "Feudalismo",
+          "Escolasticismo",
+          "Nominalismo"
+        ],
+        "correct": 0,
+        "explanation": "El teocentrismo medieval ponía a Dios como centro del universo, mientras que el humanismo renacentista colocó al ser humano en ese lugar."
+      },
+      {
+        "question": "¿Cuál de los siguientes pensadores es considerado un representante clave del humanismo renacentista?",
+        "options": [
+          "Santo Tomás de Aquino",
+          "Erasmo de Rotterdam",
+          "San Agustín",
+          "Aristóteles"
+        ],
+        "correct": 1,
+        "explanation": "Erasmo de Rotterdam fue un humanista que defendió la dignidad humana y criticó aspectos de la Iglesia, reflejando el espíritu renacentista."
+      },
+      {
+        "question": "El humanismo renacentista promovió el estudio de las humanidades. ¿Qué disciplinas incluían principalmente?",
+        "options": [
+          "Gramática, retórica, historia, poesía y filosofía moral",
+          "Matemáticas, astronomía, lógica y teología",
+          "Medicina, alquimia, astrología y derecho",
+          "Arquitectura, escultura, pintura y música"
+        ],
+        "correct": 0,
+        "explanation": "Las humanidades se centraban en el estudio del ser humano y su cultura, incluyendo gramática, retórica, historia, poesía y filosofía moral."
+      },
+      {
+        "question": "¿Qué famosa frase resume la actitud humanista del Renacimiento hacia el conocimiento y el potencial humano?",
+        "options": [
+          "El fin justifica los medios",
+          "Pienso, luego existo",
+          "El hombre es la medida de todas las cosas",
+          "Solo sé que nada sé"
+        ],
+        "correct": 2,
+        "explanation": "La frase 'El hombre es la medida de todas las cosas' de Protágoras fue retomada por los humanistas para expresar que el ser humano es el centro de referencia."
+      },
+      {
+        "question": "¿Cuál de las siguientes obras refleja mejor la visión humanista del ser humano como centro del universo?",
+        "options": [
+          "La Divina Comedia, de Dante Alighieri",
+          "El Príncipe, de Nicolás Maquiavelo",
+          "El Discurso sobre la dignidad del hombre, de Pico della Mirandola",
+          "La Ciudad de Dios, de San Agustín"
+        ],
+        "correct": 2,
+        "explanation": "En 'El Discurso sobre la dignidad del hombre', Pico della Mirandola exalta la libertad y capacidad del ser humano para elegir su destino, reflejando el humanismo."
       }
     ]
   },
@@ -291,6 +511,61 @@
         ],
         "correct": 0,
         "explanation": "Tras la derrota mexica, los españoles establecieron el Virreinato de Nueva España, iniciando el periodo colonial."
+      },
+      {
+        "question": "¿Qué ventaja militar tuvieron los españoles sobre los aztecas durante la conquista?",
+        "options": [
+          "Caballos y armas de fuego",
+          "Arcos y flechas",
+          "Escudos de madera",
+          "Lanzas largas"
+        ],
+        "correct": 0,
+        "explanation": "Los españoles contaban con caballos, espadas de acero y arcabuces, que eran superiores a las armas aztecas."
+      },
+      {
+        "question": "¿Cuál fue la principal razón por la que los tlaxcaltecas se aliaron con Hernán Cortés?",
+        "options": [
+          "Porque querían aprender español",
+          "Porque estaban enemistados con los mexicas",
+          "Porque deseaban convertirse al cristianismo",
+          "Porque buscaban oro"
+        ],
+        "correct": 1,
+        "explanation": "Los tlaxcaltecas eran enemigos de los mexicas y vieron en Cortés la oportunidad de derrotarlos."
+      },
+      {
+        "question": "¿Qué ocurrió durante el sitio de Tenochtitlán en 1521 que facilitó su caída?",
+        "options": [
+          "Los españoles usaron barcos para atacar la ciudad",
+          "Los aztecas se rindieron por falta de agua",
+          "Una epidemia de viruela debilitó a los defensores",
+          "Moctezuma II entregó la ciudad voluntariamente"
+        ],
+        "correct": 2,
+        "explanation": "La viruela, traída por los españoles, causó estragos entre los aztecas y redujo su capacidad de defensa."
+      },
+      {
+        "question": "¿Cómo influyó el humanismo renacentista en la conquista de México?",
+        "options": [
+          "Promovió el respeto por las culturas indígenas",
+          "Justificó la evangelización de los pueblos nativos",
+          "Fomentó la igualdad entre españoles e indígenas",
+          "Impulsó el comercio de especias"
+        ],
+        "correct": 1,
+        "explanation": "El humanismo de la época, junto con el afán evangelizador, justificó la expansión colonial como una misión civilizadora."
+      },
+      {
+        "question": "¿Qué papel desempeñó la ciudad de Veracruz en la conquista de México?",
+        "options": [
+          "Fue el lugar donde desembarcó Cortés y fundó el primer ayuntamiento",
+          "Fue la capital del imperio azteca",
+          "Fue el escenario de la Noche Triste",
+          "Fue el último bastión de resistencia indígena"
+        ],
+        "correct": 0,
+        "explanation": "Cortés fundó la Villa Rica de la Vera Cruz en 1519, estableciendo la primera autoridad española en territorio mexicano."
       }
     ]
   },
@@ -350,6 +625,61 @@
         ],
         "correct": 0,
         "explanation": "La burguesía, inspirada por las ideas ilustradas, encabezó la Revolución Francesa al buscar igualdad política y fin de los privilegios del clero y la nobleza."
+      },
+      {
+        "question": "¿Qué filósofo ilustrado influyó en la Declaración de los Derechos del Hombre y del Ciudadano con su idea de separación de poderes?",
+        "options": [
+          "Voltaire",
+          "Montesquieu",
+          "Rousseau",
+          "Diderot"
+        ],
+        "correct": 1,
+        "explanation": "Montesquieu propuso la división de poderes en su obra 'El espíritu de las leyes', idea adoptada en la Declaración de 1789."
+      },
+      {
+        "question": "¿Qué institución francesa fue abolida como resultado de la Revolución Francesa?",
+        "options": [
+          "La monarquía absoluta",
+          "La Asamblea Nacional",
+          "El Directorio",
+          "El Imperio Napoleónico"
+        ],
+        "correct": 0,
+        "explanation": "La Revolución Francesa puso fin al absolutismo monárquico, estableciendo un sistema republicano."
+      },
+      {
+        "question": "¿Qué evento ocurrió el 14 de julio de 1789 durante la Revolución Francesa?",
+        "options": [
+          "La ejecución de Luis XVI",
+          "La Toma de la Bastilla",
+          "La Declaración de los Derechos del Hombre",
+          "El golpe de Estado de Napoleón"
+        ],
+        "correct": 1,
+        "explanation": "La Toma de la Bastilla simbolizó el inicio de la Revolución al atacar un símbolo del absolutismo."
+      },
+      {
+        "question": "¿Qué grupo social formaba el Tercer Estado en Francia antes de la Revolución?",
+        "options": [
+          "Nobleza",
+          "Clero",
+          "Burguesía, campesinos y trabajadores",
+          "Reyes y ministros"
+        ],
+        "correct": 2,
+        "explanation": "El Tercer Estado incluía a la mayoría de la población, sin privilegios, y buscaba igualdad."
+      },
+      {
+        "question": "¿Qué país apoyó a los colonos estadounidenses en su independencia, influyendo en la Revolución Francesa?",
+        "options": [
+          "Inglaterra",
+          "España",
+          "Francia",
+          "Prusia"
+        ],
+        "correct": 2,
+        "explanation": "Francia apoyó la independencia de EE.UU., lo que inspiró a los revolucionarios franceses con ideas de libertad."
       }
     ]
   },
@@ -409,6 +739,61 @@
         ],
         "correct": 2,
         "explanation": "Los ilustrados criticaban el absolutismo y los privilegios de la nobleza y el clero, proponiendo un gobierno basado en la razón y la igualdad."
+      },
+      {
+        "question": "¿Qué pensador ilustrado propuso la división de poderes como garantía contra el abuso de autoridad?",
+        "options": [
+          "Voltaire",
+          "Montesquieu",
+          "Rousseau",
+          "Diderot"
+        ],
+        "correct": 1,
+        "explanation": "Montesquieu, en su obra 'El espíritu de las leyes', propuso separar el poder legislativo, ejecutivo y judicial para evitar la tiranía."
+      },
+      {
+        "question": "¿Cuál fue el principal medio de difusión de las ideas ilustradas en el siglo XVIII?",
+        "options": [
+          "La televisión",
+          "Los periódicos",
+          "La Enciclopedia",
+          "Las redes sociales"
+        ],
+        "correct": 2,
+        "explanation": "La Enciclopedia, dirigida por Diderot y D'Alembert, recopiló y difundió el conocimiento ilustrado entre la burguesía y la nobleza."
+      },
+      {
+        "question": "¿Qué sistema político imperaba en Francia antes de la Revolución de 1789?",
+        "options": [
+          "Democracia",
+          "Monarquía absoluta",
+          "República",
+          "Dictadura militar"
+        ],
+        "correct": 1,
+        "explanation": "Francia era una monarquía absoluta donde el rey concentraba todos los poderes, lo que los ilustrados criticaban."
+      },
+      {
+        "question": "¿Cuál de los siguientes derechos NO fue proclamado en la Declaración de los Derechos del Hombre y del Ciudadano de 1789?",
+        "options": [
+          "Libertad",
+          "Igualdad",
+          "Propiedad",
+          "Voto femenino"
+        ],
+        "correct": 3,
+        "explanation": "La Declaración de 1789 no incluyó el voto femenino; las mujeres lograron ese derecho hasta el siglo XX."
+      },
+      {
+        "question": "¿Qué revolución americana se inspiró en las ideas ilustradas y ocurrió antes de la Revolución Francesa?",
+        "options": [
+          "Revolución Mexicana",
+          "Revolución Cubana",
+          "Revolución de las Trece Colonias",
+          "Revolución Haitiana"
+        ],
+        "correct": 2,
+        "explanation": "La independencia de las Trece Colonias (1776) se basó en ideas ilustradas como la soberanía popular y los derechos naturales."
       }
     ]
   },
@@ -468,6 +853,61 @@
         ],
         "correct": 1,
         "explanation": "Rousseau argumentaba que la sociedad se basa en un acuerdo voluntario donde el poder reside en el pueblo."
+      },
+      {
+        "question": "¿Qué postura defendían los ilustrados respecto a la religión organizada?",
+        "options": [
+          "La religión debía ser la base de toda ley",
+          "Debía ser criticada y separada del gobierno",
+          "La Iglesia debía dirigir la educación",
+          "El ateísmo era obligatorio"
+        ],
+        "correct": 1,
+        "explanation": "Los ilustrados, como Voltaire, criticaban la influencia de la Iglesia en el Estado y defendían la separación entre religión y gobierno."
+      },
+      {
+        "question": "¿Cuál fue el principal método de conocimiento promovido por la Ilustración?",
+        "options": [
+          "La fe religiosa",
+          "La razón y la ciencia",
+          "La tradición oral",
+          "La intuición"
+        ],
+        "correct": 1,
+        "explanation": "La Ilustración impulsó el uso de la razón y el método científico para entender el mundo, en contraposición a la fe y la tradición."
+      },
+      {
+        "question": "¿Qué obra de Denis Diderot buscaba reunir todo el conocimiento humano de la época?",
+        "options": [
+          "El Espíritu de las Leyes",
+          "La Enciclopedia",
+          "El Contrato Social",
+          "Cándido"
+        ],
+        "correct": 1,
+        "explanation": "Diderot dirigió la publicación de la Enciclopedia, una obra que recopilaba y difundía el saber ilustrado."
+      },
+      {
+        "question": "Según los ilustrados, ¿cómo debía gobernarse una sociedad?",
+        "options": [
+          "Por voluntad divina del rey",
+          "Mediante leyes basadas en la razón",
+          "Siguiendo las costumbres ancestrales",
+          "Por decreto de la nobleza"
+        ],
+        "correct": 1,
+        "explanation": "Los ilustrados proponían que las leyes debían ser racionales y justas, no impuestas por la tradición o la religión."
+      },
+      {
+        "question": "¿Qué idea sobre el origen del poder político defendía John Locke?",
+        "options": [
+          "El poder viene de Dios al rey",
+          "El poder reside en el pueblo",
+          "El poder lo da la fuerza militar",
+          "El poder es hereditario"
+        ],
+        "correct": 1,
+        "explanation": "Locke sostenía que el poder político surge del consentimiento de los gobernados, base del liberalismo."
       }
     ]
   },
@@ -527,6 +967,61 @@
         ],
         "correct": 1,
         "explanation": "La independencia de Estados Unidos mostró que las colonias podían organizarse y derrotar a una potencia colonial, alentando a los criollos a buscar su propia independencia."
+      },
+      {
+        "question": "¿Qué pensador ilustrado influyó en los criollos latinoamericanos al proponer la separación de poderes?",
+        "options": [
+          "A) John Locke",
+          "B) Montesquieu",
+          "C) Jean-Jacques Rousseau",
+          "D) Voltaire"
+        ],
+        "correct": 1,
+        "explanation": "Montesquieu propuso la división de poderes en ejecutivo, legislativo y judicial, idea que adoptaron los líderes independentistas para evitar la concentración del poder."
+      },
+      {
+        "question": "¿Qué evento en Europa debilitó el control español sobre sus colonias americanas y favoreció los movimientos independentistas?",
+        "options": [
+          "A) La Revolución Francesa",
+          "B) La invasión napoleónica a España",
+          "C) La Guerra de los Siete Años",
+          "D) La Revolución Industrial"
+        ],
+        "correct": 1,
+        "explanation": "La invasión napoleónica a España en 1808 provocó una crisis de poder que permitió a los criollos formar juntas de gobierno y declarar su independencia."
+      },
+      {
+        "question": "¿Qué derecho natural, según la Ilustración, justificaba la rebelión de los pueblos contra un gobierno injusto?",
+        "options": [
+          "A) Derecho a la propiedad",
+          "B) Derecho a la resistencia",
+          "C) Derecho a la libertad de expresión",
+          "D) Derecho al voto"
+        ],
+        "correct": 1,
+        "explanation": "El derecho a la resistencia, defendido por John Locke, establece que si un gobierno viola los derechos naturales, el pueblo puede rebelarse y establecer uno nuevo."
+      },
+      {
+        "question": "¿Qué país latinoamericano logró su independencia tras la revolución de esclavos liderada por Toussaint Louverture?",
+        "options": [
+          "A) México",
+          "B) Argentina",
+          "C) Haití",
+          "D) Venezuela"
+        ],
+        "correct": 2,
+        "explanation": "Haití se independizó de Francia en 1804 tras una revuelta de esclavos inspirada en los ideales de libertad e igualdad de la Revolución Francesa."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia directa de la independencia de las colonias americanas para España?",
+        "options": [
+          "A) Mayor riqueza por el comercio libre",
+          "B) Pérdida de territorios y poder económico",
+          "C) Alianza con Inglaterra",
+          "D) Expansión hacia África"
+        ],
+        "correct": 1,
+        "explanation": "La independencia de sus colonias americanas significó para España la pérdida de vastos territorios y una importante fuente de ingresos, debilitando su imperio."
       }
     ]
   },
@@ -586,6 +1081,61 @@
         ],
         "correct": 1,
         "explanation": "La Constitución creó un gobierno con poderes separados para evitar abusos, reflejando las ideas de Montesquieu y Locke sobre equilibrio de poderes."
+      },
+      {
+        "question": "¿Qué filosofía ilustrada inspiró la idea de que el gobierno debe basarse en el consentimiento de los gobernados en la independencia de EE.UU.?",
+        "options": [
+          "El liberalismo de John Locke",
+          "El absolutismo de Thomas Hobbes",
+          "El socialismo de Karl Marx",
+          "El fascismo de Mussolini"
+        ],
+        "correct": 0,
+        "explanation": "John Locke defendía que los gobiernos deben ser legítimos solo con el consentimiento de los ciudadanos, idea clave para la independencia."
+      },
+      {
+        "question": "¿Qué batalla decisiva de la Guerra de Independencia de EE.UU. ocurrió en 1781 y llevó a la rendición británica?",
+        "options": [
+          "Batalla de Bunker Hill",
+          "Batalla de Saratoga",
+          "Batalla de Yorktown",
+          "Batalla de Lexington"
+        ],
+        "correct": 2,
+        "explanation": "La Batalla de Yorktown en 1781 fue la última gran batalla, donde los británicos se rindieron, asegurando la independencia."
+      },
+      {
+        "question": "¿Qué impuesto británico sobre el té provocó el Motín del Té en Boston en 1773?",
+        "options": [
+          "Ley del Timbre",
+          "Ley del Té",
+          "Ley de Azúcar",
+          "Ley de Sellos"
+        ],
+        "correct": 1,
+        "explanation": "La Ley del Té de 1773 otorgó a la Compañía Británica de las Indias Orientales el monopolio, lo que enfureció a los colonos."
+      },
+      {
+        "question": "¿Qué documento de 1776, escrito por Thomas Paine, influyó en la opinión pública a favor de la independencia?",
+        "options": [
+          "El Federalista",
+          "Sentido Común",
+          "Los Derechos del Hombre",
+          "La Riqueza de las Naciones"
+        ],
+        "correct": 1,
+        "explanation": "Sentido Común de Thomas Paine argumentó de manera clara a favor de la independencia, llegando a un amplio público."
+      },
+      {
+        "question": "¿Qué principio de la Constitución de EE.UU. de 1787 divide el poder entre tres ramas para evitar abusos?",
+        "options": [
+          "Federalismo",
+          "Separación de poderes",
+          "Soberanía popular",
+          "Republicano"
+        ],
+        "correct": 1,
+        "explanation": "La separación de poderes en ejecutivo, legislativo y judicial evita la concentración de poder, influencia de Montesquieu."
       }
     ]
   },
@@ -645,6 +1195,61 @@
         ],
         "correct": 0,
         "explanation": "La Ilustración promovió la división de poderes y la limitación del rey, dando origen a la monarquía constitucional."
+      },
+      {
+        "question": "¿Cuál era la principal fuente de legitimidad del poder de los reyes absolutos durante el siglo XVIII?",
+        "options": [
+          "La elección popular",
+          "El derecho divino",
+          "El consentimiento del parlamento",
+          "La fuerza militar"
+        ],
+        "correct": 1,
+        "explanation": "Los reyes absolutos justificaban su poder mediante el derecho divino, es decir, afirmaban que su autoridad provenía directamente de Dios."
+      },
+      {
+        "question": "¿Qué facultad NO poseía un monarca absoluto típico del siglo XVIII?",
+        "options": [
+          "Declarar la guerra",
+          "Crear impuestos",
+          "Ser juzgado por tribunales independientes",
+          "Dictar leyes"
+        ],
+        "correct": 2,
+        "explanation": "En el absolutismo, el rey estaba por encima de la ley y no podía ser juzgado por tribunales independientes, ya que concentraba todos los poderes."
+      },
+      {
+        "question": "¿Qué evento histórico del siglo XVIII desafió directamente el modelo absolutista en Francia?",
+        "options": [
+          "La Guerra de los Siete Años",
+          "La Revolución Francesa",
+          "La Guerra de Independencia de Estados Unidos",
+          "La Revolución Industrial"
+        ],
+        "correct": 1,
+        "explanation": "La Revolución Francesa (1789) derrocó a la monarquía absoluta de Luis XVI, estableciendo principios de soberanía popular y derechos ciudadanos."
+      },
+      {
+        "question": "¿Cómo se llamaba el sistema de gobierno en el que el monarca absoluto controlaba todos los aspectos del Estado, incluyendo la economía y la religión?",
+        "options": [
+          "Democracia",
+          "República",
+          "Absolutismo",
+          "Monarquía constitucional"
+        ],
+        "correct": 2,
+        "explanation": "El absolutismo se caracterizaba por la concentración total del poder en el rey, quien controlaba el gobierno, la economía y la religión."
+      },
+      {
+        "question": "¿Qué filósofo ilustrado criticó fuertemente el absolutismo y propuso la separación de poderes?",
+        "options": [
+          "John Locke",
+          "Voltaire",
+          "Montesquieu",
+          "Rousseau"
+        ],
+        "correct": 2,
+        "explanation": "Montesquieu, en su obra 'El espíritu de las leyes', propuso la división de poderes (ejecutivo, legislativo y judicial) como freno al absolutismo."
       }
     ]
   },
@@ -704,6 +1309,61 @@
         ],
         "correct": 0,
         "explanation": "Los europeos afirmaban que tenían el deber de llevar su cultura y tecnología a pueblos que consideraban atrasados, llamado 'misión civilizadora'."
+      },
+      {
+        "question": "¿Qué potencia europea colonizó la India en el siglo XIX?",
+        "options": [
+          "Francia",
+          "Portugal",
+          "Reino Unido",
+          "Alemania"
+        ],
+        "correct": 2,
+        "explanation": "El Reino Unido, a través de la Compañía Británica de las Indias Orientales, estableció su dominio sobre la India, convirtiéndola en su colonia más importante."
+      },
+      {
+        "question": "¿Cuál fue el principal interés económico de las potencias europeas en África durante el imperialismo?",
+        "options": [
+          "Comercio de esclavos",
+          "Recursos naturales como oro y diamantes",
+          "Expansión religiosa",
+          "Establecer colonias penales"
+        ],
+        "correct": 1,
+        "explanation": "Las potencias europeas buscaban explotar los recursos naturales de África, como minerales y materias primas, para impulsar su industrialización."
+      },
+      {
+        "question": "¿Qué país africano logró mantener su independencia durante la partición de África?",
+        "options": [
+          "Egipto",
+          "Etiopía",
+          "Sudáfrica",
+          "Nigeria"
+        ],
+        "correct": 1,
+        "explanation": "Etiopía resistió la colonización europea, derrotando a Italia en la Batalla de Adwa en 1896, y se mantuvo independiente."
+      },
+      {
+        "question": "¿Cómo justificaban los europeos el imperialismo en Asia y África?",
+        "options": [
+          "Necesidad de expandir la democracia",
+          "Misión civilizadora y superioridad racial",
+          "Proteger a las poblaciones locales",
+          "Fomentar el libre comercio"
+        ],
+        "correct": 1,
+        "explanation": "Los europeos usaban la idea de una 'misión civilizadora' y la creencia en su superioridad racial para justificar la dominación de otros pueblos."
+      },
+      {
+        "question": "¿Qué consecuencia tuvo el imperialismo en las colonias asiáticas?",
+        "options": [
+          "Desarrollo industrial autónomo",
+          "Explotación económica y pérdida de identidad cultural",
+          "Mejora en la calidad de vida de todos",
+          "Unificación política de la región"
+        ],
+        "correct": 1,
+        "explanation": "El imperialismo llevó a la explotación de recursos y mano de obra, además de imponer culturas extranjeras, afectando la identidad local."
       }
     ]
   },
@@ -763,6 +1423,61 @@
         ],
         "correct": 1,
         "explanation": "El nacionalismo creó rivalidades entre potencias y movimientos independentistas en los Balcanes, aumentando las tensiones que llevaron al conflicto."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de nacionalismo basado en la lengua común durante el siglo XIX?",
+        "options": [
+          "La unificación de Italia bajo el liderazgo de Garibaldi y Víctor Manuel II",
+          "La expansión colonial de Bélgica en el Congo",
+          "La firma del Tratado de Versalles en 1919",
+          "La creación de la Sociedad de Naciones en 1920"
+        ],
+        "correct": 0,
+        "explanation": "La unificación italiana se basó en la lengua y cultura comunes de los habitantes de la península itálica, un ejemplo claro de nacionalismo."
+      },
+      {
+        "question": "¿Qué papel jugó el nacionalismo en el proceso de unificación alemana?",
+        "options": [
+          "Fomentó la división de Alemania en pequeños estados",
+          "Impulsó la integración territorial bajo el liderazgo de Prusia",
+          "Provocó la independencia de las colonias alemanas",
+          "Generó conflictos religiosos entre católicos y protestantes"
+        ],
+        "correct": 1,
+        "explanation": "El nacionalismo alemán promovió la unificación de los estados germanos bajo Prusia, culminando en 1871 con la formación del Imperio Alemán."
+      },
+      {
+        "question": "Durante el imperialismo del siglo XIX, ¿qué motivación principal tenían las potencias europeas para colonizar África?",
+        "options": [
+          "Difundir el idioma inglés entre los africanos",
+          "Obtener materias primas y nuevos mercados para sus productos",
+          "Establecer gobiernos democráticos en el continente",
+          "Proteger a las poblaciones locales de invasiones asiáticas"
+        ],
+        "correct": 1,
+        "explanation": "Las potencias europeas buscaban recursos naturales como caucho y minerales, así como mercados para vender sus manufacturas, lo que impulsó la colonización."
+      },
+      {
+        "question": "¿Qué evento desencadenó la declaración de guerra de Austria-Hungría a Serbia en 1914?",
+        "options": [
+          "El hundimiento del barco Lusitania por submarinos alemanes",
+          "El asesinato del archiduque Francisco Fernando en Sarajevo",
+          "La invasión alemana de Bélgica para atacar Francia",
+          "La negativa de Serbia a pagar reparaciones de guerra"
+        ],
+        "correct": 1,
+        "explanation": "El atentado contra el heredero al trono austrohúngaro fue el pretexto que Austria-Hungría usó para declarar la guerra a Serbia, dando inicio a la Primera Guerra Mundial."
+      },
+      {
+        "question": "¿Cómo influyó el nacionalismo en el estallido de la Primera Guerra Mundial?",
+        "options": [
+          "Unificó a todas las naciones europeas en contra de la guerra",
+          "Fomentó rivalidades entre países, creando alianzas y tensiones",
+          "Promovió el desarme general en el continente",
+          "Impulsó la creación de un gobierno mundial para evitar conflictos"
+        ],
+        "correct": 1,
+        "explanation": "El nacionalismo exacerbó las rivalidades entre potencias, llevando a la formación de alianzas (Triple Entente y Triple Alianza) que aumentaron las tensiones hasta la guerra."
       }
     ]
   },
@@ -822,6 +1537,61 @@
         ],
         "correct": 0,
         "explanation": "El Tratado de Versalles fue firmado en 1919 y estableció las condiciones de paz, imponiendo duras sanciones a Alemania."
+      },
+      {
+        "question": "¿Qué tipo de guerra caracterizó el frente occidental durante la Primera Guerra Mundial?",
+        "options": [
+          "Guerra relámpago",
+          "Guerra de trincheras",
+          "Guerra naval",
+          "Guerra aérea"
+        ],
+        "correct": 1,
+        "explanation": "La guerra de trincheras fue predominante en el frente occidental, donde los soldados cavaban zanjas para protegerse y se enfrentaban en combates estáticos."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia demográfica de la Primera Guerra Mundial?",
+        "options": [
+          "Aumento de la población europea",
+          "Cerca de 20 millones de muertos",
+          "Migración masiva a América",
+          "Disminución de enfermedades"
+        ],
+        "correct": 1,
+        "explanation": "La Primera Guerra Mundial causó aproximadamente 20 millones de muertos, entre soldados y civiles, lo que representó una gran pérdida demográfica."
+      },
+      {
+        "question": "¿Qué movimiento ideológico impulsó la unificación de Alemania e Italia en el siglo XIX?",
+        "options": [
+          "Imperialismo",
+          "Socialismo",
+          "Nacionalismo",
+          "Liberalismo"
+        ],
+        "correct": 2,
+        "explanation": "El nacionalismo fue clave para la unificación de Alemania e Italia, ya que promovía la idea de que cada nación debía tener su propio Estado."
+      },
+      {
+        "question": "¿Qué país fue el primero en declarar la guerra en 1914, desencadenando el conflicto?",
+        "options": [
+          "Alemania",
+          "Austria-Hungría",
+          "Rusia",
+          "Francia"
+        ],
+        "correct": 1,
+        "explanation": "Austria-Hungría declaró la guerra a Serbia tras el asesinato del archiduque Francisco Fernando, lo que inició la reacción en cadena de declaraciones de guerra."
+      },
+      {
+        "question": "¿Qué nuevo tipo de arma se introdujo en la Primera Guerra Mundial causando gran temor?",
+        "options": [
+          "Tanques",
+          "Submarinos",
+          "Ametralladoras",
+          "Gases tóxicos"
+        ],
+        "correct": 3,
+        "explanation": "Los gases tóxicos, como el gas mostaza, se usaron por primera vez a gran escala, causando graves daños y temor entre los soldados."
       }
     ]
   },
@@ -881,6 +1651,61 @@
         ],
         "correct": 1,
         "explanation": "Las ciudades crecieron rápidamente sin planificación, lo que provocó hacinamiento, falta de saneamiento y enfermedades entre los trabajadores."
+      },
+      {
+        "question": "¿Qué innovación tecnológica permitió el desarrollo de la industria textil durante la Revolución Industrial?",
+        "options": [
+          "La máquina de vapor",
+          "El telar mecánico",
+          "El motor de combustión interna",
+          "La electricidad"
+        ],
+        "correct": 1,
+        "explanation": "El telar mecánico automatizó el tejido, aumentando la producción textil y reduciendo costos, lo que impulsó la Revolución Industrial."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia social del trabajo asalariado en las fábricas durante la Revolución Industrial?",
+        "options": [
+          "Mejora en las condiciones laborales",
+          "Aumento de la propiedad campesina",
+          "Formación de una clase obrera industrial",
+          "Desaparición del desempleo"
+        ],
+        "correct": 2,
+        "explanation": "El trabajo asalariado concentró a los trabajadores en fábricas, dando origen a una nueva clase social: el proletariado industrial."
+      },
+      {
+        "question": "¿Qué pensador ilustrado propuso la división de poderes como forma de evitar el abuso de autoridad?",
+        "options": [
+          "John Locke",
+          "Montesquieu",
+          "Jean-Jacques Rousseau",
+          "Voltaire"
+        ],
+        "correct": 1,
+        "explanation": "Montesquieu, en su obra 'El espíritu de las leyes', propuso separar el poder en legislativo, ejecutivo y judicial para garantizar la libertad."
+      },
+      {
+        "question": "¿Cuál fue una de las causas del crecimiento de las ciudades durante la Revolución Industrial?",
+        "options": [
+          "El aumento de la producción agrícola",
+          "La migración del campo a la ciudad en busca de empleo",
+          "La construcción de ferrocarriles",
+          "La disminución de la población rural"
+        ],
+        "correct": 1,
+        "explanation": "Las personas se trasladaron a las ciudades para trabajar en las fábricas, lo que provocó un rápido crecimiento urbano."
+      },
+      {
+        "question": "¿Qué ideología ilustrada influyó en la independencia de las colonias americanas?",
+        "options": [
+          "El absolutismo",
+          "El liberalismo",
+          "El socialismo",
+          "El anarquismo"
+        ],
+        "correct": 1,
+        "explanation": "El liberalismo, con ideas de libertad e igualdad, inspiró a los líderes independentistas a luchar contra el dominio colonial."
       }
     ]
   },
@@ -940,6 +1765,61 @@
         ],
         "correct": 1,
         "explanation": "Los nazis consideraban arios a los alemanes de ascendencia nórdica, a quienes veían como la raza superior."
+      },
+      {
+        "question": "¿Qué nombre recibió la noche del 9 al 10 de noviembre de 1938, cuando los nazis organizaron un pogromo contra los judíos en Alemania y Austria?",
+        "options": [
+          "Noche de los Cristales Rotos",
+          "Noche de los Cuchillos Largos",
+          "Noche de los Asesinatos",
+          "Noche de la Liberación"
+        ],
+        "correct": 0,
+        "explanation": "La Noche de los Cristales Rotos fue un ataque coordinado contra judíos, sus negocios y sinagogas, marcando un escalada en la persecución racial nazi."
+      },
+      {
+        "question": "¿Cuál era el objetivo principal de las Leyes de Núremberg de 1935?",
+        "options": [
+          "Proteger los derechos de los judíos",
+          "Excluir a los judíos de la vida pública y prohibir matrimonios mixtos",
+          "Fomentar la inmigración judía a Alemania",
+          "Establecer un estado judío en Alemania"
+        ],
+        "correct": 1,
+        "explanation": "Las Leyes de Núremberg legalizaron la discriminación racial, quitando derechos a los judíos y prohibiendo relaciones con alemanes no judíos."
+      },
+      {
+        "question": "¿Qué grupo fue el principal blanco de la persecución nazi además de los judíos?",
+        "options": [
+          "Los católicos",
+          "Los gitanos (romaníes y sinti)",
+          "Los campesinos",
+          "Los comerciantes"
+        ],
+        "correct": 1,
+        "explanation": "Los nazis también persiguieron a los gitanos, considerándolos 'racialmente inferiores', y fueron víctimas del genocidio junto con otros grupos."
+      },
+      {
+        "question": "¿Qué símbolo utilizó el régimen nazi para identificar a los prisioneros judíos en los campos de concentración?",
+        "options": [
+          "Una estrella de David amarilla",
+          "Un triángulo rojo",
+          "Una cruz esvástica",
+          "Un círculo negro"
+        ],
+        "correct": 0,
+        "explanation": "Los judíos eran obligados a portar una estrella de David amarilla como identificación y estigmatización, facilitando su discriminación y persecución."
+      },
+      {
+        "question": "¿Cuál fue el nombre del plan nazi para exterminar a los judíos europeos?",
+        "options": [
+          "Plan Madagascar",
+          "Solución Final",
+          "Operación Reinhard",
+          "Plan General del Este"
+        ],
+        "correct": 1,
+        "explanation": "La Solución Final fue el plan sistemático de los nazis para asesinar a todos los judíos de Europa, ejecutado mediante campos de exterminio."
       }
     ]
   },
@@ -999,6 +1879,61 @@
         ],
         "correct": 0,
         "explanation": "El Plan Schlieffen buscaba una victoria rápida contra Francia invadiendo Bélgica, pero fracasó y llevó a una guerra de trincheras."
+      },
+      {
+        "question": "¿Qué país abandonó la Triple Alianza en 1915 para unirse a la Triple Entente?",
+        "options": [
+          "Alemania",
+          "Austria-Hungría",
+          "Italia",
+          "Rusia"
+        ],
+        "correct": 2,
+        "explanation": "Italia abandonó la Triple Alianza en 1915 y se unió a la Triple Entente, atraída por promesas territoriales."
+      },
+      {
+        "question": "¿Qué nación formaba parte de la Triple Entente pero no participó en la guerra desde 1917 debido a su revolución?",
+        "options": [
+          "Francia",
+          "Reino Unido",
+          "Rusia",
+          "Italia"
+        ],
+        "correct": 2,
+        "explanation": "Rusia, miembro de la Triple Entente, se retiró de la Primera Guerra Mundial en 1917 tras la Revolución Rusa."
+      },
+      {
+        "question": "¿Cuál fue el principal objetivo de la Triple Alianza al formarse en 1882?",
+        "options": [
+          "Expandir sus colonias en África",
+          "Defenderse mutuamente de Francia y Rusia",
+          "Dominar el comercio marítimo",
+          "Apoyar la independencia de los Balcanes"
+        ],
+        "correct": 1,
+        "explanation": "La Triple Alianza se formó como un pacto defensivo entre Alemania, Austria-Hungría e Italia para protegerse de Francia y Rusia."
+      },
+      {
+        "question": "¿Qué imperio se alió con la Triple Entente en 1916, sumando fuerzas contra los Imperios Centrales?",
+        "options": [
+          "Imperio Otomano",
+          "Imperio Austrohúngaro",
+          "Imperio Alemán",
+          "Imperio Ruso"
+        ],
+        "correct": 0,
+        "explanation": "Rumania se unió a la Triple Entente en 1916, pero el Imperio Otomano ya era aliado de los Imperios Centrales desde 1914."
+      },
+      {
+        "question": "¿Qué país de la Triple Entente fue el primero en declarar la guerra a Austria-Hungría en 1914?",
+        "options": [
+          "Francia",
+          "Reino Unido",
+          "Rusia",
+          "Serbia"
+        ],
+        "correct": 2,
+        "explanation": "Rusia, miembro de la Triple Entente, fue el primero en movilizarse y declarar la guerra a Austria-Hungría en defensa de Serbia."
       }
     ]
   },
@@ -1058,6 +1993,61 @@
         ],
         "correct": 1,
         "explanation": "El fascismo promovía un nacionalismo extremo que buscaba expandir Italia mediante la guerra y el dominio de otros pueblos."
+      },
+      {
+        "question": "¿Qué método utilizó Mussolini para eliminar la oposición política en Italia?",
+        "options": [
+          "Elecciones libres",
+          "Creación de tribunales especiales y policía secreta",
+          "Debates parlamentarios",
+          "Reformas educativas"
+        ],
+        "correct": 1,
+        "explanation": "Mussolini estableció tribunales especiales y una policía secreta para perseguir a los opositores, eliminando así cualquier disidencia."
+      },
+      {
+        "question": "¿Cuál era el lema principal del fascismo italiano bajo Mussolini?",
+        "options": [
+          "Libertad, igualdad, fraternidad",
+          "Trabajo, familia, patria",
+          "Todo en el Estado, nada fuera del Estado, nada contra el Estado",
+          "Paz, tierra y pan"
+        ],
+        "correct": 2,
+        "explanation": "El lema refleja el control total del Estado sobre todos los aspectos de la vida, característico del totalitarismo fascista."
+      },
+      {
+        "question": "¿Qué grupo paramilitar apoyó a Mussolini en su ascenso al poder?",
+        "options": [
+          "Las SS",
+          "Los Camisas Negras",
+          "La Gestapo",
+          "Los Guardias Rojos"
+        ],
+        "correct": 1,
+        "explanation": "Los Camisas Negras fueron la milicia fascista que intimidó a los opositores y ayudó a Mussolini a tomar el poder."
+      },
+      {
+        "question": "¿Cómo controlaba Mussolini la información y la cultura en Italia?",
+        "options": [
+          "Permitiendo la libertad de prensa",
+          "A través del control de los medios de comunicación y la educación",
+          "Fomentando el arte abstracto",
+          "Dejando que las escuelas decidieran sus planes de estudio"
+        ],
+        "correct": 1,
+        "explanation": "Mussolini usó la propaganda y censuró los medios para difundir su ideología, y la educación se alineó con los valores fascistas."
+      },
+      {
+        "question": "¿Qué evento internacional aprovechó Mussolini para justificar su régimen autoritario?",
+        "options": [
+          "La Primera Guerra Mundial",
+          "La Gran Depresión",
+          "La Guerra Civil Española",
+          "La Segunda Guerra Mundial"
+        ],
+        "correct": 1,
+        "explanation": "Mussolini usó la crisis económica de la Gran Depresión para prometer orden y estabilidad, fortaleciendo su control autoritario."
       }
     ]
   },
@@ -1117,6 +2107,61 @@
         ],
         "correct": 1,
         "explanation": "Rusia se consideraba protectora de los pueblos eslavos y se movilizó en apoyo a Serbia, lo que llevó a Alemania a declarar la guerra a Rusia."
+      },
+      {
+        "question": "¿Qué organización terrorista respaldó a Gavrilo Princip en el asesinato del Archiduque Francisco Fernando?",
+        "options": [
+          "La Mano Negra",
+          "Los Jóvenes Turcos",
+          "El IRA",
+          "La Liga de los Comunistas"
+        ],
+        "correct": 0,
+        "explanation": "Gavrilo Princip era miembro de la Mano Negra, una organización secreta que buscaba la unificación de los eslavos del sur."
+      },
+      {
+        "question": "¿Cuál fue la fecha exacta del asesinato del Archiduque Francisco Fernando?",
+        "options": [
+          "28 de junio de 1914",
+          "1 de agosto de 1914",
+          "28 de julio de 1914",
+          "4 de agosto de 1914"
+        ],
+        "correct": 0,
+        "explanation": "El asesinato ocurrió el 28 de junio de 1914 en Sarajevo, y este evento desencadenó la Primera Guerra Mundial."
+      },
+      {
+        "question": "¿Qué imperio gobernaba Bosnia-Herzegovina en 1914, donde ocurrió el atentado?",
+        "options": [
+          "Imperio Austrohúngaro",
+          "Imperio Otomano",
+          "Imperio Alemán",
+          "Imperio Ruso"
+        ],
+        "correct": 0,
+        "explanation": "Bosnia-Herzegovina fue anexada por el Imperio Austrohúngaro en 1908, lo que generó tensiones con Serbia."
+      },
+      {
+        "question": "¿Cómo se llamaba la esposa del Archiduque Francisco Fernando que también fue asesinada en el atentado?",
+        "options": [
+          "Sofía Chotek",
+          "Isabel de Baviera",
+          "María Teresa",
+          "Carlota de México"
+        ],
+        "correct": 0,
+        "explanation": "Sofía Chotek, duquesa de Hohenberg, murió junto a su esposo en el ataque de Sarajevo."
+      },
+      {
+        "question": "¿Qué alianza militar unía a Alemania y Austria-Hungría antes del inicio de la guerra?",
+        "options": [
+          "Triple Alianza",
+          "Triple Entente",
+          "Pacto de Varsovia",
+          "Liga de los Balcanes"
+        ],
+        "correct": 0,
+        "explanation": "Alemania y Austria-Hungría formaban parte de la Triple Alianza junto con Italia, aunque Italia no entró en guerra inicialmente."
       }
     ]
   },
@@ -1176,6 +2221,61 @@
         ],
         "correct": 1,
         "explanation": "Alemania perdió sus colonias y territorios como Alsacia-Lorena, lo que aumentó el descontento."
+      },
+      {
+        "question": "¿Qué cláusula del Tratado de Versalles impuso a Alemania pagar reparaciones de guerra?",
+        "options": [
+          "A) Cláusula de culpabilidad",
+          "B) Cláusula de desarme",
+          "C) Cláusula de reparaciones",
+          "D) Cláusula de pérdida territorial"
+        ],
+        "correct": 2,
+        "explanation": "La cláusula de reparaciones obligó a Alemania a pagar enormes sumas a los países vencedores, lo que generó una crisis económica en el país."
+      },
+      {
+        "question": "¿Cómo afectó el Tratado de Versalles al ejército alemán?",
+        "options": [
+          "A) Lo fortaleció con nuevas armas",
+          "B) Lo limitó a 100,000 soldados sin tanques ni aviones",
+          "C) Lo eliminó por completo",
+          "D) Lo fusionó con el ejército francés"
+        ],
+        "correct": 1,
+        "explanation": "El tratado restringió el ejército alemán a 100,000 soldados y prohibió tanques, aviones y submarinos para evitar una nueva agresión."
+      },
+      {
+        "question": "¿Qué líder alemán utilizó el descontento por el Tratado de Versalles para llegar al poder?",
+        "options": [
+          "A) Otto von Bismarck",
+          "B) Friedrich Ebert",
+          "C) Adolf Hitler",
+          "D) Paul von Hindenburg"
+        ],
+        "correct": 2,
+        "explanation": "Adolf Hitler aprovechó el resentimiento por el tratado para prometer restaurar el orgullo alemán, lo que lo ayudó a ganar apoyo popular."
+      },
+      {
+        "question": "¿Qué territorio perdió Alemania que permitió a Polonia acceder al mar Báltico?",
+        "options": [
+          "A) Alsacia y Lorena",
+          "B) El Corredor Polaco",
+          "C) Danzig",
+          "D) Sarre"
+        ],
+        "correct": 1,
+        "explanation": "El Corredor Polaco separó a Prusia Oriental del resto de Alemania y le dio a Polonia salida al mar, lo que generó tensiones."
+      },
+      {
+        "question": "¿Qué sentimiento se fortaleció en Alemania debido a las duras condiciones del Tratado de Versalles?",
+        "options": [
+          "A) Nacionalismo extremo",
+          "B) Internacionalismo",
+          "C) Pacificismo",
+          "D) Colonialismo"
+        ],
+        "correct": 0,
+        "explanation": "Las duras condiciones del tratado fomentaron un nacionalismo extremo en Alemania, que buscaba revancha y recuperar su poder perdido."
       }
     ]
   },
@@ -1235,6 +2335,61 @@
         ],
         "correct": 1,
         "explanation": "La bomba lanzada sobre Hiroshima se llamó 'Little Boy', mientras que la de Nagasaki fue 'Fat Man'."
+      },
+      {
+        "question": "¿Cuál fue el nombre en clave de la bomba atómica lanzada sobre Nagasaki?",
+        "options": [
+          "Little Boy",
+          "Fat Man",
+          "Thin Man",
+          "Big Boy"
+        ],
+        "correct": 1,
+        "explanation": "La bomba lanzada sobre Nagasaki se llamó Fat Man, mientras que Little Boy fue la de Hiroshima."
+      },
+      {
+        "question": "¿Qué evento ocurrió el 8 de agosto de 1945, un día después del bombardeo de Hiroshima?",
+        "options": [
+          "La rendición de Alemania",
+          "La Unión Soviética declaró la guerra a Japón",
+          "La bomba de Nagasaki fue lanzada",
+          "Japón se rindió incondicionalmente"
+        ],
+        "correct": 1,
+        "explanation": "La Unión Soviética declaró la guerra a Japón el 8 de agosto de 1945, cumpliendo lo acordado en la Conferencia de Yalta."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia a largo plazo de las bombas atómicas en Japón?",
+        "options": [
+          "El fin inmediato de la guerra",
+          "La ocupación estadounidense de Japón",
+          "El desarrollo de la energía nuclear pacífica",
+          "La creación de la ONU"
+        ],
+        "correct": 1,
+        "explanation": "Tras la rendición de Japón, Estados Unidos ocupó el país hasta 1952, implementando reformas políticas y sociales."
+      },
+      {
+        "question": "¿Qué ciudad japonesa fue el objetivo principal de la primera bomba atómica, según el Proyecto Manhattan?",
+        "options": [
+          "Tokio",
+          "Kioto",
+          "Hiroshima",
+          "Nagasaki"
+        ],
+        "correct": 2,
+        "explanation": "Hiroshima fue el objetivo principal por ser un importante puerto militar y no haber sido bombardeada antes, lo que permitía medir el daño exacto de la bomba."
+      },
+      {
+        "question": "¿Qué tratado puso fin oficialmente a la Segunda Guerra Mundial con Japón?",
+        "options": [
+          "Tratado de Versalles",
+          "Tratado de San Francisco",
+          "Tratado de Potsdam",
+          "Tratado de Yalta"
+        ],
+        "correct": 1,
+        "explanation": "El Tratado de San Francisco, firmado en 1951, puso fin al estado de guerra entre Japón y los Aliados, restaurando la soberanía japonesa."
       }
     ]
   },
@@ -1294,6 +2449,61 @@
         ],
         "correct": 1,
         "explanation": "Alemania invadió Polonia en 1939, lo que desencadenó la guerra. Las otras invasiones ocurrieron después."
+      },
+      {
+        "question": "¿Qué país del Eje se rindió primero, en 1943, tras la invasión aliada de Sicilia?",
+        "options": [
+          "Alemania",
+          "Italia",
+          "Japón",
+          "Francia"
+        ],
+        "correct": 1,
+        "explanation": "Italia se rindió en septiembre de 1943 después de que los aliados invadieran Sicilia, siendo el primer país del Eje en salir de la guerra."
+      },
+      {
+        "question": "¿Cuál fue el nombre del plan de Alemania para invadir la Unión Soviética en 1941?",
+        "options": [
+          "Operación Barbarroja",
+          "Operación Overlord",
+          "Operación Torch",
+          "Operación Sea Lion"
+        ],
+        "correct": 0,
+        "explanation": "La Operación Barbarroja fue el nombre en clave de la invasión alemana a la Unión Soviética, iniciada en junio de 1941."
+      },
+      {
+        "question": "¿Qué país aliado utilizó bombas atómicas contra Japón en 1945?",
+        "options": [
+          "Reino Unido",
+          "Francia",
+          "Estados Unidos",
+          "Unión Soviética"
+        ],
+        "correct": 2,
+        "explanation": "Estados Unidos lanzó bombas atómicas sobre Hiroshima y Nagasaki en agosto de 1945, lo que llevó a la rendición de Japón."
+      },
+      {
+        "question": "¿Cuál fue el objetivo principal de la Conferencia de Yalta en 1945?",
+        "options": [
+          "Planificar la invasión de Normandía",
+          "Coordinar la derrota final de Alemania",
+          "Establecer la ONU",
+          "Dividir Alemania en zonas de ocupación"
+        ],
+        "correct": 1,
+        "explanation": "En Yalta, los líderes aliados (Roosevelt, Churchill y Stalin) acordaron los planes para la derrota final de Alemania y la posguerra."
+      },
+      {
+        "question": "¿Qué país del Eje no fue derrotado por los aliados hasta 1945?",
+        "options": [
+          "Italia",
+          "Alemania",
+          "Japón",
+          "Francia"
+        ],
+        "correct": 2,
+        "explanation": "Japón se rindió en septiembre de 1945, después de los bombardeos atómicos, siendo el último país del Eje en rendirse."
       }
     ]
   },
@@ -1353,6 +2563,61 @@
         ],
         "correct": 1,
         "explanation": "El nazismo integraba el nacionalismo extremo con teorías raciales que postulaban la supremacía aria."
+      },
+      {
+        "question": "¿Qué ideología política surgida en Italia en la década de 1920 promovía un gobierno autoritario y la supresión de la oposición?",
+        "options": [
+          "Fascismo",
+          "Nazismo",
+          "Comunismo",
+          "Democracia"
+        ],
+        "correct": 0,
+        "explanation": "El fascismo, liderado por Mussolini, defendía un Estado totalitario donde no había lugar para la disidencia política."
+      },
+      {
+        "question": "¿Cuál fue el principal detonante de la Segunda Guerra Mundial en Europa?",
+        "options": [
+          "La invasión de Polonia por Alemania",
+          "El ataque a Pearl Harbor",
+          "La anexión de Austria",
+          "La firma del Tratado de Versalles"
+        ],
+        "correct": 0,
+        "explanation": "La invasión de Polonia por parte de Alemania el 1 de septiembre de 1939 provocó que Francia y Reino Unido declararan la guerra."
+      },
+      {
+        "question": "¿Qué ideología consideraba que los pueblos eslavos eran inferiores y debían ser esclavizados?",
+        "options": [
+          "Nazismo",
+          "Fascismo",
+          "Militarismo japonés",
+          "Socialismo"
+        ],
+        "correct": 0,
+        "explanation": "El nazismo promovía la superioridad de la raza aria y consideraba a otros grupos, como los eslavos, como inferiores."
+      },
+      {
+        "question": "¿Qué país fue el principal aliado de Alemania durante la Segunda Guerra Mundial en Europa?",
+        "options": [
+          "Italia",
+          "Japón",
+          "España",
+          "Unión Soviética"
+        ],
+        "correct": 0,
+        "explanation": "Italia, bajo el gobierno fascista de Mussolini, fue el principal aliado europeo de Alemania durante la guerra."
+      },
+      {
+        "question": "¿Qué evento ocurrió el 6 de junio de 1944, conocido como el Día D?",
+        "options": [
+          "Desembarco de Normandía",
+          "Bombardeo de Hiroshima",
+          "Batalla de Stalingrado",
+          "Rendición de Alemania"
+        ],
+        "correct": 0,
+        "explanation": "El Desembarco de Normandía fue la invasión aliada a Francia para liberar Europa del control nazi."
       }
     ]
   },
@@ -1412,6 +2677,61 @@
         ],
         "correct": 2,
         "explanation": "En junio de 1941, Alemania lanzó la Operación Barbarroja, invadiendo la Unión Soviética a pesar del Pacto Molotov-Ribbentrop."
+      },
+      {
+        "question": "¿Cuál fue el nombre del plan militar alemán para invadir la Unión Soviética en 1941?",
+        "options": [
+          "Operación Barbarroja",
+          "Operación Overlord",
+          "Plan Schlieffen",
+          "Operación Torch"
+        ],
+        "correct": 0,
+        "explanation": "La Operación Barbarroja fue el nombre en clave de la invasión alemana a la Unión Soviética en 1941, que rompió el pacto de no agresión entre ambos países."
+      },
+      {
+        "question": "¿Qué evento llevó a Estados Unidos a declarar la guerra a Japón en 1941?",
+        "options": [
+          "La invasión de Polonia",
+          "El ataque a Pearl Harbor",
+          "La batalla de Stalingrado",
+          "El desembarco de Normandía"
+        ],
+        "correct": 1,
+        "explanation": "El ataque japonés a Pearl Harbor el 7 de diciembre de 1941 provocó que Estados Unidos entrara en la Segunda Guerra Mundial."
+      },
+      {
+        "question": "¿Cuál fue el nombre de la conferencia en la que los líderes aliados planearon la invasión de Normandía?",
+        "options": [
+          "Conferencia de Yalta",
+          "Conferencia de Potsdam",
+          "Conferencia de Teherán",
+          "Conferencia de Moscú"
+        ],
+        "correct": 2,
+        "explanation": "En la Conferencia de Teherán (1943), Roosevelt, Churchill y Stalin acordaron la estrategia para abrir un frente en el oeste de Europa, que culminó en el Día D."
+      },
+      {
+        "question": "¿Qué país fue el escenario de la batalla más larga y mortífera de la Segunda Guerra Mundial en el frente oriental?",
+        "options": [
+          "Francia",
+          "Unión Soviética",
+          "Polonia",
+          "Italia"
+        ],
+        "correct": 1,
+        "explanation": "La Unión Soviética fue el escenario de la Batalla de Stalingrado (1942-1943), una de las más sangrientas de la guerra, que marcó un punto de inflexión en el frente oriental."
+      },
+      {
+        "question": "¿Qué documento firmó Alemania para rendirse incondicionalmente en 1945?",
+        "options": [
+          "Tratado de Versalles",
+          "Acta de Rendición",
+          "Pacto de Varsovia",
+          "Tratado de Brest-Litovsk"
+        ],
+        "correct": 1,
+        "explanation": "El Acta de Rendición fue firmada el 7 de mayo de 1945, poniendo fin a la guerra en Europa."
       }
     ]
   },
@@ -1471,6 +2791,61 @@
         ],
         "correct": 1,
         "explanation": "El Holocausto se intensificó a partir de 1941 con la invasión de la Unión Soviética y continuó hasta el final de la guerra en 1945."
+      },
+      {
+        "question": "¿Qué significó la 'Solución Final' en el contexto del Holocausto?",
+        "options": [
+          "El plan nazi para exterminar a los judíos europeos",
+          "La rendición de Alemania en la Segunda Guerra Mundial",
+          "La creación del Estado de Israel",
+          "El fin de la persecución de los judíos en Europa"
+        ],
+        "correct": 0,
+        "explanation": "La 'Solución Final' fue el plan sistemático del régimen nazi para asesinar a todos los judíos de Europa, implementado durante la Segunda Guerra Mundial."
+      },
+      {
+        "question": "¿Cuál fue el papel de los campos de concentración en el Holocausto?",
+        "options": [
+          "Fueron centros de entrenamiento militar para soldados nazis",
+          "Fueron lugares donde se encarceló y asesinó a millones de personas, principalmente judíos",
+          "Fueron campos de refugiados para personas desplazadas por la guerra",
+          "Fueron centros de investigación científica para el régimen nazi"
+        ],
+        "correct": 1,
+        "explanation": "Los campos de concentración eran lugares donde los nazis encarcelaban y asesinaban a millones de personas, incluyendo judíos, gitanos y otros grupos considerados 'enemigos'."
+      },
+      {
+        "question": "¿Qué grupo fue también perseguido sistemáticamente por los nazis durante el Holocausto?",
+        "options": [
+          "Los soldados aliados capturados",
+          "Los homosexuales",
+          "Los campesinos alemanes",
+          "Los comerciantes franceses"
+        ],
+        "correct": 1,
+        "explanation": "Además de los judíos, los nazis persiguieron a otros grupos como los homosexuales, los gitanos, los discapacitados y los opositores políticos."
+      },
+      {
+        "question": "¿Qué evento marcó el inicio del Holocausto a gran escala?",
+        "options": [
+          "La invasión de Polonia en 1939",
+          "La Noche de los Cristales Rotos en 1938",
+          "La conferencia de Wannsee en 1942",
+          "La liberación de Auschwitz en 1945"
+        ],
+        "correct": 1,
+        "explanation": "La Noche de los Cristales Rotos (1938) fue un pogromo violento contra los judíos en Alemania y Austria, que marcó un punto de inflexión hacia la persecución masiva."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia del Holocausto para la comunidad internacional?",
+        "options": [
+          "La creación de la Sociedad de Naciones",
+          "El establecimiento del Estado de Israel en 1948",
+          "El inicio de la Guerra Fría entre Estados Unidos y la URSS",
+          "La firma del Tratado de Versalles"
+        ],
+        "correct": 1,
+        "explanation": "Después del Holocausto, la comunidad internacional apoyó la creación de un Estado judío en Palestina, lo que llevó al establecimiento de Israel en 1948."
       }
     ]
   },
@@ -1530,6 +2905,61 @@
         ],
         "correct": 2,
         "explanation": "Mijaíl Gorbachov implementó la perestroika y la glasnost, reformas que debilitaron el control soviético y facilitaron la caída del Muro."
+      },
+      {
+        "question": "¿Qué país se reunificó tras la caída del Muro de Berlín?",
+        "options": [
+          "Alemania",
+          "Corea",
+          "Vietnam",
+          "Yemen"
+        ],
+        "correct": 0,
+        "explanation": "La caída del Muro de Berlín en 1989 permitió la reunificación de Alemania en 1990."
+      },
+      {
+        "question": "¿Cuál fue una de las causas de la disolución de la URSS en 1991?",
+        "options": [
+          "La Perestroika y el Glásnost",
+          "La invasión de Afganistán",
+          "La crisis de los misiles en Cuba",
+          "La Guerra de Vietnam"
+        ],
+        "correct": 0,
+        "explanation": "Las reformas de Perestroika (reestructuración) y Glásnost (transparencia) impulsadas por Gorbachov debilitaron el control central y llevaron a la disolución de la URSS."
+      },
+      {
+        "question": "¿Qué bloque representaba el Muro de Berlín durante la Guerra Fría?",
+        "options": [
+          "El bloque comunista",
+          "El bloque capitalista",
+          "El bloque no alineado",
+          "El bloque europeo"
+        ],
+        "correct": 0,
+        "explanation": "El Muro de Berlín dividía a Berlín en zonas controladas por la Unión Soviética (comunista) y los aliados occidentales (capitalistas)."
+      },
+      {
+        "question": "¿Qué organismo internacional surgió tras la disolución de la URSS?",
+        "options": [
+          "La Comunidad de Estados Independientes (CEI)",
+          "La Unión Europea",
+          "La OTAN",
+          "El Pacto de Varsovia"
+        ],
+        "correct": 0,
+        "explanation": "Tras la disolución de la URSS en 1991, varias repúblicas ex soviéticas formaron la Comunidad de Estados Independientes (CEI) para mantener lazos económicos y políticos."
+      },
+      {
+        "question": "¿Qué evento ocurrió primero: la caída del Muro de Berlín o la disolución de la URSS?",
+        "options": [
+          "La caída del Muro de Berlín",
+          "La disolución de la URSS",
+          "Ocurrieron el mismo año",
+          "No hay relación temporal"
+        ],
+        "correct": 0,
+        "explanation": "La caída del Muro de Berlín ocurrió en 1989, mientras que la disolución de la URSS fue en 1991, dos años después."
       }
     ]
   },
@@ -1589,6 +3019,61 @@
         ],
         "correct": 1,
         "explanation": "Tras la guerra, la ONU impuso duras sanciones a Iraq y se establecieron zonas de exclusión aérea para proteger a la población kurda y chiita."
+      },
+      {
+        "question": "¿Qué país invadió Iraq en agosto de 1990, provocando la Guerra del Golfo?",
+        "options": [
+          "Arabia Saudita",
+          "Kuwait",
+          "Irán",
+          "Israel"
+        ],
+        "correct": 1,
+        "explanation": "Iraq invadió Kuwait en agosto de 1990, lo que llevó a la formación de una coalición internacional liderada por Estados Unidos para liberar Kuwait."
+      },
+      {
+        "question": "¿Cuál fue el principal objetivo de la coalición internacional en la Guerra del Golfo?",
+        "options": [
+          "Derrocar a Sadam Husein",
+          "Proteger los pozos petroleros de Arabia Saudita",
+          "Liberar Kuwait de la ocupación iraquí",
+          "Establecer una base militar en Oriente Medio"
+        ],
+        "correct": 2,
+        "explanation": "El objetivo principal de la coalición era liberar a Kuwait, que había sido invadido y anexado por Iraq en agosto de 1990."
+      },
+      {
+        "question": "¿Qué resolución de la ONU autorizó el uso de la fuerza contra Iraq si no se retiraba de Kuwait?",
+        "options": [
+          "Resolución 660",
+          "Resolución 678",
+          "Resolución 687",
+          "Resolución 1441"
+        ],
+        "correct": 1,
+        "explanation": "La Resolución 678 del Consejo de Seguridad de la ONU, aprobada en noviembre de 1990, autorizó el uso de la fuerza si Iraq no se retiraba de Kuwait antes del 15 de enero de 1991."
+      },
+      {
+        "question": "¿Qué nombre recibió la campaña de bombardeos aéreos de la coalición contra Iraq en enero de 1991?",
+        "options": [
+          "Operación Tormenta del Desierto",
+          "Operación Escudo del Desierto",
+          "Operación Libertad Duradera",
+          "Operación Justa Causa"
+        ],
+        "correct": 0,
+        "explanation": "La campaña aérea que comenzó el 17 de enero de 1991 se denominó Operación Tormenta del Desierto, seguida de la ofensiva terrestre en febrero."
+      },
+      {
+        "question": "¿Cuál fue una de las consecuencias ambientales de la Guerra del Golfo?",
+        "options": [
+          "Deforestación masiva en Kuwait",
+          "Derrame de petróleo en el Golfo Pérsico",
+          "Aumento de la capa de ozono",
+          "Terremotos en la región"
+        ],
+        "correct": 1,
+        "explanation": "Durante la guerra, las fuerzas iraquíes liberaron intencionalmente petróleo en el Golfo Pérsico y prendieron fuego a pozos petroleros en Kuwait, causando graves daños ambientales."
       }
     ]
   },
@@ -1648,6 +3133,61 @@
         ],
         "correct": 0,
         "explanation": "La Doctrina Truman, de 1947, prometía apoyo a países que resistieran el comunismo, marcando el inicio de la política de contención."
+      },
+      {
+        "question": "¿Qué plan económico impulsó Estados Unidos para reconstruir Europa y frenar la influencia soviética tras la Segunda Guerra Mundial?",
+        "options": [
+          "Plan Marshall",
+          "Plan Schuman",
+          "Plan Dawes",
+          "Plan Molotov"
+        ],
+        "correct": 0,
+        "explanation": "El Plan Marshall fue un programa de ayuda económica de EE.UU. para reconstruir Europa, con el objetivo de contener el avance del comunismo."
+      },
+      {
+        "question": "¿Cuál fue el conflicto bélico indirecto más representativo entre Estados Unidos y la Unión Soviética durante la Guerra Fría?",
+        "options": [
+          "Guerra de Corea",
+          "Guerra de Vietnam",
+          "Guerra de Afganistán",
+          "Guerra de los Seis Días"
+        ],
+        "correct": 0,
+        "explanation": "La Guerra de Corea (1950-1953) fue un enfrentamiento entre Corea del Norte (apoyada por URSS y China) y Corea del Sur (apoyada por EE.UU.), sin que ambas potencias se enfrentaran directamente."
+      },
+      {
+        "question": "¿Qué carrera caracterizó la competencia tecnológica entre Estados Unidos y la Unión Soviética durante la Guerra Fría?",
+        "options": [
+          "Carrera armamentista",
+          "Carrera espacial",
+          "Carrera nuclear",
+          "Carrera industrial"
+        ],
+        "correct": 1,
+        "explanation": "La carrera espacial fue una competencia por el dominio del espacio, que incluyó hitos como el lanzamiento del Sputnik por la URSS y la llegada del hombre a la Luna por EE.UU."
+      },
+      {
+        "question": "¿Qué evento de 1962 llevó al mundo al borde de una guerra nuclear entre Estados Unidos y la Unión Soviética?",
+        "options": [
+          "Bloqueo de Berlín",
+          "Crisis de los misiles en Cuba",
+          "Guerra de Vietnam",
+          "Invasión de Hungría"
+        ],
+        "correct": 1,
+        "explanation": "La Crisis de los misiles en Cuba ocurrió cuando la URSS instaló misiles nucleares en Cuba, provocando un bloqueo naval de EE.UU. y una tensión extrema que se resolvió diplomáticamente."
+      },
+      {
+        "question": "¿Qué movimiento lideró Mahatma Gandhi en la India, influido por el contexto de la Guerra Fría, pero sin alinearse con ninguno de los dos bloques?",
+        "options": [
+          "Movimiento de los Países No Alineados",
+          "Movimiento comunista indio",
+          "Movimiento de independencia de la India",
+          "Movimiento pro-estadounidense"
+        ],
+        "correct": 2,
+        "explanation": "El movimiento de independencia de la India, liderado por Gandhi, buscaba la descolonización sin alinearse con EE.UU. o la URSS, aunque ocurrió durante la Guerra Fría."
       }
     ]
   },
@@ -1707,6 +3247,61 @@
         ],
         "correct": 0,
         "explanation": "La Guerra de Vietnam terminó con la victoria de Vietnam del Norte en 1975, unificando el país bajo un régimen comunista, lo que representó un revés para EE.UU. en la Guerra Fría."
+      },
+      {
+        "question": "¿Qué potencia apoyó a Vietnam del Norte durante la Guerra de Vietnam?",
+        "options": [
+          "Estados Unidos",
+          "Francia",
+          "Unión Soviética",
+          "Japón"
+        ],
+        "correct": 2,
+        "explanation": "La Unión Soviética apoyó a Vietnam del Norte con armas y asesores militares, mientras que Estados Unidos respaldó a Vietnam del Sur."
+      },
+      {
+        "question": "¿En qué año ocurrió la crisis de los misiles en Cuba?",
+        "options": [
+          "1959",
+          "1961",
+          "1962",
+          "1963"
+        ],
+        "correct": 2,
+        "explanation": "La crisis de los misiles en Cuba ocurrió en octubre de 1962, cuando Estados Unidos descubrió bases de misiles soviéticos en la isla."
+      },
+      {
+        "question": "¿Qué país se dividió en dos después de la Segunda Guerra Mundial, convirtiéndose en un escenario de guerra proxy?",
+        "options": [
+          "Alemania",
+          "Corea",
+          "Vietnam",
+          "Cuba"
+        ],
+        "correct": 1,
+        "explanation": "Corea se dividió en Corea del Norte (comunista) y Corea del Sur (capitalista) en 1945, lo que llevó a la Guerra de Corea (1950-1953)."
+      },
+      {
+        "question": "¿Cuál fue el principal objetivo de Estados Unidos al intervenir en Vietnam?",
+        "options": [
+          "Expandir su territorio",
+          "Detener la expansión del comunismo",
+          "Controlar los recursos petroleros",
+          "Establecer una base militar"
+        ],
+        "correct": 1,
+        "explanation": "Estados Unidos intervino en Vietnam para evitar que el comunismo se extendiera por el sudeste asiático, siguiendo la teoría del dominó."
+      },
+      {
+        "question": "¿Qué líder cubano llevó a cabo la revolución que instauró un gobierno comunista en 1959?",
+        "options": [
+          "Che Guevara",
+          "Fidel Castro",
+          "Raúl Castro",
+          "Camilo Cienfuegos"
+        ],
+        "correct": 1,
+        "explanation": "Fidel Castro lideró la Revolución Cubana que derrocó a Batista en 1959, estableciendo un gobierno socialista aliado con la Unión Soviética."
       }
     ]
   },
@@ -1766,6 +3361,61 @@
         ],
         "correct": 1,
         "explanation": "La Unión Soviética envió a Yuri Gagarin al espacio en 1961, siendo el primer ser humano en orbitar la Tierra, en el contexto de la carrera espacial."
+      },
+      {
+        "question": "¿Qué tecnología desarrollada durante la Guerra Fría fue clave para la vigilancia y comunicación entre las superpotencias?",
+        "options": [
+          "Aviones de combate supersónicos",
+          "Satélites artificiales",
+          "Tanques de guerra",
+          "Bombas nucleares"
+        ],
+        "correct": 1,
+        "explanation": "Los satélites permitieron la comunicación global y la vigilancia espacial, siendo una herramienta estratégica en la Guerra Fría."
+      },
+      {
+        "question": "¿Cuál fue el principal objetivo de la carrera espacial entre Estados Unidos y la URSS?",
+        "options": [
+          "Explorar Marte",
+          "Desarrollar armas espaciales",
+          "Demostrar superioridad tecnológica e ideológica",
+          "Establecer bases en la Luna"
+        ],
+        "correct": 2,
+        "explanation": "La carrera espacial buscaba demostrar qué sistema político (capitalismo o comunismo) era superior en tecnología y ciencia."
+      },
+      {
+        "question": "¿Qué país apoyó Estados Unidos durante la Guerra Fría en el conflicto de Vietnam?",
+        "options": [
+          "Vietnam del Norte",
+          "Vietnam del Sur",
+          "China",
+          "Francia"
+        ],
+        "correct": 1,
+        "explanation": "Estados Unidos apoyó a Vietnam del Sur para contener la expansión del comunismo liderado por Vietnam del Norte."
+      },
+      {
+        "question": "¿Qué tratado firmaron Estados Unidos y la URSS para limitar la producción de armas nucleares?",
+        "options": [
+          "Tratado de Versalles",
+          "Tratado SALT",
+          "Tratado de Maastricht",
+          "Tratado de Tlatelolco"
+        ],
+        "correct": 1,
+        "explanation": "El Tratado SALT (Strategic Arms Limitation Talks) buscaba frenar la carrera armamentista nuclear entre ambas potencias."
+      },
+      {
+        "question": "¿Qué misión espacial estadounidense logró el primer alunizaje tripulado?",
+        "options": [
+          "Apolo 11",
+          "Apolo 13",
+          "Gemini 4",
+          "Mercury 9"
+        ],
+        "correct": 0,
+        "explanation": "El Apolo 11, en 1969, llevó a Neil Armstrong y Buzz Aldrin a la Luna, siendo un hito en la carrera espacial."
       }
     ]
   },
@@ -1825,6 +3475,61 @@
         ],
         "correct": 1,
         "explanation": "Las Reformas Borbónicas buscaban centralizar el poder y aumentar ingresos, lo que generó descontento entre los criollos."
+      },
+      {
+        "question": "¿Qué institución gobernaba el Virreinato de Nueva España en representación del rey?",
+        "options": [
+          "El Ayuntamiento",
+          "La Audiencia",
+          "El Virrey",
+          "El Cabildo"
+        ],
+        "correct": 2,
+        "explanation": "El virrey era la máxima autoridad en Nueva España, representando al rey de España."
+      },
+      {
+        "question": "¿Cuál fue la primera universidad fundada en el Virreinato de Nueva España?",
+        "options": [
+          "Universidad de Guadalajara",
+          "Real y Pontificia Universidad de México",
+          "Universidad de Puebla",
+          "Universidad de Valladolid"
+        ],
+        "correct": 1,
+        "explanation": "La Real y Pontificia Universidad de México se fundó en 1551, siendo la primera en América."
+      },
+      {
+        "question": "¿Qué producto agrícola fue introducido por los españoles durante el virreinato?",
+        "options": [
+          "Maíz",
+          "Frijol",
+          "Trigo",
+          "Chile"
+        ],
+        "correct": 2,
+        "explanation": "El trigo no era originario de América; fue traído por los españoles para su consumo."
+      },
+      {
+        "question": "¿Qué sistema de trabajo indígena fue establecido por los españoles en el virreinato?",
+        "options": [
+          "La encomienda",
+          "El calpulli",
+          "El tequio",
+          "La mita"
+        ],
+        "correct": 0,
+        "explanation": "La encomienda otorgaba a un español el derecho de recibir tributo y trabajo de indígenas a cambio de evangelizarlos."
+      },
+      {
+        "question": "¿Cuál fue una causa del mestizaje en Nueva España?",
+        "options": [
+          "La llegada de mujeres españolas",
+          "La escasez de mujeres españolas",
+          "Las leyes que prohibían el matrimonio mixto",
+          "La separación de grupos étnicos"
+        ],
+        "correct": 1,
+        "explanation": "La mayoría de los colonizadores eran hombres, lo que propició la unión con mujeres indígenas."
       }
     ]
   },
@@ -1884,6 +3589,61 @@
         ],
         "correct": 1,
         "explanation": "Tlacopan, aunque era la ciudad más pequeña de la alianza, recibía tributos y protección militar a cambio de su apoyo en las conquistas."
+      },
+      {
+        "question": "¿Quién era el líder principal de la Triple Alianza azteca en su formación?",
+        "options": [
+          "Moctezuma II",
+          "Itzcóatl",
+          "Cuauhtémoc",
+          "Cortés"
+        ],
+        "correct": 1,
+        "explanation": "Itzcóatl fue el tlatoani que lideró la formación de la Triple Alianza en 1428, junto con los señores de Texcoco y Tlacopan."
+      },
+      {
+        "question": "¿Qué ciudad estado era la más poderosa dentro de la Triple Alianza?",
+        "options": [
+          "Texcoco",
+          "Tlacopan",
+          "Tenochtitlan",
+          "Tlatelolco"
+        ],
+        "correct": 2,
+        "explanation": "Tenochtitlan era la capital y la más poderosa, dominando militar y políticamente a las otras dos."
+      },
+      {
+        "question": "¿Cuál era la función principal de Texcoco en la Triple Alianza?",
+        "options": [
+          "Proveer alimentos",
+          "Administrar justicia",
+          "Comandar el ejército",
+          "Ser centro religioso"
+        ],
+        "correct": 1,
+        "explanation": "Texcoco era reconocido por su sabiduría y administraba la justicia en la alianza, además de aportar conocimiento."
+      },
+      {
+        "question": "¿Qué porcentaje del tributo recibía Tenochtitlan de la Triple Alianza?",
+        "options": [
+          "La mitad",
+          "Dos tercios",
+          "Un tercio",
+          "La totalidad"
+        ],
+        "correct": 1,
+        "explanation": "Tenochtitlan recibía dos tercios del tributo, mientras que Texcoco y Tlacopan se repartían el tercio restante."
+      },
+      {
+        "question": "¿Qué alianza previa fue clave para que los aztecas formaran la Triple Alianza?",
+        "options": [
+          "Alianza con los mayas",
+          "Alianza con los tarascos",
+          "Alianza con los tepanecas",
+          "Alianza con los tlaxcaltecas"
+        ],
+        "correct": 2,
+        "explanation": "Los aztecas se aliaron con Texcoco y Tlacopan para derrotar a los tepanecas, su principal enemigo en el valle."
       }
     ]
   },
@@ -1943,6 +3703,61 @@
         ],
         "correct": 1,
         "explanation": "La Real Audiencia era la máxima autoridad judicial en la Nueva España, aunque el virrey presidía sus sesiones."
+      },
+      {
+        "question": "¿Qué tribunal tenía la facultad de conocer en segunda instancia las apelaciones de las sentencias dictadas por la Real Audiencia en la Nueva España?",
+        "options": [
+          "El Consejo de Indias",
+          "La Suprema Corte de Justicia",
+          "El Virrey",
+          "El Tribunal de la Acordada"
+        ],
+        "correct": 0,
+        "explanation": "El Consejo de Indias era el máximo tribunal de apelación para las colonias españolas, incluyendo la Nueva España, y revisaba las decisiones de la Real Audiencia."
+      },
+      {
+        "question": "¿Cómo se llamaba el tribunal prehispánico que juzgaba a los comerciantes y asuntos de mercado en el Imperio mexica?",
+        "options": [
+          "Teccalco",
+          "Tlacxitlán",
+          "Tianquiztli",
+          "Pochtecayotl"
+        ],
+        "correct": 1,
+        "explanation": "El Tlacxitlán era el tribunal encargado de juzgar asuntos comerciales y a los pochtecas (comerciantes) en la sociedad mexica."
+      },
+      {
+        "question": "¿Qué institución colonial se estableció para juzgar a los indígenas por delitos considerados graves, como el homicidio o la rebelión?",
+        "options": [
+          "El Juzgado de Indios",
+          "La Real Audiencia",
+          "El Tribunal del Santo Oficio",
+          "El Corregimiento"
+        ],
+        "correct": 0,
+        "explanation": "El Juzgado de Indios era un tribunal especial creado para atender causas graves de indígenas, aunque en la práctica muchos casos eran vistos por la Real Audiencia."
+      },
+      {
+        "question": "En la organización judicial mexica, ¿qué funcionario actuaba como juez en los barrios (calpullis) para resolver conflictos menores?",
+        "options": [
+          "El Tlatoani",
+          "El Calpullec",
+          "El Tecuhtli",
+          "El Pochtecatlatoque"
+        ],
+        "correct": 1,
+        "explanation": "El calpullec era el juez local encargado de resolver disputas menores dentro del calpulli, como pleitos por tierras o deudas."
+      },
+      {
+        "question": "¿Qué nombre recibía el tribunal de la Inquisición en la Nueva España, que juzgaba delitos contra la fe católica?",
+        "options": [
+          "El Tribunal del Santo Oficio de la Inquisición",
+          "La Real Audiencia",
+          "El Juzgado Eclesiástico",
+          "El Consejo de Indias"
+        ],
+        "correct": 0,
+        "explanation": "El Tribunal del Santo Oficio de la Inquisición fue establecido en la Nueva España en 1571 para perseguir herejías y otros delitos religiosos."
       }
     ]
   },
@@ -2002,6 +3817,61 @@
         ],
         "correct": 2,
         "explanation": "Las empresas multinacionales aprovecharon la apertura de mercados para establecer operaciones en varios países, impulsando la interdependencia económica global."
+      },
+      {
+        "question": "¿Qué factor tecnológico aceleró la interdependencia económica mundial tras la Guerra Fría?",
+        "options": [
+          "La invención del telégrafo",
+          "El desarrollo de internet y las telecomunicaciones",
+          "La creación de la máquina de vapor",
+          "El uso de la energía nuclear"
+        ],
+        "correct": 1,
+        "explanation": "Internet y las telecomunicaciones permitieron la comunicación instantánea y la transferencia de capitales a nivel global, impulsando la interdependencia económica."
+      },
+      {
+        "question": "¿Cuál de los siguientes acuerdos comerciales se consolidó después de la Guerra Fría, promoviendo la globalización?",
+        "options": [
+          "El Plan Marshall",
+          "El Tratado de Libre Comercio de América del Norte (TLCAN)",
+          "El Acuerdo de Bretton Woods",
+          "El Pacto de Varsovia"
+        ],
+        "correct": 1,
+        "explanation": "El TLCAN, firmado en 1994, eliminó barreras arancelarias entre México, Estados Unidos y Canadá, fomentando el comercio global."
+      },
+      {
+        "question": "¿Cómo se denomina el proceso de integración económica que permite la libre circulación de bienes, servicios, capitales y personas?",
+        "options": [
+          "Proteccionismo",
+          "Mercado común",
+          "Aislamiento económico",
+          "Socialismo de mercado"
+        ],
+        "correct": 1,
+        "explanation": "Un mercado común, como la Unión Europea, elimina barreras y facilita la interdependencia económica entre países miembros."
+      },
+      {
+        "question": "¿Qué consecuencia tuvo la globalización para las economías nacionales tras la Guerra Fría?",
+        "options": [
+          "Mayor autosuficiencia económica",
+          "Reducción del comercio internacional",
+          "Mayor vulnerabilidad a crisis financieras externas",
+          "Disminución de la inversión extranjera"
+        ],
+        "correct": 2,
+        "explanation": "La interdependencia hizo que las crisis económicas en un país se propagaran rápidamente a otros, como ocurrió con la crisis asiática de 1997."
+      },
+      {
+        "question": "¿Qué institución financiera internacional otorga préstamos a países en desarrollo para fomentar la globalización?",
+        "options": [
+          "La Organización Mundial del Comercio (OMC)",
+          "El Fondo Monetario Internacional (FMI)",
+          "La Organización de las Naciones Unidas (ONU)",
+          "La Organización para la Cooperación y el Desarrollo Económicos (OCDE)"
+        ],
+        "correct": 1,
+        "explanation": "El FMI proporciona préstamos y asistencia técnica para estabilizar economías y facilitar su integración al sistema financiero global."
       }
     ]
   },
@@ -2061,6 +3931,61 @@
         ],
         "correct": 2,
         "explanation": "Los mayas desarrollaron un sistema numérico vigesimal con el concepto del cero y un calendario preciso basado en observaciones astronómicas."
+      },
+      {
+        "question": "¿Cuál de las siguientes civilizaciones mesoamericanas desarrolló un sistema de escritura jeroglífica y un calendario de 365 días?",
+        "options": [
+          "Olmecas",
+          "Mayas",
+          "Toltecas",
+          "Zapotecas"
+        ],
+        "correct": 1,
+        "explanation": "Los mayas destacaron por su avanzado sistema de escritura jeroglífica y su calendario solar de 365 días, que regulaba sus actividades agrícolas y religiosas."
+      },
+      {
+        "question": "¿Qué cultura mesoamericana construyó la ciudad de Teotihuacán, conocida por sus pirámides del Sol y la Luna?",
+        "options": [
+          "Aztecas",
+          "Teotihuacanos",
+          "Toltecas",
+          "Olmecas"
+        ],
+        "correct": 1,
+        "explanation": "La cultura teotihuacana, anterior a los aztecas, edificó Teotihuacán, una de las ciudades más grandes de Mesoamérica, famosa por sus imponentes pirámides."
+      },
+      {
+        "question": "¿Cuál fue la base de la economía mexica?",
+        "options": [
+          "Ganadería",
+          "Comercio a larga distancia",
+          "Agricultura intensiva con chinampas",
+          "Pesca en lagos"
+        ],
+        "correct": 2,
+        "explanation": "Los mexicas desarrollaron las chinampas, islas artificiales para cultivar, lo que les permitió sostener una gran población en el valle de México."
+      },
+      {
+        "question": "¿Qué civilización mesoamericana es conocida por sus cabezas colosales de piedra?",
+        "options": [
+          "Mayas",
+          "Olmecas",
+          "Toltecas",
+          "Zapotecas"
+        ],
+        "correct": 1,
+        "explanation": "Los olmecas, considerados la cultura madre, esculpieron enormes cabezas de basalto que representaban a sus gobernantes."
+      },
+      {
+        "question": "¿Cuál fue una característica principal del gobierno zapoteca en Monte Albán?",
+        "options": [
+          "Monarquía hereditaria",
+          "Teocracia militar",
+          "Democracia participativa",
+          "Consejo de ancianos"
+        ],
+        "correct": 1,
+        "explanation": "Los zapotecas establecieron un gobierno teocrático-militar en Monte Albán, donde los sacerdotes y guerreros controlaban el poder."
       }
     ]
   },
@@ -2120,6 +4045,61 @@
         ],
         "correct": 1,
         "explanation": "La plata novohispana impulsó el comercio global, especialmente con Asia, donde se intercambiaba por especias y sedas."
+      },
+      {
+        "question": "¿Qué método se empleaba para extraer la plata del mineral en la Nueva España?",
+        "options": [
+          "Amalgamación con mercurio",
+          "Fundición directa",
+          "Lixiviación con ácido",
+          "Separación magnética"
+        ],
+        "correct": 0,
+        "explanation": "La amalgamación con mercurio, conocida como método de patio, permitía separar la plata de otros minerales de manera eficiente."
+      },
+      {
+        "question": "¿Qué grupo social controlaba principalmente la minería de plata en la Nueva España?",
+        "options": [
+          "Indígenas",
+          "Criollos y peninsulares",
+          "Mestizos",
+          "Esclavos africanos"
+        ],
+        "correct": 1,
+        "explanation": "Los criollos y peninsulares eran dueños de las minas y controlaban la producción de plata."
+      },
+      {
+        "question": "¿Qué recurso natural era indispensable para el funcionamiento de las minas de plata?",
+        "options": [
+          "Agua",
+          "Madera",
+          "Azogue (mercurio)",
+          "Carbón"
+        ],
+        "correct": 2,
+        "explanation": "El mercurio era necesario para el proceso de amalgamación y se importaba de minas en Perú o España."
+      },
+      {
+        "question": "¿Cómo afectó la minería de plata a la población indígena en la Nueva España?",
+        "options": [
+          "Mejoró su calidad de vida",
+          "Provocó una disminución demográfica por trabajo forzado",
+          "Les permitió acumular riqueza",
+          "No tuvo impacto significativo"
+        ],
+        "correct": 1,
+        "explanation": "Muchos indígenas fueron obligados a trabajar en las minas mediante el sistema de repartimiento, lo que causó muertes y reducción de la población."
+      },
+      {
+        "question": "¿Qué ruta seguía la plata novohispana para llegar a Europa?",
+        "options": [
+          "Ruta del Pacífico a través de Filipinas",
+          "Flota de Indias desde Veracruz a España",
+          "Camino Real de Tierra Adentro hasta Estados Unidos",
+          "Ruta del Cabo de Hornos"
+        ],
+        "correct": 1,
+        "explanation": "La plata se transportaba en la Flota de Indias desde el puerto de Veracruz hasta Sevilla, España."
       }
     ]
   },
@@ -2179,6 +4159,61 @@
         ],
         "correct": 2,
         "explanation": "Los peninsulares eran españoles nacidos en la península ibérica y ocupaban los puestos más altos en la colonia."
+      },
+      {
+        "question": "¿Cuál era la principal causa del descontento criollo durante el periodo colonial?",
+        "options": [
+          "La falta de acceso a la educación",
+          "La discriminación política y económica por parte de los peninsulares",
+          "La prohibición de practicar su religión",
+          "La obligación de pagar impuestos más altos"
+        ],
+        "correct": 1,
+        "explanation": "Los criollos eran discriminados por los peninsulares, quienes ocupaban los altos cargos políticos y eclesiásticos, limitando las aspiraciones de poder de los criollos."
+      },
+      {
+        "question": "¿Qué actividad económica estaba mayoritariamente controlada por los criollos en la Nueva España?",
+        "options": [
+          "La minería de plata",
+          "El comercio exterior",
+          "La agricultura y la ganadería",
+          "La fabricación de textiles"
+        ],
+        "correct": 2,
+        "explanation": "Los criollos poseían grandes haciendas y controlaban la producción agrícola y ganadera, aunque no tenían poder político."
+      },
+      {
+        "question": "¿Qué papel jugaron los criollos en la independencia de México?",
+        "options": [
+          "Se opusieron a la independencia",
+          "Fueron los principales líderes del movimiento",
+          "No participaron en el proceso",
+          "Apoyaron al rey de España"
+        ],
+        "correct": 1,
+        "explanation": "Muchos criollos, como Miguel Hidalgo e Ignacio Allende, encabezaron la lucha por la independencia debido a su descontento con el dominio español."
+      },
+      {
+        "question": "¿Qué evento del siglo XVIII evidenció el poder económico de los criollos?",
+        "options": [
+          "La expulsión de los jesuitas",
+          "La construcción de la Catedral Metropolitana",
+          "Las reformas borbónicas",
+          "La fundación de la Universidad de México"
+        ],
+        "correct": 2,
+        "explanation": "Las reformas borbónicas afectaron los intereses criollos al centralizar el poder y aumentar impuestos, lo que generó malestar."
+      },
+      {
+        "question": "¿Cómo se llamaba el sistema que privilegiaba a los peninsulares sobre los criollos?",
+        "options": [
+          "El sistema de castas",
+          "La encomienda",
+          "El monopolio comercial",
+          "El régimen de intendencias"
+        ],
+        "correct": 0,
+        "explanation": "El sistema de castas jerarquizaba a la población según su origen étnico, colocando a los peninsulares en la cima y limitando a los criollos."
       }
     ]
   },
@@ -2238,6 +4273,61 @@
         ],
         "correct": 2,
         "explanation": "Tras la independencia, hubo conflicto entre quienes querían una república y quienes apoyaban una monarquía, lo que llevó al fin del imperio de Iturbide."
+      },
+      {
+        "question": "¿Qué documento firmaron Agustín de Iturbide y Vicente Guerrero para unir sus fuerzas en 1821?",
+        "options": [
+          "Plan de Casa Mata",
+          "Plan de Iguala",
+          "Tratado de Córdoba",
+          "Acta de Independencia"
+        ],
+        "correct": 1,
+        "explanation": "El Plan de Iguala fue firmado por Iturbide y Guerrero para unir al ejército realista e insurgente, estableciendo las bases para la independencia."
+      },
+      {
+        "question": "¿Cuál de las siguientes NO era una de las tres garantías del Plan de Iguala?",
+        "options": [
+          "Independencia de México",
+          "Religión católica como única",
+          "Abolición de la esclavitud",
+          "Unión de todos los grupos sociales"
+        ],
+        "correct": 2,
+        "explanation": "Las tres garantías eran Independencia, Religión y Unión; la abolición de la esclavitud no estaba incluida en el Plan."
+      },
+      {
+        "question": "¿Qué nombre recibió el ejército que defendió el Plan de Iguala?",
+        "options": [
+          "Ejército Realista",
+          "Ejército Trigarante",
+          "Ejército Insurgente",
+          "Ejército Nacional"
+        ],
+        "correct": 1,
+        "explanation": "El Ejército Trigarante fue formado por Iturbide para garantizar las tres garantías del Plan de Iguala."
+      },
+      {
+        "question": "¿Qué cargo asumió Agustín de Iturbide después de la entrada del Ejército Trigarante a la Ciudad de México?",
+        "options": [
+          "Presidente de la República",
+          "Emperador de México",
+          "Presidente de la Junta Provisional Gubernativa",
+          "Virrey de Nueva España"
+        ],
+        "correct": 2,
+        "explanation": "Iturbide fue nombrado presidente de la Junta Provisional Gubernativa, que gobernó hasta la instauración del Imperio."
+      },
+      {
+        "question": "¿Qué establecía el Tratado de Córdoba firmado en 1821?",
+        "options": [
+          "La rendición de los insurgentes",
+          "El reconocimiento de la independencia por España",
+          "La unión de México con España bajo un mismo rey",
+          "La abolición del ejército realista"
+        ],
+        "correct": 2,
+        "explanation": "El Tratado de Córdoba reconocía la independencia de México y ofrecía la corona a Fernando VII o a un miembro de la familia real."
       }
     ]
   },
@@ -2297,6 +4387,61 @@
         ],
         "correct": 2,
         "explanation": "Las reformas impulsaron la minería mediante la reducción de impuestos y la introducción de nuevas técnicas, lo que aumentó la producción de plata."
+      },
+      {
+        "question": "¿Qué cargo administrativo se creó durante las reformas borbónicas para fortalecer el control real en la Nueva España?",
+        "options": [
+          "Virrey",
+          "Intendente",
+          "Alcalde mayor",
+          "Corregidor"
+        ],
+        "correct": 1,
+        "explanation": "Los Borbones crearon el cargo de intendente para administrar provincias y mejorar la recaudación de impuestos, centralizando el poder."
+      },
+      {
+        "question": "¿Qué medida de las reformas borbónicas afectó directamente el comercio en la Nueva España?",
+        "options": [
+          "Apertura de puertos a comercio libre",
+          "Prohibición del comercio con España",
+          "Establecimiento de monopolios estatales",
+          "Eliminación de impuestos aduaneros"
+        ],
+        "correct": 0,
+        "explanation": "Las reformas borbónicas permitieron el comercio libre entre puertos españoles y novohispanos, rompiendo el monopolio de Cádiz."
+      },
+      {
+        "question": "¿Qué grupo social resultó más perjudicado por las reformas borbónicas debido a la pérdida de privilegios?",
+        "options": [
+          "Los indígenas",
+          "Los criollos",
+          "Los esclavos",
+          "Los peninsulares"
+        ],
+        "correct": 1,
+        "explanation": "Los criollos perdieron cargos administrativos y privilegios que antes tenían, generando descontento contra la corona."
+      },
+      {
+        "question": "¿Qué impuesto se estableció durante las reformas borbónicas que gravaba las transacciones comerciales?",
+        "options": [
+          "Alcabala",
+          "Diezmo",
+          "Quinto real",
+          "Tributo indígena"
+        ],
+        "correct": 0,
+        "explanation": "La alcabala era un impuesto sobre las ventas y transacciones que aumentó para financiar la administración colonial."
+      },
+      {
+        "question": "¿Qué consecuencia tuvieron las reformas borbónicas en la minería novohispana?",
+        "options": [
+          "Disminución de la producción de plata",
+          "Aumento de la producción de oro",
+          "Mayor control estatal y reducción de impuestos",
+          "Privatización de minas"
+        ],
+        "correct": 2,
+        "explanation": "Las reformas borbónicas redujeron impuestos a la minería y dieron mayor control estatal, lo que incrementó la producción de plata."
       }
     ]
   },
@@ -2356,6 +4501,61 @@
         ],
         "correct": 2,
         "explanation": "Las penas más graves incluían la muerte en la hoguera (para herejes reincidentes) y la confiscación de propiedades, aunque también se aplicaban penas menores como azotes o prisión."
+      },
+      {
+        "question": "¿Cuál era el principal tribunal de la Inquisición en la Nueva España?",
+        "options": [
+          "La Real Audiencia",
+          "El Tribunal del Santo Oficio",
+          "El Cabildo eclesiástico",
+          "El Consejo de Indias"
+        ],
+        "correct": 1,
+        "explanation": "El Tribunal del Santo Oficio, establecido en 1571, era la institución encargada de perseguir herejías y delitos contra la fe en la Nueva España."
+      },
+      {
+        "question": "¿Qué grupo religioso fue especialmente perseguido por la Inquisición en el México colonial?",
+        "options": [
+          "Los franciscanos",
+          "Los judíos conversos",
+          "Los dominicos",
+          "Los jesuitas"
+        ],
+        "correct": 1,
+        "explanation": "La Inquisición persiguió a los judíos conversos (también llamados criptojudíos) que practicaban en secreto su religión, considerados herejes."
+      },
+      {
+        "question": "¿Qué tipo de libros prohibía la Inquisición en la Nueva España?",
+        "options": [
+          "Libros de caballería",
+          "Libros científicos y filosóficos considerados peligrosos",
+          "Libros de historia prehispánica",
+          "Libros de poesía"
+        ],
+        "correct": 1,
+        "explanation": "La Inquisición censuraba libros que consideraba contrarios a la fe católica, como obras científicas o filosóficas que cuestionaban dogmas religiosos."
+      },
+      {
+        "question": "¿Cuál era un castigo común para los condenados por la Inquisición en la Nueva España?",
+        "options": [
+          "La pena de muerte en la hoguera",
+          "El destierro a España",
+          "La pérdida de bienes y cárcel",
+          "Trabajos forzados en minas"
+        ],
+        "correct": 2,
+        "explanation": "Además de la humillación pública, los condenados solían perder sus propiedades y ser encarcelados; la pena de muerte era reservada para herejes reincidentes."
+      },
+      {
+        "question": "¿Qué delito era juzgado por la Inquisición relacionado con la cultura indígena?",
+        "options": [
+          "La poligamia",
+          "La idolatría",
+          "El consumo de pulque",
+          "La desobediencia civil"
+        ],
+        "correct": 1,
+        "explanation": "La Inquisición perseguía la idolatría, es decir, la práctica de rituales o creencias indígenas que mezclaban elementos prehispánicos con el cristianismo."
       }
     ]
   },
@@ -2415,6 +4615,61 @@
         ],
         "correct": 1,
         "explanation": "La separación buscaba que el Estado no interviniera en asuntos religiosos y garantizara la libertad de culto para todos los ciudadanos."
+      },
+      {
+        "question": "¿Qué documento de 1857 estableció la libertad de enseñanza en México?",
+        "options": [
+          "Constitución de 1857",
+          "Ley Juárez",
+          "Ley Lerdo",
+          "Ley Iglesias"
+        ],
+        "correct": 0,
+        "explanation": "La Constitución de 1857, en su artículo 3°, estableció la libertad de enseñanza, eliminando el monopolio educativo de la Iglesia."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia de la Ley Lerdo de 1856?",
+        "options": [
+          "La expulsión de las órdenes religiosas",
+          "La nacionalización de los bienes del clero",
+          "La desamortización de fincas rústicas y urbanas de corporaciones civiles y eclesiásticas",
+          "La creación del Registro Civil"
+        ],
+        "correct": 2,
+        "explanation": "La Ley Lerdo obligó a las corporaciones civiles y eclesiásticas a vender sus propiedades no utilizadas para generar ingresos y fomentar la propiedad privada."
+      },
+      {
+        "question": "¿Qué presidente mexicano fue un defensor de la Reforma liberal durante la Guerra de Reforma?",
+        "options": [
+          "Antonio López de Santa Anna",
+          "Benito Juárez",
+          "Ignacio Comonfort",
+          "Maximiliano de Habsburgo"
+        ],
+        "correct": 1,
+        "explanation": "Benito Juárez lideró el bando liberal durante la Guerra de Reforma y promulgó las Leyes de Reforma que separaron la Iglesia del Estado."
+      },
+      {
+        "question": "¿Qué ley de la Reforma creó el Registro Civil en México?",
+        "options": [
+          "Ley Juárez",
+          "Ley Lerdo",
+          "Ley Iglesias",
+          "Ley de Registro Civil"
+        ],
+        "correct": 3,
+        "explanation": "La Ley de Registro Civil de 1859 estableció que los nacimientos, matrimonios y defunciones fueran registrados por el Estado y no por la Iglesia."
+      },
+      {
+        "question": "¿Qué derecho individual fue garantizado por primera vez en la Constitución de 1857?",
+        "options": [
+          "Libertad de expresión",
+          "Libertad de culto",
+          "Derecho al voto universal",
+          "Libertad de asociación"
+        ],
+        "correct": 1,
+        "explanation": "La Constitución de 1857 garantizó la libertad de culto, permitiendo que cualquier persona practicara la religión de su elección sin intervención del Estado."
       }
     ]
   },
@@ -2474,6 +4729,61 @@
         ],
         "correct": 1,
         "explanation": "En 1867, Maximiliano fue capturado y fusilado en Querétaro, y Benito Juárez restauró la república."
+      },
+      {
+        "question": "¿Qué tratado firmó el gobierno conservador mexicano con Francia para solicitar su intervención?",
+        "options": [
+          "Tratado de Guadalupe Hidalgo",
+          "Tratado de Miramar",
+          "Tratado de la Soledad",
+          "Tratado de Córdoba"
+        ],
+        "correct": 1,
+        "explanation": "El Tratado de Miramar fue firmado en 1864 entre los conservadores mexicanos y Francia para establecer el imperio de Maximiliano."
+      },
+      {
+        "question": "¿Qué país europeo además de Francia apoyó militarmente el imperio de Maximiliano?",
+        "options": [
+          "España",
+          "Inglaterra",
+          "Austria",
+          "Prusia"
+        ],
+        "correct": 2,
+        "explanation": "Austria apoyó a Maximiliano, quien era archiduque austriaco, enviando tropas y recursos para sostener su imperio."
+      },
+      {
+        "question": "¿Cuál fue la capital del imperio de Maximiliano?",
+        "options": [
+          "Puebla",
+          "Ciudad de México",
+          "Querétaro",
+          "Veracruz"
+        ],
+        "correct": 1,
+        "explanation": "Maximiliano estableció su gobierno en la Ciudad de México, que era la capital del país."
+      },
+      {
+        "question": "¿Qué presidente mexicano lideró la resistencia republicana contra el imperio de Maximiliano?",
+        "options": [
+          "Benito Juárez",
+          "Porfirio Díaz",
+          "Ignacio Zaragoza",
+          "Manuel González"
+        ],
+        "correct": 0,
+        "explanation": "Benito Juárez fue el presidente constitucional que encabezó la lucha republicana contra la intervención francesa y el imperio."
+      },
+      {
+        "question": "¿En qué ciudad fue fusilado Maximiliano de Habsburgo en 1867?",
+        "options": [
+          "Puebla",
+          "Ciudad de México",
+          "Querétaro",
+          "Monterrey"
+        ],
+        "correct": 2,
+        "explanation": "Maximiliano fue fusilado en el Cerro de las Campanas en Querétaro, tras ser capturado por las fuerzas republicanas."
       }
     ]
   },
@@ -2533,6 +4843,61 @@
         ],
         "correct": 1,
         "explanation": "La política anticlerical buscaba limitar el poder de la Iglesia en asuntos del Estado y la economía, siguiendo los principios liberales."
+      },
+      {
+        "question": "¿Qué evento marcó el inicio de la República Restaurada en México?",
+        "options": [
+          "La derrota del Segundo Imperio Mexicano",
+          "La promulgación de la Constitución de 1857",
+          "La Guerra de Reforma",
+          "La intervención francesa"
+        ],
+        "correct": 0,
+        "explanation": "La República Restaurada inició en 1867 con la derrota del Segundo Imperio Mexicano, encabezado por Maximiliano de Habsburgo."
+      },
+      {
+        "question": "¿Qué institución fue suprimida durante la política anticlerical de la República Restaurada?",
+        "options": [
+          "La Universidad Pontificia",
+          "La Inquisición",
+          "La Compañía de Jesús",
+          "El Arzobispado de México"
+        ],
+        "correct": 2,
+        "explanation": "La Compañía de Jesús fue expulsada de México durante la República Restaurada como parte de las medidas anticlericales."
+      },
+      {
+        "question": "¿Qué presidente sucedió a Benito Juárez tras su muerte en 1872?",
+        "options": [
+          "Porfirio Díaz",
+          "Sebastián Lerdo de Tejada",
+          "Manuel González",
+          "José María Iglesias"
+        ],
+        "correct": 1,
+        "explanation": "Tras la muerte de Juárez en 1872, Sebastián Lerdo de Tejada asumió la presidencia y continuó las reformas liberales."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia de las Leyes de Reforma implementadas durante la República Restaurada?",
+        "options": [
+          "La nacionalización de los bienes de la Iglesia",
+          "El restablecimiento de la monarquía",
+          "La alianza con la Iglesia católica",
+          "La eliminación de la educación pública"
+        ],
+        "correct": 0,
+        "explanation": "Las Leyes de Reforma, aplicadas durante la República Restaurada, nacionalizaron los bienes eclesiásticos para debilitar el poder de la Iglesia."
+      },
+      {
+        "question": "¿Qué movimiento armado enfrentó Benito Juárez durante su gobierno en la República Restaurada?",
+        "options": [
+          "La Revolución de Ayutla",
+          "La Rebelión de La Noria",
+          "La Guerra de los Pasteles",
+          "La Independencia de Texas"
+        ],
+        "correct": 1,
+        "explanation": "La Rebelión de La Noria, encabezada por Porfirio Díaz en 1871, fue una sublevación contra la reelección de Juárez."
       }
     ]
   },
@@ -2592,6 +4957,61 @@
         ],
         "correct": 2,
         "explanation": "La pérdida de territorio generó inestabilidad, crisis económica y descontento social, debilitando al gobierno mexicano."
+      },
+      {
+        "question": "¿Qué presidente de México estaba en el poder cuando se firmó el Tratado de Guadalupe Hidalgo?",
+        "options": [
+          "Antonio López de Santa Anna",
+          "Manuel de la Peña y Peña",
+          "José Joaquín de Herrera",
+          "Mariano Paredes y Arrillaga"
+        ],
+        "correct": 1,
+        "explanation": "Manuel de la Peña y Peña era presidente interino cuando se firmó el tratado en 1848, ya que Santa Anna había renunciado tras la caída de la Ciudad de México."
+      },
+      {
+        "question": "¿Qué batalla decisiva llevó a la captura de la Ciudad de México por las fuerzas estadounidenses en 1847?",
+        "options": [
+          "Batalla de Buena Vista",
+          "Batalla de Cerro Gordo",
+          "Batalla de Chapultepec",
+          "Batalla de Palo Alto"
+        ],
+        "correct": 2,
+        "explanation": "La Batalla de Chapultepec, el 13 de septiembre de 1847, permitió a los estadounidenses tomar la Ciudad de México, ya que defendía el acceso a la capital."
+      },
+      {
+        "question": "¿Qué río fue establecido como frontera entre Texas y México después de la guerra?",
+        "options": [
+          "Río Bravo",
+          "Río Colorado",
+          "Río Sabinas",
+          "Río Nueces"
+        ],
+        "correct": 0,
+        "explanation": "El Tratado de Guadalupe Hidalgo fijó el Río Bravo (Río Grande) como límite sur de Texas, en lugar del Río Nueces que México reclamaba."
+      },
+      {
+        "question": "¿Cuál fue el monto que Estados Unidos pagó a México como compensación por el territorio cedido en el Tratado de Guadalupe Hidalgo?",
+        "options": [
+          "10 millones de dólares",
+          "15 millones de dólares",
+          "20 millones de dólares",
+          "25 millones de dólares"
+        ],
+        "correct": 1,
+        "explanation": "Estados Unidos pagó 15 millones de dólares a México como indemnización por los territorios perdidos, además de asumir deudas de ciudadanos estadounidenses contra México."
+      },
+      {
+        "question": "¿Qué territorio adicional fue comprado por Estados Unidos a México en 1853, después de la guerra?",
+        "options": [
+          "La Mesilla",
+          "Alta California",
+          "Nuevo México",
+          "Texas"
+        ],
+        "correct": 0,
+        "explanation": "La compra de La Mesilla (o Gadsden Purchase) en 1853 definió la frontera sur de Arizona y Nuevo México, pagando 10 millones de dólares adicionales."
       }
     ]
   },
@@ -2651,6 +5071,61 @@
         ],
         "correct": 2,
         "explanation": "La inestabilidad y las crisis económicas agravaron la pobreza y la desigualdad, generando levantamientos como la Revolución Mexicana."
+      },
+      {
+        "question": "¿Qué tratado firmó México en 1824 que comprometió gran parte de sus ingresos aduaneros para pagar deudas externas?",
+        "options": [
+          "Tratado de Guadalupe Hidalgo",
+          "Tratado de Mont-Almonte",
+          "Tratado de Córdoba",
+          "Tratado de Bucareli"
+        ],
+        "correct": 1,
+        "explanation": "El Tratado de Mont-Almonte, firmado en 1824, comprometió los ingresos aduaneros mexicanos para pagar deudas con Inglaterra, lo que limitó el desarrollo económico del país."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia directa de la suspensión de pagos de la deuda externa ordenada por Benito Juárez en 1861?",
+        "options": [
+          "La intervención francesa en México",
+          "La guerra con Estados Unidos",
+          "La independencia de Texas",
+          "La promulgación de las Leyes de Reforma"
+        ],
+        "correct": 0,
+        "explanation": "La suspensión de pagos provocó la intervención francesa, ya que Francia, España e Inglaterra exigieron el pago, y Francia aprovechó para invadir México."
+      },
+      {
+        "question": "Durante el Porfiriato, ¿cuál fue la principal fuente de ingresos para pagar la deuda externa?",
+        "options": [
+          "La minería de plata",
+          "La exportación de petróleo",
+          "Las remesas de emigrantes",
+          "Los impuestos al comercio"
+        ],
+        "correct": 0,
+        "explanation": "La minería de plata fue la principal fuente de ingresos, ya que México era un gran productor y su exportación generaba divisas para pagar la deuda externa."
+      },
+      {
+        "question": "¿Qué grupo social fue el más afectado por las políticas de endeudamiento durante el siglo XIX en México?",
+        "options": [
+          "Los militares",
+          "Los campesinos y pueblos indígenas",
+          "Los comerciantes extranjeros",
+          "La iglesia católica"
+        ],
+        "correct": 1,
+        "explanation": "Los campesinos y pueblos indígenas sufrieron más porque pagaron impuestos altos y fueron despojados de tierras para que el gobierno pagara sus deudas."
+      },
+      {
+        "question": "¿Qué evento de 1821 marcó el inicio del periodo de inestabilidad y deuda en México?",
+        "options": [
+          "La firma del Acta de Independencia",
+          "La coronación de Agustín de Iturbide",
+          "La creación del primer préstamo externo",
+          "La promulgación de la Constitución de 1824"
+        ],
+        "correct": 2,
+        "explanation": "En 1821, México solicitó su primer préstamo externo para cubrir gastos de la guerra de independencia, iniciando así una larga historia de deuda e inestabilidad."
       }
     ]
   },
@@ -2710,6 +5185,61 @@
         ],
         "correct": 0,
         "explanation": "Los zapatistas en Morelos luchaban por la autonomía municipal y el control local de la tierra, en contra del poder centralizado."
+      },
+      {
+        "question": "¿Qué demanda principal tenían los villistas en el norte de México durante la Revolución?",
+        "options": [
+          "Reparto de tierras",
+          "Sufragio efectivo y no reelección",
+          "Reforma laboral",
+          "Autonomía regional"
+        ],
+        "correct": 1,
+        "explanation": "Los villistas, liderados por Francisco Villa, apoyaban la democracia y el sufragio efectivo, similar a los maderistas."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución de 1917 estableció la educación laica, gratuita y obligatoria?",
+        "options": [
+          "Artículo 3",
+          "Artículo 27",
+          "Artículo 123",
+          "Artículo 130"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 3 garantiza la educación laica, gratuita y obligatoria, respondiendo a demandas de clases medias y liberales."
+      },
+      {
+        "question": "¿Qué grupo revolucionario en el norte buscaba reformas sociales como el reparto de tierras y derechos laborales?",
+        "options": [
+          "Zapatistas",
+          "Villistas",
+          "Constitucionalistas",
+          "Orozquistas"
+        ],
+        "correct": 2,
+        "explanation": "Los constitucionalistas, liderados por Venustiano Carranza, impulsaron reformas sociales plasmadas en la Constitución de 1917."
+      },
+      {
+        "question": "¿Qué demanda específica tenían los obreros durante la Revolución Mexicana?",
+        "options": [
+          "Jornada laboral de 8 horas",
+          "Voto femenino",
+          "Reparto de tierras",
+          "Autonomía municipal"
+        ],
+        "correct": 0,
+        "explanation": "Los obreros luchaban por mejores condiciones laborales, como la jornada de 8 horas, plasmada en el Artículo 123."
+      },
+      {
+        "question": "¿Qué grupo regional en Yucatán tenía demandas relacionadas con los derechos de los trabajadores henequeneros?",
+        "options": [
+          "Zapatistas",
+          "Villistas",
+          "Constitucionalistas",
+          "Socialistas yucatecos"
+        ],
+        "correct": 3,
+        "explanation": "En Yucatán, los socialistas yucatecos buscaban mejorar las condiciones de los trabajadores henequeneros, influyendo en reformas laborales."
       }
     ]
   },
@@ -2769,6 +5299,61 @@
         ],
         "correct": 1,
         "explanation": "Aunque hubo crecimiento económico, la riqueza se concentró en pocas manos y la mayoría vivía en pobreza."
+      },
+      {
+        "question": "¿Qué evento marcó el inicio del Porfiriato en 1876?",
+        "options": [
+          "La promulgación de la Constitución de 1857",
+          "El Plan de Tuxtepec",
+          "La intervención francesa",
+          "La Guerra de Reforma"
+        ],
+        "correct": 1,
+        "explanation": "El Porfiriato comenzó con el triunfo del Plan de Tuxtepec, liderado por Porfirio Díaz, que derrocó al gobierno de Sebastián Lerdo de Tejada."
+      },
+      {
+        "question": "Durante el Porfiriato, ¿cuál fue una consecuencia de la inversión extranjera en la economía mexicana?",
+        "options": [
+          "Aumento de la producción artesanal",
+          "Crecimiento de la industria nacional",
+          "Dependencia económica del exterior",
+          "Reducción de la deuda externa"
+        ],
+        "correct": 2,
+        "explanation": "La inversión extranjera generó dependencia económica, ya que empresas de Estados Unidos y Europa controlaban sectores clave como ferrocarriles y minería."
+      },
+      {
+        "question": "¿Qué grupo social fue el más beneficiado durante el Porfiriato?",
+        "options": [
+          "Los campesinos",
+          "Los obreros",
+          "Los hacendados y la élite",
+          "Los indígenas"
+        ],
+        "correct": 2,
+        "explanation": "La élite terrateniente y los empresarios cercanos al régimen acumularon riqueza y poder, mientras que campesinos y obreros vivían en condiciones precarias."
+      },
+      {
+        "question": "¿Cuál fue el principal medio de transporte impulsado durante el Porfiriato?",
+        "options": [
+          "El automóvil",
+          "El ferrocarril",
+          "El tranvía eléctrico",
+          "El barco de vapor"
+        ],
+        "correct": 1,
+        "explanation": "El ferrocarril fue el medio de transporte más desarrollado, con una extensa red que conectaba el centro del país con puertos y fronteras, facilitando el comercio."
+      },
+      {
+        "question": "¿Qué movimiento social surgió al final del Porfiriato como respuesta a la represión y desigualdad?",
+        "options": [
+          "La Revolución Mexicana",
+          "La Guerra Cristera",
+          "El Movimiento Estudiantil",
+          "La Independencia de México"
+        ],
+        "correct": 0,
+        "explanation": "La Revolución Mexicana estalló en 1910 como consecuencia del descontento social, la represión y la falta de democracia durante el Porfiriato."
       }
     ]
   },
@@ -2828,6 +5413,61 @@
         ],
         "correct": 2,
         "explanation": "La Constitución de 1917 incluyó artículos como el 27 (reforma agraria) y el 123 (derechos laborales), pioneros en el mundo."
+      },
+      {
+        "question": "¿Qué significaba el lema 'Tierra y Libertad' para Emiliano Zapata?",
+        "options": [
+          "La expropiación de todas las haciendas",
+          "La devolución de tierras a los campesinos y el derecho a elegir autoridades",
+          "La abolición de la propiedad privada",
+          "La libertad de culto en el campo"
+        ],
+        "correct": 1,
+        "explanation": "El lema 'Tierra y Libertad' de Zapata buscaba que los campesinos recuperaran las tierras que les habían sido arrebatadas por los hacendados y tuvieran libertad política para elegir a sus gobernantes."
+      },
+      {
+        "question": "¿Qué plan proclamó Emiliano Zapata en 1911 para exigir la restitución de tierras a los campesinos?",
+        "options": [
+          "Plan de Guadalupe",
+          "Plan de Ayala",
+          "Plan de San Luis",
+          "Plan de Agua Prieta"
+        ],
+        "correct": 1,
+        "explanation": "El Plan de Ayala, proclamado por Zapata, exigía la devolución de las tierras a los pueblos y campesinos, y desconocía a Francisco I. Madero por no cumplir sus promesas."
+      },
+      {
+        "question": "¿Por qué Francisco Villa atacó Columbus, Nuevo México, en 1916?",
+        "options": [
+          "Para buscar aliados en Estados Unidos",
+          "En represalia por el reconocimiento de Estados Unidos a Carranza",
+          "Para obtener armas y municiones",
+          "Para invadir territorio estadounidense"
+        ],
+        "correct": 1,
+        "explanation": "Villa atacó Columbus porque Estados Unidos reconoció a Venustiano Carranza como presidente de México, lo que consideró una traición a la causa revolucionaria."
+      },
+      {
+        "question": "¿Qué cargo ocupó Venustiano Carranza después de la Revolución Mexicana?",
+        "options": [
+          "Presidente de México",
+          "Secretario de Educación",
+          "Gobernador de Sonora",
+          "Ministro de Guerra"
+        ],
+        "correct": 0,
+        "explanation": "Venustiano Carranza fue el primer presidente constitucional después de la Revolución, y bajo su gobierno se promulgó la Constitución de 1917."
+      },
+      {
+        "question": "¿Qué innovación militar introdujo Álvaro Obregón durante la Revolución Mexicana?",
+        "options": [
+          "El uso de la caballería",
+          "La guerra de trincheras",
+          "El uso de la aviación y la artillería",
+          "El uso de tanques"
+        ],
+        "correct": 2,
+        "explanation": "Obregón utilizó por primera vez la aviación para reconocimiento y bombardeo, y mejoró el uso de la artillería, lo que le dio ventaja en varias batallas."
       }
     ]
   },
@@ -2887,6 +5527,61 @@
         ],
         "correct": 2,
         "explanation": "Estas huelgas mostraron la represión del régimen porfirista y motivaron a obreros y campesinos a unirse a la lucha revolucionaria que estalló en 1910."
+      },
+      {
+        "question": "¿En qué año ocurrió la huelga de Cananea?",
+        "options": [
+          "1905",
+          "1906",
+          "1907",
+          "1908"
+        ],
+        "correct": 1,
+        "explanation": "La huelga de Cananea ocurrió en 1906, mientras que la de Río Blanco fue en 1907."
+      },
+      {
+        "question": "¿Cuál fue la principal demanda de los trabajadores en la huelga de Cananea?",
+        "options": [
+          "Mejores salarios y reducción de jornada laboral",
+          "Reconocimiento de sindicatos",
+          "Nacionalización de la mina",
+          "Igualdad de derechos con trabajadores extranjeros"
+        ],
+        "correct": 0,
+        "explanation": "Los trabajadores de Cananea exigían mejores salarios, igualdad salarial con los estadounidenses y reducción de la jornada laboral."
+      },
+      {
+        "question": "¿Qué grupo armado apoyó al gobierno de Porfirio Díaz para reprimir la huelga de Río Blanco?",
+        "options": [
+          "Rurales",
+          "Ejército federal",
+          "Policía local",
+          "Voluntarios extranjeros"
+        ],
+        "correct": 0,
+        "explanation": "Los Rurales, un cuerpo de policía rural, fueron enviados para reprimir la huelga de Río Blanco, dejando varios muertos y heridos."
+      },
+      {
+        "question": "¿Cómo influyeron las huelgas de Cananea y Río Blanco en el movimiento obrero mexicano?",
+        "options": [
+          "Fortalecieron la organización sindical y la conciencia de clase",
+          "Provocaron la disolución de todos los sindicatos",
+          "Llevaron a la creación del Partido Liberal Mexicano",
+          "No tuvieron impacto significativo"
+        ],
+        "correct": 0,
+        "explanation": "Estas huelgas mostraron la necesidad de organización obrera y aumentaron el descontento contra el régimen de Díaz, impulsando el movimiento revolucionario."
+      },
+      {
+        "question": "¿Qué periódico o grupo difundió las ideas de los hermanos Flores Magón, que apoyaban a los trabajadores de Cananea y Río Blanco?",
+        "options": [
+          "El Hijo del Ahuizote",
+          "El Imparcial",
+          "El Diario del Hogar",
+          "El Universal"
+        ],
+        "correct": 0,
+        "explanation": "El periódico 'El Hijo del Ahuizote', dirigido por los hermanos Flores Magón, criticaba al gobierno de Díaz y apoyaba las demandas obreras."
       }
     ]
   },
@@ -2946,6 +5641,61 @@
         ],
         "correct": 1,
         "explanation": "El lema 'Sufragio Efectivo, No Reelección' resumía la lucha de Madero por elecciones democráticas y el fin de la dictadura de Díaz."
+      },
+      {
+        "question": "¿Qué principio político fundamental defendía el Plan de San Luis de Francisco I. Madero?",
+        "options": [
+          "El sufragio efectivo y la no reelección",
+          "La abolición de la propiedad privada",
+          "La instauración de una monarquía constitucional",
+          "El establecimiento de un estado socialista"
+        ],
+        "correct": 0,
+        "explanation": "El Plan de San Luis proclamaba el principio de 'Sufragio efectivo, no reelección' para garantizar elecciones libres y evitar la perpetuación en el poder."
+      },
+      {
+        "question": "¿Cuál fue el principal grupo social que apoyó la insurrección maderista en sus inicios?",
+        "options": [
+          "Los campesinos y las clases medias urbanas",
+          "Los grandes hacendados y la iglesia",
+          "Los militares porfiristas",
+          "Los inversionistas extranjeros"
+        ],
+        "correct": 0,
+        "explanation": "Madero recibió apoyo principalmente de campesinos y clases medias urbanas descontentas con el régimen de Díaz y la falta de democracia."
+      },
+      {
+        "question": "¿Qué papel jugó Francisco I. Madero en la Revolución Mexicana de 1910?",
+        "options": [
+          "Fue el líder civil que convocó a la lucha armada contra Porfirio Díaz",
+          "Fue un militar que encabezó las fuerzas revolucionarias en el norte",
+          "Fue un intelectual que redactó la Constitución de 1917",
+          "Fue un diplomático que negoció la paz con el gobierno de Díaz"
+        ],
+        "correct": 0,
+        "explanation": "Madero fue el líder civil que, tras el fraude electoral de 1910, proclamó el Plan de San Luis y llamó a la insurrección armada."
+      },
+      {
+        "question": "¿Qué consecuencia inmediata tuvo la insurrección maderista de 1910?",
+        "options": [
+          "La renuncia de Porfirio Díaz y el inicio de un gobierno democrático",
+          "La abolición de la Constitución de 1857",
+          "La intervención militar de Estados Unidos",
+          "La instauración de un régimen socialista en México"
+        ],
+        "correct": 0,
+        "explanation": "La insurrección logró que Porfirio Díaz renunciara en 1911 y se convocaran elecciones, aunque la democracia plena no se consolidó de inmediato."
+      },
+      {
+        "question": "¿Cuál fue una de las principales críticas de Francisco I. Madero al gobierno de Porfirio Díaz?",
+        "options": [
+          "La falta de democracia y la reelección continua de Díaz",
+          "La expropiación de tierras a los campesinos",
+          "El excesivo poder de la iglesia católica",
+          "La alianza con Estados Unidos"
+        ],
+        "correct": 0,
+        "explanation": "Madero criticaba la dictadura de Díaz y su reelección indefinida, demandando elecciones libres y el fin del fraude electoral."
       }
     ]
   },
@@ -3005,6 +5755,61 @@
         ],
         "correct": 1,
         "explanation": "La Revolución y la Constitución de 1917 buscaron garantizar derechos como la jornada de 8 horas, salario mínimo y seguridad social."
+      },
+      {
+        "question": "¿Qué derecho laboral relacionado con el salario establece el Artículo 123 de la Constitución de 1917?",
+        "options": [
+          "Salario igualitario sin distinción de género",
+          "Salario mínimo suficiente para satisfacer necesidades básicas",
+          "Salario doble en horas extras",
+          "Salario proporcional a la antigüedad"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 123 establece que el salario mínimo debe ser suficiente para cubrir las necesidades de un jefe de familia en el orden material, social y cultural."
+      },
+      {
+        "question": "¿Cuál es el propósito del descanso semanal obligatorio establecido en el Artículo 123?",
+        "options": [
+          "Permitir que los trabajadores realicen actividades religiosas",
+          "Garantizar un día de descanso para la recuperación física y familiar",
+          "Reducir la producción para evitar sobreoferta",
+          "Cumplir con tradiciones culturales"
+        ],
+        "correct": 1,
+        "explanation": "El descanso semanal obligatorio busca proteger la salud y el bienestar del trabajador, permitiendo un día de asueto para descansar y convivir con su familia."
+      },
+      {
+        "question": "¿Qué institución de seguridad social se creó a partir del Artículo 123 de la Constitución de 1917?",
+        "options": [
+          "Instituto Mexicano del Seguro Social (IMSS)",
+          "Secretaría de Salud",
+          "Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado (ISSSTE)",
+          "Sistema Nacional de Salud"
+        ],
+        "correct": 0,
+        "explanation": "El IMSS fue creado en 1943 como resultado de los principios de seguridad social establecidos en el Artículo 123, para proteger la salud y el bienestar de los trabajadores."
+      },
+      {
+        "question": "¿Qué aspecto de las condiciones laborales regula el Artículo 123 además de la jornada y el salario?",
+        "options": [
+          "La prohibición del trabajo infantil",
+          "El derecho a huelga",
+          "La indemnización por despido injustificado",
+          "La creación de sindicatos"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 123 reconoce el derecho de los trabajadores a la huelga como medio de presión para mejorar sus condiciones laborales, siempre que sea legal y pacífica."
+      },
+      {
+        "question": "¿Cómo contribuyó el Artículo 123 a los derechos de los trabajadores durante la Revolución Mexicana?",
+        "options": [
+          "Estableciendo un salario fijo para todos los trabajadores",
+          "Garantizando condiciones laborales justas y protección social",
+          "Eliminando el trabajo nocturno",
+          "Prohibiendo el trabajo de mujeres"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 123 fue una respuesta a las demandas de los trabajadores durante la Revolución, estableciendo jornadas limitadas, salario mínimo, descanso y seguridad social."
       }
     ]
   },
@@ -3064,6 +5869,61 @@
         ],
         "correct": 1,
         "explanation": "El Artículo 27 permitió el reparto de tierras y la creación de ejidos, beneficiando a campesinos y comunidades indígenas."
+      },
+      {
+        "question": "Según el Artículo 27, ¿qué debe hacer el Estado para que un particular pueda adquirir la propiedad de tierras y aguas?",
+        "options": [
+          "Conceder una concesión",
+          "Emitir un título de propiedad",
+          "Otorgar una autorización",
+          "Realizar una expropiación"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 27 establece que la propiedad de tierras y aguas corresponde originariamente a la Nación, y el Estado puede transmitir el dominio a particulares mediante concesiones."
+      },
+      {
+        "question": "¿Qué limitación impuso el Artículo 27 a las iglesias respecto a la propiedad de bienes raíces?",
+        "options": [
+          "Podían poseer solo templos y dependencias",
+          "Podían poseer cualquier tipo de inmueble",
+          "No podían poseer ningún bien raíz",
+          "Podían poseer hasta 5 hectáreas"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 27 prohibió a las iglesias poseer bienes raíces, excepto los templos y sus dependencias destinados al culto."
+      },
+      {
+        "question": "¿Qué establece el Artículo 27 sobre la propiedad de los minerales y sustancias del subsuelo?",
+        "options": [
+          "Son propiedad de la Nación y solo pueden ser explotados mediante concesión",
+          "Son propiedad del dueño del terreno superficial",
+          "Pertenecen a los estados de la República",
+          "Pueden ser explotados libremente por cualquier persona"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 27 declara que los minerales y sustancias del subsuelo son propiedad de la Nación, y su explotación requiere concesión del Estado."
+      },
+      {
+        "question": "¿Qué tipo de propiedad se reconoce en el Artículo 27 para los núcleos de población que carecen de tierras?",
+        "options": [
+          "Propiedad comunal",
+          "Propiedad privada",
+          "Propiedad estatal",
+          "Propiedad ejidal"
+        ],
+        "correct": 3,
+        "explanation": "El Artículo 27 establece la figura del ejido, que otorga tierras a los núcleos de población para su explotación colectiva."
+      },
+      {
+        "question": "Según el Artículo 27, ¿en qué caso el Estado puede expropiar la propiedad privada?",
+        "options": [
+          "Por causa de utilidad pública",
+          "Por falta de pago de impuestos",
+          "Por abandono del inmueble",
+          "Por cualquier motivo que el Estado decida"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 27 permite la expropiación por causa de utilidad pública, mediante indemnización."
       }
     ]
   },
@@ -3123,6 +5983,61 @@
         ],
         "correct": 2,
         "explanation": "El Artículo 3° se promulgó como parte de la Constitución de 1917, que surgió después de la Revolución Mexicana para establecer derechos sociales."
+      },
+      {
+        "question": "¿Cuál fue el objetivo principal del Artículo 3° en la Constitución de 1917?",
+        "options": [
+          "Garantizar educación religiosa en las escuelas",
+          "Asegurar que la educación fuera laica, gratuita y obligatoria",
+          "Establecer la educación solo para niños de zonas urbanas",
+          "Permitir que la Iglesia controlara la educación"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 3° buscaba que la educación fuera laica (sin religión), gratuita (sin costo) y obligatoria para todos, para garantizar igualdad de oportunidades."
+      },
+      {
+        "question": "¿Qué implicación tuvo el carácter laico de la educación en el Artículo 3°?",
+        "options": [
+          "Las escuelas podían enseñar cualquier religión",
+          "Se prohibió la enseñanza religiosa en escuelas públicas",
+          "Los maestros debían ser sacerdotes",
+          "La educación quedó a cargo de la Iglesia"
+        ],
+        "correct": 1,
+        "explanation": "El laicismo significó que la educación pública no podía incluir enseñanzas religiosas, separando así la Iglesia del Estado en las escuelas."
+      },
+      {
+        "question": "¿Por qué se consideró esencial la educación gratuita en el Artículo 3°?",
+        "options": [
+          "Para que solo los ricos pudieran estudiar",
+          "Para que todos los niños, sin importar su situación económica, tuvieran acceso a la escuela",
+          "Para que el gobierno obtuviera ganancias",
+          "Para fomentar la educación privada"
+        ],
+        "correct": 1,
+        "explanation": "La gratuidad buscaba eliminar barreras económicas y asegurar que la educación llegara a todos los sectores de la población, especialmente a los más pobres."
+      },
+      {
+        "question": "¿Qué cambio social buscaba el Artículo 3° al hacer la educación obligatoria?",
+        "options": [
+          "Que los niños trabajaran desde pequeños",
+          "Que todos los niños asistieran a la escuela para formar ciudadanos informados y participativos",
+          "Que solo los niños indígenas estudiaran",
+          "Que la educación fuera voluntaria"
+        ],
+        "correct": 1,
+        "explanation": "La obligatoriedad pretendía que ningún niño quedara sin instrucción básica, promoviendo una sociedad más educada y con mayores oportunidades."
+      },
+      {
+        "question": "¿Cómo influyó la Revolución Mexicana en la redacción del Artículo 3°?",
+        "options": [
+          "No tuvo ninguna influencia",
+          "Se inspiró en la lucha por la justicia social y el derecho a la educación para todos, especialmente los campesinos y obreros",
+          "Se basó en modelos educativos extranjeros sin relación con la Revolución",
+          "Fue impuesto por el ejército"
+        ],
+        "correct": 1,
+        "explanation": "La Revolución buscaba acabar con las desigualdades, y el Artículo 3° reflejó ese ideal al garantizar educación gratuita y laica para todos, como un derecho social."
       }
     ]
   },
@@ -3182,6 +6097,61 @@
         ],
         "correct": 0,
         "explanation": "El sufragio universal para mujeres no fue incluido en 1917; las mujeres obtuvieron el derecho al voto hasta 1953."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución de 1917 garantiza la educación laica y gratuita?",
+        "options": [
+          "Artículo 3",
+          "Artículo 27",
+          "Artículo 123",
+          "Artículo 130"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 3 establece la educación laica, gratuita y obligatoria, un avance importante para la época."
+      },
+      {
+        "question": "¿Cuál fue una innovación de la Constitución de 1917 en materia de relaciones Iglesia-Estado?",
+        "options": [
+          "Libertad religiosa absoluta",
+          "Separación Iglesia-Estado",
+          "Religión oficial católica",
+          "Subsidio estatal a la Iglesia"
+        ],
+        "correct": 1,
+        "explanation": "La Constitución de 1917 estableció la separación Iglesia-Estado, limitando el poder de la iglesia."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución de 1917 protege los derechos de los trabajadores?",
+        "options": [
+          "Artículo 3",
+          "Artículo 27",
+          "Artículo 123",
+          "Artículo 130"
+        ],
+        "correct": 2,
+        "explanation": "El Artículo 123 establece derechos laborales como jornada máxima de 8 horas y salario mínimo."
+      },
+      {
+        "question": "¿Qué derecho social se incluyó por primera vez en la Constitución de 1917?",
+        "options": [
+          "Libertad de expresión",
+          "Derecho a la propiedad privada",
+          "Derecho a la huelga",
+          "Derecho al voto femenino"
+        ],
+        "correct": 2,
+        "explanation": "La Constitución de 1917 fue pionera al incluir el derecho a la huelga y otros derechos laborales."
+      },
+      {
+        "question": "¿Qué artículo de la Constitución de 1917 se relaciona con la reforma agraria?",
+        "options": [
+          "Artículo 3",
+          "Artículo 27",
+          "Artículo 123",
+          "Artículo 130"
+        ],
+        "correct": 1,
+        "explanation": "El Artículo 27 establece la propiedad originaria de la nación y permite la expropiación por utilidad pública."
       }
     ]
   },
@@ -3241,6 +6211,61 @@
         ],
         "correct": 3,
         "explanation": "Los cristeros eran principalmente campesinos y sacerdotes que se levantaron en armas para defender su libertad religiosa."
+      },
+      {
+        "question": "¿Qué nombre recibió el acuerdo que puso fin a la Guerra Cristera?",
+        "options": [
+          "Los Tratados de Bucareli",
+          "Los Arreglos de San Juan de Ulúa",
+          "Los Acuerdos de Chapultepec",
+          "El Modus Vivendi"
+        ],
+        "correct": 3,
+        "explanation": "El conflicto terminó con un acuerdo no escrito conocido como Modus Vivendi, donde el gobierno permitió cierta libertad religiosa a cambio de que la Iglesia se sometiera a las leyes."
+      },
+      {
+        "question": "¿Qué presidente de México estaba en el poder cuando inició la Guerra Cristera?",
+        "options": [
+          "Álvaro Obregón",
+          "Plutarco Elías Calles",
+          "Emilio Portes Gil",
+          "Lázaro Cárdenas"
+        ],
+        "correct": 1,
+        "explanation": "La Guerra Cristera comenzó en 1926 durante el gobierno de Plutarco Elías Calles, quien aplicó estrictamente las leyes anticlericales."
+      },
+      {
+        "question": "¿Cuál era el principal objetivo de los cristeros?",
+        "options": [
+          "Derrocar al gobierno y establecer un estado teocrático",
+          "Defender la libertad religiosa y el culto católico",
+          "Exigir la expulsión de los sacerdotes extranjeros",
+          "Apoyar la reforma agraria del gobierno"
+        ],
+        "correct": 1,
+        "explanation": "Los cristeros luchaban principalmente por el derecho a practicar su religión libremente, ante la persecución del gobierno."
+      },
+      {
+        "question": "¿Qué artículo constitucional prohibía la enseñanza religiosa en las escuelas y generó descontento entre los católicos?",
+        "options": [
+          "Artículo 3",
+          "Artículo 27",
+          "Artículo 123",
+          "Artículo 130"
+        ],
+        "correct": 0,
+        "explanation": "El Artículo 3 establecía la educación laica, prohibiendo la participación de la Iglesia en la enseñanza, lo que fue una de las causas del conflicto."
+      },
+      {
+        "question": "¿Qué organización católica convocó al boicot económico contra el gobierno en 1926?",
+        "options": [
+          "La Liga Nacional Defensora de la Libertad Religiosa",
+          "La Acción Católica Mexicana",
+          "El Partido Católico Nacional",
+          "Los Caballeros de Colón"
+        ],
+        "correct": 0,
+        "explanation": "La Liga Nacional Defensora de la Libertad Religiosa organizó un boicot que incluía no comprar productos del gobierno y retirar depósitos bancarios."
       }
     ]
   },
@@ -3300,6 +6325,61 @@
         ],
         "correct": 0,
         "explanation": "El TLCAN entró en vigor el 1 de enero de 1994."
+      },
+      {
+        "question": "¿Cuál fue uno de los principales beneficios que el TLCAN trajo a México en términos de comercio?",
+        "options": [
+          "Reducción de aranceles entre los países miembros",
+          "Aumento de impuestos a las importaciones",
+          "Prohibición de inversiones extranjeras",
+          "Cierre de fronteras para productos agrícolas"
+        ],
+        "correct": 0,
+        "explanation": "El TLCAN eliminó gradualmente los aranceles, facilitando el comercio entre México, Estados Unidos y Canadá."
+      },
+      {
+        "question": "¿Qué tipo de industrias en México se beneficiaron más con el TLCAN?",
+        "options": [
+          "Industrias manufactureras y automotriz",
+          "Industria textil artesanal",
+          "Agricultura de subsistencia",
+          "Producción de petróleo"
+        ],
+        "correct": 0,
+        "explanation": "Las industrias manufactureras, especialmente la automotriz, crecieron gracias a la inversión extranjera y la exportación."
+      },
+      {
+        "question": "¿Qué país miembro del TLCAN tiene la economía más grande?",
+        "options": [
+          "Estados Unidos",
+          "México",
+          "Canadá",
+          "Todos tienen economías similares"
+        ],
+        "correct": 0,
+        "explanation": "Estados Unidos es la economía más grande del mundo y dominó el comercio dentro del TLCAN."
+      },
+      {
+        "question": "¿Cómo afectó el TLCAN a la migración de mexicanos a Estados Unidos?",
+        "options": [
+          "Aumentó la migración por la pérdida de empleos agrícolas",
+          "Disminuyó la migración por mejores oportunidades en México",
+          "No tuvo ningún efecto en la migración",
+          "Prohibió la migración entre los países"
+        ],
+        "correct": 0,
+        "explanation": "La competencia de productos agrícolas estadounidenses desplazó a muchos campesinos mexicanos, aumentando la migración."
+      },
+      {
+        "question": "¿Qué institución mexicana se encargó de promover las exportaciones durante el TLCAN?",
+        "options": [
+          "Secretaría de Economía",
+          "Petróleos Mexicanos (PEMEX)",
+          "Instituto Mexicano del Seguro Social (IMSS)",
+          "Secretaría de Educación Pública (SEP)"
+        ],
+        "correct": 0,
+        "explanation": "La Secretaría de Economía (antes Secretaría de Comercio y Fomento Industrial) impulsó políticas para apoyar las exportaciones."
       }
     ]
   },
@@ -3359,6 +6439,61 @@
         ],
         "correct": 1,
         "explanation": "La reforma electoral de 1990 estableció las bases para la creación del IFE y la modernización del sistema electoral mexicano."
+      },
+      {
+        "question": "¿Qué función tenían los consejeros ciudadanos en el IFE?",
+        "options": [
+          "Organizar las campañas políticas",
+          "Vigilar que las elecciones fueran limpias y transparentes",
+          "Contar los votos manualmente",
+          "Redactar las leyes electorales"
+        ],
+        "correct": 1,
+        "explanation": "Los consejeros ciudadanos eran personas independientes que vigilaban el proceso electoral para evitar fraudes y garantizar elecciones justas."
+      },
+      {
+        "question": "¿Qué problema buscaba resolver la creación del IFE?",
+        "options": [
+          "La falta de partidos políticos",
+          "La desconfianza en los resultados electorales",
+          "El bajo número de votantes",
+          "La ausencia de campañas políticas"
+        ],
+        "correct": 1,
+        "explanation": "Antes del IFE, las elecciones eran organizadas por el gobierno, lo que generaba desconfianza. El IFE buscó dar legitimidad a los procesos electorales."
+      },
+      {
+        "question": "¿Qué documento oficial acreditaba la identidad de los votantes en las elecciones después de la creación del IFE?",
+        "options": [
+          "La cartilla militar",
+          "La credencial para votar con fotografía",
+          "El pasaporte",
+          "El acta de nacimiento"
+        ],
+        "correct": 1,
+        "explanation": "El IFE implementó la credencial para votar con fotografía para evitar suplantaciones y garantizar la identidad de los votantes."
+      },
+      {
+        "question": "¿Qué cambio importante introdujo el IFE en la organización de las elecciones?",
+        "options": [
+          "Las elecciones se realizaban cada 4 años",
+          "Los partidos políticos podían comprar tiempos en radio y TV",
+          "El gobierno ya no organizaba las elecciones",
+          "Se eliminó el voto secreto"
+        ],
+        "correct": 2,
+        "explanation": "Antes del IFE, el gobierno organizaba las elecciones, lo que generaba dudas. Con el IFE, un organismo autónomo se encargó de organizarlas."
+      },
+      {
+        "question": "¿Cuál fue uno de los efectos inmediatos de la creación del IFE en la vida política de México?",
+        "options": [
+          "Desaparecieron todos los partidos políticos",
+          "Aumentó la confianza en los procesos electorales",
+          "Se eliminaron las elecciones presidenciales",
+          "Los ciudadanos dejaron de votar"
+        ],
+        "correct": 1,
+        "explanation": "La creación del IFE buscó que la ciudadanía confiara en que las elecciones eran limpias y los resultados reflejaban la voluntad popular."
       }
     ]
   },
@@ -3418,6 +6553,61 @@
         ],
         "correct": 2,
         "explanation": "En 1990 se privatizó Telmex, vendiendo la empresa estatal de telecomunicaciones a un consorcio privado."
+      },
+      {
+        "question": "¿Cuál fue el objetivo principal de la privatización de empresas estatales en México durante el neoliberalismo?",
+        "options": [
+          "Aumentar el control del Estado sobre la economía",
+          "Reducir el gasto público y promover la eficiencia",
+          "Fortalecer los sindicatos",
+          "Incrementar la producción agrícola"
+        ],
+        "correct": 1,
+        "explanation": "La privatización buscaba reducir el déficit fiscal y mejorar la eficiencia al traspasar empresas a manos privadas."
+      },
+      {
+        "question": "¿Qué organismo internacional influyó en las políticas neoliberales de México en los años 80?",
+        "options": [
+          "ONU",
+          "Fondo Monetario Internacional (FMI)",
+          "UNESCO",
+          "OMS"
+        ],
+        "correct": 1,
+        "explanation": "El FMI recomendó medidas de ajuste estructural, como la privatización y apertura comercial, a cambio de préstamos."
+      },
+      {
+        "question": "¿Cuál fue un efecto de la apertura comercial en México durante los años 90?",
+        "options": [
+          "Aumento de aranceles a productos extranjeros",
+          "Cierre total de fronteras",
+          "Mayor competencia para la industria nacional",
+          "Disminución de las exportaciones"
+        ],
+        "correct": 2,
+        "explanation": "La apertura comercial expuso a las empresas mexicanas a la competencia internacional, lo que afectó a muchas industrias locales."
+      },
+      {
+        "question": "¿Qué sector se privatizó durante el gobierno de Miguel de la Madrid (1982-1988)?",
+        "options": [
+          "Petróleo (PEMEX)",
+          "Electricidad (CFE)",
+          "Banca comercial",
+          "Educación pública"
+        ],
+        "correct": 2,
+        "explanation": "En 1982 se nacionalizó la banca, pero durante el gobierno de De la Madrid se inició su privatización, completada en los 90."
+      },
+      {
+        "question": "¿Cómo afectó la privatización de empresas estatales a los trabajadores en México?",
+        "options": [
+          "Mejoraron sus salarios automáticamente",
+          "Muchos perdieron sus empleos o prestaciones",
+          "Se duplicaron los puestos de trabajo",
+          "No hubo cambios significativos"
+        ],
+        "correct": 1,
+        "explanation": "Las empresas privatizadas redujeron personal y prestaciones para aumentar su competitividad, causando despidos masivos."
       }
     ]
   },
@@ -3477,6 +6667,61 @@
         ],
         "correct": 1,
         "explanation": "El partido único ejerció un presidencialismo fuerte donde el presidente controlaba los poderes y el corporativismo organizaba a sectores sociales bajo el partido."
+      },
+      {
+        "question": "¿En qué año se fundó el Partido Nacional Revolucionario (PNR), antecedente del PRI?",
+        "options": [
+          "1920",
+          "1929",
+          "1938",
+          "1946"
+        ],
+        "correct": 1,
+        "explanation": "El PNR fue fundado en 1929 por Plutarco Elías Calles para unificar a las fuerzas revolucionarias y consolidar el poder político."
+      },
+      {
+        "question": "¿Qué partido político antecedió directamente al Partido Revolucionario Institucional (PRI)?",
+        "options": [
+          "Partido Nacional Revolucionario",
+          "Partido de la Revolución Mexicana",
+          "Partido Liberal Mexicano",
+          "Partido Acción Nacional"
+        ],
+        "correct": 1,
+        "explanation": "El Partido de la Revolución Mexicana (PRM) fue el partido que precedió al PRI, fundado en 1938 por Lázaro Cárdenas."
+      },
+      {
+        "question": "¿Cuál fue una de las principales funciones del partido único en México durante el siglo XX?",
+        "options": [
+          "Fomentar la competencia electoral",
+          "Centralizar el poder y evitar conflictos entre facciones",
+          "Promover la alternancia partidista",
+          "Reducir la participación del Estado en la economía"
+        ],
+        "correct": 1,
+        "explanation": "El partido único sirvió para centralizar el poder político y evitar la fragmentación entre los grupos revolucionarios, manteniendo la estabilidad."
+      },
+      {
+        "question": "¿Qué nombre adoptó el partido oficial en 1946, manteniéndose hasta la actualidad?",
+        "options": [
+          "Partido Nacional Revolucionario",
+          "Partido de la Revolución Mexicana",
+          "Partido Revolucionario Institucional",
+          "Partido de la Revolución Democrática"
+        ],
+        "correct": 2,
+        "explanation": "En 1946, el PRM se transformó en el Partido Revolucionario Institucional (PRI), nombre que conserva hasta hoy."
+      },
+      {
+        "question": "¿Qué sector social fue incorporado al partido único durante el gobierno de Lázaro Cárdenas?",
+        "options": [
+          "Empresarios",
+          "Militares",
+          "Campesinos y obreros",
+          "Clase media urbana"
+        ],
+        "correct": 2,
+        "explanation": "Cárdenas integró a campesinos y obreros en el PRM a través de sectores organizados, fortaleciendo el apoyo popular al partido."
       }
     ]
   },
@@ -3536,6 +6781,61 @@
         ],
         "correct": 1,
         "explanation": "El EZLN se levantó en armas el 1 de enero de 1994 en Chiapas, demandando democracia, justicia y derechos para los indígenas, en el contexto de la era global."
+      },
+      {
+        "question": "¿Qué grupo paramilitar fue señalado como responsable de la masacre de Tlatelolco el 2 de octubre de 1968?",
+        "options": [
+          "Los Halcones",
+          "El Batallón Olimpia",
+          "La Policía Judicial",
+          "El Ejército Zapatista"
+        ],
+        "correct": 0,
+        "explanation": "Los Halcones fueron un grupo paramilitar entrenado por el gobierno mexicano para reprimir movimientos sociales, y su participación en la masacre de Tlatelolco está documentada."
+      },
+      {
+        "question": "¿Cuál fue una consecuencia política inmediata del movimiento estudiantil de 1968 en México?",
+        "options": [
+          "La renuncia del presidente Gustavo Díaz Ordaz",
+          "La creación del Instituto Nacional Electoral",
+          "El encarcelamiento de líderes estudiantiles y la represión",
+          "La aprobación del voto a los 18 años"
+        ],
+        "correct": 2,
+        "explanation": "Tras la masacre, el gobierno encarceló a varios líderes estudiantiles y continuó la represión, sin que hubiera cambios políticos inmediatos."
+      },
+      {
+        "question": "¿Qué partido político fue fundado en 1989 como resultado de la fusión de varias organizaciones de izquierda?",
+        "options": [
+          "Partido Acción Nacional (PAN)",
+          "Partido Revolucionario Institucional (PRI)",
+          "Partido de la Revolución Democrática (PRD)",
+          "Partido Verde Ecologista de México (PVEM)"
+        ],
+        "correct": 2,
+        "explanation": "El PRD se formó en 1989 con la unión de corrientes de izquierda que buscaban mayor democracia, impulsadas por el descontento tras el movimiento estudiantil."
+      },
+      {
+        "question": "¿Qué reforma electoral de 1996 permitió mayor competencia política en México?",
+        "options": [
+          "La creación del IFE como organismo autónomo",
+          "El voto de los mexicanos en el extranjero",
+          "La reducción del porcentaje para registrar partidos",
+          "La eliminación del financiamiento público a partidos"
+        ],
+        "correct": 0,
+        "explanation": "La reforma de 1996 otorgó al IFE autonomía plena, garantizando elecciones más limpias y equitativas, lo que fortaleció la democracia."
+      },
+      {
+        "question": "¿Qué movimiento social en 1985 impulsó la organización ciudadana y la crítica al gobierno priista?",
+        "options": [
+          "El movimiento estudiantil de 1968",
+          "El levantamiento zapatista de 1994",
+          "La respuesta ciudadana al terremoto de 1985",
+          "Las protestas por la crisis económica de 1982"
+        ],
+        "correct": 2,
+        "explanation": "Tras el terremoto de 1985, la ciudadanía se organizó para ayudar ante la ineficiencia gubernamental, lo que generó una mayor conciencia democrática y crítica al PRI."
       }
     ]
   },
@@ -3595,6 +6895,61 @@
         ],
         "correct": 2,
         "explanation": "La alternancia política del año 2000 ocurre al final del período conocido como México en la era global, que abarca de 1970 a 2000."
+      },
+      {
+        "question": "¿Qué partido político había gobernado México ininterrumpidamente desde 1929 hasta el año 2000?",
+        "options": [
+          "PAN",
+          "PRD",
+          "PRI",
+          "PVEM"
+        ],
+        "correct": 2,
+        "explanation": "El PRI gobernó México desde 1929 hasta el año 2000, cuando perdió la presidencia frente al PAN."
+      },
+      {
+        "question": "¿Cuál fue el porcentaje de votos que obtuvo Vicente Fox en las elecciones presidenciales de 2000?",
+        "options": [
+          "42.5%",
+          "48.8%",
+          "36.1%",
+          "50.2%"
+        ],
+        "correct": 0,
+        "explanation": "Vicente Fox obtuvo el 42.5% de los votos, superando al candidato del PRI, Francisco Labastida, que obtuvo el 36.1%."
+      },
+      {
+        "question": "¿Qué evento marcó el fin del sistema de partido hegemónico en México?",
+        "options": [
+          "La reforma electoral de 1996",
+          "La alternancia presidencial del año 2000",
+          "La creación del IFE en 1990",
+          "La crisis económica de 1994"
+        ],
+        "correct": 1,
+        "explanation": "La alternancia presidencial del año 2000, con la victoria de Vicente Fox, puso fin al sistema de partido hegemónico que había durado 71 años."
+      },
+      {
+        "question": "¿Quién fue el candidato del PRI en las elecciones presidenciales de 2000?",
+        "options": [
+          "Ernesto Zedillo",
+          "Cuauhtémoc Cárdenas",
+          "Francisco Labastida",
+          "Manuel Camacho Solís"
+        ],
+        "correct": 2,
+        "explanation": "Francisco Labastida fue el candidato del PRI en 2000, pero perdió frente a Vicente Fox del PAN."
+      },
+      {
+        "question": "¿Qué institución organizó las elecciones presidenciales de 2000 en México?",
+        "options": [
+          "Tribunal Electoral del Poder Judicial de la Federación",
+          "Instituto Federal Electoral (IFE)",
+          "Secretaría de Gobernación",
+          "Comisión Nacional de Elecciones"
+        ],
+        "correct": 1,
+        "explanation": "El Instituto Federal Electoral (IFE) fue el organismo encargado de organizar las elecciones de 2000, garantizando su transparencia."
       }
     ]
   },
@@ -3654,6 +7009,61 @@
         ],
         "correct": 0,
         "explanation": "El Subcomandante Marcos fue el portavoz del EZLN, conocido por sus comunicados y su imagen pública durante el conflicto."
+      },
+      {
+        "question": "¿Qué tratado internacional fue una de las causas del levantamiento zapatista en 1994?",
+        "options": [
+          "Tratado de Libre Comercio de América del Norte (TLCAN)",
+          "Tratado de Maastricht",
+          "Tratado de Paz y Amistad",
+          "Tratado de Versalles"
+        ],
+        "correct": 0,
+        "explanation": "El EZLN se levantó en armas el mismo día que entró en vigor el TLCAN, al que consideraban un símbolo de la marginación de los pueblos indígenas."
+      },
+      {
+        "question": "¿Cuál fue una de las demandas principales del EZLN durante el levantamiento de 1994?",
+        "options": [
+          "Mejores condiciones laborales para los obreros",
+          "Reconocimiento de los derechos y la cultura indígena",
+          "Abolición de la propiedad privada",
+          "Independencia de Chiapas como país"
+        ],
+        "correct": 1,
+        "explanation": "El EZLN exigía derechos para los pueblos indígenas, como tierra, trabajo, salud, educación y autonomía."
+      },
+      {
+        "question": "¿Qué grupo social fue el principal protagonista del levantamiento zapatista?",
+        "options": [
+          "Campesinos sin tierra",
+          "Pueblos indígenas de Chiapas",
+          "Estudiantes universitarios",
+          "Obreros de la Ciudad de México"
+        ],
+        "correct": 1,
+        "explanation": "El EZLN estaba conformado mayoritariamente por indígenas mayas de Chiapas, quienes luchaban contra el olvido y la marginación."
+      },
+      {
+        "question": "¿En qué año ocurrió el levantamiento armado del EZLN?",
+        "options": [
+          "1992",
+          "1994",
+          "1996",
+          "2000"
+        ],
+        "correct": 1,
+        "explanation": "El levantamiento comenzó el 1 de enero de 1994, fecha en que entró en vigor el TLCAN."
+      },
+      {
+        "question": "¿Qué simbolizó el uso de pasamontañas por parte de los zapatistas?",
+        "options": [
+          "Su apoyo al gobierno mexicano",
+          "El anonimato y la voz colectiva de los indígenas",
+          "Su pertenencia a un partido político",
+          "Su deseo de ocultar su identidad por vergüenza"
+        ],
+        "correct": 1,
+        "explanation": "El pasamontañas representaba que cualquier persona podía ser zapatista, dando prioridad a la lucha colectiva sobre los líderes individuales."
       }
     ]
   }

@@ -55,6 +55,61 @@
         ],
         "correct": 1,
         "explanation": "La oxidación implica una reacción química que transforma el metal en un óxido, cambiando su composición."
+      },
+      {
+        "question": "¿Qué propiedad química se manifiesta cuando un metal se oscurece al exponerse al aire?",
+        "options": [
+          "Combustibilidad",
+          "Oxidación",
+          "Corrosión",
+          "Densidad"
+        ],
+        "correct": 1,
+        "explanation": "La oxidación ocurre cuando un metal reacciona con el oxígeno del aire, formando óxidos que cambian su apariencia."
+      },
+      {
+        "question": "¿Cuál de los siguientes procesos es un ejemplo de corrosión?",
+        "options": [
+          "Disolver azúcar en agua",
+          "Formación de herrumbre en un clavo",
+          "Evaporación del alcohol",
+          "Fusión del hielo"
+        ],
+        "correct": 1,
+        "explanation": "La corrosión es la degradación de un metal por reacción con el ambiente, como la herrumbre que se forma en el hierro."
+      },
+      {
+        "question": "La combustibilidad es una propiedad química que indica la capacidad de una sustancia para:",
+        "options": [
+          "Conducir electricidad",
+          "Arder en presencia de oxígeno",
+          "Disolverse en agua",
+          "Cambiar de estado físico"
+        ],
+        "correct": 1,
+        "explanation": "La combustibilidad se refiere a la facilidad con que una sustancia puede arder al reaccionar con oxígeno."
+      },
+      {
+        "question": "¿Qué ocurre químicamente cuando un trozo de manzana se oxida al aire?",
+        "options": [
+          "Se quema",
+          "Reacciona con el oxígeno y se oscurece",
+          "Se derrite",
+          "Se evapora"
+        ],
+        "correct": 1,
+        "explanation": "La oxidación de la manzana es una reacción con el oxígeno del aire que produce compuestos que oscurecen la superficie."
+      },
+      {
+        "question": "¿Cuál de los siguientes materiales es más probable que sufra corrosión en un ambiente húmedo?",
+        "options": [
+          "Plástico",
+          "Vidrio",
+          "Hierro",
+          "Madera"
+        ],
+        "correct": 2,
+        "explanation": "El hierro es propenso a la corrosión (herrumbre) en presencia de humedad y oxígeno, mientras que plástico, vidrio y madera no se corroen."
       }
     ]
   },
@@ -114,6 +169,61 @@
         ],
         "correct": 2,
         "explanation": "La inflamabilidad es una propiedad química porque implica una reacción de combustión que cambia la composición."
+      },
+      {
+        "question": "¿Qué propiedad física permite distinguir entre un cubo de hielo y un vaso de agua líquida a simple vista?",
+        "options": [
+          "Densidad",
+          "Punto de fusión",
+          "Color",
+          "Estado de agregación"
+        ],
+        "correct": 3,
+        "explanation": "El estado de agregación (sólido, líquido) es una propiedad física observable sin cambiar la composición."
+      },
+      {
+        "question": "Si una barra de hierro se calienta hasta 1538°C y se funde, ¿qué propiedad física se está midiendo?",
+        "options": [
+          "Punto de ebullición",
+          "Densidad",
+          "Punto de fusión",
+          "Maleabilidad"
+        ],
+        "correct": 2,
+        "explanation": "El punto de fusión es la temperatura a la que un sólido se convierte en líquido, una propiedad física característica."
+      },
+      {
+        "question": "Al colocar una moneda de cobre en agua, se hunde. ¿Qué propiedad física explica este comportamiento?",
+        "options": [
+          "Conductividad eléctrica",
+          "Densidad",
+          "Punto de fusión",
+          "Maleabilidad"
+        ],
+        "correct": 1,
+        "explanation": "La densidad del cobre es mayor que la del agua, por lo que la moneda se hunde; es una propiedad física."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de propiedad física extensiva?",
+        "options": [
+          "Densidad",
+          "Punto de ebullición",
+          "Masa",
+          "Color"
+        ],
+        "correct": 2,
+        "explanation": "La masa depende de la cantidad de materia, por lo que es una propiedad física extensiva."
+      },
+      {
+        "question": "El alcohol etílico hierve a 78.37°C. ¿Qué propiedad física se describe?",
+        "options": [
+          "Densidad",
+          "Punto de ebullición",
+          "Punto de fusión",
+          "Viscosidad"
+        ],
+        "correct": 1,
+        "explanation": "El punto de ebullición es la temperatura a la que un líquido hierve, una propiedad física característica."
       }
     ]
   },
@@ -173,6 +283,61 @@
         ],
         "correct": 1,
         "explanation": "Las enzimas de la manzana reaccionan con el oxígeno, produciendo nuevas sustancias que causan el color café."
+      },
+      {
+        "question": "Al dejar un clavo de hierro al aire libre durante varias semanas, se observa la formación de una capa de color naranja. ¿Qué tipo de cambio ocurre?",
+        "options": [
+          "Cambio físico porque solo cambia el color",
+          "Cambio químico porque se forma una nueva sustancia (óxido)",
+          "Cambio físico porque el hierro sigue siendo hierro",
+          "Cambio químico porque se evapora el agua del aire"
+        ],
+        "correct": 1,
+        "explanation": "La capa naranja es óxido de hierro, una nueva sustancia diferente al hierro, lo que indica un cambio químico."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de cambio químico?",
+        "options": [
+          "Disolver sal en agua",
+          "Derretir hielo",
+          "Quemar un trozo de papel",
+          "Romper un vidrio"
+        ],
+        "correct": 2,
+        "explanation": "Al quemar papel se producen cenizas y gases, que son sustancias diferentes al papel original."
+      },
+      {
+        "question": "Durante la combustión de una vela, la cera se derrite y luego arde. ¿En qué etapa ocurre un cambio químico?",
+        "options": [
+          "Al derretirse la cera",
+          "Al arder la cera",
+          "En ambas etapas",
+          "En ninguna etapa"
+        ],
+        "correct": 1,
+        "explanation": "Al arder, la cera reacciona con el oxígeno formando dióxido de carbono y agua, nuevas sustancias."
+      },
+      {
+        "question": "¿Qué característica distingue un cambio químico de un cambio físico?",
+        "options": [
+          "Se libera o absorbe energía",
+          "Cambia el estado de agregación",
+          "Se forman nuevas sustancias con propiedades diferentes",
+          "Se modifica la forma pero no la composición"
+        ],
+        "correct": 2,
+        "explanation": "En un cambio químico siempre se producen una o más sustancias nuevas, diferente a lo que ocurre en un cambio físico."
+      },
+      {
+        "question": "La oxidación de un metal, como el hierro, es un cambio químico porque:",
+        "options": [
+          "El metal se calienta",
+          "Se forma una capa de óxido, que es una sustancia distinta",
+          "El metal cambia de color temporalmente",
+          "Se libera oxígeno"
+        ],
+        "correct": 1,
+        "explanation": "El óxido de hierro tiene propiedades diferentes al hierro metálico, evidenciando la formación de una nueva sustancia."
       }
     ]
   },
@@ -232,6 +397,61 @@
         ],
         "correct": 0,
         "explanation": "La ley de conservación de la masa establece que los átomos solo se reorganizan en una reacción química, por lo que la masa total permanece constante."
+      },
+      {
+        "question": "En un experimento, 10 g de hidrógeno reaccionan con 80 g de oxígeno para formar agua. ¿Cuánto pesará el agua producida?",
+        "options": [
+          "70 g",
+          "80 g",
+          "90 g",
+          "100 g"
+        ],
+        "correct": 2,
+        "explanation": "La ley de conservación de la masa dice que la masa total de los reactivos (10 g + 80 g = 90 g) es igual a la masa de los productos."
+      },
+      {
+        "question": "Si al mezclar 5 g de ácido clorhídrico con 5 g de hidróxido de sodio se obtienen 7.3 g de cloruro de sodio y agua, ¿cuánto pesa el agua formada?",
+        "options": [
+          "2.7 g",
+          "5 g",
+          "7.3 g",
+          "10 g"
+        ],
+        "correct": 0,
+        "explanation": "La masa total de reactivos es 10 g, y la masa de productos es 7.3 g + masa de agua. Por conservación, masa de agua = 10 g - 7.3 g = 2.7 g."
+      },
+      {
+        "question": "En un sistema cerrado, la masa de los reactivos es 100 g. Después de la reacción, se obtienen 40 g de un producto y 60 g de otro. ¿Qué principio se cumple?",
+        "options": [
+          "Ley de las proporciones múltiples",
+          "Ley de conservación de la masa",
+          "Ley de las proporciones definidas",
+          "Ley de la composición constante"
+        ],
+        "correct": 1,
+        "explanation": "La masa total de productos (40 g + 60 g = 100 g) es igual a la masa de reactivos, cumpliendo la ley de conservación de la masa."
+      },
+      {
+        "question": "En una reacción química, la masa de los reactivos es 20 g. Si se obtienen 12 g de un producto y 8 g de otro, ¿qué ocurre con la masa?",
+        "options": [
+          "Se pierde masa",
+          "Se gana masa",
+          "La masa se conserva",
+          "La masa se transforma en energía"
+        ],
+        "correct": 2,
+        "explanation": "La suma de masas de productos (12 g + 8 g = 20 g) es igual a la masa de reactivos, por lo que la masa se conserva."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones es correcta según la ley de conservación de la masa?",
+        "options": [
+          "La masa se puede crear durante una reacción química",
+          "La masa se puede destruir en una reacción química",
+          "La masa total de los reactivos es igual a la masa total de los productos",
+          "La masa de los productos siempre es mayor que la de los reactivos"
+        ],
+        "correct": 2,
+        "explanation": "La ley de conservación de la masa establece que en una reacción química, la masa total de los reactivos es igual a la masa total de los productos."
       }
     ]
   },
@@ -291,6 +511,61 @@
         ],
         "correct": 1,
         "explanation": "Moler carbón solo reduce el tamaño de las partículas, pero sigue siendo carbono elemental, sin alterar su composición química."
+      },
+      {
+        "question": "¿Cuál de los siguientes procesos representa un cambio físico?",
+        "options": [
+          "Quemar un trozo de madera",
+          "Disolver azúcar en agua",
+          "Oxidar un clavo de hierro",
+          "Freír un huevo"
+        ],
+        "correct": 1,
+        "explanation": "Disolver azúcar en agua es un cambio físico porque la composición del azúcar no cambia, solo se dispersa en el agua."
+      },
+      {
+        "question": "Al doblar una hoja de papel, ¿qué tipo de cambio ocurre?",
+        "options": [
+          "Cambio químico",
+          "Cambio físico",
+          "Cambio nuclear",
+          "Cambio biológico"
+        ],
+        "correct": 1,
+        "explanation": "Doblar papel es un cambio físico porque solo se modifica la forma, pero la composición del papel sigue siendo la misma."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de cambio físico?",
+        "options": [
+          "Cocinar una tortilla",
+          "Encender una vela",
+          "Rasgar una hoja de papel",
+          "Digestión de los alimentos"
+        ],
+        "correct": 2,
+        "explanation": "Rasgar papel es un cambio físico porque solo se altera su tamaño y forma, sin cambiar su composición química."
+      },
+      {
+        "question": "Si calientas agua líquida hasta que se evapora, ¿qué tipo de cambio ocurre?",
+        "options": [
+          "Cambio químico, porque se forma vapor de agua",
+          "Cambio físico, porque el agua sigue siendo H2O",
+          "Cambio nuclear, porque se libera energía",
+          "Cambio biológico, porque se eliminan microorganismos"
+        ],
+        "correct": 1,
+        "explanation": "La evaporación del agua es un cambio físico porque el agua cambia de estado líquido a gaseoso, pero su composición molecular (H2O) no se altera."
+      },
+      {
+        "question": "¿Por qué triturar una roca es un cambio físico?",
+        "options": [
+          "Porque se libera energía en forma de calor",
+          "Porque la roca se convierte en un nuevo material",
+          "Porque solo cambia el tamaño y la forma, no la composición",
+          "Porque se produce una reacción química con el aire"
+        ],
+        "correct": 2,
+        "explanation": "Triturar una roca es un cambio físico porque solo se reduce su tamaño, pero los minerales que la componen siguen siendo los mismos."
       }
     ]
   },
@@ -350,6 +625,61 @@
         ],
         "correct": 0,
         "explanation": "El número de masa es la suma de protones y neutrones: 8 + 8 = 16."
+      },
+      {
+        "question": "Un átomo de sodio tiene 11 protones y 12 neutrones. ¿Cuál es su número de masa?",
+        "options": [
+          "11",
+          "12",
+          "23",
+          "1"
+        ],
+        "correct": 2,
+        "explanation": "El número de masa (A) es la suma de protones y neutrones: 11 + 12 = 23."
+      },
+      {
+        "question": "Si un átomo tiene número de masa 31 y 15 neutrones, ¿cuántos protones tiene?",
+        "options": [
+          "16",
+          "15",
+          "31",
+          "46"
+        ],
+        "correct": 0,
+        "explanation": "Los protones se calculan restando los neutrones del número de masa: 31 - 15 = 16."
+      },
+      {
+        "question": "Un átomo de calcio tiene 20 protones y número de masa 40. ¿Cuántos neutrones tiene?",
+        "options": [
+          "20",
+          "40",
+          "60",
+          "10"
+        ],
+        "correct": 0,
+        "explanation": "Los neutrones son la diferencia entre el número de masa y los protones: 40 - 20 = 20."
+      },
+      {
+        "question": "El número de masa de un átomo es 27 y tiene 13 protones. ¿Cuántos neutrones tiene?",
+        "options": [
+          "13",
+          "14",
+          "27",
+          "40"
+        ],
+        "correct": 1,
+        "explanation": "Los neutrones se obtienen restando los protones del número de masa: 27 - 13 = 14."
+      },
+      {
+        "question": "Un átomo de fósforo tiene 15 protones y 16 neutrones. ¿Cuál es su número de masa?",
+        "options": [
+          "15",
+          "16",
+          "31",
+          "1"
+        ],
+        "correct": 2,
+        "explanation": "El número de masa es la suma de protones y neutrones: 15 + 16 = 31."
       }
     ]
   },
@@ -409,6 +739,61 @@
         ],
         "correct": 1,
         "explanation": "Los elementos se ordenan en la tabla periodica segun su numero atomico creciente, determinando su posicion."
+      },
+      {
+        "question": "¿Cuál es el número atómico de un átomo que tiene 11 protones?",
+        "options": [
+          "A) 10",
+          "B) 11",
+          "C) 12",
+          "D) 23"
+        ],
+        "correct": 1,
+        "explanation": "El número atómico es igual a la cantidad de protones, por lo tanto, si tiene 11 protones, su número atómico es 11."
+      },
+      {
+        "question": "Un átomo de nitrógeno tiene número atómico 7. ¿Cuántos protones tiene?",
+        "options": [
+          "A) 5",
+          "B) 6",
+          "C) 7",
+          "D) 8"
+        ],
+        "correct": 2,
+        "explanation": "El número atómico indica la cantidad de protones, así que un átomo con Z=7 tiene 7 protones."
+      },
+      {
+        "question": "El número atómico del carbono es 6. ¿Qué partícula subatómica determina que sea carbono?",
+        "options": [
+          "A) Electrones",
+          "B) Neutrones",
+          "C) Protones",
+          "D) Núcleo"
+        ],
+        "correct": 2,
+        "explanation": "El número atómico es la cantidad de protones, y esta define el elemento químico."
+      },
+      {
+        "question": "Si un átomo tiene 20 protones y 20 neutrones, ¿cuál es su número atómico?",
+        "options": [
+          "A) 20",
+          "B) 40",
+          "C) 0",
+          "D) 10"
+        ],
+        "correct": 0,
+        "explanation": "El número atómico solo depende de los protones, así que con 20 protones, Z=20."
+      },
+      {
+        "question": "¿Qué sucede si un átomo gana o pierde protones?",
+        "options": [
+          "A) Se convierte en otro elemento",
+          "B) Cambia de masa atómica",
+          "C) Se vuelve un isótopo",
+          "D) No cambia nada"
+        ],
+        "correct": 0,
+        "explanation": "Al cambiar la cantidad de protones, cambia el número atómico y, por lo tanto, el elemento químico."
       }
     ]
   },
@@ -468,6 +853,61 @@
         ],
         "correct": 2,
         "explanation": "Los orbitales son regiones alrededor del núcleo donde se encuentran los electrones, no los protones ni neutrones."
+      },
+      {
+        "question": "¿Cuál es la carga eléctrica de un neutrón?",
+        "options": [
+          "Positiva",
+          "Negativa",
+          "Neutra",
+          "Depende del átomo"
+        ],
+        "correct": 2,
+        "explanation": "Los neutrones no tienen carga eléctrica, son neutros, y junto con los protones forman el núcleo del átomo."
+      },
+      {
+        "question": "Si un átomo tiene 8 protones y 8 neutrones, ¿cuál es su número atómico?",
+        "options": [
+          "8",
+          "16",
+          "0",
+          "No se puede determinar"
+        ],
+        "correct": 0,
+        "explanation": "El número atómico es igual al número de protones, que en este caso es 8, y define el elemento químico."
+      },
+      {
+        "question": "¿Qué partícula subatómica tiene la menor masa?",
+        "options": [
+          "Protón",
+          "Neutrón",
+          "Electrón",
+          "Todas tienen la misma masa"
+        ],
+        "correct": 2,
+        "explanation": "Los electrones tienen una masa mucho menor que los protones y neutrones; aproximadamente 1/1836 de la masa de un protón."
+      },
+      {
+        "question": "En un átomo neutro, si hay 12 electrones, ¿cuántos protones hay?",
+        "options": [
+          "6",
+          "12",
+          "24",
+          "No se puede saber"
+        ],
+        "correct": 1,
+        "explanation": "En un átomo neutro, el número de electrones es igual al número de protones para balancear la carga."
+      },
+      {
+        "question": "¿Cuál es la función principal de los electrones en un átomo?",
+        "options": [
+          "Dar masa al átomo",
+          "Formar enlaces químicos",
+          "Estabilizar el núcleo",
+          "Todas las anteriores"
+        ],
+        "correct": 1,
+        "explanation": "Los electrones, al estar en orbitales alrededor del núcleo, participan en la formación de enlaces químicos entre átomos."
       }
     ]
   },
@@ -527,6 +967,61 @@
         ],
         "correct": 2,
         "explanation": "El granito es una mezcla heterogénea porque se pueden observar diferentes minerales (como cuarzo, feldespato y mica) a simple vista."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones describe una mezcla heterogénea?",
+        "options": [
+          "Agua con sal disuelta",
+          "Aire limpio",
+          "Ensalada de frutas",
+          "Agua potable"
+        ],
+        "correct": 2,
+        "explanation": "En una ensalada de frutas se pueden distinguir los diferentes ingredientes a simple vista, por lo que su composición no es uniforme y es heterogénea."
+      },
+      {
+        "question": "¿Qué tipo de mezcla se forma al disolver azúcar en agua?",
+        "options": [
+          "Heterogénea",
+          "Homogénea",
+          "Coloide",
+          "Suspensión"
+        ],
+        "correct": 1,
+        "explanation": "Al disolver azúcar en agua, las partículas de azúcar se distribuyen uniformemente y no se pueden distinguir a simple vista, formando una mezcla homogénea."
+      },
+      {
+        "question": "¿Cuál de las siguientes es una característica de las mezclas heterogéneas?",
+        "options": [
+          "Tienen una sola fase",
+          "Sus componentes se pueden separar por filtración",
+          "No se pueden separar por métodos físicos",
+          "Tienen composición uniforme"
+        ],
+        "correct": 1,
+        "explanation": "En las mezclas heterogéneas, los componentes se pueden distinguir y separar por métodos físicos como la filtración, ya que sus fases son observables."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de mezcla homogénea?",
+        "options": [
+          "Granito",
+          "Agua con aceite",
+          "Aire",
+          "Ensalada de verduras"
+        ],
+        "correct": 2,
+        "explanation": "El aire es una mezcla de gases (nitrógeno, oxígeno, etc.) que no se pueden distinguir a simple vista, por lo que es homogénea."
+      },
+      {
+        "question": "En una mezcla heterogénea, ¿qué se puede observar?",
+        "options": [
+          "Una sola fase uniforme",
+          "Dos o más fases distintas",
+          "Partículas disueltas a nivel molecular",
+          "Composición constante en toda la mezcla"
+        ],
+        "correct": 1,
+        "explanation": "En una mezcla heterogénea se pueden observar diferentes fases o componentes a simple vista o con un microscopio, como en el agua con aceite."
       }
     ]
   },
@@ -586,6 +1081,61 @@
         ],
         "correct": 1,
         "explanation": "La cristalización forma cristales sólidos al enfriar o evaporar lentamente la disolución."
+      },
+      {
+        "question": "¿Qué método de separación se utiliza para separar una mezcla de agua y arena?",
+        "options": [
+          "Destilación",
+          "Filtración",
+          "Decantación",
+          "Cristalización"
+        ],
+        "correct": 1,
+        "explanation": "La filtración separa sólidos insolubles de líquidos al pasar la mezcla por un filtro que retiene la arena y deja pasar el agua."
+      },
+      {
+        "question": "Para separar una mezcla de agua y alcohol, ¿qué propiedad se aprovecha en la destilación?",
+        "options": [
+          "Diferencia de densidad",
+          "Diferencia de puntos de ebullición",
+          "Diferencia de solubilidad",
+          "Diferencia de tamaño de partícula"
+        ],
+        "correct": 1,
+        "explanation": "La destilación separa líquidos con diferentes puntos de ebullición; el alcohol hierve a menor temperatura que el agua y se evapora primero."
+      },
+      {
+        "question": "¿Qué método separa una mezcla de aceite y agua por diferencia de densidad?",
+        "options": [
+          "Filtración",
+          "Destilación",
+          "Decantación",
+          "Evaporación"
+        ],
+        "correct": 2,
+        "explanation": "La decantación permite separar líquidos inmiscibles de diferente densidad; el aceite flota sobre el agua y se puede decantar."
+      },
+      {
+        "question": "¿Qué método se usa para obtener sal sólida a partir de agua salada?",
+        "options": [
+          "Filtración",
+          "Destilación",
+          "Cristalización",
+          "Decantación"
+        ],
+        "correct": 2,
+        "explanation": "La cristalización forma cristales de sal al evaporar el agua lentamente, dejando la sal sólida."
+      },
+      {
+        "question": "Para obtener cristales de sulfato de cobre de una disolución saturada, ¿qué método es adecuado?",
+        "options": [
+          "Evaporación",
+          "Filtración",
+          "Destilación",
+          "Decantación"
+        ],
+        "correct": 0,
+        "explanation": "La evaporación elimina el agua lentamente, permitiendo que el sulfato de cobre forme cristales sólidos."
       }
     ]
   },
@@ -645,6 +1195,61 @@
         ],
         "correct": 1,
         "explanation": "El hidrógeno tiene número atómico 1, es el elemento más ligero y el primero en la tabla periódica."
+      },
+      {
+        "question": "¿En qué se basa la organización de los elementos en la tabla periódica actual?",
+        "options": [
+          "Masa atómica",
+          "Número atómico",
+          "Número de neutrones",
+          "Peso atómico"
+        ],
+        "correct": 1,
+        "explanation": "La tabla periódica actual ordena los elementos por número atómico creciente, que es la cantidad de protones en el núcleo."
+      },
+      {
+        "question": "Si un átomo tiene 12 protones, ¿cuál es su número atómico?",
+        "options": [
+          "6",
+          "12",
+          "24",
+          "No se puede determinar"
+        ],
+        "correct": 1,
+        "explanation": "El número atómico es igual al número de protones, por lo tanto es 12."
+      },
+      {
+        "question": "Las columnas verticales en la tabla periódica se llaman:",
+        "options": [
+          "Períodos",
+          "Grupos",
+          "Series",
+          "Bloques"
+        ],
+        "correct": 1,
+        "explanation": "Las columnas verticales se denominan grupos y agrupan elementos con propiedades químicas similares."
+      },
+      {
+        "question": "El elemento con número atómico 8 es:",
+        "options": [
+          "Nitrógeno",
+          "Oxígeno",
+          "Flúor",
+          "Neón"
+        ],
+        "correct": 1,
+        "explanation": "El número atómico 8 corresponde al oxígeno, que tiene 8 protones."
+      },
+      {
+        "question": "¿Qué información proporciona el número atómico de un elemento?",
+        "options": [
+          "La masa del átomo",
+          "La cantidad de protones",
+          "El número de electrones en el último nivel",
+          "El número de neutrones"
+        ],
+        "correct": 1,
+        "explanation": "El número atómico indica la cantidad de protones en el núcleo del átomo."
       }
     ]
   },
@@ -704,6 +1309,116 @@
         ],
         "correct": 1,
         "explanation": "La ecuación balanceada es 2H2 + O2 → 2H2O, por lo que se producen 2 moléculas de agua."
+      },
+      {
+        "question": "¿Cuál es el número de neutrones en un átomo de ²⁷Al?",
+        "options": [
+          "13",
+          "14",
+          "27",
+          "40"
+        ],
+        "correct": 1,
+        "explanation": "El número de neutrones se calcula restando el número atómico (Z=13) del número de masa (A=27): 27-13=14."
+      },
+      {
+        "question": "¿Qué elemento tiene configuración electrónica 1s² 2s² 2p⁶ 3s² 3p⁴?",
+        "options": [
+          "Azufre",
+          "Oxígeno",
+          "Cloro",
+          "Fósforo"
+        ],
+        "correct": 0,
+        "explanation": "La configuración termina en 3p⁴, lo que indica 16 electrones totales, correspondiente al azufre (Z=16)."
+      },
+      {
+        "question": "En la tabla periódica, los elementos del grupo 1 (excepto el hidrógeno) se conocen como:",
+        "options": [
+          "Metales alcalinos",
+          "Metales alcalinotérreos",
+          "Halógenos",
+          "Gases nobles"
+        ],
+        "correct": 0,
+        "explanation": "Los metales alcalinos son los del grupo 1, como sodio y potasio."
+      },
+      {
+        "question": "¿Cuál es el número atómico de un elemento que tiene 20 protones?",
+        "options": [
+          "10",
+          "20",
+          "40",
+          "60"
+        ],
+        "correct": 1,
+        "explanation": "El número atómico es igual al número de protones, por lo tanto es 20."
+      },
+      {
+        "question": "¿Qué partícula subatómica tiene carga positiva y se encuentra en el núcleo?",
+        "options": [
+          "Electrón",
+          "Protón",
+          "Neutrón",
+          "Mesón"
+        ],
+        "correct": 1,
+        "explanation": "El protón tiene carga positiva y está en el núcleo del átomo."
+      },
+      {
+        "question": "¿Cuál es el coeficiente estequiométrico del oxígeno en la reacción balanceada: 2H2 + O2 → 2H2O?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 0,
+        "explanation": "En la ecuación balanceada, el coeficiente del O2 es 1, lo que significa que se necesita una molécula de oxígeno para reaccionar con dos de hidrógeno."
+      },
+      {
+        "question": "En la reacción de descomposición del agua: 2H2O → 2H2 + O2, ¿cuántos átomos de oxígeno hay en los reactivos?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "En los reactivos hay 2 moléculas de agua, cada una con 1 átomo de oxígeno, por lo que hay 2 átomos de oxígeno en total."
+      },
+      {
+        "question": "¿Qué tipo de reacción química ocurre cuando dos o más sustancias se combinan para formar un solo producto?",
+        "options": [
+          "Síntesis",
+          "Descomposición",
+          "Desplazamiento simple",
+          "Combustión"
+        ],
+        "correct": 0,
+        "explanation": "Una reacción de síntesis combina reactivos para formar un solo producto, como en 2H2 + O2 → 2H2O."
+      },
+      {
+        "question": "En la reacción de síntesis del amoniaco: N2 + 3H2 → 2NH3, ¿cuántas moléculas de amoniaco se producen?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "Según la ecuación balanceada, se producen 2 moléculas de amoniaco (NH3) a partir de 1 molécula de nitrógeno y 3 de hidrógeno."
+      },
+      {
+        "question": "¿Cuál de las siguientes ecuaciones representa una reacción de combustión completa?",
+        "options": [
+          "CH4 + 2O2 → CO2 + 2H2O",
+          "2H2 + O2 → 2H2O",
+          "CaCO3 → CaO + CO2",
+          "Fe + CuSO4 → FeSO4 + Cu"
+        ],
+        "correct": 0,
+        "explanation": "La combustión completa de un hidrocarburo produce dióxido de carbono y agua, como en la reacción del metano con oxígeno."
       }
     ]
   },
@@ -763,6 +1478,61 @@
         ],
         "correct": 1,
         "explanation": "El número de periodo indica el nivel de energía del último electrón; periodo 4 significa nivel 4."
+      },
+      {
+        "question": "¿Cuántos electrones puede alojar como máximo el nivel de energía correspondiente al periodo 3?",
+        "options": [
+          "8",
+          "18",
+          "32",
+          "2"
+        ],
+        "correct": 0,
+        "explanation": "El nivel 3 (n=3) tiene subniveles 3s, 3p y 3d, que en total pueden alojar 2+6+10 = 18 electrones."
+      },
+      {
+        "question": "Un elemento cuyo último electrón está en el nivel 5 pertenece al periodo:",
+        "options": [
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "correct": 1,
+        "explanation": "El periodo coincide con el nivel de energía del último electrón, por lo que si está en nivel 5, pertenece al periodo 5."
+      },
+      {
+        "question": "¿Cuál de los siguientes elementos se encuentra en el periodo 6?",
+        "options": [
+          "Carbono (C)",
+          "Fósforo (P)",
+          "Oro (Au)",
+          "Cloro (Cl)"
+        ],
+        "correct": 2,
+        "explanation": "El oro (Au) tiene su último electrón en el nivel 6, por lo que pertenece al periodo 6."
+      },
+      {
+        "question": "En la tabla periódica, el periodo 1 contiene únicamente:",
+        "options": [
+          "Metales alcalinos",
+          "Gases nobles",
+          "Hidrógeno y helio",
+          "No metales"
+        ],
+        "correct": 2,
+        "explanation": "El periodo 1 solo tiene dos elementos: hidrógeno (H) y helio (He), que ocupan el nivel 1."
+      },
+      {
+        "question": "¿Cuántos elementos tiene el periodo 4?",
+        "options": [
+          "8",
+          "18",
+          "32",
+          "2"
+        ],
+        "correct": 1,
+        "explanation": "El periodo 4 incluye desde el potasio (K) hasta el kriptón (Kr), sumando 18 elementos."
       }
     ]
   },
@@ -822,6 +1592,61 @@
         ],
         "correct": 2,
         "explanation": "El hierro es un metal, mientras que el oxígeno, carbono y azufre son no metales."
+      },
+      {
+        "question": "¿Cuál de las siguientes propiedades es característica de los metales?",
+        "options": [
+          "Son malos conductores del calor",
+          "Son opacos a la luz",
+          "Son dúctiles y maleables",
+          "Son frágiles y se rompen fácilmente"
+        ],
+        "correct": 2,
+        "explanation": "Los metales son dúctiles (se pueden estirar en hilos) y maleables (se pueden martillar en láminas), a diferencia de los no metales que son frágiles."
+      },
+      {
+        "question": "¿En qué región de la tabla periódica se encuentran la mayoría de los elementos metálicos?",
+        "options": [
+          "En la parte superior derecha",
+          "En la parte inferior izquierda",
+          "En la parte superior izquierda",
+          "En la parte inferior derecha"
+        ],
+        "correct": 1,
+        "explanation": "Los metales se ubican principalmente a la izquierda y centro de la tabla periódica, es decir, en la parte inferior izquierda."
+      },
+      {
+        "question": "¿Qué propiedad de los metales explica que puedan ser convertidos en alambres delgados?",
+        "options": [
+          "Maleabilidad",
+          "Ductilidad",
+          "Brillo metálico",
+          "Conductividad eléctrica"
+        ],
+        "correct": 1,
+        "explanation": "La ductilidad es la capacidad de un metal para estirarse en hilos o alambres sin romperse."
+      },
+      {
+        "question": "¿Qué característica de los metales les permite ser moldeados en láminas delgadas?",
+        "options": [
+          "Ductilidad",
+          "Maleabilidad",
+          "Conductividad térmica",
+          "Brillo metálico"
+        ],
+        "correct": 1,
+        "explanation": "La maleabilidad es la propiedad que permite a los metales ser martillados o prensados en láminas sin romperse."
+      },
+      {
+        "question": "¿Cuál de las siguientes propiedades NO es característica de los metales?",
+        "options": [
+          "Conductividad eléctrica",
+          "Maleabilidad",
+          "Brillo metálico",
+          "Fragilidad"
+        ],
+        "correct": 3,
+        "explanation": "La fragilidad es una propiedad de los no metales, no de los metales. Los metales son dúctiles y maleables, no frágiles."
       }
     ]
   },
@@ -881,6 +1706,61 @@
         ],
         "correct": 1,
         "explanation": "Cloro y yodo están en el grupo 17 (halógenos) y ambos tienen 7 electrones de valencia, lo que les da propiedades químicas similares."
+      },
+      {
+        "question": "¿Cuál es la principal razón por la que los elementos del grupo 17 (halógenos) tienen propiedades químicas similares?",
+        "options": [
+          "Tienen el mismo número de electrones de valencia.",
+          "Tienen el mismo número de protones.",
+          "Tienen el mismo número de niveles de energía.",
+          "Tienen la misma masa atómica."
+        ],
+        "correct": 0,
+        "explanation": "Los elementos de un mismo grupo tienen la misma cantidad de electrones en su capa más externa, lo que determina sus propiedades químicas."
+      },
+      {
+        "question": "¿Cuántos electrones de valencia tienen los elementos del grupo 2 (metales alcalinotérreos)?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "Los elementos del grupo 2 tienen 2 electrones en su último nivel de energía, por eso comparten propiedades como formar compuestos con valencia +2."
+      },
+      {
+        "question": "¿Por qué los gases nobles (grupo 18) son tan estables y casi no reaccionan?",
+        "options": [
+          "Porque tienen 8 electrones en su capa de valencia.",
+          "Porque tienen muchos protones.",
+          "Porque son muy pesados.",
+          "Porque tienen baja masa atómica."
+        ],
+        "correct": 0,
+        "explanation": "Los gases nobles tienen 8 electrones en su capa externa (excepto helio con 2), lo que les da una configuración estable y baja reactividad."
+      },
+      {
+        "question": "¿Qué elemento del grupo 1 (metales alcalinos) es más reactivo: litio, sodio o potasio?",
+        "options": [
+          "Litio",
+          "Sodio",
+          "Potasio",
+          "Todos reaccionan igual."
+        ],
+        "correct": 2,
+        "explanation": "La reactividad aumenta al bajar en un grupo; el potasio está más abajo que el sodio y el litio, por lo que es más reactivo."
+      },
+      {
+        "question": "¿Cómo se llaman los elementos del grupo 17?",
+        "options": [
+          "Metales alcalinos",
+          "Halógenos",
+          "Gases nobles",
+          "Metales de transición"
+        ],
+        "correct": 1,
+        "explanation": "Los elementos del grupo 17 se conocen como halógenos, y todos tienen 7 electrones de valencia, por lo que reaccionan fácilmente para completar 8."
       }
     ]
   },
@@ -940,6 +1820,61 @@
         ],
         "correct": 1,
         "explanation": "El azufre y el oxígeno son no metales, por lo que forman un enlace covalente al compartir electrones."
+      },
+      {
+        "question": "¿Qué característica principal distingue a un enlace covalente de un enlace iónico?",
+        "options": [
+          "Se forma entre un metal y un no metal",
+          "Se comparten electrones entre no metales",
+          "Se transfieren electrones de un átomo a otro",
+          "Solo ocurre en elementos gaseosos"
+        ],
+        "correct": 1,
+        "explanation": "En el enlace covalente, los átomos no metálicos comparten electrones, mientras que en el iónico hay transferencia de electrones."
+      },
+      {
+        "question": "¿Cuál de las siguientes sustancias está formada por enlaces covalentes?",
+        "options": [
+          "NaCl",
+          "MgO",
+          "H2O",
+          "KBr"
+        ],
+        "correct": 2,
+        "explanation": "El agua (H2O) está formada por hidrógeno y oxígeno, ambos no metales, que comparten electrones formando enlaces covalentes."
+      },
+      {
+        "question": "En un enlace covalente doble, ¿cuántos electrones se comparten en total?",
+        "options": [
+          "2",
+          "4",
+          "6",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "Un enlace covalente doble implica la compartición de dos pares de electrones, es decir, 4 electrones en total."
+      },
+      {
+        "question": "¿Qué tipo de enlace covalente se forma cuando los electrones se comparten de manera desigual?",
+        "options": [
+          "Covalente puro",
+          "Covalente polar",
+          "Covalente coordinado",
+          "Covalente simple"
+        ],
+        "correct": 1,
+        "explanation": "Cuando los electrones se comparten de forma desigual debido a la diferencia de electronegatividad, se forma un enlace covalente polar."
+      },
+      {
+        "question": "¿Cuál de los siguientes pares de elementos formará probablemente un enlace covalente?",
+        "options": [
+          "Na y Cl",
+          "Ca y O",
+          "N y H",
+          "Fe y S"
+        ],
+        "correct": 2,
+        "explanation": "El nitrógeno y el hidrógeno son no metales, por lo que tienden a compartir electrones y formar un enlace covalente."
       }
     ]
   },
@@ -999,6 +1934,61 @@
         ],
         "correct": 1,
         "explanation": "El oxígeno tiene 6 electrones de valencia, usa 2 para enlaces con hidrógenos y le quedan 4 (2 pares) no compartidos."
+      },
+      {
+        "question": "¿Cuántos electrones de valencia tiene el nitrógeno (número atómico 7)?",
+        "options": [
+          "2",
+          "5",
+          "7",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "El nitrógeno tiene 5 electrones de valencia porque está en el grupo 15 de la tabla periódica."
+      },
+      {
+        "question": "En la estructura de Lewis del metano (CH4), ¿cuántos electrones comparte el carbono con cada hidrógeno?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "Cada enlace C-H es un enlace simple que comparte 2 electrones (un par)."
+      },
+      {
+        "question": "¿Cuál es la estructura de Lewis correcta para el ácido clorhídrico (HCl)?",
+        "options": [
+          "H-Cl con un par de electrones en cada átomo",
+          "H-Cl con tres pares en Cl",
+          "H-Cl con dos pares en Cl",
+          "H-Cl con un par en Cl"
+        ],
+        "correct": 2,
+        "explanation": "El cloro tiene 7 electrones de valencia, forma un enlace con H y le quedan 3 pares no compartidos."
+      },
+      {
+        "question": "¿Cuántos electrones de valencia tiene el carbono (número atómico 6)?",
+        "options": [
+          "2",
+          "4",
+          "6",
+          "8"
+        ],
+        "correct": 1,
+        "explanation": "El carbono tiene 4 electrones de valencia porque está en el grupo 14."
+      },
+      {
+        "question": "En la estructura de Lewis del oxígeno molecular (O2), ¿cuántos enlaces hay entre los dos oxígenos?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "El O2 tiene un doble enlace (dos pares compartidos) para que cada oxígeno complete su octeto."
       }
     ]
   },
@@ -1058,6 +2048,61 @@
         ],
         "correct": 1,
         "explanation": "El oxígeno es un no metal necesario para la respiración de los seres vivos."
+      },
+      {
+        "question": "¿Qué característica eléctrica comparten la mayoría de los no metales?",
+        "options": [
+          "Son buenos conductores de electricidad",
+          "Son malos conductores de electricidad",
+          "Son superconductores",
+          "Son semiconductores"
+        ],
+        "correct": 1,
+        "explanation": "Los no metales son malos conductores de electricidad porque sus electrones están fuertemente unidos a los átomos y no pueden moverse libremente."
+      },
+      {
+        "question": "¿Cuál de los siguientes elementos es un no metal que se encuentra en el lado derecho de la tabla periódica?",
+        "options": [
+          "Sodio",
+          "Hierro",
+          "Azufre",
+          "Calcio"
+        ],
+        "correct": 2,
+        "explanation": "El azufre es un no metal que se localiza en el grupo 16, en la parte derecha de la tabla periódica, y es mal conductor de electricidad."
+      },
+      {
+        "question": "¿Por qué los no metales no conducen bien la electricidad?",
+        "options": [
+          "Porque tienen muchos electrones libres",
+          "Porque sus electrones están fuertemente ligados",
+          "Porque son líquidos a temperatura ambiente",
+          "Porque tienen baja masa atómica"
+        ],
+        "correct": 1,
+        "explanation": "Los no metales tienen electrones fuertemente ligados a sus núcleos, lo que impide el flujo de corriente eléctrica, a diferencia de los metales."
+      },
+      {
+        "question": "¿En qué región de la tabla periódica se ubican los elementos que son malos conductores de electricidad?",
+        "options": [
+          "En la parte izquierda",
+          "En la parte central",
+          "En la parte derecha",
+          "En la parte inferior"
+        ],
+        "correct": 2,
+        "explanation": "Los elementos no metales, que son malos conductores, se encuentran en la parte derecha de la tabla periódica, separados por la línea escalonada."
+      },
+      {
+        "question": "¿Cuál de las siguientes propiedades es común en los no metales?",
+        "options": [
+          "Brillo metálico",
+          "Alta conductividad térmica",
+          "Malos conductores de electricidad",
+          "Maleabilidad"
+        ],
+        "correct": 2,
+        "explanation": "Los no metales son malos conductores tanto de electricidad como de calor, y carecen de brillo metálico y maleabilidad."
       }
     ]
   },
@@ -1117,6 +2162,61 @@
         ],
         "correct": 0,
         "explanation": "Al perder 3 electrones, su número de electrones se reduce a 10 (13 - 3 = 10)."
+      },
+      {
+        "question": "Un átomo de oxígeno (O) tiene 8 protones y 8 electrones. Si gana dos electrones, ¿qué tipo de ion forma y cuál es su carga?",
+        "options": [
+          "Catión con carga +2",
+          "Anión con carga -2",
+          "Catión con carga -2",
+          "Anión con carga +2"
+        ],
+        "correct": 1,
+        "explanation": "Al ganar electrones, el oxígeno se convierte en un anión con carga negativa. Como gana dos electrones, su carga es -2."
+      },
+      {
+        "question": "¿Cuál de los siguientes iones tiene la misma cantidad de electrones que el gas noble neón (Ne, 10 electrones)?",
+        "options": [
+          "Na+ (11 protones)",
+          "F- (9 protones)",
+          "Mg2+ (12 protones)",
+          "O2- (8 protones)"
+        ],
+        "correct": 0,
+        "explanation": "El Na+ tiene 10 electrones (perdió 1 de 11), igual que el neón. Los otros tienen diferente número de electrones."
+      },
+      {
+        "question": "Un ion de calcio (Ca) tiene 20 protones y 18 electrones. ¿Qué tipo de ion es y cuál es su símbolo?",
+        "options": [
+          "Catión, Ca2+",
+          "Anión, Ca2-",
+          "Catión, Ca+",
+          "Anión, Ca-"
+        ],
+        "correct": 0,
+        "explanation": "Al perder 2 electrones (de 20 a 18), el calcio se convierte en un catión con carga +2, representado como Ca2+."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones sobre un anión es correcta?",
+        "options": [
+          "Tiene más protones que electrones",
+          "Tiene más electrones que protones",
+          "Tiene igual número de protones y electrones",
+          "Su carga es positiva"
+        ],
+        "correct": 1,
+        "explanation": "Un anión se forma cuando un átomo gana electrones, por lo que tiene más electrones que protones, resultando en carga negativa."
+      },
+      {
+        "question": "Un átomo de azufre (S) tiene 16 electrones. Si forma un ion S2-, ¿cuántos electrones tiene y qué tipo de ion es?",
+        "options": [
+          "14 electrones, catión",
+          "18 electrones, anión",
+          "16 electrones, neutro",
+          "20 electrones, anión"
+        ],
+        "correct": 1,
+        "explanation": "Al ganar 2 electrones, el azufre tiene 18 electrones y se convierte en un anión con carga -2."
       }
     ]
   },
@@ -1176,6 +2276,61 @@
         ],
         "correct": 1,
         "explanation": "El sodio cede un electrón al cloro, formando un catión Na+ y un anión Cl-."
+      },
+      {
+        "question": "¿Cuál es la principal diferencia entre un enlace iónico y un enlace covalente?",
+        "options": [
+          "En el iónico hay transferencia de electrones; en el covalente, compartición.",
+          "En el iónico hay compartición de electrones; en el covalente, transferencia.",
+          "Ambos implican transferencia de electrones.",
+          "Ambos implican compartición de electrones."
+        ],
+        "correct": 0,
+        "explanation": "En el enlace iónico, un metal cede electrones a un no metal, mientras que en el covalente ambos no metales comparten electrones."
+      },
+      {
+        "question": "¿Qué tipo de partícula forma un átomo de cloro (Cl) al ganar un electrón en un enlace iónico?",
+        "options": [
+          "Un catión",
+          "Un anión",
+          "Un átomo neutro",
+          "Un protón"
+        ],
+        "correct": 1,
+        "explanation": "Al ganar un electrón, el cloro adquiere carga negativa y se convierte en un anión (Cl⁻)."
+      },
+      {
+        "question": "¿Cuál de los siguientes pares de elementos formará un enlace iónico?",
+        "options": [
+          "Oxígeno (O) y oxígeno (O)",
+          "Sodio (Na) y flúor (F)",
+          "Carbono (C) e hidrógeno (H)",
+          "Nitrógeno (N) y nitrógeno (N)"
+        ],
+        "correct": 1,
+        "explanation": "El sodio (metal) cede un electrón al flúor (no metal), formando un enlace iónico."
+      },
+      {
+        "question": "En la formación de cloruro de sodio (NaCl), ¿qué ocurre con los electrones de valencia?",
+        "options": [
+          "El sodio gana un electrón y el cloro pierde uno.",
+          "El sodio pierde un electrón y el cloro gana uno.",
+          "Ambos comparten un par de electrones.",
+          "No hay transferencia de electrones."
+        ],
+        "correct": 1,
+        "explanation": "El sodio cede su electrón de valencia al cloro, formando iones Na⁺ y Cl⁻ que se atraen electrostáticamente."
+      },
+      {
+        "question": "¿Por qué los compuestos iónicos conducen electricidad cuando están disueltos en agua?",
+        "options": [
+          "Porque los electrones se mueven libremente.",
+          "Porque los iones se separan y pueden moverse.",
+          "Porque el agua se ioniza.",
+          "Porque forman moléculas polares."
+        ],
+        "correct": 1,
+        "explanation": "Al disolverse, los iones se separan y pueden moverse, permitiendo el paso de corriente eléctrica."
       }
     ]
   },
@@ -1235,6 +2390,61 @@
         ],
         "correct": 1,
         "explanation": "Al agregar un ácido, la concentración de H⁺ aumenta y el pH disminuye por debajo de 7."
+      },
+      {
+        "question": "¿Cuál de las siguientes sustancias tiene un pH menor a 7?",
+        "options": [
+          "Agua destilada",
+          "Jugo de limón",
+          "Leche de magnesia",
+          "Agua de mar"
+        ],
+        "correct": 1,
+        "explanation": "El jugo de limón es un ácido, por lo que su pH es menor a 7. El agua destilada tiene pH 7, la leche de magnesia es básica y el agua de mar es ligeramente básica."
+      },
+      {
+        "question": "¿Qué tipo de iones liberan los ácidos al disolverse en agua?",
+        "options": [
+          "OH⁻",
+          "H⁺",
+          "Cl⁻",
+          "Na⁺"
+        ],
+        "correct": 1,
+        "explanation": "Los ácidos liberan iones de hidrógeno (H⁺) en solución acuosa, lo que hace que el pH sea menor a 7."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de ácido en la vida cotidiana?",
+        "options": [
+          "Vinagre",
+          "Bicarbonato de sodio",
+          "Jabón",
+          "Amoníaco"
+        ],
+        "correct": 0,
+        "explanation": "El vinagre contiene ácido acético, que es un ácido débil. Los otros son bases o sustancias básicas."
+      },
+      {
+        "question": "¿Qué sucede con el pH de una solución si se agrega ácido clorhídrico (HCl)?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "Se mantiene igual",
+          "Se vuelve neutro"
+        ],
+        "correct": 1,
+        "explanation": "El HCl es un ácido fuerte que libera H⁺, disminuyendo el pH de la solución."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones es correcta sobre los ácidos?",
+        "options": [
+          "Tienen sabor amargo",
+          "Tienen pH mayor a 7",
+          "Liberan H⁺ en agua",
+          "Son resbaladizos al tacto"
+        ],
+        "correct": 2,
+        "explanation": "Los ácidos liberan iones H⁺ en agua, lo que les da un pH menor a 7. El sabor amargo y la sensación resbaladiza son características de las bases."
       }
     ]
   },
@@ -1294,6 +2504,61 @@
         ],
         "correct": 1,
         "explanation": "El coeficiente 2 delante de Mg indica que hay 2 átomos de magnesio en los reactivos."
+      },
+      {
+        "question": "En la ecuación química: 2KClO3 → 2KCl + 3O2, ¿cuáles son los productos?",
+        "options": [
+          "KClO3 y O2",
+          "KCl y O2",
+          "KClO3 y KCl",
+          "solo O2"
+        ],
+        "correct": 1,
+        "explanation": "Los productos son las sustancias que se forman después de la flecha en la ecuación química, en este caso KCl y O2."
+      },
+      {
+        "question": "En la reacción: Zn + 2HCl → ZnCl2 + H2, ¿cuántos átomos de hidrógeno hay en los reactivos?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "En los reactivos, 2HCl contiene 2 átomos de hidrógeno, ya que cada molécula de HCl tiene un átomo de H."
+      },
+      {
+        "question": "¿Cuál de las siguientes ecuaciones químicas está correctamente balanceada?",
+        "options": [
+          "N2 + H2 → NH3",
+          "N2 + 3H2 → 2NH3",
+          "2N2 + H2 → NH3",
+          "N2 + 2H2 → 2NH3"
+        ],
+        "correct": 1,
+        "explanation": "La ecuación balanceada tiene el mismo número de átomos de cada elemento en reactivos y productos: N2 + 3H2 → 2NH3."
+      },
+      {
+        "question": "En la reacción: 2H2O2 → 2H2O + O2, ¿cuál es el reactivo?",
+        "options": [
+          "H2O",
+          "O2",
+          "H2O2",
+          "H2O y O2"
+        ],
+        "correct": 2,
+        "explanation": "El reactivo es la sustancia que se transforma, en este caso el peróxido de hidrógeno (H2O2), que está antes de la flecha."
+      },
+      {
+        "question": "En la ecuación: CaCO3 → CaO + CO2, ¿cuántos átomos de oxígeno hay en los productos?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 2,
+        "explanation": "En los productos, CaO tiene 1 átomo de oxígeno y CO2 tiene 2, sumando un total de 3 átomos de oxígeno."
       }
     ]
   },
@@ -1353,6 +2618,61 @@
         ],
         "correct": 0,
         "explanation": "La masa de un mol de carbono-12 es exactamente 12 gramos, según la definición de mol."
+      },
+      {
+        "question": "¿Cuántos átomos de oxígeno hay en 1 mol de O₂?",
+        "options": [
+          "6.022×10²³ átomos",
+          "1.204×10²⁴ átomos",
+          "3.011×10²³ átomos",
+          "1.806×10²⁴ átomos"
+        ],
+        "correct": 1,
+        "explanation": "1 mol de O₂ contiene 2 moles de átomos de oxígeno, por lo que hay 2 × 6.022×10²³ = 1.204×10²⁴ átomos."
+      },
+      {
+        "question": "Si tienes 1.5 moles de NaCl, ¿cuántas unidades fórmula de NaCl hay?",
+        "options": [
+          "6.022×10²³",
+          "9.033×10²³",
+          "1.204×10²⁴",
+          "3.011×10²³"
+        ],
+        "correct": 1,
+        "explanation": "Multiplicando 1.5 moles por 6.022×10²³ unidades fórmula/mol se obtienen 9.033×10²³ unidades fórmula."
+      },
+      {
+        "question": "¿Cuántos moles de átomos de nitrógeno hay en 0.25 moles de N₂?",
+        "options": [
+          "0.25 moles",
+          "0.50 moles",
+          "0.125 moles",
+          "0.75 moles"
+        ],
+        "correct": 1,
+        "explanation": "Cada molécula de N₂ tiene 2 átomos de nitrógeno, por lo que 0.25 moles de N₂ contienen 0.50 moles de átomos de N."
+      },
+      {
+        "question": "En la reacción N₂ + 3H₂ → 2NH₃, ¿cuántos moles de NH₃ se producen a partir de 2 moles de N₂?",
+        "options": [
+          "1 mol",
+          "2 moles",
+          "3 moles",
+          "4 moles"
+        ],
+        "correct": 3,
+        "explanation": "La relación estequiométrica es 1 mol de N₂ produce 2 moles de NH₃, así que 2 moles de N₂ producen 4 moles de NH₃."
+      },
+      {
+        "question": "¿Cuántos moles de iones sodio hay en 0.5 moles de Na₂SO₄?",
+        "options": [
+          "0.5 moles",
+          "1.0 moles",
+          "1.5 moles",
+          "2.0 moles"
+        ],
+        "correct": 1,
+        "explanation": "Cada unidad de Na₂SO₄ contiene 2 iones sodio, por lo que 0.5 moles de Na₂SO₄ tienen 1.0 mol de iones sodio."
       }
     ]
   },
@@ -1412,6 +2732,61 @@
         ],
         "correct": 2,
         "explanation": "La ecuación balanceada es 4Fe + 3O2 → 2Fe2O3, por lo que el coeficiente del O2 es 3."
+      },
+      {
+        "question": "Al balancear la ecuación: C3H8 + O2 → CO2 + H2O, ¿cuál es el coeficiente del oxígeno (O2)?",
+        "options": [
+          "3",
+          "5",
+          "4",
+          "2"
+        ],
+        "correct": 1,
+        "explanation": "Para balancear, se requieren 5 moléculas de O2 para producir 3 CO2 y 4 H2O."
+      },
+      {
+        "question": "En la reacción: Na + Cl2 → NaCl, ¿cuál es el coeficiente del sodio (Na) al balancear?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correct": 1,
+        "explanation": "Se necesitan 2 átomos de Na para reaccionar con una molécula de Cl2 y formar 2 NaCl."
+      },
+      {
+        "question": "Balancea: Al + HCl → AlCl3 + H2. ¿Qué coeficiente tiene el HCl?",
+        "options": [
+          "2",
+          "3",
+          "6",
+          "4"
+        ],
+        "correct": 2,
+        "explanation": "Se requieren 6 HCl para producir 2 AlCl3 y 3 H2, balanceando aluminio y cloro."
+      },
+      {
+        "question": "¿Cuál es la ecuación correctamente balanceada para la formación de amoniaco?",
+        "options": [
+          "N2 + 3H2 → 2NH3",
+          "2N2 + H2 → 2NH3",
+          "N2 + H2 → NH3",
+          "N2 + 2H2 → 2NH3"
+        ],
+        "correct": 0,
+        "explanation": "La ecuación balanceada es N2 + 3H2 → 2NH3, con igual número de átomos de cada elemento."
+      },
+      {
+        "question": "Al balancear: C2H6 + O2 → CO2 + H2O, ¿cuál es el coeficiente del agua?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "correct": 1,
+        "explanation": "Se producen 3 moléculas de H2O para balancear los 6 átomos de hidrógeno del C2H6."
       }
     ]
   },
@@ -1471,6 +2846,61 @@
         ],
         "correct": 0,
         "explanation": "Reducción implica ganancia de electrones, por lo que el número de electrones aumenta."
+      },
+      {
+        "question": "En la reacción: Cl₂ + 2e⁻ → 2Cl⁻, ¿qué proceso experimenta el cloro?",
+        "options": [
+          "Oxidación porque pierde electrones",
+          "Reducción porque gana electrones",
+          "Oxidación porque gana electrones",
+          "Reducción porque pierde electrones"
+        ],
+        "correct": 1,
+        "explanation": "El cloro gana electrones (de 0 a -1), por lo que se reduce según la regla OIL RIG: Reduction Is Gain."
+      },
+      {
+        "question": "Si un elemento pasa de un estado de oxidación +2 a 0, ¿qué ocurre?",
+        "options": [
+          "Se oxida porque pierde electrones",
+          "Se reduce porque gana electrones",
+          "Se oxida porque gana electrones",
+          "Se reduce porque pierde electrones"
+        ],
+        "correct": 1,
+        "explanation": "Al disminuir su número de oxidación (de +2 a 0), gana electrones, por lo que se reduce."
+      },
+      {
+        "question": "¿Qué sucede con el número de electrones de una especie que se oxida?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "No cambia",
+          "Se duplica"
+        ],
+        "correct": 1,
+        "explanation": "Según la regla OIL RIG, oxidación es pérdida de electrones, por lo que su número disminuye."
+      },
+      {
+        "question": "En la reacción: Zn + Cu²⁺ → Zn²⁺ + Cu, ¿qué elemento se oxida?",
+        "options": [
+          "Zn porque pierde electrones",
+          "Cu²⁺ porque gana electrones",
+          "Zn porque gana electrones",
+          "Cu²⁺ porque pierde electrones"
+        ],
+        "correct": 0,
+        "explanation": "El Zn pasa de 0 a +2, perdiendo electrones, por lo que se oxida."
+      },
+      {
+        "question": "¿Cuál de los siguientes procesos es una reducción?",
+        "options": [
+          "Fe²⁺ → Fe³⁺ + e⁻",
+          "Na → Na⁺ + e⁻",
+          "O₂ + 4e⁻ → 2O²⁻",
+          "H₂ → 2H⁺ + 2e⁻"
+        ],
+        "correct": 2,
+        "explanation": "En O₂ + 4e⁻ → 2O²⁻, el oxígeno gana electrones, por lo que se reduce."
       }
     ]
   },
@@ -1530,6 +2960,61 @@
         ],
         "correct": 0,
         "explanation": "Agregar una base aumenta la concentración de OH-, lo que eleva el pH por encima de 7."
+      },
+      {
+        "question": "¿Qué tipo de iones liberan las bases en solución acuosa según la teoría de Arrhenius?",
+        "options": [
+          "Iones H+",
+          "Iones OH-",
+          "Iones Na+",
+          "Iones Cl-"
+        ],
+        "correct": 1,
+        "explanation": "Las bases liberan iones hidroxilo (OH-) en agua, lo que les da sus propiedades características."
+      },
+      {
+        "question": "El bicarbonato de sodio (NaHCO3) es una base débil. ¿Cuál es su uso común en el hogar?",
+        "options": [
+          "Limpiar metales",
+          "Neutralizar ácidos en la cocina",
+          "Blanquear ropa",
+          "Desinfectar superficies"
+        ],
+        "correct": 1,
+        "explanation": "El bicarbonato de sodio se usa para neutralizar ácidos, como en recetas o para eliminar olores."
+      },
+      {
+        "question": "¿Qué valor de pH esperarías en una solución de hidróxido de sodio (NaOH) 0.1 M?",
+        "options": [
+          "pH = 7",
+          "pH < 7",
+          "pH > 7",
+          "pH = 0"
+        ],
+        "correct": 2,
+        "explanation": "El NaOH es una base fuerte, por lo que su pH es mayor a 7, típicamente alrededor de 13."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones sobre las bases es correcta?",
+        "options": [
+          "Tienen sabor agrio",
+          "Son donadoras de protones",
+          "Vuelven rojo el papel tornasol azul",
+          "Vuelven azul el papel tornasol rojo"
+        ],
+        "correct": 3,
+        "explanation": "Las bases cambian el papel tornasol rojo a azul, indicando su naturaleza alcalina."
+      },
+      {
+        "question": "¿Qué producto se forma al reaccionar una base con un ácido?",
+        "options": [
+          "Sal y agua",
+          "Sal y oxígeno",
+          "Agua y dióxido de carbono",
+          "Base y ácido"
+        ],
+        "correct": 0,
+        "explanation": "La reacción de neutralización entre un ácido y una base produce una sal y agua."
       }
     ]
   },
@@ -1589,6 +3074,61 @@
         ],
         "correct": 1,
         "explanation": "En el cátodo ocurre la reducción, donde los iones ganan electrones."
+      },
+      {
+        "question": "En la reacción: Fe + CuSO4 → FeSO4 + Cu, ¿qué elemento se reduce?",
+        "options": [
+          "Fe",
+          "Cu",
+          "S",
+          "O"
+        ],
+        "correct": 1,
+        "explanation": "El cobre (Cu) pasa de tener número de oxidación +2 en CuSO4 a 0 en Cu, ganando electrones, por lo que se reduce."
+      },
+      {
+        "question": "Si un átomo de magnesio pierde 2 electrones para formar Mg2+, ¿qué proceso ocurre?",
+        "options": [
+          "Reducción",
+          "Oxidación",
+          "Neutralización",
+          "Precipitación"
+        ],
+        "correct": 1,
+        "explanation": "La pérdida de electrones es oxidación, por lo que el magnesio se oxida al perder dos electrones."
+      },
+      {
+        "question": "En la reacción: 2H2 + O2 → 2H2O, ¿cuál es el agente oxidante?",
+        "options": [
+          "H2",
+          "O2",
+          "H2O",
+          "Ninguno"
+        ],
+        "correct": 1,
+        "explanation": "El oxígeno (O2) gana electrones al reducirse, por lo que es el agente oxidante que provoca la oxidación del hidrógeno."
+      },
+      {
+        "question": "¿Qué sucede con el número de oxidación del cloro cuando pasa de Cl2 a Cl-?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "No cambia",
+          "Se duplica"
+        ],
+        "correct": 1,
+        "explanation": "El cloro pasa de 0 en Cl2 a -1 en Cl-, ganando electrones, por lo que su número de oxidación disminuye (se reduce)."
+      },
+      {
+        "question": "En una reacción redox, si una especie se oxida, ¿qué debe ocurrir con otra especie?",
+        "options": [
+          "También se oxida",
+          "Se reduce",
+          "No cambia",
+          "Se descompone"
+        ],
+        "correct": 1,
+        "explanation": "En una reacción redox, la oxidación de una especie va acompañada de la reducción de otra, porque los electrones perdidos deben ser ganados."
       }
     ]
   },
@@ -1648,6 +3188,61 @@
         ],
         "correct": 2,
         "explanation": "El agua pura es neutra porque la concentración de H+ y OH- es igual, dando pH 7."
+      },
+      {
+        "question": "¿Cuál es la concentración de iones hidronio en una solución neutra a 25°C?",
+        "options": [
+          "1 x 10^-7 M",
+          "1 x 10^-14 M",
+          "7 M",
+          "0 M"
+        ],
+        "correct": 0,
+        "explanation": "En una solución neutra, la concentración de iones hidronio es igual a la de iones hidroxilo, ambas de 1 x 10^-7 M a 25°C."
+      },
+      {
+        "question": "Si una solución tiene un pH de 7, ¿cómo es la concentración de iones H+ respecto a la de iones OH-?",
+        "options": [
+          "Mayor",
+          "Menor",
+          "Igual",
+          "No se puede determinar"
+        ],
+        "correct": 2,
+        "explanation": "En una solución neutra, las concentraciones de H+ y OH- son iguales, por eso el pH es 7."
+      },
+      {
+        "question": "¿Qué sucede con el pH del agua pura si se le añade un ácido?",
+        "options": [
+          "Aumenta",
+          "Disminuye",
+          "Se mantiene en 7",
+          "Se vuelve básico"
+        ],
+        "correct": 1,
+        "explanation": "Al añadir un ácido, aumenta la concentración de H+, por lo que el pH disminuye por debajo de 7."
+      },
+      {
+        "question": "El agua pura a 25°C tiene un pH de 7. ¿Qué valor de pOH tendrá?",
+        "options": [
+          "7",
+          "0",
+          "14",
+          "1"
+        ],
+        "correct": 0,
+        "explanation": "En agua pura, pH + pOH = 14, por lo que si pH=7, entonces pOH=7."
+      },
+      {
+        "question": "¿Cuál de las siguientes soluciones tiene pH neutro?",
+        "options": [
+          "Agua de mar",
+          "Agua pura",
+          "Jugo de limón",
+          "Leche de magnesia"
+        ],
+        "correct": 1,
+        "explanation": "El agua pura tiene pH 7, mientras que el agua de mar es ligeramente básica, el jugo de limón ácido y la leche de magnesia básica."
       }
     ]
   }

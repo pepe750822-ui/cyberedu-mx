@@ -61,8 +61,15 @@ type QuizPhase =
       subindice: string;
       questions: QuizQuestion[];
       answers: (number | null)[];
+      currentSet: 1 | 2;
     }
-  | { phase: "results"; subindice: string; questions: QuizQuestion[]; answers: number[] };
+  | {
+      phase: "results";
+      subindice: string;
+      questions: QuizQuestion[];
+      answers: number[];
+      currentSet: 1 | 2;
+    };
 
 // Helper to shuffle an array (Fisher-Yates)
 function shuffleArray<T>(array: T[]): T[] {
@@ -145,18 +152,30 @@ export default function PracticaSubindice() {
   const toggleArea = (i: number) =>
     setOpenArea((prev) => (prev === i ? null : i));
 
-  const handlePractice = (concepto: string) => {
+  const handlePractice = (concepto: string, setNumber: 1 | 2 = 1) => {
     const slug = createSlug(concepto.split(":")[0]);
-    const questions = staticBank[slug];
-    if (!questions || questions.length === 0) return;
+    const allQuestions = staticBank[slug];
+    if (!allQuestions || allQuestions.length === 0) return;
 
-    const randomizedQuestions = shuffleArray(questions).map(shuffleQuizQuestion);
+    let targetQuestions = [];
+    if (setNumber === 1) {
+      targetQuestions = allQuestions.slice(0, 5);
+    } else {
+      targetQuestions = allQuestions.slice(5, 10);
+      // Fallback if there are no questions in set 2 yet
+      if (targetQuestions.length === 0) {
+        targetQuestions = allQuestions.slice(0, 5);
+      }
+    }
+
+    const randomizedQuestions = shuffleArray(targetQuestions).map(shuffleQuizQuestion);
 
     setQuiz({
       phase: "quiz",
       subindice: concepto.split(":")[0],
       questions: randomizedQuestions,
       answers: new Array(randomizedQuestions.length).fill(null),
+      currentSet: setNumber,
     });
   };
 
@@ -177,6 +196,7 @@ export default function PracticaSubindice() {
       subindice: quiz.subindice,
       questions: quiz.questions,
       answers: completeAnswers,
+      currentSet: quiz.currentSet,
     });
   };
 
@@ -613,6 +633,22 @@ export default function PracticaSubindice() {
 
                   {/* Actions */}
                   <div className="space-y-3">
+                    {(() => {
+                      const slug = createSlug(quiz.subindice);
+                      const totalQs = staticBank[slug]?.length ?? 0;
+                      if (totalQs > 5) {
+                        return (
+                          <button
+                            onClick={() => handlePractice(quiz.subindice + ":", quiz.currentSet === 1 ? 2 : 1)}
+                            className="w-full h-12 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-violet-500/20 flex items-center justify-center gap-2"
+                          >
+                            {quiz.currentSet === 1 ? "👉 Ver las otras 5 preguntas" : "👈 Volver a las primeras 5 preguntas"}
+                          </button>
+                        );
+                      }
+                      return null;
+                    })()}
+
                     <div className="flex gap-3">
                       <button
                         onClick={() => setQuiz({ phase: "idle" })}
@@ -622,18 +658,12 @@ export default function PracticaSubindice() {
                         Volver a Práctica por Tema
                       </button>
                       <button
-                        onClick={() => setQuiz({ phase: "idle" })}
-                        className="flex-1 h-12 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm transition-colors"
+                        onClick={() => handlePractice(quiz.subindice + ":", quiz.currentSet)}
+                        className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-primary/20"
                       >
-                        Practicar otro tema
+                        Repetir este grupo
                       </button>
                     </div>
-                    <button
-                      onClick={() => { const slug = createSlug((quiz as any).subindice); const qs = staticBank[slug]; if (qs) setQuiz({ phase: "quiz", subindice: (quiz as any).subindice, questions: shuffleArray(qs).map(shuffleQuizQuestion), answers: new Array(qs.length).fill(null) }); }}
-                      className="w-full h-12 rounded-xl bg-primary hover:bg-primary/80 text-white font-black uppercase tracking-wide text-xs transition-colors shadow-lg shadow-primary/20"
-                    >
-                      Repetir subíndice
-                    </button>
                   </div>
                 </div>
               )}

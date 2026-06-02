@@ -55,6 +55,61 @@
         ],
         "correct": 1,
         "explanation": "Es explícita porque el texto menciona directamente cuál es la capital, sin necesidad de interpretación."
+      },
+      {
+        "question": "En el texto 'El niño llevaba una mochila azul', ¿qué información es explícita?",
+        "options": [
+          "El niño iba a la escuela",
+          "La mochila era azul",
+          "El niño tenía hambre",
+          "La mochila era pesada"
+        ],
+        "correct": 1,
+        "explanation": "La frase dice directamente que la mochila era azul, sin necesidad de interpretar."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones contiene información explícita?",
+        "options": [
+          "María estaba triste porque perdió su juguete",
+          "El perro ladró fuerte",
+          "Juan seguramente llegará tarde",
+          "Quizá llueva mañana"
+        ],
+        "correct": 1,
+        "explanation": "'El perro ladró fuerte' es un hecho directo, mientras las otras opciones requieren inferencia o suposición."
+      },
+      {
+        "question": "Si un texto dice 'La maestra explicó la lección de matemáticas', la información explícita es que:",
+        "options": [
+          "La lección era difícil",
+          "La maestra explicó matemáticas",
+          "Los alumnos entendieron",
+          "La clase duró una hora"
+        ],
+        "correct": 1,
+        "explanation": "El texto dice directamente que la maestra explicó matemáticas, sin añadir detalles."
+      },
+      {
+        "question": "Al leer 'El gato negro saltó sobre la mesa', ¿qué dato es explícito?",
+        "options": [
+          "El gato era travieso",
+          "El gato saltó sobre la mesa",
+          "La mesa era de madera",
+          "El gato tenía hambre"
+        ],
+        "correct": 1,
+        "explanation": "La oración afirma que el gato saltó sobre la mesa; los otros datos no están escritos."
+      },
+      {
+        "question": "¿Qué caracteriza a la información explícita en un texto?",
+        "options": [
+          "Requiere deducir significados ocultos",
+          "Se expresa de manera clara y directa",
+          "Depende de la opinión del lector",
+          "Siempre está al final del texto"
+        ],
+        "correct": 1,
+        "explanation": "La información explícita es aquella que el autor escribe sin rodeos, sin necesidad de interpretación."
       }
     ]
   },
@@ -114,6 +169,61 @@
         ],
         "correct": 2,
         "explanation": "Si las premisas son verdaderas y el razonamiento es válido, la conclusión también será verdadera."
+      },
+      {
+        "question": "En un texto argumentativo, la conclusión es la idea principal que se defiende. ¿Cuál de las siguientes afirmaciones sobre la conclusión es correcta?",
+        "options": [
+          "Debe ser una opinión personal sin relación con las premisas.",
+          "Se deriva lógicamente de las premisas presentadas.",
+          "Puede contradecir la información de las premisas.",
+          "Siempre es falsa si las premisas son falsas."
+        ],
+        "correct": 1,
+        "explanation": "La conclusión se infiere de las premisas mediante un razonamiento lógico; si las premisas son verdaderas y el razonamiento es correcto, la conclusión será verdadera."
+      },
+      {
+        "question": "Lee el argumento: 'Los planetas giran alrededor del Sol. Marte es un planeta. Por lo tanto, Marte gira alrededor del Sol.' ¿Qué función cumple la última oración?",
+        "options": [
+          "Es una premisa.",
+          "Es una conclusión.",
+          "Es una hipótesis.",
+          "Es una opinión."
+        ],
+        "correct": 1,
+        "explanation": "La última oración es la conclusión porque se deriva de las premisas anteriores, que son generales y específicas."
+      },
+      {
+        "question": "¿Qué sucede si en un argumento las premisas son verdaderas pero la conclusión es falsa?",
+        "options": [
+          "El argumento es válido.",
+          "El razonamiento es incorrecto.",
+          "La conclusión es correcta.",
+          "Las premisas son falsas."
+        ],
+        "correct": 1,
+        "explanation": "Si las premisas son verdaderas y la conclusión es falsa, el razonamiento lógico tiene un error, por lo que el argumento no es válido."
+      },
+      {
+        "question": "En un texto argumentativo, ¿cómo se reconoce la conclusión?",
+        "options": [
+          "Es la primera oración del texto.",
+          "Contiene palabras como 'porque' o 'ya que'.",
+          "Generalmente se introduce con 'por lo tanto' o 'en conclusión'.",
+          "Siempre es una pregunta."
+        ],
+        "correct": 2,
+        "explanation": "Las conclusiones suelen ir precedidas de conectores como 'por lo tanto', 'en conclusión' o 'entonces', que indican que se está cerrando el argumento."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones NO es una conclusión válida para el argumento: 'Todos los mamíferos tienen pelo. El perro es un mamífero.'?",
+        "options": [
+          "El perro tiene pelo.",
+          "Algunos mamíferos no tienen pelo.",
+          "El perro es un animal.",
+          "Los mamíferos son vertebrados."
+        ],
+        "correct": 1,
+        "explanation": "La conclusión debe derivarse lógicamente de las premisas. 'Algunos mamíferos no tienen pelo' contradice la primera premisa, por lo que no es una conclusión válida."
       }
     ]
   },
@@ -173,6 +283,61 @@
         ],
         "correct": 1,
         "explanation": "'Correr 30 minutos al día reduce el riesgo de enfermedades cardíacas' es un ejemplo concreto que apoya la idea principal de que el deporte es saludable."
+      },
+      {
+        "question": "En el texto 'La fotosíntesis es el proceso por el cual las plantas producen su alimento. Por ejemplo, las hojas absorben la luz solar y la convierten en energía.', ¿cuál es la idea secundaria?",
+        "options": [
+          "La fotosíntesis produce alimento.",
+          "Las hojas absorben la luz solar.",
+          "Las plantas necesitan luz.",
+          "La energía es importante."
+        ],
+        "correct": 1,
+        "explanation": "La idea secundaria ejemplifica la principal: explica que las hojas absorben luz solar para convertirla en energía."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones representa una idea secundaria en un texto sobre la contaminación del agua?",
+        "options": [
+          "La contaminación del agua es un problema grave.",
+          "Los desechos industriales contaminan ríos y lagos.",
+          "El agua es esencial para la vida.",
+          "Debemos cuidar el agua."
+        ],
+        "correct": 1,
+        "explanation": "La opción B detalla un ejemplo específico de cómo se contamina el agua, apoyando la idea principal."
+      },
+      {
+        "question": "Identifica la idea secundaria en: 'El ejercicio regular mejora la salud. Por ejemplo, correr 30 minutos al día fortalece el corazón.'",
+        "options": [
+          "El ejercicio regular mejora la salud.",
+          "Correr fortalece el corazón.",
+          "La salud es importante.",
+          "El ejercicio cansa."
+        ],
+        "correct": 1,
+        "explanation": "La oración 'correr 30 minutos al día fortalece el corazón' ejemplifica cómo el ejercicio mejora la salud."
+      },
+      {
+        "question": "En un texto sobre la importancia de la lectura, ¿cuál sería una idea secundaria?",
+        "options": [
+          "Leer es fundamental para el aprendizaje.",
+          "La lectura desarrolla la imaginación y el pensamiento crítico.",
+          "Todos deberían leer más.",
+          "Los libros son valiosos."
+        ],
+        "correct": 1,
+        "explanation": "La opción B explica beneficios específicos de la lectura, apoyando la idea principal de su importancia."
+      },
+      {
+        "question": "En el párrafo 'El calentamiento global es causado por la emisión de gases. Por ejemplo, el dióxido de carbono atrapa el calor en la atmósfera.', ¿cuál es la idea secundaria?",
+        "options": [
+          "El calentamiento global es causado por gases.",
+          "El dióxido de carbono atrapa el calor.",
+          "Los gases son dañinos.",
+          "La atmósfera se calienta."
+        ],
+        "correct": 1,
+        "explanation": "La idea secundaria ejemplifica cómo un gas específico contribuye al calentamiento global."
       }
     ]
   },
@@ -232,6 +397,62 @@
         ],
         "correct": 1,
         "explanation": "Mirar al techo, el reloj, suspirar y tener la hoja en blanco indican que no conoce las respuestas o está bloqueado."
+      },
+      {
+        "question": "Del texto: 'El sol se ocultaba tras las montañas cuando Laura encendió la linterna. El sendero se volvía borroso.' ¿Qué momento del día se infiere?",
+        "options": [
+          "Mediodía",
+          "Amanecer",
+          "Atardecer",
+          "Medianoche"
+        ],
+        "correct": 2,
+        "explanation": "Se menciona que el sol se ocultaba, lo que indica que es atardecer."
+      },
+      {
+        "question": "En 'Carlos tomó el paraguas antes de salir. Miró al cielo nublado y suspiró.' ¿Qué clima se infiere?",
+        "options": [
+          "Soleado",
+          "Lluvioso",
+          "Nevado",
+          "Ventoso"
+        ],
+        "correct": 1,
+        "option": "Lluvioso",
+        "explanation": "Tomar un paraguas y ver el cielo nublado sugiere que va a llover."
+      },
+      {
+        "question": "Del texto: 'El jefe llamó a Luis a su oficina. Al salir, Luis tenía los ojos brillantes y una sonrisa.' ¿Qué emoción se infiere?",
+        "options": [
+          "Tristeza",
+          "Enojo",
+          "Alegría",
+          "Miedo"
+        ],
+        "correct": 2,
+        "explanation": "Los ojos brillantes y la sonrisa indican alegría o satisfacción."
+      },
+      {
+        "question": "En 'La abuela guardó las fotos viejas en un álbum. Sus manos temblaban al pasar las hojas.' ¿Qué se infiere sobre la abuela?",
+        "options": [
+          "Está enojada",
+          "Está nostálgica",
+          "Tiene frío",
+          "Está apurada"
+        ],
+        "correct": 1,
+        "explanation": "Guardar fotos viejas y temblar al pasar hojas sugiere nostalgia o emoción."
+      },
+      {
+        "question": "Del texto: 'El perro se acercó al plato de comida, lo olió y se fue sin comer. Luego se acostó en su cama.' ¿Qué se infiere?",
+        "options": [
+          "El perro está enfermo",
+          "El perro está feliz",
+          "El perro tiene hambre",
+          "El perro quiere jugar"
+        ],
+        "correct": 0,
+        "explanation": "Que no coma y se acueste indica que podría estar enfermo o sin apetito."
       }
     ]
   },
@@ -291,6 +512,61 @@
         ],
         "correct": 1,
         "explanation": "La idea principal es que las abejas cumplen funciones vitales para el medio ambiente, no solo una."
+      },
+      {
+        "question": "Un texto describe que el reciclaje reduce la contaminación, ahorra energía y conserva recursos naturales. ¿Cuál es la idea principal?",
+        "options": [
+          "El reciclaje tiene múltiples beneficios ambientales.",
+          "El reciclaje ahorra energía.",
+          "La contaminación se reduce con el reciclaje.",
+          "Los recursos naturales se conservan."
+        ],
+        "correct": 0,
+        "explanation": "La idea principal es el beneficio general del reciclaje, no solo un aspecto específico."
+      },
+      {
+        "question": "En un texto que explica que los árboles producen oxígeno, absorben dióxido de carbono y proporcionan sombra, ¿cuál es la idea principal?",
+        "options": [
+          "Los árboles producen oxígeno.",
+          "Los árboles absorben dióxido de carbono.",
+          "Los árboles son esenciales para el medio ambiente.",
+          "Los árboles proporcionan sombra."
+        ],
+        "correct": 2,
+        "explanation": "La idea principal es que los árboles cumplen funciones vitales para el ambiente, no solo una función específica."
+      },
+      {
+        "question": "Un texto narra cómo un estudiante, después de esforzarse y practicar, logra mejorar sus calificaciones en matemáticas. ¿Cuál es la idea principal implícita?",
+        "options": [
+          "Las matemáticas son difíciles.",
+          "El esfuerzo y la práctica llevan al éxito.",
+          "El estudiante obtuvo mejores calificaciones.",
+          "Practicar es importante."
+        ],
+        "correct": 1,
+        "explanation": "La idea implícita es que el esfuerzo y la práctica son la clave del logro, no solo el resultado."
+      },
+      {
+        "question": "Un artículo menciona que el ejercicio regular fortalece el corazón, mejora el estado de ánimo y ayuda a controlar el peso. ¿Cuál es la idea principal?",
+        "options": [
+          "El ejercicio fortalece el corazón.",
+          "El ejercicio mejora el estado de ánimo.",
+          "El ejercicio tiene múltiples beneficios para la salud.",
+          "El ejercicio ayuda a controlar el peso."
+        ],
+        "correct": 2,
+        "explanation": "La idea principal es que el ejercicio ofrece varios beneficios, no solo uno en particular."
+      },
+      {
+        "question": "En un texto que describe cómo las redes sociales permiten conectar personas, compartir información y expresar opiniones, ¿cuál es la idea principal?",
+        "options": [
+          "Las redes sociales conectan personas.",
+          "Las redes sociales permiten compartir información.",
+          "Las redes sociales son herramientas de comunicación.",
+          "Las redes sociales permiten expresar opiniones."
+        ],
+        "correct": 2,
+        "explanation": "La idea principal es que las redes sociales funcionan como herramientas de comunicación, abarcando todas las funciones mencionadas."
       }
     ]
   },
@@ -350,6 +626,61 @@
         ],
         "correct": 1,
         "explanation": "El exceso de lluvias (causa) generó inundaciones (consecuencia)."
+      },
+      {
+        "question": "Lee el siguiente texto: 'La deforestación provoca la pérdida de hábitats naturales.' ¿Cuál es la consecuencia?",
+        "options": [
+          "La deforestación",
+          "La pérdida de hábitats naturales",
+          "El aumento de árboles",
+          "La conservación"
+        ],
+        "correct": 1,
+        "explanation": "La consecuencia es lo que sucede debido a la causa. Aquí, la deforestación es la causa y la pérdida de hábitats es el efecto."
+      },
+      {
+        "question": "En el texto: 'A diferencia de las fábulas, los cuentos de hadas incluyen magia.' ¿Qué relación se establece?",
+        "options": [
+          "Causa-consecuencia",
+          "Oposición",
+          "Comparación",
+          "Secuencia"
+        ],
+        "correct": 1,
+        "explanation": "La frase 'a diferencia de' indica una oposición o contraste entre fábulas y cuentos de hadas."
+      },
+      {
+        "question": "Lee: 'El consumo excesivo de azúcar puede causar diabetes.' ¿Cuál es la causa?",
+        "options": [
+          "La diabetes",
+          "El consumo excesivo de azúcar",
+          "El ejercicio",
+          "La alimentación saludable"
+        ],
+        "correct": 1,
+        "explanation": "La causa es lo que origina el efecto. Aquí, el consumo excesivo de azúcar es la causa de la diabetes."
+      },
+      {
+        "question": "En el enunciado: 'Mientras que el norte es frío, el sur es cálido.' ¿Qué tipo de relación hay?",
+        "options": [
+          "Causa-consecuencia",
+          "Oposición",
+          "Ejemplificación",
+          "Adición"
+        ],
+        "correct": 1,
+        "explanation": "La expresión 'mientras que' señala un contraste entre las características del norte y del sur."
+      },
+      {
+        "question": "Lee: 'La falta de ejercicio genera problemas de salud.' ¿Cuál es la consecuencia?",
+        "options": [
+          "La falta de ejercicio",
+          "Los problemas de salud",
+          "El descanso",
+          "La buena alimentación"
+        ],
+        "correct": 1,
+        "explanation": "La consecuencia es el resultado de la causa. La falta de ejercicio causa problemas de salud."
       }
     ],
     "explanations": []
@@ -410,6 +741,61 @@
         ],
         "correct": 2,
         "explanation": "Las instrucciones siguen un orden secuencial; el paso anterior precede al paso final."
+      },
+      {
+        "question": "En un texto histórico, ¿cuál es el orden correcto de los siguientes eventos: descubrimiento, exploración, conquista?",
+        "options": [
+          "Descubrimiento, exploración, conquista",
+          "Exploración, descubrimiento, conquista",
+          "Conquista, exploración, descubrimiento",
+          "Descubrimiento, conquista, exploración"
+        ],
+        "correct": 0,
+        "explanation": "El orden lógico es primero descubrir, luego explorar y finalmente conquistar."
+      },
+      {
+        "question": "En un cuento, ¿qué elemento aparece inmediatamente después del planteamiento?",
+        "options": [
+          "Desenlace",
+          "Nudo",
+          "Clímax",
+          "Resolución"
+        ],
+        "correct": 1,
+        "explanation": "Después del planteamiento viene el nudo, donde se desarrolla el conflicto."
+      },
+      {
+        "question": "Al leer un texto instructivo, ¿qué se debe hacer antes de enumerar los materiales?",
+        "options": [
+          "Explicar el procedimiento",
+          "Dar advertencias de seguridad",
+          "Indicar el objetivo de la actividad",
+          "Mostrar el resultado final"
+        ],
+        "correct": 2,
+        "explanation": "Primero se debe indicar el objetivo para entender qué se va a hacer."
+      },
+      {
+        "question": "En una noticia, ¿qué información se presenta primero?",
+        "options": [
+          "Los detalles secundarios",
+          "El contexto histórico",
+          "Los hechos principales",
+          "Las opiniones de testigos"
+        ],
+        "correct": 2,
+        "explanation": "La noticia inicia con los hechos más importantes para captar la atención."
+      },
+      {
+        "question": "En un texto argumentativo, ¿qué debe ir antes de la conclusión?",
+        "options": [
+          "La tesis",
+          "Los argumentos",
+          "El título",
+          "La introducción"
+        ],
+        "correct": 1,
+        "explanation": "Primero se presentan los argumentos que apoyan la tesis, luego la conclusión."
       }
     ]
   },
@@ -469,6 +855,61 @@
         ],
         "correct": 0,
         "explanation": "El médico trabaja en el hospital, el maestro trabaja en la escuela; la relación es de profesión con su lugar de trabajo."
+      },
+      {
+        "question": "¿Qué palabra completa la analogía? 'Ojos es a ver como oídos es a...'",
+        "options": [
+          "Oír",
+          "Escuchar",
+          "Sonido",
+          "Audífonos"
+        ],
+        "correct": 0,
+        "explanation": "Los ojos sirven para ver, así como los oídos sirven para oír. La relación es función del órgano."
+      },
+      {
+        "question": "En la analogía 'feliz es a triste como amor es a odio', ¿qué tipo de relación existe?",
+        "options": [
+          "Sinonimia",
+          "Antonimia",
+          "Causa-efecto",
+          "Parte-todo"
+        ],
+        "correct": 1,
+        "explanation": "Feliz y triste son antónimos, al igual que amor y odio. La relación es de oposición."
+      },
+      {
+        "question": "¿Qué opción completa la analogía? 'Perro es a ladrar como gato es a...'",
+        "options": [
+          "Maullar",
+          "Ronronear",
+          "Morder",
+          "Saltar"
+        ],
+        "correct": 0,
+        "explanation": "El perro produce el sonido ladrar, así como el gato produce el sonido maullar. Relación de animal y su sonido característico."
+      },
+      {
+        "question": "En la analogía 'lluvia es a mojar como sol es a secar', ¿qué tipo de relación existe?",
+        "options": [
+          "Causa-efecto",
+          "Sinonimia",
+          "Antonimia",
+          "Parte-todo"
+        ],
+        "correct": 0,
+        "explanation": "La lluvia causa mojar, y el sol causa secar. Es una relación de causa y efecto."
+      },
+      {
+        "question": "¿Qué palabra completa la analogía? 'Coche es a gasolina como persona es a...'",
+        "options": [
+          "Comida",
+          "Agua",
+          "Energía",
+          "Oxígeno"
+        ],
+        "correct": 0,
+        "explanation": "El coche necesita gasolina para funcionar, así como la persona necesita comida para tener energía. Relación de necesidad."
       }
     ]
   },
@@ -529,6 +970,61 @@
         ],
         "correct": 2,
         "explanation": "Las palabras 'primero', 'luego' y 'finalmente' indican una secuencia temporal."
+      },
+      {
+        "question": "En el texto 'La historia del chocolate', se narra que los mayas fueron los primeros en cultivar el cacao. Luego, los españoles lo llevaron a Europa. ¿Qué tipo de relación temporal existe entre estos dos eventos?",
+        "options": [
+          "A. Simultaneidad",
+          "B. Anterioridad",
+          "C. Posteridad",
+          "D. Causa-efecto"
+        ],
+        "correct": 1,
+        "explanation": "El evento de los mayas cultivando cacao ocurrió antes de que los españoles lo llevaran a Europa, por lo que hay una relación de anterioridad."
+      },
+      {
+        "question": "Lee el siguiente fragmento: 'Por ejemplo, en la novela 'Cien años de soledad', Gabriel García Márquez utiliza el realismo mágico para narrar la historia de la familia Buendía.' ¿Qué función cumple esta oración en el texto?",
+        "options": [
+          "A. Introducir un nuevo tema",
+          "B. Ejemplificar un concepto",
+          "C. Concluir una idea",
+          "D. Describir un personaje"
+        ],
+        "correct": 1,
+        "explanation": "La oración presenta un caso específico (la novela) para ilustrar el concepto de realismo mágico, por lo que es un ejemplo."
+      },
+      {
+        "question": "Ordena cronológicamente los siguientes eventos del cuento 'El árbol mágico': I. El niño plantó la semilla. II. El árbol dio frutos dorados. III. El niño encontró la semilla en el bosque. IV. El niño compartió los frutos con su familia.",
+        "options": [
+          "A. III, I, II, IV",
+          "B. I, III, II, IV",
+          "C. III, II, I, IV",
+          "D. II, III, I, IV"
+        ],
+        "correct": 0,
+        "explanation": "Primero encontró la semilla (III), luego la plantó (I), después dio frutos (II) y finalmente los compartió (IV)."
+      },
+      {
+        "question": "En el artículo 'Cómo hacer pan casero', se incluye la siguiente oración: 'Por ejemplo, si usas harina integral, el pan será más denso.' ¿Qué tipo de recurso es esta oración?",
+        "options": [
+          "A. Definición",
+          "B. Comparación",
+          "C. Ejemplificación",
+          "D. Causa-efecto"
+        ],
+        "correct": 2,
+        "explanation": "La oración ilustra con un caso específico (harina integral) cómo afecta la densidad del pan, por lo que es un ejemplo."
+      },
+      {
+        "question": "Lee el siguiente texto: 'El lunes, María fue al mercado. El martes, preparó la cena. El miércoles, invitó a sus amigos.' ¿Qué tipo de estructura predomina?",
+        "options": [
+          "A. Descriptiva",
+          "B. Cronológica",
+          "C. Argumentativa",
+          "D. Comparativa"
+        ],
+        "correct": 1,
+        "explanation": "Los eventos se presentan en orden temporal (lunes, martes, miércoles), por lo que predomina la estructura cronológica."
       }
     ]
   },
@@ -588,6 +1084,61 @@
         ],
         "correct": 1,
         "explanation": "La primera oración habla de políticas en general; la segunda cita un caso específico en México como ejemplo de esas políticas."
+      },
+      {
+        "question": "Lee el texto: 'Los ecosistemas marinos son fundamentales para la vida en la Tierra. En particular, los arrecifes de coral albergan una gran diversidad de especies.' ¿Cuál es la función de la segunda oración respecto a la primera?",
+        "options": [
+          "Contradecir la idea principal",
+          "Presentar un ejemplo específico",
+          "Ampliar el tema de manera general",
+          "Introducir una causa"
+        ],
+        "correct": 1,
+        "explanation": "La primera oración habla de ecosistemas marinos en general, y la segunda se enfoca en los arrecifes de coral como un caso particular, por lo que la relación es de general a específico."
+      },
+      {
+        "question": "En el texto: 'La tecnología ha transformado la comunicación. Por ejemplo, los teléfonos inteligentes permiten enviar mensajes al instante.' La expresión 'por ejemplo' indica que la segunda oración:",
+        "options": [
+          "Explica una causa de la primera",
+          "Ilustra con un caso concreto la idea general",
+          "Presenta una consecuencia opuesta",
+          "Compara dos tecnologías"
+        ],
+        "correct": 1,
+        "explanation": "'Por ejemplo' introduce un caso específico que ejemplifica la afirmación general sobre la transformación de la comunicación."
+      },
+      {
+        "question": "Del texto: 'La contaminación del aire afecta la salud humana. En las grandes ciudades, el smog incrementa los casos de enfermedades respiratorias.' ¿Qué tipo de relación existe entre ambas oraciones?",
+        "options": [
+          "Causa-efecto",
+          "General-particular",
+          "Problema-solución",
+          "Comparación"
+        ],
+        "correct": 1,
+        "explanation": "La primera oración es una afirmación general sobre la contaminación del aire, y la segunda la particulariza al mencionar las grandes ciudades y el smog."
+      },
+      {
+        "question": "Lee: 'El reciclaje ayuda a reducir los desechos. Por ejemplo, reciclar una tonelada de papel salva 17 árboles.' La palabra 'por ejemplo' señala que la segunda parte:",
+        "options": [
+          "Muestra una consecuencia negativa",
+          "Ofrece un dato concreto que apoya la idea general",
+          "Introduce una excepción",
+          "Cambia el tema completamente"
+        ],
+        "correct": 1,
+        "explanation": "'Por ejemplo' introduce un dato específico que sirve como evidencia de la afirmación general sobre el reciclaje."
+      },
+      {
+        "question": "En el texto: 'La educación es clave para el desarrollo de un país. En Finlandia, el sistema educativo se basa en la equidad y la confianza.' La relación entre las oraciones es:",
+        "options": [
+          "De contraste",
+          "De general a particular",
+          "De causa y efecto",
+          "De adición"
+        ],
+        "correct": 1,
+        "explanation": "La primera oración es una declaración general sobre la educación, y la segunda la ejemplifica con el caso específico de Finlandia."
       }
     ]
   },
@@ -647,6 +1198,61 @@
         ],
         "correct": 0,
         "explanation": "'Veloz' significa que se mueve rápido, igual que 'rápido'."
+      },
+      {
+        "question": "¿Cuál es el sinónimo de 'efímero'?",
+        "options": [
+          "Duradero",
+          "Breve",
+          "Constante",
+          "Lento"
+        ],
+        "correct": 1,
+        "explanation": "Efímero significa que dura poco tiempo, por lo que su sinónimo es breve."
+      },
+      {
+        "question": "¿Cuál es el sinónimo de 'candoroso'?",
+        "options": [
+          "Astuto",
+          "Ingenuo",
+          "Malicioso",
+          "Desconfiado"
+        ],
+        "correct": 1,
+        "explanation": "Candoroso se refiere a una persona inocente y sin malicia, es sinónimo de ingenuo."
+      },
+      {
+        "question": "¿Cuál es el sinónimo de 'opulencia'?",
+        "options": [
+          "Pobreza",
+          "Riqueza",
+          "Sencillez",
+          "Escasez"
+        ],
+        "correct": 1,
+        "explanation": "Opulencia significa abundancia de bienes y riqueza, por lo que su sinónimo es riqueza."
+      },
+      {
+        "question": "¿Cuál es el sinónimo de 'frugal'?",
+        "options": [
+          "Derrochador",
+          "Moderado",
+          "Generoso",
+          "Excesivo"
+        ],
+        "correct": 1,
+        "explanation": "Frugal se aplica a quien es moderado al comer o gastar, su sinónimo es moderado."
+      },
+      {
+        "question": "¿Cuál es el sinónimo de 'intrépido'?",
+        "options": [
+          "Cobarde",
+          "Valiente",
+          "Tímido",
+          "Precavido"
+        ],
+        "correct": 1,
+        "explanation": "Intrépido describe a alguien que no tiene miedo y actúa con audacia, es sinónimo de valiente."
       }
     ]
   },
@@ -706,6 +1312,61 @@
         ],
         "correct": 1,
         "explanation": "Fértil significa que produce mucho, mientras que árido significa seco y poco productivo, por lo que son opuestos."
+      },
+      {
+        "question": "Selecciona el antónimo de PRÓDIGO:",
+        "options": [
+          "A. Avaro",
+          "B. Generoso",
+          "C. Derrochador",
+          "D. Ostentoso"
+        ],
+        "correct": 0,
+        "explanation": "Pródigo significa que gasta sin medida; su antónimo es avaro, que es tacaño o que no gasta."
+      },
+      {
+        "question": "¿Cuál es el antónimo de EFÍMERO?",
+        "options": [
+          "A. Breve",
+          "B. Fugaz",
+          "C. Duradero",
+          "D. Pasajero"
+        ],
+        "correct": 2,
+        "explanation": "Efímero significa que dura poco tiempo; su antónimo es duradero, que perdura."
+      },
+      {
+        "question": "Elige el antónimo de BELIGERANTE:",
+        "options": [
+          "A. Agresivo",
+          "B. Pacífico",
+          "C. Hostil",
+          "D. Combatiente"
+        ],
+        "correct": 1,
+        "explanation": "Beligerante significa que está en guerra o es agresivo; su antónimo es pacífico, que busca la paz."
+      },
+      {
+        "question": "Identifica el antónimo de CANDOROSO:",
+        "options": [
+          "A. Ingenuo",
+          "B. Sincero",
+          "C. Pícaro",
+          "D. Simple"
+        ],
+        "correct": 2,
+        "explanation": "Candoroso significa inocente y sin malicia; su antónimo es pícaro, que es astuto o travieso."
+      },
+      {
+        "question": "Selecciona el antónimo de LACÓNICO:",
+        "options": [
+          "A. Breve",
+          "B. Conciso",
+          "C. Extenso",
+          "D. Sucinto"
+        ],
+        "correct": 2,
+        "explanation": "Lacónico significa que habla o escribe con pocas palabras; su antónimo es extenso, que es largo o detallado."
       }
     ]
   },
@@ -765,6 +1426,61 @@
         ],
         "correct": 1,
         "explanation": "La prudencia es una virtud; la arrogancia es un defecto, completando la analogía de tipo-categoría."
+      },
+      {
+        "question": "Selecciona la opción que completa la analogía: paciencia : virtud :: impaciencia : ?",
+        "options": [
+          "defecto",
+          "cualidad",
+          "vicio",
+          "fortaleza"
+        ],
+        "correct": 0,
+        "explanation": "La paciencia es una virtud, así como la impaciencia es un defecto, siguiendo la relación de tipo-categoría."
+      },
+      {
+        "question": "Analogía: humildad : virtud :: soberbia : ?",
+        "options": [
+          "defecto",
+          "virtud",
+          "don",
+          "talento"
+        ],
+        "correct": 0,
+        "explanation": "La humildad es una virtud, mientras que la soberbia es un defecto, estableciendo una oposición entre cualidades positivas y negativas."
+      },
+      {
+        "question": "Completa la analogía: gratitud : virtud :: ingratitud : ?",
+        "options": [
+          "defecto",
+          "cualidad",
+          "valor",
+          "mérito"
+        ],
+        "correct": 0,
+        "explanation": "La gratitud es una virtud, por lo que la ingratitud es su defecto correspondiente."
+      },
+      {
+        "question": "Analogía: sinceridad : virtud :: hipocresía : ?",
+        "options": [
+          "defecto",
+          "vicio",
+          "virtud",
+          "don"
+        ],
+        "correct": 0,
+        "explanation": "La sinceridad es una virtud, mientras que la hipocresía es un defecto, ya que son opuestos en el ámbito moral."
+      },
+      {
+        "question": "Selecciona la opción correcta: caridad : virtud :: avaricia : ?",
+        "options": [
+          "defecto",
+          "vicio",
+          "virtud",
+          "cualidad"
+        ],
+        "correct": 0,
+        "explanation": "La caridad es una virtud, y la avaricia es un defecto, siguiendo la misma relación de tipo-categoría."
       }
     ]
   },
@@ -824,6 +1540,61 @@
         ],
         "correct": 1,
         "explanation": "El contexto de 'con pruebas contundentes' indica que refutó es rechazar o demostrar que es falsa."
+      },
+      {
+        "question": "En la frase 'El testigo hizo una declaración veraz sobre lo ocurrido', la palabra 'veraz' significa:",
+        "options": [
+          "Falsa",
+          "Dudosa",
+          "Verdadera",
+          "Exagerada"
+        ],
+        "correct": 2,
+        "explanation": "Veraz significa que dice la verdad, por lo que en el contexto se refiere a una declaración verdadera."
+      },
+      {
+        "question": "Lee: 'La tormenta causó estragos en la ciudad, dejando calles inundadas y árboles caídos'. ¿Qué significa 'estragos'?",
+        "options": [
+          "Beneficios",
+          "Daños graves",
+          "Mejoras",
+          "Sorprendentes"
+        ],
+        "correct": 1,
+        "explanation": "Estragos se refiere a daños o destrucción grandes, como los causados por la tormenta."
+      },
+      {
+        "question": "En 'El juez se mostró imparcial al escuchar a ambas partes antes de decidir', 'imparcial' significa:",
+        "options": [
+          "Parcial",
+          "Justo y neutral",
+          "Injusto",
+          "Apasionado"
+        ],
+        "correct": 1,
+        "explanation": "Imparcial significa que no favorece a ninguna parte, actúa con justicia y neutralidad."
+      },
+      {
+        "question": "Lee: 'El artista plasmó sus emociones en el lienzo con colores vibrantes'. ¿Qué significa 'plasmó'?",
+        "options": [
+          "Borrón",
+          "Expresó o representó",
+          "Ocultó",
+          "Rompió"
+        ],
+        "correct": 1,
+        "explanation": "Plasmó significa que expresó o materializó sus emociones en la obra de arte."
+      },
+      {
+        "question": "En 'El gobierno implementó nuevas medidas para mejorar la seguridad', 'implementó' significa:",
+        "options": [
+          "Eliminó",
+          "Puso en práctica",
+          "Ignoró",
+          "Criticó"
+        ],
+        "correct": 1,
+        "explanation": "Implementar es poner en marcha o ejecutar algo, en este caso, las medidas de seguridad."
       }
     ]
   },
@@ -883,6 +1654,61 @@
         ],
         "correct": 2,
         "explanation": "'En mi opinión' señala una apreciación subjetiva. Las otras opciones presentan datos concretos que pueden ser verificados."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones representa un hecho?",
+        "options": [
+          "La Revolución Mexicana comenzó en 1910.",
+          "El libro más aburrido es 'Cien años de soledad'.",
+          "En mi opinión, el clima es agradable.",
+          "Creo que la educación es importante."
+        ],
+        "correct": 0,
+        "explanation": "Es un hecho porque se puede verificar históricamente; las otras expresan opiniones con frases como 'en mi opinión' o 'creo que'."
+      },
+      {
+        "question": "Selecciona la afirmación que es un hecho:",
+        "options": [
+          "El mejor deporte es el fútbol.",
+          "Creo que la lluvia es molesta.",
+          "El Everest es la montaña más alta del mundo.",
+          "En mi opinión, el color azul es bonito."
+        ],
+        "correct": 2,
+        "explanation": "Es un hecho geográfico verificable; las otras expresan preferencias o creencias."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones contiene una opinión?",
+        "options": [
+          "El carbono es un elemento químico.",
+          "La Segunda Guerra Mundial terminó en 1945.",
+          "Se cree que la lectura mejora la inteligencia.",
+          "El oxígeno es necesario para la combustión."
+        ],
+        "correct": 2,
+        "explanation": "Usa 'se cree que', indicando una creencia no comprobada; las demás son hechos científicos o históricos."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones expresa un hecho comprobable?",
+        "options": [
+          "El agua hierve a 100 grados Celsius al nivel del mar.",
+          "Creo que el agua hierve a 100 grados Celsius.",
+          "En mi opinión, el agua hierve a 100 grados.",
+          "Se cree que el agua hierve a 100 grados."
+        ],
+        "correct": 0,
+        "explanation": "Un hecho es objetivo y comprobable, como la temperatura de ebullición del agua. Las otras opciones incluyen 'creo que', 'en mi opinión' o 'se cree que', que indican opinión."
+      },
+      {
+        "question": "Identifica la afirmación que es una opinión:",
+        "options": [
+          "La capital de México es la Ciudad de México.",
+          "El metro de la Ciudad de México es el mejor del mundo.",
+          "La Revolución Mexicana comenzó en 1910.",
+          "El Sol es una estrella."
+        ],
+        "correct": 1,
+        "explanation": "La frase 'es el mejor del mundo' expresa una opinión personal, no un hecho comprobable. Las otras opciones son hechos verificables."
       }
     ]
   },
@@ -942,6 +1768,61 @@
         ],
         "correct": 0,
         "explanation": "El capítulo es una parte del libro, así como la escena es una parte de la película."
+      },
+      {
+        "question": "¿Qué opción completa la analogía: vela:barco = ?: casa?",
+        "options": [
+          "Puerta",
+          "Tejado",
+          "Ventana",
+          "Pared"
+        ],
+        "correct": 1,
+        "explanation": "La vela es una parte del barco, así como el tejado es una parte de la casa."
+      },
+      {
+        "question": "Completa la analogía: hoja:árbol = ?: flor",
+        "options": [
+          "Pétalo",
+          "Tallo",
+          "Raíz",
+          "Semilla"
+        ],
+        "correct": 0,
+        "explanation": "La hoja es parte del árbol, así como el pétalo es parte de la flor."
+      },
+      {
+        "question": "¿Cuál es la analogía parte-todo equivalente a uña:dedo?",
+        "options": [
+          "Pestaña:ojo",
+          "Codo:brazo",
+          "Rodilla:pierna",
+          "Cabello:cabeza"
+        ],
+        "correct": 0,
+        "explanation": "La uña es una parte del dedo, así como la pestaña es una parte del ojo."
+      },
+      {
+        "question": "Selecciona la opción que completa la analogía: rueda:coche = ?: avión",
+        "options": [
+          "Ala",
+          "Motor",
+          "Hélice",
+          "Turbina"
+        ],
+        "correct": 0,
+        "explanation": "La rueda es una parte del coche, así como el ala es una parte del avión."
+      },
+      {
+        "question": "Completa la analogía: ventana:edificio = ?: cuerpo",
+        "options": [
+          "Ojo",
+          "Boca",
+          "Nariz",
+          "Oreja"
+        ],
+        "correct": 0,
+        "explanation": "La ventana es una abertura en un edificio, así como el ojo es una abertura en el cuerpo para ver."
       }
     ]
   },
@@ -1001,6 +1882,61 @@
         ],
         "correct": 0,
         "explanation": "El cuchillo se usa para cortar, por lo que la relación es de objeto con su función."
+      },
+      {
+        "question": "¿Qué tipo de relación existe en el par 'pájaro : volar'?",
+        "options": [
+          "Agente-acción",
+          "Todo-parte",
+          "Sinonimia",
+          "Causa-efecto"
+        ],
+        "correct": 0,
+        "explanation": "El pájaro realiza la acción de volar, por lo que es una relación de agente-acción."
+      },
+      {
+        "question": "¿Qué tipo de relación existe en el par 'lápiz : escribir'?",
+        "options": [
+          "Objeto-función",
+          "Agente-acción",
+          "Parte-todo",
+          "Antonimia"
+        ],
+        "correct": 0,
+        "explanation": "El lápiz tiene la función de escribir, estableciendo una relación de objeto-función."
+      },
+      {
+        "question": "¿Qué tipo de relación existe en el par 'selva : árbol'?",
+        "options": [
+          "Todo-parte",
+          "Parte-todo",
+          "Agente-acción",
+          "Causa-efecto"
+        ],
+        "correct": 0,
+        "explanation": "La selva está compuesta por árboles, por lo que es una relación de todo-parte."
+      },
+      {
+        "question": "¿Qué tipo de relación existe en el par 'hambre : comer'?",
+        "options": [
+          "Causa-efecto",
+          "Agente-acción",
+          "Sinonimia",
+          "Objeto-función"
+        ],
+        "correct": 0,
+        "explanation": "El hambre causa la acción de comer, indicando una relación de causa-efecto."
+      },
+      {
+        "question": "¿Qué tipo de relación existe en el par 'feliz : contento'?",
+        "options": [
+          "Sinonimia",
+          "Antonimia",
+          "Agente-acción",
+          "Todo-parte"
+        ],
+        "correct": 0,
+        "explanation": "Feliz y contento son palabras con significado similar, por lo que es una relación de sinonimia."
       }
     ]
   },
@@ -1060,6 +1996,61 @@
         ],
         "correct": 1,
         "explanation": "Las canas son un efecto de la vejez; la sonrisa es un efecto de la alegría. Ambas son relaciones de causa-efecto."
+      },
+      {
+        "question": "Completa la analogía: hojas:otoño :: lluvia:?",
+        "options": [
+          "invierno",
+          "nubes",
+          "tormenta",
+          "primavera"
+        ],
+        "correct": 2,
+        "explanation": "Las hojas son efecto del otoño, así como la lluvia es efecto de una tormenta. Ambas relaciones son causa-efecto."
+      },
+      {
+        "question": "¿Qué palabra completa la analogía? sonrisa:alegría :: lágrimas:?",
+        "options": [
+          "tristeza",
+          "llanto",
+          "dolor",
+          "emoción"
+        ],
+        "correct": 0,
+        "explanation": "La sonrisa es causada por la alegría, así como las lágrimas son causadas por la tristeza. Es una relación de efecto a causa."
+      },
+      {
+        "question": "Selecciona la opción que mantiene la misma relación: sudor:calor :: ?",
+        "options": [
+          "hielo:frío",
+          "viento:tormenta",
+          "fuego:cenizas",
+          "sed:agua"
+        ],
+        "correct": 0,
+        "explanation": "El sudor es efecto del calor, así como el hielo es efecto del frío. Ambas son relaciones de efecto a causa."
+      },
+      {
+        "question": "Completa la analogía: herida:dolor :: incendio:?",
+        "options": [
+          "bomberos",
+          "calor",
+          "destrucción",
+          "humo"
+        ],
+        "correct": 2,
+        "explanation": "Una herida causa dolor, así como un incendio causa destrucción. Es una relación de causa a efecto."
+      },
+      {
+        "question": "¿Qué palabra completa la analogía? ensayo:error :: práctica:?",
+        "options": [
+          "deporte",
+          "perfección",
+          "ejercicio",
+          "habilidad"
+        ],
+        "correct": 1,
+        "explanation": "El ensayo permite corregir errores, así como la práctica lleva a la perfección. Ambas son relaciones de causa a efecto."
       }
     ]
   },
@@ -1119,6 +2110,61 @@
         ],
         "correct": 1,
         "explanation": "La sierra corta madera, así como las tijeras cortan tela; ambos son instrumentos para cortar un material específico."
+      },
+      {
+        "question": "Completa la analogía: cincel es a escultor como __________",
+        "options": [
+          "lapicero es a escritor",
+          "aguja es a costurera",
+          "pala es a albañil",
+          "tijeras es a peluquero"
+        ],
+        "correct": 1,
+        "explanation": "El cincel es la herramienta del escultor, así como la aguja es la herramienta de la costurera."
+      },
+      {
+        "question": "¿Qué par completa correctamente la analogía: volante es a automóvil como __________?",
+        "options": [
+          "timón es a barco",
+          "llave es a cerradura",
+          "motor es a vehículo",
+          "freno es a bicicleta"
+        ],
+        "correct": 0,
+        "explanation": "El volante controla el automóvil, así como el timón controla el barco."
+      },
+      {
+        "question": "Selecciona la analogía correcta: lupa es a aumento como __________",
+        "options": [
+          "telescopio es a distancia",
+          "microscopio es a célula",
+          "prismáticos es a visión",
+          "regla es a medición"
+        ],
+        "correct": 3,
+        "explanation": "La lupa sirve para aumentar, así como la regla sirve para medir."
+      },
+      {
+        "question": "Completa: cuchillo es a chef como __________",
+        "options": [
+          "espátula es a cocinero",
+          "sierra es a carpintero",
+          "pinzas es a mecánico",
+          "bisturí es a cirujano"
+        ],
+        "correct": 3,
+        "explanation": "El bisturí es la herramienta del cirujano, así como el cuchillo es la herramienta del chef."
+      },
+      {
+        "question": "¿Qué analogía es equivalente a: yunque es a herrero como __________?",
+        "options": [
+          "tornillo es a carpintero",
+          "aguja es a sastre",
+          "pala es a jardinero",
+          "pincel es a pintor"
+        ],
+        "correct": 1,
+        "explanation": "El yunque es la herramienta del herrero, así como la aguja es la herramienta del sastre."
       }
     ]
   },
@@ -1178,6 +2224,61 @@
         ],
         "correct": 0,
         "explanation": "El colectivo de abeja es enjambre, que es un grupo de abejas."
+      },
+      {
+        "question": "¿Qué opción completa la analogía? oveja : rebaño ::",
+        "options": [
+          "lobo : manada",
+          "pájaro : bandada",
+          "vaca : hato",
+          "abeja : colmena"
+        ],
+        "correct": 2,
+        "explanation": "La relación es individuo-colectivo: oveja pertenece a rebaño, así como vaca pertenece a hato."
+      },
+      {
+        "question": "¿Cuál es el colectivo de lobo?",
+        "options": [
+          "manada",
+          "jauría",
+          "rebaño",
+          "bandada"
+        ],
+        "correct": 0,
+        "explanation": "El colectivo de lobo es manada, que es un grupo de lobos."
+      },
+      {
+        "question": "¿Qué par NO sigue la misma relación individuo-colectivo que abeja:enjambre?",
+        "options": [
+          "pez:cardumen",
+          "perro:jauría",
+          "vaca:hato",
+          "pájaro:colmena"
+        ],
+        "correct": 3,
+        "explanation": "Pájaro no se relaciona con colmena; el colectivo de pájaro es bandada, no colmena."
+      },
+      {
+        "question": "¿Cuál es la analogía correcta? hormiga : colonia ::",
+        "options": [
+          "abeja : enjambre",
+          "perro : jauría",
+          "pez : cardumen",
+          "oveja : rebaño"
+        ],
+        "correct": 0,
+        "explanation": "Hormiga vive en colonia, así como abeja vive en enjambre; ambas son relaciones individuo-colectivo."
+      },
+      {
+        "question": "¿Qué opción completa la analogía? jauría : perro ::",
+        "options": [
+          "cardumen : pez",
+          "enjambre : abeja",
+          "manada : lobo",
+          "bandada : pájaro"
+        ],
+        "correct": 1,
+        "explanation": "La relación es colectivo-individuo: jauría es grupo de perros, así como enjambre es grupo de abejas."
       }
     ]
   }
