@@ -153,6 +153,19 @@ export default async function handler(req: Request) {
           if (error) throw error;
           console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → usuario ${external_reference}`);
 
+        } else if (metaPackageId === 'practica_subindice') {
+          // ── Práctica por Subíndice ────────────────────────────────────
+          const { error } = await supabase
+            .from('profiles')
+            .update({
+              practica_ilimitada: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', external_reference);
+
+          if (error) throw error;
+          console.log(`[Webhook] ✅ PRÁCTICA POR SUBÍNDICE DESBLOQUEADA → usuario ${external_reference}`);
+
         } else if (metaType === 'subscription' || metaPackageId === 'ilimitado') {
           // ── Suscripción / Maestro ─────────────────────────────────────
           const { error } = await supabase

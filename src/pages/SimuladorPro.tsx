@@ -39,6 +39,7 @@ import { ProgressPanel } from "@/components/simulator/ProgressPanel";
 import { RestoreModal } from "@/components/simulator/RestoreModal";
 import { trackSimuladorStart, trackSimuladorPause, trackSimuladorResume, trackSimuladorComplete } from "@/hooks/useAnalytics";
 import { clarityEvent } from "@/lib/clarity";
+import { useTracking, guardarResultadoSimulador } from "@/hooks/useTracking";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
@@ -97,6 +98,7 @@ const SimuladorPro = () => {
     const { user, profile, refreshProfile } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
+    const { track } = useTracking();
 
     // UI state
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -579,6 +581,7 @@ const SimuladorPro = () => {
         setShowResults(false);
         trackSimuladorStart();
         clarityEvent('simulador_iniciado');
+        void track('simulador_iniciado', { userId: user?.id, metadata: { banco: selectedBank, modo: mode } });
     };
 
     const calculateScore = () => {
@@ -594,6 +597,20 @@ const SimuladorPro = () => {
         const totalTime = examMode === 'full' ? EXAM_TIME_SECONDS - timeLeft : 0;
         const pct = Math.round((finalScore / activeQuestions.length) * 100);
         trackSimuladorComplete(finalScore, totalTime, pct >= 70 ? 'aprobado' : 'reprobado');
+        void track('simulador_completado', {
+            userId: user?.id,
+            metadata: { banco: selectedBank, aciertos: finalScore, errores: activeQuestions.length - finalScore, total: activeQuestions.length, porcentaje: pct },
+        });
+        if (user?.id) {
+            void guardarResultadoSimulador({
+                userId: user.id,
+                banco: selectedBank,
+                totalPreguntas: activeQuestions.length,
+                aciertos: finalScore,
+                errores: activeQuestions.length - finalScore,
+                tiempoSegundos: totalTime > 0 ? totalTime : undefined,
+            });
+        }
         localStorage.removeItem('simulador_estado');
         localStorage.removeItem('simulador_revision');
         localStorage.removeItem('simulador_questions');

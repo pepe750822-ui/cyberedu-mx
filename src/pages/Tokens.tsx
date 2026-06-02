@@ -735,6 +735,75 @@ const TokensPage = () => {
                 );
               })()}
 
+              {/* ——— PRÁCTICA POR SUBÍNDICE 50 TOKENS ——— */}
+              {(() => {
+                const isPracticaUnlocked = (profile as any)?.practica_ilimitada === true || (profile as any)?.paquete_completo === true;
+                const canAfford = (profile?.tokens ?? 0) >= 50;
+                return (
+                  <div className={`relative rounded-3xl border p-6 space-y-4 transition-all ${
+                    isPracticaUnlocked
+                      ? "bg-emerald-500/10 border-emerald-500/30"
+                      : "bg-purple-500/10 border-purple-500/30"
+                  }`}>
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-2xl bg-purple-500/20 border border-purple-500/30 shrink-0">
+                        <Star className="h-6 w-6 text-purple-400" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Producto Individual</p>
+                        <h3 className="text-lg font-black text-white">📚 Práctica por Subíndice</h3>
+                        <p className="text-xs text-slate-400 mt-1">371 subíndices del temario oficial ECOEMS · 5 preguntas por tema generadas por IA · acceso ilimitado permanente</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      {["371 subíndices del temario oficial", "Preguntas generadas por IA por tema", "Acceso ilimitado — sin límite de intentos"].map(p => (
+                        <div key={p} className="flex items-center gap-2 text-xs text-slate-300">
+                          <Check className="h-3 w-3 text-purple-400 shrink-0" />
+                          {p}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="pt-2 space-y-2">
+                      {isPracticaUnlocked ? (
+                        <div className="flex items-center gap-2 w-full h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 justify-center">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                          <span className="text-emerald-300 font-black uppercase text-xs tracking-widest">✅ Ya Desbloqueado</span>
+                        </div>
+                      ) : canAfford ? (
+                        <button
+                          onClick={() => redeemTokens('practica_subindice', 50, { practica_ilimitada: true })}
+                          disabled={redeemingPkg === 'practica_subindice'}
+                          className="flex items-center justify-center gap-2 w-full h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 hover:opacity-90 text-white font-black uppercase text-xs tracking-widest shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-60"
+                        >
+                          {redeemingPkg === 'practica_subindice' ? (
+                            <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : (
+                            <>🔓 Canjear — 50 tokens</>
+                          )}
+                        </button>
+                      ) : (
+                        <p className="text-amber-400 text-xs text-center font-semibold">Necesitas 50 tokens (tienes {profile?.tokens ?? 0})</p>
+                      )}
+                      {!isPracticaUnlocked && (
+                        <button
+                          onClick={() => handleBuy('practica_subindice')}
+                          disabled={loadingPkg === 'practica_subindice'}
+                          className="flex items-center justify-center gap-2 w-full h-10 rounded-xl border border-purple-500/40 text-purple-300 hover:bg-purple-500/10 font-black uppercase text-[10px] tracking-widest transition-all"
+                        >
+                          {loadingPkg === 'practica_subindice' ? (
+                            <div className="h-3.5 w-3.5 border-2 border-purple-300/30 border-t-purple-300 rounded-full animate-spin" />
+                          ) : (
+                            '💳 Comprar con pesos — $50 MXN'
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* ——— BANCOS 5, 8, 9, 11 INDIVIDUALES 50 TOKENS c/u ——— */}
               {[
                 { id: 'banco5',  bankKey: 'bank5_unlocked',  label: 'Banco 5 — Guías UNAM 2024-25', perks: ['128 preguntas guías oficiales UNAM 2024-25', 'Modo examen + práctica rápida'] },

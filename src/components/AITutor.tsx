@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, Suspense } from "react";
 import { clarityEvent } from "@/lib/clarity";
+import { useTracking } from "@/hooks/useTracking";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -2741,6 +2742,7 @@ const AITutor = () => {
   const { getWeeklyReport, getRecomendacionesDiarias, getAlertasRiesgo } = useAnalisisRendimiento();
   const { addMetric, addError } = useChatAnalytics();
   const { user, profile, isSubscriber, hasTokens, trialDaysRemaining, session, refreshProfile } = useAuth();
+  const { track } = useTracking();
   const isUnlimitedTutor =
     isSubscriber ||
     (profile?.tokens ?? 0) >= 150 ||
@@ -2803,7 +2805,10 @@ const AITutor = () => {
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent(isOpen ? 'cyberedu:opened' : 'cyberedu:closed'));
-    if (isOpen) clarityEvent('tutor_abierto');
+    if (isOpen) {
+      clarityEvent('tutor_abierto');
+      void track('tutor_abierto', { userId: user?.id });
+    }
   }, [isOpen]);
 
   const [isStreaming, setIsStreaming] = useState(false);
@@ -3558,6 +3563,8 @@ const AITutor = () => {
     }
 
     if (!finalChatText || isStreaming) return;
+
+    void track('tutor_consulta', { userId: user?.id, metadata: { longitud: finalChatText.length } });
 
     const currentFile = pendingFile;
     if (currentFile) setPendingFile(null);
