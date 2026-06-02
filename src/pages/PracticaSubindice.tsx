@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,16 +17,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { areas, colorMap } from "@/data/temarioData";
 
-import españolData from "@/data/practica/espanol.json";
-import habilidadVerbalData from "@/data/practica/habilidad-verbal.json";
-import matematicasData from "@/data/practica/matematicas.json";
-import habilidadMateData from "@/data/practica/habilidad-matematica.json";
-import biologiaData from "@/data/practica/biologia.json";
-import fisicaData from "@/data/practica/fisica.json";
-import quimicaData from "@/data/practica/quimica.json";
-import historiaData from "@/data/practica/historia.json";
-import geografiaData from "@/data/practica/geografia.json";
-import civicaData from "@/data/practica/formacion-civica-y-etica.json";
+const PRACTICA_MODULES = [
+  () => import("@/data/practica/espanol.json"),
+  () => import("@/data/practica/habilidad-verbal.json"),
+  () => import("@/data/practica/matematicas.json"),
+  () => import("@/data/practica/habilidad-matematica.json"),
+  () => import("@/data/practica/biologia.json"),
+  () => import("@/data/practica/fisica.json"),
+  () => import("@/data/practica/quimica.json"),
+  () => import("@/data/practica/historia.json"),
+  () => import("@/data/practica/geografia.json"),
+  () => import("@/data/practica/formacion-civica-y-etica.json"),
+];
 
 interface QuizQuestion {
   question: string;
@@ -43,16 +45,6 @@ function createSlug(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-// Build lookup: slug → questions[]
-const staticBank: Record<string, QuizQuestion[]> = {};
-for (const bank of [
-  españolData, habilidadVerbalData, matematicasData, habilidadMateData,
-  biologiaData, fisicaData, quimicaData, historiaData, geografiaData, civicaData,
-] as Record<string, { questions: QuizQuestion[] }>[]) {
-  for (const [slug, data] of Object.entries(bank)) {
-    if (data?.questions) staticBank[slug] = data.questions;
-  }
-}
 
 type QuizPhase =
   | { phase: "idle" }
@@ -149,6 +141,22 @@ export default function PracticaSubindice() {
   const navigate = useNavigate();
   const [openArea, setOpenArea] = useState<number | null>(null);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
+  const [bankData, setBankData] = useState<Record<string, QuizQuestion[]>>({});
+  const [bankLoading, setBankLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all(PRACTICA_MODULES.map(fn => fn())).then(modules => {
+      const bank: Record<string, QuizQuestion[]> = {};
+      for (const mod of modules as any[]) {
+        const data = mod.default ?? mod;
+        for (const [slug, val] of Object.entries(data as Record<string, { questions: QuizQuestion[] }>)) {
+          if ((val as any)?.questions) bank[slug] = (val as any).questions;
+        }
+      }
+      setBankData(bank);
+      setBankLoading(false);
+    });
+  }, []);
 
   const isFree =
     (profile as any)?.paquete_completo === true ||
@@ -205,8 +213,9 @@ export default function PracticaSubindice() {
     setOpenArea((prev) => (prev === i ? null : i));
 
   const handlePractice = (concepto: string, setNumber: 1 | 2 = 1) => {
+    if (bankLoading) return;
     const slug = createSlug(concepto.split(":")[0]);
-    const allQuestions = staticBank[slug];
+    const allQuestions = bankData[slug];
     if (!allQuestions || allQuestions.length === 0) return;
 
     let targetQuestions = [];
@@ -432,7 +441,7 @@ export default function PracticaSubindice() {
                           <div className="divide-y divide-white/5">
                             {subtema.contenido.map((concepto, cIdx) => {
                               const slug = createSlug(concepto.split(":")[0]);
-                              const hasQuestions = !!staticBank[slug];
+                              const hasQuestions = !!bankData[slug];
                               const label = concepto.split(":")[0];
                               const unlocked = unlockMap[aIdx]?.[sIdx]?.[cIdx] ?? false;
 
@@ -859,7 +868,7 @@ export default function PracticaSubindice() {
                   <div className="space-y-3">
                     {(() => {
                       const slug = createSlug(quiz.subindice);
-                      const totalQs = staticBank[slug]?.length ?? 0;
+                      const totalQs = bankData[slug]?.length ?? 0;
                       if (totalQs > 5) {
                         return (
                           <button
