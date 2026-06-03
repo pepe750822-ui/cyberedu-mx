@@ -44,6 +44,109 @@ import { useTracking, guardarResultadoSimulador } from "@/hooks/useTracking";
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
 
+// Distribución oficial ECOEMS — pesos para muestreo proporcional
+const DISTRIBUCION_ECOEMS: Record<string, number> = {
+    'Habilidad Matemática': 16,
+    'Matemáticas':          16,
+    'Habilidad Verbal':     16,
+    'Español':              16,
+    'Biología':             12,
+    'Física':               12,
+    'Química':              12,
+    'Historia':             24, // = Historia Universal (12) + Historia de México (12) — los bancos usan "Historia" unificado
+    'Geografía':            12,
+    'Formación Cívica y Ética': 12,
+};
+
+export const AREA_EMOJI: Record<string, string> = {
+    'Habilidad Matemática':     '📐',
+    'Matemáticas':              '🔢',
+    'Habilidad Verbal':         '🗣️',
+    'Español':                  '📝',
+    'Biología':                 '🧬',
+    'Física':                   '⚡',
+    'Química':                  '⚗️',
+    'Historia':                 '🌎',
+    'Geografía':                '🗺️',
+    'Formación Cívica y Ética': '⚖️',
+};
+
+// Construcción proporcional respetando distribución ECOEMS
+function buildMixtoDistribuido(pool: Question[], total: number | 'all'): Question[] {
+    if (pool.length === 0) return [];
+    if (total === 'all') return shuffleArray(pool).map(shuffleQuestionOptions);
+
+    const byArea: Record<string, Question[]> = {};
+    pool.forEach(q => { (byArea[q.area] ??= []).push(q); });
+
+    const areas = Object.keys(byArea);
+    const pesoTotal = areas.reduce((s, a) => s + (DISTRIBUCION_ECOEMS[a] ?? 8), 0);
+    const asignacion: Record<string, number> = {};
+    let asignado = 0;
+
+    for (const area of areas) {
+        const peso = DISTRIBUCION_ECOEMS[area] ?? 8;
+        const cuota = Math.floor((peso / pesoTotal) * (total as number));
+        asignacion[area] = Math.min(cuota, byArea[area].length);
+        asignado += asignacion[area];
+    }
+
+    let restante = (total as number) - asignado;
+    const conStock = areas
+        .filter(a => byArea[a].length > asignacion[a])
+        .sort((a, b) => (DISTRIBUCION_ECOEMS[b] ?? 8) - (DISTRIBUCION_ECOEMS[a] ?? 8));
+    for (const area of conStock) {
+        if (restante <= 0) break;
+        asignacion[area]++;
+        restante--;
+    }
+
+    const result: Question[] = [];
+    for (const [area, count] of Object.entries(asignacion)) {
+        result.push(...shuffleArray(byArea[area]).slice(0, count).map(shuffleQuestionOptions));
+    }
+    return shuffleArray(result);
+}
+
+// Previsualización de distribución (sin barajar)
+export function calcularDistribucionPreview(
+    pool: Question[],
+    total: number | 'all'
+): Array<{ area: string; count: number }> {
+    if (pool.length === 0) return [];
+    const t = total === 'all' ? pool.length : (total as number);
+
+    const byArea: Record<string, number> = {};
+    pool.forEach(q => { byArea[q.area] = (byArea[q.area] ?? 0) + 1; });
+
+    const areas = Object.keys(byArea);
+    const pesoTotal = areas.reduce((s, a) => s + (DISTRIBUCION_ECOEMS[a] ?? 8), 0);
+    const asignacion: Record<string, number> = {};
+    let asignado = 0;
+
+    for (const area of areas) {
+        const peso = DISTRIBUCION_ECOEMS[area] ?? 8;
+        const cuota = Math.floor((peso / pesoTotal) * t);
+        asignacion[area] = Math.min(cuota, byArea[area]);
+        asignado += asignacion[area];
+    }
+
+    let restante = t - asignado;
+    const conStock = areas
+        .filter(a => byArea[a] > asignacion[a])
+        .sort((a, b) => (DISTRIBUCION_ECOEMS[b] ?? 8) - (DISTRIBUCION_ECOEMS[a] ?? 8));
+    for (const area of conStock) {
+        if (restante <= 0) break;
+        asignacion[area]++;
+        restante--;
+    }
+
+    return Object.entries(asignacion)
+        .filter(([, c]) => c > 0)
+        .sort(([a], [b]) => (DISTRIBUCION_ECOEMS[b] ?? 8) - (DISTRIBUCION_ECOEMS[a] ?? 8))
+        .map(([area, count]) => ({ area, count }));
+}
+
 const BANK_LABELS: Record<BankSelection, string> = {
     bank1: 'Banco 1 — Práctica General',
     bank2: 'Banco 2 — IA',
@@ -57,6 +160,7 @@ const BANK_LABELS: Record<BankSelection, string> = {
     bank11: 'Banco 11 — 2do Conocimientos Gen.',
     bank12: 'Banco 12 — Conocimientos Generales',
     mixed: 'Mixto — Combinado',
+    mixto: 'Simulador Mixto — Todos los bancos',
 };
 
 // Fisher-Yates shuffle
@@ -113,6 +217,7 @@ const SimuladorPro = () => {
     const [savedState, setSavedState] = useState<any | null>(null);
     const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
     const [isPreviewMode, setIsPreviewMode] = useState(false);
+    const [mixtoCount, setMixtoCount] = useState<number | 'all'>(50);
     const [bankData, setBankData] = useState<Record<string, Question[]>>({
         bank1: [],
         bank2: [],
@@ -538,7 +643,60 @@ const SimuladorPro = () => {
         return true;
     };
 
+    // ── Simulador Mixto ─────────────────────────────────────────────────────
+    const mixtoPool = React.useMemo(() => {
+        const paq = (profile as any)?.paquete_completo === true;
+        const pool: Question[] = [
+            ...bankData.bank1, ...bankData.bank2, ...bankData.bank3, ...bankData.bank4,
+        ];
+        if (user) pool.push(...(bankData.bank6 ?? []), ...(bankData.bank7 ?? []), ...(bankData.bank10 ?? []));
+        if ((profile as any)?.bank8_unlocked  || paq) pool.push(...(bankData.bank8  ?? []));
+        if ((profile as any)?.bank9_unlocked  || paq) pool.push(...(bankData.bank9  ?? []));
+        if ((profile as any)?.bank11_unlocked || paq) pool.push(...(bankData.bank11 ?? []));
+        if ((profile as any)?.bank12_unlocked || paq) pool.push(...(bankData.bank12 ?? []));
+        return pool;
+    }, [bankData, user, profile]);
+
+    const bancosActivosCount = React.useMemo(() => {
+        const paq = (profile as any)?.paquete_completo === true;
+        return 4
+            + (user ? 3 : 0)
+            + ((profile as any)?.bank8_unlocked  || paq ? 1 : 0)
+            + ((profile as any)?.bank9_unlocked  || paq ? 1 : 0)
+            + ((profile as any)?.bank11_unlocked || paq ? 1 : 0)
+            + ((profile as any)?.bank12_unlocked || paq ? 1 : 0);
+    }, [user, profile]);
+
+    const distribucionPreview = React.useMemo(
+        () => calcularDistribucionPreview(mixtoPool, mixtoCount),
+        [mixtoPool, mixtoCount]
+    );
+
+    const handleStartMixto = async () => {
+        const questions = buildMixtoDistribuido(mixtoPool, mixtoCount);
+        if (questions.length === 0) return;
+        setSelectedBank('mixto');
+        setIsPreviewMode(false);
+        setActiveQuestions(questions);
+        setExamMode('practice');
+        setIsExamActive(true);
+        setStartTime(Date.now());
+        setUserAnswers({});
+        setMarkedForReview({});
+        setCurrentQuestionIndex(0);
+        setTimeLeft(EXAM_TIME_SECONDS);
+        setShowResults(false);
+        trackSimuladorStart();
+        clarityEvent('simulador_iniciado');
+        void track('simulador_iniciado', {
+            userId: user?.id,
+            metadata: { modo: 'mixto', cantidad: questions.length, bancos: bancosActivosCount },
+        });
+    };
+    // ────────────────────────────────────────────────────────────────────────
+
     const handleStartExam = async (mode: ExamMode = 'full') => {
+        if (selectedBank === 'mixto') { await handleStartMixto(); return; }
         const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank9Unlocked  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank10Unlocked =
@@ -741,6 +899,7 @@ const SimuladorPro = () => {
             }}
             onStartExam={handleStartExam}
             fullModeCount={(() => {
+                if (selectedBank === 'mixto') return mixtoCount === 'all' ? mixtoPool.length : Math.min(mixtoCount as number, mixtoPool.length);
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = !!user || (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
@@ -754,6 +913,7 @@ const SimuladorPro = () => {
                 return buildPool(selectedArea).length;
             })()}
             practiceModeCount={(() => {
+                if (selectedBank === 'mixto') return mixtoCount === 'all' ? mixtoPool.length : Math.min(mixtoCount as number, mixtoPool.length);
                 const b8u  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b9u  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
                 const b10u = !!user || (profile as any)?.bank10_unlocked === true || (profile as any)?.guia2026_unlocked === true || (profile as any)?.paquete_completo === true;
@@ -780,6 +940,12 @@ const SimuladorPro = () => {
             isLoggedIn={!!user}
             onNavigateToGuias={() => navigate('/auth?ref=simulador&reason=guias')}
             onRedeemUnlock={handleRedeemUnlock}
+            onStartMixto={handleStartMixto}
+            mixtoCount={mixtoCount}
+            onSetMixtoCount={setMixtoCount}
+            bancosActivosCount={bancosActivosCount}
+            totalPreguntasMixto={mixtoPool.length}
+            distribucionPreview={distribucionPreview}
         >
             <ProgressPanel
                 userId={user?.id ?? null}

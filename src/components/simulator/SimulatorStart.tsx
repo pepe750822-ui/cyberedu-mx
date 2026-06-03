@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 
-type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank6' | 'bank7' | 'bank8' | 'bank9' | 'bank10' | 'bank11' | 'bank12' | 'mixed';
+type BankSelection = 'bank1' | 'bank2' | 'bank3' | 'bank4' | 'bank6' | 'bank7' | 'bank8' | 'bank9' | 'bank10' | 'bank11' | 'bank12' | 'mixed' | 'mixto';
 type ExamMode = 'full' | 'practice';
 
 const AREA_FILTERS = [
@@ -55,6 +55,12 @@ interface SimulatorStartProps {
     onNavigateToGuias?: () => void;
     onRedeemUnlock?: (bankKey: string, cost: number, updates: Record<string, boolean>) => Promise<void>;
     children?: React.ReactNode; // ProgressPanel
+    onStartMixto?: () => void;
+    mixtoCount?: number | 'all';
+    onSetMixtoCount?: (count: number | 'all') => void;
+    bancosActivosCount?: number;
+    totalPreguntasMixto?: number;
+    distribucionPreview?: Array<{ area: string; count: number }>;
 }
 
 export const SimulatorStart: React.FC<SimulatorStartProps> = ({
@@ -81,8 +87,16 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     isLoggedIn = false,
     onNavigateToGuias,
     onRedeemUnlock,
-    children
+    children,
+    onStartMixto,
+    mixtoCount = 50,
+    onSetMixtoCount,
+    bancosActivosCount = 4,
+    totalPreguntasMixto = 0,
+    distribucionPreview = [],
 }) => {
+    const [customInput, setCustomInput] = React.useState('50');
+    const [showCustom, setShowCustom] = React.useState(false);
     const navigate = useNavigate();
     const hasTokens = userTokens >= 50;
     return (
@@ -465,6 +479,129 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                             </span>
                         </div>
                     )}
+                </div>
+
+                {/* ── Simulador Mixto ── */}
+                <div className={cn(
+                    "border-2 rounded-2xl p-5 transition-all text-left",
+                    selectedBank === 'mixto'
+                        ? "border-purple-500 bg-purple-500/10"
+                        : "border-purple-500/30 bg-white/[0.02] hover:bg-purple-500/5"
+                )}>
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                        <div>
+                            <h3 className="font-black text-white text-base flex items-center gap-2">
+                                <Shuffle className="w-4 h-4 text-purple-400 inline" />
+                                Simulador Mixto
+                            </h3>
+                            <p className="text-xs text-slate-400 mt-1">
+                                Mezcla preguntas de todos tus bancos desbloqueados con distribución oficial ECOEMS
+                            </p>
+                        </div>
+                        <span className="text-[10px] px-2 py-1 rounded-full font-black bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap shrink-0">
+                            {bancosActivosCount} bancos · {totalPreguntasMixto.toLocaleString()} reactivos
+                        </span>
+                    </div>
+
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">¿Cuántas preguntas?</p>
+                    <div className="grid grid-cols-4 gap-2 mb-3">
+                        {([20, 50, 128] as const).map(cantidad => (
+                            <button
+                                key={String(cantidad)}
+                                onClick={() => { setShowCustom(false); onSetMixtoCount?.(cantidad); }}
+                                className={cn(
+                                    "py-2 rounded-xl border-2 font-black text-xs transition-all",
+                                    mixtoCount === cantidad && !showCustom
+                                        ? "border-purple-500 bg-purple-500/20 text-purple-300"
+                                        : "border-white/10 text-slate-400 hover:border-purple-500/40 hover:text-purple-300"
+                                )}
+                            >
+                                {cantidad}
+                            </button>
+                        ))}
+                        <button
+                            onClick={() => {
+                                setShowCustom(true);
+                                const n = Math.max(10, Math.min(200, parseInt(customInput) || 50));
+                                setCustomInput(String(n));
+                                onSetMixtoCount?.(n);
+                            }}
+                            className={cn(
+                                "py-2 rounded-xl border-2 font-black text-xs transition-all",
+                                showCustom
+                                    ? "border-purple-500 bg-purple-500/20 text-purple-300"
+                                    : "border-white/10 text-slate-400 hover:border-purple-500/40 hover:text-purple-300"
+                            )}
+                        >
+                            ✏️ Personalizado
+                        </button>
+                    </div>
+                    {showCustom && (
+                        <div className="flex items-center justify-center gap-2 mb-4">
+                            <input
+                                type="number"
+                                min={10}
+                                max={200}
+                                value={customInput}
+                                onChange={e => setCustomInput(e.target.value)}
+                                onBlur={() => {
+                                    const n = Math.max(10, Math.min(200, parseInt(customInput) || 50));
+                                    setCustomInput(String(n));
+                                    onSetMixtoCount?.(n);
+                                }}
+                                className="w-24 px-2 py-1.5 rounded-xl text-xs font-black text-center outline-none"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(168,85,247,0.4)', color: 'white' }}
+                                placeholder="50"
+                                autoFocus
+                            />
+                            <span className="text-[10px] text-slate-500">reactivos (10–200)</span>
+                        </div>
+                    )}
+
+                    {/* Distribución por materia */}
+                    {distribucionPreview.length > 0 && (
+                        <div className="mb-4 rounded-xl p-3 space-y-2" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-2">
+                                Tu simulador mixto tendrá:
+                            </p>
+                            {([
+                                { emoji: '📐', label: 'Matemáticas', areas: ['Habilidad Matemática', 'Matemáticas'] },
+                                { emoji: '📝', label: 'Verbal / Español', areas: ['Habilidad Verbal', 'Español'] },
+                                { emoji: '🧪', label: 'Ciencias', areas: ['Biología', 'Física', 'Química'] },
+                                { emoji: '🌎', label: 'Sociales', areas: ['Historia', 'Geografía', 'Formación Cívica y Ética'] },
+                            ] as const).map(grupo => {
+                                const items = grupo.areas
+                                    .map(area => ({ area, count: distribucionPreview.find(d => d.area === area)?.count ?? 0 }))
+                                    .filter(i => i.count > 0);
+                                const total = items.reduce((s, i) => s + i.count, 0);
+                                if (total === 0) return null;
+                                return (
+                                    <div key={grupo.label} className="flex items-baseline justify-between gap-2">
+                                        <div>
+                                            <span className="text-white font-black text-[11px]">{grupo.emoji} {grupo.label}</span>
+                                            {items.length > 1 && (
+                                                <span className="text-slate-500 text-[9px] ml-1.5">({items.map(i => i.count).join(' + ')})</span>
+                                            )}
+                                        </div>
+                                        <span className="font-black text-purple-300 text-[11px] shrink-0">{total}</span>
+                                    </div>
+                                );
+                            })}
+                            <p className="text-[10px] text-slate-500 pt-1 border-t border-white/10">
+                                Total: <span className="font-black text-white">
+                                    {distribucionPreview.reduce((s, i) => s + i.count, 0)}
+                                </span> preguntas
+                            </p>
+                        </div>
+                    )}
+
+                    <button
+                        onClick={() => onStartMixto?.()}
+                        className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-black text-sm hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    >
+                        <Shuffle className="w-4 h-4" />
+                        Iniciar Simulador Mixto
+                    </button>
                 </div>
 
                 {/* Filter by subject */}
