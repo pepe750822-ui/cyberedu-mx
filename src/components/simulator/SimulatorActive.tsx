@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import {
     Timer,
     Zap,
@@ -95,6 +96,26 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         const message = `Explícame esta pregunta del ECOEMS:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
         window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
     };
+
+    const nearCompletionShownRef = useRef(false);
+
+    // Reset near-completion flag when a new exam starts
+    useEffect(() => {
+        nearCompletionShownRef.current = false;
+    }, [activeQuestions]);
+
+    // Toast when 10 questions remain — reduces abandonment
+    useEffect(() => {
+        const remaining = activeQuestions.length - currentQuestionIndex;
+        if (
+            remaining === 10 &&
+            activeQuestions.length > 15 &&
+            !nearCompletionShownRef.current
+        ) {
+            nearCompletionShownRef.current = true;
+            toast.info(`¡Ya casi! Solo te faltan ${remaining} preguntas 💪`);
+        }
+    }, [currentQuestionIndex, activeQuestions.length]);
 
     // Enter key → ask Tutor IA when feedback is visible
     useEffect(() => {
@@ -193,6 +214,15 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
                         </Button>
                     </div>
                 </div>
+            </div>
+
+            {/* Mobile progress bar — hidden on large screens where the HUD header shows it */}
+            <div className="lg:hidden bg-edu-card/80 border-b border-edu-indigo/20 px-4 py-2">
+                <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase mb-1.5">
+                    <span>Pregunta {currentQuestionIndex + 1} de {activeQuestions.length}</span>
+                    <span>{Object.keys(userAnswers).length} respondidas</span>
+                </div>
+                <Progress value={(Object.keys(userAnswers).length / activeQuestions.length) * 100} className="h-2.5" />
             </div>
 
             {/* Question Main Area */}

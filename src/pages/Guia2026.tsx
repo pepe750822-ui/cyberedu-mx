@@ -235,7 +235,7 @@ const Guia2026 = () => {
                     />
                   )}
                   {activeTab === 'infografia' && selectedTema.infografia && (
-                    <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" />
+                    <img src={selectedTema.infografia} alt="Infografía" className="w-full rounded-xl" loading="lazy" />
                   )}
                   {activeTab === 'pdf' && selectedTema.pdf && (
                     isMobile ? (
@@ -429,6 +429,7 @@ const Guia2026 = () => {
                       src={getThumbnail(tema.youtubeUrl)}
                       alt={tema.tema}
                       className="w-full aspect-video object-cover"
+                      loading="lazy"
                     />
                     {!isLocked && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20">
