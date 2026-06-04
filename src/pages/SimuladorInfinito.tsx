@@ -19,13 +19,21 @@ const AREA_GROUPS = [
     { emoji: '🌎', label: 'Ciencias Sociales', areas: ['Historia', 'Geografía', 'Formación Cívica y Ética'] },
 ] as const;
 
-const EXAM_TIME_SECONDS = 7200;
+const SECONDS_PER_QUESTION = 84.375;
 
 const formatTime = (s: number): string => {
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
     const sec = s % 60;
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+};
+
+const formatearTiempo = (segundos: number): string => {
+    const horas = Math.floor(segundos / 3600);
+    const mins = Math.floor((segundos % 3600) / 60);
+    if (horas > 0 && mins > 0) return `${horas}h ${mins}min`;
+    if (horas > 0) return `${horas}h`;
+    return `${mins} min`;
 };
 
 type PageState = 'config' | 'loading' | 'exam' | 'results';
@@ -43,6 +51,7 @@ const SimuladorInfinito: React.FC = () => {
     const [showCustom, setShowCustom] = useState(false);
     const [materias, setMaterias] = useState<string[]>([...ALL_MATERIAS]);
     const [fuente, setFuente] = useState<'bancos' | 'subindices' | 'ambas'>('ambas');
+    const tiempoSimulador = Math.round(cantidad * SECONDS_PER_QUESTION);
 
     // Exam
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -100,7 +109,7 @@ const SimuladorInfinito: React.FC = () => {
             setCurrentIndex(0);
             setUserAnswers({});
             setMarkedForReview({});
-            setTimeLeft(EXAM_TIME_SECONDS);
+            setTimeLeft(Math.round(qs.length * SECONDS_PER_QUESTION));
             setIsPaused(false);
             setPageState('exam');
         } catch (err) {
@@ -360,11 +369,9 @@ const SimuladorInfinito: React.FC = () => {
                                 <p className="text-[11px] text-slate-400">
                                     Total: <span className="font-black text-white">{cantidad}</span> preguntas
                                 </p>
-                                {cantidad === 128 && (
-                                    <span className="text-[10px] text-green-400 font-bold">
-                                        estructura oficial ECOEMS
-                                    </span>
-                                )}
+                                <span className="text-[11px] text-blue-300 font-bold">
+                                    ⏱️ {formatearTiempo(tiempoSimulador)}
+                                </span>
                             </div>
                         </div>
                     ) : (

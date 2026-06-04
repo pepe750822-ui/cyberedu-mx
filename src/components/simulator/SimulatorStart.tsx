@@ -99,6 +99,17 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     const [showCustom, setShowCustom] = React.useState(false);
     const navigate = useNavigate();
     const hasTokens = userTokens >= 50;
+
+    const formatearTiempo = (segundos: number): string => {
+        const horas = Math.floor(segundos / 3600);
+        const mins = Math.floor((segundos % 3600) / 60);
+        if (horas > 0 && mins > 0) return `${horas}h ${mins}min`;
+        if (horas > 0) return `${horas}h`;
+        return `${mins} min`;
+    };
+    const tiempoFull = formatearTiempo(Math.round(fullModeCount * 84.375));
+    const tiempoPractica = formatearTiempo(Math.round(practiceModeCount * 84.375));
+
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full bg-slate-900/50 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 backdrop-blur-xl">
@@ -698,12 +709,12 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                     <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
                         <Clock className="h-5 w-5 text-indigo-400" />
                         <span className="text-[10px] font-black uppercase text-slate-500">Examen Completo</span>
-                        <span className="text-sm font-bold text-white">3 Horas · {fullModeCount} Reactivos</span>
+                        <span className="text-sm font-bold text-white">⏱️ {tiempoFull} · {fullModeCount} Reactivos</span>
                     </div>
                     <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-2">
                         <Zap className="h-5 w-5 text-amber-400" />
                         <span className="text-[10px] font-black uppercase text-slate-500">Práctica Rápida</span>
-                        <span className="text-sm font-bold text-white">Sin Tiempo · {practiceModeCount} Reactivos</span>
+                        <span className="text-sm font-bold text-white">⏱️ {tiempoPractica} · {practiceModeCount} Reactivos</span>
                     </div>
                 </div>
 

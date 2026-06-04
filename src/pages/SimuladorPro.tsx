@@ -43,6 +43,8 @@ import { useTracking, guardarResultadoSimulador } from "@/hooks/useTracking";
 
 const EXAM_TIME_SECONDS = 3 * 60 * 60;
 const PRACTICE_QUESTION_COUNT = 20;
+const SECONDS_PER_QUESTION = 84.375;
+const PRACTICE_TIME_SECONDS = Math.round(PRACTICE_QUESTION_COUNT * SECONDS_PER_QUESTION);
 
 // Distribución oficial ECOEMS — pesos para muestreo proporcional
 const DISTRIBUCION_ECOEMS: Record<string, number> = {
@@ -552,16 +554,16 @@ const SimuladorPro = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showResults]);
 
-    // Timer
+    // Timer — runs for all modes (proportional time)
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (isExamActive && examMode === 'full' && timeLeft > 0 && !isPaused) {
+        if (isExamActive && timeLeft > 0 && !isPaused) {
             timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-        } else if (examMode === 'full' && timeLeft === 0 && isExamActive) {
+        } else if (timeLeft === 0 && isExamActive) {
             handleFinishExam();
         }
         return () => clearInterval(timer);
-    }, [isExamActive, timeLeft, isPaused, examMode]);
+    }, [isExamActive, timeLeft, isPaused]);
 
     const buildPool = (area: string): Question[] => {
         const fromSource = (src: Question[]) => {
@@ -684,7 +686,7 @@ const SimuladorPro = () => {
         setUserAnswers({});
         setMarkedForReview({});
         setCurrentQuestionIndex(0);
-        setTimeLeft(EXAM_TIME_SECONDS);
+        setTimeLeft(Math.round(questions.length * SECONDS_PER_QUESTION));
         setShowResults(false);
         trackSimuladorStart();
         clarityEvent('simulador_iniciado');
@@ -735,7 +737,7 @@ const SimuladorPro = () => {
         setUserAnswers({});
         setMarkedForReview({});
         setCurrentQuestionIndex(0);
-        setTimeLeft(EXAM_TIME_SECONDS);
+        setTimeLeft(mode === 'practice' ? PRACTICE_TIME_SECONDS : EXAM_TIME_SECONDS);
         setShowResults(false);
         trackSimuladorStart();
         clarityEvent('simulador_iniciado');
@@ -752,7 +754,8 @@ const SimuladorPro = () => {
         setIsExamActive(false);
         setShowResults(true);
         const finalScore = calculateScore();
-        const totalTime = examMode === 'full' ? EXAM_TIME_SECONDS - timeLeft : 0;
+        const startTime_ = examMode === 'full' ? EXAM_TIME_SECONDS : PRACTICE_TIME_SECONDS;
+        const totalTime = startTime_ - timeLeft;
         const pct = Math.round((finalScore / activeQuestions.length) * 100);
         trackSimuladorComplete(finalScore, totalTime, pct >= 70 ? 'aprobado' : 'reprobado');
         void track('simulador_completado', {
