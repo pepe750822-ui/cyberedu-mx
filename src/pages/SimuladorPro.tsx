@@ -251,6 +251,12 @@ const SimuladorPro = () => {
     const [rankingPorArea, setRankingPorArea] = useState<any[] | null>(null);
     const [rankingLoading, setRankingLoading] = useState(false);
 
+    // Testimonio
+    const [showTestimonio, setShowTestimonio] = useState(false);
+    const [textoTestimonio, setTextoTestimonio] = useState('');
+    const [totalSimuladoresUser, setTotalSimuladoresUser] = useState(0);
+    const [totalPreguntasUser, setTotalPreguntasUser] = useState(0);
+
     // SEO Dynamic Tags
     useEffect(() => {
         document.title = "Simulador Pro ECOEMS 2026 - 512 Reactivos | CyberEdu MX";
@@ -744,6 +750,54 @@ const SimuladorPro = () => {
         void track('simulador_iniciado', { userId: user?.id, metadata: { banco: selectedBank, modo: mode } });
     };
 
+    const verificarTestimonio = async () => {
+        if (!user?.id) return;
+        const { data: yaExiste } = await supabase
+            .from('testimonios')
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+        if (yaExiste) return;
+
+        const { count: totalSims } = await supabase
+            .from('simulador_results')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id);
+
+        const { data: resultados } = await supabase
+            .from('simulador_results')
+            .select('total_preguntas')
+            .eq('user_id', user.id);
+
+        const totalPregs = resultados?.reduce((sum: number, r: any) => sum + (r.total_preguntas || 0), 0) || 0;
+
+        if ((totalSims ?? 0) >= 3 || totalPregs >= 500) {
+            setTotalSimuladoresUser(totalSims ?? 0);
+            setTotalPreguntasUser(totalPregs);
+            setShowTestimonio(true);
+        }
+    };
+
+    const guardarTestimonio = async () => {
+        const { error } = await supabase
+            .from('testimonios')
+            .insert({
+                user_id: user!.id,
+                texto: textoTestimonio.trim(),
+                nombre: profile?.name || user!.email,
+                simuladores_completados: totalSimuladoresUser,
+                total_preguntas: totalPreguntasUser,
+            });
+        if (!error) {
+            toast.success('¡Gracias por compartir tu experiencia! 🌟');
+            setShowTestimonio(false);
+            setTextoTestimonio('');
+            void track('testimonio_enviado', { userId: user!.id });
+        } else {
+            toast.error('Error al guardar, intenta de nuevo');
+        }
+    };
+
     const calculateScore = () => {
         let correct = 0;
         activeQuestions.forEach(q => { if (userAnswers[q.id] === q.correctIndex) correct++; });
@@ -771,6 +825,7 @@ const SimuladorPro = () => {
                 errores: activeQuestions.length - finalScore,
                 tiempoSegundos: totalTime > 0 ? totalTime : undefined,
             });
+            void verificarTestimonio();
         }
         localStorage.removeItem('simulador_estado');
         localStorage.removeItem('simulador_revision');
@@ -794,6 +849,7 @@ const SimuladorPro = () => {
     if (showResults) {
         const totalBankQuestions = bankData[selectedBank as keyof typeof bankData]?.length ?? 0;
         return (
+            <>
             <SimulatorResults
                 user={user}
                 activeQuestions={activeQuestions}
@@ -844,6 +900,51 @@ const SimuladorPro = () => {
                     </div>
                 )}
             </SimulatorResults>
+
+            {/* Modal testimonio */}
+            {showTestimonio && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                        <div className="text-center mb-4">
+                            <span className="text-5xl">🌟</span>
+                            <h3 className="text-xl font-bold mt-3 text-gray-800">
+                                ¡Ya llevas mucho avance!
+                            </h3>
+                            <p className="text-gray-500 text-sm mt-2">
+                                Completaste {totalSimuladoresUser} simuladores y respondiste {totalPreguntasUser} preguntas.
+                                ¿CyberEdu MX te ha ayudado a prepararte?
+                            </p>
+                        </div>
+                        <textarea
+                            placeholder="Ej: Me ayudó muchísimo a entender los temas de matemáticas, antes reprobaba y ahora me siento más seguro..."
+                            rows={4}
+                            value={textoTestimonio}
+                            onChange={e => setTextoTestimonio(e.target.value)}
+                            maxLength={500}
+                            className="w-full border-2 border-gray-200 rounded-xl p-3 text-sm resize-none focus:outline-none focus:border-purple-500 transition-colors"
+                        />
+                        <p className="text-xs text-gray-400 text-right mt-1">
+                            {textoTestimonio.length}/500
+                        </p>
+                        <div className="flex gap-2 mt-4">
+                            <button
+                                onClick={guardarTestimonio}
+                                disabled={textoTestimonio.trim().length < 10}
+                                className="flex-1 bg-purple-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-purple-700 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                Compartir mi experiencia 💜
+                            </button>
+                            <button
+                                onClick={() => setShowTestimonio(false)}
+                                className="px-4 py-3 text-gray-400 text-sm hover:text-gray-600"
+                            >
+                                Después
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            </>
         );
     }
 

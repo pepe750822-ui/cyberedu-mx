@@ -29,6 +29,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { areas } from "@/data/areas";
 import { studioMapping, fullSimulators } from "@/data/studioMap";
@@ -125,6 +126,7 @@ const Index = () => {
 
   const stats = getEstadisticas();
   const [sortByProgress, setSortByProgress] = useState(false);
+  const [testimonios, setTestimonios] = useState<{ texto: string; nombre: string; created_at: string }[]>([]);
   const [isDesktop, setIsDesktop] = useState(false);
   const [showRobot, setShowRobot] = useState(false);
   const [mouseX, setMouseX] = useState(0);
@@ -249,6 +251,16 @@ const Index = () => {
       }
     };
   }, [location]);
+
+  useEffect(() => {
+    supabase
+      .from('testimonios')
+      .select('texto, nombre, created_at')
+      .eq('aprobado', true)
+      .order('created_at', { ascending: false })
+      .limit(6)
+      .then(({ data }) => setTestimonios(data || []));
+  }, []);
 
   const areaProgress = useMemo(() => {
     const map: Record<string, { viewed: number; total: number }> = {};
@@ -550,6 +562,27 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* ── TESTIMONIOS ─────────────────────────────────── */}
+      {testimonios.length > 0 && (
+        <section className="mx-4 mb-6">
+          <h2 className="text-2xl font-bold text-center mb-6 text-white">
+            Lo que dicen nuestros estudiantes 💜
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {testimonios.map((t, i) => (
+              <div key={i} className="bg-purple-950/30 border border-purple-500/30 rounded-xl p-4">
+                <p className="text-gray-300 text-sm italic">
+                  "{t.texto}"
+                </p>
+                <p className="text-purple-400 font-semibold text-sm mt-2">
+                  — {t.nombre?.split(' ')[0] || 'Estudiante'}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── NOVEDADES 2026 ──────────────────────────────── */}
       <section className="mx-4 mb-6">
