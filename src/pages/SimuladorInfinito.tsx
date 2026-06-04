@@ -58,7 +58,7 @@ const SimuladorInfinito: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<string, number>>({});
     const [markedForReview, setMarkedForReview] = useState<Record<string, boolean>>({});
-    const [timeLeft, setTimeLeft] = useState(EXAM_TIME_SECONDS);
+    const [timeLeft, setTimeLeft] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
     const handleFinish = useCallback(() => {
