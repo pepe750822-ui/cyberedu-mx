@@ -84,6 +84,17 @@ const PREMIUM_EXPORTS: Record<string, string> = {
     '12': 'bank12Questions',
 };
 
+// Static import map so Vite can properly analyze and bundle each chunk
+const BANCO_IMPORTS: Record<string, () => Promise<Record<string, Question[]>>> = {
+    '6':  () => import('./simuladorData6')  as Promise<any>,
+    '7':  () => import('./simuladorData7')  as Promise<any>,
+    '8':  () => import('./simuladorData8')  as Promise<any>,
+    '9':  () => import('./simuladorData9')  as Promise<any>,
+    '10': () => import('./simuladorData10') as Promise<any>,
+    '11': () => import('./simuladorData11') as Promise<any>,
+    '12': () => import('./simuladorData12') as Promise<any>,
+};
+
 export const generarSimuladorPersonalizado = async (config: {
     cantidad: number;
     materias: string[];
@@ -116,7 +127,9 @@ export const generarSimuladorPersonalizado = async (config: {
 
         for (const banco of bancosAPremium) {
             try {
-                const data = await import(`./simuladorData${banco}`);
+                const importFn = BANCO_IMPORTS[banco];
+                if (!importFn) continue;
+                const data = await importFn();
                 const exportName = PREMIUM_EXPORTS[banco];
                 const questions: Question[] = data[exportName] || [];
                 pool.push(...questions.filter(q => config.materias.includes(q.area || '')));

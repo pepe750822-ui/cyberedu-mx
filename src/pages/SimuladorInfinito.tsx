@@ -35,6 +35,7 @@ const SimuladorInfinito: React.FC = () => {
     const { user, profile } = useAuth();
 
     const [pageState, setPageState] = useState<PageState>('config');
+    const [initError, setInitError] = useState<string | null>(null);
 
     // Config
     const [cantidad, setCantidad] = useState(128);
@@ -80,21 +81,33 @@ const SimuladorInfinito: React.FC = () => {
 
     const handleIniciar = async () => {
         if (materias.length === 0) return;
+        setInitError(null);
         setPageState('loading');
-        const qs = await generarSimuladorPersonalizado({
-            cantidad,
-            materias,
-            fuente,
-            bancosDesbloqueados: getBancosDesbloqueados(),
-            paqueteCompleto: (profile as any)?.paquete_completo === true,
-        });
-        setQuestions(qs);
-        setCurrentIndex(0);
-        setUserAnswers({});
-        setMarkedForReview({});
-        setTimeLeft(EXAM_TIME_SECONDS);
-        setIsPaused(false);
-        setPageState('exam');
+        try {
+            const qs = await generarSimuladorPersonalizado({
+                cantidad,
+                materias,
+                fuente,
+                bancosDesbloqueados: getBancosDesbloqueados(),
+                paqueteCompleto: (profile as any)?.paquete_completo === true,
+            });
+            if (qs.length === 0) {
+                setInitError('No se encontraron preguntas con la configuración seleccionada. Intenta con más materias o cambia la fuente.');
+                setPageState('config');
+                return;
+            }
+            setQuestions(qs);
+            setCurrentIndex(0);
+            setUserAnswers({});
+            setMarkedForReview({});
+            setTimeLeft(EXAM_TIME_SECONDS);
+            setIsPaused(false);
+            setPageState('exam');
+        } catch (err) {
+            console.error('Error generando simulador:', err);
+            setInitError('Ocurrió un error al cargar las preguntas. Intenta de nuevo.');
+            setPageState('config');
+        }
     };
 
     // Distribution preview (proportional to official weights)
@@ -357,6 +370,12 @@ const SimuladorInfinito: React.FC = () => {
                     ) : (
                         <div className="rounded-xl p-4 text-center text-slate-500 text-sm border border-white/10">
                             Selecciona al menos una materia para continuar
+                        </div>
+                    )}
+
+                    {initError && (
+                        <div className="rounded-xl px-4 py-3 text-sm font-bold text-red-300 bg-red-500/10 border border-red-500/30">
+                            ⚠️ {initError}
                         </div>
                     )}
 
