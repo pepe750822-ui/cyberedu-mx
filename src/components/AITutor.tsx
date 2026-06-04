@@ -4376,8 +4376,8 @@ const AITutor = () => {
 
   return (
     <>
-      {/* Floating Toggle — se oculta en fullscreen móvil para no sobreponerse */}
-      <button
+      {/* Floating Toggle — oculto en simuladores y en fullscreen móvil */}
+      {!['/simulador-pro', '/simulador-infinito', '/practica-subindice'].some(r => location.pathname.startsWith(r)) && <button
         onClick={() => {
           setIsOpen(true);
           setIsExpanded(true);
@@ -4405,7 +4405,7 @@ const AITutor = () => {
             )}
           </div>
         )}
-      </button>
+      </button>}
 
       <div className={cn(
         "fixed transition-all duration-500 origin-bottom-right z-[100] flex flex-col overflow-hidden bg-slate-950/90 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[2rem]",

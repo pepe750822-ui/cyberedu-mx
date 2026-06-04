@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Bot } from "lucide-react";
@@ -157,9 +157,13 @@ const AdminResumenRoute = () => {
     : <Navigate to="/" replace />;
 };
 
+const RUTAS_SIN_FLOTANTES = ['/simulador-pro', '/simulador-infinito', '/practica-subindice'];
+
 const AuthenticatedStudyTools = () => {
   const { user, profile } = useAuth();
+  const { pathname } = useLocation();
   const [tutorOpen, setTutorOpen] = useState(false);
+  const ocultarBotones = RUTAS_SIN_FLOTANTES.some(r => pathname.startsWith(r));
 
   useEffect(() => {
     const handleOpen = () => setTutorOpen(true);
@@ -181,7 +185,7 @@ const AuthenticatedStudyTools = () => {
   return (
     <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando... (si tarda, recarga la página)</div>}>
       <AITutor />
-      {user && !tutorOpen && (
+      {user && !tutorOpen && !ocultarBotones && (
         <button
           onClick={() => window.dispatchEvent(new CustomEvent('cyberedu:open-chat'))}
           className="fixed bottom-6 right-6 z-40 bg-violet-600 hover:bg-violet-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-violet-500/25 transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300"

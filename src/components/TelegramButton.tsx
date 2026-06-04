@@ -7,10 +7,8 @@ const WhatsAppButton: React.FC = () => {
   const [hovered, setHovered] = useState(false);
   const { pathname } = useLocation();
 
-  // SimuladorPro and PracticaSubindice handle their own WA button with mobile restrictions
-  // Index hides it to avoid visual interference with hero CTAs
-  const rutasOcultar = ["/", "/simulador-pro", "/practica-subindice", "/simulador-infinito"];
-  if (rutasOcultar.some(r => pathname.startsWith(r))) return null;
+  const RUTAS_SIN_BOTON = ['/simulador-pro', '/simulador-infinito', '/practica-subindice'];
+  if (pathname === '/' || RUTAS_SIN_BOTON.some(r => pathname.startsWith(r))) return null;
 
   return (
     <a
