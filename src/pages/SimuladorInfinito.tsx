@@ -41,7 +41,7 @@ type PageState = 'config' | 'loading' | 'exam' | 'results';
 
 const SimuladorInfinito: React.FC = () => {
     const navigate = useNavigate();
-    const { user, profile } = useAuth();
+    const { user, profile, loading } = useAuth();
 
     const [pageState, setPageState] = useState<PageState>('config');
     const [initError, setInitError] = useState<string | null>(null);
@@ -97,6 +97,12 @@ const SimuladorInfinito: React.FC = () => {
         }, 1000);
         return () => clearInterval(timer);
     }, [pageState, isPaused, handleFinish]);
+
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/auth?redirect=/simulador-infinito');
+        }
+    }, [user, loading, navigate]);
 
     const guardarEstado = useCallback(() => {
         const estado = {
@@ -189,6 +195,14 @@ const SimuladorInfinito: React.FC = () => {
         .filter(d => d.count > 0);
 
     const esDistribucionOficial = cantidad === 128 && materias.length === ALL_MATERIAS.length;
+
+    // Auth guards — after all hooks
+    if (loading) return (
+        <div className="flex items-center justify-center h-screen bg-slate-950">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
+        </div>
+    );
+    if (!user) return null;
 
     // ── Config ──────────────────────────────────────────────────────────────
     if (pageState === 'config') {
