@@ -126,6 +126,12 @@ const Header = () => {
               )}
             </Link>
             <Link
+              to="/simulador-infinito"
+              className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+            >
+              ♾️ Infinito
+            </Link>
+            <Link
               to="/practica-subindice"
               className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
             >
@@ -236,10 +242,19 @@ const Header = () => {
               onClick={() => navigate('/simulador-pro')}
               title="Simulador Pro"
               className={`p-2 rounded-xl transition-colors hover:bg-white/10 ${
-                location.pathname.includes('simulador') ? 'text-violet-400' : 'text-gray-400'
+                location.pathname === '/simulador-pro' ? 'text-violet-400' : 'text-gray-400'
               }`}
             >
               📝
+            </button>
+            <button
+              onClick={() => navigate('/simulador-infinito')}
+              title="Simulador Infinito"
+              className={`p-2 rounded-xl transition-colors hover:bg-white/10 ${
+                location.pathname.includes('simulador-infinito') ? 'text-blue-400' : 'text-gray-400'
+              }`}
+            >
+              ♾️
             </button>
             <button
               onClick={() => navigate('/practica-subindice')}
@@ -461,6 +476,14 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     🎯 Simulador
+                  </Link>
+                  <Link
+                    to="/simulador-infinito"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 transition-colors text-blue-400 font-bold border border-blue-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    ♾️ Simulador Infinito
+                    <span className="ml-auto text-[8px] bg-blue-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
                   </Link>
                   <Link
                     to="/practica-subindice"
