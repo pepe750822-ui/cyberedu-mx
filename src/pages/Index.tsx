@@ -790,6 +790,31 @@ const Index = () => {
                 Iniciar Simulacro <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
+            <div
+              onClick={() => navigate("/simulador-infinito")}
+              className="group relative flex flex-col justify-between p-6 rounded-3xl bg-card border-2 border-blue-500/30 shadow-lg hover:shadow-blue-500/20 hover:border-blue-500/50 transition-all cursor-pointer overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative z-10 space-y-4">
+                <div className="h-12 w-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-2xl">
+                  ♾️
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-xl font-black uppercase tracking-tight text-foreground group-hover:text-blue-400 transition-colors">
+                      Simulador Infinito
+                    </h3>
+                    <span className="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-black">NUEVO</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-2 font-medium">
+                    +3,680 preguntas · Personaliza materias · 128 distribución ECOEMS
+                  </p>
+                </div>
+              </div>
+              <div className="relative z-10 mt-6 flex items-center text-sm font-bold text-blue-500 uppercase tracking-widest">
+                Practicar ahora <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
             {sortedAreas.map((area, index) => {
               const ap = areaProgress[area.id];
               return (
