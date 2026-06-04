@@ -20,6 +20,7 @@ const AREA_GROUPS = [
 ] as const;
 
 const SECONDS_PER_QUESTION = 84.375;
+const STORAGE_KEY = 'simulador_infinito_estado';
 
 const formatTime = (s: number): string => {
     const h = Math.floor(s / 3600);
@@ -44,6 +45,8 @@ const SimuladorInfinito: React.FC = () => {
 
     const [pageState, setPageState] = useState<PageState>('config');
     const [initError, setInitError] = useState<string | null>(null);
+    const [hayEstadoGuardado, setHayEstadoGuardado] = useState(false);
+    const [estadoGuardado, setEstadoGuardado] = useState<any>(null);
 
     // Config
     const [cantidad, setCantidad] = useState(128);
@@ -62,7 +65,26 @@ const SimuladorInfinito: React.FC = () => {
     const [isPaused, setIsPaused] = useState(false);
 
     const handleFinish = useCallback(() => {
+        localStorage.removeItem(STORAGE_KEY);
         setPageState('results');
+    }, []);
+
+    // Verificar estado guardado al montar
+    useEffect(() => {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        try {
+            const estado = JSON.parse(raw);
+            const horas = (Date.now() - estado.timestamp) / (1000 * 60 * 60);
+            if (horas < 24) {
+                setHayEstadoGuardado(true);
+                setEstadoGuardado(estado);
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        } catch {
+            localStorage.removeItem(STORAGE_KEY);
+        }
     }, []);
 
     useEffect(() => {
@@ -75,6 +97,37 @@ const SimuladorInfinito: React.FC = () => {
         }, 1000);
         return () => clearInterval(timer);
     }, [pageState, isPaused, handleFinish]);
+
+    const guardarEstado = useCallback(() => {
+        const estado = {
+            preguntas: questions,
+            indiceActual: currentIndex,
+            respuestas: userAnswers,
+            marcadas: markedForReview,
+            tiempoRestante: timeLeft,
+            config: { cantidad, materias, fuente },
+            timestamp: Date.now(),
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
+    }, [questions, currentIndex, userAnswers, markedForReview, timeLeft, cantidad, materias, fuente]);
+
+    const continuarSimulador = () => {
+        if (!estadoGuardado) return;
+        setQuestions(estadoGuardado.preguntas);
+        setCurrentIndex(estadoGuardado.indiceActual);
+        setUserAnswers(estadoGuardado.respuestas);
+        setMarkedForReview(estadoGuardado.marcadas || {});
+        setTimeLeft(estadoGuardado.tiempoRestante);
+        if (estadoGuardado.config) {
+            setCantidad(estadoGuardado.config.cantidad);
+            setMaterias(estadoGuardado.config.materias);
+            setFuente(estadoGuardado.config.fuente);
+        }
+        localStorage.removeItem(STORAGE_KEY);
+        setHayEstadoGuardado(false);
+        setEstadoGuardado(null);
+        setPageState('exam');
+    };
 
     const getBancosDesbloqueados = (): string[] => {
         const p = profile as any;
@@ -163,6 +216,38 @@ const SimuladorInfinito: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Banner: continuar simulador pausado */}
+                    {hayEstadoGuardado && estadoGuardado && (
+                        <div className="bg-blue-950/30 border border-blue-500/30 rounded-xl p-4">
+                            <p className="font-semibold text-blue-400 mb-1">
+                                📌 Tienes un simulador pausado
+                            </p>
+                            <p className="text-sm text-slate-400 mb-3">
+                                Pregunta {estadoGuardado.indiceActual + 1} de{' '}
+                                {estadoGuardado.preguntas.length} ·{' '}
+                                Tiempo restante: {formatearTiempo(estadoGuardado.tiempoRestante)}
+                            </p>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={continuarSimulador}
+                                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-blue-500 transition-colors"
+                                >
+                                    Continuar donde lo dejé ▶
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        localStorage.removeItem(STORAGE_KEY);
+                                        setHayEstadoGuardado(false);
+                                        setEstadoGuardado(null);
+                                    }}
+                                    className="px-3 py-2 text-slate-400 text-sm hover:text-white transition-colors"
+                                >
+                                    Descartar
+                                </button>
+                            </div>
+                        </div>
+                    )}
 
                     {/* SECCIÓN 1 — Cantidad */}
                     <div className="space-y-3">
@@ -423,7 +508,7 @@ const SimuladorInfinito: React.FC = () => {
                 markedForReview={markedForReview}
                 timeLeft={timeLeft}
                 isPaused={isPaused}
-                examMode="practice"
+                examMode="full"
                 bankLabel="Simulador Infinito ♾️"
                 onSelectAnswer={idx => {
                     const q = questions[currentIndex];
@@ -431,11 +516,11 @@ const SimuladorInfinito: React.FC = () => {
                 }}
                 onNext={() => setCurrentIndex(i => Math.min(i + 1, questions.length - 1))}
                 onPrev={() => setCurrentIndex(i => Math.max(i - 1, 0))}
-                onPause={() => setIsPaused(true)}
+                onPause={() => { setIsPaused(true); guardarEstado(); }}
                 onResume={() => setIsPaused(false)}
                 onFinish={handleFinish}
-                onSaveAndExit={() => navigate('/')}
-                onAbandon={() => navigate('/')}
+                onSaveAndExit={() => { guardarEstado(); navigate('/'); }}
+                onAbandon={() => { localStorage.removeItem(STORAGE_KEY); navigate('/'); }}
                 onToggleMark={() => {
                     const q = questions[currentIndex];
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
