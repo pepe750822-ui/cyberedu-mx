@@ -457,6 +457,16 @@ const Index = () => {
                 >
                   📚 Práctica por Tema
                 </button>
+                <button
+                  onClick={() => navigate("/simulador-infinito")}
+                  className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "linear-gradient(135deg,#1d4ed8,#1e40af)",
+                    boxShadow: "0 0 30px rgba(29,78,216,0.4), 0 0 60px rgba(29,78,216,0.1)",
+                  }}
+                >
+                  ♾️ Simulador Infinito
+                </button>
               </div>
 
               {/* Guía 2026 promo — hero inline */}
