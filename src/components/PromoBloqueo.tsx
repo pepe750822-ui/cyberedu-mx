@@ -105,7 +105,7 @@ export const PromoBloqueo = ({ titulo }: PromoBloqueoProps) => {
           </p>
 
           <a
-            href={`https://wa.me/5552326941?text=${encodeURIComponent('¡Hola! Quiero activar el acceso completo a CyberEdu MX por $50 MXN. Te mando mi comprobante de pago. Mi correo de Google es: ')}`}
+            href={`https://wa.me/5552326941?text=${encodeURIComponent('¡Hola! Quiero activar el acceso completo a CyberEdu MX por $50 MXN.\n\nDatos para transferencia:\nBanco: Santander\nCLABE: 014180565546539842\nNombre: JOSE LUIS GONZALEZ PEREZ\n\nTe mando mi comprobante. Mi correo de Google es: ')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-green-600/20 border border-green-500/30 text-green-400 py-3 rounded-xl font-bold text-sm hover:bg-green-600/30 transition-all mt-3"
