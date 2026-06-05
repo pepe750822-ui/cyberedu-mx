@@ -712,6 +712,10 @@ const SimuladorPro = () => {
     // ────────────────────────────────────────────────────────────────────────
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
+        if (selectedBank === 'mixto' && !(profile as any)?.paquete_completo) {
+            setBancoBloqueoActivo('Simulador Mixto');
+            return;
+        }
         if (selectedBank !== 'mixto' && !tieneAccesoBanco(selectedBank)) {
             const num = selectedBank.replace('bank', '');
             setBancoBloqueoActivo(`Simulador Pro — Banco ${num}`);
