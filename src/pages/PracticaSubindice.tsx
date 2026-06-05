@@ -13,6 +13,7 @@ import {
   Lock,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import PromoBloqueo from "@/components/PromoBloqueo";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { areas, colorMap } from "@/data/temarioData";
@@ -361,6 +362,11 @@ export default function PracticaSubindice() {
     quiz.phase === "results"
       ? quiz.answers.filter((a, i) => a === quiz.questions[i].correct).length
       : 0;
+
+  // Gate: requiere practica_ilimitada o paquete_completo
+  if (user && !profile?.practica_ilimitada && !(profile as any)?.paquete_completo) {
+    return <PromoBloqueo titulo="Práctica por Subíndice" />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white pb-24 cyber-grid">

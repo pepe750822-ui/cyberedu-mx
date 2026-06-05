@@ -365,8 +365,25 @@ export default async function handler(req: Request) {
     const rawTokens = profile.tokens ?? profile.token ?? 0;
     const currentTokens = Number(rawTokens);
 
+    // Rule 0: paquete_completo durante la promo ECOEMS (hasta 29 jun 2026) → sin cobro
+    const FECHA_FIN_PROMO = new Date('2026-06-29T23:59:59-06:00');
+    const estaEnPromo = new Date() < FECHA_FIN_PROMO;
+    if ((profile as any).paquete_completo === true && estaEnPromo) {
+      console.log(`[AI-CHAT] Access GRANTED (Promo ECOEMS / paquete_completo). skipping token deduction.`);
+      await supabaseRequest(`profiles?id=eq.${userId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ updated_at: new Date().toISOString() })
+      });
+      const { data: promoUsage } = await supabaseRequest(`daily_usage?user_id=eq.${userId}&date=eq.${localToday}&select=count`);
+      const promoCount = promoUsage?.[0]?.count || 0;
+      await supabaseRequest(`daily_usage`, {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({ user_id: userId, date: localToday, count: promoCount + 1 })
+      });
+    }
     // Rule 1: Subscriber -> pasa sin límite (pero actualizamos timestamp + tracking)
-    if (profile.subscription_status === 'active' || profile.is_premium === true) {
+    else if (profile.subscription_status === 'active' || profile.is_premium === true) {
       console.log(`[AI-CHAT] Access GRANTED (Subscriber/Premium). skipping token deduction.`);
       await supabaseRequest(`profiles?id=eq.${userId}`, {
         method: 'PATCH',

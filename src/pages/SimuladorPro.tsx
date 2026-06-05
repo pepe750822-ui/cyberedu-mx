@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { Question, ExamMode, BankSelection } from "@/data/simuladorData";
 import { ESCUELAS, Escuela } from "@/data/escuelas";
 import { SimulatorStart } from "@/components/simulator/SimulatorStart";
+import PromoBloqueo from "@/components/PromoBloqueo";
 import { SimulatorActive } from "@/components/simulator/SimulatorActive";
 import { SimulatorResults } from "@/components/simulator/SimulatorResults";
 import { ProgressPanel } from "@/components/simulator/ProgressPanel";
@@ -237,6 +238,7 @@ const SimuladorPro = () => {
     const [examMode, setExamMode] = useState<ExamMode>('full');
     const [selectedArea, setSelectedArea] = useState<string>('all');
     const [selectedBank, setSelectedBank] = useState<BankSelection>('bank1');
+    const [bancoBloqueoActivo, setBancoBloqueoActivo] = useState<string | null>(null);
     const [selectedEscuela, setSelectedEscuela] = useState<Escuela | null>(() => {
         try {
             const saved = localStorage.getItem('user_target_school');
@@ -595,6 +597,12 @@ const SimuladorPro = () => {
         ];
     };
 
+    const tieneAccesoBanco = (bancoId: string): boolean => {
+        if ((profile as any)?.paquete_completo === true) return true;
+        if (bancoId === 'bank1' || bancoId === '1') return true;
+        return false;
+    };
+
     const handleSelectBank = async (bank: BankSelection) => {
         // bank8, bank9, bank10, bank11, bank12: free 10-question preview — select freely, upsell after results
         if (['bank8', 'bank9', 'bank10', 'bank11', 'bank12'].includes(bank)) {
@@ -704,6 +712,11 @@ const SimuladorPro = () => {
     // ────────────────────────────────────────────────────────────────────────
 
     const handleStartExam = async (mode: ExamMode = 'full') => {
+        if (selectedBank !== 'mixto' && !tieneAccesoBanco(selectedBank)) {
+            const num = selectedBank.replace('bank', '');
+            setBancoBloqueoActivo(`Simulador Pro — Banco ${num}`);
+            return;
+        }
         if (selectedBank === 'mixto') { await handleStartMixto(); return; }
         const bank8Unlocked  = (profile as any)?.bank8_unlocked  === true || (profile as any)?.paquete_completo === true;
         const bank9Unlocked  = (profile as any)?.bank9_unlocked  === true || (profile as any)?.paquete_completo === true;
@@ -946,6 +959,10 @@ const SimuladorPro = () => {
             )}
             </>
         );
+    }
+
+    if (bancoBloqueoActivo) {
+        return <PromoBloqueo titulo={bancoBloqueoActivo} />;
     }
 
     if (isExamActive) {

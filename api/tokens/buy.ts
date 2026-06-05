@@ -34,6 +34,7 @@ export default async function handler(req: Request) {
       'guia2026':           { name: 'Paquete Guía 2026 — Simulador + 44 Videos',               price: 90,  tokens: 0    },
       'paquete_completo':   { name: 'Paquete Completo — Todos los Simuladores + Guía 2026',    price: 170, tokens: 0    },
       'practica_subindice': { name: 'CyberEdu MX – Práctica por Subíndice ECOEMS',            price: 50,  tokens: 0    },
+      'promo_ecoems':       { name: 'Promo ECOEMS 2026 — Acceso Completo',                      price: 50,  tokens: 150  },
     };
 
     const pkg = packages[packageId];

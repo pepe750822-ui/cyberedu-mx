@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import PromoBloqueo from '@/components/PromoBloqueo';
 import { cn } from '@/lib/utils';
 import { Question } from '@/data/simuladorData';
 import { SimulatorActive } from '@/components/simulator/SimulatorActive';
@@ -203,6 +204,7 @@ const SimuladorInfinito: React.FC = () => {
         </div>
     );
     if (!user) return null;
+    if (!(profile as any)?.paquete_completo) return <PromoBloqueo titulo="Simulador Infinito" />;
 
     // ── Config ──────────────────────────────────────────────────────────────
     if (pageState === 'config') {

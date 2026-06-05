@@ -82,7 +82,46 @@ export default async function handler(req: Request) {
 
         console.log(`[Webhook] Pago aprobado ${paymentId} | type=${metaType} | package=${metaPackageId} | tokens=${tokenAmount} | user=${external_reference}`);
 
-        if (isTokenPurchase && tokenAmount > 0) {
+        if (metaPackageId === 'promo_ecoems') {
+          // ── Promo ECOEMS 2026: tokens + acceso completo ───────────────
+          let { data: promoProfile } = await supabase
+            .from('profiles')
+            .select('id, tokens')
+            .eq('id', external_reference)
+            .single();
+
+          if (!promoProfile && paymentData.payer?.email) {
+            const { data: byEmail } = await supabase
+              .from('profiles')
+              .select('id, tokens')
+              .eq('email', paymentData.payer.email)
+              .single();
+            promoProfile = byEmail;
+          }
+
+          if (promoProfile) {
+            const currentTokens = promoProfile.tokens || 0;
+            const { error } = await supabase
+              .from('profiles')
+              .update({
+                tokens: currentTokens + 150,
+                paquete_completo: true,
+                practica_ilimitada: true,
+                bank5_unlocked: true,
+                bank8_unlocked: true,
+                bank9_unlocked: true,
+                bank10_unlocked: true,
+                guia2026_unlocked: true,
+                updated_at: new Date().toISOString(),
+              })
+              .eq('id', promoProfile.id);
+            if (error) throw error;
+            console.log(`[Webhook] ✅ PROMO ECOEMS ACTIVADA → +150 tokens + acceso completo | usuario ${promoProfile.id}`);
+          } else {
+            console.error(`[Webhook] ❌ USUARIO NO ENCONTRADO para promo_ecoems. UUID: ${external_reference}`);
+          }
+
+        } else if (isTokenPurchase && tokenAmount > 0) {
           // ── Compra de tokens ──────────────────────────────────────────
           let { data: profile } = await supabase
             .from('profiles')

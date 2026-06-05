@@ -29,6 +29,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { areas } from "@/data/areas";
@@ -115,6 +116,29 @@ const Index = () => {
     setCopiadoIndex(true);
     setTimeout(() => setCopiadoIndex(false), 2000);
   };
+  const [loadingPromo, setLoadingPromo] = useState(false);
+
+  const irAMercadoPago = async () => {
+    if (!user) { navigate('/auth?ref=promo-ecoems'); return; }
+    setLoadingPromo(true);
+    try {
+      const res = await fetch('/api/tokens/buy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ packageId: 'promo_ecoems', userId: user.id, userEmail: user.email }),
+      });
+      const data = await res.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        toast.error('Error al conectar con Mercado Pago');
+      }
+    } catch {
+      toast.error('Error al conectar con Mercado Pago');
+    }
+    setLoadingPromo(false);
+  };
+
   const totalVideos = areas.reduce((acc, area) => acc + area.videoCount, 0);
   const {
     isViewed,
@@ -321,6 +345,42 @@ const Index = () => {
     // Root div with forced dark class so all dark: Tailwind variants activate
     <div className="min-h-screen dark" style={{ background: "#0a0a0f" }}>
       <Header />
+
+      {/* ── BANNER PROMO ECOEMS $50 ─────────────────────────────────────── */}
+      {user && profile && !(profile as any).paquete_completo && (
+        <div className="mx-4 mt-20 mb-2 bg-gradient-to-r from-orange-600/20 to-purple-600/20 border border-orange-500/40 rounded-2xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-orange-400 text-xs font-bold uppercase tracking-widest">
+              🔥 Promo especial — Solo por el ECOEMS
+            </span>
+          </div>
+          <p className="text-white font-bold text-lg mb-1">
+            Todo desbloqueado permanentemente
+            <span className="text-orange-400"> $50 MXN</span>
+          </p>
+          <p className="text-slate-400 text-sm mb-2">
+            Todos los simuladores, videos y acordeón.
+            Para seguir creciendo la plataforma.
+          </p>
+          <div className="bg-purple-600/10 border border-purple-500/30 rounded-xl p-2 mb-3 text-center">
+            <p className="text-purple-400 font-bold text-sm">
+              🤖 Tutor IA GRATIS hasta el 29 de junio
+            </p>
+          </div>
+          <button
+            onClick={irAMercadoPago}
+            disabled={loadingPromo}
+            className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold text-base hover:bg-orange-500 transition-all disabled:opacity-50"
+          >
+            {loadingPromo ? '⏳ Conectando...' : '💳 Obtener acceso completo — Mercado Pago'}
+          </button>
+          {(profile?.tokens ?? 0) > 0 && (
+            <p className="text-center text-xs text-slate-500 mt-2">
+              Ya tienes {profile.tokens} tokens disponibles
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Texto que sigue el cursor — solo desktop */}
       {isDesktop && (
