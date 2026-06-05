@@ -203,8 +203,7 @@ const SimuladorInfinito: React.FC = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
         </div>
     );
-    if (!user) return null;
-    if (!(profile as any)?.paquete_completo) return <PromoBloqueo titulo="Simulador Infinito" />;
+    if (!user || !(profile as any)?.paquete_completo) return <PromoBloqueo titulo="Simulador Infinito" />;
 
     // ── Config ──────────────────────────────────────────────────────────────
     if (pageState === 'config') {

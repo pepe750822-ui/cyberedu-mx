@@ -100,7 +100,7 @@ const FREE_PREVIEW_COUNT = 20;
 
 const Guia2026 = () => {
   const navigate = useNavigate();
-  const { profile, user, refreshProfile } = useAuth();
+  const { profile, user, refreshProfile, isLoading: authLoading } = useAuth();
   // Sin login → 20 videos gratis; con login → todos los 44 gratis
   const hasAccess = user !== null;
 
@@ -171,7 +171,7 @@ const Guia2026 = () => {
     ? TEMAS
     : TEMAS.filter(t => t.materia === filterMateria);
 
-  if (!profile) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
@@ -179,7 +179,7 @@ const Guia2026 = () => {
     );
   }
 
-  if (!(profile as any).paquete_completo) {
+  if (!user || !(profile as any)?.paquete_completo) {
     return <PromoBloqueo titulo="Guía 2026" />;
   }
 

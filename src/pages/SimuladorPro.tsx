@@ -202,7 +202,7 @@ const formatFecha = (fecha: string) => {
 };
 
 const SimuladorPro = () => {
-    const { user, profile, refreshProfile } = useAuth();
+    const { user, profile, refreshProfile, isLoading: authLoading } = useAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
     const { track } = useTracking();
@@ -845,7 +845,7 @@ const SimuladorPro = () => {
         );
     }
 
-    if (!profile) {
+    if (authLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
@@ -853,7 +853,7 @@ const SimuladorPro = () => {
         );
     }
 
-    if (!(profile as any).paquete_completo) {
+    if (!profile || !(profile as any).paquete_completo) {
         return <PromoBloqueo titulo="Simulador Pro" />;
     }
 

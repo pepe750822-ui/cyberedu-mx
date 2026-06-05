@@ -549,7 +549,7 @@ const colorMap: Record<string, { header: string; dot: string; tag: string; aiBtn
 };
 
 export default function Acordeon() {
-  const { session, user, profile } = useAuth();
+  const { session, user, profile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [openSubtemas, setOpenSubtemas] = useState<Record<string, boolean>>({});
@@ -671,7 +671,7 @@ export default function Acordeon() {
     action();
   };
 
-  if (!profile) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
@@ -679,7 +679,7 @@ export default function Acordeon() {
     );
   }
 
-  if (!(profile as any).paquete_completo) {
+  if (!user || !(profile as any)?.paquete_completo) {
     return <PromoBloqueo titulo="Acordeón ECOEMS" />;
   }
 

@@ -140,7 +140,7 @@ function renderProgressBadge(concepto: string, areaNombre: string) {
 }
 
 export default function PracticaSubindice() {
-  const { user, profile, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [openArea, setOpenArea] = useState<number | null>(null);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
@@ -364,7 +364,14 @@ export default function PracticaSubindice() {
       : 0;
 
   // Gate: requiere practica_ilimitada o paquete_completo
-  if (user && !profile?.practica_ilimitada && !(profile as any)?.paquete_completo) {
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+      </div>
+    );
+  }
+  if (!user || (!profile?.practica_ilimitada && !(profile as any)?.paquete_completo)) {
     return <PromoBloqueo titulo="Práctica por Subíndice" />;
   }
 
