@@ -4,6 +4,7 @@ import { ArrowLeft, PlayCircle, ImageIcon, FileText, CheckCircle, Circle, BookOp
 import { cn } from '@/lib/utils';
 import { clarityEvent } from '@/lib/clarity';
 import { useAuth } from '@/contexts/AuthContext';
+import PromoBloqueo from '@/components/PromoBloqueo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -169,6 +170,18 @@ const Guia2026 = () => {
   const temasFiltrados = filterMateria === 'all'
     ? TEMAS
     : TEMAS.filter(t => t.materia === filterMateria);
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+      </div>
+    );
+  }
+
+  if (!(profile as any).paquete_completo) {
+    return <PromoBloqueo titulo="Guía 2026" />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
