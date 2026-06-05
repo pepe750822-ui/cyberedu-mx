@@ -17,6 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { areas, colorMap } from "@/data/temarioData";
 
+const STORAGE_KEY = 'practica_subindice_estado';
+
 const PRACTICA_MODULES = [
   () => import("@/data/practica/espanol.json"),
   () => import("@/data/practica/habilidad-verbal.json"),
@@ -143,6 +145,8 @@ export default function PracticaSubindice() {
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
   const [bankData, setBankData] = useState<Record<string, QuizQuestion[]>>({});
   const [bankLoading, setBankLoading] = useState(true);
+  const [hayProgresoGuardado, setHayProgresoGuardado] = useState(false);
+  const [estadoGuardado, setEstadoGuardado] = useState<Extract<QuizPhase, { phase: "quiz" }> | null>(null);
 
   useEffect(() => {
     Promise.all(PRACTICA_MODULES.map(fn => fn())).then(modules => {
@@ -156,6 +160,25 @@ export default function PracticaSubindice() {
       setBankData(bank);
       setBankLoading(false);
     });
+  }, []);
+
+  // TAREA 2: Check for saved progress on mount (24h expiry)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (Date.now() - saved.timestamp > 24 * 60 * 60 * 1000) {
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      if (saved.quiz?.phase === "quiz") {
+        setEstadoGuardado(saved.quiz as Extract<QuizPhase, { phase: "quiz" }>);
+        setHayProgresoGuardado(true);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   const isFree =
@@ -212,6 +235,29 @@ export default function PracticaSubindice() {
   const toggleArea = (i: number) =>
     setOpenArea((prev) => (prev === i ? null : i));
 
+  // TAREA 1: Save current quiz progress to localStorage
+  const guardarProgreso = (estadoActual: Extract<QuizPhase, { phase: "quiz" }>) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ timestamp: Date.now(), quiz: estadoActual }));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // TAREA 4: Restore saved progress
+  const continuarPractica = () => {
+    if (!estadoGuardado) return;
+    setQuiz(estadoGuardado);
+    setHayProgresoGuardado(false);
+    setEstadoGuardado(null);
+  };
+
+  const descartarProgreso = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setHayProgresoGuardado(false);
+    setEstadoGuardado(null);
+  };
+
   const handlePractice = (concepto: string, setNumber: 1 | 2 = 1) => {
     if (bankLoading) return;
     const slug = createSlug(concepto.split(":")[0]);
@@ -245,7 +291,9 @@ export default function PracticaSubindice() {
     if (quiz.answers[qIdx] !== null) return;
     const newAnswers = [...quiz.answers];
     newAnswers[qIdx] = aIdx;
-    setQuiz({ ...quiz, answers: newAnswers });
+    const updatedQuiz = { ...quiz, answers: newAnswers };
+    setQuiz(updatedQuiz);
+    guardarProgreso(updatedQuiz); // TAREA 1
   };
 
   const handleShowResults = () => {
@@ -291,6 +339,8 @@ export default function PracticaSubindice() {
     } catch (e) {
       console.error(e);
     }
+
+    localStorage.removeItem(STORAGE_KEY); // TAREA 5: clear in-progress save on completion
 
     setQuiz({
       phase: "results",
@@ -384,6 +434,37 @@ export default function PracticaSubindice() {
             >
               100 tokens →
             </button>
+          </div>
+        )}
+
+        {/* ── TAREA 3: BANNER PROGRESO GUARDADO ── */}
+        {hayProgresoGuardado && estadoGuardado && quiz.phase === "idle" && (
+          <div className="flex items-center justify-between gap-4 px-5 py-4 rounded-2xl border bg-cyan-500/10 border-cyan-500/30">
+            <div className="flex items-center gap-3">
+              <span className="text-lg shrink-0">💾</span>
+              <div>
+                <p className="text-sm font-black text-white">Práctica guardada</p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Continuando en{" "}
+                  <span className="text-cyan-300 font-bold">{estadoGuardado.subindice}</span>
+                  {" "}— {estadoGuardado.answers.filter((a) => a !== null).length} de {estadoGuardado.questions.length} respondidas
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2 shrink-0">
+              <button
+                onClick={continuarPractica}
+                className="text-xs font-black uppercase tracking-widest px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition-colors"
+              >
+                Continuar ▶
+              </button>
+              <button
+                onClick={descartarProgreso}
+                className="text-xs font-black uppercase tracking-widest px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-slate-400 transition-colors"
+              >
+                Descartar
+              </button>
+            </div>
           </div>
         )}
 
