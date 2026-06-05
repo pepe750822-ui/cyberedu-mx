@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import PromoBloqueo from "@/components/PromoBloqueo";
 
 interface Subtema {
   titulo: string;
@@ -548,7 +549,7 @@ const colorMap: Record<string, { header: string; dot: string; tag: string; aiBtn
 };
 
 export default function Acordeon() {
-  const { session, user } = useAuth();
+  const { session, user, profile } = useAuth();
   const navigate = useNavigate();
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [openSubtemas, setOpenSubtemas] = useState<Record<string, boolean>>({});
@@ -669,6 +670,18 @@ export default function Acordeon() {
     if (!user) { navigate("/auth"); return; }
     action();
   };
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0f' }}>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+      </div>
+    );
+  }
+
+  if (!(profile as any).paquete_completo) {
+    return <PromoBloqueo titulo="Acordeón ECOEMS" />;
+  }
 
   return (
     <>
