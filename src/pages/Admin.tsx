@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const AdminPage = () => {
   const { user, profile, isLoading } = useAuth();
@@ -31,6 +32,11 @@ const AdminPage = () => {
   });
   
   const [message, setMessage] = useState('');
+
+  // Magic Link state
+  const [emailNuevo, setEmailNuevo] = useState('');
+  const [magicLink, setMagicLink] = useState('');
+  const [generando, setGenerando] = useState(false);
   
   // Academic Analytics State
   const [globalStats, setGlobalStats] = useState<any>(null);
@@ -76,6 +82,32 @@ const AdminPage = () => {
     
     if (!error && data) setChallenges(data);
     setLoading(false);
+  };
+
+  const generarMagicLink = async () => {
+    if (!emailNuevo.trim()) return;
+    setGenerando(true);
+    setMagicLink('');
+    try {
+      const res = await fetch('/api/admin/magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailNuevo.trim(),
+          adminSecret: import.meta.env.VITE_ADMIN_SECRET,
+        }),
+      });
+      const data = await res.json();
+      if (data.link) {
+        setMagicLink(data.link);
+        toast.success('✅ Link generado y usuario activado');
+      } else {
+        toast.error('Error: ' + data.error);
+      }
+    } catch {
+      toast.error('Error al generar link');
+    }
+    setGenerando(false);
   };
 
   if (isLoading) {
@@ -217,6 +249,62 @@ const AdminPage = () => {
         <div className="grid gap-8">
           {activeTab === 'users' ? (
             <div className="space-y-8">
+              {/* ── Activar Usuario (Magic Link) ── */}
+              <div className="p-6 rounded-3xl bg-white/5 border border-orange-500/20 backdrop-blur-xl">
+                <h2 className="text-xl font-bold mb-1 flex items-center gap-2 text-orange-400">
+                  🔗 ACTIVAR USUARIO
+                </h2>
+                <p className="text-slate-500 text-xs mb-4">
+                  Genera un link mágico para usuarios que pagaron por transferencia.
+                  Al dar clic entran directo con acceso completo activado.
+                </p>
+
+                <input
+                  type="email"
+                  placeholder="correo@ejemplo.com"
+                  value={emailNuevo}
+                  onChange={e => setEmailNuevo(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm mb-3 focus:border-orange-500 outline-none transition-all"
+                />
+
+                <button
+                  onClick={generarMagicLink}
+                  disabled={generando || !emailNuevo.trim()}
+                  className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-orange-500 disabled:opacity-40 transition-all mb-3"
+                >
+                  {generando ? '⏳ Generando...' : '🔗 Generar Magic Link'}
+                </button>
+
+                {magicLink && (
+                  <div className="bg-black/40 border border-green-500/30 rounded-xl p-4 space-y-2">
+                    <p className="text-green-400 text-xs font-bold">
+                      ✅ Link listo — cópialo y mándalo por WhatsApp:
+                    </p>
+                    <p className="text-slate-400 text-xs break-all">{magicLink}</p>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(magicLink); toast.success('Link copiado ✅'); }}
+                      className="w-full bg-green-600/20 border border-green-500/30 text-green-400 py-2 rounded-lg text-sm font-bold hover:bg-green-600/30 transition-all"
+                    >
+                      📋 Copiar link
+                    </button>
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(
+                        '¡Hola! Tu acceso a CyberEdu MX está listo 🎓\n\n' +
+                        'Da clic en este link para entrar directo:\n' +
+                        magicLink + '\n\n' +
+                        'El link expira en 24 horas.\n' +
+                        '¡Mucho éxito en el ECOEMS! 🚀'
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center bg-green-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-green-500 transition-all"
+                    >
+                      💬 Mandar por WhatsApp
+                    </a>
+                  </div>
+                )}
+              </div>
+
               {/* Search Card */}
               <div className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl">
                 <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
