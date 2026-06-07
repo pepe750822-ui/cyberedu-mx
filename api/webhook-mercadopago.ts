@@ -51,9 +51,12 @@ export default async function handler(req: Request) {
       console.log(`[Webhook] metadata:            ${JSON.stringify(metadata)}`);
       console.log(`[Webhook] ────────────────────────────────────────────`);
 
-      // Fix #2: si metadata está vacía o sin type, recuperarla de la preferencia original.
+      // Fix #2: si metadata está vacía o sin ningún campo identificador, recuperarla de la preferencia.
       // MP no garantiza que /v1/payments/{id} propague la metadata de la preferencia.
-      const isMetadataEmpty = !metadata || !metadata.type;
+      // Antes solo se chequeaba !metadata.type, lo que dejaba pasar casos con type pero sin package_id.
+      const isMetadataEmpty = !metadata ||
+        (!metadata.type && !metadata.package_id &&
+         !metadata.packageId && !metadata.packageid);
       if (isMetadataEmpty && paymentData.preference_id) {
         console.log(`[Webhook] Metadata ausente en pago ${paymentId}, recuperando desde preferencia ${paymentData.preference_id}`);
         const prefResp = await fetch(
@@ -81,6 +84,10 @@ export default async function handler(req: Request) {
         const isTokenPurchase = metaType === 'token_purchase';
 
         console.log(`[Webhook] Pago aprobado ${paymentId} | type=${metaType} | package=${metaPackageId} | tokens=${tokenAmount} | user=${external_reference}`);
+        console.log(`[Webhook] [DEBUG] payer_email:        ${paymentData.payer?.email}`);
+        console.log(`[Webhook] [DEBUG] metadata_completa:  ${JSON.stringify(metadata)}`);
+        console.log(`[Webhook] [DEBUG] metaPackageId:      ${metaPackageId}`);
+        console.log(`[Webhook] [DEBUG] external_reference: ${external_reference}`);
 
         if (metaPackageId === 'promo_ecoems') {
           // ── Promo ECOEMS 2026: tokens + acceso completo ───────────────
@@ -162,6 +169,15 @@ export default async function handler(req: Request) {
 
         } else if (metaPackageId === 'guia2026') {
           // ── Desbloqueo Guía 2026 ──────────────────────────────────────
+          let guiaId = external_reference;
+          const { data: guiaProfile } = await supabase
+            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+          if (!guiaProfile && paymentData.payer?.email) {
+            const { data: byEmail } = await supabase
+              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+            if (byEmail) { guiaId = byEmail.id; console.log(`[Webhook] guia2026: usuario encontrado por email → ${guiaId}`); }
+          }
+
           const { error } = await supabase
             .from('profiles')
             .update({
@@ -169,13 +185,22 @@ export default async function handler(req: Request) {
               guia2026_unlocked: true,
               updated_at: new Date().toISOString(),
             })
-            .eq('id', external_reference);
+            .eq('id', guiaId);
 
           if (error) throw error;
-          console.log(`[Webhook] ✅ GUÍA 2026 DESBLOQUEADA → usuario ${external_reference}`);
+          console.log(`[Webhook] ✅ GUÍA 2026 DESBLOQUEADA → usuario ${guiaId}`);
 
         } else if (metaPackageId === 'paquete_completo') {
           // ── Paquete Completo ──────────────────────────────────────────
+          let paqId = external_reference;
+          const { data: paqProfile } = await supabase
+            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+          if (!paqProfile && paymentData.payer?.email) {
+            const { data: byEmail } = await supabase
+              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+            if (byEmail) { paqId = byEmail.id; console.log(`[Webhook] paquete_completo: usuario encontrado por email → ${paqId}`); }
+          }
+
           const { error } = await supabase
             .from('profiles')
             .update({
@@ -187,26 +212,44 @@ export default async function handler(req: Request) {
               paquete_completo: true,
               updated_at: new Date().toISOString(),
             })
-            .eq('id', external_reference);
+            .eq('id', paqId);
 
           if (error) throw error;
-          console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → usuario ${external_reference}`);
+          console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → usuario ${paqId}`);
 
         } else if (metaPackageId === 'practica_subindice') {
           // ── Práctica por Subíndice ────────────────────────────────────
+          let pracId = external_reference;
+          const { data: pracProfile } = await supabase
+            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+          if (!pracProfile && paymentData.payer?.email) {
+            const { data: byEmail } = await supabase
+              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+            if (byEmail) { pracId = byEmail.id; console.log(`[Webhook] practica_subindice: usuario encontrado por email → ${pracId}`); }
+          }
+
           const { error } = await supabase
             .from('profiles')
             .update({
               practica_ilimitada: true,
               updated_at: new Date().toISOString(),
             })
-            .eq('id', external_reference);
+            .eq('id', pracId);
 
           if (error) throw error;
-          console.log(`[Webhook] ✅ PRÁCTICA POR SUBÍNDICE DESBLOQUEADA → usuario ${external_reference}`);
+          console.log(`[Webhook] ✅ PRÁCTICA POR SUBÍNDICE DESBLOQUEADA → usuario ${pracId}`);
 
         } else if (metaType === 'subscription' || metaPackageId === 'ilimitado') {
           // ── Suscripción / Maestro ─────────────────────────────────────
+          let subsId = external_reference;
+          const { data: subsProfile } = await supabase
+            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+          if (!subsProfile && paymentData.payer?.email) {
+            const { data: byEmail } = await supabase
+              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+            if (byEmail) { subsId = byEmail.id; console.log(`[Webhook] subscription: usuario encontrado por email → ${subsId}`); }
+          }
+
           const { error } = await supabase
             .from('profiles')
             .update({
@@ -214,10 +257,10 @@ export default async function handler(req: Request) {
               is_premium: true,
               updated_at: new Date().toISOString(),
             })
-            .eq('id', external_reference);
+            .eq('id', subsId);
 
           if (error) throw error;
-          console.log(`[Webhook] ✅ SUSCRIPCIÓN ACTIVADA → usuario ${external_reference}`);
+          console.log(`[Webhook] ✅ SUSCRIPCIÓN ACTIVADA → usuario ${subsId}`);
 
         } else {
           console.warn(`[Webhook] ⚠️ TIPO DESCONOCIDO. external_reference=${external_reference} | metadata=`, metadata);
