@@ -1,17 +1,99 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import PromoBloqueo from '@/components/PromoBloqueo';
 import { cn } from '@/lib/utils';
 import { Question } from '@/data/simuladorData';
 import { SimulatorActive } from '@/components/simulator/SimulatorActive';
-import { SimulatorResults } from '@/components/simulator/SimulatorResults';
+import { supabase } from '@/integrations/supabase/client';
 import {
     generarSimuladorPersonalizado,
     ALL_MATERIAS,
     DISTRIBUCION_OFICIAL,
 } from '@/data/adaptadorPreguntas';
+
+interface ResultadosProps {
+    correctas: number;
+    total: number;
+    tiempo: number;
+    porMateria: Record<string, { correctas: number; total: number }>;
+    onNuevoSimulador: () => void;
+}
+
+const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador }) => (
+    <div className="min-h-screen bg-[#0a0a0a] px-4 py-8">
+        <div className="max-w-md mx-auto">
+            <div className="text-center mb-8">
+                <div className="text-6xl mb-3">
+                    {Math.round(correctas / total * 100) >= 60 ? '🎉' : '💪'}
+                </div>
+                <h2 className="font-bebas text-4xl text-white mb-1">
+                    {Math.round(correctas / total * 100)}%
+                </h2>
+                <p className="text-slate-400">
+                    {correctas} de {total} correctas
+                </p>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 text-center">
+                    <p className="text-2xl font-bold text-green-400">{correctas}</p>
+                    <p className="text-xs text-slate-500">Correctas</p>
+                </div>
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 text-center">
+                    <p className="text-2xl font-bold text-red-400">{total - correctas}</p>
+                    <p className="text-xs text-slate-500">Incorrectas</p>
+                </div>
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 text-center">
+                    <p className="text-2xl font-bold text-orange-400">{Math.floor(tiempo / 60)}m</p>
+                    <p className="text-xs text-slate-500">Tiempo usado</p>
+                </div>
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 text-center">
+                    <p className="text-2xl font-bold text-blue-400">{Math.round(correctas / total * 100)}%</p>
+                    <p className="text-xs text-slate-500">Acierto</p>
+                </div>
+            </div>
+
+            {/* Desglose por materia */}
+            {Object.keys(porMateria).length > 0 && (
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 mb-6">
+                    <h3 className="font-bold text-white mb-3 text-sm">📊 Por materia</h3>
+                    {Object.entries(porMateria).map(([materia, stats]) => (
+                        <div key={materia} className="mb-2">
+                            <div className="flex justify-between text-xs mb-1">
+                                <span className="text-slate-400 truncate">{materia}</span>
+                                <span className="text-white shrink-0 ml-2">{stats.correctas}/{stats.total}</span>
+                            </div>
+                            <div className="w-full bg-[#1e1e2e] rounded-full h-1.5">
+                                <div
+                                    className="bg-orange-500 h-1.5 rounded-full"
+                                    style={{ width: `${Math.round(stats.correctas / stats.total * 100)}%` }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Botones */}
+            <div className="space-y-3">
+                <button
+                    onClick={onNuevoSimulador}
+                    className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-base hover:bg-orange-500 transition-all"
+                >
+                    ♾️ Nuevo simulador
+                </button>
+                <Link to="/reportes">
+                    <button className="w-full bg-[#12121a] border border-[#1e1e2e] text-slate-300 py-3 rounded-xl font-bold text-sm hover:border-orange-500/40 transition-all">
+                        📈 Ver mi historial
+                    </button>
+                </Link>
+            </div>
+        </div>
+    </div>
+);
 
 const AREA_GROUPS = [
     { emoji: '📐', label: 'Matemáticas', areas: ['Habilidad Matemática', 'Matemáticas'] },
@@ -65,6 +147,9 @@ const SimuladorInfinito: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
+    // Results
+    const [resultsFinal, setResultsFinal] = useState<ResultadosProps | null>(null);
+
     const handleFinish = useCallback(() => {
         localStorage.removeItem(STORAGE_KEY);
         setPageState('results');
@@ -104,6 +189,45 @@ const SimuladorInfinito: React.FC = () => {
             navigate('/auth?redirect=/simulador-infinito');
         }
     }, [user, loading, navigate]);
+
+    useEffect(() => {
+        if (pageState !== 'results' || questions.length === 0) return;
+
+        const total = questions.length;
+        const correctas = questions.filter(q => userAnswers[q.id] === q.correctIndex).length;
+        const tiempoTotal = Math.round(total * SECONDS_PER_QUESTION);
+        const tiempo = Math.max(0, tiempoTotal - timeLeft);
+
+        const porMateria: Record<string, { correctas: number; total: number }> = {};
+        questions.forEach(q => {
+            const m = q.area || 'Sin área';
+            if (!porMateria[m]) porMateria[m] = { correctas: 0, total: 0 };
+            porMateria[m].total++;
+            if (userAnswers[q.id] === q.correctIndex) porMateria[m].correctas++;
+        });
+
+        setResultsFinal({ correctas, total, tiempo, porMateria, onNuevoSimulador: () => setPageState('config') });
+
+        if (user) {
+            supabase.from('simulador_resultados').insert({
+                user_id: user.id,
+                banco: 'infinito',
+                modo: 'infinito',
+                total_preguntas: total,
+                respuestas_correctas: correctas,
+                porcentaje: Math.round((correctas / total) * 100),
+                tiempo_segundos: tiempo,
+                metadata: {
+                    tipo: 'simulador_infinito',
+                    materias,
+                    fuente,
+                },
+            }).then(({ error }) => {
+                if (error) console.error('[SimuladorInfinito] Error guardando resultado:', error.message);
+            });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageState]);
 
     const guardarEstado = useCallback(() => {
         const estado = {
@@ -548,65 +672,18 @@ const SimuladorInfinito: React.FC = () => {
     }
 
     // ── Results ───────────────────────────────────────────────────────────────
-    const porArea: Record<string, { total: number; correctas: number; oficial: number }> = {};
-    questions.forEach(q => {
-        const area = q.area || 'Sin área';
-        if (!porArea[area]) {
-            porArea[area] = { total: 0, correctas: 0, oficial: DISTRIBUCION_OFICIAL[area] || 0 };
-        }
-        porArea[area].total++;
-        if (userAnswers[q.id] === q.correctIndex) porArea[area].correctas++;
-    });
-
-    return (
-        <SimulatorResults
-            user={user}
-            activeQuestions={questions}
-            userAnswers={userAnswers}
-            markedForReview={markedForReview}
-            examMode="practice"
-            selectedEscuela={null}
-            onRestartFull={() => setPageState('config')}
-            onRestartPractice={() => setPageState('config')}
-            onBackToDashboard={() => navigate('/')}
-        >
-            {/* Comparativa con distribución oficial ECOEMS */}
-            {Object.keys(porArea).length > 0 && (
-                <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 space-y-4 mt-4">
-                    <h3 className="font-black text-white text-base">
-                        Tu simulador vs Examen oficial ECOEMS
-                    </h3>
-                    <div className="space-y-2.5">
-                        {ALL_MATERIAS.map(area => {
-                            const data = porArea[area];
-                            if (!data) return null;
-                            const alcanzaOficial = data.total >= data.oficial;
-                            return (
-                                <div
-                                    key={area}
-                                    className="flex items-center gap-2 text-sm"
-                                >
-                                    <span className="text-slate-300 flex-1 text-xs">{area}</span>
-                                    <span className="text-slate-500 text-xs shrink-0">
-                                        {data.correctas}/{data.total} correctas
-                                    </span>
-                                    <span className={cn(
-                                        'text-xs font-bold shrink-0 w-28 text-right',
-                                        alcanzaOficial ? 'text-green-400' : 'text-yellow-400'
-                                    )}>
-                                        {data.total} vs {data.oficial} oficial {alcanzaOficial ? '✅' : '⚠️'}
-                                    </span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <p className="text-[10px] text-slate-600 pt-2 border-t border-white/10">
-                        El examen oficial ECOEMS incluye {Object.values(DISTRIBUCION_OFICIAL).reduce((a, b) => a + b, 0)} preguntas distribuidas en 10 materias.
-                    </p>
+    if (pageState === 'results') {
+        if (!resultsFinal) {
+            return (
+                <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
                 </div>
-            )}
-        </SimulatorResults>
-    );
+            );
+        }
+        return <ResultadosSimulador {...resultsFinal} />;
+    }
+
+    return null;
 };
 
 export default SimuladorInfinito;
