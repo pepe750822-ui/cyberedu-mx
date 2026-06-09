@@ -22,8 +22,12 @@ interface ResultadosProps {
     onNuevoSimulador: () => void;
 }
 
-const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador }) => (
-    <div className="min-h-screen bg-[#0a0a0a] px-4 py-8">
+const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador }) => {
+    const { user } = useAuth();
+    const esAdmin = user?.email === 'pepe750822@gmail.com';
+
+    return (
+        <div className="min-h-screen bg-[#0a0a0a] px-4 py-8">
         <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
                 <div className="text-6xl mb-3">
@@ -86,15 +90,15 @@ const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiem
                 >
                     ♾️ Nuevo simulador
                 </button>
-                <Link to="/reportes">
+                <Link to={esAdmin ? '/reportes-admin' : '/reportes-simulador'}>
                     <button className="w-full bg-[#12121a] border border-[#1e1e2e] text-slate-300 py-3 rounded-xl font-bold text-sm hover:border-orange-500/40 transition-all">
                         📈 Ver mi historial
                     </button>
                 </Link>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const AREA_GROUPS = [
     { emoji: '📐', label: 'Matemáticas', areas: ['Habilidad Matemática', 'Matemáticas'] },
