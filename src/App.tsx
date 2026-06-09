@@ -52,6 +52,7 @@ const LandingPage = lazy(() => import("./pages/LandingPage"));
 const PromoEcoems = lazy(() => import("./pages/PromoEcoems"));
 const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
 const SimuladorInfinito = lazy(() => import("./pages/SimuladorInfinito"));
+const ReportesAdmin = lazy(() => import("./pages/ReportesAdmin"));
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -227,6 +228,7 @@ const App = () => (
               <Route path="/acordeon" element={<Acordeon />} />
               <Route path="/practica-subindice" element={<PracticaSubindice />} />
               <Route path="/simulador-infinito" element={<SimuladorInfinito />} />
+              <Route path="/reportes-admin" element={<ReportesAdmin />} />
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/promo-ecoems" element={<PromoEcoems />} />
               <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
