@@ -23,9 +23,6 @@ interface ResultadosProps {
 }
 
 const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador }) => {
-    const { user } = useAuth();
-    const esAdmin = user?.email === 'pepe750822@gmail.com';
-
     return (
         <div className="min-h-screen bg-[#0a0a0a] px-4 py-8">
         <div className="max-w-md mx-auto">
@@ -90,7 +87,7 @@ const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiem
                 >
                     ♾️ Nuevo simulador
                 </button>
-                <Link to={esAdmin ? '/reportes-admin' : '/reportes-simulador'}>
+                <Link to="/reportes-simulador">
                     <button className="w-full bg-[#12121a] border border-[#1e1e2e] text-slate-300 py-3 rounded-xl font-bold text-sm hover:border-orange-500/40 transition-all">
                         📈 Ver mi historial
                     </button>
@@ -222,21 +219,19 @@ const SimuladorInfinito: React.FC = () => {
                 const { error } = await supabase.from('simulador_resultados').insert({
                     user_id: user.id,
                     banco: 'infinito',
-                    modo: 'infinito',
                     total_preguntas: total,
                     respuestas_correctas: correctas,
                     porcentaje: Math.round((correctas / total) * 100),
-                    tiempo_segundos: tiempo,
+                    tiempo_segundos: tiempo_usado,
                     metadata: {
                         tipo: 'simulador_infinito',
-                        materias,
-                        fuente,
-                    },
+                        timestamp: new Date().toISOString()
+                    }
                 });
 
                 if (error) {
-                    console.error('Error guardando resultado:', error);
-                    toast.error('Error al guardar resultado: ' + error.message);
+                    console.error('Error:', JSON.stringify(error));
+                    toast.error('Error: ' + error.message);
                 }
             };
             guardarResultado();

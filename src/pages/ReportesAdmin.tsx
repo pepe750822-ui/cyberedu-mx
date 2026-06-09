@@ -30,6 +30,13 @@ export default function ReportesAdmin() {
     cargar();
   }, []);
 
+  // Preseleccionar al usuario logueado al entrar
+  useEffect(() => {
+    if (user?.id && !userSeleccionado) {
+      setUserSeleccionado(user.id);
+    }
+  }, [user, userSeleccionado]);
+
   // Cargar historial del usuario seleccionado
   useEffect(() => {
     if (!userSeleccionado) return;
