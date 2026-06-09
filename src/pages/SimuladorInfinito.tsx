@@ -12,6 +12,7 @@ import {
     ALL_MATERIAS,
     DISTRIBUCION_OFICIAL,
 } from '@/data/adaptadorPreguntas';
+import { toast } from "sonner";
 
 interface ResultadosProps {
     correctas: number;
@@ -212,22 +213,28 @@ const SimuladorInfinito: React.FC = () => {
         setResultsFinal({ correctas, total, tiempo, porMateria, onNuevoSimulador: () => setPageState('config') });
 
         if (user) {
-            supabase.from('simulador_resultados').insert({
-                user_id: user.id,
-                banco: 'infinito',
-                modo: 'infinito',
-                total_preguntas: total,
-                respuestas_correctas: correctas,
-                porcentaje: Math.round((correctas / total) * 100),
-                tiempo_segundos: tiempo,
-                metadata: {
-                    tipo: 'simulador_infinito',
-                    materias,
-                    fuente,
-                },
-            }).then(({ error }) => {
-                if (error) console.error('[SimuladorInfinito] Error guardando resultado:', error.message);
-            });
+            const guardarResultado = async () => {
+                const { error } = await supabase.from('simulador_resultados').insert({
+                    user_id: user.id,
+                    banco: 'infinito',
+                    modo: 'infinito',
+                    total_preguntas: total,
+                    respuestas_correctas: correctas,
+                    porcentaje: Math.round((correctas / total) * 100),
+                    tiempo_segundos: tiempo,
+                    metadata: {
+                        tipo: 'simulador_infinito',
+                        materias,
+                        fuente,
+                    },
+                });
+
+                if (error) {
+                    console.error('Error guardando resultado:', error);
+                    toast.error('Error al guardar resultado: ' + error.message);
+                }
+            };
+            guardarResultado();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageState]);
