@@ -149,6 +149,7 @@ const SimuladorInfinito: React.FC = () => {
 
     // Results
     const [resultsFinal, setResultsFinal] = useState<ResultadosProps | null>(null);
+    const [tiempoInicio, setTiempoInicio] = useState<number>(0);
 
     const handleFinish = useCallback(() => {
         localStorage.removeItem(STORAGE_KEY);
@@ -195,8 +196,10 @@ const SimuladorInfinito: React.FC = () => {
 
         const total = questions.length;
         const correctas = questions.filter(q => userAnswers[q.id] === q.correctIndex).length;
-        const tiempoTotal = Math.round(total * SECONDS_PER_QUESTION);
-        const tiempo = Math.max(0, tiempoTotal - timeLeft);
+        const tiempoTotal = Math.round(questions.length * 84.375);
+        const tiempoTranscurrido = Math.round((Date.now() - tiempoInicio) / 1000);
+        const tiempo_usado = Math.min(tiempoTranscurrido, tiempoTotal);
+        const tiempo = tiempo_usado;
 
         const porMateria: Record<string, { correctas: number; total: number }> = {};
         questions.forEach(q => {
@@ -295,6 +298,7 @@ const SimuladorInfinito: React.FC = () => {
             setMarkedForReview({});
             setTimeLeft(Math.round(qs.length * SECONDS_PER_QUESTION));
             setIsPaused(false);
+            setTiempoInicio(Date.now());
             setPageState('exam');
         } catch (err) {
             console.error('Error generando simulador:', err);
