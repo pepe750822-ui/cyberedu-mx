@@ -97,6 +97,7 @@ const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiem
                 </Link>
             </div>
         </div>
+        </div>
     );
 };
 
