@@ -91,39 +91,48 @@ export default async function handler(req: Request) {
 
         if (metaPackageId === 'promo_ecoems') {
           // ── Promo ECOEMS 2026: tokens + acceso completo ───────────────
-          let { data: promoProfile } = await supabase
-            .from('profiles')
-            .select('id, tokens')
-            .eq('id', external_reference)
-            .single();
-
-          if (!promoProfile && paymentData.payer?.email) {
+          // Resolver userId (fallback por email si UUID no coincide)
+          let promoUserId = external_reference;
+          const { data: promoCheck } = await supabase
+            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+          if (!promoCheck && paymentData.payer?.email) {
             const { data: byEmail } = await supabase
-              .from('profiles')
-              .select('id, tokens')
-              .eq('email', paymentData.payer.email)
-              .single();
-            promoProfile = byEmail;
+              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+            if (byEmail) {
+              promoUserId = byEmail.id;
+              console.log(`[Webhook] promo_ecoems: usuario encontrado por email → ${promoUserId}`);
+            }
           }
 
-          if (promoProfile) {
-            const currentTokens = promoProfile.tokens || 0;
+          if (promoUserId) {
+            // Obtener tokens actuales primero para evitar null en la suma
+            const { data: perfilActual } = await supabase
+              .from('profiles')
+              .select('tokens')
+              .eq('id', promoUserId)
+              .single();
+
+            const tokensActuales = Number(perfilActual?.tokens) || 0;
+
+            const updates = {
+              tokens: tokensActuales + 150,
+              paquete_completo: true,
+              practica_ilimitada: true,
+              bank5_unlocked: true,
+              bank8_unlocked: true,
+              bank9_unlocked: true,
+              bank10_unlocked: true,
+              guia2026_unlocked: true,
+              updated_at: new Date().toISOString(),
+            };
+
             const { error } = await supabase
               .from('profiles')
-              .update({
-                tokens: currentTokens + 150,
-                paquete_completo: true,
-                practica_ilimitada: true,
-                bank5_unlocked: true,
-                bank8_unlocked: true,
-                bank9_unlocked: true,
-                bank10_unlocked: true,
-                guia2026_unlocked: true,
-                updated_at: new Date().toISOString(),
-              })
-              .eq('id', promoProfile.id);
+              .update(updates)
+              .eq('id', promoUserId);
+
             if (error) throw error;
-            console.log(`[Webhook] ✅ PROMO ECOEMS ACTIVADA → +150 tokens + acceso completo | usuario ${promoProfile.id}`);
+            console.log(`[Webhook] ✅ PROMO ECOEMS ACTIVADA → ${tokensActuales} + 150 = ${tokensActuales + 150} tokens + acceso completo | usuario ${promoUserId}`);
           } else {
             console.error(`[Webhook] ❌ USUARIO NO ENCONTRADO para promo_ecoems. UUID: ${external_reference}`);
           }
