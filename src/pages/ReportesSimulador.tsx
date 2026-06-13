@@ -120,43 +120,56 @@ export default function ReportesSimulador() {
           <h2 className="font-bebas text-xl text-white">
             HISTORIAL
           </h2>
-          {historial.map((r, i) => (
-            <div key={r.id}
-              className="bg-[#12121a] border border-[#1e1e2e]
-              rounded-xl p-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-white font-bold">
-                    {new Date(r.created_at).toLocaleDateString(
-                      'es-MX', { 
-                        weekday: 'short',
-                        day: '2-digit', 
-                        month: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      }
-                    )}
-                  </p>
-                  <p className="text-slate-400 text-sm mt-1">
-                    {r.total_preguntas} preguntas · {' '}
-                    {Math.floor((r.tiempo_segundos||0)/60)} min
-                  </p>
+          {historial.map((r) => {
+            const pct = Number(r.porcentaje);
+            const colorClass = pct >= 70 ? 'text-green-400' : pct >= 50 ? 'text-orange-400' : 'text-red-400';
+            const barClass   = pct >= 70 ? 'bg-green-500'  : pct >= 50 ? 'bg-orange-500'  : 'bg-red-500';
+            return (
+              <div key={r.id} className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 mb-3">
+                {/* Header */}
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-white font-bold text-sm">
+                      {new Date(r.created_at).toLocaleDateString('es-MX', {
+                        weekday: 'long', day: '2-digit', month: 'short',
+                        hour: '2-digit', minute: '2-digit'
+                      })}
+                    </p>
+                    <p className="text-slate-500 text-xs mt-0.5">
+                      {r.total_preguntas} preguntas · {Math.floor((r.tiempo_segundos || 0) / 60)} min
+                    </p>
+                  </div>
+                  <div className={`font-bebas text-3xl ${colorClass}`}>
+                    {Math.round(pct)}%
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className={`font-bebas text-2xl ${
-                    r.porcentaje >= 70 ? 'text-green-400' :
-                    r.porcentaje >= 50 ? 'text-orange-400' :
-                    'text-red-400'
-                  }`}>
-                    {r.porcentaje}%
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {r.respuestas_correctas}/{r.total_preguntas}
-                  </p>
+
+                {/* Barra de progreso */}
+                <div className="w-full bg-[#1e1e2e] rounded-full h-2 mb-3">
+                  <div
+                    className={`h-2 rounded-full transition-all ${barClass}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="bg-[#0a0a0a] rounded-lg p-2">
+                    <p className="text-green-400 font-bold text-lg">{r.aciertos}</p>
+                    <p className="text-slate-600 text-xs">Correctas</p>
+                  </div>
+                  <div className="bg-[#0a0a0a] rounded-lg p-2">
+                    <p className="text-red-400 font-bold text-lg">{r.errores}</p>
+                    <p className="text-slate-600 text-xs">Incorrectas</p>
+                  </div>
+                  <div className="bg-[#0a0a0a] rounded-lg p-2">
+                    <p className="text-blue-400 font-bold text-lg">{Math.floor((r.tiempo_segundos || 0) / 60)}m</p>
+                    <p className="text-slate-600 text-xs">Tiempo</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
