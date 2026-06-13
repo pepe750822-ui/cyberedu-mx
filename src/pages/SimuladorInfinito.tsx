@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Question } from '@/data/simuladorData';
 import { SimulatorActive } from '@/components/simulator/SimulatorActive';
 import { supabase } from '@/integrations/supabase/client';
+import { guardarResultadoSimulador } from '@/hooks/useTracking';
 import {
     generarSimuladorPersonalizado,
     ALL_MATERIAS,
@@ -215,26 +216,14 @@ const SimuladorInfinito: React.FC = () => {
         setResultsFinal({ correctas, total, tiempo, porMateria, onNuevoSimulador: () => setPageState('config') });
 
         if (user) {
-            const guardarResultado = async () => {
-                const { error } = await supabase.from('simulador_resultados').insert({
-                    user_id: user.id,
-                    banco: 'infinito',
-                    total_preguntas: total,
-                    respuestas_correctas: correctas,
-                    porcentaje: Math.round((correctas / total) * 100),
-                    tiempo_segundos: tiempo_usado,
-                    metadata: {
-                        tipo: 'simulador_infinito',
-                        timestamp: new Date().toISOString()
-                    }
-                });
-
-                if (error) {
-                    console.error('Error:', JSON.stringify(error));
-                    toast.error('Error: ' + error.message);
-                }
-            };
-            guardarResultado();
+            guardarResultadoSimulador({
+                userId: user.id,
+                banco: 'infinito',
+                totalPreguntas: total,
+                aciertos: correctas,
+                errores: total - correctas,
+                tiempoSegundos: tiempo_usado,
+            }).then(() => toast.success('✅ Resultado guardado'));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageState]);
