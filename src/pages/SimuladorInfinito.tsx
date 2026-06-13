@@ -21,9 +21,12 @@ interface ResultadosProps {
     tiempo: number;
     porMateria: Record<string, { correctas: number; total: number }>;
     onNuevoSimulador: () => void;
+    simuladoresCount?: number;
+    mejorResultado?: number;
+    promedio?: number;
 }
 
-const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador }) => {
+const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiempo, porMateria, onNuevoSimulador, simuladoresCount, mejorResultado, promedio }) => {
     return (
         <div className="min-h-screen bg-[#0a0a0a] px-4 py-8">
         <div className="max-w-md mx-auto">
@@ -77,6 +80,27 @@ const ResultadosSimulador: React.FC<ResultadosProps> = ({ correctas, total, tiem
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Progreso histórico */}
+            {simuladoresCount !== undefined && (
+                <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 mb-4">
+                    <h3 className="font-bold text-white text-sm mb-3">📊 Tu progreso</h3>
+                    <div className="grid grid-cols-3 gap-3 text-center">
+                        <div>
+                            <p className="text-xl font-bold text-orange-400">{simuladoresCount}</p>
+                            <p className="text-xs text-slate-500">Simuladores</p>
+                        </div>
+                        <div>
+                            <p className="text-xl font-bold text-green-400">{mejorResultado}%</p>
+                            <p className="text-xs text-slate-500">Mejor</p>
+                        </div>
+                        <div>
+                            <p className="text-xl font-bold text-blue-400">{promedio}%</p>
+                            <p className="text-xs text-slate-500">Promedio</p>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -216,6 +240,7 @@ const SimuladorInfinito: React.FC = () => {
         setResultsFinal({ correctas, total, tiempo, porMateria, onNuevoSimulador: () => setPageState('config') });
 
         if (user) {
+            const currentPct = Math.round((correctas / total) * 100);
             guardarResultadoSimulador({
                 userId: user.id,
                 banco: 'infinito',
@@ -223,7 +248,28 @@ const SimuladorInfinito: React.FC = () => {
                 aciertos: correctas,
                 errores: total - correctas,
                 tiempoSegundos: tiempo_usado,
-            }).then(() => toast.success('✅ Resultado guardado'));
+            }).then(async () => {
+                toast.success('✅ Resultado guardado');
+                const { data: historial } = await supabase
+                    .from('simulador_resultados')
+                    .select('porcentaje, aciertos, total_preguntas')
+                    .eq('user_id', user.id)
+                    .eq('banco', 'infinito')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                const mejorResultado = historial && historial.length > 0
+                    ? Math.max(...historial.map((h: any) => Number(h.porcentaje)))
+                    : currentPct;
+                const promedio = historial && historial.length > 0
+                    ? Math.round(historial.reduce((s: number, h: any) => s + Number(h.porcentaje), 0) / historial.length)
+                    : currentPct;
+                setResultsFinal(prev => prev ? {
+                    ...prev,
+                    simuladoresCount: historial?.length ?? 1,
+                    mejorResultado,
+                    promedio,
+                } : prev);
+            });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageState]);
@@ -617,6 +663,11 @@ const SimuladorInfinito: React.FC = () => {
                     >
                         Iniciar Simulador ♾️
                     </button>
+                    <Link to="/reportes-simulador">
+                        <button className="w-full flex items-center justify-center gap-2 bg-[#12121a] border border-[#1e1e2e] text-slate-400 py-3 rounded-xl font-rajdhani font-bold text-sm hover:border-orange-500/40 hover:text-orange-400 transition-all mt-3">
+                            📈 Ver mi historial
+                        </button>
+                    </Link>
                 </div>
             </div>
         );
