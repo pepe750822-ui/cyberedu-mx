@@ -13,7 +13,7 @@ export interface Question {
 export const bank13Questions: Question[] = [
   {
     id: 1001,
-    area: "Física",
+    area: "Química",
     text: "¿Cómo se llama aquella sustancia simple que no puede descomponerse en otras más sencillas?",
     options: ["Elemento", "Velocidad", "Aceleración", "Presión"],
     correctIndex: 0,
@@ -37,7 +37,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1004,
-    area: "Física",
+    area: "Química",
     text: "Los electrones se mueven alrededor del núcleo en niveles de energía fija (cuantizada) lo propuso:",
     options: ["Transmisión", "Refracción", "Difracción", "Bohr"],
     correctIndex: 3,
@@ -77,7 +77,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1009,
-    area: "Química",
+    area: "Física",
     text: "Método de separación de mezclas en el cual la sustancia se hace girar a gran velocidad, separándose los componentes:",
     options: ["Centrifugación", "Filtración", "Decantación", "Destilación"],
     correctIndex: 0,
@@ -93,7 +93,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1011,
-    area: "Química",
+    area: "Física",
     text: "Si el número atómico del sodio es 11 y la masa atómica 23, ¿Cuántos neutrones se encuentran en el núcleo del sodio?",
     options: ["Compuesto", "Mezcla", "12", "Solución"],
     correctIndex: 2,
@@ -101,7 +101,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1012,
-    area: "Química",
+    area: "Física",
     text: "Si el ácido sulfúrico tiene la fórmula H2SO4, ¿Cuál es su masa molar? (Masa atómica: H=1, S=32, O=16)",
     options: ["Agua", "Sal", "Aire", "98"],
     correctIndex: 3,
@@ -109,7 +109,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1013,
-    area: "Biología",
+    area: "Química",
     text: "¿Cuál es el nombre que se le da a la mezcla (por lo general) líquida de varias sustancias?",
     options: ["Disolución", "El cloroplasto", "La vacuola", "El lisosoma"],
     correctIndex: 0,
@@ -125,7 +125,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1015,
-    area: "Física",
+    area: "Química",
     text: "Una de las características de los líquidos es:",
     options: ["Metal", "Semimetal", "Adoptan la forma del recipiente que los contiene", "Conductor"],
     correctIndex: 2,
@@ -133,7 +133,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1016,
-    area: "Física",
+    area: "Química",
     text: "Una de las características de los gases es:",
     options: ["Disminuye", "Se mantiene igual", "Desaparece", "Moléculas muy separadas"],
     correctIndex: 3,
@@ -149,7 +149,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1018,
-    area: "Biología",
+    area: "Química",
     text: "La reacción química entre un metal y el oxígeno da como producto:",
     options: ["Glucosa", "Un óxido", "Fructosa", "Galactosa"],
     correctIndex: 1,
@@ -157,7 +157,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1019,
-    area: "Biología",
+    area: "Química",
     text: "La reacción química entre el hidrógeno y un no metal da como producto:",
     options: ["Bacterias", "Hongos", "Un ácido", "Virus"],
     correctIndex: 2,
@@ -197,7 +197,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1024,
-    area: "Química",
+    area: "Física",
     text: "Si el elemento Fe tiene 26 electrones y su masa atómica es de 56, ¿cuál es su número de neutrones?",
     options: ["Dalton", "Rutherford", "Thomson", "30"],
     correctIndex: 3,
@@ -237,7 +237,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1029,
-    area: "Física",
+    area: "Química",
     text: "Según la Ley de Charles al disminuir la temperatura de un gas, su volumen:",
     options: ["Disminuye", "Tiempo", "Distancia", "Potencia"],
     correctIndex: 0,
@@ -253,7 +253,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1031,
-    area: "Química",
+    area: "Física",
     text: "De acuerdo con la tercera ley de Newton, a toda acción:",
     options: ["Compuesto", "Mezcla", "Corresponde una reacción de igual magnitud y dirección contraria", "Solución"],
     correctIndex: 2,
@@ -269,7 +269,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1033,
-    area: "Química",
+    area: "Física",
     text: "La aceleración es directamente proporcional a la fuerza e inversamente proporcional a la masa del objeto.",
     options: ["a = F / m", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -277,7 +277,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1034,
-    area: "Física",
+    area: "Química",
     text: "En física, se llama a todo aquello que ocupe un lugar en el espacio:",
     options: ["Transmisión", "Materia", "Refracción", "Difracción"],
     correctIndex: 1,
@@ -285,7 +285,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1035,
-    area: "Biología",
+    area: "Química",
     text: "Cuando un objeto se ve en un espejo, la imagen formada se debe al fenómeno de:",
     options: ["Fagocitosis", "Pinocitosis", "Reflexión", "Endocitosis"],
     correctIndex: 2,
@@ -293,7 +293,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1036,
-    area: "Física",
+    area: "Química",
     text: "Un frasco con tapa apretada se destapa con facilidad haciendo fluir agua caliente sobre ella. ¿Por qué?",
     options: ["Disminuye", "Se mantiene igual", "Desaparece", "Aumenta su volumen"],
     correctIndex: 3,
@@ -309,7 +309,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1038,
-    area: "Física",
+    area: "Química",
     text: "Una medida de volumen es:",
     options: ["Joule", "El litro", "Pascal", "Newton"],
     correctIndex: 1,
@@ -325,7 +325,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1040,
-    area: "Química",
+    area: "Física",
     text: "Una esfera de metal recibe una fuerza de 60 N y alcanza una aceleración de 12 m/seg2. ¿Cuál es la masa de la esfera?",
     options: ["Ecuaciones", "Símbolos", "Diagramas", "5 kg"],
     correctIndex: 3,
@@ -381,7 +381,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1047,
-    area: "Física",
+    area: "Química",
     text: "A cuántos ºC equivalen 73 K:",
     options: ["Aumenta", "Desaparece", "-200 ºC", "Varía aleatoriamente"],
     correctIndex: 2,
@@ -453,7 +453,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1056,
-    area: "Español",
+    area: "Matemáticas",
     text: "Género narrativo caracterizado por relatar una historia en prosa, en la que se describen acciones fingidas:",
     options: ["Punto y seguido", "Punto y aparte", "Dos puntos", "Novela"],
     correctIndex: 3,
@@ -461,7 +461,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1057,
-    area: "Español",
+    area: "Matemáticas",
     text: "Género literario al que pertenecen las obras dramáticas compuestas para ser representadas en un escenario:",
     options: ["Teatro", "Verso", "Estrofa", "Rima"],
     correctIndex: 0,
@@ -469,7 +469,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1058,
-    area: "Biología",
+    area: "Matemáticas",
     text: "Arte del lenguaje de expresar o sugerir por medio de la palabra, el ritmo, la armonía y la imagen, opuesta a la prosa:",
     options: ["Glucosa", "Poesía", "Fructosa", "Galactosa"],
     correctIndex: 1,
@@ -493,7 +493,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1061,
-    area: "Química",
+    area: "Matemáticas",
     text: "¿Cuál es el resultado correcto para la operación: (10x² + 6x - 15) + (-3x² - 16x + 9)?",
     options: ["7x² - 10x - 6", "Compuesto", "Mezcla", "Solución"],
     correctIndex: 0,
@@ -501,7 +501,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1062,
-    area: "Química",
+    area: "Matemáticas",
     text: "En la siguiente operación con polinomios (18x³ - 16x² + 20x) - (16x³ + 15x² - 12x):",
     options: ["Agua", "2x³ - 29x² + 32x", "Sal", "Aire"],
     correctIndex: 1,
@@ -509,7 +509,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1063,
-    area: "Química",
+    area: "Matemáticas",
     text: "La solución para el producto de (2x + 5)(3x - 8) ¿es?",
     options: ["Líquido", "Sólido", "6x² - x - 40", "Plasma"],
     correctIndex: 2,
@@ -517,7 +517,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1064,
-    area: "Química",
+    area: "Matemáticas",
     text: "Al desarrollar la operación en la expresión (x - 9)² ¿Se obtiene como resultado?",
     options: ["Dalton", "Rutherford", "Thomson", "x² - 18x + 81"],
     correctIndex: 3,
@@ -525,7 +525,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1065,
-    area: "Química",
+    area: "Matemáticas",
     text: "Al operar la siguiente expresión (5x + 10)(5x - 10), ¿Se obtiene?",
     options: ["25x² - 100", "Grupos", "Valencias", "Períodos"],
     correctIndex: 0,
@@ -533,7 +533,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1066,
-    area: "Química",
+    area: "Matemáticas",
     text: "¿Cuál es la solución para la expresión algebraica (x - 12)(x - 4)?",
     options: ["Los gases", "x² - 16x + 48", "Los líquidos", "Los compuestos"],
     correctIndex: 1,
@@ -541,7 +541,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1067,
-    area: "Química",
+    area: "Matemáticas",
     text: "La factorización del trinomio x² - 3x - 40 es:",
     options: ["Elemento", "Mezcla", "(x - 8)(x + 5)", "Átomo"],
     correctIndex: 2,
@@ -549,7 +549,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1068,
-    area: "Química",
+    area: "Matemáticas",
     text: "Factorice la expresión x² + 9x + 20:",
     options: ["Solución", "Compuesto", "Elemento", "(x + 5)(x + 4)"],
     correctIndex: 3,
@@ -557,7 +557,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1069,
-    area: "Química",
+    area: "Matemáticas",
     text: "Factoriza la expresión x² - 9:",
     options: ["(x + 3)(x - 3)", "Filtración", "Decantación", "Destilación"],
     correctIndex: 0,
@@ -589,7 +589,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1073,
-    area: "Química",
+    area: "Matemáticas",
     text: "¿Cuál es el área de un triángulo si su base mide 24 cm y su altura 30 cm?",
     options: ["360 cm²", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -717,7 +717,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1089,
-    area: "Biología",
+    area: "Matemáticas",
     text: "La fotosíntesis es la transformación de energía luminosa a energía:",
     options: ["Química", "Bacterias", "Hongos", "Virus"],
     correctIndex: 0,
@@ -765,7 +765,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1095,
-    area: "Química",
+    area: "Biología",
     text: "La Teoría de la Selección Natural fue propuesta por:",
     options: ["Grupos", "Valencias", "Charles Darwin", "Períodos"],
     correctIndex: 2,
@@ -821,7 +821,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1102,
-    area: "Química",
+    area: "Biología",
     text: "¿Cómo se llama a la forma de división celular donde intervienen glándulas sexuales?",
     options: ["Agua", "Meiosis", "Sal", "Aire"],
     correctIndex: 1,
@@ -837,7 +837,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1104,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué moléculas constituyen la primera fuente de energía para los seres vivos?",
     options: ["Dalton", "Rutherford", "Thomson", "Carbohidratos (azúcares)"],
     correctIndex: 3,
@@ -893,7 +893,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1111,
-    area: "Química",
+    area: "Biología",
     text: "La digestión celular es realizada por los:",
     options: ["Compuesto", "Mezcla", "Lisosomas", "Solución"],
     correctIndex: 2,
@@ -981,7 +981,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1122,
-    area: "Química",
+    area: "Biología",
     text: "Los hidrocarburos están formados por _____ y carbono:",
     options: ["Agua", "Hidrógeno", "Sal", "Aire"],
     correctIndex: 1,
@@ -989,7 +989,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1123,
-    area: "Geografía",
+    area: "Biología",
     text: "El conocimiento que permite a los niños diferenciar entre frío y caliente es:",
     options: ["Oaxaca", "Sonora", "Empírico", "Veracruz"],
     correctIndex: 2,
@@ -1021,7 +1021,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1127,
-    area: "Química",
+    area: "Biología",
     text: "La manifestación externa de los rasgos hereditarios se conoce como:",
     options: ["Elemento", "Mezcla", "Fenotipo", "Átomo"],
     correctIndex: 2,
@@ -1069,7 +1069,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1133,
-    area: "Química",
+    area: "Biología",
     text: "¿Cuáles son los dos ácidos nucleídos?",
     options: ["ADN y ARN", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -1133,7 +1133,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1141,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué es selección natural y quien la postuló?",
     options: ["Es el proceso por el cual, el medio ambiente selecciona a los organismos mejor adaptados, los cuales sobreviven a las condiciones del ambiente y la postuló Charles Darwin", "Compuesto", "Mezcla", "Solución"],
     correctIndex: 0,
@@ -1141,7 +1141,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1142,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué es adaptación?",
     options: ["Agua", "Es el proceso por el que una especie se condiciona lenta o rápidamente para lograr sobrevivir", "Sal", "Aire"],
     correctIndex: 1,
@@ -1157,7 +1157,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1144,
-    area: "Geografía",
+    area: "Biología",
     text: "¿Por qué México es considerado un país megadiverso?",
     options: ["Atlántico", "Índico", "Ártico", "Ubicación geográfica, orografía y especies endémicas"],
     correctIndex: 3,
@@ -1253,7 +1253,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1156,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué es la respiración aerobia?",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Tipo de respiración que se lleva a cabo con la presencia de oxígeno, produciendo 38 ATP, los animales y el ser humano respiran por este medio"],
     correctIndex: 3,
@@ -1261,7 +1261,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1157,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué es la respiración anaerobia?",
     options: ["Tipo de respiración que se realiza SIN la presencia de oxígeno, produciendo 2 ATP, las bacterias respiran por este medio", "Elemento", "Mezcla", "Átomo"],
     correctIndex: 0,
@@ -1293,7 +1293,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1161,
-    area: "Química",
+    area: "Biología",
     text: "¿Quién inventó la penicilina y qué función tiene?",
     options: ["Alexander Fleming, es un antibiótico capaz de eliminar a las bacterias que causan infecciones", "Compuesto", "Mezcla", "Solución"],
     correctIndex: 0,
@@ -1341,7 +1341,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1167,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué es la diabetes?",
     options: ["La Revolución Industrial", "La Ilustración", "Aumento de los niveles de glucosa en la sangre", "El Renacimiento"],
     correctIndex: 2,
@@ -1349,7 +1349,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1168,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué es la anorexia?",
     options: ["Napoleón Bonaparte", "Carlos V", "Felipe II", "Trastorno de la conducta alimenticia, donde el enfermo se ve gordo aún cuando su peso se encuentra por debajo de lo recomendado"],
     correctIndex: 3,
@@ -1357,7 +1357,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1169,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué es la bulimia?",
     options: ["Es un trastorno donde las personas no pueden dominar los impulsos que los motiva a comer grandes cantidades de alimento, para después provocarse la pérdida de peso", "1810", "1821", "1910"],
     correctIndex: 0,
@@ -1429,7 +1429,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1178,
-    area: "Historia",
+    area: "Biología",
     text: "¿Cuáles son las funciones del sistema reproductor femenino?",
     options: ["Napoleón Bonaparte", "Producir óvulos, progesterona y estrógenos, permitir la fecundación, implantar el óvulo, mantener la gestación y finalizar el proceso en el trabajo de parto", "Carlos V", "Felipe II"],
     correctIndex: 1,
@@ -1501,7 +1501,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1187,
-    area: "Química",
+    area: "Biología",
     text: "¿Qué es población?",
     options: ["Elemento", "Mezcla", "Conjunto de individuos de la misma especie que habitan en un lugar determinado", "Átomo"],
     correctIndex: 2,
@@ -1509,7 +1509,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1188,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué es una comunidad?",
     options: ["Napoleón Bonaparte", "Carlos V", "Felipe II", "Conjunto de poblaciones en un área determinada"],
     correctIndex: 3,
@@ -1533,7 +1533,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1191,
-    area: "Química",
+    area: "Biología",
     text: "¿Cuáles son los tres productos finales de la respiración?",
     options: ["Compuesto", "Mezcla", "Dióxido de carbono, agua y 38 ATP", "Solución"],
     correctIndex: 2,
@@ -1541,7 +1541,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1192,
-    area: "Química",
+    area: "Biología",
     text: "¿Cuáles son los dos tipos de fermentación?",
     options: ["Agua", "Sal", "Aire", "Ácida y alcohólica"],
     correctIndex: 3,
@@ -1549,7 +1549,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1193,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué son las estomas?",
     options: ["Son pequeños poros por donde respira la planta, ubicados en sus hojas y tallos", "Francia", "España", "Inglaterra"],
     correctIndex: 0,
@@ -1557,7 +1557,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1194,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué enfermedad nos da, si nos falta vitamina K?",
     options: ["El Plan de Ayala", "Hemorragias", "El Plan de Guadalupe", "El Plan de Tuxtepec"],
     correctIndex: 1,
@@ -1565,7 +1565,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1195,
-    area: "Historia",
+    area: "Biología",
     text: "¿Qué enfermedad nos da, si nos falta vitamina B12?",
     options: ["La Constitución de 1824", "La Constitución de 1857", "Anemia", "La Constitución de 1824"],
     correctIndex: 2,
@@ -1613,7 +1613,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1201,
-    area: "Español",
+    area: "Historia",
     text: "Movimiento político social que inició el 4 de julio de 1776, comandado por George Washington y que enfrentó al ejército inglés.",
     options: ["La Independencia de las trece colonias británicas", "Conjunción", "Adjetivo", "Verbo"],
     correctIndex: 0,
@@ -1621,7 +1621,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1202,
-    area: "Formación Cívica y Ética",
+    area: "Historia",
     text: "¿Cuál es el nombre del documento firmado después de la Batalla de Yorktown en 1783, por medio del cual se reconoce la independencia de los Estados Unidos de América?",
     options: ["Legislativo", "Tratado de Versalles", "Ejecutivo", "Judicial"],
     correctIndex: 1,
@@ -1629,7 +1629,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1203,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuál es el nombre del movimiento iniciado el 14 de julio de 1789 con la toma del castillo de la Bastilla y que tuvo gran repercusión en el pensamiento europeo e hispanoamericano de los siglos XVIII y XIX?",
     options: ["Líquido", "Sólido", "La Revolución Francesa", "Plasma"],
     correctIndex: 2,
@@ -1669,7 +1669,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1208,
-    area: "Química",
+    area: "Geografía",
     text: "Por su extensión, es el estado más grande del país:",
     options: ["Solución", "Compuesto", "Elemento", "Chihuahua"],
     correctIndex: 3,
@@ -1677,7 +1677,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1209,
-    area: "Historia",
+    area: "Geografía",
     text: "El viaje en que Cristóbal Colón llegó a tierras americanas fue motivado principalmente por:",
     options: ["La búsqueda de nuevas rutas hacia las Indias", "1810", "1821", "1910"],
     correctIndex: 0,
@@ -1693,7 +1693,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1211,
-    area: "Historia",
+    area: "Geografía",
     text: "¿Cuáles fueron los países participantes de la Triple Entente durante la Primera Guerra Mundial?",
     options: ["En 1820", "En 1850", "Reino Unido, Francia y Rusia", "En 1900"],
     correctIndex: 2,
@@ -1701,7 +1701,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1212,
-    area: "Historia",
+    area: "Geografía",
     text: "La caída de las acciones bursátiles en 1929 provocó una falta de liquidez de los bancos y ésta a su vez provocó:",
     options: ["Benito Juárez", "Porfirio Díaz", "Venustiano Carranza", "La Gran Depresión"],
     correctIndex: 3,
@@ -1709,7 +1709,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1213,
-    area: "Química",
+    area: "Geografía",
     text: "Año en el que es derrumbado el Muro de Berlín iniciándose no sólo la reunificación alemana, sino también el derrumbe de la hegemonía socialista organizada por la URSS.",
     options: ["1989", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -1717,7 +1717,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1214,
-    area: "Historia",
+    area: "Geografía",
     text: "Son los firmantes del Plan de Iguala, por medio del cual se propone la independencia de México en 1821.",
     options: ["El Plan de Ayala", "Iturbide y Guerrero", "El Plan de Guadalupe", "El Plan de Tuxtepec"],
     correctIndex: 1,
@@ -1725,7 +1725,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1215,
-    area: "Química",
+    area: "Geografía",
     text: "Artículo de la Constitución Política Mexicana en que se asienta el derecho de todo mexicano a la educación:",
     options: ["Grupos", "Valencias", "Artículo 3°", "Períodos"],
     correctIndex: 2,
@@ -1733,7 +1733,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1216,
-    area: "Química",
+    area: "Geografía",
     text: "Durante el mandato de este presidente se promulgó la Constitución que actualmente nos rige:",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Venustiano Carranza"],
     correctIndex: 3,
@@ -1765,7 +1765,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1220,
-    area: "Historia",
+    area: "Geografía",
     text: "¿Qué presidente de los Estados Unidos Mexicanos expresó 'Entre los individuos, como entre las naciones, el respeto al derecho ajeno es la paz'?",
     options: ["Estados Unidos", "Francia", "Gran Bretaña", "Benito Juárez"],
     correctIndex: 3,
@@ -1773,7 +1773,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1221,
-    area: "Historia",
+    area: "Geografía",
     text: "Este personaje fue el protagonista de la Conquista de México:",
     options: ["Hernán Cortés", "En 1820", "En 1850", "En 1900"],
     correctIndex: 0,
@@ -1781,7 +1781,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1222,
-    area: "Biología",
+    area: "Geografía",
     text: "Organismo que surge como reacción al establecimiento del bloque socialista; fue firmado en 1948 sobre todo por los países de Europa del Oeste.",
     options: ["El ARN", "OTAN", "El ribosoma", "La mitocondria"],
     correctIndex: 1,
@@ -1893,7 +1893,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1236,
-    area: "Química",
+    area: "Geografía",
     text: "Menciona las características del movimiento de rotación.",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Es el movimiento que realiza la tierra, dando una vuelta sobre su propio eje, tiene una duración de 24 horas y su fenómeno más evidente es el día y la noche, así como la forma geoide de la tierra"],
     correctIndex: 3,
@@ -1901,7 +1901,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1237,
-    area: "Química",
+    area: "Geografía",
     text: "Menciona las características del movimiento de traslación.",
     options: ["Es el movimiento que realiza la tierra dando una vuelta alrededor del sol en orbita elíptica, tiene una duración de 365 días y su fenómeno más evidente es el cambio de las estaciones del año", "Elemento", "Mezcla", "Átomo"],
     correctIndex: 0,
@@ -1989,7 +1989,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1248,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué es presión atmosférica?",
     options: ["Solución", "Compuesto", "Elemento", "Es el peso que ejerce la atmósfera sobre la superficie de la tierra"],
     correctIndex: 3,
@@ -2005,7 +2005,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1250,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué es una región natural?",
     options: ["Ecuaciones", "Es una porción de la superficie terrestre que tiene características propias que la distinguen de otras, como puede ser su clima, su tipo de suelo, flora, fauna, etc.", "Símbolos", "Diagramas"],
     correctIndex: 1,
@@ -2149,7 +2149,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1268,
-    area: "Biología",
+    area: "Geografía",
     text: "¿Qué porcentaje de nitrógeno y oxígeno hay en la atmósfera?",
     options: ["Glucosa", "Fructosa", "Galactosa", "Nitrógeno 78%, oxígeno 21%"],
     correctIndex: 3,
@@ -2357,7 +2357,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1294,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué características tiene una población rural?",
     options: ["Dalton", "Tiene menos de 2500 habitantes y su principal ocupación es la agricultura", "Rutherford", "Thomson"],
     correctIndex: 1,
@@ -2365,7 +2365,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1295,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué características tiene la población urbana?",
     options: ["Grupos", "Valencias", "Tiene más de 2500 habitantes y su principal ocupación es el comercio e industria", "Períodos"],
     correctIndex: 2,
@@ -2373,7 +2373,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1296,
-    area: "Química",
+    area: "Geografía",
     text: "¿Cuáles son los dos factores que hacen crecer a la población?",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Natalidad y migración (extranjeros)"],
     correctIndex: 3,
@@ -2381,7 +2381,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1297,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué es el crecimiento natural de la población?",
     options: ["Se obtiene a partir de los nacimientos", "Elemento", "Mezcla", "Átomo"],
     correctIndex: 0,
@@ -2405,7 +2405,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1300,
-    area: "Química",
+    area: "Geografía",
     text: "¿Qué es un territorio con población intermedia?",
     options: ["Ecuaciones", "Símbolos", "Diagramas", "Es aquel que tiene de 1 a 50 habitantes por kilómetro cuadrado"],
     correctIndex: 3,
@@ -2437,7 +2437,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1304,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es riesgo?",
     options: ["Obligación", "Norma", "Deber", "Es la posibilidad de pérdida de vidas humanas, de propiedades o de la capacidad productiva"],
     correctIndex: 3,
@@ -2445,7 +2445,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1305,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es peligro?",
     options: ["Es la posibilidad de que un área se vea afectada o destruida por factores naturales o provocados por el hombre", "Libertad", "Igualdad", "Fraternidad"],
     correctIndex: 0,
@@ -2453,7 +2453,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1306,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es vulnerabilidad?",
     options: ["Partido político", "Indica el grado de riesgo de tiene una persona o una población de ser herido o perder la vida", "Sindicato", "ONG"],
     correctIndex: 1,
@@ -2461,7 +2461,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1307,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "Explica qué son los riesgos geológicos.",
     options: ["Democracia directa", "Democracia representativa", "Son el vulcanismo y la sismicidad, dañan a las personas que se encuentren cerca de la manifestación de dichos fenómenos", "Autocracia"],
     correctIndex: 2,
@@ -2469,7 +2469,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1308,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué son los riesgos geomorfológicos?",
     options: ["Derechos civiles", "Derechos políticos", "Derechos sociales", "Son deslizamientos de tierra y roca provocados por la naturaleza o por el ser humano"],
     correctIndex: 3,
@@ -2477,7 +2477,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1309,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué son los riesgos hidrometeorológicos?",
     options: ["Huracanes, ciclones, vientos, maremotos, tsunamis", "Municipio", "Estado", "País"],
     correctIndex: 0,
@@ -2485,7 +2485,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1310,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué son los riesgos antrópicos?",
     options: ["Importación", "Se generan por descuido humano (accidentes en fábricas, plantas de gas, derrames de petróleo)", "Exportación", "Globalización"],
     correctIndex: 1,
@@ -2493,7 +2493,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1311,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es una actividad económica?",
     options: ["Valores estéticos", "Valores económicos", "Es cualquier proceso mediante el cual obtenemos productos, bienes y servicios", "Valores morales"],
     correctIndex: 2,
@@ -2533,7 +2533,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1316,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es comercio?",
     options: ["Partido político", "Sindicato", "ONG", "Es la actividad de compraventa de productos y servicios"],
     correctIndex: 3,
@@ -2541,7 +2541,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1317,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué tipos de comercio existen?",
     options: ["Interior y exterior", "Democracia directa", "Democracia representativa", "Autocracia"],
     correctIndex: 0,
@@ -2549,7 +2549,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1318,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Cuáles son las características del comercio interior?",
     options: ["Derechos civiles", "Se lleva a cabo en el interior del país, utilizando el mismo tipo de cambio", "Derechos políticos", "Derechos sociales"],
     correctIndex: 1,
@@ -2557,7 +2557,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1319,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es el comercio exterior?",
     options: ["Municipio", "Estado", "El que se realiza entre dos o más países", "País"],
     correctIndex: 2,
@@ -2565,7 +2565,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1320,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué son las importaciones?",
     options: ["Importación", "Exportación", "Globalización", "Son todas las mercancías que se compran del exterior"],
     correctIndex: 3,
@@ -2573,7 +2573,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1321,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué son las exportaciones?",
     options: ["Son todas las mercancías que se venden al exterior", "Valores estéticos", "Valores económicos", "Valores morales"],
     correctIndex: 0,
@@ -2589,7 +2589,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1323,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué significan las siglas OMC?",
     options: ["Federal", "Municipal", "Organización Mundial de Comercio", "Estatal"],
     correctIndex: 2,
@@ -2597,7 +2597,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1324,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué significan las siglas PIB?",
     options: ["Obligación", "Norma", "Deber", "Producto interno bruto y es el valor total de la producción de un país"],
     correctIndex: 3,
@@ -2605,7 +2605,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1325,
-    area: "Formación Cívica y Ética",
+    area: "Química",
     text: "¿Qué es soberanía?",
     options: ["Es la libertad que ejerce el estado en representación de su pueblo para gobernar, decidir en su territorio", "Libertad", "Igualdad", "Fraternidad"],
     correctIndex: 0,
@@ -2661,7 +2661,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1332,
-    area: "Biología",
+    area: "Química",
     text: "Son propiedades generales de la materia:",
     options: ["El ARN", "El ribosoma", "La mitocondria", "Masa, peso, volumen, inercia, impenetrabilidad, divisibilidad, porosidad, elasticidad"],
     correctIndex: 3,
@@ -2853,7 +2853,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1356,
-    area: "Química",
+    area: "Español",
     text: "Característica de la función referencial de la lengua:",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Transmitir conocimientos"],
     correctIndex: 3,
@@ -2861,7 +2861,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1357,
-    area: "Química",
+    area: "Español",
     text: "Características de la función apelativa de la lengua:",
     options: ["Tiene como objetivo convencer o persuadir al interlocutor para que cambie su punto de vista", "Elemento", "Mezcla", "Átomo"],
     correctIndex: 0,
@@ -2869,7 +2869,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1358,
-    area: "Química",
+    area: "Español",
     text: "Características de la función fática de la lengua:",
     options: ["Solución", "Establece una comunicación casual, breve o informal", "Compuesto", "Elemento"],
     correctIndex: 1,
@@ -2877,7 +2877,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1359,
-    area: "Química",
+    area: "Español",
     text: "Características de la función poética de la lengua:",
     options: ["Filtración", "Decantación", "Expresa los sentimientos del autor, a través de los poemas", "Destilación"],
     correctIndex: 2,
@@ -2885,7 +2885,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1360,
-    area: "Química",
+    area: "Español",
     text: "Características de la función metalingüística de la lengua:",
     options: ["Ecuaciones", "Símbolos", "Diagramas", "Tiene como objetivo hablar del lenguaje mismo"],
     correctIndex: 3,
@@ -2957,7 +2957,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1369,
-    area: "Química",
+    area: "Español",
     text: "Función del título en un texto:",
     options: ["Permite identificar el ámbito al que pertenece un texto", "Filtración", "Decantación", "Destilación"],
     correctIndex: 0,
@@ -2965,7 +2965,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1370,
-    area: "Química",
+    area: "Español",
     text: "Función del tema en un texto:",
     options: ["Ecuaciones", "Es la idea central de lo que tratará el texto", "Símbolos", "Diagramas"],
     correctIndex: 1,
@@ -2973,7 +2973,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1371,
-    area: "Química",
+    area: "Español",
     text: "Función del índice en un texto:",
     options: ["Compuesto", "Mezcla", "Muestra el contenido del texto organizado por número de página", "Solución"],
     correctIndex: 2,
@@ -2989,7 +2989,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1373,
-    area: "Química",
+    area: "Español",
     text: "¿Qué función tienen las ilustraciones en un texto?",
     options: ["Se utilizan para reforzar visualmente el contenido del texto", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -2997,7 +2997,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1374,
-    area: "Química",
+    area: "Español",
     text: "¿Qué función tienen las gráficas o tablas en un texto?",
     options: ["Dalton", "Explican visualmente los datos estadísticos que contiene el texto", "Rutherford", "Thomson"],
     correctIndex: 1,
@@ -3005,7 +3005,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1375,
-    area: "Química",
+    area: "Español",
     text: "¿Qué función tienen las negritas y las cursivas en un texto?",
     options: ["Grupos", "Valencias", "Tienen la finalidad de resaltar los textos", "Períodos"],
     correctIndex: 2,
@@ -3013,7 +3013,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1376,
-    area: "Química",
+    area: "Español",
     text: "¿Qué función tiene el subrayado en un texto?",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Se usan para destacar una idea importante en el texto"],
     correctIndex: 3,
@@ -3021,7 +3021,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1377,
-    area: "Química",
+    area: "Español",
     text: "¿Qué es una oración temática?",
     options: ["Es aquella que contiene la idea principal en un párrafo", "Elemento", "Mezcla", "Átomo"],
     correctIndex: 0,
@@ -3029,7 +3029,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1378,
-    area: "Química",
+    area: "Español",
     text: "¿Qué es una oración?",
     options: ["Solución", "Conjunto de palabras con sentido completo", "Compuesto", "Elemento"],
     correctIndex: 1,
@@ -3061,7 +3061,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1382,
-    area: "Química",
+    area: "Español",
     text: "¿Qué función tiene la coma?",
     options: ["Agua", "Enumerar un listado de objetos en serie, como sustantivos, adjetivos o verbos", "Sal", "Aire"],
     correctIndex: 1,
@@ -3069,7 +3069,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1383,
-    area: "Química",
+    area: "Español",
     text: "Función de un guion largo en un texto:",
     options: ["Líquido", "Sólido", "Sirve para introducir diálogos de personajes en cuentos", "Plasma"],
     correctIndex: 2,
@@ -3077,7 +3077,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1384,
-    area: "Química",
+    area: "Español",
     text: "Función del punto y aparte en un texto:",
     options: ["Dalton", "Rutherford", "Thomson", "Separar ideas"],
     correctIndex: 3,
@@ -3085,7 +3085,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1385,
-    area: "Química",
+    area: "Español",
     text: "Función de los paréntesis en un texto:",
     options: ["Sirven para encerrar información, cuyo fin es explicativo", "Grupos", "Valencias", "Períodos"],
     correctIndex: 0,
@@ -3197,7 +3197,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1399,
-    area: "Matemáticas",
+    area: "Español",
     text: "En matemáticas, ¿Qué es un término semejante?",
     options: ["Paralelas", "Secantes", "Dos o más términos son semejantes, si tienen la misma parte literal y el mismo exponente", "Coincidentes"],
     correctIndex: 2,
@@ -3205,7 +3205,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1400,
-    area: "Matemáticas",
+    area: "Español",
     text: "¿Qué es un experimento?",
     options: ["90°", "180°", "45°", "Es una reproducción controlada de algún fenómeno observado"],
     correctIndex: 3,
@@ -3213,7 +3213,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1401,
-    area: "Matemáticas",
+    area: "Español",
     text: "¿Qué es un experimento aleatorio?",
     options: ["Es un evento que puede tener diferentes resultados y no se puede predecir", "180°", "270°", "360°"],
     correctIndex: 0,
@@ -3221,7 +3221,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1402,
-    area: "Matemáticas",
+    area: "Español",
     text: "¿Qué es un experimento determinístico?",
     options: ["Ordenadas", "Es un evento cuyo resultado se conoce previamente y no puede variar", "Coordenadas", "Vectores"],
     correctIndex: 1,
@@ -3229,7 +3229,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1403,
-    area: "Matemáticas",
+    area: "Español",
     text: "¿Cómo se calcula la probabilidad?",
     options: ["El cuadrado", "El triángulo", "Dividiendo el número de casos favorables para algún evento entre el total del casos", "El rombo"],
     correctIndex: 2,
@@ -3349,7 +3349,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1418,
-    area: "Biología",
+    area: "Matemáticas",
     text: "¿Cuál es la razón trigonométrica de la tangente?",
     options: ["Glucosa", "Tangente = cateto opuesto/cateto adyacente", "Fructosa", "Galactosa"],
     correctIndex: 1,
@@ -3373,7 +3373,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1421,
-    area: "Biología",
+    area: "Matemáticas",
     text: "¿Cuál es la razón trigonométrica de la cotangente?",
     options: ["Cotangente = cateto adyacente/cateto opuesto", "El núcleo", "La membrana", "El citoplasma"],
     correctIndex: 0,
@@ -3381,7 +3381,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1422,
-    area: "Química",
+    area: "Matemáticas",
     text: "Fórmulas para calcular el área del cuadrado, rectángulo y triángulo:",
     options: ["Agua", "Cuadrado = lxl, rectángulo = bxh, triángulo = bh/2", "Sal", "Aire"],
     correctIndex: 1,
@@ -3389,7 +3389,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1423,
-    area: "Química",
+    area: "Matemáticas",
     text: "Fórmulas para el área del rombo, trapecio, pentágono:",
     options: ["Líquido", "Sólido", "Rombo = Dd/2, trapecio = (B + b)h/2, pentágono = pa/2", "Plasma"],
     correctIndex: 2,
@@ -3397,7 +3397,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1424,
-    area: "Química",
+    area: "Matemáticas",
     text: "Fórmulas para calcular el perímetro y el área de un círculo:",
     options: ["Dalton", "Rutherford", "Thomson", "Perímetro = π(diámetro), área = π(radio²)"],
     correctIndex: 3,
@@ -3405,7 +3405,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1425,
-    area: "Química",
+    area: "Matemáticas",
     text: "Fórmulas para el volumen de prismas, pirámides y esfera:",
     options: ["Prisma = (área de la base)(altura), pirámide = (área de la base)(altura)/3, esfera = 4π(radio³)/3", "Grupos", "Valencias", "Períodos"],
     correctIndex: 0,
@@ -3477,7 +3477,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1434,
-    area: "Química",
+    area: "Formación Cívica y Ética",
     text: "¿Qué es la Población?",
     options: ["Dalton", "Es el conjunto de personas que habitan una determinada área geográfica", "Rutherford", "Thomson"],
     correctIndex: 1,
@@ -3493,7 +3493,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1436,
-    area: "Química",
+    area: "Formación Cívica y Ética",
     text: "¿Cuáles son los tres poderes de la Nación?",
     options: ["Los gases", "Los líquidos", "Los compuestos", "Ejecutivo, legislativo y judicial"],
     correctIndex: 3,
@@ -3541,7 +3541,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1442,
-    area: "Química",
+    area: "Formación Cívica y Ética",
     text: "¿Qué constitución nos rige actualmente?",
     options: ["Agua", "La de 1917", "Sal", "Aire"],
     correctIndex: 1,
@@ -3597,7 +3597,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1449,
-    area: "Química",
+    area: "Formación Cívica y Ética",
     text: "¿Qué es una obligación?",
     options: ["Es una exigencia establecida por la moral, la ley o la autoridad", "Filtración", "Decantación", "Destilación"],
     correctIndex: 0,
@@ -3645,7 +3645,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1455,
-    area: "Biología",
+    area: "Formación Cívica y Ética",
     text: "¿Con qué acontecimiento comienza la Revolución Francesa?",
     options: ["Fagocitosis", "Pinocitosis", "Con la toma de la Bastilla en 1789", "Endocitosis"],
     correctIndex: 2,
@@ -3653,7 +3653,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1456,
-    area: "Biología",
+    area: "Formación Cívica y Ética",
     text: "¿Qué período abarcó la Revolución Industrial?",
     options: ["La mitocondria", "El ribosoma", "El núcleo", "Del siglo XVIII al XIX"],
     correctIndex: 3,
@@ -3661,7 +3661,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1457,
-    area: "Biología",
+    area: "Formación Cívica y Ética",
     text: "¿Cuáles fueron las principales fuentes de energía durante la Revolución Industrial?",
     options: ["El Carbón y el Vapor", "Proteínas", "Lípidos", "Vitaminas"],
     correctIndex: 0,
@@ -3669,7 +3669,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1458,
-    area: "Historia",
+    area: "Formación Cívica y Ética",
     text: "¿Cuál fue el detonante de la Primera Guerra Mundial?",
     options: ["Napoleón Bonaparte", "El asesinato del Archiduque Francisco Fernando en 1914", "Carlos V", "Felipe II"],
     correctIndex: 1,
@@ -3685,7 +3685,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1460,
-    area: "Biología",
+    area: "Historia",
     text: "¿En qué año ocurre la Revolución Rusa?",
     options: ["Luz", "Temperatura", "Humedad", "En octubre de 1917"],
     correctIndex: 3,
@@ -3733,7 +3733,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1466,
-    area: "Formación Cívica y Ética",
+    area: "Historia",
     text: "¿Cuál fue la causa de la entrada de Estados Unidos a la SGM?",
     options: ["Partido político", "El bombardeo a Pearl Harbor", "Sindicato", "ONG"],
     correctIndex: 1,
@@ -3749,7 +3749,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1468,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuál fue la causa de rendición de Japón durante la SGM?",
     options: ["Solución", "Compuesto", "Elemento", "Los ataques nucleares a Hiroshima y Nagasaki"],
     correctIndex: 3,
@@ -3789,7 +3789,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1473,
-    area: "Química",
+    area: "Historia",
     text: "¿En qué año ocurre la desintegración de la URSS?",
     options: ["En 1991", "Líquido", "Sólido", "Plasma"],
     correctIndex: 0,
@@ -3797,7 +3797,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1474,
-    area: "Química",
+    area: "Historia",
     text: "¿Qué es la Globalización?",
     options: ["Dalton", "Es un fenómeno de integración mundial", "Rutherford", "Thomson"],
     correctIndex: 1,
@@ -3885,7 +3885,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1485,
-    area: "Química",
+    area: "Historia",
     text: "¿Quién redactó el documento llamado Los Sentimientos de la Nación?",
     options: ["José María Morelos", "Grupos", "Valencias", "Períodos"],
     correctIndex: 0,
@@ -3893,7 +3893,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1486,
-    area: "Química",
+    area: "Historia",
     text: "¿Quién promulga la Constitución de Apatzingán?",
     options: ["Los gases", "El Congreso de Chilpancingo", "Los líquidos", "Los compuestos"],
     correctIndex: 1,
@@ -3917,7 +3917,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1489,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuándo fue la primera intervención francesa?",
     options: ["De 1838 a 1839", "Filtración", "Decantación", "Destilación"],
     correctIndex: 0,
@@ -3925,7 +3925,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1490,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuándo fue la intervención estadounidense?",
     options: ["Ecuaciones", "De 1846 a 1848", "Símbolos", "Diagramas"],
     correctIndex: 1,
@@ -3933,7 +3933,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1491,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuándo fue la segunda intervención francesa?",
     options: ["Compuesto", "Mezcla", "De 1861 a 1866", "Solución"],
     correctIndex: 2,
@@ -3957,7 +3957,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1494,
-    area: "Biología",
+    area: "Historia",
     text: "¿Qué Plan da inicio a la revolución mexicana?",
     options: ["Meiosis", "El Plan de San Luis el 20 de noviembre de 1910", "Gemación", "Bipartición"],
     correctIndex: 1,
@@ -3973,7 +3973,7 @@ export const bank13Questions: Question[] = [
   },
   {
     id: 1496,
-    area: "Química",
+    area: "Historia",
     text: "¿Cuáles son los artículos más importantes de la Constitución de 1917?",
     options: ["Los gases", "Los líquidos", "Los compuestos", "El 3ro de la Educación, el 27 de los Recursos"],
     correctIndex: 3,
