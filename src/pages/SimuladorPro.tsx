@@ -1009,6 +1009,15 @@ const SimuladorPro = () => {
                     const sec = s % 60;
                     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
                 }}
+                onAskTutor={async (q) => {
+                    if (!user?.id) return;
+                    await supabase.from('tutor_uso' as any).insert({
+                        user_id: user.id,
+                        pregunta_id: String(q.id),
+                        pregunta_texto: q.text.slice(0, 200),
+                        area: q.area,
+                    });
+                }}
             />
         );
     }

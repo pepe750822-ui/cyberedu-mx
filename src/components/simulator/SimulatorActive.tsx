@@ -35,6 +35,7 @@ interface SimulatorActiveProps {
     onJumpToQuestion: (index: number) => void;
     onReportQuestion: (questionId: string) => Promise<boolean>;
     formatTime: (seconds: number) => string;
+    onAskTutor?: (question: Question) => void;
 }
 
 export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
@@ -57,7 +58,8 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     onToggleMark,
     onJumpToQuestion,
     onReportQuestion,
-    formatTime
+    formatTime,
+    onAskTutor,
 }) => {
     const navigate = useNavigate();
     const currentQuestion = activeQuestions[currentQuestionIndex];
@@ -95,6 +97,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
         const correct = currentQuestion.options[currentQuestion.correctIndex];
         const message = `Explícame esta pregunta del ECOEMS:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
         window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
+        onAskTutor?.(currentQuestion);
     };
 
     const nearCompletionShownRef = useRef(false);

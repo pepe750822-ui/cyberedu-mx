@@ -6,6 +6,7 @@ export default function ReportesSimulador() {
   const { user } = useAuth();
   const [historial, setHistorial] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
+  const [tutorUso, setTutorUso] = useState<any[]>([]);
 
   // Cargar historial del usuario logueado
   useEffect(() => {
@@ -41,9 +42,17 @@ export default function ReportesSimulador() {
             .toLocaleDateString('es-MX'))
         ).size;
 
-        setStats({ total, promedio, mejor, 
+        setStats({ total, promedio, mejor,
           totalPreguntas, totalTiempo, dias });
       }
+
+      // Tutor uso
+      const { data: tutor } = await supabase
+        .from('tutor_uso' as any)
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      setTutorUso((tutor as any[]) || []);
     };
     cargar();
   }, [user]);
@@ -178,6 +187,63 @@ export default function ReportesSimulador() {
           Aún no tienes simuladores registrados
         </p>
       )}
+
+      {/* Uso del Tutor IA */}
+      <div className="mt-8">
+        <h2 className="font-bebas text-xl text-white mb-4">🤖 USO DEL TUTOR IA</h2>
+        {tutorUso.length === 0 ? (
+          <div className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 text-center">
+            <span className="text-xs font-bold bg-slate-700 text-slate-300 px-2 py-1 rounded-full">
+              Sin uso del tutor
+            </span>
+          </div>
+        ) : (() => {
+          // Agrupar por pregunta_id
+          const grouped: Record<string, { texto: string; area: string; count: number; ultima: string }> = {};
+          for (const r of tutorUso) {
+            if (!grouped[r.pregunta_id]) {
+              grouped[r.pregunta_id] = { texto: r.pregunta_texto || '', area: r.area || '', count: 0, ultima: r.created_at };
+            }
+            grouped[r.pregunta_id].count++;
+            if (r.created_at > grouped[r.pregunta_id].ultima) grouped[r.pregunta_id].ultima = r.created_at;
+          }
+          const porArea: Record<string, typeof grouped[string][]> = {};
+          for (const item of Object.values(grouped)) {
+            if (!porArea[item.area]) porArea[item.area] = [];
+            porArea[item.area].push(item);
+          }
+          return (
+            <div className="space-y-4">
+              <p className="text-slate-400 text-sm">
+                Total de consultas al tutor: <span className="text-white font-bold">{tutorUso.length}</span>
+                {' · '}preguntas únicas: <span className="text-white font-bold">{Object.keys(grouped).length}</span>
+              </p>
+              {Object.entries(porArea).map(([area, items]) => (
+                <div key={area} className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4">
+                  <p className="text-slate-300 font-bold text-sm mb-3">{area}</p>
+                  <div className="space-y-2">
+                    {items.sort((a, b) => b.count - a.count).map((item, i) => {
+                      const badge = item.count >= 4
+                        ? <span className="text-[10px] font-black bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full shrink-0">Estudió con tutor {item.count} veces</span>
+                        : item.count >= 1
+                        ? <span className="text-[10px] font-black bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full shrink-0">Usó tutor {item.count} {item.count === 1 ? 'vez' : 'veces'}</span>
+                        : null;
+                      return (
+                        <div key={i} className="flex items-start gap-2">
+                          <p className="text-slate-400 text-xs flex-1 leading-relaxed">
+                            {item.texto.slice(0, 80)}{item.texto.length > 80 ? '…' : ''}
+                          </p>
+                          {badge}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+      </div>
     </div>
   );
 }

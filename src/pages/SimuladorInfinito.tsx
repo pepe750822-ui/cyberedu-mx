@@ -719,6 +719,15 @@ const SimuladorInfinito: React.FC = () => {
                 onJumpToQuestion={setCurrentIndex}
                 onReportQuestion={async () => false}
                 formatTime={formatTime}
+                onAskTutor={async (q) => {
+                    if (!user?.id) return;
+                    await supabase.from('tutor_uso' as any).insert({
+                        user_id: user.id,
+                        pregunta_id: String(q.id),
+                        pregunta_texto: q.text.slice(0, 200),
+                        area: q.area,
+                    });
+                }}
             />
         );
     }
