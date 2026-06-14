@@ -1,11 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import PromoBloqueo from "@/components/PromoBloqueo";
 import { flashcardsData, flashcardAreas, Flashcard } from "../data/flashcardsData";
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function Flashcards() {
   const { user, profile } = useAuth();
   const [areaFiltro, setAreaFiltro] = useState<string>("Todas");
+  const [shuffleKey, setShuffleKey] = useState(0);
   const [indice, setIndice] = useState(0);
   const [volteada, setVolteada] = useState(false);
   const [vistas, setVistas] = useState<Set<number>>(new Set());
@@ -17,10 +27,13 @@ export default function Flashcards() {
 
   const areas = ["Todas", ...flashcardAreas];
 
-  const tarjetas: Flashcard[] =
-    areaFiltro === "Todas"
+  const tarjetas = useMemo(() => {
+    const filtradas = areaFiltro === "Todas"
       ? flashcardsData
       : flashcardsData.filter((f) => f.area === areaFiltro);
+    return shuffle(filtradas);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [areaFiltro, shuffleKey]);
 
   const tarjeta = tarjetas[indice] ?? null;
   const progreso = tarjetas.length > 0 ? Math.round((vistas.size / tarjetas.length) * 100) : 0;
@@ -30,7 +43,7 @@ export default function Flashcards() {
     setVolteada(false);
     setVistas(new Set());
     setConocidas(new Set());
-  }, [areaFiltro]);
+  }, [areaFiltro, shuffleKey]);
 
   function siguiente() {
     if (!tarjeta) return;
@@ -51,10 +64,7 @@ export default function Flashcards() {
   }
 
   function reiniciar() {
-    setIndice(0);
-    setVolteada(false);
-    setVistas(new Set());
-    setConocidas(new Set());
+    setShuffleKey((k) => k + 1);
   }
 
   if (!tarjeta) {
@@ -188,7 +198,7 @@ export default function Flashcards() {
             onClick={reiniciar}
             className="text-sm text-gray-400 hover:text-gray-600 underline"
           >
-            Reiniciar sesión
+            Barajar de nuevo
           </button>
         </div>
 
