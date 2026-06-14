@@ -150,6 +150,12 @@ const Header = () => {
               📋 Acordeón
             </Link>
             <Link
+              to="/flashcards"
+              className="text-sm font-medium text-green-400 hover:text-green-300 transition-colors flex items-center gap-1"
+            >
+              🃏 Flashcards
+            </Link>
+            <Link
               to="/#areas"
               onClick={handleAreasClick}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -506,6 +512,14 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     📋 Acordeón
+                  </Link>
+                  <Link
+                    to="/flashcards"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-green-500/10 hover:bg-green-500/20 transition-colors text-green-400 font-bold border border-green-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    🃏 Flashcards
+                    <span className="ml-auto text-[8px] bg-green-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
                   </Link>
                   <Link
                     to="/#areas"

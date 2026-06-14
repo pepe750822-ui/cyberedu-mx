@@ -54,6 +54,7 @@ const AdminAnalytics = lazy(() => import("./components/AdminAnalytics"));
 const SimuladorInfinito = lazy(() => import("./pages/SimuladorInfinito"));
 const ReportesAdmin = lazy(() => import("./pages/ReportesAdmin"));
 const ReportesSimulador = lazy(() => import("./pages/ReportesSimulador"));
+const Flashcards = lazy(() => import("./pages/Flashcards"));
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -239,6 +240,7 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPostDetail />} />
               <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
+              <Route path="/flashcards" element={<Flashcards />} />
               <Route path="/sugerencias" element={<Sugerencias />} />
               <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
               <Route path="/tokens" element={<Tokens />} />

@@ -314,6 +314,7 @@ const SimuladorInfinito: React.FC = () => {
         if (p?.bank9_unlocked || paq) bancos.push('9');
         if (p?.bank11_unlocked || paq) bancos.push('11');
         if (p?.bank12_unlocked || paq) bancos.push('12');
+        if (p?.bank13_unlocked || paq) bancos.push('13');
         return bancos;
     };
 

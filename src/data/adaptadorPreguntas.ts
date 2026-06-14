@@ -82,6 +82,7 @@ const PREMIUM_EXPORTS: Record<string, string> = {
     '10': 'bank10Questions',
     '11': 'bank11Questions',
     '12': 'bank12Questions',
+    '13': 'bank13Questions',
 };
 
 // Static import map so Vite can properly analyze and bundle each chunk
@@ -93,6 +94,7 @@ const BANCO_IMPORTS: Record<string, () => Promise<Record<string, Question[]>>> =
     '10': () => import('./simuladorData10') as Promise<any>,
     '11': () => import('./simuladorData11') as Promise<any>,
     '12': () => import('./simuladorData12') as Promise<any>,
+    '13': () => import('./simuladorData13') as Promise<any>,
 };
 
 export const generarSimuladorPersonalizado = async (config: {
