@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import PromoBloqueo from "@/components/PromoBloqueo";
 import { flashcardsData, flashcardAreas, Flashcard } from "../data/flashcardsData";
 
 export default function Flashcards() {
+  const { user, profile } = useAuth();
   const [areaFiltro, setAreaFiltro] = useState<string>("Todas");
   const [indice, setIndice] = useState(0);
   const [volteada, setVolteada] = useState(false);
   const [vistas, setVistas] = useState<Set<number>>(new Set());
   const [conocidas, setConocidas] = useState<Set<number>>(new Set());
+
+  if (!user || !(profile as any)?.paquete_completo) {
+    return <PromoBloqueo titulo="Flashcards ECOEMS" />;
+  }
 
   const areas = ["Todas", ...flashcardAreas];
 
