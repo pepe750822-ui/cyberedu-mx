@@ -539,6 +539,27 @@ const Index = () => {
                 >
                   ♾️ Simulador Infinito
                 </button>
+                <button
+                  onClick={() => navigate("/flashcards")}
+                  className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "linear-gradient(135deg,#059669,#047857)",
+                    boxShadow: "0 0 30px rgba(5,150,105,0.4), 0 0 60px rgba(5,150,105,0.1)",
+                  }}
+                >
+                  🃏 Flashcards
+                </button>
+                <button
+                  onClick={() => navigate("/simulador-pro")}
+                  className="font-black px-8 py-5 rounded-2xl text-white text-base md:text-lg transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "transparent",
+                    border: "2px solid rgba(5,150,105,0.7)",
+                    boxShadow: "0 0 20px rgba(5,150,105,0.2)",
+                  }}
+                >
+                  📋 +500 Preguntas Nuevas
+                </button>
               </div>
 
               {/* Guía 2026 promo — hero inline */}
