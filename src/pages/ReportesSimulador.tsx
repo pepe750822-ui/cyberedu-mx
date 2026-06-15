@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -7,6 +7,7 @@ export default function ReportesSimulador() {
   const [historial, setHistorial] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [tutorUso, setTutorUso] = useState<any[]>([]);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   // Cargar historial del usuario logueado
   useEffect(() => {
@@ -56,6 +57,24 @@ export default function ReportesSimulador() {
     };
     cargar();
   }, [user]);
+
+  // Agrupar tutor_uso por sesion_id
+  const tutorBySesion = useMemo(() => {
+    const map: Record<string, any[]> = {};
+    for (const r of tutorUso) {
+      if (!r.sesion_id) continue;
+      if (!map[r.sesion_id]) map[r.sesion_id] = [];
+      map[r.sesion_id].push(r);
+    }
+    return map;
+  }, [tutorUso]);
+
+  const toggleExpanded = (id: string) =>
+    setExpanded(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] px-4 py-6">
@@ -133,6 +152,8 @@ export default function ReportesSimulador() {
             const pct = Number(r.porcentaje);
             const colorClass = pct >= 70 ? 'text-green-400' : pct >= 50 ? 'text-orange-400' : 'text-red-400';
             const barClass   = pct >= 70 ? 'bg-green-500'  : pct >= 50 ? 'bg-orange-500'  : 'bg-red-500';
+            const sesionTutor = r.sesion_id ? (tutorBySesion[r.sesion_id] ?? []) : [];
+            const isExpanded  = expanded.has(r.id);
             return (
               <div key={r.id} className="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-4 mb-3">
                 {/* Header */}
@@ -176,6 +197,39 @@ export default function ReportesSimulador() {
                     <p className="text-slate-600 text-xs">Tiempo</p>
                   </div>
                 </div>
+
+                {/* Toggle tutor */}
+                {r.sesion_id && (
+                  <button
+                    onClick={() => toggleExpanded(r.id)}
+                    className="mt-3 w-full text-left text-xs flex items-center justify-between px-3 py-2 rounded-lg bg-[#0a0a0a] border border-[#1e1e2e] hover:border-blue-500/30 transition-colors"
+                  >
+                    <span className="text-slate-400">
+                      🤖 Tutor IA
+                      {sesionTutor.length > 0
+                        ? <span className="ml-1 text-blue-400 font-bold">{sesionTutor.length} consulta{sesionTutor.length !== 1 ? 's' : ''}</span>
+                        : <span className="ml-1 text-slate-600">· sin uso</span>}
+                    </span>
+                    <span className="text-slate-600">{isExpanded ? '▲' : '▼'}</span>
+                  </button>
+                )}
+
+                {/* Detalle tutor expandido */}
+                {isExpanded && sesionTutor.length > 0 && (
+                  <div className="mt-2 space-y-1.5 pl-1">
+                    {sesionTutor.map((t: any, i: number) => (
+                      <div key={i} className="flex items-start gap-2 text-xs">
+                        <span className="text-blue-500 mt-0.5 shrink-0">🧠</span>
+                        <p className="text-slate-400 leading-relaxed">
+                          {(t.pregunta_texto || '').slice(0, 90)}{(t.pregunta_texto || '').length > 90 ? '…' : ''}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {isExpanded && sesionTutor.length === 0 && (
+                  <p className="mt-2 text-xs text-slate-600 pl-1">No usaste el tutor en esta sesión.</p>
+                )}
               </div>
             );
           })}

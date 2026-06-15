@@ -175,6 +175,9 @@ const SimuladorInfinito: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
+    // Session tracking
+    const [sesionId, setSesionId] = useState<string>(() => crypto.randomUUID());
+
     // Results
     const [resultsFinal, setResultsFinal] = useState<ResultadosProps | null>(null);
     const [tiempoInicio, setTiempoInicio] = useState<number>(0);
@@ -248,6 +251,7 @@ const SimuladorInfinito: React.FC = () => {
                 aciertos: correctas,
                 errores: total - correctas,
                 tiempoSegundos: tiempo_usado,
+                sesionId,
             }).then(async () => {
                 toast.success('✅ Resultado guardado');
                 const { data: historial } = await supabase
@@ -335,6 +339,7 @@ const SimuladorInfinito: React.FC = () => {
                 setPageState('config');
                 return;
             }
+            setSesionId(crypto.randomUUID());
             setQuestions(qs);
             setCurrentIndex(0);
             setUserAnswers({});
@@ -726,6 +731,7 @@ const SimuladorInfinito: React.FC = () => {
                         pregunta_id: String(q.id),
                         pregunta_texto: q.text.slice(0, 200),
                         area: q.area,
+                        sesion_id: sesionId,
                     });
                 }}
             />
