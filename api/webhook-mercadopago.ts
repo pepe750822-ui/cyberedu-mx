@@ -119,9 +119,14 @@ export default async function handler(req: Request) {
               paquete_completo: true,
               practica_ilimitada: true,
               bank5_unlocked: true,
+              bank6_unlocked: true,
+              bank7_unlocked: true,
               bank8_unlocked: true,
               bank9_unlocked: true,
               bank10_unlocked: true,
+              bank11_unlocked: true,
+              bank12_unlocked: true,
+              bank13_unlocked: true,
               guia2026_unlocked: true,
               updated_at: new Date().toISOString(),
             };
@@ -157,7 +162,7 @@ export default async function handler(req: Request) {
           }
 
           if (profile) {
-            const currentTokens = profile.tokens || 0;
+            const currentTokens = Number(profile.tokens) || 0;
             const newTotal = currentTokens + tokenAmount;
 
             const { error } = await supabase
@@ -213,12 +218,18 @@ export default async function handler(req: Request) {
           const { error } = await supabase
             .from('profiles')
             .update({
+              paquete_completo: true,
+              practica_ilimitada: true,
               bank5_unlocked: true,
+              bank6_unlocked: true,
+              bank7_unlocked: true,
               bank8_unlocked: true,
               bank9_unlocked: true,
               bank10_unlocked: true,
+              bank11_unlocked: true,
+              bank12_unlocked: true,
+              bank13_unlocked: true,
               guia2026_unlocked: true,
-              paquete_completo: true,
               updated_at: new Date().toISOString(),
             })
             .eq('id', paqId);
@@ -272,7 +283,7 @@ export default async function handler(req: Request) {
           console.log(`[Webhook] ✅ SUSCRIPCIÓN ACTIVADA → usuario ${subsId}`);
 
         } else {
-          console.warn(`[Webhook] ⚠️ TIPO DESCONOCIDO. external_reference=${external_reference} | metadata=`, metadata);
+          console.error(`[Webhook] ❌ TIPO DESCONOCIDO. external_reference=${external_reference} | metadata=`, metadata);
         }
 
         // ── Recompensa primera compra al referidor ────────────────────
@@ -301,7 +312,7 @@ export default async function handler(req: Request) {
     return new Response('OK', { status: 200 });
 
   } catch (error: any) {
-    console.error('[Webhook] FALLO INTERNO:', error.message);
+    console.error('[Webhook] FALLO INTERNO:', error.message, error.stack);
     // 200 igual — MP no debe reintentar por errores internos nuestros
     return new Response('Webhook processed with internal errors', { status: 200 });
   }
