@@ -50,12 +50,17 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('mermaid')) {
-            return 'mermaid';
-          }
+          if (id.includes('mermaid')) return 'mermaid';
+          if (id.includes('framer-motion')) return 'framer-motion';
+          if (id.includes('recharts')) return 'recharts';
+          if (id.includes('@splinetool')) return 'spline';
+          if (id.includes('@supabase')) return 'supabase';
+          if (id.includes('@tanstack/react-query')) return 'react-query';
+          if (id.includes('react-markdown') || id.includes('remark-') || id.includes('rehype-')) return 'markdown';
         },
       },
     },
+    cssCodeSplit: true,
   },
 }));
 

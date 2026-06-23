@@ -64,9 +64,10 @@ import { useSync } from "./hooks/useSync";
 import { useOfflineCache } from "./hooks/useOfflineCache";
 import { AchievementObserver } from "./components/AchievementObserver";
 import { usePageView } from "./hooks/useAnalytics";
-import GlobalAnnouncementBanner from "./components/GlobalAnnouncementBanner";
 import TelegramButton from "./components/TelegramButton";
-import ExamCountdown from "./components/ExamCountdown";
+
+const GlobalAnnouncementBanner = lazy(() => import("./components/GlobalAnnouncementBanner"));
+const ExamCountdown = lazy(() => import("./components/ExamCountdown"));
 import { PendingResultSync } from "./components/PendingResultSync";
 
 
@@ -214,8 +215,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <GlobalAnnouncementBanner />
-          <ExamCountdown />
+          <Suspense fallback={null}><GlobalAnnouncementBanner /></Suspense>
+          <Suspense fallback={null}><ExamCountdown /></Suspense>
           <PageViewTracker />
           <AuthenticatedStudyTools />
           <PWAInstallBanner />
