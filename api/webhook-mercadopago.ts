@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
 
 export default async function handler(req: Request) {
@@ -74,6 +74,7 @@ export default async function handler(req: Request) {
       }
 
       if (status === 'approved' && external_reference) {
+        const payerEmail = paymentData.payer?.email || '';
         const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
         // Fix #1: soportar snake_case (package_id, token_amount) Y camelCase (packageId, tokenAmount)
@@ -131,12 +132,27 @@ export default async function handler(req: Request) {
               updated_at: new Date().toISOString(),
             };
 
-            const { error } = await supabase
+            const { data: promoUpdateData, error: promoUpdateError } = await supabase
               .from('profiles')
               .update(updates)
-              .eq('id', promoUserId);
+              .eq('id', promoUserId)
+              .select();
 
-            if (error) throw error;
+            if (promoUpdateError) throw promoUpdateError;
+
+            if (!promoUpdateData || promoUpdateData.length === 0) {
+              const { error: insertError } = await supabase
+                .from('profiles')
+                .insert({
+                  id: promoUserId,
+                  email: payerEmail,
+                  tokens: tokensActuales + 150,
+                  ...updates,
+                });
+
+              if (insertError) throw insertError;
+            }
+
             console.log(`[Webhook] ✅ PROMO ECOEMS ACTIVADA → ${tokensActuales} + 150 = ${tokensActuales + 150} tokens + acceso completo | usuario ${promoUserId}`);
           } else {
             console.error(`[Webhook] ❌ USUARIO NO ENCONTRADO para promo_ecoems. UUID: ${external_reference}`);
@@ -161,25 +177,37 @@ export default async function handler(req: Request) {
             profile = profileByEmail;
           }
 
-          if (profile) {
-            const currentTokens = Number(profile.tokens) || 0;
-            const newTotal = currentTokens + tokenAmount;
+          const tokenUserId = profile?.id || external_reference;
+          const currentTokens = Number(profile?.tokens) || 0;
+          const newTotal = currentTokens + tokenAmount;
+          const tokenUpdates: Record<string, any> = {
+            tokens: newTotal,
+            updated_at: new Date().toISOString(),
+            subscription_status:
+              metaPackageId === 'ilimitado' ? 'active' : profile?.subscription_status || 'inactive',
+          };
 
-            const { error } = await supabase
+          const { data: tokenUpdateData, error: tokenUpdateError } = await supabase
+            .from('profiles')
+            .update(tokenUpdates)
+            .eq('id', tokenUserId)
+            .select();
+
+          if (tokenUpdateError) throw tokenUpdateError;
+
+          if (!tokenUpdateData || tokenUpdateData.length === 0) {
+            const { error: insertError } = await supabase
               .from('profiles')
-              .update({
-                tokens: newTotal,
-                updated_at: new Date().toISOString(),
-                subscription_status:
-                  metaPackageId === 'ilimitado' ? 'active' : profile.subscription_status,
-              })
-              .eq('id', profile.id);
+              .insert({
+                id: tokenUserId,
+                email: payerEmail,
+                ...tokenUpdates,
+              });
 
-            if (error) throw error;
-            console.log(`[Webhook] ✅ TOKENS ACREDITADOS: +${tokenAmount} → total ${newTotal} | usuario ${profile.id}`);
-          } else {
-            console.error(`[Webhook] ❌ USUARIO NO ENCONTRADO. UUID: ${external_reference} | Email: ${paymentData.payer?.email}`);
+            if (insertError) throw insertError;
           }
+
+          console.log(`[Webhook] ✅ TOKENS ACREDITADOS: +${tokenAmount} → total ${newTotal} | usuario ${tokenUserId}`);
 
         } else if (metaPackageId === 'guia2026') {
           // ── Desbloqueo Guía 2026 ──────────────────────────────────────
@@ -192,16 +220,32 @@ export default async function handler(req: Request) {
             if (byEmail) { guiaId = byEmail.id; console.log(`[Webhook] guia2026: usuario encontrado por email → ${guiaId}`); }
           }
 
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              bank10_unlocked: true,
-              guia2026_unlocked: true,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', guiaId);
+          const guiaUpdates = {
+            bank10_unlocked: true,
+            guia2026_unlocked: true,
+            updated_at: new Date().toISOString(),
+          };
 
-          if (error) throw error;
+          const { data: guiaUpdateData, error: guiaUpdateError } = await supabase
+            .from('profiles')
+            .update(guiaUpdates)
+            .eq('id', guiaId)
+            .select();
+
+          if (guiaUpdateError) throw guiaUpdateError;
+
+          if (!guiaUpdateData || guiaUpdateData.length === 0) {
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({
+                id: guiaId,
+                email: payerEmail,
+                ...guiaUpdates,
+              });
+
+            if (insertError) throw insertError;
+          }
+
           console.log(`[Webhook] ✅ GUÍA 2026 DESBLOQUEADA → usuario ${guiaId}`);
 
         } else if (metaPackageId === 'paquete_completo') {
@@ -215,26 +259,42 @@ export default async function handler(req: Request) {
             if (byEmail) { paqId = byEmail.id; console.log(`[Webhook] paquete_completo: usuario encontrado por email → ${paqId}`); }
           }
 
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              paquete_completo: true,
-              practica_ilimitada: true,
-              bank5_unlocked: true,
-              bank6_unlocked: true,
-              bank7_unlocked: true,
-              bank8_unlocked: true,
-              bank9_unlocked: true,
-              bank10_unlocked: true,
-              bank11_unlocked: true,
-              bank12_unlocked: true,
-              bank13_unlocked: true,
-              guia2026_unlocked: true,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', paqId);
+          const paqUpdates = {
+            paquete_completo: true,
+            practica_ilimitada: true,
+            bank5_unlocked: true,
+            bank6_unlocked: true,
+            bank7_unlocked: true,
+            bank8_unlocked: true,
+            bank9_unlocked: true,
+            bank10_unlocked: true,
+            bank11_unlocked: true,
+            bank12_unlocked: true,
+            bank13_unlocked: true,
+            guia2026_unlocked: true,
+            updated_at: new Date().toISOString(),
+          };
 
-          if (error) throw error;
+          const { data: paqUpdateData, error: paqUpdateError } = await supabase
+            .from('profiles')
+            .update(paqUpdates)
+            .eq('id', paqId)
+            .select();
+
+          if (paqUpdateError) throw paqUpdateError;
+
+          if (!paqUpdateData || paqUpdateData.length === 0) {
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({
+                id: paqId,
+                email: payerEmail,
+                ...paqUpdates,
+              });
+
+            if (insertError) throw insertError;
+          }
+
           console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → usuario ${paqId}`);
 
         } else if (metaPackageId === 'practica_subindice') {
@@ -248,15 +308,31 @@ export default async function handler(req: Request) {
             if (byEmail) { pracId = byEmail.id; console.log(`[Webhook] practica_subindice: usuario encontrado por email → ${pracId}`); }
           }
 
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              practica_ilimitada: true,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', pracId);
+          const pracUpdates = {
+            practica_ilimitada: true,
+            updated_at: new Date().toISOString(),
+          };
 
-          if (error) throw error;
+          const { data: pracUpdateData, error: pracUpdateError } = await supabase
+            .from('profiles')
+            .update(pracUpdates)
+            .eq('id', pracId)
+            .select();
+
+          if (pracUpdateError) throw pracUpdateError;
+
+          if (!pracUpdateData || pracUpdateData.length === 0) {
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({
+                id: pracId,
+                email: payerEmail,
+                ...pracUpdates,
+              });
+
+            if (insertError) throw insertError;
+          }
+
           console.log(`[Webhook] ✅ PRÁCTICA POR SUBÍNDICE DESBLOQUEADA → usuario ${pracId}`);
 
         } else if (metaType === 'subscription' || metaPackageId === 'ilimitado') {
@@ -270,16 +346,32 @@ export default async function handler(req: Request) {
             if (byEmail) { subsId = byEmail.id; console.log(`[Webhook] subscription: usuario encontrado por email → ${subsId}`); }
           }
 
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              subscription_status: 'active',
-              is_premium: true,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', subsId);
+          const subsUpdates = {
+            subscription_status: 'active',
+            is_premium: true,
+            updated_at: new Date().toISOString(),
+          };
 
-          if (error) throw error;
+          const { data: subsUpdateData, error: subsUpdateError } = await supabase
+            .from('profiles')
+            .update(subsUpdates)
+            .eq('id', subsId)
+            .select();
+
+          if (subsUpdateError) throw subsUpdateError;
+
+          if (!subsUpdateData || subsUpdateData.length === 0) {
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({
+                id: subsId,
+                email: payerEmail,
+                ...subsUpdates,
+              });
+
+            if (insertError) throw insertError;
+          }
+
           console.log(`[Webhook] ✅ SUSCRIPCIÓN ACTIVADA → usuario ${subsId}`);
 
         } else {
