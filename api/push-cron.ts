@@ -66,13 +66,13 @@ async function encryptPayload(sub: { keys: { p256dh: string; auth: string } }, p
   const serverKP = await crypto.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveBits"]);
   const serverPubRaw = new Uint8Array(await crypto.subtle.exportKey("raw", serverKP.publicKey));
 
-  const clientKey = await crypto.subtle.importKey("raw", clientPub, { name: "ECDH", namedCurve: "P-256" }, false, []);
+  const clientKey = await crypto.subtle.importKey("raw", clientPub as unknown as ArrayBuffer, { name: "ECDH", namedCurve: "P-256" }, false, []);
   const shared = new Uint8Array(await crypto.subtle.deriveBits({ name: "ECDH", public: clientKey }, serverKP.privateKey, 256));
   const salt = crypto.getRandomValues(new Uint8Array(16));
 
   const hkdf = async (ikm: Uint8Array, saltV: Uint8Array, info: Uint8Array, bits: number) => {
-    const k = await crypto.subtle.importKey("raw", ikm, "HKDF", false, ["deriveBits"]);
-    return new Uint8Array(await crypto.subtle.deriveBits({ name: "HKDF", hash: "SHA-256", salt: saltV, info }, k, bits));
+    const k = await crypto.subtle.importKey("raw", ikm as unknown as ArrayBuffer, "HKDF", false, ["deriveBits"]);
+    return new Uint8Array(await crypto.subtle.deriveBits({ name: "HKDF", hash: "SHA-256", salt: saltV as unknown as ArrayBuffer, info: info as unknown as ArrayBuffer }, k, bits));
   };
 
   const prk = await hkdf(shared, auth, enc.encode("Content-Encoding: auth\0"), 256);
