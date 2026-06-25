@@ -57,6 +57,8 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('@supabase')) return 'supabase';
           if (id.includes('@tanstack/react-query')) return 'react-query';
           if (id.includes('react-markdown') || id.includes('remark-') || id.includes('rehype-')) return 'markdown';
+          if (id.includes('lucide-react')) return 'icons';
+          if (id.includes('@radix-ui')) return 'radix-ui';
         },
       },
     },

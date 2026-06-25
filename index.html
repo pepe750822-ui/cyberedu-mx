@@ -2,15 +2,7 @@
 <html lang="es">
 
 <head>
-  <!-- Prevent 'activity is not defined' ReferenceError in GTM custom tags -->
-  <script>var activity;</script>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-KQH2KVXL');</script>
-  <!-- End Google Tag Manager -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -87,7 +79,78 @@
   <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png">
 
-  <!-- GOOGLE ANALYTICS (GA4) -->
+  <!-- Critical CSS for above-the-fold hero render -->
+  <style>
+    html,body{margin:0;padding:0;background:#0a0a0f;color:#fff}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+    #root{min-height:100vh}
+    .dark .min-h-screen{background:#0a0a0f;min-height:100vh}
+  </style>
+
+  <meta name="google-site-verification" content="googlea2a310e1d404c0e6" />
+
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQH2KVXL"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script>
+    // Register Service Worker with update detection
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => {
+            console.log('⚡ SW registered:', reg.scope);
+
+            // Pre-cache offline page
+            caches.open('cyberedu-static-v3').then(cache => {
+              cache.add('/offline.html').catch(() => { });
+            });
+
+            // Check for updates every 30 min
+            setInterval(() => reg.update(), 30 * 60 * 1000);
+
+            // Notify user when new version available
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                    console.log('🔄 Nueva versión disponible');
+                  }
+                });
+              }
+            });
+          })
+          .catch((err) => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>var activity;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KQH2KVXL');</script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-88JWPSS4QL" crossorigin="anonymous"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -96,10 +159,8 @@
     gtag('config', 'G-88JWPSS4QL');
   </script>
 
-  <meta name="google-site-verification" content="googlea2a310e1d404c0e6" />
-
   <!-- Microsoft Clarity -->
-  <script type="text/javascript">
+  <script>
     (function(c,l,a,r,i,t,y){
       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
       t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -179,59 +240,6 @@
       }
     ]
   }
-  </script>
-
-  <script>
-    (function () {
-      const theme = localStorage.getItem('theme');
-      if (theme === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
-</head>
-
-
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQH2KVXL"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-  <script>
-    // Register Service Worker with update detection
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((reg) => {
-            console.log('⚡ SW registered:', reg.scope);
-
-            // Pre-cache offline page
-            caches.open('cyberedu-static-v3').then(cache => {
-              cache.add('/offline.html').catch(() => { });
-            });
-
-            // Check for updates every 30 min
-            setInterval(() => reg.update(), 30 * 60 * 1000);
-
-            // Notify user when new version available
-            reg.addEventListener('updatefound', () => {
-              const newWorker = reg.installing;
-              if (newWorker) {
-                newWorker.addEventListener('statechange', () => {
-                  if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
-                    console.log('🔄 Nueva versión disponible');
-                  }
-                });
-              }
-            });
-          })
-          .catch((err) => console.log('SW registration failed:', err));
-      });
-    }
   </script>
 </body>
 
