@@ -2885,32 +2885,15 @@ const AITutor = () => {
 
   const agentNavigate = useAgentNavigation(setIsOpen);
 
-  const [usageStats, setUsageStats] = useState<{ used: number, limit: number, tokens: number, isSubscriber: boolean } | null>(null);
-
-  const fetchUsageStats = useCallback(async () => {
-    if (!session?.access_token) return;
-    try {
-      const res = await fetch("/api/usage", {
-        headers: { "Authorization": `Bearer ${session.access_token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUsageStats(data);
-        
-        // Auto-unblock if backend says we have questions left (avoids false positives from legacy localStorage)
-        if (data.used < data.limit && dailyLimitBanner.visible) {
-          setDailyLimitBanner({ visible: false, message: "" });
-          localStorage.removeItem("cyberedu_daily_limit_reached");
-        }
-      }
-    } catch (e) {
-      console.error("Failed to fetch usage stats", e);
-    }
-  }, [session?.access_token]);
-
-  useEffect(() => {
-    fetchUsageStats();
-  }, [fetchUsageStats]);
+  const usageStats = useMemo(() => {
+    if (!user || !profile) return null;
+    return {
+      used: 0,
+      limit: 25,
+      tokens: profile.tokens || 0,
+      isSubscriber: !!(isSubscriber || (profile as any)?.subscription_status === 'active' || (profile as any)?.is_premium === true),
+    };
+  }, [user, profile, isSubscriber]);
 
   const closeBanner = () => {
     setShowPromoBanner(false);

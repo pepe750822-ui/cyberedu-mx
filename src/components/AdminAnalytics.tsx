@@ -285,15 +285,10 @@ export default function AdminAnalytics() {
     } catch (e) { console.error('Error fetching cost alerts:', e); }
   }, [ALERTS_URL]);
 
-  // Verificar al montar y cada 5 minutos
+  // Verificar al montar (sin polling para reducir edge requests)
   useEffect(() => {
     fetchStatus();
     fetchAlerts();
-    const interval = setInterval(() => {
-      fetchStatus();
-      fetchAlerts();
-    }, REFRESH_INTERVAL_MS);
-    return () => clearInterval(interval);
   }, [fetchStatus, fetchAlerts]);
 
   return (
@@ -318,6 +313,9 @@ export default function AdminAnalytics() {
             >
               {testingAlert ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4 text-primary" />}
               Probar alerta
+            </Button>
+            <Button onClick={() => { fetchStatus(); fetchAlerts(); }} variant="outline" className="flex items-center gap-2 border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-400">
+              <RefreshCw className="h-4 w-4" /> Refrescar
             </Button>
             <Button onClick={exportToCSV} className="flex items-center gap-2 shrink-0">
               <Download className="h-4 w-4" /> Exportar CSV
