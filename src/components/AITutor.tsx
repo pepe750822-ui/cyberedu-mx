@@ -3931,7 +3931,7 @@ const AITutor = () => {
               spatialReasoning3Ds: spatialReasoning3Ds.length > 0 ? spatialReasoning3Ds : undefined,
             } : m));
             setIsStreaming(false);
-            fetchUsageStats();
+            refreshProfile();
           },
         });
       } catch (err: any) {
@@ -4277,7 +4277,6 @@ const AITutor = () => {
           ));
           setIsStreaming(false);
           refreshProfile();
-          fetchUsageStats();
         },
       });
     } catch (err: any) {
