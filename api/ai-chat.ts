@@ -1,5 +1,5 @@
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 // ─── Upstash Redis helpers (REST API, no package needed) ───────

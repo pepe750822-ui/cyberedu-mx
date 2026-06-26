@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 function getUserIdFromToken(token: string | null): string | null {
