@@ -52,7 +52,7 @@ async function signVapidJwt(audience: string, privB64url: string, pubB64url: str
     exp: Math.floor(Date.now() / 1000) + 43200,
     sub: "mailto:pepe750822@gmail.com",
   })}`;
-  const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, new TextEncoder().encode(input));
+  const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, new TextEncoder().encode(input) as unknown as ArrayBuffer);
   return `${input}.${bytesToB64url(new Uint8Array(sig))}`;
 }
 
@@ -82,7 +82,7 @@ async function encryptPayload(sub: { keys: { p256dh: string; auth: string } }, p
 
   const cek = await crypto.subtle.importKey("raw", cekBits, "AES-GCM", false, ["encrypt"]);
   const plain = new Uint8Array([0, 0, ...enc.encode(payload)]);
-  const ciphertext = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv: nonceBits }, cek, plain));
+  const ciphertext = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv: nonceBits as unknown as ArrayBuffer }, cek, plain as unknown as ArrayBuffer));
 
   return { body: ciphertext, salt: bytesToB64url(salt), serverPub: bytesToB64url(serverPubRaw) };
 }
