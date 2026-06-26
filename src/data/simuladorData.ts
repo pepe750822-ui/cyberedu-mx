@@ -7,6 +7,7 @@ export interface Question {
     area: string;
     imageUrl?: string;
     source?: string;
+    examenTipo?: 'ecoems' | 'exani-i';
 }
 
 export type ExamMode = 'full' | 'practice';

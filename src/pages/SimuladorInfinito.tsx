@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import PromoBloqueo from '@/components/PromoBloqueo';
@@ -13,6 +13,7 @@ import {
     ALL_MATERIAS,
     DISTRIBUCION_OFICIAL,
 } from '@/data/adaptadorPreguntas';
+import { DISTRIBUCION_EXANI, MATERIAS_EXANI } from '@/data/exani-i';
 import { toast } from "sonner";
 
 interface ResultadosProps {
@@ -152,6 +153,8 @@ type PageState = 'config' | 'loading' | 'exam' | 'results';
 
 const SimuladorInfinito: React.FC = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const esExaniI = searchParams.get('examen') === 'exani-i';
     const { user, profile, loading } = useAuth();
 
     const [pageState, setPageState] = useState<PageState>('config');
@@ -163,7 +166,7 @@ const SimuladorInfinito: React.FC = () => {
     const [cantidad, setCantidad] = useState(128);
     const [customInput, setCustomInput] = useState('128');
     const [showCustom, setShowCustom] = useState(false);
-    const [materias, setMaterias] = useState<string[]>([...ALL_MATERIAS]);
+    const [materias, setMaterias] = useState<string[]>(esExaniI ? [...MATERIAS_EXANI] : [...ALL_MATERIAS]);
     const [fuente, setFuente] = useState<'bancos' | 'subindices' | 'ambas'>('ambas');
     const tiempoSimulador = Math.round(cantidad * SECONDS_PER_QUESTION);
 
@@ -252,6 +255,7 @@ const SimuladorInfinito: React.FC = () => {
                 errores: total - correctas,
                 tiempoSegundos: tiempo_usado,
                 sesionId,
+                examenTipo: esExaniI ? 'exani-i' : 'ecoems',
             }).then(async () => {
                 toast.success('✅ Resultado guardado');
                 const { data: historial } = await supabase
@@ -327,13 +331,26 @@ const SimuladorInfinito: React.FC = () => {
         setInitError(null);
         setPageState('loading');
         try {
-            const qs = await generarSimuladorPersonalizado({
-                cantidad,
-                materias,
-                fuente,
-                bancosDesbloqueados: getBancosDesbloqueados(),
-                paqueteCompleto: (profile as any)?.paquete_completo === true,
-            });
+            let qs: Question[];
+            if (esExaniI) {
+                const res = await fetch('/data/exani-questions.json');
+                const allQs: Question[] = await res.json();
+                qs = allQs.filter(q => materias.includes(q.area));
+                const shuffled = [...qs];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                qs = shuffled.slice(0, Math.min(cantidad, shuffled.length));
+            } else {
+                qs = await generarSimuladorPersonalizado({
+                    cantidad,
+                    materias,
+                    fuente,
+                    bancosDesbloqueados: getBancosDesbloqueados(),
+                    paqueteCompleto: (profile as any)?.paquete_completo === true,
+                });
+            }
             if (qs.length === 0) {
                 setInitError('No se encontraron preguntas con la configuración seleccionada. Intenta con más materias o cambia la fuente.');
                 setPageState('config');
@@ -355,23 +372,28 @@ const SimuladorInfinito: React.FC = () => {
         }
     };
 
-    // Distribution preview (proportional to official weights)
-    const totalOficialFiltrado = ALL_MATERIAS
-        .filter(a => materias.includes(a))
-        .reduce((s, a) => s + (DISTRIBUCION_OFICIAL[a] || 0), 0);
+    const MATERIAS_LISTA = esExaniI ? MATERIAS_EXANI : ALL_MATERIAS;
+    const DISTRIBUCION_ACTIVA = esExaniI ? DISTRIBUCION_EXANI : DISTRIBUCION_OFICIAL;
+    const MATERIAS_ALL = esExaniI ? MATERIAS_EXANI : ALL_MATERIAS;
 
-    const distribucionPreview = ALL_MATERIAS
+    const totalOficialFiltrado = MATERIAS_ALL
+        .filter(a => materias.includes(a))
+        .reduce((s, a) => s + (DISTRIBUCION_ACTIVA[a] || 0), 0);
+
+    const distribucionPreview = MATERIAS_ALL
         .filter(a => materias.includes(a))
         .map(area => ({
             area,
             count: totalOficialFiltrado > 0
-                ? Math.round((DISTRIBUCION_OFICIAL[area] || 0) / totalOficialFiltrado * cantidad)
+                ? Math.round((DISTRIBUCION_ACTIVA[area] || 0) / totalOficialFiltrado * cantidad)
                 : 0,
-            oficial: DISTRIBUCION_OFICIAL[area] || 0,
+            oficial: DISTRIBUCION_ACTIVA[area] || 0,
         }))
         .filter(d => d.count > 0);
 
-    const esDistribucionOficial = cantidad === 128 && materias.length === ALL_MATERIAS.length;
+    const esDistribucionOficial = esExaniI
+        ? cantidad === 130 && materias.length === MATERIAS_EXANI.length
+        : cantidad === 128 && materias.length === ALL_MATERIAS.length;
 
     // Auth guards — after all hooks
     if (loading) return (
@@ -379,7 +401,7 @@ const SimuladorInfinito: React.FC = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
         </div>
     );
-    if (!user || !(profile as any)?.paquete_completo) return <PromoBloqueo titulo="Simulador Infinito" />;
+    if (!esExaniI && (!user || !(profile as any)?.paquete_completo)) return <PromoBloqueo titulo="Simulador Infinito" />;
 
     // ── Config ──────────────────────────────────────────────────────────────
     if (pageState === 'config') {
@@ -389,20 +411,20 @@ const SimuladorInfinito: React.FC = () => {
 
                     <div>
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate(esExaniI ? '/exani-i' : '/')}
                             className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-6"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Volver al inicio
+                            {esExaniI ? 'Volver a EXANI-I' : 'Volver al inicio'}
                         </button>
                         <div className="flex items-center gap-4">
-                            <div className="h-16 w-16 bg-blue-500/20 rounded-2xl flex items-center justify-center text-4xl shrink-0">
+                            <div className={`h-16 w-16 rounded-2xl flex items-center justify-center text-4xl shrink-0 ${esExaniI ? 'bg-teal-500/20' : 'bg-blue-500/20'}`}>
                                 ♾️
                             </div>
                             <div>
-                                <h1 className="text-3xl font-black text-white">Simulador Infinito</h1>
+                                <h1 className={`text-3xl font-black ${esExaniI ? 'text-teal-400' : 'text-white'}`}>{esExaniI ? 'EXANI-I Infinito' : 'Simulador Infinito'}</h1>
                                 <p className="text-slate-400 text-sm mt-1">
-                                    Personaliza tu práctica con toda la base de preguntas
+                                    {esExaniI ? 'Practica ilimitada para el EXANI-I' : 'Personaliza tu práctica con toda la base de preguntas'}
                                 </p>
                             </div>
                         </div>
@@ -458,8 +480,11 @@ const SimuladorInfinito: React.FC = () => {
                                     )}
                                 >
                                     {n}
-                                    {n === 128 && (
+                                    {n === 128 && !esExaniI && (
                                         <span className="text-[8px] text-green-400 font-bold leading-none">ECOEMS</span>
+                                    )}
+                                    {n === 130 && esExaniI && (
+                                        <span className="text-[8px] text-teal-400 font-bold leading-none">EXANI-I</span>
                                     )}
                                 </button>
                             ))}
@@ -505,7 +530,7 @@ const SimuladorInfinito: React.FC = () => {
                             </p>
                             <div className="flex gap-1.5">
                                 <button
-                                    onClick={() => setMaterias([...ALL_MATERIAS])}
+                                    onClick={() => setMaterias(esExaniI ? [...MATERIAS_EXANI] : [...ALL_MATERIAS])}
                                     className="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 text-slate-400 hover:bg-white/10 transition-all border border-white/10"
                                 >
                                     Todas
@@ -519,9 +544,9 @@ const SimuladorInfinito: React.FC = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {ALL_MATERIAS.map(materia => {
+                            {MATERIAS_ALL.map(materia => {
                                 const checked = materias.includes(materia);
-                                const oficial = DISTRIBUCION_OFICIAL[materia] || 0;
+                                const oficial = DISTRIBUCION_ACTIVA[materia] || 0;
                                 return (
                                     <button
                                         key={materia}

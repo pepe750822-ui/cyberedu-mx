@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import PromoBloqueo from "@/components/PromoBloqueo";
 import { flashcardsData, flashcardAreas, Flashcard } from "../data/flashcardsData";
+import { exaniFlashcardsData, exaniFlashcardAreas } from "../data/exaniFlashcardsData";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -14,6 +16,9 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function Flashcards() {
   const { user, profile } = useAuth();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const esExaniI = searchParams.get('examen') === 'exani-i';
   const [areaFiltro, setAreaFiltro] = useState<string>("Todas");
   const [shuffleKey, setShuffleKey] = useState(0);
   const [indice, setIndice] = useState(0);
@@ -21,16 +26,14 @@ export default function Flashcards() {
   const [vistas, setVistas] = useState<Set<number>>(new Set());
   const [conocidas, setConocidas] = useState<Set<number>>(new Set());
 
-  if (!user || !(profile as any)?.paquete_completo) {
-    return <PromoBloqueo titulo="Flashcards ECOEMS" />;
-  }
-
-  const areas = ["Todas", ...flashcardAreas];
+  const dataActual = esExaniI ? exaniFlashcardsData : flashcardsData;
+  const areasActual = esExaniI ? exaniFlashcardAreas : flashcardAreas;
+  const areas = ["Todas", ...areasActual];
 
   const tarjetas = useMemo(() => {
     const filtradas = areaFiltro === "Todas"
-      ? flashcardsData
-      : flashcardsData.filter((f) => f.area === areaFiltro);
+      ? dataActual
+      : dataActual.filter((f) => f.area === areaFiltro);
     return shuffle(filtradas);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [areaFiltro, shuffleKey]);
@@ -44,6 +47,10 @@ export default function Flashcards() {
     setVistas(new Set());
     setConocidas(new Set());
   }, [areaFiltro, shuffleKey]);
+
+  if (!esExaniI && (!user || !(profile as any)?.paquete_completo)) {
+    return <PromoBloqueo titulo="Flashcards ECOEMS" />;
+  }
 
   function siguiente() {
     if (!tarjeta) return;
@@ -80,7 +87,7 @@ export default function Flashcards() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-800">🃏 Flashcards ECOEMS</h1>
+          <h1 className="text-2xl font-bold text-gray-800">{esExaniI ? '🃏 Flashcards EXANI-I' : '🃏 Flashcards ECOEMS'}</h1>
           <p className="text-gray-500 text-sm mt-1">500 preguntas · Toca la tarjeta para ver la respuesta</p>
         </div>
 

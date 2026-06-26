@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { logger } from "@/lib/logger";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -205,6 +205,8 @@ const formatFecha = (fecha: string) => {
 const SimuladorPro = () => {
     const { user, profile, refreshProfile, isLoading: authLoading } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const esExaniI = searchParams.get('examen') === 'exani-i';
     const { toast } = useToast();
     const { track } = useTracking();
 
@@ -260,10 +262,11 @@ const SimuladorPro = () => {
     const [totalSimuladoresUser, setTotalSimuladoresUser] = useState(0);
     const [totalPreguntasUser, setTotalPreguntasUser] = useState(0);
 
-    // SEO Dynamic Tags
     useEffect(() => {
-        document.title = "Simulador Pro ECOEMS 2026 - 512 Reactivos | CyberEdu MX";
-    }, []);
+        document.title = esExaniI
+            ? "Simulador EXANI-I | CyberEdu MX"
+            : "Simulador Pro ECOEMS 2026 - 512 Reactivos | CyberEdu MX";
+    }, [esExaniI]);
 
     // Load banks
     useEffect(() => {
@@ -275,6 +278,14 @@ const SimuladorPro = () => {
                     if (!res.ok) throw new Error(`Failed to load ${path}`);
                     return res.json();
                 };
+
+                if (esExaniI) {
+                    const exaniData = await fetchBank('/data/exani-questions.json');
+                    setBankData(prev => ({ ...prev, bank1: exaniData }));
+                    setIsLoadingData(false);
+                    return;
+                }
+
                 const [b1, b2, b3, b4] = await Promise.all([
                     fetchBank('/data/questions.json'),
                     fetchBank('/data/questions2.json'),
@@ -321,7 +332,7 @@ const SimuladorPro = () => {
             }
         };
         loadAllBanks();
-    }, [toast]);
+    }, [toast, esExaniI]);
 
     // Check for saved state
     useEffect(() => {
@@ -527,7 +538,8 @@ const SimuladorPro = () => {
             modo: examMode,
             banco: selectedBank,
             area: selectedArea,
-            resultados_por_area: areaBreakdown
+            resultados_por_area: areaBreakdown,
+            examen_tipo: esExaniI ? 'exani-i' : 'ecoems',
         };
 
         if (!user) {
@@ -658,6 +670,8 @@ const SimuladorPro = () => {
     };
 
     // ── Simulador Mixto ─────────────────────────────────────────────────────
+    const bankLabel = esExaniI ? 'EXANI-I' : BANK_LABELS[selectedBank];
+
     const mixtoPool = React.useMemo(() => {
         const paq = (profile as any)?.paquete_completo === true;
         const pool: Question[] = [
@@ -864,7 +878,7 @@ const SimuladorPro = () => {
         );
     }
 
-    if (!profile || !(profile as any).paquete_completo) {
+    if (!esExaniI && (!profile || !(profile as any).paquete_completo)) {
         return <PromoBloqueo titulo="Simulador Pro" />;
     }
 
@@ -1001,7 +1015,7 @@ const SimuladorPro = () => {
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
                 }}
                 onJumpToQuestion={setCurrentQuestionIndex}
-                bankLabel={BANK_LABELS[selectedBank]}
+                bankLabel={bankLabel}
                 onReportQuestion={handleReportQuestion}
                 formatTime={(s) => {
                     const h = Math.floor(s / 3600);
@@ -1019,6 +1033,45 @@ const SimuladorPro = () => {
                     });
                 }}
             />
+        );
+    }
+
+    if (esExaniI) {
+        const exaniPool = bankData.bank1 ?? [];
+        const uniqueAreas = [...new Set(exaniPool.map(q => q.area))];
+        return (
+            <div className="min-h-screen bg-slate-950 text-white">
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    <button onClick={() => navigate('/exani-i')} className="flex items-center gap-2 text-white/50 hover:text-white/80 mb-8 transition-colors text-sm">
+                        ← Volver a EXANI-I
+                    </button>
+                    <div className="text-center mb-10">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-400 to-emerald-300 bg-clip-text text-transparent">Simulador EXANI-I</h1>
+                        <p className="text-white/50 mt-2">{exaniPool.length} preguntas disponibles</p>
+                    </div>
+                    <div className="space-y-4 mb-8">
+                        <p className="text-sm font-semibold text-white/60">Filtrar por área</p>
+                        <div className="flex flex-wrap gap-2">
+                            <button onClick={() => setSelectedArea('all')} className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border ${selectedArea === 'all' ? 'bg-teal-600 text-white border-teal-600' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}>
+                                Todas
+                            </button>
+                            {uniqueAreas.map(a => (
+                                <button key={a} onClick={() => setSelectedArea(a)} className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border ${selectedArea === a ? 'bg-teal-600 text-white border-teal-600' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}>
+                                    {a}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button onClick={() => handleStartExam('full')} className="px-8 py-4 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-bold rounded-xl transition-all text-lg shadow-lg shadow-teal-500/25">
+                            Simulador Completo ({exaniPool.length} preguntas · 3h)
+                        </button>
+                        <button onClick={() => handleStartExam('practice')} className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-lg border border-white/10">
+                            Práctica (20 preguntas)
+                        </button>
+                    </div>
+                </div>
+            </div>
         );
     }
 
@@ -1105,7 +1158,6 @@ const SimuladorPro = () => {
                 formatFecha={formatFecha}
             />
         </SimulatorStart>
-
     );
 };
 

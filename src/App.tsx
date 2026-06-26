@@ -55,6 +55,7 @@ const SimuladorInfinito = lazy(() => import("./pages/SimuladorInfinito"));
 const ReportesAdmin = lazy(() => import("./pages/ReportesAdmin"));
 const ReportesSimulador = lazy(() => import("./pages/ReportesSimulador"));
 const Flashcards = lazy(() => import("./pages/Flashcards"));
+const ExaniI = lazy(() => import("./pages/ExaniI"));
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -161,7 +162,7 @@ const AdminResumenRoute = () => {
     : <Navigate to="/" replace />;
 };
 
-const RUTAS_SIN_FLOTANTES = ['/simulador-pro', '/simulador-infinito', '/practica-subindice'];
+const RUTAS_SIN_FLOTANTES = ['/simulador-pro', '/simulador-infinito', '/practica-subindice', '/exani-i'];
 
 const AuthenticatedStudyTools = () => {
   const { user, profile } = useAuth();
@@ -242,6 +243,7 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPostDetail />} />
               <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
               <Route path="/flashcards" element={<Flashcards />} />
+              <Route path="/exani-i" element={<ExaniI />} />
               <Route path="/sugerencias" element={<Sugerencias />} />
               <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
               <Route path="/tokens" element={<Tokens />} />

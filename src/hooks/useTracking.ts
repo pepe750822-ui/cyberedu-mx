@@ -73,6 +73,7 @@ export const guardarResultadoSimulador = async (data: {
   tiempoSegundos?: number;
   materia?: string;
   sesionId?: string;
+  examenTipo?: string;
 }) => {
   const { error } = await supabase.from('simulador_resultados').insert({
     user_id: data.userId,
@@ -83,6 +84,7 @@ export const guardarResultadoSimulador = async (data: {
     tiempo_segundos: data.tiempoSegundos ?? null,
     materia: data.materia ?? null,
     sesion_id: data.sesionId ?? null,
+    examen_tipo: data.examenTipo ?? 'ecoems',
   });
   if (error) console.warn('Error guardando resultado:', error);
 };

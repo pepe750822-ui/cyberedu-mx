@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import PromoBloqueo from "@/components/PromoBloqueo";
+import { areas as exaniAreas } from "@/data/exaniTemarioData";
 
 interface Subtema {
   titulo: string;
@@ -15,7 +16,7 @@ interface Area {
   subtemas: Subtema[];
 }
 
-const areas: Area[] = [
+const ecoemsAreas: Area[] = [
   /* ── LENGUAJES ──────────────────────────────────────────────────── */
   {
     nombre: "Español", icono: "📝", color: "yellow",
@@ -551,6 +552,9 @@ const colorMap: Record<string, { header: string; dot: string; tag: string; aiBtn
 export default function Acordeon() {
   const { session, user, profile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const esExaniI = searchParams.get('examen') === 'exani-i';
+  const areas = esExaniI ? exaniAreas : ecoemsAreas;
   const [openAreas, setOpenAreas] = useState<number[]>([]);
   const [openSubtemas, setOpenSubtemas] = useState<Record<string, boolean>>({});
   const [aiLoading, setAiLoading] = useState<number | null>(null);

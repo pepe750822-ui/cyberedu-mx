@@ -62,6 +62,7 @@ interface SimulatorStartProps {
     bancosActivosCount?: number;
     totalPreguntasMixto?: number;
     distribucionPreview?: Array<{ area: string; count: number }>;
+    areaFilters?: Array<{ label: string; value: string }>;
 }
 
 export const SimulatorStart: React.FC<SimulatorStartProps> = ({
@@ -96,6 +97,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
     bancosActivosCount = 4,
     totalPreguntasMixto = 0,
     distribucionPreview = [],
+    areaFilters,
 }) => {
     const [customInput, setCustomInput] = React.useState('50');
     const [showCustom, setShowCustom] = React.useState(false);
@@ -669,7 +671,7 @@ export const SimulatorStart: React.FC<SimulatorStartProps> = ({
                 <div className="space-y-3">
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Filtrar por materia</p>
                     <div className="flex flex-wrap justify-center gap-2">
-                        {AREA_FILTERS.map(f => (
+                        {(areaFilters ?? AREA_FILTERS).map(f => (
                             <button
                                 key={f.value}
                                 onClick={() => onSelectArea(f.value)}
