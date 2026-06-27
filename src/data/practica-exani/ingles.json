@@ -1,0 +1,422 @@
+{
+  "saludos": {
+    "concepto": "Saludos",
+    "questions": [
+      {
+        "question": "¿Qué significa \"Hello\" en español?",
+        "options": ["A) Adiós", "B) Hola", "C) Gracias"],
+        "correct": 1,
+        "explanation": "\"Hello\" se traduce como \"Hola\" en español, un saludo formal e informal."
+      },
+      {
+        "question": "Completa: Good _____ (buenos días).",
+        "options": ["A) night", "B) afternoon", "C) morning"],
+        "correct": 2,
+        "explanation": "Good morning significa \"buenos días\" y se usa por la mañana."
+      },
+      {
+        "question": "¿Cómo te despides en inglés?",
+        "options": ["A) Goodbye", "B) Hello", "C) Hi"],
+        "correct": 0,
+        "explanation": "\"Goodbye\" significa \"adiós\" y se usa para despedirse."
+      },
+      {
+        "question": "¿Qué expresión significa \"buenas tardes\"?",
+        "options": ["A) Good morning", "B) Good afternoon", "C) Good evening"],
+        "correct": 1,
+        "explanation": "\"Good afternoon\" se usa para saludar por la tarde."
+      },
+      {
+        "question": "¿Cuál es una forma informal de saludar?",
+        "options": ["A) Goodbye", "B) See you later", "C) Hi"],
+        "correct": 2,
+        "explanation": "\"Hi\" es una forma informal de decir \"hola\" en inglés."
+      }
+    ]
+  },
+  "numeros": {
+    "concepto": "Números",
+    "questions": [
+      {
+        "question": "¿Cómo se escribe el número 3 en inglés?",
+        "options": ["A) Tree", "B) Three", "C) Thre"],
+        "correct": 1,
+        "explanation": "El número 3 en inglés se escribe \"three\"."
+      },
+      {
+        "question": "¿Cuál es la traducción de \"five\"?",
+        "options": ["A) Cuatro", "B) Seis", "C) Cinco"],
+        "correct": 2,
+        "explanation": "\"Five\" significa \"cinco\" en español."
+      },
+      {
+        "question": "Completa: One, two, _____, four.",
+        "options": ["A) five", "B) three", "C) six"],
+        "correct": 1,
+        "explanation": "Después de \"one, two\" sigue \"three\" antes de llegar a \"four\"."
+      },
+      {
+        "question": "¿Cómo se escribe el número 1 en inglés?",
+        "options": ["A) Won", "B) One", "C) Wan"],
+        "correct": 1,
+        "explanation": "El número 1 se escribe \"one\" en inglés."
+      },
+      {
+        "question": "¿Qué número es \"four\"?",
+        "options": ["A) 3", "B) 5", "C) 4"],
+        "correct": 2,
+        "explanation": "\"Four\" significa el número 4 en español."
+      }
+    ]
+  },
+  "colores": {
+    "concepto": "Colores",
+    "questions": [
+      {
+        "question": "¿Cómo se dice \"rojo\" en inglés?",
+        "options": ["A) Read", "B) Red", "C) Rad"],
+        "correct": 1,
+        "explanation": "\"Rojo\" se traduce como \"red\" en inglés."
+      },
+      {
+        "question": "¿Cuál es la traducción de \"blue\"?",
+        "options": ["A) Blanco", "B) Negro", "C) Azul"],
+        "correct": 2,
+        "explanation": "\"Blue\" significa \"azul\" en español."
+      },
+      {
+        "question": "El color \"green\" en español es:",
+        "options": ["A) Gris", "B) Verde", "C) Amarillo"],
+        "correct": 1,
+        "explanation": "\"Green\" se traduce como \"verde\"."
+      },
+      {
+        "question": "¿Cómo se dice \"amarillo\" en inglés?",
+        "options": ["A) Yellow", "B) Yelow", "C) Yello"],
+        "correct": 0,
+        "explanation": "\"Amarillo\" se escribe \"yellow\" en inglés."
+      },
+      {
+        "question": "¿Qué color es \"black\"?",
+        "options": ["A) Blanco", "B) Negro", "C) Café"],
+        "correct": 1,
+        "explanation": "\"Black\" significa \"negro\" en español."
+      }
+    ]
+  },
+  "dias-de-la-semana": {
+    "concepto": "Días de la semana",
+    "questions": [
+      {
+        "question": "¿Cuál es el primer día de la semana en inglés?",
+        "options": ["A) Sunday", "B) Monday", "C) Saturday"],
+        "correct": 1,
+        "explanation": "Monday (lunes) se considera el primer día de la semana en muchos países."
+      },
+      {
+        "question": "¿Cómo se dice \"miércoles\" en inglés?",
+        "options": ["A) Tuesday", "B) Thursday", "C) Wednesday"],
+        "correct": 2,
+        "explanation": "\"Miércoles\" se traduce como \"Wednesday\"."
+      },
+      {
+        "question": "Completa: Monday, _____, Wednesday.",
+        "options": ["A) Thursday", "B) Tuesday", "C) Friday"],
+        "correct": 1,
+        "explanation": "Después de Monday (lunes) viene Tuesday (martes)."
+      },
+      {
+        "question": "¿Qué día es \"Friday\"?",
+        "options": ["A) Viernes", "B) Sábado", "C) Domingo"],
+        "correct": 0,
+        "explanation": "\"Friday\" significa \"viernes\" en español."
+      },
+      {
+        "question": "¿Cuál es el último día hábil de la semana (viernes)?",
+        "options": ["A) Saturday", "B) Friday", "C) Thursday"],
+        "correct": 1,
+        "explanation": "Friday (viernes) es el último día hábil de la semana laboral."
+      }
+    ]
+  },
+  "meses": {
+    "concepto": "Meses",
+    "questions": [
+      {
+        "question": "¿Cómo se dice \"enero\" en inglés?",
+        "options": ["A) January", "B) February", "C) June"],
+        "correct": 0,
+        "explanation": "\"Enero\" se traduce como \"January\"."
+      },
+      {
+        "question": "¿Qué mes es \"March\"?",
+        "options": ["A) Mayo", "B) Marzo", "C) Abril"],
+        "correct": 1,
+        "explanation": "\"March\" significa \"marzo\" en español."
+      },
+      {
+        "question": "Completa: January, February, _____, April.",
+        "options": ["A) May", "B) June", "C) March"],
+        "correct": 2,
+        "explanation": "Después de February (febrero) sigue March (marzo)."
+      },
+      {
+        "question": "¿Cómo se dice \"mayo\" en inglés?",
+        "options": ["A) June", "B) May", "C) April"],
+        "correct": 1,
+        "explanation": "\"Mayo\" se traduce como \"May\"."
+      },
+      {
+        "question": "¿Qué mes sigue después de May?",
+        "options": ["A) July", "B) April", "C) June"],
+        "correct": 2,
+        "explanation": "Después de May (mayo) viene June (junio)."
+      }
+    ]
+  },
+  "verbo-to-be": {
+    "concepto": "Verbo to be",
+    "questions": [
+      {
+        "question": "Completa: I _____ a student.",
+        "options": ["A) am", "B) is", "C) are"],
+        "correct": 0,
+        "explanation": "Con I (yo) siempre usamos \"am\" en presente."
+      },
+      {
+        "question": "Completa: She _____ my friend.",
+        "options": ["A) am", "B) is", "C) are"],
+        "correct": 1,
+        "explanation": "Con she (ella) usamos \"is\" en presente."
+      },
+      {
+        "question": "Completa: They _____ in the classroom.",
+        "options": ["A) am", "B) is", "C) are"],
+        "correct": 2,
+        "explanation": "Con they (ellos) usamos \"are\" en presente."
+      },
+      {
+        "question": "¿Cuál es la forma correcta? He _____ a doctor.",
+        "options": ["A) am", "B) is", "C) are"],
+        "correct": 1,
+        "explanation": "Con he (él) usamos \"is\" en presente."
+      },
+      {
+        "question": "Completa: We _____ happy.",
+        "options": ["A) am", "B) is", "C) are"],
+        "correct": 2,
+        "explanation": "Con we (nosotros) usamos \"are\" en presente."
+      }
+    ]
+  },
+  "presente-simple": {
+    "concepto": "Presente simple",
+    "questions": [
+      {
+        "question": "Completa: I _____ (walk) to school every day.",
+        "options": ["A) walk", "B) walks", "C) walked"],
+        "correct": 0,
+        "explanation": "Con I (yo) en presente simple usamos el verbo sin cambios: I walk."
+      },
+      {
+        "question": "Completa: He _____ (play) soccer on Saturdays.",
+        "options": ["A) play", "B) plays", "C) played"],
+        "correct": 1,
+        "explanation": "Con he (él) en presente simple agregamos -s al verbo: he plays."
+      },
+      {
+        "question": "Elige la opción correcta: She _____ (read) books every night.",
+        "options": ["A) read", "B) reads", "C) reading"],
+        "correct": 1,
+        "explanation": "Con she (ella) en presente simple agregamos -s: she reads."
+      },
+      {
+        "question": "Completa: They _____ (go) to the park on Sundays.",
+        "options": ["A) go", "B) goes", "C) going"],
+        "correct": 0,
+        "explanation": "Con they (ellos) usamos el verbo sin cambios: they go."
+      },
+      {
+        "question": "¿Cuál es la forma correcta? My sister _____ (study) every afternoon.",
+        "options": ["A) study", "B) studies", "C) studying"],
+        "correct": 1,
+        "explanation": "Con tercera persona (my sister = she) agregamos -es cuando el verbo termina en y: studies."
+      }
+    ]
+  },
+  "pasado-simple": {
+    "concepto": "Pasado simple",
+    "questions": [
+      {
+        "question": "Completa: Yesterday I _____ (walk) to the store.",
+        "options": ["A) walk", "B) walked", "C) walks"],
+        "correct": 1,
+        "explanation": "Para pasado simple de verbos regulares agregamos -ed: walked."
+      },
+      {
+        "question": "Completa: She _____ (go) to Mexico last summer.",
+        "options": ["A) go", "B) goed", "C) went"],
+        "correct": 2,
+        "explanation": "\"Go\" es un verbo irregular. Su pasado es \"went\"."
+      },
+      {
+        "question": "Elige la forma correcta en pasado: I _____ (eat) pizza yesterday.",
+        "options": ["A) eat", "B) eated", "C) ate"],
+        "correct": 2,
+        "explanation": "\"Eat\" es irregular. Su pasado es \"ate\"."
+      },
+      {
+        "question": "Completa: They _____ (play) video games last night.",
+        "options": ["A) played", "B) play", "C) plays"],
+        "correct": 0,
+        "explanation": "Play es regular, así que en pasado agregamos -ed: played."
+      },
+      {
+        "question": "¿Cuál es el pasado de \"have\"?",
+        "options": ["A) haved", "B) had", "C) has"],
+        "correct": 1,
+        "explanation": "\"Have\" es irregular. Su pasado es \"had\"."
+      }
+    ]
+  },
+  "adjetivos": {
+    "concepto": "Adjetivos",
+    "questions": [
+      {
+        "question": "¿Qué significa \"big\" en español?",
+        "options": ["A) Pequeño", "B) Grande", "C) Rápido"],
+        "correct": 1,
+        "explanation": "\"Big\" significa \"grande\"."
+      },
+      {
+        "question": "¿Cuál es el opuesto de \"small\"?",
+        "options": ["A) Tall", "B) Big", "C) Fast"],
+        "correct": 1,
+        "explanation": "El opuesto de \"small\" (pequeño) es \"big\" (grande)."
+      },
+      {
+        "question": "Completa: The girl is very _____ (hermosa).",
+        "options": ["A) ugly", "B) beautiful", "C) tall"],
+        "correct": 1,
+        "explanation": "\"Beautiful\" significa \"hermosa\" o \"bonita\"."
+      },
+      {
+        "question": "¿Qué significa \"fast\" en español?",
+        "options": ["A) Lento", "B) Fuerte", "C) Rápido"],
+        "correct": 2,
+        "explanation": "\"Fast\" significa \"rápido\"."
+      },
+      {
+        "question": "Traduce: El libro es pequeño.",
+        "options": ["A) The book is big", "B) The book is small", "C) The book is tall"],
+        "correct": 1,
+        "explanation": "\"Pequeño\" se traduce como \"small\"."
+      }
+    ]
+  },
+  "preposiciones": {
+    "concepto": "Preposiciones",
+    "questions": [
+      {
+        "question": "Completa: The book is _____ the table. (en/sobre)",
+        "options": ["A) in", "B) on", "C) at"],
+        "correct": 1,
+        "explanation": "Usamos \"on\" cuando algo está sobre una superficie."
+      },
+      {
+        "question": "Completa: She is _____ school. (en la escuela)",
+        "options": ["A) in", "B) on", "C) at"],
+        "correct": 2,
+        "explanation": "Usamos \"at\" para lugares específicos como school, work, home."
+      },
+      {
+        "question": "Completa: The cat is _____ the box. (dentro de)",
+        "options": ["A) in", "B) on", "C) under"],
+        "correct": 0,
+        "explanation": "Usamos \"in\" para indicar que algo está dentro de un espacio cerrado."
+      },
+      {
+        "question": "¿Qué preposición indica que algo está debajo de algo?",
+        "options": ["A) on", "B) behind", "C) under"],
+        "correct": 2,
+        "explanation": "\"Under\" significa \"debajo de\"."
+      },
+      {
+        "question": "Completa: The ball is _____ the chair. (detrás de)",
+        "options": ["A) behind", "B) in", "C) under"],
+        "correct": 0,
+        "explanation": "\"Behind\" significa \"detrás de\"."
+      }
+    ]
+  },
+  "articulos": {
+    "concepto": "Artículos",
+    "questions": [
+      {
+        "question": "Completa: I have _____ apple.",
+        "options": ["A) a", "B) an", "C) the"],
+        "correct": 1,
+        "explanation": "Usamos \"an\" antes de palabras que comienzan con sonido vocálico. Apple comienza con vocal."
+      },
+      {
+        "question": "Completa: He is _____ teacher.",
+        "options": ["A) a", "B) an", "C) the"],
+        "correct": 0,
+        "explanation": "Usamos \"a\" antes de palabras que comienzan con sonido consonántico."
+      },
+      {
+        "question": "Completa: Close _____ door, please. (la puerta específica)",
+        "options": ["A) a", "B) an", "C) the"],
+        "correct": 2,
+        "explanation": "Usamos \"the\" cuando hablamos de algo específico o conocido."
+      },
+      {
+        "question": "Elige la opción correcta: She wants _____ orange.",
+        "options": ["A) a", "B) an", "C) the"],
+        "correct": 1,
+        "explanation": "\"Orange\" comienza con vocal, por lo tanto usamos \"an\"."
+      },
+      {
+        "question": "Completa: I saw _____ dog in the park. (uno cualquiera)",
+        "options": ["A) a", "B) an", "C) the"],
+        "correct": 0,
+        "explanation": "Usamos \"a\" para mencionar algo por primera vez o de forma general."
+      }
+    ]
+  },
+  "plurales": {
+    "concepto": "Plurales",
+    "questions": [
+      {
+        "question": "¿Cuál es el plural de \"book\"?",
+        "options": ["A) bookes", "B) books", "C) book"],
+        "correct": 1,
+        "explanation": "Para formar el plural de la mayoría de sustantivos agregamos -s: books."
+      },
+      {
+        "question": "¿Cuál es el plural de \"box\"?",
+        "options": ["A) boxs", "B) boxes", "C) box"],
+        "correct": 1,
+        "explanation": "Los sustantivos terminados en -s, -sh, -ch, -x, -z agregan -es: boxes."
+      },
+      {
+        "question": "¿Cuál es el plural de \"child\"?",
+        "options": ["A) childs", "B) childes", "C) children"],
+        "correct": 2,
+        "explanation": "\"Child\" es un plural irregular. Su plural es \"children\"."
+      },
+      {
+        "question": "¿Cuál es el plural de \"baby\"?",
+        "options": ["A) babys", "B) babies", "C) babyes"],
+        "correct": 1,
+        "explanation": "Los sustantivos terminados en consonante + y cambian la y por ies: babies."
+      },
+      {
+        "question": "Elige la opción correcta: I have two _____ (foot).",
+        "options": ["A) foots", "B) feet", "C) footes"],
+        "correct": 1,
+        "explanation": "\"Foot\" es un plural irregular. Su plural es \"feet\"."
+      }
+    ]
+  }
+}

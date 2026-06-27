@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ChevronDown,
   Zap,
@@ -16,11 +16,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import PromoBloqueo from "@/components/PromoBloqueo";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { areas, colorMap } from "@/data/temarioData";
+import { areas as ecoemsAreas, colorMap as ecoemsColorMap } from "@/data/temarioData";
+import { areas as exaniAreas, colorMap as exaniColorMap } from "@/data/exaniTemarioData";
 
 const STORAGE_KEY = 'practica_subindice_estado';
 
-const PRACTICA_MODULES = [
+const ECOEMS_MODULES = [
   () => import("@/data/practica/espanol.json"),
   () => import("@/data/practica/habilidad-verbal.json"),
   () => import("@/data/practica/matematicas.json"),
@@ -31,6 +32,14 @@ const PRACTICA_MODULES = [
   () => import("@/data/practica/historia.json"),
   () => import("@/data/practica/geografia.json"),
   () => import("@/data/practica/formacion-civica-y-etica.json"),
+];
+
+const EXANI_MODULES = [
+  () => import("@/data/practica-exani/pensamiento-cientifico.json"),
+  () => import("@/data/practica-exani/redaccion-indirecta.json"),
+  () => import("@/data/practica-exani/comprension-lectora.json"),
+  () => import("@/data/practica-exani/pensamiento-matematico.json"),
+  () => import("@/data/practica-exani/ingles.json"),
 ];
 
 interface QuizQuestion {
@@ -142,6 +151,10 @@ function renderProgressBadge(concepto: string, areaNombre: string) {
 export default function PracticaSubindice() {
   const { user, profile, refreshProfile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const esExaniI = searchParams.get("examen") === "exani-i";
+  const areas = esExaniI ? exaniAreas : ecoemsAreas;
+  const colorMap = esExaniI ? exaniColorMap : ecoemsColorMap;
   const [openArea, setOpenArea] = useState<number | null>(null);
   const [quiz, setQuiz] = useState<QuizPhase>({ phase: "idle" });
   const [bankData, setBankData] = useState<Record<string, QuizQuestion[]>>({});
@@ -150,7 +163,8 @@ export default function PracticaSubindice() {
   const [estadoGuardado, setEstadoGuardado] = useState<Extract<QuizPhase, { phase: "quiz" }> | null>(null);
 
   useEffect(() => {
-    Promise.all(PRACTICA_MODULES.map(fn => fn())).then(modules => {
+    const modulesToLoad = esExaniI ? EXANI_MODULES : ECOEMS_MODULES;
+    Promise.all(modulesToLoad.map(fn => fn())).then(modules => {
       const bank: Record<string, QuizQuestion[]> = {};
       for (const mod of modules as any[]) {
         const data = mod.default ?? mod;
@@ -161,7 +175,7 @@ export default function PracticaSubindice() {
       setBankData(bank);
       setBankLoading(false);
     });
-  }, []);
+  }, [esExaniI]);
 
   // TAREA 2: Check for saved progress on mount (24h expiry)
   useEffect(() => {
@@ -225,7 +239,8 @@ export default function PracticaSubindice() {
       if (error) throw error;
       await refreshProfile();
       setLockModal(false);
-      toast.success("¡Desbloqueado! Acceso ilimitado a los 371 subíndices. 🎉");
+      const totalSubindices = esExaniI ? 81 : 371;
+      toast.success(`¡Desbloqueado! Acceso ilimitado a los ${totalSubindices} subíndices. 🎉`);
     } catch {
       toast.error("Error al desbloquear. Intenta de nuevo.");
     } finally {
@@ -354,7 +369,7 @@ export default function PracticaSubindice() {
 
   // Open AITutor with question context — same pattern as SimuladorPro
   const askTutor = (question: string, correctOption: string, explanation: string) => {
-    const message = `Explícame esta pregunta del ECOEMS:\n"${question}"\n\nLa respuesta correcta es: "${correctOption}"\n\n${explanation}`;
+    const message = `Explícame esta pregunta del ${esExaniI ? "EXANI-I" : "ECOEMS"}:\n"${question}"\n\nLa respuesta correcta es: "${correctOption}"\n\n${explanation}`;
     window.dispatchEvent(new CustomEvent("cyberedu:open-chat", { detail: { message } }));
   };
 
@@ -397,7 +412,7 @@ export default function PracticaSubindice() {
         <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-400">
             <Zap className="h-3 w-3 text-primary" />
-            Práctica Dirigida · ECOEMS
+            Práctica Dirigida · {esExaniI ? "EXANI-I" : "ECOEMS"}
           </div>
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic leading-none">
             Practica por{" "}
@@ -430,7 +445,7 @@ export default function PracticaSubindice() {
           <div className="flex items-center gap-3 px-5 py-3 rounded-2xl border bg-emerald-500/10 border-emerald-500/30">
             <Crown className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="text-sm font-bold text-emerald-300">
-              Acceso ilimitado activo — 371 subíndices desbloqueados
+              Acceso ilimitado activo — {esExaniI ? "81" : "371"} subíndices desbloqueados
             </span>
           </div>
         ) : (
@@ -438,7 +453,7 @@ export default function PracticaSubindice() {
             <div className="flex items-center gap-3">
               <Lock className="h-4 w-4 text-amber-400 shrink-0" />
               <span className="text-sm font-bold text-amber-300">
-                10 subíndices gratis por materia — desbloquea los 371 completos
+                10 subíndices gratis por materia — desbloquea los {esExaniI ? "81" : "371"} completos
               </span>
             </div>
             <button
@@ -1029,7 +1044,7 @@ export default function PracticaSubindice() {
               </div>
 
               <div className="space-y-2">
-                {["371 subíndices del temario oficial ECOEMS", "1,855 preguntas de opción múltiple", "Preguntas y opciones aleatorizadas", "Acceso permanente — pago único"].map(f => (
+                {[(esExaniI ? "81 subíndices del temario oficial EXANI-I" : "371 subíndices del temario oficial ECOEMS"), (esExaniI ? "405+ preguntas de opción múltiple" : "1,855 preguntas de opción múltiple"), "Preguntas y opciones aleatorizadas", "Acceso permanente — pago único"].map(f => (
                   <div key={f} className="flex items-center gap-2 text-xs text-slate-300">
                     <Check className="h-3 w-3 text-amber-400 shrink-0" />
                     {f}

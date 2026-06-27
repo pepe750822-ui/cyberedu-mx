@@ -1,0 +1,674 @@
+{
+  "texto-informativo": {
+    "concepto": "Texto informativo",
+    "description": "Presenta hechos objetivos (noticia, reportaje)",
+    "questions": [
+      {
+        "question": "¿Cuál es la característica principal de un texto informativo?",
+        "options": [
+          "A) Expresar opiniones personales del autor",
+          "B) Presentar hechos objetivos y verificables",
+          "C) Narrar una historia con personajes ficticios"
+        ],
+        "correct": 1,
+        "explanation": "El texto informativo se distingue por presentar información objetiva y verificable, sin opiniones personales del autor."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un ejemplo de texto informativo?",
+        "options": [
+          "A) Un cuento de ciencia ficción",
+          "B) Una noticia periodística",
+          "C) Un poema de amor"
+        ],
+        "correct": 1,
+        "explanation": "La noticia periodística es un texto informativo porque reporta hechos de actualidad de manera objetiva."
+      },
+      {
+        "question": "En un texto informativo, el lenguaje debe ser:",
+        "options": [
+          "A) Subjetivo y emocional",
+          "B) Técnico y especializado",
+          "C) Claro, preciso y objetivo"
+        ],
+        "correct": 2,
+        "explanation": "El texto informativo utiliza un lenguaje claro, preciso y objetivo para comunicar hechos sin sesgos."
+      },
+      {
+        "question": "¿Qué tipo de información contiene un reportaje?",
+        "options": [
+          "A) Opiniones personales del reportero",
+          "B) Datos, testimonios y hechos sobre un tema",
+          "C) Una historia inventada para entretener"
+        ],
+        "correct": 1,
+        "explanation": "El reportaje es un texto informativo que profundiza en un tema mediante datos, testimonios y hechos verificables."
+      },
+      {
+        "question": "La función principal del texto informativo es:",
+        "options": [
+          "A) Convencer al lector de una idea",
+          "B) Informar sobre un tema de manera objetiva",
+          "C) Expresar sentimientos y emociones"
+        ],
+        "correct": 1,
+        "explanation": "La función principal del texto informativo es comunicar información de manera objetiva, sin buscar convencer ni emocionar."
+      }
+    ]
+  },
+  "texto-argumentativo": {
+    "concepto": "Texto argumentativo",
+    "description": "Defiende una tesis (artículo de opinión, ensayo)",
+    "questions": [
+      {
+        "question": "¿Qué elemento es indispensable en un texto argumentativo?",
+        "options": [
+          "A) Una tesis que se defiende con argumentos",
+          "B) Una lista de datos sin opinión",
+          "C) Una secuencia narrativa con personajes"
+        ],
+        "correct": 0,
+        "explanation": "El texto argumentativo gira en torno a una tesis o postura que el autor defiende mediante argumentos."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un texto argumentativo?",
+        "options": [
+          "A) Un artículo de opinión en un periódico",
+          "B) Una noticia sobre un terremoto",
+          "C) Una receta de cocina"
+        ],
+        "correct": 0,
+        "explanation": "El artículo de opinión es un texto argumentativo donde el autor expone y defiende su postura sobre un tema."
+      },
+      {
+        "question": "En un texto argumentativo, los argumentos sirven para:",
+        "options": [
+          "A) Entretener al lector con anécdotas",
+          "B) Respaldar y sostener la tesis del autor",
+          "C) Describir un objeto o lugar"
+        ],
+        "correct": 1,
+        "explanation": "Los argumentos son las razones que el autor presenta para sostener su tesis y convencer al lector."
+      },
+      {
+        "question": "¿Qué diferencia a un texto argumentativo de uno informativo?",
+        "options": [
+          "A) El argumentativo busca convencer; el informativo, informar",
+          "B) El argumentativo usa lenguaje técnico; el informativo no",
+          "C) El argumentativo es más extenso que el informativo"
+        ],
+        "correct": 0,
+        "explanation": "El texto argumentativo busca persuadir al lector, mientras que el informativo solo presenta datos objetivos."
+      },
+      {
+        "question": "¿Cuál es la estructura típica de un texto argumentativo?",
+        "options": [
+          "A) Inicio, nudo y desenlace",
+          "B) Introducción, tesis, argumentos y conclusión",
+          "C) Pregunta, procedimiento y resultados"
+        ],
+        "correct": 1,
+        "explanation": "Un texto argumentativo suele estructurarse con introducción, planteamiento de la tesis, desarrollo de argumentos y conclusión."
+      }
+    ]
+  },
+  "texto-literario": {
+    "concepto": "Texto literario",
+    "description": "Función estética (cuento, poesía, novela)",
+    "questions": [
+      {
+        "question": "¿Cuál es la función principal de un texto literario?",
+        "options": [
+          "A) Informar sobre hechos reales",
+          "B) Producir un efecto estético o artístico",
+          "C) Convencer al lector de una idea"
+        ],
+        "correct": 1,
+        "explanation": "La función principal del texto literario es estética: busca crear belleza y provocar una experiencia artística."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un género literario?",
+        "options": [
+          "A) La noticia",
+          "B) La poesía",
+          "C) El artículo científico"
+        ],
+        "correct": 1,
+        "explanation": "La poesía es un género literario que emplea el lenguaje con fines estéticos y expresivos."
+      },
+      {
+        "question": "En un texto literario, el lenguaje suele ser:",
+        "options": [
+          "A) Objetivo y denotativo",
+          "B) Connotativo y figurado",
+          "C) Técnico y especializado"
+        ],
+        "correct": 1,
+        "explanation": "El lenguaje literario utiliza recursos connotativos y figurados (metáforas, símiles) para crear efectos artísticos."
+      },
+      {
+        "question": "¿Qué recurso es común en los textos literarios?",
+        "options": [
+          "A) La metáfora",
+          "B) La tabla de datos",
+          "C) La cita bibliográfica"
+        ],
+        "correct": 0,
+        "explanation": "La metáfora es un recurso literario frecuente que consiste en trasladar el significado de una palabra a otra."
+      },
+      {
+        "question": "¿Cuál es la intención del autor de un cuento?",
+        "options": [
+          "A) Informar sobre un suceso real",
+          "B) Narrar una historia con fines artísticos o de entretenimiento",
+          "C) Exponer los resultados de una investigación"
+        ],
+        "correct": 1,
+        "explanation": "El cuento es un texto literario narrativo cuya intención es contar una historia con fines estéticos o de entretenimiento."
+      }
+    ]
+  },
+  "texto-cientifico": {
+    "concepto": "Texto científico",
+    "description": "Informa sobre investigación (artículo, monografía)",
+    "questions": [
+      {
+        "question": "¿Qué caracteriza a un texto científico?",
+        "options": [
+          "A) Usa lenguaje subjetivo y emocional",
+          "B) Presenta resultados de investigación con rigor y precisión",
+          "C) Narra hechos ficticios para entretener"
+        ],
+        "correct": 1,
+        "explanation": "El texto científico se caracteriza por comunicar resultados de investigación con rigor, precisión y objetividad."
+      },
+      {
+        "question": "¿Cuál de los siguientes es un texto científico?",
+        "options": [
+          "A) Un cuento de hadas",
+          "B) Un artículo de investigación",
+          "C) Un anuncio publicitario"
+        ],
+        "correct": 1,
+        "explanation": "El artículo de investigación es un texto científico donde se difunden los resultados de un estudio."
+      },
+      {
+        "question": "El lenguaje en un texto científico debe ser:",
+        "options": [
+          "A) Técnico y preciso",
+          "B) Poético y figurado",
+          "C) Coloquial y cotidiano"
+        ],
+        "correct": 0,
+        "explanation": "El texto científico emplea un lenguaje técnico y preciso para evitar ambigüedades en la comunicación de resultados."
+      },
+      {
+        "question": "¿Qué elemento no puede faltar en un artículo científico?",
+        "options": [
+          "A) Personajes y diálogos",
+          "B) Metodología y resultados",
+          "C) Opiniones personales del autor"
+        ],
+        "correct": 1,
+        "explanation": "Todo artículo científico debe incluir la metodología empleada y los resultados obtenidos en la investigación."
+      },
+      {
+        "question": "La monografía es un texto científico que:",
+        "options": [
+          "A) Narra una historia inventada",
+          "B) Desarrolla un tema específico de manera sistemática",
+          "C) Expresa sentimientos del autor"
+        ],
+        "correct": 1,
+        "explanation": "La monografía es un texto expositivo-científico que aborda un tema específico de forma organizada y sistemática."
+      }
+    ]
+  },
+  "convocatoria": {
+    "concepto": "Convocatoria",
+    "description": "Documento que anuncia requisitos y plazos",
+    "questions": [
+      {
+        "question": "¿Cuál es el propósito de una convocatoria?",
+        "options": [
+          "A) Entretener al lector con una historia",
+          "B) Anunciar requisitos, plazos y condiciones para participar en algo",
+          "C) Expresar la opinión del autor sobre un tema"
+        ],
+        "correct": 1,
+        "explanation": "La convocatoria es un documento oficial que informa sobre requisitos, plazos y condiciones para participar en una actividad."
+      },
+      {
+        "question": "¿Qué dato es indispensable en una convocatoria?",
+        "options": [
+          "A) Una reseña histórica del evento",
+          "B) La fecha límite de inscripción",
+          "C) Una biografía del organizador"
+        ],
+        "correct": 1,
+        "explanation": "Toda convocatoria debe incluir la fecha límite o plazo para que los interesados puedan participar."
+      },
+      {
+        "question": "¿En qué tipo de situación se publica una convocatoria?",
+        "options": [
+          "A) Para anunciar una beca o un concurso",
+          "B) Para publicar una noticia de última hora",
+          "C) Para compartir un poema"
+        ],
+        "correct": 0,
+        "explanation": "Las convocatorias se utilizan para anunciar becas, concursos, empleos o cualquier actividad que requiera participantes."
+      },
+      {
+        "question": "El lenguaje de una convocatoria debe ser:",
+        "options": [
+          "A) Poético y figurado",
+          "B) Claro, formal y preciso",
+          "C) Coloquial e informal"
+        ],
+        "correct": 1,
+        "explanation": "La convocatoria usa un lenguaje formal, claro y preciso para que todos los interesados comprendan los requisitos."
+      },
+      {
+        "question": "¿Qué sección no puede faltar en una convocatoria?",
+        "options": [
+          "A) Los requisitos de participación",
+          "B) Un resumen del libro favorito del autor",
+          "C) Una lista de películas recomendadas"
+        ],
+        "correct": 0,
+        "explanation": "Los requisitos de participación son esenciales en una convocatoria para que los interesados sepan si cumplen con lo solicitado."
+      }
+    ]
+  },
+  "idea-principal": {
+    "concepto": "Idea principal",
+    "description": "De qué trata el texto (puede estar implícita o explícita)",
+    "questions": [
+      {
+        "question": "¿Qué es la idea principal de un texto?",
+        "options": [
+          "A) El título del texto",
+          "B) La información más importante que el autor quiere comunicar",
+          "C) Cualquier dato que aparezca en el texto"
+        ],
+        "correct": 1,
+        "explanation": "La idea principal es el mensaje central o la información más relevante que el autor desea transmitir."
+      },
+      {
+        "question": "Si un texto dice: 'El agua es esencial para la vida. Todos los seres vivos la necesitan para sobrevivir. Las plantas, los animales y los humanos dependemos de ella.', ¿cuál es la idea principal?",
+        "options": [
+          "A) Las plantas necesitan agua",
+          "B) El agua es indispensable para la vida",
+          "C) Los humanos dependemos del agua"
+        ],
+        "correct": 1,
+        "explanation": "La idea principal es que el agua es esencial para la vida, ya que las demás oraciones la apoyan."
+      },
+      {
+        "question": "¿Dónde puede encontrarse la idea principal en un párrafo?",
+        "options": [
+          "A) Solo al inicio del párrafo",
+          "B) Al inicio, al final o puede estar implícita",
+          "C) Siempre en la última oración"
+        ],
+        "correct": 1,
+        "explanation": "La idea principal puede ubicarse al inicio, al final del párrafo o estar implícita a lo largo del texto."
+      },
+      {
+        "question": "Cuando la idea principal no está escrita directamente, se dice que está:",
+        "options": [
+          "A) Explícita",
+          "B) Implícita",
+          "C) Ausente"
+        ],
+        "correct": 1,
+        "explanation": "Cuando la idea principal no se expresa de forma directa sino que se deduce del contenido, está implícita."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre tema e idea principal?",
+        "options": [
+          "A) Son lo mismo",
+          "B) El tema es el asunto general; la idea principal es lo que se dice sobre ese tema",
+          "C) La idea principal es más general que el tema"
+        ],
+        "correct": 1,
+        "explanation": "El tema es el asunto general del texto, mientras que la idea principal es la afirmación concreta que se hace sobre ese asunto."
+      }
+    ]
+  },
+  "ideas-secundarias": {
+    "concepto": "Ideas secundarias",
+    "description": "Apoyan o ejemplifican la idea principal",
+    "questions": [
+      {
+        "question": "¿Cuál es la función de las ideas secundarias en un texto?",
+        "options": [
+          "A) Contradecir la idea principal",
+          "B) Apoyar, explicar o ejemplificar la idea principal",
+          "C) Introducir un tema diferente"
+        ],
+        "correct": 1,
+        "explanation": "Las ideas secundarias complementan la idea principal aportando detalles, ejemplos o explicaciones."
+      },
+      {
+        "question": "Si la idea principal es 'El ejercicio físico beneficia la salud', ¿cuál sería una idea secundaria?",
+        "options": [
+          "A) Correr 30 minutos al día fortalece el corazón",
+          "B) El ejercicio físico es importante",
+          "C) La salud es lo más valioso"
+        ],
+        "correct": 0,
+        "explanation": "La oración 'Correr 30 minutos al día fortalece el corazón' ejemplifica y apoya la idea principal."
+      },
+      {
+        "question": "Las ideas secundarias suelen contener:",
+        "options": [
+          "A) La conclusión del texto",
+          "B) Ejemplos, datos específicos o explicaciones detalladas",
+          "C) El resumen de todo el texto"
+        ],
+        "correct": 1,
+        "explanation": "Las ideas secundarias desarrollan la idea principal mediante ejemplos, datos particulares o explicaciones."
+      },
+      {
+        "question": "¿Qué ocurre si eliminamos las ideas secundarias de un texto?",
+        "options": [
+          "A) El texto pierde detalles pero conserva el mensaje central",
+          "B) El texto deja de tener sentido por completo",
+          "C) La idea principal desaparece"
+        ],
+        "correct": 0,
+        "explanation": "Sin las ideas secundarias el texto conserva su mensaje central, pero pierde los detalles que lo enriquecen."
+      },
+      {
+        "question": "¿Cómo se relacionan las ideas secundarias con la idea principal?",
+        "options": [
+          "A) Son independientes y no se relacionan",
+          "B) Dependen de la idea principal y la desarrollan",
+          "C) Son más importantes que la idea principal"
+        ],
+        "correct": 1,
+        "explanation": "Las ideas secundarias dependen de la principal y su función es desarrollarla, explicarla o ejemplificarla."
+      }
+    ]
+  },
+  "inferencia": {
+    "concepto": "Inferencia",
+    "description": "Conclusión no dicha explícitamente en el texto",
+    "questions": [
+      {
+        "question": "¿Qué significa inferir información de un texto?",
+        "options": [
+          "A) Copiar textualmente lo que dice el autor",
+          "B) Sacar conclusiones que no están escritas explícitamente",
+          "C) Ignorar la información del texto"
+        ],
+        "correct": 1,
+        "explanation": "Inferir es deducir o concluir información que no aparece de manera explícita, a partir de pistas del texto."
+      },
+      {
+        "question": "Si un texto dice: 'María tomó un paraguas y salió de casa. Al llegar a la escuela, su ropa estaba seca.' ¿Qué podemos inferir?",
+        "options": [
+          "A) Que María no fue a la escuela",
+          "B) Que probablemente estaba lloviendo y el paraguas la protegió",
+          "C) Que María perdió su paraguas"
+        ],
+        "correct": 1,
+        "explanation": "Podemos inferir que llovía porque María llevaba paraguas y su ropa llegó seca, aunque el texto no lo diga directamente."
+      },
+      {
+        "question": "La inferencia se basa en:",
+        "options": [
+          "A) La imaginación del lector sin relación con el texto",
+          "B) Pistas y datos que proporciona el texto más los conocimientos del lector",
+          "C) La opinión del autor exclusivamente"
+        ],
+        "correct": 1,
+        "explanation": "Inferir combina la información explícita del texto con los conocimientos previos del lector."
+      },
+      {
+        "question": "Leemos: 'El suelo estaba mojado y habia charcos por todas partes.' ¿Qué inferimos?",
+        "options": [
+          "A) Que alguien regó las plantas",
+          "B) Que acaba de llover o hubo una inundación",
+          "C) Que el suelo siempre está mojado"
+        ],
+        "correct": 1,
+        "explanation": "Inferimos que llovió o hubo una inundación porque el suelo mojado y los charcos son evidencia de agua reciente."
+      },
+      {
+        "question": "¿Por qué es importante hacer inferencias al leer?",
+        "options": [
+          "A) Porque permite comprender más allá de lo literal",
+          "B) Porque no es necesario leer todo el texto",
+          "C) Porque así se puede cambiar el significado del texto"
+        ],
+        "correct": 0,
+        "explanation": "Inferir permite una comprensión más profunda al descubrir información que el autor sugiere pero no dice directamente."
+      }
+    ]
+  },
+  "parafrasis": {
+    "concepto": "Paráfrasis",
+    "description": "Expresar una idea con otras palabras",
+    "questions": [
+      {
+        "question": "¿Qué es una paráfrasis?",
+        "options": [
+          "A) Repetir exactamente las mismas palabras del texto original",
+          "B) Expresar una idea con palabras diferentes sin cambiar el significado",
+          "C) Resumir el texto a la mitad de su extensión"
+        ],
+        "correct": 1,
+        "explanation": "La paráfrasis consiste en explicar o expresar una idea con palabras propias, manteniendo el significado original."
+      },
+      {
+        "question": "Si el texto dice: 'El calentamiento global es un fenómeno que preocupa a los científicos', ¿cuál es una paráfrasis correcta?",
+        "options": [
+          "A) El calentamiento global es un fenómeno que preocupa a los científicos",
+          "B) Los expertos están preocupados por el fenómeno del calentamiento global",
+          "C) El calentamiento global no existe"
+        ],
+        "correct": 1,
+        "explanation": "La opción B expresa la misma idea con palabras diferentes, lo que constituye una paráfrasis adecuada."
+      },
+      {
+        "question": "¿Cuál es la utilidad de la paráfrasis al estudiar?",
+        "options": [
+          "A) Permite verificar que se ha comprendido el contenido",
+          "B) Sirve para alargar el texto artificialmente",
+          "C) Ayuda a memorizar sin entender"
+        ],
+        "correct": 0,
+        "explanation": "La paráfrasis demuestra comprensión porque obliga a procesar la información y expresarla con palabras propias."
+      },
+      {
+        "question": "¿Qué se debe evitar al hacer una paráfrasis?",
+        "options": [
+          "A) Cambiar el significado original del texto",
+          "B) Usar sinónimos",
+          "C) Modificar la estructura de las oraciones"
+        ],
+        "correct": 0,
+        "explanation": "Al parafrasear se debe conservar el significado original; cambiarlo sería una interpretación incorrecta."
+      },
+      {
+        "question": "La paráfrasis se diferencia de la cita textual porque:",
+        "options": [
+          "A) La paráfrasis usa comillas y la cita textual no",
+          "B) La paráfrasis dice la idea con otras palabras, mientras que la cita textual reproduce exactamente",
+          "C) La cita textual es más corta que la paráfrasis"
+        ],
+        "correct": 1,
+        "explanation": "La cita textual reproduce las palabras exactas del autor entre comillas, mientras que la paráfrasis usa palabras propias."
+      }
+    ]
+  },
+  "sintesis": {
+    "concepto": "Síntesis",
+    "description": "Resumen breve de lo más importante",
+    "questions": [
+      {
+        "question": "¿Qué es una síntesis?",
+        "options": [
+          "A) Una copia completa del texto original",
+          "B) Un breve resumen que contiene solo lo esencial",
+          "C) Una opinión personal sobre el texto"
+        ],
+        "correct": 1,
+        "explanation": "La síntesis es una versión abreviada que recoge únicamente los puntos más importantes del texto."
+      },
+      {
+        "question": "¿En qué se diferencia una síntesis de un resumen?",
+        "options": [
+          "A) La síntesis es más breve y condensada que el resumen",
+          "B) El resumen es más breve que la síntesis",
+          "C) No hay diferencia entre ambos"
+        ],
+        "correct": 0,
+        "explanation": "La síntesis es más breve y condensada que el resumen; presenta la esencia del texto en pocas palabras."
+      },
+      {
+        "question": "Al elaborar una síntesis, ¿qué información se debe incluir?",
+        "options": [
+          "A) Todos los detalles y ejemplos del texto",
+          "B) Solo la idea principal y los puntos más relevantes",
+          "C) La opinión del lector sobre el texto"
+        ],
+        "correct": 1,
+        "explanation": "La síntesis debe contener únicamente la idea principal y los puntos esenciales, omitiendo detalles secundarios."
+      },
+      {
+        "question": "¿Para qué sirve hacer una síntesis?",
+        "options": [
+          "A) Para tener una visión general y rápida del contenido",
+          "B) Para alargar el tiempo de estudio",
+          "C) Para evitar leer el texto completo"
+        ],
+        "correct": 0,
+        "explanation": "La síntesis permite captar rápidamente lo esencial de un texto sin leerlo por completo."
+      },
+      {
+        "question": "¿Cuál de las siguientes opciones es una síntesis adecuada de este texto: 'Los delfines son mamíferos marinos inteligentes. Viven en grupos llamados manadas. Se comunican mediante sonidos y saltos. Se alimentan de peces y calamares'?",
+        "options": [
+          "A) Los delfines son mamíferos marinos que viven en grupo, se comunican con sonidos y comen peces",
+          "B) Los delfines son animales que viven en el mar y hacen sonidos",
+          "C) Los delfines son mamíferos marinos inteligentes"
+        ],
+        "correct": 0,
+        "explanation": "La opción A condensa la información esencial del texto original sin perder los datos clave."
+      }
+    ]
+  },
+  "cita-textual": {
+    "concepto": "Cita textual",
+    "description": "Reproducción literal de un fragmento entre comillas",
+    "questions": [
+      {
+        "question": "¿Qué es una cita textual?",
+        "options": [
+          "A) Explicar una idea con palabras propias",
+          "B) Reproducir exactamente las palabras de un autor entre comillas",
+          "C) Escribir un resumen del texto"
+        ],
+        "correct": 1,
+        "explanation": "La cita textual reproduce de manera literal las palabras del autor, y debe ir entre comillas."
+      },
+      {
+        "question": "¿Qué signo de puntuación se utiliza para encerrar una cita textual?",
+        "options": [
+          "A) Paréntesis",
+          "B) Comillas",
+          "C) Corchetes"
+        ],
+        "correct": 1,
+        "explanation": "Las comillas se usan para indicar que las palabras son una reproducción exacta de otro autor."
+      },
+      {
+        "question": "¿Por qué es importante incluir la fuente en una cita textual?",
+        "options": [
+          "A) Para dar crédito al autor original y evitar plagio",
+          "B) Para que el texto se vea más profesional",
+          "C) No es necesario incluir la fuente"
+        ],
+        "correct": 0,
+        "explanation": "Citar la fuente es esencial para reconocer la autoría de las ideas y evitar el plagio académico."
+      },
+      {
+        "question": "¿Cuándo es apropiado usar una cita textual?",
+        "options": [
+          "A) Cuando las palabras del autor son tan precisas que no conviene cambiarlas",
+          "B) En todo momento, para llenar el texto",
+          "C) Solo cuando no se entiende el tema"
+        ],
+        "correct": 0,
+        "explanation": "Se usa cita textual cuando la forma en que el autor expresó la idea es especialmente clara o relevante."
+      },
+      {
+        "question": "¿Qué diferencia hay entre cita textual y paráfrasis?",
+        "options": [
+          "A) La cita textual usa comillas; la paráfrasis no",
+          "B) La paráfrasis usa comillas; la cita textual no",
+          "C) Ambas son exactamente iguales"
+        ],
+        "correct": 0,
+        "explanation": "La cita textual reproduce las palabras exactas entre comillas, mientras que la paráfrasis expresa la idea con otras palabras."
+      }
+    ]
+  },
+  "hecho-vs-opinion": {
+    "concepto": "Hecho vs opinión",
+    "description": "El hecho es verificable; la opinión es subjetiva",
+    "questions": [
+      {
+        "question": "¿Qué caracteriza a un hecho?",
+        "options": [
+          "A) Puede ser verificado objetivamente",
+          "B) Depende de los sentimientos del autor",
+          "C) No se puede comprobar"
+        ],
+        "correct": 0,
+        "explanation": "Un hecho es una afirmación objetiva que puede ser comprobada o verificada mediante evidencia."
+      },
+      {
+        "question": "¿Cuál de las siguientes afirmaciones es una opinión?",
+        "options": [
+          "A) La Ciudad de México tiene más de 8 millones de habitantes",
+          "B) La Ciudad de México es la ciudad más hermosa del país",
+          "C) El metro de la Ciudad de México transporta millones de personas al dia"
+        ],
+        "correct": 1,
+        "explanation": "'La ciudad más hermosa' es una apreciación subjetiva que expresa una opinion personal, no un hecho verificable."
+      },
+      {
+        "question": "¿Cuál de las siguientes es un hecho verificable?",
+        "options": [
+          "A) El helado de chocolate es el mejor sabor",
+          "B) El agua hierve a 100 °C al nivel del mar",
+          "C) La música clásica es aburrida"
+        ],
+        "correct": 1,
+        "explanation": "La temperatura de ebullición del agua es un dato científico que puede comprobarse experimentalmente."
+      },
+      {
+        "question": "Las opiniones se reconocen porque suelen incluir palabras como:",
+        "options": [
+          "A) Según datos, estadisticamente, científicamente",
+          "B) Creo que, pienso que, me parece, el mejor",
+          "C) Nació, ocurrió, se encuentra"
+        ],
+        "correct": 1,
+        "explanation": "Expresiones como 'creo que', 'pienso que' o 'me parece' indican que se trata de una opinión personal."
+      },
+      {
+        "question": "¿Por qué es importante distinguir entre hechos y opiniones al leer?",
+        "options": [
+          "A) Para evaluar la credibilidad de la información",
+          "B) Para estar de acuerdo con el autor",
+          "C) No es importante hacer esa distinción"
+        ],
+        "correct": 0,
+        "explanation": "Distinguir hechos de opiniones permite evaluar críticamente la información y no confundir datos objetivos con juicios subjetivos."
+      }
+    ]
+  }
+}

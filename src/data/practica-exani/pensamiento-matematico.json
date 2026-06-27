@@ -1,0 +1,807 @@
+{
+  "expresiones-algebraicas": {
+    "concepto": "Expresiones algebraicas — combinación de números y variables",
+    "questions": [
+      {
+        "question": "¿Cuál es el valor numérico de la expresión 3x + 5 cuando x = 4?",
+        "options": ["A) 17", "B) 12", "C) 20"],
+        "correct": 0,
+        "explanation": "Sustituimos x = 4: 3(4) + 5 = 12 + 5 = 17."
+      },
+      {
+        "question": "Simplifica la expresión 2a + 3b - a + 2b.",
+        "options": ["A) a + 5b", "B) 3a + 5b", "C) a + b"],
+        "correct": 0,
+        "explanation": "Agrupamos términos semejantes: (2a - a) + (3b + 2b) = a + 5b."
+      },
+      {
+        "question": "¿Cuál es el coeficiente del término 7x²y?",
+        "options": ["A) 7", "B) 2", "C) x²y"],
+        "correct": 0,
+        "explanation": "El coeficiente es el factor numérico que multiplica a las variables, que en este caso es 7."
+      },
+      {
+        "question": "¿Cuántos términos tiene la expresión 4x³ - 2x² + x - 7?",
+        "options": ["A) 3", "B) 4", "C) 5"],
+        "correct": 1,
+        "explanation": "Los términos son 4x³, -2x², +x y -7, separados por signos de suma o resta: 4 términos."
+      },
+      {
+        "question": "Evalúa 2x² - 3y cuando x = 3 y y = 4.",
+        "options": ["A) 6", "B) 18", "C) 12"],
+        "correct": 0,
+        "explanation": "Sustituimos: 2(3)² - 3(4) = 2(9) - 12 = 18 - 12 = 6."
+      }
+    ]
+  },
+  "productos-notables": {
+    "concepto": "Productos notables — (a+b)², (a-b)², (a+b)(a-b)",
+    "questions": [
+      {
+        "question": "Desarrolla (x + 3)².",
+        "options": ["A) x² + 6x + 9", "B) x² + 9", "C) x² + 3x + 9"],
+        "correct": 0,
+        "explanation": "(a + b)² = a² + 2ab + b². (x + 3)² = x² + 2(x)(3) + 3² = x² + 6x + 9."
+      },
+      {
+        "question": "Desarrolla (2a - 1)².",
+        "options": ["A) 4a² - 4a + 1", "B) 4a² - 2a + 1", "C) 2a² - 4a + 1"],
+        "correct": 0,
+        "explanation": "(a - b)² = a² - 2ab + b². (2a - 1)² = (2a)² - 2(2a)(1) + 1² = 4a² - 4a + 1."
+      },
+      {
+        "question": "Multiplica (x + 5)(x - 5).",
+        "options": ["A) x² - 25", "B) x² + 25", "C) x² - 10x + 25"],
+        "correct": 0,
+        "explanation": "(a + b)(a - b) = a² - b². (x + 5)(x - 5) = x² - 5² = x² - 25."
+      },
+      {
+        "question": "Desarrolla (3x + 2y)².",
+        "options": ["A) 9x² + 12xy + 4y²", "B) 9x² + 6xy + 4y²", "C) 3x² + 12xy + 2y²"],
+        "correct": 0,
+        "explanation": "(3x + 2y)² = (3x)² + 2(3x)(2y) + (2y)² = 9x² + 12xy + 4y²."
+      },
+      {
+        "question": "¿A qué es igual (m + n)(m - n)?",
+        "options": ["A) m² - n²", "B) m² + n²", "C) m² - 2mn + n²"],
+        "correct": 0,
+        "explanation": "Es una diferencia de cuadrados: (m + n)(m - n) = m² - n²."
+      }
+    ]
+  },
+  "factorizacion": {
+    "concepto": "Factorización — expresar como producto de factores",
+    "questions": [
+      {
+        "question": "Factoriza 6x + 9.",
+        "options": ["A) 3(2x + 3)", "B) 2(3x + 9)", "C) 3(2x + 9)"],
+        "correct": 0,
+        "explanation": "El factor común es 3. 6x + 9 = 3(2x + 3)."
+      },
+      {
+        "question": "Factoriza x² - 9.",
+        "options": ["A) (x - 3)(x + 3)", "B) (x - 9)(x + 1)", "C) (x - 3)²"],
+        "correct": 0,
+        "explanation": "Es una diferencia de cuadrados: x² - 9 = (x - 3)(x + 3)."
+      },
+      {
+        "question": "Factoriza x² + 5x + 6.",
+        "options": ["A) (x + 2)(x + 3)", "B) (x + 1)(x + 6)", "C) (x - 2)(x - 3)"],
+        "correct": 0,
+        "explanation": "Buscamos dos números que sumen 5 y multipliquen 6: 2 y 3. x² + 5x + 6 = (x + 2)(x + 3)."
+      },
+      {
+        "question": "Factoriza 4x² - 9y².",
+        "options": ["A) (2x - 3y)(2x + 3y)", "B) (4x - 9y)(x + y)", "C) (2x - 3y)²"],
+        "correct": 0,
+        "explanation": "Diferencia de cuadrados: 4x² - 9y² = (2x)² - (3y)² = (2x - 3y)(2x + 3y)."
+      },
+      {
+        "question": "Factoriza 3x² + 6x.",
+        "options": ["A) 3x(x + 2)", "B) 3(x² + 2x)", "C) x(3x + 6)"],
+        "correct": 0,
+        "explanation": "Factor común 3x: 3x² + 6x = 3x(x + 2)."
+      }
+    ]
+  },
+  "ecuacion-lineal": {
+    "concepto": "Ecuación lineal — ax + b = 0",
+    "questions": [
+      {
+        "question": "Resuelve 2x + 6 = 0.",
+        "options": ["A) x = -3", "B) x = 3", "C) x = -6"],
+        "correct": 0,
+        "explanation": "2x + 6 = 0 → 2x = -6 → x = -3."
+      },
+      {
+        "question": "Resuelve 3x - 7 = 14.",
+        "options": ["A) x = 7", "B) x = 21", "C) x = 3"],
+        "correct": 0,
+        "explanation": "3x - 7 = 14 → 3x = 21 → x = 7."
+      },
+      {
+        "question": "Resuelve 5(x - 2) = 15.",
+        "options": ["A) x = 5", "B) x = 3", "C) x = 17"],
+        "correct": 0,
+        "explanation": "5(x - 2) = 15 → x - 2 = 3 → x = 5."
+      },
+      {
+        "question": "Resuelve 4x + 8 = 2x + 20.",
+        "options": ["A) x = 6", "B) x = 12", "C) x = 3"],
+        "correct": 0,
+        "explanation": "4x + 8 = 2x + 20 → 4x - 2x = 20 - 8 → 2x = 12 → x = 6."
+      },
+      {
+        "question": "Resuelve x/3 + 2 = 7.",
+        "options": ["A) x = 15", "B) x = 5", "C) x = 27"],
+        "correct": 0,
+        "explanation": "x/3 + 2 = 7 → x/3 = 5 → x = 15."
+      }
+    ]
+  },
+  "sistema-de-ecuaciones": {
+    "concepto": "Sistema de ecuaciones — dos o más ecuaciones con dos o más incógnitas",
+    "questions": [
+      {
+        "question": "Resuelve el sistema: x + y = 10, x - y = 2.",
+        "options": ["A) x = 6, y = 4", "B) x = 5, y = 5", "C) x = 7, y = 3"],
+        "correct": 0,
+        "explanation": "Sumando: (x + y) + (x - y) = 10 + 2 → 2x = 12 → x = 6. Sustituyendo: 6 + y = 10 → y = 4."
+      },
+      {
+        "question": "Resuelve el sistema: 2x + y = 7, x - y = 2.",
+        "options": ["A) x = 3, y = 1", "B) x = 2, y = 3", "C) x = 1, y = 5"],
+        "correct": 0,
+        "explanation": "Sumando: (2x + y) + (x - y) = 7 + 2 → 3x = 9 → x = 3. Sustituyendo: 3 - y = 2 → y = 1."
+      },
+      {
+        "question": "Resuelve el sistema: x + 2y = 8, x + y = 5.",
+        "options": ["A) x = 2, y = 3", "B) x = 4, y = 2", "C) x = 3, y = 2"],
+        "correct": 0,
+        "explanation": "Restando: (x + 2y) - (x + y) = 8 - 5 → y = 3. Sustituyendo: x + 3 = 5 → x = 2."
+      },
+      {
+        "question": "Resuelve el sistema: 3x - y = 7, x + y = 5.",
+        "options": ["A) x = 3, y = 2", "B) x = 2, y = 3", "C) x = 1, y = 4"],
+        "correct": 0,
+        "explanation": "Sumando: (3x - y) + (x + y) = 7 + 5 → 4x = 12 → x = 3. Sustituyendo: 3 + y = 5 → y = 2."
+      },
+      {
+        "question": "Resuelve el sistema: 2x + 3y = 13, x + y = 6.",
+        "options": ["A) x = 5, y = 1", "B) x = 4, y = 2", "C) x = 3, y = 3"],
+        "correct": 0,
+        "explanation": "De x + y = 6 → y = 6 - x. Sustituyendo: 2x + 3(6 - x) = 13 → 2x + 18 - 3x = 13 → -x = -5 → x = 5, y = 1."
+      }
+    ]
+  },
+  "area-del-rectangulo": {
+    "concepto": "Área del rectángulo — base × altura",
+    "questions": [
+      {
+        "question": "¿Cuál es el área de un rectángulo de base 8 cm y altura 5 cm?",
+        "options": ["A) 40 cm²", "B) 13 cm²", "C) 26 cm²"],
+        "correct": 0,
+        "explanation": "Área = base × altura = 8 × 5 = 40 cm²."
+      },
+      {
+        "question": "Un rectángulo tiene área de 72 m² y base de 9 m. ¿Cuánto mide su altura?",
+        "options": ["A) 8 m", "B) 63 m", "C) 9 m"],
+        "correct": 0,
+        "explanation": "Área = base × altura → altura = área / base = 72 / 9 = 8 m."
+      },
+      {
+        "question": "Un terreno rectangular mide 15 m de largo y 12 m de ancho. ¿Cuál es su área?",
+        "options": ["A) 180 m²", "B) 27 m²", "C) 150 m²"],
+        "correct": 0,
+        "explanation": "Área = 15 × 12 = 180 m²."
+      },
+      {
+        "question": "¿Cuál es el área de un rectángulo cuya base mide 3.5 cm y altura 2 cm?",
+        "options": ["A) 7 cm²", "B) 5.5 cm²", "C) 8 cm²"],
+        "correct": 0,
+        "explanation": "Área = 3.5 × 2 = 7 cm²."
+      },
+      {
+        "question": "La base de un rectángulo es el doble de su altura. Si la altura es 4 cm, ¿cuál es el área?",
+        "options": ["A) 32 cm²", "B) 16 cm²", "C) 24 cm²"],
+        "correct": 0,
+        "explanation": "Base = 2 × 4 = 8 cm. Área = 8 × 4 = 32 cm²."
+      }
+    ]
+  },
+  "area-del-circulo": {
+    "concepto": "Área del círculo — πr²",
+    "questions": [
+      {
+        "question": "¿Cuál es el área de un círculo de radio 3 cm? (considera π = 3.14)",
+        "options": ["A) 28.26 cm²", "B) 18.84 cm²", "C) 9.42 cm²"],
+        "correct": 0,
+        "explanation": "Área = πr² = 3.14 × 3² = 3.14 × 9 = 28.26 cm²."
+      },
+      {
+        "question": "Un círculo tiene radio 5 m. ¿Cuál es su área? (π = 3.14)",
+        "options": ["A) 78.5 m²", "B) 31.4 m²", "C) 157 m²"],
+        "correct": 0,
+        "explanation": "Área = 3.14 × 5² = 3.14 × 25 = 78.5 m²."
+      },
+      {
+        "question": "Si el diámetro de un círculo mide 8 cm, ¿cuál es su área? (π = 3.14)",
+        "options": ["A) 50.24 cm²", "B) 25.12 cm²", "C) 200.96 cm²"],
+        "correct": 0,
+        "explanation": "Radio = diámetro / 2 = 4 cm. Área = 3.14 × 4² = 3.14 × 16 = 50.24 cm²."
+      },
+      {
+        "question": "¿Cuál es el área de un círculo de radio 10 cm expresada en términos de π?",
+        "options": ["A) 100π cm²", "B) 20π cm²", "C) 10π cm²"],
+        "correct": 0,
+        "explanation": "Área = π × 10² = 100π cm²."
+      },
+      {
+        "question": "Si el área de un círculo es 78.5 m² y π = 3.14, ¿cuánto mide el radio?",
+        "options": ["A) 5 m", "B) 10 m", "C) 25 m"],
+        "correct": 0,
+        "explanation": "78.5 = 3.14 × r² → r² = 78.5 / 3.14 = 25 → r = 5 m."
+      }
+    ]
+  },
+  "area-del-triangulo": {
+    "concepto": "Área del triángulo — (base × altura) / 2",
+    "questions": [
+      {
+        "question": "¿Cuál es el área de un triángulo de base 6 cm y altura 4 cm?",
+        "options": ["A) 12 cm²", "B) 24 cm²", "C) 10 cm²"],
+        "correct": 0,
+        "explanation": "Área = (base × altura) / 2 = (6 × 4) / 2 = 24 / 2 = 12 cm²."
+      },
+      {
+        "question": "Un triángulo tiene base 10 m y área 25 m². ¿Cuánto mide su altura?",
+        "options": ["A) 5 m", "B) 2.5 m", "C) 10 m"],
+        "correct": 0,
+        "explanation": "Área = (b × h) / 2 → 25 = (10 × h) / 2 → 50 = 10h → h = 5 m."
+      },
+      {
+        "question": "Calcula el área de un triángulo de base 12 cm y altura 8 cm.",
+        "options": ["A) 48 cm²", "B) 96 cm²", "C) 20 cm²"],
+        "correct": 0,
+        "explanation": "Área = (12 × 8) / 2 = 96 / 2 = 48 cm²."
+      },
+      {
+        "question": "Un triángulo rectángulo tiene catetos de 3 cm y 4 cm. ¿Cuál es su área?",
+        "options": ["A) 6 cm²", "B) 12 cm²", "C) 7 cm²"],
+        "correct": 0,
+        "explanation": "En un triángulo rectángulo, los catetos son base y altura. Área = (3 × 4) / 2 = 6 cm²."
+      },
+      {
+        "question": "¿Cuál es el área de un triángulo de base 7.5 m y altura 4 m?",
+        "options": ["A) 15 m²", "B) 30 m²", "C) 20 m²"],
+        "correct": 0,
+        "explanation": "Área = (7.5 × 4) / 2 = 30 / 2 = 15 m²."
+      }
+    ]
+  },
+  "teorema-de-pitagoras": {
+    "concepto": "Teorema de Pitágoras — c² = a² + b²",
+    "questions": [
+      {
+        "question": "En un triángulo rectángulo, los catetos miden 3 y 4. ¿Cuánto mide la hipotenusa?",
+        "options": ["A) 5", "B) 7", "C) 25"],
+        "correct": 0,
+        "explanation": "c² = 3² + 4² = 9 + 16 = 25 → c = √25 = 5."
+      },
+      {
+        "question": "Un triángulo rectángulo tiene catetos de 6 y 8. ¿Cuánto mide la hipotenusa?",
+        "options": ["A) 10", "B) 14", "C) 100"],
+        "correct": 0,
+        "explanation": "c² = 6² + 8² = 36 + 64 = 100 → c = √100 = 10."
+      },
+      {
+        "question": "La hipotenusa de un triángulo rectángulo mide 13 y un cateto mide 5. ¿Cuánto mide el otro cateto?",
+        "options": ["A) 12", "B) 8", "C) 18"],
+        "correct": 0,
+        "explanation": "13² = 5² + b² → 169 = 25 + b² → b² = 144 → b = 12."
+      },
+      {
+        "question": "¿Cuál es la hipotenusa de un triángulo rectángulo con catetos de 9 y 12?",
+        "options": ["A) 15", "B) 21", "C) 18"],
+        "correct": 0,
+        "explanation": "c² = 9² + 12² = 81 + 144 = 225 → c = √225 = 15."
+      },
+      {
+        "question": "Un triángulo rectángulo tiene catetos de 5 y 12. ¿Cuál es la longitud de la hipotenusa?",
+        "options": ["A) 13", "B) 17", "C) 7"],
+        "correct": 0,
+        "explanation": "c² = 5² + 12² = 25 + 144 = 169 → c = √169 = 13."
+      }
+    ]
+  },
+  "volumen-del-cubo": {
+    "concepto": "Volumen del cubo — lado³",
+    "questions": [
+      {
+        "question": "¿Cuál es el volumen de un cubo cuyo lado mide 4 cm?",
+        "options": ["A) 64 cm³", "B) 16 cm³", "C) 12 cm³"],
+        "correct": 0,
+        "explanation": "Volumen = lado³ = 4³ = 4 × 4 × 4 = 64 cm³."
+      },
+      {
+        "question": "Un cubo tiene volumen de 27 m³. ¿Cuánto mide su lado?",
+        "options": ["A) 3 m", "B) 9 m", "C) 6 m"],
+        "correct": 0,
+        "explanation": "lado³ = 27 → lado = ∛27 = 3 m."
+      },
+      {
+        "question": "Calcula el volumen de un cubo de lado 5 cm.",
+        "options": ["A) 125 cm³", "B) 25 cm³", "C) 15 cm³"],
+        "correct": 0,
+        "explanation": "Volumen = 5³ = 5 × 5 × 5 = 125 cm³."
+      },
+      {
+        "question": "Si el volumen de un cubo es 64 cm³, ¿cuánto mide su lado?",
+        "options": ["A) 4 cm", "B) 8 cm", "C) 16 cm"],
+        "correct": 0,
+        "explanation": "lado = ∛64 = 4 cm."
+      },
+      {
+        "question": "¿Cuál es el volumen de un cubo de lado 1.5 m?",
+        "options": ["A) 3.375 m³", "B) 4.5 m³", "C) 2.25 m³"],
+        "correct": 0,
+        "explanation": "Volumen = 1.5³ = 1.5 × 1.5 × 1.5 = 3.375 m³."
+      }
+    ]
+  },
+  "angulos": {
+    "concepto": "Ángulos — agudo (<90°), recto (90°), obtuso (>90°), llano (180°)",
+    "questions": [
+      {
+        "question": "¿Cómo se clasifica un ángulo de 45°?",
+        "options": ["A) Agudo", "B) Recto", "C) Obtuso"],
+        "correct": 0,
+        "explanation": "Un ángulo agudo mide menos de 90°, y 45° < 90°."
+      },
+      {
+        "question": "Un ángulo de 90° se llama:",
+        "options": ["A) Recto", "B) Agudo", "C) Llano"],
+        "correct": 0,
+        "explanation": "El ángulo recto mide exactamente 90°."
+      },
+      {
+        "question": "¿Cómo se clasifica un ángulo de 120°?",
+        "options": ["A) Obtuso", "B) Agudo", "C) Llano"],
+        "correct": 0,
+        "explanation": "Un ángulo obtuso mide más de 90° y menos de 180°, y 120° está en ese rango."
+      },
+      {
+        "question": "¿Cuántos grados mide un ángulo llano?",
+        "options": ["A) 180°", "B) 90°", "C) 360°"],
+        "correct": 0,
+        "explanation": "Un ángulo llano mide exactamente 180°, formando una línea recta."
+      },
+      {
+        "question": "Dos ángulos son complementarios y uno mide 35°. ¿Cuánto mide el otro?",
+        "options": ["A) 55°", "B) 145°", "C) 35°"],
+        "correct": 0,
+        "explanation": "Ángulos complementarios suman 90°. 90° - 35° = 55°."
+      }
+    ]
+  },
+  "media": {
+    "concepto": "Media — suma de datos ÷ número de datos",
+    "questions": [
+      {
+        "question": "Calcula la media de los números: 4, 8, 6, 10, 2.",
+        "options": ["A) 6", "B) 5", "C) 7"],
+        "correct": 0,
+        "explanation": "Suma = 4 + 8 + 6 + 10 + 2 = 30. Media = 30 / 5 = 6."
+      },
+      {
+        "question": "Las edades de 5 personas son: 12, 15, 14, 13, 16. ¿Cuál es la edad media?",
+        "options": ["A) 14", "B) 13", "C) 15"],
+        "correct": 0,
+        "explanation": "Suma = 12 + 15 + 14 + 13 + 16 = 70. Media = 70 / 5 = 14."
+      },
+      {
+        "question": "Un estudiante obtuvo calificaciones: 8, 9, 7, 9, 7. ¿Cuál es su promedio?",
+        "options": ["A) 8", "B) 7.5", "C) 8.5"],
+        "correct": 0,
+        "explanation": "Suma = 8 + 9 + 7 + 9 + 7 = 40. Media = 40 / 5 = 8."
+      },
+      {
+        "question": "Los pesos (en kg) de 4 personas son: 60, 70, 65, 55. ¿Cuál es el peso medio?",
+        "options": ["A) 62.5 kg", "B) 65 kg", "C) 60 kg"],
+        "correct": 0,
+        "explanation": "Suma = 60 + 70 + 65 + 55 = 250. Media = 250 / 4 = 62.5."
+      },
+      {
+        "question": "La media de tres números es 10. Si dos números son 8 y 12, ¿cuál es el tercero?",
+        "options": ["A) 10", "B) 9", "C) 11"],
+        "correct": 0,
+        "explanation": "Suma total = 10 × 3 = 30. Tercer número = 30 - 8 - 12 = 10."
+      }
+    ]
+  },
+  "mediana": {
+    "concepto": "Mediana — valor central de datos ordenados",
+    "questions": [
+      {
+        "question": "¿Cuál es la mediana de: 3, 7, 5, 9, 1?",
+        "options": ["A) 5", "B) 7", "C) 3"],
+        "correct": 0,
+        "explanation": "Ordenando: 1, 3, 5, 7, 9. El valor central (tercero) es 5."
+      },
+      {
+        "question": "Encuentra la mediana de: 12, 8, 15, 10, 11, 9, 14.",
+        "options": ["A) 11", "B) 10", "C) 12"],
+        "correct": 0,
+        "explanation": "Ordenando: 8, 9, 10, 11, 12, 14, 15. El valor central (cuarto) es 11."
+      },
+      {
+        "question": "¿Cuál es la mediana de: 4, 8, 6, 5, 9, 7?",
+        "options": ["A) 6.5", "B) 6", "C) 7"],
+        "correct": 0,
+        "explanation": "Ordenando: 4, 5, 6, 7, 8, 9. Con número par de datos, mediana = (6 + 7) / 2 = 6.5."
+      },
+      {
+        "question": "Las alturas (en cm) de 5 estudiantes son: 150, 165, 155, 160, 170. ¿Cuál es la mediana?",
+        "options": ["A) 160 cm", "B) 155 cm", "C) 165 cm"],
+        "correct": 0,
+        "explanation": "Ordenando: 150, 155, 160, 165, 170. El valor central es 160."
+      },
+      {
+        "question": "Temperaturas registradas: 22°, 25°, 20°, 28°, 24°, 26°. ¿Cuál es la mediana?",
+        "options": ["A) 24.5°", "B) 24°", "C) 25°"],
+        "correct": 0,
+        "explanation": "Ordenando: 20, 22, 24, 25, 26, 28. Mediana = (24 + 25) / 2 = 24.5°."
+      }
+    ]
+  },
+  "moda": {
+    "concepto": "Moda — valor que más se repite",
+    "questions": [
+      {
+        "question": "¿Cuál es la moda de: 2, 3, 5, 3, 7, 3, 8?",
+        "options": ["A) 3", "B) 5", "C) 7"],
+        "correct": 0,
+        "explanation": "El número 3 aparece tres veces, más que cualquier otro valor."
+      },
+      {
+        "question": "En un examen, las calificaciones fueron: 7, 8, 9, 7, 8, 7, 10. ¿Cuál es la moda?",
+        "options": ["A) 7", "B) 8", "C) 9"],
+        "correct": 0,
+        "explanation": "7 aparece 3 veces, 8 aparece 2 veces, 9 una vez, 10 una vez. La moda es 7."
+      },
+      {
+        "question": "Las edades de un grupo son: 12, 14, 12, 15, 14, 12, 13. ¿Cuál es la moda?",
+        "options": ["A) 12", "B) 14", "C) 13"],
+        "correct": 0,
+        "explanation": "12 aparece 3 veces, 14 aparece 2 veces. La moda es 12."
+      },
+      {
+        "question": "¿Qué significa que un conjunto de datos sea multimodal?",
+        "options": ["A) Tiene dos o más modas", "B) Tiene una sola moda", "C) No tiene moda"],
+        "correct": 0,
+        "explanation": "Un conjunto multimodal tiene dos o más valores con la misma frecuencia máxima."
+      },
+      {
+        "question": "Datos: 5, 5, 7, 9, 9, 9, 10. ¿Cuál es la moda?",
+        "options": ["A) 9", "B) 5", "C) 7"],
+        "correct": 0,
+        "explanation": "9 aparece tres veces, 5 aparece dos veces, los demás una vez. La moda es 9."
+      }
+    ]
+  },
+  "probabilidad": {
+    "concepto": "Probabilidad — casos favorables / casos totales",
+    "questions": [
+      {
+        "question": "¿Cuál es la probabilidad de obtener un 3 al lanzar un dado de 6 caras?",
+        "options": ["A) 1/6", "B) 1/3", "C) 1/2"],
+        "correct": 0,
+        "explanation": "Un dado tiene 6 resultados posibles. Un solo 3 favorable. Probabilidad = 1/6."
+      },
+      {
+        "question": "En una bolsa hay 3 canicas rojas, 2 azules y 5 verdes. ¿Probabilidad de sacar una azul?",
+        "options": ["A) 1/5", "B) 1/2", "C) 3/10"],
+        "correct": 0,
+        "explanation": "Total de canicas = 3 + 2 + 5 = 10. Azules = 2. Probabilidad = 2/10 = 1/5."
+      },
+      {
+        "question": "¿Cuál es la probabilidad de obtener águila al lanzar una moneda?",
+        "options": ["A) 1/2", "B) 1", "C) 1/4"],
+        "correct": 0,
+        "explanation": "Una moneda tiene 2 caras. Un resultado favorable. Probabilidad = 1/2."
+      },
+      {
+        "question": "Se lanzan dos monedas. ¿Probabilidad de obtener dos águilas?",
+        "options": ["A) 1/4", "B) 1/2", "C) 1/3"],
+        "correct": 0,
+        "explanation": "Resultados posibles: AA, AS, SA, SS. Un favorable (AA). Probabilidad = 1/4."
+      },
+      {
+        "question": "En un grupo de 30 estudiantes, 18 son mujeres. ¿Probabilidad de elegir un hombre al azar?",
+        "options": ["A) 2/5", "B) 3/5", "C) 1/5"],
+        "correct": 0,
+        "explanation": "Hombres = 30 - 18 = 12. Probabilidad = 12/30 = 2/5."
+      }
+    ]
+  },
+  "minimo-comun-multiplo": {
+    "concepto": "Mínimo común múltiplo (mcm) — múltiplo más pequeño compartido",
+    "questions": [
+      {
+        "question": "¿Cuál es el mcm de 4 y 6?",
+        "options": ["A) 12", "B) 24", "C) 2"],
+        "correct": 0,
+        "explanation": "Múltiplos de 4: 4, 8, 12, 16… Múltiplos de 6: 6, 12, 18… El mínimo común es 12."
+      },
+      {
+        "question": "Calcula el mcm de 6 y 9.",
+        "options": ["A) 18", "B) 3", "C) 54"],
+        "correct": 0,
+        "explanation": "Múltiplos de 6: 6, 12, 18… Múltiplos de 9: 9, 18, 27… El mcm es 18."
+      },
+      {
+        "question": "¿Cuál es el mcm de 8 y 12?",
+        "options": ["A) 24", "B) 48", "C) 4"],
+        "correct": 0,
+        "explanation": "Múltiplos de 8: 8, 16, 24… Múltiplos de 12: 12, 24, 36… El mcm es 24."
+      },
+      {
+        "question": "Encuentra el mcm de 5 y 7.",
+        "options": ["A) 35", "B) 12", "C) 70"],
+        "correct": 0,
+        "explanation": "Son primos entre sí, por lo que el mcm es su producto: 5 × 7 = 35."
+      },
+      {
+        "question": "¿Cuál es el mcm de 3, 4 y 6?",
+        "options": ["A) 12", "B) 24", "C) 72"],
+        "correct": 0,
+        "explanation": "Múltiplos de 3: 3, 6, 9, 12… De 4: 4, 8, 12… De 6: 6, 12… El mcm es 12."
+      }
+    ]
+  },
+  "maximo-comun-divisor": {
+    "concepto": "Máximo común divisor (MCD) — divisor más grande compartido",
+    "questions": [
+      {
+        "question": "¿Cuál es el MCD de 12 y 18?",
+        "options": ["A) 6", "B) 3", "C) 36"],
+        "correct": 0,
+        "explanation": "Divisores de 12: 1, 2, 3, 4, 6, 12. Divisores de 18: 1, 2, 3, 6, 9, 18. Máximo común: 6."
+      },
+      {
+        "question": "Calcula el MCD de 24 y 36.",
+        "options": ["A) 12", "B) 6", "C) 72"],
+        "correct": 0,
+        "explanation": "Divisores de 24: 1, 2, 3, 4, 6, 8, 12, 24. Divisores de 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. Máximo común: 12."
+      },
+      {
+        "question": "¿Cuál es el MCD de 15 y 25?",
+        "options": ["A) 5", "B) 1", "C) 75"],
+        "correct": 0,
+        "explanation": "Divisores de 15: 1, 3, 5, 15. Divisores de 25: 1, 5, 25. Máximo común: 5."
+      },
+      {
+        "question": "Encuentra el MCD de 30 y 45.",
+        "options": ["A) 15", "B) 5", "C) 90"],
+        "correct": 0,
+        "explanation": "Divisores de 30: 1, 2, 3, 5, 6, 10, 15, 30. Divisores de 45: 1, 3, 5, 9, 15, 45. Máximo común: 15."
+      },
+      {
+        "question": "Una persona tiene 20 manzanas y 30 naranjas para hacer bolsas iguales sin que sobre nada. ¿Cuál es el máximo número de bolsas que puede hacer?",
+        "options": ["A) 10", "B) 5", "C) 15"],
+        "correct": 0,
+        "explanation": "Se busca el MCD de 20 y 30. Divisores de 20: 1, 2, 4, 5, 10, 20. Divisores de 30: 1, 2, 3, 5, 6, 10, 15, 30. MCD = 10 bolsas."
+      }
+    ]
+  },
+  "numeros-enteros": {
+    "concepto": "Números enteros — positivos, negativos y cero",
+    "questions": [
+      {
+        "question": "¿Cuál es el resultado de -5 + 8?",
+        "options": ["A) 3", "B) -3", "C) 13"],
+        "correct": 0,
+        "explanation": "-5 + 8 = 3. Se resta 5 de 8 y se conserva el signo del mayor."
+      },
+      {
+        "question": "Resuelve (-7) - (-3).",
+        "options": ["A) -4", "B) -10", "C) 4"],
+        "correct": 0,
+        "explanation": "(-7) - (-3) = -7 + 3 = -4."
+      },
+      {
+        "question": "¿Cuál es el producto de (-4) × 6?",
+        "options": ["A) -24", "B) 24", "C) -2"],
+        "correct": 0,
+        "explanation": "Positivo × negativo = negativo. (-4) × 6 = -24."
+      },
+      {
+        "question": "¿Cuánto es (-15) ÷ (-3)?",
+        "options": ["A) 5", "B) -5", "C) 45"],
+        "correct": 0,
+        "explanation": "Negativo ÷ negativo = positivo. (-15) ÷ (-3) = 5."
+      },
+      {
+        "question": "Un buzo está a -20 m y sube 12 m. ¿A qué profundidad se encuentra ahora?",
+        "options": ["A) -8 m", "B) 8 m", "C) -32 m"],
+        "correct": 0,
+        "explanation": "-20 + 12 = -8. El buzo está a 8 metros bajo el nivel del mar."
+      }
+    ]
+  },
+  "fracciones": {
+    "concepto": "Fracciones — numerador / denominador",
+    "questions": [
+      {
+        "question": "Suma 1/4 + 2/4.",
+        "options": ["A) 3/4", "B) 3/8", "C) 1/2"],
+        "correct": 0,
+        "explanation": "Suma de fracciones con mismo denominador: (1 + 2)/4 = 3/4."
+      },
+      {
+        "question": "¿Cuánto es 2/3 + 1/6?",
+        "options": ["A) 5/6", "B) 3/9", "C) 1/2"],
+        "correct": 0,
+        "explanation": "Convertimos a común denominador: 2/3 = 4/6. 4/6 + 1/6 = 5/6."
+      },
+      {
+        "question": "Multiplica 2/5 × 3/4.",
+        "options": ["A) 3/10", "B) 6/20", "C) 5/9"],
+        "correct": 0,
+        "explanation": "Multiplicación directa: (2 × 3)/(5 × 4) = 6/20 = 3/10."
+      },
+      {
+        "question": "Divide 3/4 ÷ 1/2.",
+        "options": ["A) 3/2", "B) 3/8", "C) 4/6"],
+        "correct": 0,
+        "explanation": "Dividir es multiplicar por el recíproco: 3/4 × 2/1 = 6/4 = 3/2."
+      },
+      {
+        "question": "¿Cuál de las siguientes fracciones es mayor, 3/5 o 2/3?",
+        "options": ["A) 2/3", "B) 3/5", "C) Son iguales"],
+        "correct": 0,
+        "explanation": "Convertimos: 3/5 = 9/15 y 2/3 = 10/15. 10/15 > 9/15, por lo que 2/3 es mayor."
+      }
+    ]
+  },
+  "decimales": {
+    "concepto": "Decimales — décimas, centésimas, milésimas",
+    "questions": [
+      {
+        "question": "¿Cuánto es 0.5 + 0.25?",
+        "options": ["A) 0.75", "B) 0.30", "C) 0.50"],
+        "correct": 0,
+        "explanation": "0.5 + 0.25 = 0.75."
+      },
+      {
+        "question": "Multiplica 0.3 × 0.4.",
+        "options": ["A) 0.12", "B) 1.2", "C) 0.07"],
+        "correct": 0,
+        "explanation": "3 × 4 = 12, y contamos 2 decimales (0.3 y 0.4): 0.12."
+      },
+      {
+        "question": "¿Cuánto es 1.5 ÷ 0.5?",
+        "options": ["A) 3", "B) 0.75", "C) 1"],
+        "correct": 0,
+        "explanation": "1.5 ÷ 0.5 = 3, porque 0.5 cabe 3 veces en 1.5."
+      },
+      {
+        "question": "¿Cómo se escribe 7 centésimos en forma decimal?",
+        "options": ["A) 0.07", "B) 0.7", "C) 7.0"],
+        "correct": 0,
+        "explanation": "7 centésimos = 7/100 = 0.07."
+      },
+      {
+        "question": "Resta 3.2 - 1.75.",
+        "options": ["A) 1.45", "B) 2.55", "C) 1.55"],
+        "correct": 0,
+        "explanation": "3.20 - 1.75 = 1.45."
+      }
+    ]
+  },
+  "porcentaje": {
+    "concepto": "Porcentaje — parte de 100 (20% = 20/100 = 0.20)",
+    "questions": [
+      {
+        "question": "¿Cuánto es el 20% de 80?",
+        "options": ["A) 16", "B) 20", "C) 8"],
+        "correct": 0,
+        "explanation": "20% de 80 = (20/100) × 80 = 0.20 × 80 = 16."
+      },
+      {
+        "question": "¿Qué porcentaje representa 15 de 60?",
+        "options": ["A) 25%", "B) 15%", "C) 40%"],
+        "correct": 0,
+        "explanation": "(15/60) × 100 = 0.25 × 100 = 25%."
+      },
+      {
+        "question": "Un producto cuesta $200 y tiene un descuento del 15%. ¿Cuánto se descuenta?",
+        "options": ["A) $30", "B) $15", "C) $20"],
+        "correct": 0,
+        "explanation": "15% de 200 = 0.15 × 200 = $30."
+      },
+      {
+        "question": "Si una población de 500 habitantes crece un 10%, ¿cuántos habitantes tendrá?",
+        "options": ["A) 550", "B) 510", "C) 600"],
+        "correct": 0,
+        "explanation": "10% de 500 = 50. 500 + 50 = 550 habitantes."
+      },
+      {
+        "question": "Convierto 0.35 a porcentaje:",
+        "options": ["A) 35%", "B) 3.5%", "C) 0.35%"],
+        "correct": 0,
+        "explanation": "Para convertir decimal a porcentaje, multiplicamos por 100: 0.35 × 100 = 35%."
+      }
+    ]
+  },
+  "regla-de-tres": {
+    "concepto": "Regla de tres — proporcionalidad directa",
+    "questions": [
+      {
+        "question": "Si 3 kg de manzanas cuestan $45, ¿cuánto cuestan 7 kg?",
+        "options": ["A) $105", "B) $90", "C) $120"],
+        "correct": 0,
+        "explanation": "Regla de tres: 3 kg → $45, 7 kg → x. x = (7 × 45) / 3 = 315 / 3 = $105."
+      },
+      {
+        "question": "Un auto recorre 120 km con 8 litros de gasolina. ¿Cuántos km recorre con 5 litros?",
+        "options": ["A) 75 km", "B) 60 km", "C) 100 km"],
+        "correct": 0,
+        "explanation": "8 L → 120 km, 5 L → x. x = (5 × 120) / 8 = 600 / 8 = 75 km."
+      },
+      {
+        "question": "Si 4 trabajadores construyen una barda en 6 días, ¿cuántos días tardarían 3 trabajadores?",
+        "options": ["A) 8 días", "B) 4.5 días", "C) 2 días"],
+        "correct": 0,
+        "explanation": "Es proporcionalidad inversa: 4 × 6 = 3 × d → d = 24 / 3 = 8 días."
+      },
+      {
+        "question": "Un paquete de 5 cuadernos cuesta $60. ¿Cuánto cuestan 12 cuadernos?",
+        "options": ["A) $144", "B) $120", "C) $100"],
+        "correct": 0,
+        "explanation": "5 → $60, 12 → x. x = (12 × 60) / 5 = 720 / 5 = $144."
+      },
+      {
+        "question": "Si 10 m de tela cuestan $350, ¿cuánto cuestan 6 m?",
+        "options": ["A) $210", "B) $140", "C) $280"],
+        "correct": 0,
+        "explanation": "10 → $350, 6 → x. x = (6 × 350) / 10 = 2100 / 10 = $210."
+      }
+    ]
+  },
+  "razones": {
+    "concepto": "Razones — comparación de dos cantidades",
+    "questions": [
+      {
+        "question": "En un salón hay 12 niñas y 8 niños. ¿Cuál es la razón de niñas a niños?",
+        "options": ["A) 3:2", "B) 2:3", "C) 12:20"],
+        "correct": 0,
+        "explanation": "Razón niñas:niños = 12:8 = simplificando entre 4 → 3:2."
+      },
+      {
+        "question": "Un triángulo tiene lados en razón 3:4:5 y el lado más pequeño mide 9 cm. ¿Cuánto mide el lado más grande?",
+        "options": ["A) 15 cm", "B) 12 cm", "C) 20 cm"],
+        "correct": 0,
+        "explanation": "3 → 9 cm, 5 → x. x = (9 × 5) / 3 = 45 / 3 = 15 cm."
+      },
+      {
+        "question": "La razón de dos números es 2:5 y su suma es 28. ¿Cuál es el número mayor?",
+        "options": ["A) 20", "B) 8", "C) 15"],
+        "correct": 0,
+        "explanation": "Partes totales = 2 + 5 = 7. Valor de cada parte = 28 / 7 = 4. Mayor = 5 × 4 = 20."
+      },
+      {
+        "question": "En una receta, la razón de harina a azúcar es 4:1. Si usamos 200 g de harina, ¿cuánta azúcar se necesita?",
+        "options": ["A) 50 g", "B) 40 g", "C) 25 g"],
+        "correct": 0,
+        "explanation": "4 → 200 g, 1 → x. x = (1 × 200) / 4 = 50 g."
+      },
+      {
+        "question": "¿Cuál es la razón entre 30 cm y 1.5 m expresada en su forma más simple?",
+        "options": ["A) 1:5", "B) 30:1.5", "C) 2:3"],
+        "correct": 0,
+        "explanation": "Convertimos a la misma unidad: 1.5 m = 150 cm. Razón 30:150 = simplificando entre 30 → 1:5."
+      }
+    ]
+  }
+}

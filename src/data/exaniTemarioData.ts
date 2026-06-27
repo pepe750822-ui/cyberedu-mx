@@ -144,3 +144,11 @@ export const areas: Area[] = [
     ],
   },
 ];
+
+export const colorMap: Record<string, { header: string; dot: string; tag: string; btn: string; ring: string }> = {
+  emerald: { header: "bg-emerald-600", dot: "bg-emerald-400", tag: "bg-emerald-900/40 text-emerald-300", btn: "bg-emerald-600 hover:bg-emerald-500", ring: "ring-emerald-500/30 border-emerald-500/30" },
+  yellow:  { header: "bg-yellow-500",  dot: "bg-yellow-400",  tag: "bg-yellow-900/40 text-yellow-200",  btn: "bg-yellow-600 hover:bg-yellow-500",  ring: "ring-yellow-500/30 border-yellow-500/30" },
+  violet:  { header: "bg-violet-600",  dot: "bg-violet-400",  tag: "bg-violet-900/40 text-violet-300",  btn: "bg-violet-600 hover:bg-violet-500",  ring: "ring-violet-500/30 border-violet-500/30" },
+  blue:    { header: "bg-blue-600",    dot: "bg-blue-400",    tag: "bg-blue-900/40 text-blue-300",    btn: "bg-blue-600 hover:bg-blue-500",    ring: "ring-blue-500/30 border-blue-500/30" },
+  sky:     { header: "bg-sky-600",     dot: "bg-sky-400",     tag: "bg-sky-900/40 text-sky-300",      btn: "bg-sky-600 hover:bg-sky-500",      ring: "ring-sky-500/30 border-sky-500/30" },
+};

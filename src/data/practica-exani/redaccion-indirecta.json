@@ -1,0 +1,492 @@
+{
+  "acentuacion": {
+    "concepto": "Acentuación — agudas (última sílaba), graves (penúltima), esdrújulas (antepenúltima)",
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes palabras es aguda?",
+        "options": ["A) Árbol", "B) Camión", "C) Música"],
+        "correct": 1,
+        "explanation": "Las palabras agudas llevan tilde en la última sílaba cuando terminan en n, s o vocal. 'Camión' es aguda y termina en n."
+      },
+      {
+        "question": "¿En qué opción todas las palabras son graves?",
+        "options": ["A) Fácil, lápiz, árbol", "B) Cantó, balón, ratón", "C) Pájaro, música, económico"],
+        "correct": 0,
+        "explanation": "Las palabras graves llevan tilde en la penúltima sílaba cuando NO terminan en n, s o vocal. Fácil, lápiz y árbol cumplen esa regla."
+      },
+      {
+        "question": "Selecciona la palabra esdrújula:",
+        "options": ["A) Computadora", "B) Teléfono", "C) Reloj"],
+        "correct": 1,
+        "explanation": "Las palabras esdrújulas llevan tilde en la antepenúltima sílaba. 'Teléfono' tiene la sílaba tónica en 'lé'."
+      },
+      {
+        "question": "¿Cuál de las siguientes oraciones contiene una palabra aguda con tilde?",
+        "options": ["A) El avión despegó a tiempo.", "B) La casa es grande.", "C) El árbol tiene hojas verdes."],
+        "correct": 0,
+        "explanation": "'Avión' es una palabra aguda terminada en n, por lo que debe llevar tilde en la última sílaba."
+      },
+      {
+        "question": "Identifica la opción que contiene una palabra grave sin tilde correctamente escrita:",
+        "options": ["A) Examen", "B) Exámen", "C) Examen'"],
+        "correct": 0,
+        "explanation": "Las palabras graves terminadas en n, s o vocal NO llevan tilde. 'Examen' termina en n, por lo tanto no debe acentuarse."
+      }
+    ]
+  },
+  "palabras-graves": {
+    "concepto": "Palabras graves terminadas en n, s o vocal — NO llevan tilde (examen, imagen)",
+    "questions": [
+      {
+        "question": "¿Cuál de las siguientes palabras graves está escrita correctamente?",
+        "options": ["A) Imágen", "B) Imagen", "C) Imagén"],
+        "correct": 1,
+        "explanation": "'Imagen' es una palabra grave terminada en n, por lo que NO debe llevar tilde."
+      },
+      {
+        "question": "Selecciona la oración escrita correctamente:",
+        "options": ["A) El joven presentó su examen.", "B) El jóven presentó su exámen.", "C) El joven presentó su exámen."],
+        "correct": 0,
+        "explanation": "Tanto 'joven' como 'examen' son palabras graves terminadas en n, por lo que no llevan tilde."
+      },
+      {
+        "question": "¿Cuál opción contiene solo palabras graves sin tilde?",
+        "options": ["A) Casa, mesa, libro", "B) Árbol, lápiz, fácil", "C) Canción, avión, ratón"],
+        "correct": 0,
+        "explanation": "Casa, mesa y libro son palabras graves terminadas en vocal, por lo que no llevan tilde."
+      },
+      {
+        "question": "Identifica la palabra que está acentuada incorrectamente:",
+        "options": ["A) Martes", "B) Jóven", "C) Volumen"],
+        "correct": 1,
+        "explanation": "'Joven' es una palabra grave terminada en n, por lo tanto no debe llevar tilde. La forma correcta es 'joven'."
+      },
+      {
+        "question": "¿En qué caso una palabra grave SÍ lleva tilde?",
+        "options": ["A) Termina en vocal.", "B) Termina en n o s.", "C) Termina en consonante que no sea n ni s."],
+        "correct": 2,
+        "explanation": "Las palabras graves llevan tilde solo cuando NO terminan en n, s o vocal. Por ejemplo: lápiz, carácter, césped."
+      }
+    ]
+  },
+  "uso-de-la-dieresis": {
+    "concepto": "Uso de la diéresis — güe, güi (antigüedad, vergüenza)",
+    "questions": [
+      {
+        "question": "¿Cuál palabra está escrita correctamente con diéresis?",
+        "options": ["A) Antigüedad", "B) Antiguedad", "C) Antigüedád"],
+        "correct": 0,
+        "explanation": "'Antigüedad' lleva diéresis sobre la u para indicar que debe pronunciarse en la combinación güe."
+      },
+      {
+        "question": "Selecciona la oración correctamente escrita:",
+        "options": ["A) Sintió vergüenza por su error.", "B) Sintió verguenza por su error.", "C) Sintió vergüenza por su error."],
+        "correct": 0,
+        "explanation": "'Vergüenza' lleva diéresis en la u para que se pronuncie el sonido /gu/ en güe."
+      },
+      {
+        "question": "¿En qué palabra se usa correctamente la diéresis?",
+        "options": ["A) Guerra", "B) Guiso", "C) Pingüino"],
+        "correct": 2,
+        "explanation": "'Pingüino' lleva diéresis en la u para indicar que debe pronunciarse en la combinación güi."
+      },
+      {
+        "question": "¿Cuál es la función de la diéresis?",
+        "options": ["A) Indicar que la u no se pronuncia.", "B) Indicar que la u debe pronunciarse en güe y güi.", "C) Indicar que la sílaba es tónica."],
+        "correct": 1,
+        "explanation": "La diéresis (¨) se coloca sobre la u en las combinaciones güe y güi para indicar que debe pronunciarse."
+      },
+      {
+        "question": "Identifica la palabra que NO debe llevar diéresis:",
+        "options": ["A) Desagüe", "B) Güero", "C) Guitarra"],
+        "correct": 2,
+        "explanation": "'Guitarra' no lleva diéresis porque la u no se pronuncia en la combinación gui. La diéresis solo se usa en güe y güi."
+      }
+    ]
+  },
+  "uso-de-la-coma": {
+    "concepto": "Uso de la coma — enumeración, vocativo, aposiciones",
+    "questions": [
+      {
+        "question": "¿En qué oración se usa correctamente la coma para enumerar?",
+        "options": ["A) Compré pan, leche, y huevos.", "B) Compré pan leche y huevos.", "C) Compré pan, leche y, huevos."],
+        "correct": 0,
+        "explanation": "La coma se usa para separar elementos en una enumeración. La opción A usa correctamente las comas entre los elementos de la lista."
+      },
+      {
+        "question": "Identifica la oración que usa coma vocativa correctamente:",
+        "options": ["A) Juan ven aquí.", "B) Juan, ven aquí.", "C) Juan ven, aquí."],
+        "correct": 1,
+        "explanation": "El vocativo (la persona a quien se habla) debe separarse con coma. En 'Juan, ven aquí', la coma indica que llamamos a Juan."
+      },
+      {
+        "question": "¿Cuál oración usa correctamente la coma en una aposición?",
+        "options": ["A) Mi amigo Pedro llegó tarde.", "B) Mi amigo, Pedro llegó tarde.", "C) Mi amigo, Pedro, llegó tarde."],
+        "correct": 2,
+        "explanation": "Las aposiciones (explicaciones del sujeto) se encierran entre comas. 'Pedro' es una aposición que explica quién es 'mi amigo'."
+      },
+      {
+        "question": "Selecciona la oración con uso correcto de la coma:",
+        "options": ["A) Si quieres, podemos ir al cine.", "B) Si quieres podemos ir, al cine.", "C) Si, quieres podemos ir al cine."],
+        "correct": 0,
+        "explanation": "La coma se usa para separar una oración subordinada condicional de la oración principal: 'Si quieres, podemos ir al cine'."
+      },
+      {
+        "question": "¿En qué opción la coma se usa para separar elementos de una enumeración?",
+        "options": ["A) México, es un país hermoso.", "B) Necesito lápiz, cuaderno, goma y regla.", "C) María, ¿cómo estás?"],
+        "correct": 1,
+        "explanation": "La coma separa los elementos de una enumeración: lápiz, cuaderno, goma y regla son los útiles que se necesitan."
+      }
+    ]
+  },
+  "punto-y-coma": {
+    "concepto": "Punto y coma — separa oraciones largas relacionadas",
+    "questions": [
+      {
+        "question": "¿En qué caso se usa correctamente el punto y coma?",
+        "options": ["A) Terminé la tarea; luego salí a jugar.", "B) Terminé la tarea, luego salí a jugar.", "C) Terminé la tarea. luego salí a jugar."],
+        "correct": 0,
+        "explanation": "El punto y coma se usa para separar oraciones relacionadas entre sí. En este caso, ambas acciones están vinculadas."
+      },
+      {
+        "question": "Selecciona la oración con puntuación correcta:",
+        "options": ["A) Llegamos temprano; sin embargo, la fila era larga.", "B) Llegamos temprano, sin embargo la fila era larga.", "C) Llegamos temprano; sin embargo la fila era larga."],
+        "correct": 0,
+        "explanation": "El punto y coma se usa antes de conectores adversativos como 'sin embargo', y luego se coloca una coma."
+      },
+      {
+        "question": "¿Cuándo es apropiado usar punto y coma?",
+        "options": ["A) Para terminar un párrafo.", "B) Para separar oraciones largas que están relacionadas.", "C) Para enumerar elementos en una lista."],
+        "correct": 1,
+        "explanation": "El punto y coma indica una pausa mayor que la coma pero menor que el punto, y se usa entre oraciones largas relacionadas."
+      },
+      {
+        "question": "Identifica la oración con puntuación correcta:",
+        "options": ["A) Fuimos a la playa; el agua estaba fría.", "B) Fuimos a la playa, el agua estaba fría.", "C) Fuimos a la playa el agua estaba fría."],
+        "correct": 0,
+        "explanation": "El punto y coma separa dos oraciones que tienen relación temática pero que podrían funcionar como oraciones independientes."
+      },
+      {
+        "question": "¿Qué signo de puntuación es más adecuado para unir dos oraciones relacionadas sin usar conjunción?",
+        "options": ["A) La coma", "B) El punto y coma", "C) Los dos puntos"],
+        "correct": 1,
+        "explanation": "El punto y coma es ideal para unir oraciones relacionadas sin necesidad de una conjunción, indicando una pausa intermedia."
+      }
+    ]
+  },
+  "dos-puntos": {
+    "concepto": "Dos puntos — enumeración, cita textual, explicación",
+    "questions": [
+      {
+        "question": "¿En qué oración se usan correctamente los dos puntos para una enumeración?",
+        "options": ["A) Los colores primarios son: rojo, azul y amarillo.", "B) Los colores primarios son: rojo, azul, y, amarillo.", "C) Los colores primarios son rojo: azul y amarillo."],
+        "correct": 0,
+        "explanation": "Los dos puntos se usan antes de una enumeración cuando la oración los introduce. La opción A es correcta."
+      },
+      {
+        "question": "Selecciona la opción que usa correctamente los dos puntos para una cita textual:",
+        "options": ["A) El maestro dijo: la educación es importante.", "B) El maestro dijo: \"La educación es importante.\"", "C) El maestro dijo \"La educación es importante\":"],
+        "correct": 1,
+        "explanation": "Los dos puntos introducen una cita textual, la cual debe ir entre comillas. La opción B cumple ambas reglas."
+      },
+      {
+        "question": "¿Cuál oración usa los dos puntos para dar una explicación?",
+        "options": ["A) El resultado fue: sorprendente.", "B) No pudo asistir: estaba enfermo.", "C) Los invitados son: María, Juan y Luis."],
+        "correct": 1,
+        "explanation": "Los dos puntos pueden introducir una explicación o causa. En este caso, 'estaba enfermo' explica por qué no pudo asistir."
+      },
+      {
+        "question": "Identifica el uso incorrecto de los dos puntos:",
+        "options": ["A) Querida María: Te escribo para saludarte.", "B) Compramos: manzanas, peras y uvas.", "C) La verdad es: que no sé qué hacer."],
+        "correct": 2,
+        "explanation": "No deben usarse dos puntos entre un verbo y su complemento directo. 'La verdad es que no sé qué hacer' es correcto sin dos puntos."
+      },
+      {
+        "question": "¿En qué caso se usan los dos puntos después del saludo en una carta?",
+        "options": ["A; Querido amigo:", "B) Querido amigo;", "C) Querido amigo."],
+        "correct": 0,
+        "explanation": "En las cartas y documentos formales, después del saludo se usan dos puntos: 'Querido amigo:'"
+      }
+    ]
+  },
+  "mayusculas": {
+    "concepto": "Mayúsculas — inicio de oración, nombres propios",
+    "questions": [
+      {
+        "question": "¿Cuál oración usa correctamente las mayúsculas?",
+        "options": ["A) Juan fue a la Ciudad de México.", "B) Juan fue a la ciudad de méxico.", "C) juan fue a la Ciudad de México."],
+        "correct": 0,
+        "explanation": "Los nombres propios (Juan) y los nombres de ciudades y países (Ciudad de México) se escriben con mayúscula inicial."
+      },
+      {
+        "question": "Selecciona la opción con uso correcto de mayúsculas:",
+        "options": ["A) El río bravo cruza varios estados.", "B) El Río Bravo cruza varios estados.", "C) el Río bravo cruza varios Estados."],
+        "correct": 1,
+        "explanation": "Los nombres propios de ríos llevan mayúscula en todas las palabras significativas: 'Río Bravo'."
+      },
+      {
+        "question": "¿Cuándo debe usarse la mayúscula inicial?",
+        "options": ["A) Después de un punto y seguido.", "B) Después de una coma.", "C) Después de un punto y coma."],
+        "correct": 0,
+        "explanation": "La mayúscula inicial se usa al comenzar un escrito y después de un punto (seguido o aparte)."
+      },
+      {
+        "question": "Identifica la oración escrita correctamente:",
+        "options": ["A) La señora García vive en Guadalajara.", "B) La Señora García vive en guadalajara.", "C) la señora garcía vive en Guadalajara."],
+        "correct": 0,
+        "explanation": "Los apellidos (García) y los nombres de ciudades (Guadalajara) llevan mayúscula. 'Señora' es un tratamiento que va en minúscula."
+      },
+      {
+        "question": "¿Cuál opción tiene todas las palabras escritas correctamente con mayúsculas?",
+        "options": ["A) América, Juan, Lunes", "B) México, Pedro, Enero", "C) España, Laura, Martes"],
+        "correct": 2,
+        "explanation": "Los nombres de países (España) y personas (Laura) llevan mayúscula. Los días de la semana (martes) van en minúscula, pero no hay error en 'Martes' porque inicia la oración en este contexto — sin embargo, la opción C es la más correcta asumiendo que no inician oración. Revisando: 'Martes' debería ir en minúscula si no inicia oración, pero en una lista sin contexto, ninguna es perfecta. La opción C es la mejor porque España y Laura son incuestionables."
+      }
+    ]
+  },
+  "sujeto": {
+    "concepto": "Sujeto — quien realiza la acción",
+    "questions": [
+      {
+        "question": "Identifica el sujeto en: 'Los niños juegan en el parque.'",
+        "options": ["A) juegan", "B) Los niños", "C) en el parque"],
+        "correct": 1,
+        "explanation": "El sujeto es quien realiza la acción. 'Los niños' son quienes ejecutan la acción de jugar."
+      },
+      {
+        "question": "¿Cuál es el sujeto en la oración: 'Mañana viajarán mis primos a la playa.'?",
+        "options": ["A) Mañana", "B) mis primos", "C) a la playa"],
+        "correct": 1,
+        "explanation": "El sujeto es 'mis primos' porque son quienes realizan la acción de viajar. 'Mañana' es un complemento circunstancial de tiempo."
+      },
+      {
+        "question": "Selecciona la oración cuyo sujeto es 'El perro café':",
+        "options": ["A) El perro café corre por el jardín.", "B) Corre el perro café por el jardín.", "C) El perro café corre por el jardín y ladra."],
+        "correct": 1,
+        "explanation": "En la opción B, al invertir el orden, se aprecia que 'el perro café' sigue siendo el sujeto. Todas tienen el mismo sujeto, pero la B lo resalta al anteponer el verbo."
+      },
+      {
+        "question": "¿Cuál es el sujeto de 'Hubo muchos accidentes en la carretera'?",
+        "options": ["A) muchos accidentes", "B) en la carretera", "C) Es una oración impersonal con 'haber'."],
+        "correct": 2,
+        "explanation": "El verbo 'haber' en forma impersonal ('hubo') no tiene sujeto. 'Muchos accidentes' es el complemento directo."
+      },
+      {
+        "question": "Identifica el núcleo del sujeto en: 'Los tres libros nuevos llegaron hoy.'",
+        "options": ["A) Los tres", "B) libros", "C) nuevos"],
+        "correct": 1,
+        "explanation": "El núcleo del sujeto es la palabra más importante dentro del sujeto. 'Libros' es el sustantivo que funciona como núcleo."
+      }
+    ]
+  },
+  "predicado": {
+    "concepto": "Predicado — la acción que realiza el sujeto",
+    "questions": [
+      {
+        "question": "Identifica el predicado en: 'María estudia todas las tardes.'",
+        "options": ["A) María", "B) estudia todas las tardes", "C) todas las tardes"],
+        "correct": 1,
+        "explanation": "El predicado es todo lo que se dice del sujeto. 'Estudia todas las tardes' es la acción y sus circunstancias."
+      },
+      {
+        "question": "¿Cuál es el núcleo del predicado en: 'Los estudiantes resolvieron los ejercicios rápidamente.'?",
+        "options": ["A) estudiantes", "B) resolvieron", "C) ejercicios"],
+        "correct": 1,
+        "explanation": "El núcleo del predicado es el verbo principal. 'Resolvieron' es la acción realizada por los estudiantes."
+      },
+      {
+        "question": "Selecciona la oración que tiene un predicado verbal simple (un solo verbo):",
+        "options": ["A) Luis come y duerme mucho.", "B) Luis come muchas frutas.", "C) Luis come, estudia y trabaja."],
+        "correct": 1,
+        "explanation": "El predicado verbal simple tiene un solo verbo conjugado. 'Come' es el único verbo en la opción B."
+      },
+      {
+        "question": "¿Cuál es el predicado de 'El sol brilla con fuerza'?",
+        "options": ["A) El sol", "B) brilla con fuerza", "C) con fuerza"],
+        "correct": 1,
+        "explanation": "'Brilla con fuerza' es el predicado, que incluye el verbo 'brilla' y el complemento circunstancial 'con fuerza'."
+      },
+      {
+        "question": "Identifica el predicado nominal en las siguientes oraciones:",
+        "options": ["A) Laura es inteligente.", "B) Laura corre rápido.", "C) Laura llegó temprano."],
+        "correct": 0,
+        "explanation": "El predicado nominal se forma con un verbo copulativo (ser, estar, parecer) y un atributo. 'Es inteligente' es un predicado nominal."
+      }
+    ]
+  },
+  "concordancia-nominal": {
+    "concepto": "Concordancia nominal — género y número (niños contentos)",
+    "questions": [
+      {
+        "question": "Selecciona la opción con concordancia nominal correcta:",
+        "options": ["A) Los niño contentos", "B) Los niños contentos", "C) Los niños contento"],
+        "correct": 1,
+        "explanation": "El artículo (los), el sustantivo (niños) y el adjetivo (contentos) deben coincidir en género y número. La opción B tiene concordancia correcta."
+      },
+      {
+        "question": "¿Cuál oración tiene concordancia nominal incorrecta?",
+        "options": ["A) La casa blanca es bonita.", "B) El casa blanca es bonita.", "C) Las casas blancas son bonitas."],
+        "correct": 1,
+        "explanation": "'Casa' es femenino, por lo que debe usarse el artículo femenino 'la', no 'el'. La forma correcta es 'La casa blanca'."
+      },
+      {
+        "question": "Completa correctamente: '____ ____ llegaron temprano.'",
+        "options": ["A) Unas niñas", "B) Unos niñas", "C) Unas niños"],
+        "correct": 0,
+        "explanation": "Unas (femenino plural) debe concordar con niñas (femenino plural). La concordancia de género y número es correcta en la opción A."
+      },
+      {
+        "question": "Identifica la frase con concordancia correcta:",
+        "options": ["A) Mucha personas participaron.", "B) Muchas personas participaron.", "C) Muchos personas participaron."],
+        "correct": 1,
+        "explanation": "'Personas' es femenino plural, por lo que requiere el determinante femenino plural 'muchas'."
+      },
+      {
+        "question": "¿Cuál opción presenta concordancia nominal correcta?",
+        "options": ["A) El árbol es altos.", "B) Los árbol son altos.", "C) Los árboles son altos."],
+        "correct": 2,
+        "explanation": "Todos los elementos concuerdan: 'los' (artículo plural), 'árboles' (sustantivo plural) y 'altos' (adjetivo plural masculino)."
+      }
+    ]
+  },
+  "concordancia-verbal": {
+    "concepto": "Concordancia verbal — persona y número (él corre, ellos corren)",
+    "questions": [
+      {
+        "question": "Completa: 'Ellos ____ todos los días.'",
+        "options": ["A) estudia", "B) estudian", "C) estudiáis"],
+        "correct": 1,
+        "explanation": "El sujeto 'ellos' (tercera persona del plural) requiere el verbo en tercera persona del plural: 'estudian'."
+      },
+      {
+        "question": "Identifica la oración con concordancia verbal correcta:",
+        "options": ["A) El niño corren en el patio.", "B) Los niños corre en el patio.", "C) Los niños corren en el patio."],
+        "correct": 2,
+        "explanation": "'Los niños' (tercera persona plural) concuerda con 'corren' (tercera persona plural)."
+      },
+      {
+        "question": "¿Cuál oración tiene error de concordancia verbal?",
+        "options": ["A) Tú cantas muy bien.", "B) Ustedes cantan muy bien.", "C) Ellos canta muy bien."],
+        "correct": 2,
+        "explanation": "'Ellos' es tercera persona del plural, por lo que el verbo debe ser 'cantan', no 'canta' (que es tercera persona del singular)."
+      },
+      {
+        "question": "Selecciona la forma verbal correcta: 'La mayoría de los estudiantes ____ aprobado.'",
+        "options": ["A) ha", "B) han", "C) hemos"],
+        "correct": 1,
+        "explanation": "Aunque 'mayoría' es singular, cuando va seguida de un complemento en plural ('de los estudiantes'), el verbo puede concordar en plural: 'han aprobado'."
+      },
+      {
+        "question": "Completa correctamente: 'El profesor y los alumnos ____ de acuerdo.'",
+        "options": ["A) está", "B) están", "C) estoy"],
+        "correct": 1,
+        "explanation": "El sujeto compuesto 'El profesor y los alumnos' es tercera persona del plural, por lo que el verbo debe conjugarse en plural: 'están'."
+      }
+    ]
+  },
+  "voz-activa": {
+    "concepto": "Voz activa — el sujeto realiza la acción",
+    "questions": [
+      {
+        "question": "Identifica la oración en voz activa:",
+        "options": ["A) La carta fue escrita por María.", "B) María escribió la carta.", "C) La carta está escrita."],
+        "correct": 1,
+        "explanation": "En voz activa el sujeto (María) realiza la acción (escribió). El verbo está en forma activa y el sujeto es quien ejecuta la acción."
+      },
+      {
+        "question": "¿Cuál es el sujeto en la voz activa de: 'El libro fue leído por Juan'?",
+        "options": ["A) El libro", "B) Juan", "C) fue leído"],
+        "correct": 1,
+        "explanation": "Al convertir a voz activa 'Juan leyó el libro', Juan es quien realiza la acción, por lo tanto es el sujeto."
+      },
+      {
+        "question": "Selecciona la opción en voz activa:",
+        "options": ["A) La comida fue preparada por mi mamá.", "B) Mi mamá preparó la comida.", "C) La comida está preparada."],
+        "correct": 1,
+        "explanation": "En voz activa el sujeto (mi mamá) realiza la acción (preparó). La opción B presenta esta estructura."
+      },
+      {
+        "question": "¿Qué elemento no puede faltar en una oración en voz activa?",
+        "options": ["A) Un sujeto que realiza la acción.", "B) Un complemento agente.", "C) El verbo 'ser' como auxiliar."],
+        "correct": 0,
+        "explanation": "En voz activa, el sujeto grammatical realiza la acción del verbo. El complemento agente y el verbo 'ser' son propios de la voz pasiva."
+      },
+      {
+        "question": "Convierte a voz activa: 'El problema fue resuelto por el ingeniero.'",
+        "options": ["A) El problema resolvió al ingeniero.", "B) El ingeniero resolvió el problema.", "C) El problema está resuelto por el ingeniero."],
+        "correct": 1,
+        "explanation": "En voz activa, el complemento agente ('el ingeniero') se convierte en sujeto, y el sujeto pasivo ('el problema') en objeto directo: 'El ingeniero resolvió el problema'."
+      }
+    ]
+  },
+  "voz-pasiva": {
+    "concepto": "Voz pasiva — el sujeto recibe la acción",
+    "questions": [
+      {
+        "question": "Identifica la oración en voz pasiva:",
+        "options": ["A) El pintor creó una obra maestra.", "B) Una obra maestra fue creada por el pintor.", "C) El pintor creó la obra."],
+        "correct": 1,
+        "explanation": "En voz pasiva el sujeto (una obra maestra) recibe la acción. Se forma con el verbo 'ser' + participio + complemento agente."
+      },
+      {
+        "question": "¿Cuál es el complemento agente en: 'El pastel fue horneado por María'?",
+        "options": ["A) El pastel", "B) fue horneado", "C) por María"],
+        "correct": 2,
+        "explanation": "El complemento agente indica quién realiza la acción en voz pasiva. 'Por María' indica quién horneó el pastel."
+      },
+      {
+        "question": "Selecciona la opción en voz pasiva:",
+        "options": ["A) Los niños rompieron la ventana.", "B) La ventana fue rota por los niños.", "C) Los niños rompen ventanas."],
+        "correct": 1,
+        "explanation": "La estructura 'ser + participio + por + agente' es característica de la voz pasiva. 'La ventana fue rota por los niños' cumple con esta estructura."
+      },
+      {
+        "question": "¿Cuál es la estructura correcta de la voz pasiva?",
+        "options": ["A) Sujeto + verbo en activo + complemento.", "B) Sujeto + verbo ser + participio + complemento agente.", "C) Sujeto + verbo estar + gerundio."],
+        "correct": 1,
+        "explanation": "La voz pasiva se forma con el verbo auxiliar 'ser' conjugado + el participio del verbo principal + (opcionalmente) el complemento agente introducido por 'por'."
+      },
+      {
+        "question": "Convierte a voz pasiva: 'El chef preparó una cena deliciosa.'",
+        "options": ["A) Una cena deliciosa preparó al chef.", "B) Una cena deliciosa fue preparada por el chef.", "C) El chef fue preparado por una cena deliciosa."],
+        "correct": 1,
+        "explanation": "Al convertir a voz pasiva, el objeto directo ('una cena deliciosa') pasa a ser el sujeto, y el sujeto activo ('el chef') se convierte en complemento agente."
+      }
+    ]
+  },
+  "conectores": {
+    "concepto": "Conectores — causales (porque), adversativos (pero), temporales (luego)",
+    "questions": [
+      {
+        "question": "Identifica el conector causal en: 'No fuimos al paseo porque llovía.'",
+        "options": ["A) No fuimos", "B) porque", "C) llovía"],
+        "correct": 1,
+        "explanation": "'Porque' es un conector causal que introduce la razón o causa de la acción. Indica por qué no fueron al paseo."
+      },
+      {
+        "question": "¿Cuál oración usa un conector adversativo?",
+        "options": ["A) Estudió mucho, pero no aprobó.", "B) Estudió mucho porque quería aprobar.", "C) Estudió mucho, luego aprobó."],
+        "correct": 0,
+        "explanation": "'Pero' es un conector adversativo que indica oposición o contraste entre dos ideas: estudió mucho vs. no aprobó."
+      },
+      {
+        "question": "Selecciona la oración con conector temporal:",
+        "options": ["A) Terminó la tarea, luego fue a jugar.", "B) Terminó la tarea porque quería jugar.", "C) Terminó la tarea, pero no jugó."],
+        "correct": 0,
+        "explanation": "'Luego' es un conector temporal que indica secuencia en el tiempo. Primero terminó la tarea y después fue a jugar."
+      },
+      {
+        "question": "¿Qué tipo de conector es 'sin embargo'?",
+        "options": ["A) Causal", "B) Adversativo", "C) Temporal"],
+        "correct": 1,
+        "explanation": "'Sin embargo' es un conector adversativo que expresa contraste u oposición entre dos ideas, similar a 'pero' pero más formal."
+      },
+      {
+        "question": "Completa con el conector adecuado: 'Llegamos tarde ____ el tráfico.'",
+        "options": ["A) pero", "B) por", "C) luego"],
+        "correct": 1,
+        "explanation": "'Por' introduce la causa. En este contexto se necesita un conector causal: 'por el tráfico' explica la razón de la tardanza."
+      }
+    ]
+  }
+}

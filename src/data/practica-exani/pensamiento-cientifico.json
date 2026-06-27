@@ -1,0 +1,683 @@
+﻿{
+  "teoria-celular": {
+    "questions": [
+      {
+        "question": "Â¿CuÃ¡l de las siguientes afirmaciones forma parte de la teorÃ­a celular?",
+        "options": ["A) Todos los seres vivos estÃ¡n formados por cÃ©lulas", "B) Las cÃ©lulas solo se encuentran en animales", "C) Las cÃ©lulas pueden generarse espontÃ¡neamente"],
+        "correct": 0,
+        "explanation": "La teorÃ­a celular establece que todos los seres vivos estÃ¡n compuestos por cÃ©lulas, que son la unidad bÃ¡sica de la vida."
+      },
+      {
+        "question": "Â¿QuiÃ©nes fueron fundamentales en el desarrollo de la teorÃ­a celular?",
+        "options": ["A) Darwin y Wallace", "B) Schleiden y Schwann", "C) Mendel y Morgan"],
+        "correct": 1,
+        "explanation": "Matthias Schleiden (plantas) y Theodor Schwann (animales) propusieron que todos los organismos estÃ¡n formados por cÃ©lulas."
+      },
+      {
+        "question": "SegÃºn la teorÃ­a celular, Â¿de dÃ³nde provienen todas las cÃ©lulas?",
+        "options": ["A) De la materia inorgÃ¡nica", "B) De cÃ©lulas preexistentes", "C) De la generaciÃ³n espontÃ¡nea"],
+        "correct": 1,
+        "explanation": "Rudolf Virchow postulÃ³ que toda cÃ©lula proviene de otra cÃ©lula preexistente (omnis cellula e cellula)."
+      },
+      {
+        "question": "Â¿QuÃ© unidad se considera la mÃ¡s pequeÃ±a con vida propia segÃºn la teorÃ­a celular?",
+        "options": ["A) El Ã¡tomo", "B) La cÃ©lula", "C) El tejido"],
+        "correct": 1,
+        "explanation": "La cÃ©lula es la unidad estructural y funcional mÃ¡s pequeÃ±a que posee las caracterÃ­sticas de la vida."
+      },
+      {
+        "question": "La teorÃ­a celular NO aplica a:",
+        "options": ["A) Los virus", "B) Las bacterias", "C) Los hongos"],
+        "correct": 0,
+        "explanation": "Los virus no estÃ¡n formados por cÃ©lulas y no cumplen con todos los postulados de la teorÃ­a celular."
+      }
+    ]
+  },
+  "celula-procariota": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© caracterÃ­stica principal distingue a las cÃ©lulas procariotas?",
+        "options": ["A) Tienen un nÃºcleo definido", "B) Carecen de nÃºcleo definido", "C) Poseen cloroplastos"],
+        "correct": 1,
+        "explanation": "Las cÃ©lulas procariotas no tienen un nÃºcleo definido; su material genÃ©tico se encuentra disperso en el citoplasma."
+      },
+      {
+        "question": "Â¿QuÃ© organismo es un ejemplo de cÃ©lula procariota?",
+        "options": ["A) Una bacteria", "B) Una neurona", "C) Un glÃ³bulo rojo"],
+        "correct": 0,
+        "explanation": "Las bacterias son organismos procariotas; las neuronas y glÃ³bulos rojos son cÃ©lulas eucariotas."
+      },
+      {
+        "question": "Â¿CÃ³mo se llama la regiÃ³n donde se encuentra el ADN en una cÃ©lula procariota?",
+        "options": ["A) NÃºcleo", "B) Nucleoide", "C) Vacuola"],
+        "correct": 1,
+        "explanation": "El nucleoide es la regiÃ³n del citoplasma procariota donde se localiza el ADN circular sin membrana que lo envuelva."
+      },
+      {
+        "question": "Â¿QuÃ© estructura adicional pueden tener algunas bacterias para desplazarse?",
+        "options": ["A) Cilios", "B) Flagelos", "C) PseudÃ³podos"],
+        "correct": 1,
+        "explanation": "Muchas bacterias poseen flagelos que les permiten moverse en medios lÃ­quidos."
+      },
+      {
+        "question": "Las cÃ©lulas procariotas se reproducen principalmente por:",
+        "options": ["A) Mitosis", "B) FisiÃ³n binaria", "C) Meiosis"],
+        "correct": 1,
+        "explanation": "La fisiÃ³n binaria es el mÃ©todo de reproducciÃ³n asexual en el que una cÃ©lula procariota se divide en dos cÃ©lulas hijas idÃ©nticas."
+      }
+    ]
+  },
+  "celula-eucariota": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© organelo contiene el material genÃ©tico en una cÃ©lula eucariota?",
+        "options": ["A) Ribosoma", "B) NÃºcleo", "C) Aparato de Golgi"],
+        "correct": 1,
+        "explanation": "El nÃºcleo es el organelo que contiene el ADN en las cÃ©lulas eucariotas, protegido por una envoltura nuclear."
+      },
+      {
+        "question": "Â¿CuÃ¡l de los siguientes NO es un organismo eucariota?",
+        "options": ["A) Un hongo", "B) Una bacteria", "C) Una planta"],
+        "correct": 1,
+        "explanation": "Las bacterias son procariotas; los hongos y las plantas estÃ¡n formados por cÃ©lulas eucariotas."
+      },
+      {
+        "question": "Â¿QuÃ© organelo exclusivo de las cÃ©lulas vegetales realiza la fotosÃ­ntesis?",
+        "options": ["A) Mitocondria", "B) Cloroplasto", "C) Vacuola"],
+        "correct": 1,
+        "explanation": "Los cloroplastos contienen clorofila y son los encargados de realizar la fotosÃ­ntesis en las cÃ©lulas vegetales."
+      },
+      {
+        "question": "Â¿En quÃ© se diferencia la cÃ©lula eucariota animal de la vegetal?",
+        "options": ["A) La animal tiene cloroplastos", "B) La animal no tiene pared celular", "C) La animal tiene una vacuola mÃ¡s grande"],
+        "correct": 1,
+        "explanation": "Las cÃ©lulas animales carecen de pared celular, mientras que las vegetales poseen una pared de celulosa que les da rigidez."
+      },
+      {
+        "question": "Â¿QuÃ© funciÃ³n cumple la membrana celular en las cÃ©lulas eucariotas?",
+        "options": ["A) Producir energÃ­a", "B) Regular la entrada y salida de sustancias", "C) Almacenar agua"],
+        "correct": 1,
+        "explanation": "La membrana celular actÃºa como una barrera selectiva que controla el intercambio de sustancias entre la cÃ©lula y su entorno."
+      }
+    ]
+  },
+  "organelos": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© organelo es conocido como la 'central energÃ©tica' de la cÃ©lula?",
+        "options": ["A) Mitocondria", "B) Ribosoma", "C) NÃºcleo"],
+        "correct": 0,
+        "explanation": "La mitocondria produce ATP mediante la respiraciÃ³n celular, por eso se le llama la central energÃ©tica de la cÃ©lula."
+      },
+      {
+        "question": "Â¿CuÃ¡l es la funciÃ³n de los ribosomas?",
+        "options": ["A) Almacenar lÃ­pidos", "B) Sintetizar proteÃ­nas", "C) Degradar desechos"],
+        "correct": 1,
+        "explanation": "Los ribosomas son los encargados de la sÃ­ntesis de proteÃ­nas a partir de la informaciÃ³n del ARN mensajero."
+      },
+      {
+        "question": "El aparato de Golgi se encarga principalmente de:",
+        "options": ["A) Producir energÃ­a", "B) Empacar y modificar proteÃ­nas", "C) Realizar la fotosÃ­ntesis"],
+        "correct": 1,
+        "explanation": "El aparato de Golgi modifica, empaca y distribuye proteÃ­nas y lÃ­pidos hacia otros destinos dentro o fuera de la cÃ©lula."
+      },
+      {
+        "question": "Â¿QuÃ© organelo contiene enzimas digestivas para degradar materiales?",
+        "options": ["A) Lisosoma", "B) RetÃ­culo endoplÃ¡smico", "C) Cloroplasto"],
+        "correct": 0,
+        "explanation": "Los lisosomas contienen enzimas hidrolÃ­ticas que digieren materiales de desecho y partÃ­culas extraÃ±as."
+      },
+      {
+        "question": "El retÃ­culo endoplÃ¡smico rugoso recibe ese nombre porque tiene adheridos:",
+        "options": ["A) Lisosomas", "B) Ribosomas", "C) Peroxisomas"],
+        "correct": 1,
+        "explanation": "El retÃ­culo endoplÃ¡smico rugoso tiene ribosomas en su superficie, lo que le da un aspecto rugoso y le permite sintetizar proteÃ­nas."
+      }
+    ]
+  },
+  "biodiversidad-en-mexico": {
+    "questions": [
+      {
+        "question": "Â¿Por quÃ© MÃ©xico es considerado un paÃ­s megadiverso?",
+        "options": ["A) Por su gran extensiÃ³n territorial", "B) Por albergar una gran variedad de especies y ecosistemas", "C) Por tener la mayor poblaciÃ³n del mundo"],
+        "correct": 1,
+        "explanation": "MÃ©xico es uno de los 17 paÃ­ses megadiversos del mundo debido a su enorme riqueza de especies y ecosistemas."
+      },
+      {
+        "question": "Â¿QuÃ© grupo de vertebrados tiene mayor diversidad de especies en MÃ©xico?",
+        "options": ["A) Aves", "B) Reptiles", "C) MamÃ­feros"],
+        "correct": 1,
+        "explanation": "MÃ©xico ocupa el primer lugar mundial en diversidad de reptiles, con mÃ¡s de 800 especies."
+      },
+      {
+        "question": "Â¿CuÃ¡l de los siguientes ecosistemas es caracterÃ­stico de MÃ©xico?",
+        "options": ["A) La taiga", "B) El arrecife de coral", "C) La tundra"],
+        "correct": 1,
+        "explanation": "MÃ©xico cuenta con arrecifes de coral en el Caribe, especialmente en el Sistema Arrecifal Mesoamericano, el segundo mÃ¡s grande del mundo."
+      },
+      {
+        "question": "Â¿QuÃ© tipo de bosque es emblemÃ¡tico de MÃ©xico por su gran diversidad de pinos y encinos?",
+        "options": ["A) Bosque tropical", "B) Bosque de conÃ­feras y encinos", "C) Bosque nublado"],
+        "correct": 1,
+        "explanation": "MÃ©xico posee la mayor diversidad de pinos y encinos del mundo, formando extensos bosques en zonas montaÃ±osas."
+      },
+      {
+        "question": "Â¿CuÃ¡l es una de las principales amenazas para la biodiversidad en MÃ©xico?",
+        "options": ["A) Aumento de Ã¡reas naturales protegidas", "B) DeforestaciÃ³n y pÃ©rdida de hÃ¡bitat", "C) DisminuciÃ³n de la poblaciÃ³n humana"],
+        "correct": 1,
+        "explanation": "La deforestaciÃ³n, el cambio de uso de suelo y la contaminaciÃ³n son las principales amenazas para la biodiversidad mexicana."
+      }
+    ]
+  },
+  "adaptacion": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© son las adaptaciones en los seres vivos?",
+        "options": ["A) Cambios que ocurren en un solo individuo durante su vida", "B) CaracterÃ­sticas que mejoran la supervivencia en un ambiente", "C] Enfermedades que adquieren los organismos"],
+        "correct": 1,
+        "explanation": "Las adaptaciones son rasgos heredables que permiten a los organismos sobrevivir y reproducirse mejor en su entorno."
+      },
+      {
+        "question": "El camuflaje es un ejemplo de adaptaciÃ³n:",
+        "options": ["A) FisiolÃ³gica", "B) MorfolÃ³gica", "C) De comportamiento"],
+        "correct": 1,
+        "explanation": "El camuflaje es una adaptaciÃ³n morfolÃ³gica que permite a un organismo confundirse con su entorno para evitar depredadores."
+      },
+      {
+        "question": "Â¿QuÃ© adaptaciÃ³n presentan los cactus para vivir en ambientes Ã¡ridos?",
+        "options": ["A) Hojas anchas para captar luz", "B) Espinas que reducen la pÃ©rdida de agua", "C) RaÃ­ces superficiales muy extensas"],
+        "correct": 1,
+        "explanation": "Las espinas de los cactus son hojas modificadas que disminuyen la pÃ©rdida de agua y protegen al cactus de herbÃ­voros."
+      },
+      {
+        "question": "La migraciÃ³n de las aves es un ejemplo de adaptaciÃ³n:",
+        "options": ["A) De comportamiento", "B) MorfolÃ³gica", "C) FisiolÃ³gica"],
+        "correct": 0,
+        "explanation": "La migraciÃ³n es una adaptaciÃ³n de comportamiento que permite a las aves desplazarse a lugares con mejores condiciones climÃ¡ticas o alimenticias."
+      },
+      {
+        "question": "Â¿QuÃ© tipo de adaptaciÃ³n es la producciÃ³n de veneno en algunas serpientes?",
+        "options": ["A) MorfolÃ³gica", "B) FisiolÃ³gica", "C) De comportamiento"],
+        "correct": 1,
+        "explanation": "La producciÃ³n de veneno es una adaptaciÃ³n fisiolÃ³gica, ya que implica la producciÃ³n de sustancias quÃ­micas especializadas en el organismo."
+      }
+    ]
+  },
+  "velocidad": {
+    "questions": [
+      {
+        "question": "Â¿CuÃ¡l es la fÃ³rmula para calcular la velocidad?",
+        "options": ["A) v = m Ã— a", "B) v = d / t", "C) v = t / d"],
+        "correct": 1,
+        "explanation": "La velocidad se calcula dividiendo la distancia recorrida entre el tiempo transcurrido: v = d / t."
+      },
+      {
+        "question": "Si un auto recorre 200 km en 4 horas, Â¿cuÃ¡l es su velocidad media?",
+        "options": ["A) 40 km/h", "B) 50 km/h", "C) 60 km/h"],
+        "correct": 1,
+        "explanation": "v = 200 km / 4 h = 50 km/h. El auto viaja a una velocidad media de 50 kilÃ³metros por hora."
+      },
+      {
+        "question": "La velocidad es una magnitud que mide:",
+        "options": ["A) La fuerza aplicada a un objeto", "B) El cambio de posiciÃ³n en el tiempo", "C) La cantidad de materia de un cuerpo"],
+        "correct": 1,
+        "explanation": "La velocidad mide quÃ© tan rÃ¡pido cambia la posiciÃ³n de un objeto con respecto al tiempo."
+      },
+      {
+        "question": "Â¿QuÃ© unidades se utilizan comÃºnmente para la velocidad?",
+        "options": ["A) Metros por segundo (m/s)", "B) Kilogramos (kg)", "C) Newtons (N)"],
+        "correct": 0,
+        "explanation": "La velocidad se expresa en unidades de longitud divididas por tiempo, como metros por segundo (m/s) o kilÃ³metros por hora (km/h)."
+      },
+      {
+        "question": "Si dos autos recorren la misma distancia pero uno tarda menos tiempo, Â¿quÃ© se puede afirmar?",
+        "options": ["A) El mÃ¡s rÃ¡pido tiene menor velocidad", "B) El que tardÃ³ menos tiene mayor velocidad", "C) Ambos tienen la misma velocidad"],
+        "correct": 1,
+        "explanation": "A igual distancia, el auto que tarda menos tiempo tiene mayor velocidad, pues recorre la misma distancia en menos tiempo."
+      }
+    ]
+  },
+  "aceleracion": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© mide la aceleraciÃ³n?",
+        "options": ["A) La distancia recorrida", "B) El cambio de velocidad en el tiempo", "C) La fuerza aplicada"],
+        "correct": 1,
+        "explanation": "La aceleraciÃ³n mide quÃ© tan rÃ¡pido cambia la velocidad de un objeto en un intervalo de tiempo."
+      },
+      {
+        "question": "Si un auto pasa de 0 a 100 km/h en 10 segundos, el auto estÃ¡ experimentando:",
+        "options": ["A] Velocidad constante", "B) AceleraciÃ³n", "C) Inercia"],
+        "correct": 1,
+        "explanation": "El auto estÃ¡ acelerando porque su velocidad aumenta con el tiempo, pasando de 0 a 100 km/h."
+      },
+      {
+        "question": "Â¿CuÃ¡l es la unidad de aceleraciÃ³n en el Sistema Internacional?",
+        "options": ["A) m/s", "B) m/sÂ²", "C) km/h"],
+        "correct": 1,
+        "explanation": "La aceleraciÃ³n se mide en metros por segundo al cuadrado (m/sÂ²), que representa el cambio de velocidad por cada segundo."
+      },
+      {
+        "question": "Cuando un objeto frena, su aceleraciÃ³n es:",
+        "options": ["A) Positiva", "B) Negativa (desaceleraciÃ³n)", "C) Cero"],
+        "correct": 1,
+        "explanation": "Cuando un objeto frena, su velocidad disminuye, por lo que la aceleraciÃ³n es negativa, tambiÃ©n llamada desaceleraciÃ³n."
+      },
+      {
+        "question": "Â¿QuÃ© significa que un objeto tenga aceleraciÃ³n cero?",
+        "options": ["A) Que estÃ¡ en reposo", "B) Que su velocidad es constante", "C) Que se mueve en cÃ­rculos"],
+        "correct": 1,
+        "explanation": "AceleraciÃ³n cero significa que la velocidad no cambia, es decir, el objeto se mueve con velocidad constante (puede estar en reposo o en movimiento uniforme)."
+      }
+    ]
+  },
+  "1ra-ley-de-newton-inercia": {
+    "questions": [
+      {
+        "question": "La primera ley de Newton tambiÃ©n se conoce como:",
+        "options": ["A) Ley de acciÃ³n y reacciÃ³n", "B) Ley de la inercia", "C) Ley de la gravitaciÃ³n universal"],
+        "correct": 1,
+        "explanation": "La primera ley de Newton se llama ley de la inercia porque describe la tendencia de los objetos a mantener su estado de movimiento."
+      },
+      {
+        "question": "SegÃºn la primera ley de Newton, un objeto en reposo:",
+        "options": ["A) Siempre se moverÃ¡ por sÃ­ solo", "B) PermanecerÃ¡ en reposo a menos que actÃºe una fuerza externa", "C) Se moverÃ¡ solo si tiene poca masa"],
+        "correct": 1,
+        "explanation": "La inercia hace que un objeto en reposo permanezca en reposo hasta que una fuerza neta externa actÃºe sobre Ã©l."
+      },
+      {
+        "question": "Â¿Por quÃ© los pasajeros de un autobÃºs se sienten empujados hacia adelante cuando el autobÃºs frena repentinamente?",
+        "options": ["A) Por la aceleraciÃ³n del autobÃºs", "B) Por la inercia del cuerpo que tiende a seguir en movimiento", "C) Por la gravedad"],
+        "correct": 1,
+        "explanation": "Por inercia, el cuerpo de los pasajeros tiende a mantener su velocidad original cuando el autobÃºs frena, por lo que se sienten lanzados hacia adelante."
+      },
+      {
+        "question": "Â¿De quÃ© depende la inercia de un objeto?",
+        "options": ["A) De su color", "B) De su masa", "C) De su temperatura"],
+        "correct": 1,
+        "explanation": "La inercia depende directamente de la masa: a mayor masa, mayor inercia y mÃ¡s difÃ­cil es cambiar su estado de movimiento."
+      },
+      {
+        "question": "Un libro permanece sobre una mesa sin moverse. Esto ejemplifica:",
+        "options": ["A) La segunda ley de Newton", "B) La ley de la inercia", "C) La ley de acciÃ³n y reacciÃ³n"],
+        "correct": 1,
+        "explanation": "El libro permanece en reposo debido a la inercia; las fuerzas que actÃºan sobre Ã©l (gravedad y normal) estÃ¡n equilibradas, por lo que no cambia su estado."
+      }
+    ]
+  },
+  "2da-ley-de-newton": {
+    "questions": [
+      {
+        "question": "La segunda ley de Newton establece que la fuerza es igual a:",
+        "options": ["A) Masa por velocidad", "B) Masa por aceleraciÃ³n", "C) Masa por distancia"],
+        "correct": 1,
+        "explanation": "La segunda ley de Newton se expresa como F = m Ã— a, donde la fuerza neta es igual a la masa multiplicada por la aceleraciÃ³n."
+      },
+      {
+        "question": "Si se aplica la misma fuerza a un objeto de 2 kg y a otro de 4 kg, Â¿cuÃ¡l acelera mÃ¡s?",
+        "options": ["A) El de 2 kg", "B) El de 4 kg", "C) Ambos por igual"],
+        "correct": 0,
+        "explanation": "A menor masa, mayor aceleraciÃ³n para una misma fuerza (a = F/m). El objeto de 2 kg acelera el doble que el de 4 kg."
+      },
+      {
+        "question": "Â¿En quÃ© unidad se mide la fuerza en el Sistema Internacional?",
+        "options": ["A) Joule", "B) Newton", "C) Watt"],
+        "correct": 1,
+        "explanation": "La fuerza se mide en newtons (N). Un newton es la fuerza necesaria para acelerar 1 kg a 1 m/sÂ²."
+      },
+      {
+        "question": "Para que un objeto de 10 kg acelere a 2 m/sÂ², Â¿quÃ© fuerza debe aplicarse?",
+        "options": ["A) 5 N", "B) 20 N", "C) 12 N"],
+        "correct": 1,
+        "explanation": "F = m Ã— a = 10 kg Ã— 2 m/sÂ² = 20 N. Se requieren 20 newtons de fuerza."
+      },
+      {
+        "question": "Â¿QuÃ© sucede con la aceleraciÃ³n si la masa de un objeto aumenta pero la fuerza aplicada permanece constante?",
+        "options": ["A) La aceleraciÃ³n aumenta", "B) La aceleraciÃ³n disminuye", "C) La aceleraciÃ³n no cambia"],
+        "correct": 1,
+        "explanation": "a = F/m; si la masa aumenta y la fuerza es constante, la aceleraciÃ³n disminuye. Masa y aceleraciÃ³n son inversamente proporcionales."
+      }
+    ]
+  },
+  "3ra-ley-de-newton": {
+    "questions": [
+      {
+        "question": "La tercera ley de Newton afirma que para toda acciÃ³n hay:",
+        "options": ["A) Una reacciÃ³n igual y en el mismo sentido", "B) Una reacciÃ³n igual y en sentido opuesto", "C) Una reacciÃ³n mayor en sentido opuesto"],
+        "correct": 1,
+        "explanation": "La tercera ley establece que las fuerzas de acciÃ³n y reacciÃ³n son iguales en magnitud pero actÃºan en direcciones opuestas sobre cuerpos diferentes."
+      },
+      {
+        "question": "Cuando caminamos, empujamos el suelo hacia atrÃ¡s. Â¿QuÃ© sucede como reacciÃ³n?",
+        "options": ["A) El suelo empuja nuestro pie hacia adelante", "B) El suelo permanece inmÃ³vil", "C) El suelo empuja hacia abajo"],
+        "correct": 0,
+        "explanation": "Al empujar el suelo hacia atrÃ¡s (acciÃ³n), el suelo empuja nuestro pie hacia adelante (reacciÃ³n), permitiÃ©ndonos avanzar."
+      },
+      {
+        "question": "Un cohete despega expulsando gases hacia abajo. Â¿QuÃ© principio explica su movimiento hacia arriba?",
+        "options": ["A) Primera ley de Newton", "B) Tercera ley de Newton", "C) Ley de la gravitaciÃ³n"],
+        "correct": 1,
+        "explanation": "Los gases son expulsados hacia abajo (acciÃ³n) y el cohete es impulsado hacia arriba (reacciÃ³n) segÃºn la tercera ley de Newton."
+      },
+      {
+        "question": "Si empujas una pared con 50 N de fuerza, Â¿quÃ© fuerza ejerce la pared sobre ti?",
+        "options": ["A) 0 N, la pared no se mueve", "B) 50 N en sentido opuesto", "C) 100 N en el mismo sentido"],
+        "correct": 1,
+        "explanation": "La pared ejerce una fuerza de 50 N en sentido opuesto sobre tus manos, cumpliendo la ley de acciÃ³n y reacciÃ³n."
+      },
+      {
+        "question": "Las fuerzas de acciÃ³n y reacciÃ³n actÃºan sobre:",
+        "options": ["A) El mismo cuerpo", "B) Cuerpos diferentes", "C) Solo cuerpos en movimiento"],
+        "correct": 1,
+        "explanation": "Aunque las fuerzas son iguales y opuestas, cada una actÃºa sobre un cuerpo diferente, por lo que no se anulan entre sÃ­."
+      }
+    ]
+  },
+  "energia-cinetica": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© es la energÃ­a cinÃ©tica?",
+        "options": ["A) La energÃ­a almacenada por un objeto en reposo", "B) La energÃ­a asociada al movimiento de un objeto", "C) La energÃ­a quÃ­mica de los alimentos"],
+        "correct": 1,
+        "explanation": "La energÃ­a cinÃ©tica es la energÃ­a que posee un cuerpo debido a su movimiento."
+      },
+      {
+        "question": "Â¿De quÃ© factores depende la energÃ­a cinÃ©tica de un objeto?",
+        "options": ["A) Solo de la masa", "B) De la masa y la velocidad", "C) De la masa y la altura"],
+        "correct": 1,
+        "explanation": "La energÃ­a cinÃ©tica depende de la masa y de la velocidad al cuadrado: Ec = Â½ m vÂ²."
+      },
+      {
+        "question": "Si duplicas la velocidad de un auto, Â¿quÃ© ocurre con su energÃ­a cinÃ©tica?",
+        "options": ["A) Se duplica", "B) Se cuadruplica", "C) No cambia"],
+        "correct": 1,
+        "explanation": "Como la energÃ­a cinÃ©tica depende de vÂ², al duplicar la velocidad la energÃ­a se cuadruplica (2Â² = 4)."
+      },
+      {
+        "question": "Dos objetos con la misma velocidad pero diferente masa, Â¿cuÃ¡l tiene mÃ¡s energÃ­a cinÃ©tica?",
+        "options": ["A) El de mayor masa", "B) El de menor masa", "C) Ambos tienen la misma energÃ­a cinÃ©tica"],
+        "correct": 0,
+        "explanation": "A mayor masa, mayor energÃ­a cinÃ©tica si la velocidad es la misma, pues Ec es directamente proporcional a la masa."
+      },
+      {
+        "question": "Un auto en movimiento tiene energÃ­a cinÃ©tica. Si frena hasta detenerse, Â¿quÃ© sucede con esa energÃ­a?",
+        "options": ["A) Desaparece por completo", "B) Se transforma en calor por fricciÃ³n", "C) Se convierte en masa"],
+        "correct": 1,
+        "explanation": "La energÃ­a cinÃ©tica se transforma en energÃ­a tÃ©rmica (calor) debido a la fricciÃ³n de los frenos, de acuerdo con la conservaciÃ³n de la energÃ­a."
+      }
+    ]
+  },
+  "energia-potencial": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© es la energÃ­a potencial gravitatoria?",
+        "options": ["A) La energÃ­a del movimiento", "B) La energÃ­a almacenada por un objeto debido a su posiciÃ³n", "C) La energÃ­a elÃ©ctrica de un circuito"],
+        "correct": 1,
+        "explanation": "La energÃ­a potencial gravitatoria es la energÃ­a almacenada que posee un objeto por su altura respecto a un nivel de referencia."
+      },
+      {
+        "question": "Â¿QuÃ© fÃ³rmula representa la energÃ­a potencial gravitatoria?",
+        "options": ["A) Ep = Â½ m vÂ²", "B) Ep = m Ã— g Ã— h", "C) Ep = F Ã— d"],
+        "correct": 1,
+        "explanation": "Ep = m Ã— g Ã— h, donde m es la masa, g es la aceleraciÃ³n de la gravedad y h es la altura."
+      },
+      {
+        "question": "Si elevas un libro a una altura mayor, Â¿quÃ© ocurre con su energÃ­a potencial?",
+        "options": ["A) Disminuye", "B) Aumenta", "C) Permanece igual"],
+        "correct": 1,
+        "explanation": "La energÃ­a potencial aumenta con la altura, ya que depende directamente de h (Ep = mgh)."
+      },
+      {
+        "question": "Un objeto en la cima de una montaÃ±a tiene energÃ­a potencial. Al caer, esa energÃ­a se convierte en:",
+        "options": ["A) EnergÃ­a quÃ­mica", "B) EnergÃ­a cinÃ©tica", "C) EnergÃ­a nuclear"],
+        "correct": 1,
+        "explanation": "Al caer, la energÃ­a potencial se transforma en energÃ­a cinÃ©tica: el objeto pierde altura y gana velocidad."
+      },
+      {
+        "question": "Dos objetos de diferente masa se encuentran a la misma altura. Â¿CuÃ¡l tiene mayor energÃ­a potencial?",
+        "options": ["A) El de menor masa", "B) El de mayor masa", "C) Ambos tienen la misma energÃ­a potencial"],
+        "correct": 1,
+        "explanation": "Ep = mgh, asÃ­ que a mayor masa, mayor energÃ­a potencial si la altura y la gravedad son iguales."
+      }
+    ]
+  },
+  "estados-de-agregacion": {
+    "questions": [
+      {
+        "question": "Â¿CuÃ¡les son los tres estados clÃ¡sicos de agregaciÃ³n de la materia?",
+        "options": ["A) SÃ³lido, lÃ­quido y plasma", "B) SÃ³lido, lÃ­quido y gaseoso", "C) LÃ­quido, gaseoso y plasma"],
+        "correct": 1,
+        "explanation": "Los tres estados clÃ¡sicos son sÃ³lido, lÃ­quido y gaseoso, aunque tambiÃ©n existe el plasma como cuarto estado."
+      },
+      {
+        "question": "En el estado sÃ³lido, las partÃ­culas se caracterizan por:",
+        "options": ["A) Estar muy separadas y moverse libremente", "B) Estar muy juntas y tener posiciones fijas", "C) Deslizarse unas sobre otras"],
+        "correct": 1,
+        "explanation": "En los sÃ³lidos, las partÃ­culas estÃ¡n fuertemente unidas en posiciones fijas, solo vibran sin desplazarse."
+      },
+      {
+        "question": "Â¿CÃ³mo se llama el cambio de estado de lÃ­quido a gas?",
+        "options": ["A) CondensaciÃ³n", "B) EvaporaciÃ³n o ebulliciÃ³n", "C) SolidificaciÃ³n"],
+        "correct": 1,
+        "explanation": "El paso de lÃ­quido a gas se llama evaporaciÃ³n (a cualquier temperatura) o ebulliciÃ³n (a una temperatura especÃ­fica)."
+      },
+      {
+        "question": "Â¿QuÃ© sucede con las partÃ­culas cuando un lÃ­quido se congela?",
+        "options": ["A) Se separan mÃ¡s", "B) Se ordenan y pierden movimiento", "C) Aumentan su velocidad"],
+        "correct": 1,
+        "explanation": "Al congelarse, las partÃ­culas pierden energÃ­a, se ordenan en una estructura fija y solo vibran, formando un sÃ³lido."
+      },
+      {
+        "question": "El plasma se diferencia de los otros estados porque:",
+        "options": ["A) EstÃ¡ formado por partÃ­culas ionizadas con carga elÃ©ctrica", "B) No tiene masa", "C) Solo existe en la Tierra"],
+        "correct": 0,
+        "explanation": "El plasma es un gas ionizado con partÃ­culas cargadas elÃ©ctricamente. Es el estado mÃ¡s abundante del universo (estrellas)."
+      }
+    ]
+  },
+  "modelos-atomicos": {
+    "questions": [
+      {
+        "question": "Â¿QuiÃ©n propuso el primer modelo atÃ³mico con base cientÃ­fica?",
+        "options": ["A) DemÃ³crito", "B) John Dalton", "C) Niels Bohr"],
+        "correct": 1,
+        "explanation": "John Dalton propuso en 1808 el primer modelo atÃ³mico moderno, considerando el Ã¡tomo como una esfera maciza e indivisible."
+      },
+      {
+        "question": "Â¿QuÃ© descubrimiento llevÃ³ a Thomson a proponer su modelo atÃ³mico?",
+        "options": ["A) El nÃºcleo atÃ³mico", "B) El electrÃ³n", "C) El neutrÃ³n"],
+        "correct": 1,
+        "explanation": "Thomson descubriÃ³ el electrÃ³n en 1897 y propuso un modelo conocido como 'pudÃ­n de pasas', con electrones incrustados en una esfera positiva."
+      },
+      {
+        "question": "El experimento de Rutherford con lÃ¡mina de oro demostrÃ³ que el Ã¡tomo tiene:",
+        "options": ["A) Electrones distribuidos uniformemente", "B) Un nÃºcleo pequeÃ±o y denso con carga positiva", "C) PartÃ­culas sin carga"],
+        "correct": 1,
+        "explanation": "Rutherford observÃ³ que algunas partÃ­culas alfa se desviaban, lo que indicaba un nÃºcleo pequeÃ±o, denso y con carga positiva en el centro del Ã¡tomo."
+      },
+      {
+        "question": "Â¿QuÃ© aportÃ³ el modelo de Bohr al conocimiento del Ã¡tomo?",
+        "options": ["A) Los electrones giran en Ã³rbitas definidas con niveles de energÃ­a", "B) El Ã¡tomo es indivisible", "C) El nÃºcleo contiene protones y neutrones"],
+        "correct": 0,
+        "explanation": "Bohr propuso que los electrones se mueven en Ã³rbitas circulares alrededor del nÃºcleo, cada una con un nivel de energÃ­a especÃ­fico."
+      },
+      {
+        "question": "Â¿QuÃ© partÃ­cula subatÃ³mica descubriÃ³ James Chadwick?",
+        "options": ["A) El protÃ³n", "B) El neutrÃ³n", "C) El electrÃ³n"],
+        "correct": 1,
+        "explanation": "Chadwick descubriÃ³ el neutrÃ³n en 1932, una partÃ­cula sin carga elÃ©ctrica ubicada en el nÃºcleo del Ã¡tomo."
+      }
+    ]
+  },
+  "enlace-ionico": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© ocurre en un enlace iÃ³nico?",
+        "options": ["A) Los Ã¡tomos comparten electrones", "B) Hay transferencia de electrones de un Ã¡tomo a otro", "C) Los electrones se mueven libremente"],
+        "correct": 1,
+        "explanation": "En el enlace iÃ³nico hay transferencia completa de electrones: un Ã¡tomo cede electrones y el otro los acepta."
+      },
+      {
+        "question": "Â¿Entre quÃ© tipo de elementos se forma tÃ­picamente un enlace iÃ³nico?",
+        "options": ["A) Metal y metal", "B) Metal y no metal", "C) No metal y no metal"],
+        "correct": 1,
+        "explanation": "El enlace iÃ³nico se forma entre un metal (que cede electrones) y un no metal (que acepta electrones)."
+      },
+      {
+        "question": "Â¿QuÃ© nombre recibe el compuesto formado por iones con carga positiva y negativa?",
+        "options": ["A) MolÃ©cula covalente", "B) Compuesto iÃ³nico", "C) Compuesto metÃ¡lico"],
+        "correct": 1,
+        "explanation": "Un compuesto iÃ³nico estÃ¡ formado por cationes (iones positivos) y aniones (iones negativos) unidos por atracciÃ³n electrostÃ¡tica."
+      },
+      {
+        "question": "El cloruro de sodio (NaCl) es un ejemplo de compuesto con enlace:",
+        "options": ["A) Covalente", "B) IÃ³nico", "C) MetÃ¡lico"],
+        "correct": 1,
+        "explanation": "En el NaCl, el sodio (metal) cede un electrÃ³n al cloro (no metal), formando un enlace iÃ³nico."
+      },
+      {
+        "question": "Â¿QuÃ© propiedad es caracterÃ­stica de los compuestos iÃ³nicos?",
+        "options": ["A) Conducen electricidad en estado sÃ³lido", "B) Conducen electricidad cuando estÃ¡n disueltos o fundidos", "C) Tienen puntos de fusiÃ³n bajos"],
+        "correct": 1,
+        "explanation": "Los compuestos iÃ³nicos conducen electricidad cuando estÃ¡n disueltos en agua o fundidos, porque los iones pueden moverse libremente."
+      }
+    ]
+  },
+  "enlace-covalente": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© caracteriza a un enlace covalente?",
+        "options": ["A) Transferencia de electrones", "B) ComparticiÃ³n de electrones entre Ã¡tomos", "C) AtracciÃ³n entre iones opuestos"],
+        "correct": 1,
+        "explanation": "En el enlace covalente dos Ã¡tomos comparten uno o mÃ¡s pares de electrones para completar su Ãºltima capa."
+      },
+      {
+        "question": "Â¿Entre quÃ© tipo de elementos se forma principalmente un enlace covalente?",
+        "options": ["A) Metal y no metal", "B) No metal y no metal", "C) Metal y metal"],
+        "correct": 1,
+        "explanation": "Los enlaces covalentes se forman entre no metales, que comparten electrones para alcanzar la estabilidad."
+      },
+      {
+        "question": "La molÃ©cula de agua (Hâ‚‚O) tiene enlaces:",
+        "options": ["A) IÃ³nicos", "B) Covalentes", "C) MetÃ¡licos"],
+        "correct": 1,
+        "explanation": "El agua tiene enlaces covalentes: cada Ã¡tomo de hidrÃ³geno comparte un par de electrones con el oxÃ­geno."
+      },
+      {
+        "question": "Â¿QuÃ© tipo de enlace covalente se forma cuando los Ã¡tomos comparten dos pares de electrones?",
+        "options": ["A) Enlace simple", "B) Enlace doble", "C) Enlace triple"],
+        "correct": 1,
+        "explanation": "Un enlace doble se forma cuando dos Ã¡tomos comparten dos pares de electrones (cuatro electrones en total)."
+      },
+      {
+        "question": "Â¿QuÃ© propiedad suelen tener los compuestos covalentes?",
+        "options": ["A) Altos puntos de fusiÃ³n", "B) Son solubles en agua y conducen electricidad", "C) Pueden ser gases, lÃ­quidos o sÃ³lidos de bajo punto de fusiÃ³n"],
+        "correct": 2,
+        "explanation": "Los compuestos covalentes suelen tener puntos de fusiÃ³n y ebulliciÃ³n bajos y pueden encontrarse en los tres estados a temperatura ambiente."
+      }
+    ]
+  },
+  "reaccion-quimica": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© es una reacciÃ³n quÃ­mica?",
+        "options": ["A) Un cambio de estado fÃ­sico", "B) Un proceso donde unas sustancias se transforman en otras", "C) Una mezcla de sustancias"],
+        "correct": 1,
+        "explanation": "Una reacciÃ³n quÃ­mica es un proceso en el que los reactivos se transforman en productos mediante la reorganizaciÃ³n de Ã¡tomos."
+      },
+      {
+        "question": "En una ecuaciÃ³n quÃ­mica, las sustancias que reaccionan se llaman:",
+        "options": ["A) Productos", "B) Reactivos", "C) Catalizadores"],
+        "correct": 1,
+        "explanation": "Los reactivos son las sustancias iniciales que se transforman; se escriben del lado izquierdo de la ecuaciÃ³n."
+      },
+      {
+        "question": "Â¿QuÃ© dice la ley de conservaciÃ³n de la masa en una reacciÃ³n quÃ­mica?",
+        "options": ["A) La masa puede crearse", "B) La masa total se conserva, no se crea ni se destruye", "C) La masa disminuye siempre"],
+        "correct": 1,
+        "explanation": "La ley de conservaciÃ³n de la masa (Lavoisier) establece que la masa total de los reactivos es igual a la masa total de los productos."
+      },
+      {
+        "question": "Â¿CuÃ¡l de los siguientes es un ejemplo de reacciÃ³n quÃ­mica?",
+        "options": ["A) Hervir agua", "B) OxidaciÃ³n de un clavo de hierro", "C) Disolver azÃºcar en agua"],
+        "correct": 1,
+        "explanation": "La oxidaciÃ³n del hierro es una reacciÃ³n quÃ­mica porque se forma una nueva sustancia (Ã³xido de hierro). Hervir agua y disolver azÃºcar son cambios fÃ­sicos."
+      },
+      {
+        "question": "Â¿QuÃ© sÃ­mbolo se usa en las ecuaciones quÃ­micas para indicar que se libera calor?",
+        "options": ["A) (s)", "B) (aq)", "C) Î”"],
+        "correct": 2,
+        "explanation": "El sÃ­mbolo Î” (delta) sobre la flecha indica que se aplica calor para que ocurra la reacciÃ³n."
+      }
+    ]
+  },
+  "ph": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© mide el pH?",
+        "options": ["A) La temperatura de una sustancia", "B) El grado de acidez o basicidad de una disoluciÃ³n", "C) La densidad de un lÃ­quido"],
+        "correct": 1,
+        "explanation": "El pH mide la concentraciÃ³n de iones de hidrÃ³geno (Hâº) en una disoluciÃ³n, indicando si es Ã¡cida, neutra o bÃ¡sica."
+      },
+      {
+        "question": "En la escala de pH, un valor de 7 indica que la sustancia es:",
+        "options": ["A) Ãcida", "B) Neutra", "C) BÃ¡sica"],
+        "correct": 1,
+        "explanation": "Un pH de 7 es neutro. El agua pura es el ejemplo mÃ¡s comÃºn de sustancia neutra."
+      },
+      {
+        "question": "Â¿QuÃ© rango de pH corresponde a una sustancia Ã¡cida?",
+        "options": ["A) 0 a 6", "B) 7", "C) 8 a 14"],
+        "correct": 0,
+        "explanation": "Las sustancias Ã¡cidas tienen un pH menor a 7, en el rango de 0 a 6. A menor pH, mayor acidez."
+      },
+      {
+        "question": "El jugo de limÃ³n tiene un pH aproximadamente de 2. Esto significa que es:",
+        "options": ["A) Muy bÃ¡sico", "B) Muy Ã¡cido", "C) Neutro"],
+        "correct": 1,
+        "explanation": "El jugo de limÃ³n es muy Ã¡cido (pH â‰ˆ 2), por eso tiene un sabor agrio caracterÃ­stico."
+      },
+      {
+        "question": "Â¿CuÃ¡l de las siguientes sustancias tiene pH bÃ¡sico?",
+        "options": ["A) Vinagre", "B) JabÃ³n", "C) Refresco de cola"],
+        "correct": 1,
+        "explanation": "El jabÃ³n tiene pH bÃ¡sico (alcalino), generalmente entre 8 y 10. El vinagre y el refresco son Ã¡cidos."
+      }
+    ]
+  },
+  "metodos-de-separacion": {
+    "questions": [
+      {
+        "question": "Â¿QuÃ© mÃ©todo de separaciÃ³n se usa para separar un sÃ³lido insoluble de un lÃ­quido?",
+        "options": ["A) DestilaciÃ³n", "B) FiltraciÃ³n", "C) ImantaciÃ³n"],
+        "correct": 1,
+        "explanation": "La filtraciÃ³n separa sÃ³lidos insolubles de lÃ­quidos usando un medio poroso como papel filtro."
+      },
+      {
+        "question": "Â¿En quÃ© consiste la decantaciÃ³n?",
+        "options": ["A) Separar por diferencia de densidades", "B) Separar por puntos de ebulliciÃ³n", "C) Separar por tamaÃ±o de partÃ­culas"],
+        "correct": 0,
+        "explanation": "La decantaciÃ³n separa mezclas heterogÃ©neas aprovechando la diferencia de densidades, como agua y aceite."
+      },
+      {
+        "question": "Â¿QuÃ© mÃ©todo separa lÃ­quidos con diferentes puntos de ebulliciÃ³n?",
+        "options": ["A) FiltraciÃ³n", "B) DecantaciÃ³n", "C) DestilaciÃ³n"],
+        "correct": 2,
+        "explanation": "La destilaciÃ³n separa lÃ­quidos mediante calentamiento: el lÃ­quido con menor punto de ebulliciÃ³n se evapora primero y luego se condensa."
+      },
+      {
+        "question": "Para separar una mezcla de limaduras de hierro y arena, el mÃ©todo mÃ¡s eficaz es:",
+        "options": ["A) FiltraciÃ³n", "B) ImantaciÃ³n", "C) Tamizado"],
+        "correct": 1,
+        "explanation": "La imantaciÃ³n usa un imÃ¡n para separar materiales magnÃ©ticos (hierro) de los no magnÃ©ticos (arena)."
+      },
+      {
+        "question": "Â¿QuÃ© mÃ©todo separa mezclas segÃºn el tamaÃ±o de las partÃ­culas usando una malla?",
+        "options": ["A) Tamizado", "B) DestilaciÃ³n", "C) DecantaciÃ³n"],
+        "correct": 0,
+        "explanation": "El tamizado separa partÃ­culas sÃ³lidas de diferentes tamaÃ±os haciÃ©ndolas pasar por una malla o tamiz."
+      }
+    ]
+  }
+}
+
