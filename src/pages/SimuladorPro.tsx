@@ -255,6 +255,9 @@ const SimuladorPro = () => {
     const [rankingActivos, setRankingActivos] = useState<any[] | null>(null);
     const [rankingPorArea, setRankingPorArea] = useState<any[] | null>(null);
     const [rankingLoading, setRankingLoading] = useState(false);
+    const [exaniSelectedOption, setExaniSelectedOption] = useState<'20' | '50' | '130' | 'custom'>('130');
+    const [exaniCustomInput, setExaniCustomInput] = useState<string>('130');
+    const [examInitialTime, setExamInitialTime] = useState(EXAM_TIME_SECONDS);
 
     // Testimonio
     const [showTestimonio, setShowTestimonio] = useState(false);
@@ -769,11 +772,36 @@ const SimuladorPro = () => {
         setUserAnswers({});
         setMarkedForReview({});
         setCurrentQuestionIndex(0);
-        setTimeLeft(mode === 'practice' ? PRACTICE_TIME_SECONDS : EXAM_TIME_SECONDS);
+        const initialTime = mode === 'practice' ? PRACTICE_TIME_SECONDS : EXAM_TIME_SECONDS;
+        setTimeLeft(initialTime);
+        setExamInitialTime(initialTime);
         setShowResults(false);
         trackSimuladorStart();
         clarityEvent('simulador_iniciado');
         void track('simulador_iniciado', { userId: user?.id, metadata: { banco: selectedBank, modo: mode } });
+    };
+
+    const handleStartExaniExam = () => {
+        const count = exaniSelectedOption === '20' ? 20
+            : exaniSelectedOption === '50' ? 50
+            : exaniSelectedOption === '130' ? 130
+            : Math.max(5, Math.min(550, parseInt(exaniCustomInput) || 130));
+        const pool = buildPool(selectedArea);
+        const questions = shuffleArray(pool).map(shuffleQuestionOptions).slice(0, Math.min(count, pool.length));
+        const timeSeconds = Math.round(count * SECONDS_PER_QUESTION);
+        setActiveQuestions(questions);
+        setExamMode('practice');
+        setIsExamActive(true);
+        setStartTime(Date.now());
+        setUserAnswers({});
+        setMarkedForReview({});
+        setCurrentQuestionIndex(0);
+        setTimeLeft(timeSeconds);
+        setExamInitialTime(timeSeconds);
+        setShowResults(false);
+        trackSimuladorStart();
+        clarityEvent('simulador_iniciado');
+        void track('simulador_iniciado', { userId: user?.id, metadata: { banco: 'bank1', modo: `exani-${count}` } });
     };
 
     const verificarTestimonio = async () => {
@@ -834,7 +862,7 @@ const SimuladorPro = () => {
         setIsExamActive(false);
         setShowResults(true);
         const finalScore = calculateScore();
-        const startTime_ = examMode === 'full' ? EXAM_TIME_SECONDS : PRACTICE_TIME_SECONDS;
+        const startTime_ = examInitialTime;
         const totalTime = startTime_ - timeLeft;
         const pct = Math.round((finalScore / activeQuestions.length) * 100);
         trackSimuladorComplete(finalScore, totalTime, pct >= 70 ? 'aprobado' : 'reprobado');
@@ -1062,13 +1090,54 @@ const SimuladorPro = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <button onClick={() => handleStartExam('full')} className="px-8 py-4 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-bold rounded-xl transition-all text-lg shadow-lg shadow-teal-500/25">
-                            Simulador Completo ({exaniPool.length} preguntas · 3h)
-                        </button>
-                        <button onClick={() => handleStartExam('practice')} className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-lg border border-white/10">
-                            Práctica (20 preguntas)
-                        </button>
+                    <div className="space-y-6">
+                        <div>
+                            <p className="text-sm font-semibold text-white/60 mb-3 text-center">Número de preguntas</p>
+                            <div className="flex flex-wrap gap-3 justify-center">
+                                {([
+                                    { value: '20',     label: '20 preguntas',  sublabel: 'práctica rápida' },
+                                    { value: '50',     label: '50 preguntas',  sublabel: 'práctica media' },
+                                    { value: '130',    label: '130 preguntas', sublabel: 'examen real EXANI-I' },
+                                    { value: 'custom', label: 'Personalizado', sublabel: 'tú eliges' },
+                                ] as const).map(opt => (
+                                    <button
+                                        key={opt.value}
+                                        onClick={() => setExaniSelectedOption(opt.value)}
+                                        className={`px-5 py-3 rounded-xl text-sm font-bold transition-all border flex flex-col items-center min-w-[120px] ${
+                                            exaniSelectedOption === opt.value
+                                                ? 'bg-teal-600 text-white border-teal-600 shadow-lg shadow-teal-500/25'
+                                                : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
+                                        }`}
+                                    >
+                                        <span>{opt.label}</span>
+                                        <span className="text-xs font-normal opacity-70 mt-0.5">{opt.sublabel}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        {exaniSelectedOption === 'custom' && (
+                            <div className="flex flex-col items-center gap-2">
+                                <label className="text-sm text-white/50">¿Cuántas preguntas?</label>
+                                <input
+                                    type="number"
+                                    min={5}
+                                    max={550}
+                                    value={exaniCustomInput}
+                                    onChange={e => setExaniCustomInput(e.target.value)}
+                                    className="w-36 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white text-center text-lg font-bold focus:outline-none focus:border-teal-500"
+                                    placeholder="130"
+                                />
+                                <p className="text-xs text-white/30">mínimo 5 · máximo 550</p>
+                            </div>
+                        )}
+                        <div className="flex justify-center">
+                            <button
+                                onClick={handleStartExaniExam}
+                                className="px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white font-bold rounded-xl transition-all text-lg shadow-lg shadow-teal-500/25"
+                            >
+                                Iniciar Simulador
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
