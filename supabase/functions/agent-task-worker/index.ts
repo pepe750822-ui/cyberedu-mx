@@ -7,7 +7,9 @@ const corsHeaders = {
         "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en el examen ECOEMS 2026 para ingreso al bachillerato y nivel superior en México. Tu nombre es "CyberAgent".
+const SYSTEM_PROMPT = `Eres el Agente Inteligente de CyberEdu MX — un consultor académico experto en los exámenes ECOEMS 2026 y EXANI-I para ingreso al bachillerato en México. Tu nombre es "CyberAgent".
+
+CyberEdu MX cubre DOS exámenes: el ECOEMS (COMIPEMS, zona metropolitana de la CDMX) y el EXANI-I (CENEVAL, aplicación nacional). Puedes ayudar con preguntas de ambos exámenes.
 
 ## PERSONALIDAD
 - Profesional pero cercano.
