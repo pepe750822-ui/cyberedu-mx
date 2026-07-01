@@ -258,6 +258,8 @@ const SimuladorPro = () => {
     const [exaniSelectedOption, setExaniSelectedOption] = useState<'20' | '50' | '130' | 'custom'>('130');
     const [exaniCustomInput, setExaniCustomInput] = useState<string>('130');
     const [examInitialTime, setExamInitialTime] = useState(EXAM_TIME_SECONDS);
+    // null = todas las áreas; Set<string> = áreas específicas seleccionadas
+    const [exaniSelectedAreas, setExaniSelectedAreas] = useState<Set<string> | null>(null);
 
     // Testimonio
     const [showTestimonio, setShowTestimonio] = useState(false);
@@ -786,7 +788,10 @@ const SimuladorPro = () => {
             : exaniSelectedOption === '50' ? 50
             : exaniSelectedOption === '130' ? 130
             : Math.max(5, Math.min(550, parseInt(exaniCustomInput) || 130));
-        const pool = buildPool(selectedArea);
+        const exaniSrc = bankData.bank1 ?? [];
+        const pool = exaniSelectedAreas === null
+            ? exaniSrc
+            : exaniSrc.filter(q => exaniSelectedAreas.has(q.area));
         const questions = shuffleArray(pool).map(shuffleQuestionOptions).slice(0, Math.min(count, pool.length));
         const timeSeconds = Math.round(count * SECONDS_PER_QUESTION);
         setActiveQuestions(questions);
@@ -1077,18 +1082,59 @@ const SimuladorPro = () => {
                         <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-400 to-emerald-300 bg-clip-text text-transparent">Simulador EXANI-I</h1>
                         <p className="text-white/50 mt-2">{exaniPool.length} preguntas disponibles</p>
                     </div>
-                    <div className="space-y-4 mb-8">
-                        <p className="text-sm font-semibold text-white/60">Filtrar por área</p>
-                        <div className="flex flex-wrap gap-2">
-                            <button onClick={() => setSelectedArea('all')} className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border ${selectedArea === 'all' ? 'bg-teal-600 text-white border-teal-600' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}>
-                                Todas
-                            </button>
-                            {uniqueAreas.map(a => (
-                                <button key={a} onClick={() => setSelectedArea(a)} className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border ${selectedArea === a ? 'bg-teal-600 text-white border-teal-600' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}>
-                                    {a}
+                    <div className="space-y-3 mb-8">
+                        <div className="flex items-center justify-between">
+                            <p className="text-sm font-semibold text-white/60">Filtrar por área</p>
+                            {exaniSelectedAreas !== null && (
+                                <button
+                                    onClick={() => setExaniSelectedAreas(null)}
+                                    className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                                >
+                                    Seleccionar todas
                                 </button>
-                            ))}
+                            )}
                         </div>
+                        <div className="flex flex-wrap gap-2">
+                            {uniqueAreas.map(a => {
+                                const isSelected = exaniSelectedAreas === null || exaniSelectedAreas.has(a);
+                                return (
+                                    <button
+                                        key={a}
+                                        onClick={() => {
+                                            setExaniSelectedAreas(prev => {
+                                                if (prev === null) {
+                                                    const next = new Set(uniqueAreas.filter(x => x !== a));
+                                                    return next.size === 0 ? null : next;
+                                                }
+                                                const next = new Set(prev);
+                                                if (next.has(a)) {
+                                                    next.delete(a);
+                                                    return next.size === 0 ? null : next;
+                                                } else {
+                                                    next.add(a);
+                                                    return next.size === uniqueAreas.length ? null : next;
+                                                }
+                                            });
+                                        }}
+                                        className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border flex items-center gap-1.5 ${
+                                            isSelected
+                                                ? 'bg-teal-600 text-white border-teal-600'
+                                                : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white/60'
+                                        }`}
+                                    >
+                                        <span className={`text-[10px] ${isSelected ? 'text-teal-200' : 'text-white/30'}`}>
+                                            {isSelected ? '✓' : '○'}
+                                        </span>
+                                        {a}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {exaniSelectedAreas !== null && (
+                            <p className="text-xs text-white/40">
+                                {(bankData.bank1 ?? []).filter(q => exaniSelectedAreas.has(q.area)).length} preguntas disponibles con las áreas seleccionadas
+                            </p>
+                        )}
                     </div>
                     <div className="space-y-6">
                         <div>
