@@ -131,7 +131,6 @@ const AREA_GROUPS = [
     { emoji: '🌎', label: 'Ciencias Sociales', areas: ['Historia', 'Geografía', 'Formación Cívica y Ética'] },
 ] as const;
 
-const SECONDS_PER_QUESTION = 84.375;
 const STORAGE_KEY = 'simulador_infinito_estado';
 
 const formatTime = (s: number): string => {
@@ -163,8 +162,10 @@ const SimuladorInfinito: React.FC = () => {
     const [estadoGuardado, setEstadoGuardado] = useState<any>(null);
 
     // Config
-    const [cantidad, setCantidad] = useState(128);
-    const [customInput, setCustomInput] = useState('128');
+    const SECONDS_PER_QUESTION = esExaniI ? (240 * 60) / 130 : 84.375;
+    const defaultCantidad = esExaniI ? 130 : 128;
+    const [cantidad, setCantidad] = useState(defaultCantidad);
+    const [customInput, setCustomInput] = useState(String(defaultCantidad));
     const [showCustom, setShowCustom] = useState(false);
     const [materias, setMaterias] = useState<string[]>(esExaniI ? [...MATERIAS_EXANI] : [...ALL_MATERIAS]);
     const [fuente, setFuente] = useState<'bancos' | 'subindices' | 'ambas'>('ambas');
@@ -468,7 +469,7 @@ const SimuladorInfinito: React.FC = () => {
                             ¿Cuántas preguntas?
                         </p>
                         <div className="grid grid-cols-5 gap-2">
-                            {([10, 20, 50, 128, 200] as const).map(n => (
+                            {(esExaniI ? [10, 20, 50, 130, 200] : [10, 20, 50, 128, 200] as const).map(n => (
                                 <button
                                     key={n}
                                     onClick={() => { setCantidad(n); setShowCustom(false); }}
@@ -586,7 +587,7 @@ const SimuladorInfinito: React.FC = () => {
                         <div className="space-y-2">
                             {([
                                 { value: 'bancos', label: 'Solo bancos SimuladorPro', desc: 'Preguntas de los bancos desbloqueados' },
-                                { value: 'subindices', label: 'Solo práctica por subíndice', desc: '~3,680 preguntas clasificadas por tema' },
+                                { value: 'subindices', label: 'Solo práctica por subíndice', desc: esExaniI ? '~405 preguntas clasificadas por tema' : '~3,680 preguntas clasificadas por tema' },
                                 { value: 'ambas', label: 'Ambas fuentes', desc: 'Recomendado — mayor variedad', recommended: true },
                             ] as const).map(opt => (
                                 <button
