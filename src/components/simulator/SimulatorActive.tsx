@@ -95,7 +95,7 @@ export const SimulatorActive: React.FC<SimulatorActiveProps> = ({
     const handleAskTutor = () => {
         if (!currentQuestion) return;
         const correct = currentQuestion.options[currentQuestion.correctIndex];
-        const message = `Explícame esta pregunta del ECOEMS:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
+        const message = `Explícame esta pregunta del examen:\n"${currentQuestion.text}"\n\nLa respuesta correcta es: "${correct}"\n\n${currentQuestion.explanation}`;
         window.dispatchEvent(new CustomEvent('cyberedu:open-chat', { detail: { message } }));
         onAskTutor?.(currentQuestion);
     };

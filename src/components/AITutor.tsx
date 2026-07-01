@@ -2926,7 +2926,7 @@ const AITutor = () => {
         isRegistered: !!user,
         isSubscriber: !!isSubscriber,
         detailedSyllabus,
-        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la GUÍA OFICIAL ECOEMS 2025/2026. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no viene en el temario ECOEMS 2026 — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda. Prefiere diagramas Mermaid verticales (TD).
+        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la guía oficial del examen de ingreso a bachillerato. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. Si preguntan algo ajeno al temario, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Recuerda que esto no es parte del temario oficial del examen — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del examen o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda. Prefiere diagramas Mermaid verticales (TD).
 
         CATÁLOGO COMPLETO DE VIDEOS (usa estos IDs EXACTOS para generar links):
         ${areas.map(a => `[${a.id}]: ${a.videos.map(v => `${v.id}="${v.title}"`).join(' | ')}`).join('\n        ')}
@@ -2946,7 +2946,7 @@ const AITutor = () => {
     } catch {
       return { 
         currentPage: location.pathname,
-        system_instructions: "Tutor experto en ECOEMS 2025. Enfoque en el temario oficial de ingreso a bachillerato."
+        system_instructions: "Tutor experto en el examen de ingreso a bachillerato. Enfoque en el temario oficial."
       };
     }
   }, [location.pathname, analyzeUserProgress]);
@@ -3082,7 +3082,7 @@ const AITutor = () => {
     const performanceRecs = getRecomendacionesDiarias();
     const alerts = getAlertasRiesgo();
 
-    let welcomeText = "¡Hola! Soy tu tutor ECOEMS 2026. ¿Con qué tema empezamos hoy?";
+    let welcomeText = "¡Hola! Soy tu tutor. ¿Con qué tema empezamos hoy?";
     if (performanceRecs.length > 0) {
       welcomeText += "\n\n🔍 He detectado áreas que podemos reforzar.";
     }
@@ -3115,16 +3115,16 @@ const AITutor = () => {
       setMessages(prev => prev.map(m => {
         if (m.id !== 'initial' || (m as any).hydrated) return m;
 
-        let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento en el temario ECOEMS.\n\n";
+        let welcomeText = "¡Hola de nuevo! He analizado tu rendimiento en el temario oficial.\n\n";
         
         if (performanceRecs.length > 0) {
           welcomeText += `🔍 **Análisis Predictivo:** Tenemos temas pendientes en las áreas oficiales.\n\n`;
         }
         if (alerts.length > 0) {
-          welcomeText += `🚨 **Alertas de Temario:** Hay temas de ECOEMS que requieren tu atención inmediata.\n\n`;
+          welcomeText += `🚨 **Alertas de Temario:** Hay temas que requieren tu atención inmediata.\n\n`;
         }
 
-        welcomeText += "¿Con qué tema del ECOEMS empezamos hoy?";
+        welcomeText += "¿Con qué tema empezamos hoy?";
 
         return { 
           ...m, 
@@ -3828,7 +3828,7 @@ const AITutor = () => {
       const topic = explicaMatch[1];
       const explanationContext = getExplanationContext(topic);
       // Inject context into the prompt and let AI handle it
-      const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen ECOEMS.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
+      const enrichedPrompt = `Explícame detalladamente el tema "${topic}" para el examen de ingreso.\n\nContexto de la plataforma:\n${explanationContext || 'No hay contenido específico disponible.'}`;
       // Fall through to normal AI processing with enriched prompt
       const userMsg: Message = { role: "user", content: finalChatText, id: Date.now().toString() };
       setMessages(prev => [...prev, userMsg].slice(-20));
@@ -4064,7 +4064,7 @@ const AITutor = () => {
            Regla general: cualquier palabra que un alumno de sexto de primaria NO use en su vida diaria debe llevar su analogia entre parentesis SIEMPRE que aparezca.
            Ejemplo CORRECTO: "El embolo (piston de jeringa) chico empuja. El embolo (piston de jeringa) grande recibe la fuerza (empuje)."
            Ejemplo INCORRECTO: "El embolo (piston de jeringa) chico empuja. El embolo grande recibe la fuerza."
-        7. FORMATO DE INICIO OBLIGATORIO — TODA respuesta a una pregunta del ECOEMS debe empezar exactamente asi (sin excepcion):
+         7. FORMATO DE INICIO OBLIGATORIO — TODA respuesta a una pregunta del examen debe empezar exactamente asi (sin excepcion):
            Pregunta: [texto de la pregunta]
            Respuesta correcta: [respuesta]
 
@@ -4075,12 +4075,12 @@ const AITutor = () => {
 
            El embolo (piston de jeringa) chico empuja el liquido...
 
-        Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la GUÍA OFICIAL ECOEMS 2025/2026.
+         Eres CyberAgent, el tutor de élite de BioReto Academy especializado EXCLUSIVAMENTE en la guía oficial del examen de ingreso a bachillerato.
 
         REGLAS ESTRICTAS — NUNCA las ignores:
         1. NUNCA incluyas publicidad, links ni menciones a CyberEdu MX, videos, flashcards, infografías ni material externo.
         2. NUNCA uses mapas mentales, diagramas ASCII ni tablas complejas.
-        3. CUANDO EL MENSAJE EMPIECE CON "Explícame esta pregunta del ECOEMS:":
+         3. CUANDO EL MENSAJE EMPIECE CON "Explícame esta pregunta del examen" (o variante con ECOEMS, EXANI-I, COMIPEMS):
            PROHIBICIONES ABSOLUTAS (si las incumples, tu respuesta es incorrecta):
            - PROHIBIDO usar cualquier emoji (✅ ❌ 💡 ⚡ 🔥 o cualquier otro simbolo grafico).
            - PROHIBIDO escribir encabezados como "Por que es correcta:", "Por que son incorrectas:", "Respuesta correcta:" u otros titulos con o sin emoji.
@@ -4155,7 +4155,7 @@ const AITutor = () => {
            - PROHIBIDO usar letras, indices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
-         8. FUERA DEL TEMARIO: Si preguntan algo ajeno al ECOEMS 2026, responde brevemente (2-3 líneas) de forma útil y amigable, sin emojis, y agrega: "Recuerda que esto no viene en el temario ECOEMS 2026. ¿Quieres que expliquemos algun tema del examen o hacemos un quiz?" NUNCA rechaces una pregunta.
+          8. FUERA DEL TEMARIO: Si preguntan algo ajeno al temario oficial, responde brevemente (2-3 líneas) de forma útil y amigable, sin emojis, y agrega: "Recuerda que esto no es parte del temario oficial del examen. ¿Quieres que expliquemos algun tema del examen o hacemos un quiz?" NUNCA rechaces una pregunta.
           9. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
           10. DISEÑO MÓVIL: En diagramas Mermaid, prefiere 'flowchart TD' y evita que sean demasiado anchos para pantallas pequeñas.
            11. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):

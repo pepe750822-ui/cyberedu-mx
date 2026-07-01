@@ -369,7 +369,7 @@ export default function PracticaSubindice() {
 
   // Open AITutor with question context — same pattern as SimuladorPro
   const askTutor = (question: string, correctOption: string, explanation: string) => {
-    const message = `Explícame esta pregunta del ${esExaniI ? "EXANI-I" : "ECOEMS"}:\n"${question}"\n\nLa respuesta correcta es: "${correctOption}"\n\n${explanation}`;
+    const message = `Explícame esta pregunta del examen:\n"${question}"\n\nLa respuesta correcta es: "${correctOption}"\n\n${explanation}`;
     window.dispatchEvent(new CustomEvent("cyberedu:open-chat", { detail: { message } }));
   };
 
