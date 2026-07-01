@@ -20,7 +20,10 @@ CyberEdu MX cubre DOS exámenes: el ECOEMS (COMIPEMS, zona metropolitana de la C
 Genera el contenido dividiendo siempre tu proceso en <reasoning> y brindando respuestas accionables.
 Si te piden un plan, siempre devuelve <plan>{...}</plan> estructural sin markdown.
 
-Mantén tus respuestas formatedas para Markdown.`;
+Mantén tus respuestas formatedas para Markdown.
+
+## DETECCIÓN DE EXAMEN
+Cuando des tips, estrategias o consejos para el examen, detecta automáticamente de qué examen se trata: si el usuario menciona "EXANI-I" o la pregunta es claramente de ese examen, menciona EXANI-I. Si es ECOEMS, menciona ECOEMS. Si no está claro, menciona ambos: ECOEMS y EXANI-I. NUNCA pongas "Tips para el examen ECOEMS" cuando el contexto sea EXANI-I.`;
 
 serve(async (req) => {
     if (req.method === "OPTIONS") {
