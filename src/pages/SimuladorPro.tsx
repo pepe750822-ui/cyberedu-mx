@@ -477,13 +477,13 @@ const SimuladorPro = () => {
 
     const handleSaveAndExit = () => {
         saveStateToLocalStorage();
-        navigate('/');
+        navigate(esExaniI ? '/exani-i' : '/');
         toast({ title: "Simulador guardado", description: "Podrás continuarlo la próxima vez que regreses." });
     };
 
     const handleAbandon = () => {
         saveStateToLocalStorage();
-        navigate('/simulador-pro');
+        navigate(esExaniI ? '/exani-i' : '/simulador-pro');
         toast({ title: "Simulador guardado", description: "Podrás continuarlo la próxima vez que regreses." });
     };
 
@@ -897,7 +897,7 @@ const SimuladorPro = () => {
                 selectedEscuela={selectedEscuela}
                 onRestartFull={() => handleStartExam('full')}
                 onRestartPractice={() => handleStartExam('practice')}
-                onBackToDashboard={() => navigate('/')}
+                onBackToDashboard={() => navigate(esExaniI ? '/exani-i' : '/')}
             >
                 <ProgressPanel
                     userId={user?.id ?? null}
@@ -1120,7 +1120,7 @@ const SimuladorPro = () => {
                 if (selectedBank === 'bank13' && !b13u) return 10;
                 return Math.min(PRACTICE_QUESTION_COUNT, buildPool(selectedArea).length);
             })()}
-            onBackToHome={() => navigate('/')}
+            onBackToHome={() => navigate(esExaniI ? '/exani-i' : '/')}
             userTokens={profile?.tokens ?? 0}
             bank6Unlocked={(profile as any)?.bank6_unlocked === true}
             bank7Unlocked={(profile as any)?.bank7_unlocked === true}

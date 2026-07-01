@@ -740,8 +740,8 @@ const SimuladorInfinito: React.FC = () => {
                 onPause={() => { setIsPaused(true); guardarEstado(); }}
                 onResume={() => setIsPaused(false)}
                 onFinish={handleFinish}
-                onSaveAndExit={() => { guardarEstado(); navigate('/'); }}
-                onAbandon={() => { localStorage.removeItem(STORAGE_KEY); navigate('/'); }}
+                onSaveAndExit={() => { guardarEstado(); navigate(esExaniI ? '/exani-i' : '/'); }}
+                onAbandon={() => { localStorage.removeItem(STORAGE_KEY); navigate(esExaniI ? '/exani-i' : '/'); }}
                 onToggleMark={() => {
                     const q = questions[currentIndex];
                     if (q) setMarkedForReview(prev => ({ ...prev, [q.id]: !prev[q.id] }));
