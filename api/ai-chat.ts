@@ -453,11 +453,12 @@ export default async function handler(req: Request) {
   try {
     const { messages, context, memory, file, isTelegram } = body;
     const isExaniI = Boolean(context?.isExaniI) || context?.currentPage === '/exani-i';
+    const examMode = isExaniI ? ':exani' : ':ecoems';
 
     // ── Cache check ──────────────────────────────────────────
     const lastUserMsg = [...(messages || [])].reverse().find((m: any) => m.role === 'user')?.content || '';
     const { shouldCache, cacheType } = isCacheable(lastUserMsg, messages || []);
-    const cacheKey = shouldCache ? normalizeCacheKey(lastUserMsg, cacheType!) : normalizeCacheKey(lastUserMsg, 'simple');
+    const cacheKey = (shouldCache ? normalizeCacheKey(lastUserMsg, cacheType!) : normalizeCacheKey(lastUserMsg, 'simple')) + examMode;
 
     if (shouldCache) {
       const cached = await cacheGet(cacheKey);
