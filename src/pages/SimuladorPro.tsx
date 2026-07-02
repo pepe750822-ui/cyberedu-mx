@@ -838,35 +838,39 @@ const SimuladorPro = () => {
     };
 
     const guardarTestimonio = async () => {
-        const { error } = await supabase
-            .from('testimonios')
-            .insert({
-                user_id: user!.id,
-                texto: textoTestimonio.trim(),
-                nombre: profile?.name || user!.email,
-                simuladores_completados: totalSimuladoresUser,
-                total_preguntas: totalPreguntasUser,
-            });
-        if (!error) {
-            toast.success('¡Gracias por compartir tu experiencia! 🌟');
-            setShowTestimonio(false);
-            setTextoTestimonio('');
-            void track('testimonio_enviado', { userId: user!.id });
+        const shareText = `¡Llevo ${totalSimuladoresUser} simuladores completados en CyberEdu MX!\nMe estoy preparando para mi examen de admisión 🎓\n👉 cyberedumx.com`;
 
-            const shareText = `¡Llevo ${totalSimuladoresUser} simuladores en CyberEdu MX! Prepárate para tu examen en cyberedumx.com`;
-            try {
-                if (navigator.share) {
-                    await navigator.share({ text: shareText, url: 'https://cyberedumx.com' });
-                } else {
-                    await navigator.clipboard.writeText(shareText);
-                    toast.info('¡Texto copiado al portapapeles! Compártelo donde quieras.');
-                }
-            } catch {
-                // user cancelled share or clipboard unavailable — silently ignore
+        // Share first (modal still visible — avoids blank screen flash)
+        try {
+            if (navigator.share) {
+                await navigator.share({ text: shareText, url: 'https://cyberedumx.com' });
+            } else {
+                await navigator.clipboard.writeText(shareText);
+                toast.info('¡Texto copiado al portapapeles! Compártelo donde quieras.');
             }
-        } else {
-            toast.error('Error al guardar, intenta de nuevo');
+        } catch {
+            // user cancelled share dialog — still close modal normally
         }
+
+        // Save testimonio to DB only if they wrote something
+        if (textoTestimonio.trim().length >= 10) {
+            const { error } = await supabase
+                .from('testimonios')
+                .insert({
+                    user_id: user!.id,
+                    texto: textoTestimonio.trim(),
+                    nombre: profile?.name || user!.email,
+                    simuladores_completados: totalSimuladoresUser,
+                    total_preguntas: totalPreguntasUser,
+                });
+            if (!error) {
+                toast.success('¡Gracias por compartir tu experiencia! 🌟');
+                void track('testimonio_enviado', { userId: user!.id });
+            }
+        }
+
+        setShowTestimonio(false);
+        setTextoTestimonio('');
     };
 
     const calculateScore = () => {
@@ -999,8 +1003,8 @@ const SimuladorPro = () => {
                             </p>
                         </div>
                         <textarea
-                            placeholder="Ej: Me ayudó muchísimo a entender los temas de matemáticas, antes reprobaba y ahora me siento más seguro..."
-                            rows={4}
+                            placeholder="Opcional: cuéntanos cómo te ha ayudado (mínimo 10 caracteres para enviarlo a la comunidad)..."
+                            rows={3}
                             value={textoTestimonio}
                             onChange={e => setTextoTestimonio(e.target.value)}
                             maxLength={500}
@@ -1012,8 +1016,7 @@ const SimuladorPro = () => {
                         <div className="flex gap-2 mt-4">
                             <button
                                 onClick={guardarTestimonio}
-                                disabled={textoTestimonio.trim().length < 10}
-                                className="flex-1 bg-purple-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-purple-700 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="flex-1 bg-purple-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-purple-700 active:scale-95 transition-all"
                             >
                                 Compartir mi experiencia 💜
                             </button>
