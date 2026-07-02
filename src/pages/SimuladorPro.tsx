@@ -864,9 +864,9 @@ const SimuladorPro = () => {
                     total_preguntas: totalPreguntasUser,
                 });
             if (!error) {
-                toast.success('¡Gracias por compartir tu experiencia! 🌟');
                 void track('testimonio_enviado', { userId: user!.id });
             }
+            toast.success('¡Gracias! Tu experiencia fue guardada 🎉');
         }
 
         setShowTestimonio(false);
