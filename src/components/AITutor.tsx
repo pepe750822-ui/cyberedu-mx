@@ -4021,7 +4021,15 @@ const AITutor = () => {
     };
 
     try {
-      const detailedSyllabus = {
+      const isExaniI = location.pathname === '/exani-i' || location.search.includes('exani-i');
+
+      const detailedSyllabus = isExaniI ? {
+        "1. Pensamiento científico (30 reactivos)": ["1.1 Biología celular y molecular", "1.2 Ecología y medio ambiente", "1.3 Física: movimiento, fuerzas, energía, ondas", "1.4 Química: materia, reacciones, tabla periódica"],
+        "2. Comprensión lectora (30 reactivos)": ["2.1 Identificación de tema e idea principal", "2.2 Inferencias y relaciones entre ideas", "2.3 Propósito y punto de vista del autor", "2.4 Vocabulario en contexto"],
+        "3. Redacción indirecta (30 reactivos)": ["3.1 Coherencia y cohesión textual", "3.2 Ortografía y gramática (tildes, puntuación, tiempos verbales)", "3.3 Organización y estructura de párrafos", "3.4 Tipos de texto (argumentativo, expositivo, narrativo)"],
+        "4. Pensamiento matemático (40 reactivos)": ["4.1 Álgebra (ecuaciones, expresiones algebraicas)", "4.2 Geometría (áreas, perímetros, Pitágoras, ángulos)", "4.3 Estadística y probabilidad", "4.4 Trigonometría básica", "4.5 Aritmética, fracciones y proporciones"],
+        "5. Inglés — evaluación diagnóstica (30 reactivos)": ["5.1 Comprensión de lectura en inglés", "5.2 Vocabulario y gramática en inglés", "5.3 Identificación de ideas principales en textos en inglés"],
+      } : {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario (Analogías, Sinónimos, Antónimos)"],
         "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
         "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos (informativos, literarios, legales/administrativos, publicitarios)", "3.3 Ortografía y gramática (presente histórico, tiempos verbales)", "3.4 Organización de información", "3.5 Recursos retóricos (exageración en publicidad)"],
@@ -4031,7 +4039,7 @@ const AITutor = () => {
         "7. Ciencias III (Química)": ["7.1 Características de materiales", "7.2 Estructura y periodicidad (Tabla Periódica)"],
         "8. Historia": ["8.1 Historia Universal", "8.2 Historia de México (Revolución, Guerra Cristera, movimientos sociales años 60, neoliberalismo, TLCAN)"],
         "9. Geografía": ["9.1 Mapas y SIG/GPS", "9.2 Recursos y ambiente (ecoturismo, ecotecnias)", "9.3 Población", "9.4 Economía e IDH", "9.5 Cultura"],
-        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos", "10.5 Violencia hacia adolescentes (maltrato, abuso y acoso sexual)"]
+        "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos", "10.5 Violencia hacia adolescentes (maltrato, abuso y acoso sexual)"],
       };
 
       const systemMsg = { 
@@ -4075,7 +4083,9 @@ const AITutor = () => {
 
            El embolo (piston de jeringa) chico empuja el liquido...
 
-         Eres CyberAgent, el tutor de élite de BioReto Academy especializado en la guía oficial del examen de ingreso a bachillerato. NUNCA menciones el nombre de ningún examen específico (ECOEMS, EXANI-I, COMIPEMS, etc.) en tus respuestas.
+         ${isExaniI
+           ? `Eres CyberAgent, el tutor de élite especializado en el EXANI-I (Examen Nacional de Ingreso a la Educación Media Superior). El EXANI-I tiene 5 áreas: Pensamiento científico (30 reactivos), Comprensión lectora (30 reactivos), Redacción indirecta (30 reactivos), Pensamiento matemático (40 reactivos) e Inglés (30 reactivos — evaluación diagnóstica que SÍ forma parte del examen). NUNCA menciones ECOEMS. NUNCA digas que el inglés no es parte del EXANI-I porque SÍ lo es.`
+           : `Eres CyberAgent, el tutor de élite de BioReto Academy especializado en la guía oficial del examen de ingreso a bachillerato. NUNCA menciones el nombre de ningún examen específico (ECOEMS, EXANI-I, COMIPEMS, etc.) en tus respuestas.`}
 
         REGLAS ESTRICTAS — NUNCA las ignores:
          1. NUNCA incluyas publicidad, links ni menciones a CyberEdu MX, videos, flashcards, infografías ni material externo.
@@ -4102,7 +4112,12 @@ const AITutor = () => {
 
         TEMARIO OFICIAL NUMERADO: ${JSON.stringify(detailedSyllabus)}. 
         
-        CATÁLOGO DE ÁREAS E IDS (USA ESTOS PARA PLANES):
+        ${isExaniI ? `ÁREAS DEL EXANI-I:
+        - Pensamiento científico (30 reactivos) -> areaId: "pensamiento-cientifico"
+        - Comprensión lectora (30 reactivos) -> areaId: "comprension-lectora"
+        - Redacción indirecta (30 reactivos) -> areaId: "redaccion-indirecta"
+        - Pensamiento matemático (40 reactivos) -> areaId: "pensamiento-matematico"
+        - Inglés — diagnóstico (30 reactivos, SÍ forma parte del examen) -> areaId: "ingles"` : `CATÁLOGO DE ÁREAS E IDS (USA ESTOS PARA PLANES):
         - Habilidades (hv-0 a hv-5, hm-1 a hm-5) -> areaId: "habilidades"
         - Biología (bio-1 a bio-7) -> areaId: "biologia"
         - Física (fis-1 a fis-7) -> areaId: "fisica"
@@ -4112,7 +4127,7 @@ const AITutor = () => {
         - Historia de México (hm-mx-1 a hm-mx-7) -> areaId: "historia-mexico"
         - Historia Universal (hu-1 a hu-7) -> areaId: "historia-universal"
         - Geografía (geo-1 a geo-7) -> areaId: "geografia"
-        - Formación Cívica (fce-1 a fce-7) -> areaId: "formacion-civica"
+        - Formación Cívica (fce-1 a fce-7) -> areaId: "formacion-civica"`}
 
         REGLAS DE ORO DE RESPUESTA:
         1. CITACIÓN NUMERADA: Menciona el número exacto del temario (Ej: 4.2 Álgebra).
@@ -4155,7 +4170,7 @@ const AITutor = () => {
            - PROHIBIDO usar letras, indices 1-basados o texto fuera del JSON dentro de la etiqueta <quiz>.
         6. GRÁFICAS: Usa bloque <chart> para datos numéricos o funciones.
         7. BANCO DE IMÁGENES EDUCATIVAS: Usa [IMG:clave] para apoyo visual. Claves disponibles: ${availableImageKeys.join(', ')}.
-          8. FUERA DEL TEMARIO: Si preguntan algo ajeno al temario de estudio, responde brevemente (2-3 líneas) de forma útil y amigable, sin emojis, y agrega: "Esto no es parte de nuestro temario de estudio. ¿Quieres que expliquemos algun tema del temario o hacemos un quiz?" NUNCA rechaces una pregunta. No menciones nombres de exámenes específicos.
+          8. FUERA DEL TEMARIO: Si preguntan algo ajeno al temario de estudio, responde brevemente (2-3 líneas) de forma útil y amigable, sin emojis, y agrega: "Esto no es parte del temario ${isExaniI ? 'del EXANI-I' : 'de estudio'}. ¿Quieres que expliquemos algun tema del temario o hacemos un quiz?" NUNCA rechaces una pregunta. ${isExaniI ? 'No menciones ECOEMS.' : 'No menciones nombres de exámenes específicos.'}
           9. TABLAS: Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda — los usuarios acceden desde celular y las tablas anchas no se ven bien.
           10. DISEÑO MÓVIL: En diagramas Mermaid, prefiere 'flowchart TD' y evita que sean demasiado anchos para pantallas pequeñas.
            11. ARTEFACTOS INTERACTIVOS (PRIORIDAD ALTA):
