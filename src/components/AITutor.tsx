@@ -2959,6 +2959,7 @@ const AITutor = () => {
         streak: `${analysis.streak} días seguidos`,
         isRegistered: !!user,
         isSubscriber: !!isSubscriber,
+        isExaniI,
         detailedSyllabus,
         system_instructions,
       };
