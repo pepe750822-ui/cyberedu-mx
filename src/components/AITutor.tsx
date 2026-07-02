@@ -2752,17 +2752,21 @@ const AITutor = () => {
   // ─── Topic extractor ───
   const extractTopic = (text: string): string => {
     const lower = text.toLowerCase();
+    const isExaniI = location.pathname === '/exani-i' || location.search.includes('exani-i');
     const topicMap: [string[], string][] = [
-      [['biolog', 'célula', 'fotosíntesis', 'dna', 'genética', 'organismo', 'carbono', 'ecosistema'], 'biología'],
-      [['físic', 'movimiento', 'fuerza', 'energía', 'newton', 'cinemática', 'óptica'], 'física'],
-      [['químic', 'átomo', 'molécula', 'reacción', 'elemento', 'tabla periódica'], 'química'],
-      [['matemát', 'álgebra', 'geometría', 'ecuación', 'fracción', 'trigonometría', 'estadística'], 'matemáticas'],
-      [['español', 'lectura', 'comprensión', 'gramática', 'ortografía', 'puntuación'], 'español'],
+      [['biolog', 'célula', 'fotosíntesis', 'dna', 'genética', 'organismo', 'carbono', 'ecosistema'], isExaniI ? 'pensamiento científico' : 'biología'],
+      [['físic', 'movimiento', 'fuerza', 'energía', 'newton', 'cinemática', 'óptica'], isExaniI ? 'pensamiento científico' : 'física'],
+      [['químic', 'átomo', 'molécula', 'reacción', 'elemento', 'tabla periódica'], isExaniI ? 'pensamiento científico' : 'química'],
+      [['matemát', 'álgebra', 'geometría', 'ecuación', 'fracción', 'trigonometría', 'estadística'], isExaniI ? 'pensamiento matemático' : 'matemáticas'],
+      [['español', 'gramática', 'ortografía', 'puntuación', 'cohesión', 'redacción'], isExaniI ? 'redacción indirecta' : 'español'],
+      [['lectura', 'comprensión', 'inferencia', 'texto', 'párrafo', 'autor'], isExaniI ? 'comprensión lectora' : 'español'],
+      [['inglés', 'english', 'vocabulary', 'grammar', 'reading'], isExaniI ? 'inglés EXANI-I' : 'habilidades'],
       [['historia', 'revolución', 'guerra', 'siglo', 'cultura', 'civilización'], 'historia'],
       [['geografía', 'mapa', 'continente', 'población', 'clima', 'relieve'], 'geografía'],
       [['cívica', 'democracia', 'ciudadanía', 'ética', 'derechos', 'constitución'], 'formación cívica'],
       [['habilidad', 'verbal', 'razonamiento', 'lógico', 'sucesión', 'analogía'], 'habilidades'],
-      [['ecoems', 'examen', 'simulacro', 'quiz', 'estudiar', 'repaso'], 'preparación ECOEMS'],
+      [['exani', 'simulacro', 'quiz', 'estudiar', 'repaso'], isExaniI ? 'preparación EXANI-I' : 'preparación examen'],
+      [['ecoems'], isExaniI ? 'preparación EXANI-I' : 'preparación ECOEMS'],
     ];
     for (const [keywords, topic] of topicMap) {
       if (keywords.some(k => lower.includes(k))) return topic;
@@ -2902,8 +2906,15 @@ const AITutor = () => {
 
   const buildContext = useCallback(() => {
     try {
+      const isExaniI = location.pathname === '/exani-i' || location.search.includes('exani-i');
       const analysis = analyzeUserProgress();
-      const detailedSyllabus = {
+      const detailedSyllabus = isExaniI ? {
+        "1. Pensamiento científico (30 reactivos)": ["1.1 Biología celular y molecular", "1.2 Ecología y medio ambiente", "1.3 Física: movimiento, fuerzas, energía, ondas", "1.4 Química: materia, reacciones, tabla periódica"],
+        "2. Comprensión lectora (30 reactivos)": ["2.1 Identificación de tema e idea principal", "2.2 Inferencias y relaciones entre ideas", "2.3 Propósito y punto de vista del autor", "2.4 Vocabulario en contexto"],
+        "3. Redacción indirecta (30 reactivos)": ["3.1 Coherencia y cohesión textual", "3.2 Ortografía y gramática (tildes, puntuación, tiempos verbales)", "3.3 Organización y estructura de párrafos", "3.4 Tipos de texto (argumentativo, expositivo, narrativo)"],
+        "4. Pensamiento matemático (40 reactivos)": ["4.1 Álgebra (ecuaciones, expresiones algebraicas)", "4.2 Geometría (áreas, perímetros, Pitágoras, ángulos)", "4.3 Estadística y probabilidad", "4.4 Trigonometría básica", "4.5 Aritmética, fracciones y proporciones"],
+        "5. Inglés — evaluación diagnóstica (30 reactivos)": ["5.1 Comprensión de lectura en inglés", "5.2 Vocabulario y gramática en inglés", "5.3 Identificación de ideas principales en textos en inglés"],
+      } : {
         "1. Habilidad Verbal": ["1.1 Comprensión de lectura", "1.2 Manejo de vocabulario"],
         "2. Habilidad Matemática": ["2.1 Sucesiones numéricas y espaciales", "2.2 Imaginación espacial", "2.3 Razonamiento lógico"],
         "3. Español": ["3.1 Estructura de textos", "3.2 Tipos de textos (informativos, literarios, legales/administrativos, publicitarios)", "3.3 Ortografía y gramática (presente histórico, tiempos verbales)", "3.4 Organización de información", "3.5 Recursos retóricos (exageración en publicidad)"],
@@ -2915,18 +2926,14 @@ const AITutor = () => {
         "9. Geografía": ["9.1 Mapas y SIG/GPS", "9.2 Recursos y ambiente (ecoturismo, ecotecnias)", "9.3 Población", "9.4 Economía e IDH", "9.5 Cultura"],
         "10. Formación Cívica": ["10.1 Valores y autonomía", "10.2 Democracia", "10.3 Ciudadanía y Participación", "10.4 Solución de conflictos", "10.5 Violencia hacia adolescentes (maltrato, abuso y acoso sexual)"]
       };
-      
-      return {
-        today: new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-        current_time: new Date().toLocaleTimeString('es-MX'),
-        currentPage: location.pathname,
-        progress: `${analysis.totalProgress}% general completado`,
-        weakAreas: analysis.weakAreas.map((a: any) => a.name),
-        streak: `${analysis.streak} días seguidos`,
-        isRegistered: !!user,
-        isSubscriber: !!isSubscriber,
-        detailedSyllabus,
-        system_instructions: `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la guía oficial del examen de ingreso a bachillerato. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. NUNCA menciones el nombre de ningún examen específico (ECOEMS, EXANI-I, COMIPEMS, etc.). Si preguntan algo ajeno al temario, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Esto no es parte de nuestro temario de estudio — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del temario o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda. Prefiere diagramas Mermaid verticales (TD).
+
+      const system_instructions = isExaniI
+        ? `Eres CyberAgent, el tutor de élite especializado en el EXANI-I (Examen Nacional de Ingreso a la Educación Media Superior). El EXANI-I tiene 5 áreas: Pensamiento científico (30 reactivos), Comprensión lectora (30 reactivos), Redacción indirecta (30 reactivos), Pensamiento matemático (40 reactivos) e Inglés (30 reactivos — evaluación diagnóstica que SÍ forma parte del examen). Tu conocimiento se basa en el temario: ${JSON.stringify(detailedSyllabus)}. NUNCA menciones ECOEMS. NUNCA digas que el inglés no es parte del EXANI-I porque SÍ lo es. Si preguntan algo ajeno al temario, responde brevemente de forma útil. NUNCA rechaces una pregunta.
+
+        CALLS TO ACTION SEGÚN USUARIO:
+        - Si !context.isRegistered: Regístrate GRATIS en CyberEdu MX para acceder a más material.
+        - Si el usuario no tiene tokens: Puedes comprar tokens desde $20 pesos en /tokens.`
+        : `Eres CyberAgent, el tutor experto de BioReto Academy especializado en la guía oficial del examen de ingreso a bachillerato. Tu conocimiento se basa en el temario numerado: ${JSON.stringify(detailedSyllabus)}. NUNCA menciones el nombre de ningún examen específico (ECOEMS, EXANI-I, COMIPEMS, etc.). Si preguntan algo ajeno al temario, responde brevemente (2-3 líneas) de forma útil y amigable como un cuate inteligente que sabe de todo, y agrega SIEMPRE: 💡 Dato extra para ti. Esto no es parte de nuestro temario de estudio — no pierdas tiempo en ello ahora. ¿Quieres que te explique algún tema del temario o hacemos un quiz? 🎯 NUNCA rechaces una pregunta. Cuando generes tablas en markdown, limítalas a máximo 3 columnas y usa textos cortos en cada celda. Prefiere diagramas Mermaid verticales (TD).
 
         CATÁLOGO COMPLETO DE VIDEOS (usa estos IDs EXACTOS para generar links):
         ${areas.map(a => `[${a.id}]: ${a.videos.map(v => `${v.id}="${v.title}"`).join(' | ')}`).join('\n        ')}
@@ -2941,15 +2948,27 @@ const AITutor = () => {
 
         CALLS TO ACTION SEGÚN USUARIO:
         - Si !context.isRegistered: 💡 [Regístrate GRATIS](/)
-        - Si el usuario no tiene tokens: 💡 [Consigue tokens desde $10](/tokens)`
+        - Si el usuario no tiene tokens: 💡 [Consigue tokens desde $10](/tokens)`;
+
+      return {
+        today: new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+        current_time: new Date().toLocaleTimeString('es-MX'),
+        currentPage: location.pathname,
+        progress: `${analysis.totalProgress}% general completado`,
+        weakAreas: analysis.weakAreas.map((a: any) => a.name),
+        streak: `${analysis.streak} días seguidos`,
+        isRegistered: !!user,
+        isSubscriber: !!isSubscriber,
+        detailedSyllabus,
+        system_instructions,
       };
     } catch {
-      return { 
+      return {
         currentPage: location.pathname,
         system_instructions: "Tutor experto en el examen de ingreso a bachillerato. Enfoque en el temario oficial. No menciones nombres de exámenes específicos (ECOEMS, EXANI-I, COMIPEMS)."
       };
     }
-  }, [location.pathname, analyzeUserProgress]);
+  }, [location.pathname, location.search, analyzeUserProgress]);
 
   const ctxForQueue = useMemo(() => buildContext(), [buildContext]);
   const { tasks, addTask, removeTask, clearCompleted, retryTask } = useTaskQueue(memory, ctxForQueue);
