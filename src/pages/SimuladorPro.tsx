@@ -852,6 +852,18 @@ const SimuladorPro = () => {
             setShowTestimonio(false);
             setTextoTestimonio('');
             void track('testimonio_enviado', { userId: user!.id });
+
+            const shareText = `¡Llevo ${totalSimuladoresUser} simuladores en CyberEdu MX! Prepárate para tu examen en cyberedumx.com`;
+            try {
+                if (navigator.share) {
+                    await navigator.share({ text: shareText, url: 'https://cyberedumx.com' });
+                } else {
+                    await navigator.clipboard.writeText(shareText);
+                    toast.info('¡Texto copiado al portapapeles! Compártelo donde quieras.');
+                }
+            } catch {
+                // user cancelled share or clipboard unavailable — silently ignore
+            }
         } else {
             toast.error('Error al guardar, intenta de nuevo');
         }
@@ -975,13 +987,13 @@ const SimuladorPro = () => {
             {/* Modal testimonio */}
             {showTestimonio && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                    <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
                         <div className="text-center mb-4">
                             <span className="text-5xl">🌟</span>
-                            <h3 className="text-xl font-bold mt-3 text-gray-800">
+                            <h3 className="text-xl font-bold mt-3 text-white">
                                 ¡Ya llevas mucho avance!
                             </h3>
-                            <p className="text-gray-500 text-sm mt-2">
+                            <p className="text-slate-200 text-sm mt-2">
                                 Completaste {totalSimuladoresUser} simuladores y respondiste {totalPreguntasUser} preguntas.
                                 ¿CyberEdu MX te ha ayudado a prepararte?
                             </p>
@@ -992,9 +1004,9 @@ const SimuladorPro = () => {
                             value={textoTestimonio}
                             onChange={e => setTextoTestimonio(e.target.value)}
                             maxLength={500}
-                            className="w-full border-2 border-gray-200 rounded-xl p-3 text-sm resize-none focus:outline-none focus:border-purple-500 transition-colors"
+                            className="w-full border-2 border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 rounded-xl p-3 text-sm resize-none focus:outline-none focus:border-purple-500 transition-colors"
                         />
-                        <p className="text-xs text-gray-400 text-right mt-1">
+                        <p className="text-xs text-slate-400 text-right mt-1">
                             {textoTestimonio.length}/500
                         </p>
                         <div className="flex gap-2 mt-4">
@@ -1007,7 +1019,7 @@ const SimuladorPro = () => {
                             </button>
                             <button
                                 onClick={() => setShowTestimonio(false)}
-                                className="px-4 py-3 text-gray-400 text-sm hover:text-gray-600"
+                                className="px-4 py-3 text-slate-400 text-sm hover:text-slate-200 transition-colors"
                             >
                                 Después
                             </button>
