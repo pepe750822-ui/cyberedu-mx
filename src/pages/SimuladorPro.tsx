@@ -811,6 +811,8 @@ const SimuladorPro = () => {
 
     const verificarTestimonio = async () => {
         if (!user?.id) return;
+        if (localStorage.getItem('testimonio_mostrado')) return;
+
         const { data: yaExiste } = await supabase
             .from('testimonios')
             .select('id')
@@ -833,6 +835,7 @@ const SimuladorPro = () => {
         if ((totalSims ?? 0) >= 3 || totalPregs >= 500) {
             setTotalSimuladoresUser(totalSims ?? 0);
             setTotalPreguntasUser(totalPregs);
+            localStorage.setItem('testimonio_mostrado', 'true');
             setShowTestimonio(true);
         }
     };
