@@ -1,587 +1,527 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  GraduationCap, 
-  ArrowRight, 
-  Brain, 
-  Target, 
-  Video, 
-  LineChart, 
-  Globe, 
-  CheckCircle2, 
-  Star,
-  Quote,
-  ShieldCheck,
-  Zap,
-  Ticket,
-  Crown,
-  Sparkles,
-  Users,
-  Bot,
-  Layers,
-  MessageCircle
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
-const LandingPage = () => {
+const ECOEMS_TARGET = new Date('2027-06-15T08:00:00');
+
+const STATS = [
+  { value: 2847, suffix: '+', label: 'Estudiantes activos' },
+  { value: 90,   suffix: '+', label: 'Videos educativos' },
+  { value: 5000, suffix: '+', label: 'Preguntas de práctica' },
+  { value: 94,   suffix: '%', label: 'Tasa de aprobación' },
+];
+
+const FEATURES = [
+  { icon: '🎯', color: 'purple', title: 'Simulador Inteligente',  desc: 'Exámenes con el mismo formato oficial del ECOEMS. Cronometrado, con retroalimentación inmediata y análisis de errores.', tag: 'BioReto Pro v3.0' },
+  { icon: '🤖', color: 'cyan',   title: 'Tutor IA 24/7',          desc: 'Pregunta cualquier duda sobre el temario y recibe explicaciones claras al instante. Disponible en cualquier momento.',   tag: '150 tokens incluidos' },
+  { icon: '📹', color: 'green',  title: 'Videos estilo anime',     desc: 'Aprende con contenido visual dinámico. Más de 90 videos que hacen que estudiar sea más entretenido y efectivo.',          tag: '90+ videos' },
+  { icon: '📊', color: 'amber',  title: 'Área de Subíndices',      desc: 'Calcula tu puntaje estimado y descubre qué preparatorias podrías alcanzar con tu rendimiento actual.',                    tag: 'COMIPEMS 2027' },
+  { icon: '📚', color: 'purple', title: 'Acordeón 2027',           desc: 'Resumen completo del temario oficial actualizado. Todo lo que entra en el examen en un solo lugar.',                       tag: 'Temario oficial' },
+  { icon: '📱', color: 'cyan',   title: '100% en el celular',      desc: 'Estudia donde quieras. La plataforma funciona perfectamente en cualquier dispositivo sin instalar nada.',                  tag: 'PWA' },
+];
+
+const MATERIAS = [
+  { emoji: '🔢', name: 'Matemáticas' },
+  { emoji: '🔤', name: 'Español' },
+  { emoji: '🧪', name: 'Química' },
+  { emoji: '⚡', name: 'Física' },
+  { emoji: '🌿', name: 'Biología' },
+  { emoji: '🌍', name: 'Geografía' },
+  { emoji: '📜', name: 'Historia' },
+  { emoji: '🏛️', name: 'Cívica y Ética' },
+];
+
+const FREE_ITEMS = [
+  { t: 'Simulador básico (20 preguntas)', ok: true },
+  { t: 'Temario resumido',               ok: true },
+  { t: 'Videos introductorios',          ok: true },
+  { t: 'Tutor IA',                       ok: false },
+  { t: 'Simulador completo',             ok: false },
+  { t: 'Acordeón 2027',                  ok: false },
+];
+
+const PRO_ITEMS = [
+  'Simulador completo (bancos oficiales)',
+  '90+ videos estilo anime',
+  'Tutor IA — 150 tokens',
+  'Acordeón 2027 actualizado',
+  'Área de Subíndices COMIPEMS',
+  'Acceso de por vida',
+];
+
+const p2 = (n: number) => String(n).padStart(2, '0');
+
+export default function LandingPage() {
   const navigate = useNavigate();
+  const [scrollPct, setScrollPct]     = useState(0);
+  const [cd, setCd]                   = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [counts, setCounts]           = useState(STATS.map(() => 0));
+  const statsRef                      = useRef<HTMLDivElement>(null);
+  const cardRefs                      = useRef<(HTMLDivElement | null)[]>([]);
+  const pillRefs                      = useRef<(HTMLDivElement | null)[]>([]);
+  const priceRefs                     = useRef<(HTMLDivElement | null)[]>([]);
+  const countersStarted               = useRef(false);
 
+  // Scroll progress bar
   useEffect(() => {
-    document.title = "CyberEdu MX | Preparación ECOEMS con IA";
-    window.scrollTo(0, 0);
-
-    // Forzar dark mode en la landing para que los colores sean siempre correctos
-    const root = document.documentElement;
-    const prevClass = root.className;
-    root.classList.add("dark");
-    document.body.style.backgroundColor = "#020617"; // slate-950
-
-    return () => {
-      root.className = prevClass;
-      document.body.style.backgroundColor = "";
+    const fn = () => {
+      const el = document.documentElement;
+      setScrollPct((el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100);
     };
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const features = [
-    {
-      icon: <Brain className="h-6 w-6 text-violet-400" />,
-      title: "Tutor IA 24/7",
-      description: "Powered by Claude (Anthropic). Resuelve tus dudas paso a paso como si tuvieras un profesor particular siempre disponible."
-    },
-    {
-      icon: <Globe className="h-6 w-6 text-blue-400" />,
-      title: "19 Laboratorios Virtuales",
-      description: "Explora el cuerpo humano en 3D, el globo terráqueo interactivo, el sistema solar y la línea del tiempo de historia."
-    },
-    {
-      icon: <Target className="h-6 w-6 text-emerald-400" />,
-      title: "Simulador 128 Preguntas",
-      description: "Mídete con reactivos tipo examen real, organizados por área y dificultad. Obtén retroalimentación predictiva."
-    },
-    {
-      icon: <Video className="h-6 w-6 text-rose-400" />,
-      title: "91 Videos Educativos",
-      description: "Lecciones claras y concisas en alta definición que cubren exactamente el temario oficial del ECOEMS 2026."
-    },
-    {
-      icon: <LineChart className="h-6 w-6 text-amber-400" />,
-      title: "Progreso Automático",
-      description: "Visualiza tu avance en un dashboard personalizado. Identifica tus puntos débiles antes del examen."
-    }
-  ];
+  // Countdown timer
+  useEffect(() => {
+    const tick = () => {
+      const diff = ECOEMS_TARGET.getTime() - Date.now();
+      if (diff <= 0) return;
+      setCd({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
-  const pricingPlans = [
-    {
-      name: "Gratis",
-      price: "0",
-      description: "Para probar la plataforma",
-      tokens: "15 preguntas/día",
-      features: ["Acceso a todo el contenido", "91 Videos Educativos", "15 preguntas diarias al Tutor IA", "Sin tarjeta de crédito"],
-      cta: "Registrarme Gratis",
-      action: () => navigate("/auth"),
-      highlight: false,
-      icon: <Zap className="h-6 w-6 text-slate-400" />
-    },
-    {
-      name: "Básico",
-      price: "20",
-      description: "Ideal para dudas rápidas",
-      tokens: "20 Tokens",
-      features: ["Todo lo gratuito", "20 interacciones con IA", "Prioridad de respuesta", "Tokens no expiran"],
-      cta: "Comprar Tokens",
-      action: () => navigate("/tokens"),
-      highlight: false,
-      icon: <Ticket className="h-6 w-6 text-emerald-400" />
-    },
-    {
-      name: "Popular",
-      price: "50",
-      description: "Balance perfecto",
-      tokens: "60 Tokens",
-      features: ["Todo lo gratuito", "60 interacciones con IA", "Análisis de progreso avanzado", "Tokens no expiran"],
-      cta: "Comprar Tokens",
-      action: () => navigate("/tokens"),
-      highlight: true,
-      badge: "Más Vendido",
-      icon: <Star className="h-6 w-6 text-amber-400" />
-    },
-    {
-      name: "Pro",
-      price: "120",
-      description: "Estudiantes intensivos",
-      tokens: "160 Tokens",
-      features: ["Todo lo gratuito", "160 interacciones con IA", "Explicaciones extendidas", "Tokens no expiran"],
-      cta: "Comprar Tokens",
-      action: () => navigate("/tokens"),
-      highlight: false,
-      icon: <ShieldCheck className="h-6 w-6 text-blue-400" />
-    },
-    {
-      name: "Ilimitado",
-      price: "250",
-      description: "Preparación total (mensual)",
-      tokens: "1,000 Tokens/mes",
-      features: ["Todo lo gratuito", "1,000 interacciones mensuales", "Tutor IA siempre disponible", "Renovación automática"],
-      cta: "Activar Plan",
-      action: () => navigate("/tokens"),
-      highlight: false,
-      badge: "Maestro",
-      icon: <Crown className="h-6 w-6 text-rose-400" />
-    }
-  ];
+  // Animated counters
+  const startCounters = useCallback(() => {
+    if (countersStarted.current) return;
+    countersStarted.current = true;
+    STATS.forEach((stat, idx) => {
+      const step = stat.value / (2000 / 16);
+      let cur = 0;
+      const id = setInterval(() => {
+        cur += step;
+        if (cur >= stat.value) {
+          setCounts(p => { const a = [...p]; a[idx] = stat.value; return a; });
+          clearInterval(id);
+        } else {
+          setCounts(p => { const a = [...p]; a[idx] = Math.floor(cur); return a; });
+        }
+      }, 16);
+    });
+  }, []);
 
-  const testimonials = [
-    {
-      name: "María, 17 años",
-      location: "Estado de México",
-      text: "Pasé de 45 a 89 puntos en el simulador en solo un mes. Entender matemáticas con el tutor IA fue la clave.",
-      stars: 5
-    },
-    {
-      name: "Juan Carlos",
-      location: "CDMX",
-      text: "El Tutor IA me explicó mejor que cualquier profesor que he tenido. Además el globo 3D para geografía está brutal.",
-      stars: 5
-    }
-  ];
+  // IntersectionObserver for scroll animations
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('lp-vis'); obs.unobserve(e.target); } }),
+      { threshold: 0.15 }
+    );
+    const statsObs = new IntersectionObserver(
+      entries => { if (entries[0]?.isIntersecting) { startCounters(); statsObs.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    [...cardRefs.current, ...pillRefs.current, ...priceRefs.current].forEach(el => el && obs.observe(el));
+    if (statsRef.current) statsObs.observe(statsRef.current);
+    return () => { obs.disconnect(); statsObs.disconnect(); };
+  }, [startCounters]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-primary/30 font-sans" style={{ backgroundColor: '#020617', color: '#e2e8f0' }}>
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <div className="p-1.5 bg-primary/20 rounded-lg border border-primary/30">
-              <GraduationCap className="h-5 w-5 text-primary" />
-            </div>
-            <span className="text-lg font-black text-white tracking-tight">CyberEdu MX</span>
+    <>
+      {/* ── Scroll progress bar ── */}
+      <div style={{ position: 'fixed', top: 0, left: 0, height: 3, zIndex: 200, width: `${scrollPct}%`, background: 'linear-gradient(90deg,#7c3aed,#06b6d4)', transition: 'width 0.1s' }} />
+
+      <div className="lp-root">
+
+        {/* ── NAV ── */}
+        <nav className="lp-nav">
+          <div className="lp-logo">Cyber<span>Edu</span> MX</div>
+          <div className="lp-nav-links">
+            <a href="#features">Características</a>
+            <a href="#materias">Materias</a>
+            <a href="#pricing">Precios</a>
+            <a href="#pricing" className="lp-nav-cta">Empezar gratis</a>
           </div>
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/auth")}
-            className="text-slate-300 hover:text-white font-bold text-xs uppercase tracking-widest"
-          >
-            Iniciar Sesión
-          </Button>
-        </div>
-      </nav>
+        </nav>
 
-      {/* 1. Hero Section */}
-      <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden px-4">
-        {/* Background glows */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 left-1/4 w-[350px] h-[350px] bg-violet-500/10 blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 w-[350px] h-[350px] bg-orange-500/8 blur-[100px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 max-w-5xl mx-auto">
-
-          {/* Live badge */}
-          <div className="flex justify-center mb-7 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-              </span>
-              <span className="text-[11px] font-black uppercase tracking-widest">ECOEMS 2026 · 20-28 Junio · Prepárate Ya</span>
+        {/* ── HERO ── */}
+        <section className="lp-hero">
+          <div className="lp-hero-bg" />
+          <div className="lp-hero-grid" />
+          <div className="lp-hero-content">
+            <div className="lp-badge">
+              <span className="lp-dot" />
+              ECOEMS 2027 — Preparación oficial
             </div>
-          </div>
 
-          {/* Title */}
-          <div className="text-center animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.05] mb-5">
-              Aprueba el ECOEMS{" "}
-              <span className="relative inline-block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">en 45 Días</span>
-                <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400/0 via-emerald-400/70 to-emerald-400/0 rounded-full" />
-              </span>
+            <h1 className="lp-h1">
+              Domina el examen.<br />
+              Entra a tu <span className="lp-grad">preparatoria.</span>
             </h1>
 
-            <p className="text-lg md:text-2xl text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed">
-              <span className="text-white font-bold">Tutor IA disponible 24/7</span>
-              {" + "}
-              <span className="text-cyan-400 font-bold">19 Laboratorios Virtuales</span>
-              {" para dominar cada tema del examen."}
+            <p className="lp-sub">
+              Simuladores inteligentes, temario actualizado y Tutor IA disponible 24/7.{' '}
+              Todo lo que necesitas para el <strong style={{ color: '#f9fafb' }}>ECOEMS 2027</strong>.
             </p>
-          </div>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-            <Button
-              onClick={() => navigate("/auth")}
-              className="w-full sm:w-auto h-14 px-10 rounded-2xl font-black uppercase tracking-[0.12em] text-sm transition-all hover:scale-105 active:scale-95 text-black"
-              style={{
-                background: "linear-gradient(135deg, #10b981 0%, #f59e0b 100%)",
-                boxShadow: "0 0 40px rgba(16,185,129,0.35), 0 4px 20px rgba(245,158,11,0.2)"
-              }}
-            >
-              Empezar Gratis — 15 Preguntas/Día
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => document.getElementById('precios')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-white/5 border-white/10 hover:bg-white/10 text-white font-bold uppercase tracking-widest transition-all"
-            >
-              Ver Precios
-            </Button>
-          </div>
-          <p className="text-center text-[11px] text-slate-500 mt-3 font-medium animate-in fade-in duration-1000 delay-400">
-            Sin registro: <span className="text-slate-300 font-bold">15 preguntas gratis al instante</span> · También en{" "}
-            <a href="https://wa.me/5215523269241" target="_blank" rel="noopener noreferrer" className="text-green-400 font-bold hover:text-green-300 no-underline">Grupo de WhatsApp</a>
-          </p>
+            <div className="lp-actions">
+              <button className="lp-btn-pri" onClick={() => navigate('/auth')}>🚀 Empezar gratis</button>
+              <a className="lp-btn-sec" href="#features">Ver cómo funciona</a>
+            </div>
 
-          {/* Social proof */}
-          <div className="flex justify-center mt-6 animate-in fade-in duration-1000 delay-500">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-              <div className="flex -space-x-2">
-                {(["#8b5cf6","#06b6d4","#10b981","#f59e0b"] as const).map((color, i) => (
-                  <div
-                    key={i}
-                    className="w-7 h-7 rounded-full border-2 border-slate-900 flex items-center justify-center text-[9px] font-black text-white"
-                    style={{ backgroundColor: color }}
-                  >
-                    {["M","J","A","K"][i]}
+            <div className="lp-stats" ref={statsRef}>
+              {STATS.map((s, i) => (
+                <div key={i} className="lp-stat">
+                  <div className="lp-stat-num">
+                    <span>{counts[i].toLocaleString()}</span>{s.suffix}
                   </div>
-                ))}
-              </div>
-              <Users className="h-3.5 w-3.5 text-slate-400" />
-              <span className="text-xs font-bold text-slate-300">
-                <span className="text-white font-black">47 estudiantes</span> ya están usando CyberEdu
-              </span>
+                  <div className="lp-stat-lbl">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
+        </section>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-6 animate-in fade-in duration-1000 delay-700">
-            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-violet-500/30 hover:bg-violet-500/5 transition-all">
-              <Bot className="h-3.5 w-3.5 text-violet-400" />
-              Tutor IA de Anthropic
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all">
-              <Layers className="h-3.5 w-3.5 text-cyan-400" />
-              19 Laboratorios Virtuales
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-sky-500/30 hover:bg-sky-500/5 transition-all">
-              <MessageCircle className="h-3.5 w-3.5 text-sky-400" />
-              Grupo WhatsApp
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px] font-bold text-slate-300 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-              Acceso de Por Vida
-            </div>
-          </div>
-
-          {/* Hero Visual — AI Tutor mock */}
-          <div className="mt-14 max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500">
-            <div
-              className="relative rounded-3xl border border-white/10 overflow-hidden"
-              style={{
-                background: "linear-gradient(145deg, rgba(15,23,42,0.97) 0%, rgba(2,6,23,0.99) 100%)",
-                boxShadow: "0 0 80px rgba(16,185,129,0.10), 0 0 40px rgba(139,92,246,0.08), 0 32px 64px rgba(0,0,0,0.5)"
-              }}
-            >
-              {/* Window bar */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5" style={{ background: "rgba(255,255,255,0.02)" }}>
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
-                </div>
-                <div className="flex-1 flex justify-center">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
-                    <Bot className="h-3 w-3 text-violet-400" />
-                    <span className="text-[10px] text-slate-400 font-bold">CyberAgent · Tutor IA</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Chat messages */}
-              <div className="p-5 space-y-4">
-                {/* User message */}
-                <div className="flex justify-end">
-                  <div
-                    className="max-w-[75%] px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm font-medium text-white"
-                    style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)" }}
-                  >
-                    ¿Cómo funciona la fotosíntesis para el ECOEMS?
-                  </div>
-                </div>
-
-                {/* AI response */}
-                <div className="flex gap-3">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1"
-                    style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
-                  >
-                    <Bot className="h-4 w-4 text-white" />
-                  </div>
-                  <div className="flex-1 space-y-2.5">
-                    <div
-                      className="px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-200 leading-relaxed"
-                      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
-                    >
-                      La fotosíntesis convierte luz solar en glucosa ☀️<br />
-                      <br />
-                      <span className="text-emerald-400 font-bold">Fórmula clave [BIO 3.1]:</span>
-                      <span
-                        className="ml-2 px-2 py-0.5 rounded font-mono text-[11px]"
-                        style={{ background: "rgba(16,185,129,0.15)", color: "#34d399" }}
-                      >
-                        6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { label: "🧮 Calculadora IA", color: "#10b981" },
-                        { label: "⚡ Lab de Circuitos", color: "#f59e0b" },
-                        { label: "⚛️ Estructura de Lewis", color: "#06b6d4" },
-                        { label: "🌍 Mapa Interactivo", color: "#6366f1" },
-                        { label: "📐 Diagramas de Fuerzas", color: "#8b5cf6" },
-                        { label: "💬 Grupo WhatsApp", color: "#0ea5e9" },
-                        { label: "🎮 Simulador ECOEMS", color: "#ec4899" }
-                      ].map((tag) => (
-                        <span
-                          key={tag.label}
-                          className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider cursor-pointer hover:opacity-80 transition-opacity"
-                          style={{
-                            background: `${tag.color}20`,
-                            color: tag.color,
-                            border: `1px solid ${tag.color}30`
-                          }}
-                        >
-                          {tag.label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Input bar */}
-              <div className="px-5 pb-5">
-                <div
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
-                >
-                  <span className="text-sm text-slate-500 flex-1">Pregunta algo al Tutor IA...</span>
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)" }}
-                  >
-                    <ArrowRight className="h-4 w-4 text-white" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom gradient fade */}
-              <div className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none" style={{ background: "linear-gradient(to top, #020617, transparent)" }} />
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 2. Problem -> Solution Section */}
-      <section className="py-24 bg-slate-900 border-y border-white/5">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 text-rose-400 text-xs font-black uppercase tracking-widest bg-rose-500/10 px-3 py-1 rounded-lg">
-                <Target className="h-4 w-4" /> El Reto Real
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-                Más de 300,000 estudiantes compiten por pocas plazas.
-              </h2>
-              <p className="text-slate-400 text-lg leading-relaxed">
-                Estudiar con guías de papel desactualizadas ya no es suficiente. El nivel de competencia exige herramientas modernas que se adapten a tu ritmo de aprendizaje.
-              </p>
-            </div>
-            
-            <div className="glass-card-premium p-8 rounded-3xl border-primary/20 bg-primary/5 space-y-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-6 opacity-10">
-                <Brain className="h-32 w-32 text-primary" />
-              </div>
-              <div className="inline-flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-lg relative z-10">
-                <Zap className="h-4 w-4" /> La Solución
-              </div>
-              <h3 className="text-2xl font-black text-white relative z-10">
-                CyberEdu MX te prepara con Inteligencia Artificial
-              </h3>
-              <p className="text-slate-300 relative z-10">
-                Hemos digitalizado todo el proceso. Te explicamos cada tema al instante, analizamos tus simulacros y creamos un plan de estudio personalizado para garantizar tu éxito.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Features Section */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-              Todo lo que necesitas para aprobar
-            </h2>
-            <p className="text-slate-400 font-medium">Herramientas tecnológicas diseñadas específicamente para el ECOEMS.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, idx) => (
-              <div key={idx} className="bg-slate-900 border border-white/5 hover:border-white/20 transition-all duration-300 p-8 rounded-3xl group">
-                <div className="h-12 w-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Testimonials Section */}
-      <section className="py-24 bg-slate-900 border-y border-white/5 relative overflow-hidden">
-         {/* Background Elements */}
-         <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none" />
-         
-        <div className="container mx-auto px-4 max-w-5xl relative z-10">
-          <div className="text-center mb-16">
-             <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-               Casos de Éxito
-             </h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((test, idx) => (
-              <div key={idx} className="bg-slate-950 p-8 rounded-3xl border border-white/5 relative">
-                <Quote className="absolute top-6 right-6 h-12 w-12 text-white/5" />
-                <div className="flex gap-1 mb-6">
-                  {[...Array(test.stars)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-lg text-slate-300 font-medium mb-6">
-                  "{test.text}"
-                </p>
-                <div>
-                  <h4 className="font-bold text-white">{test.name}</h4>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-bold">{test.location}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Pricing Section */}
-      <section id="precios" className="py-24 relative">
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
-         
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-              Precios Transparentes
-            </h2>
-            <p className="text-slate-400 font-medium">Elige el plan que mejor se adapte a tu ritmo de estudio.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {pricingPlans.map((plan, idx) => (
-              <Card 
-                key={idx} 
-                className={`flex flex-col bg-slate-900 border-white/10 relative overflow-hidden ${
-                  plan.highlight ? 'ring-2 ring-amber-500/50 shadow-2xl shadow-amber-500/10 scale-105 z-10' : ''
-                }`}
-              >
-                {plan.badge && (
-                  <div className="absolute top-5 right-[-35px] rotate-45 bg-amber-500 text-black text-[10px] font-black uppercase py-1 px-10 shadow-lg">
-                    {plan.badge}
-                  </div>
-                )}
-                
-                <CardHeader className="p-6">
-                  <div className="mb-4">{plan.icon}</div>
-                  <CardTitle className="text-xl font-black text-white uppercase tracking-tight">{plan.name}</CardTitle>
-                  <CardDescription className="text-slate-400 min-h-[40px]">{plan.description}</CardDescription>
-                </CardHeader>
-                
-                <CardContent className="p-6 pt-0 flex-1 space-y-6">
-                  <div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-bold text-slate-500">$</span>
-                      <span className="text-4xl font-black text-white">{plan.price}</span>
-                      <span className="text-xs text-slate-500 font-bold uppercase tracking-widest">MXN</span>
-                    </div>
-                    <p className="text-xs font-black uppercase tracking-widest text-primary mt-2">{plan.tokens}</p>
-                  </div>
-                  
-                  <ul className="space-y-3 pt-4 border-t border-white/5">
-                    {plan.features.map((feat, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs font-medium text-slate-300">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                
-                <CardFooter className="p-6 pt-0">
-                  <Button 
-                    onClick={plan.action}
-                    className={`w-full font-black uppercase tracking-widest text-[10px] h-12 rounded-xl transition-all ${
-                      plan.highlight 
-                        ? 'bg-amber-500 hover:bg-amber-400 text-black' 
-                        : 'bg-white/5 hover:bg-white/10 text-white'
-                    }`}
-                  >
-                    {plan.cta}
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Bottom CTA */}
-      <section className="py-24 bg-gradient-to-t from-primary/20 to-slate-950 border-t border-white/5">
-        <div className="container mx-auto px-4 max-w-4xl text-center space-y-8">
-          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
-            Tu futuro comienza aquí.
+        {/* ── COUNTDOWN ── */}
+        <section className="lp-countdown">
+          <p className="lp-sec-label">⏳ Cuenta regresiva</p>
+          <h2 className="lp-cd-title">
+            El <span>ECOEMS 2027</span> se aplica aproximadamente en
           </h2>
-          <p className="text-xl text-slate-400">
-            Únete a la nueva generación de estudiantes y asegura tu lugar.
+          <div className="lp-cd-grid">
+            {[
+              { v: cd.d,     l: 'Días' },
+              { v: p2(cd.h), l: 'Horas' },
+              { v: p2(cd.m), l: 'Minutos' },
+              { v: p2(cd.s), l: 'Segundos' },
+            ].map(({ v, l }) => (
+              <div key={l} className="lp-cd-box">
+                <span className="lp-cd-num">{v}</span>
+                <span className="lp-cd-lbl">{l}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── FEATURES ── */}
+        <section id="features" className="lp-features">
+          <div className="lp-sec-hdr">
+            <p className="lp-sec-label">✨ Herramientas</p>
+            <h2>Todo para que pases el ECOEMS</h2>
+          </div>
+          <div className="lp-feat-grid">
+            {FEATURES.map((f, i) => (
+              <div key={i} ref={el => { cardRefs.current[i] = el; }} className="lp-card" style={{ transitionDelay: `${i * 0.1}s` }}>
+                <div className={`lp-icon lp-icon-${f.color}`}>{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+                <span className="lp-tag">{f.tag}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── MATERIAS ── */}
+        <section id="materias" className="lp-materias">
+          <div className="lp-materias-inner">
+            <div className="lp-sec-hdr">
+              <p className="lp-sec-label">📖 Temario</p>
+              <h2>Todas las materias del ECOEMS</h2>
+            </div>
+            <div className="lp-mat-grid">
+              {MATERIAS.map((m, i) => (
+                <div key={i} ref={el => { pillRefs.current[i] = el; }} className="lp-pill" style={{ transitionDelay: `${i * 0.05}s` }}>
+                  <span className="lp-pill-emoji">{m.emoji}</span>
+                  {m.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PRICING ── */}
+        <section id="pricing" className="lp-pricing">
+          <p className="lp-sec-label">💎 Planes</p>
+          <h2>Elige tu plan</h2>
+          <p className="lp-pricing-sub">Sin suscripciones. Pago único, acceso completo.</p>
+          <div className="lp-price-grid">
+            {/* Free */}
+            <div ref={el => { priceRefs.current[0] = el; }} className="lp-card" style={{ textAlign: 'left', transitionDelay: '0s' }}>
+              <p className="lp-plan-name">Gratis</p>
+              <p className="lp-plan-price">$0 <span>MXN</span></p>
+              <p className="lp-plan-desc">Para empezar a explorar</p>
+              <ul className="lp-plan-list">
+                {FREE_ITEMS.map(f => (
+                  <li key={f.t} className={f.ok ? '' : 'lp-locked'}>{f.t}</li>
+                ))}
+              </ul>
+              <button className="lp-btn-sec lp-full" onClick={() => navigate('/auth')}>Empezar gratis</button>
+            </div>
+
+            {/* Pro */}
+            <div ref={el => { priceRefs.current[1] = el; }} className="lp-card lp-card-feat" style={{ textAlign: 'left', transitionDelay: '0.15s' }}>
+              <div className="lp-popular">⭐ Más popular</div>
+              <p className="lp-plan-name">Pro</p>
+              <p className="lp-plan-price">$90 <span>MXN · pago único</span></p>
+              <p className="lp-plan-desc">Todo lo que necesitas para pasar</p>
+              <ul className="lp-plan-list">
+                {PRO_ITEMS.map(f => <li key={f}>{f}</li>)}
+              </ul>
+              <button className="lp-btn-pri lp-full" onClick={() => navigate('/tokens')}>Obtener acceso Pro</button>
+            </div>
+          </div>
+        </section>
+
+        {/* ── CTA FINAL ── */}
+        <section className="lp-cta">
+          <h2>
+            ¿Listo para entrar a tu<br />
+            <span>preparatoria soñada?</span>
+          </h2>
+          <p>Únete a miles de estudiantes que ya se preparan con CyberEdu MX</p>
+          <div className="lp-actions">
+            <button className="lp-btn-pri lp-lg" onClick={() => navigate('/auth')}>🚀 Empezar ahora</button>
+            <a className="lp-btn-sec lp-lg" href="#features">Ver características</a>
+          </div>
+        </section>
+
+        {/* ── FOOTER ── */}
+        <footer className="lp-footer">
+          <p>
+            © 2026 <a href="#">CyberEdu MX</a> — Preparación ECOEMS 2027 ·{' '}
+            <a href="#">Privacidad</a> · <a href="#">Contacto</a>
           </p>
-          <Button 
-            onClick={() => navigate("/auth")}
-            className="h-16 px-10 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-[0.2em] shadow-[0_0_50px_rgba(var(--primary),0.4)] hover:scale-105 transition-all text-sm"
-          >
-            Empezar Gratis Ahora
-          </Button>
-        </div>
-      </section>
+        </footer>
+      </div>
 
-      {/* 7. Footer Minimal */}
-      <footer className="bg-slate-950 py-12 border-t border-white/5">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="h-5 w-5 text-slate-500" />
-            <span className="font-black text-slate-500 uppercase tracking-widest text-xs">CyberEdu MX © {new Date().getFullYear()}</span>
-          </div>
-          <div className="flex gap-6 text-xs font-bold uppercase tracking-widest text-slate-600">
-            <a href="/auth" className="hover:text-primary transition-colors">Iniciar Sesión</a>
-            <a href="/tokens" className="hover:text-primary transition-colors">Precios</a>
-            <a href="/marketing" className="hover:text-primary transition-colors">Contacto</a>
-          </div>
-        </div>
-      </footer>
-    </div>
+      {/* ── Global styles scoped to landing ── */}
+      <style>{`
+        .lp-root {
+          background: #0a0e1a;
+          color: #f9fafb;
+          font-family: 'Segoe UI', system-ui, sans-serif;
+          overflow-x: hidden;
+        }
+
+        /* NAV */
+        .lp-nav {
+          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+          padding: 1rem 2rem;
+          display: flex; justify-content: space-between; align-items: center;
+          background: rgba(10,14,26,0.85);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(124,58,237,0.2);
+        }
+        .lp-logo { font-size: 1.25rem; font-weight: 700; color: #7c3aed; letter-spacing: -0.5px; }
+        .lp-logo span { color: #06b6d4; }
+        .lp-nav-links { display: flex; gap: 0.25rem; }
+        .lp-nav-links a {
+          color: #9ca3af; text-decoration: none; font-size: 0.9rem;
+          padding: 0.4rem 1rem; border-radius: 6px; transition: all 0.2s;
+        }
+        .lp-nav-links a:hover { color: #f9fafb; background: rgba(124,58,237,0.15); }
+        .lp-nav-cta { background: #7c3aed !important; color: white !important; font-weight: 600 !important; }
+        .lp-nav-cta:hover { background: #5b21b6 !important; }
+        @media (max-width: 640px) { .lp-nav-links { display: none; } }
+
+        /* HERO */
+        .lp-hero {
+          min-height: 100vh; display: flex; flex-direction: column;
+          align-items: center; justify-content: center; text-align: center;
+          padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
+        }
+        .lp-hero-bg {
+          position: absolute; inset: 0;
+          background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(124,58,237,0.15) 0%, transparent 70%),
+                      radial-gradient(ellipse 40% 40% at 80% 60%, rgba(6,182,212,0.08) 0%, transparent 60%);
+        }
+        .lp-hero-grid {
+          position: absolute; inset: 0;
+          background-image: linear-gradient(rgba(124,58,237,0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(124,58,237,0.05) 1px, transparent 1px);
+          background-size: 60px 60px;
+          mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+        }
+        .lp-hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+        /* Badge */
+        .lp-badge {
+          display: inline-flex; align-items: center; gap: 0.5rem;
+          background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+          color: #a78bfa; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+          padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 2rem;
+          animation: lpFadeInDown 0.6s ease both;
+        }
+        .lp-dot {
+          width: 6px; height: 6px; border-radius: 50%; background: #a78bfa;
+          animation: lpPulse 2s infinite; display: inline-block;
+        }
+
+        /* H1 */
+        .lp-h1 {
+          font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1;
+          letter-spacing: -2px; margin: 0; animation: lpFadeInUp 0.7s ease 0.1s both;
+        }
+        .lp-grad {
+          background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .lp-sub {
+          font-size: 1.15rem; color: #9ca3af; max-width: 560px; margin: 1.5rem auto;
+          line-height: 1.7; animation: lpFadeInUp 0.7s ease 0.2s both;
+        }
+
+        .lp-actions {
+          display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+          margin-top: 2rem; animation: lpFadeInUp 0.7s ease 0.3s both;
+        }
+
+        /* STATS */
+        .lp-stats {
+          display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+          margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.08);
+          animation: lpFadeInUp 0.7s ease 0.4s both;
+        }
+        .lp-stat { text-align: center; }
+        .lp-stat-num { font-size: 2rem; font-weight: 800; }
+        .lp-stat-num span { color: #7c3aed; }
+        .lp-stat-lbl { font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.25rem; }
+        @media (max-width: 640px) { .lp-stats { gap: 1.5rem; } }
+
+        /* COUNTDOWN */
+        .lp-countdown {
+          padding: 5rem 2rem; text-align: center;
+          background: #111827;
+          border-top: 1px solid rgba(255,255,255,0.05);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .lp-sec-label { font-size: 0.8rem; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.75rem; }
+        .lp-cd-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 2.5rem; color: #9ca3af; }
+        .lp-cd-title span { color: #f9fafb; }
+        .lp-cd-grid { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .lp-cd-box {
+          background: #1f2937; border: 1px solid rgba(124,58,237,0.2); border-radius: 16px;
+          padding: 1.5rem 2rem; min-width: 110px;
+        }
+        .lp-cd-num { font-size: 3rem; font-weight: 800; color: #7c3aed; display: block; line-height: 1; }
+        .lp-cd-lbl { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; display: block; }
+        @media (max-width: 640px) {
+          .lp-cd-grid { gap: 0.75rem; }
+          .lp-cd-box { padding: 1rem 1.25rem; min-width: 80px; }
+          .lp-cd-num { font-size: 2rem; }
+        }
+
+        /* FEATURES */
+        .lp-features { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .lp-sec-hdr { text-align: center; margin-bottom: 4rem; }
+        .lp-sec-hdr h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; margin-top: 0.5rem; }
+        .lp-feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+        /* CARDS */
+        .lp-card {
+          background: #111827; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+          padding: 2rem; transition: all 0.4s;
+          opacity: 0; transform: translateY(30px);
+        }
+        .lp-card.lp-vis { opacity: 1; transform: translateY(0); }
+        .lp-card:hover { border-color: rgba(124,58,237,0.3); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
+        .lp-card-feat {
+          border-color: #7c3aed !important;
+          background: linear-gradient(180deg, rgba(124,58,237,0.08) 0%, #111827 100%) !important;
+          position: relative;
+        }
+        .lp-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 0; }
+        .lp-card p  { font-size: 0.9rem; color: #9ca3af; line-height: 1.6; margin: 0; }
+
+        .lp-icon {
+          width: 48px; height: 48px; border-radius: 12px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 1.5rem; margin-bottom: 1.25rem;
+        }
+        .lp-icon-purple { background: rgba(124,58,237,0.15); }
+        .lp-icon-cyan   { background: rgba(6,182,212,0.15); }
+        .lp-icon-green  { background: rgba(16,185,129,0.15); }
+        .lp-icon-amber  { background: rgba(245,158,11,0.15); }
+
+        .lp-tag {
+          display: inline-block; margin-top: 1rem;
+          background: rgba(124,58,237,0.1); color: #a78bfa;
+          font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 6px;
+        }
+
+        /* MATERIAS */
+        .lp-materias { padding: 6rem 2rem; background: #111827; }
+        .lp-materias-inner { max-width: 1000px; margin: 0 auto; }
+        .lp-mat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 3rem; }
+        .lp-pill {
+          display: flex; align-items: center; gap: 0.75rem;
+          background: #1f2937; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px;
+          padding: 1rem 1.25rem; font-size: 0.9rem; font-weight: 600;
+          opacity: 0; transform: scale(0.9); transition: all 0.3s; cursor: default;
+        }
+        .lp-pill.lp-vis { opacity: 1; transform: scale(1); }
+        .lp-pill:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.08); }
+        .lp-pill-emoji { font-size: 1.2rem; }
+
+        /* PRICING */
+        .lp-pricing { padding: 6rem 2rem; max-width: 1000px; margin: 0 auto; text-align: center; }
+        .lp-pricing-sub { color: #9ca3af; margin-top: 0.75rem; }
+        .lp-pricing h2 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; letter-spacing: -1px; margin-top: 0.5rem; }
+        .lp-price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+
+        .lp-popular {
+          position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+          background: #7c3aed; color: white; font-size: 0.75rem; font-weight: 700;
+          padding: 0.25rem 1rem; border-radius: 999px; white-space: nowrap;
+        }
+        .lp-plan-name { font-size: 0.85rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0; }
+        .lp-plan-price { font-size: 2.5rem; font-weight: 800; margin: 0.75rem 0; }
+        .lp-plan-price span { font-size: 1rem; font-weight: 400; color: #9ca3af; }
+        .lp-plan-desc { font-size: 0.9rem; color: #9ca3af; margin-bottom: 1.5rem; margin-top: 0; }
+        .lp-plan-list { list-style: none; margin-bottom: 2rem; padding: 0; }
+        .lp-plan-list li {
+          display: flex; align-items: center; gap: 0.6rem;
+          font-size: 0.9rem; padding: 0.4rem 0; color: #9ca3af;
+        }
+        .lp-plan-list li::before { content: '✓'; color: #10b981; font-weight: 700; }
+        .lp-plan-list li.lp-locked { color: #6b7280; }
+        .lp-plan-list li.lp-locked::before { content: '✗'; color: #6b7280; }
+
+        /* CTA */
+        .lp-cta {
+          padding: 8rem 2rem; text-align: center;
+          background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 70%);
+        }
+        .lp-cta h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -1.5px; margin: 0; }
+        .lp-cta h2 span { color: #7c3aed; }
+        .lp-cta p { font-size: 1.1rem; color: #9ca3af; margin: 1rem 0 2.5rem; }
+
+        /* FOOTER */
+        .lp-footer {
+          padding: 2rem; text-align: center;
+          border-top: 1px solid rgba(255,255,255,0.06);
+          color: #6b7280; font-size: 0.85rem;
+        }
+        .lp-footer a { color: #7c3aed; text-decoration: none; }
+
+        /* BUTTONS */
+        .lp-btn-pri {
+          background: #7c3aed; color: white; border: none;
+          padding: 0.85rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 700;
+          cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+        }
+        .lp-btn-pri:hover { background: #5b21b6; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.4); }
+        .lp-btn-sec {
+          background: transparent; color: #9ca3af; border: 1px solid rgba(255,255,255,0.15);
+          padding: 0.85rem 2rem; border-radius: 10px; font-size: 1rem; font-weight: 600;
+          cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+        }
+        .lp-btn-sec:hover { color: #f9fafb; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+        .lp-full  { width: 100%; text-align: center; }
+        .lp-lg    { font-size: 1.1rem !important; padding: 1rem 2.5rem !important; }
+
+        /* ANIMATIONS */
+        @keyframes lpFadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes lpFadeInUp   { from { opacity: 0; transform: translateY(20px);  } to { opacity: 1; transform: translateY(0); } }
+        @keyframes lpPulse      { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      `}</style>
+    </>
   );
-};
-
-export default LandingPage;
+}

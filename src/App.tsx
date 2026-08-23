@@ -225,7 +225,8 @@ const App = () => (
           <TelegramButton />
           <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando... (si tarda, recarga la página)</div>}>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/home" element={<Index />} />
               <Route path="/area/:areaId" element={<AreaDetail />} />
               <Route path="/simulador-pro" element={<SimuladorPro />} />
               <Route path="/guia2026" element={<Guia2026 />} />
