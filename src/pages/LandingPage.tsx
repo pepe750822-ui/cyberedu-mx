@@ -20,7 +20,7 @@ const NAV_ADMIN = [
   { label: '⚙️ Admin', href: '/admin'      },
 ];
 
-const ECOEMS_TARGET = new Date('2027-06-15T08:00:00');
+const ECOEMS_TARGET = new Date('2027-06-20T08:00:00');
 
 const STATS = [
   { value: 2847, suffix: '+', label: 'Estudiantes activos' },
@@ -251,7 +251,7 @@ export default function LandingPage() {
         <section className="lp-countdown">
           <p className="lp-sec-label">⏳ Cuenta regresiva</p>
           <h2 className="lp-cd-title">
-            El <span>ECOEMS 2027</span> se aplica aproximadamente en
+            El <span>ECOEMS 2027</span> se aplica aproximadamente el <span>20 de junio de 2027</span>
           </h2>
           <div className="lp-cd-grid">
             {[
@@ -266,6 +266,12 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+          <p className="lp-cd-note">
+            *Fecha estimada basada en ciclo 2026. Confirma en{' '}
+            <a href="https://miderechomilugar.gob.mx" target="_blank" rel="noopener noreferrer">
+              miderechomilugar.gob.mx
+            </a>
+          </p>
         </section>
 
         {/* ── FEATURES ── */}
@@ -508,6 +514,9 @@ export default function LandingPage() {
         }
         .lp-cd-num { font-size: 3rem; font-weight: 800; color: #7c3aed; display: block; line-height: 1; }
         .lp-cd-lbl { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; display: block; }
+        .lp-cd-note { margin-top: 1.5rem; font-size: 0.78rem; color: #6b7280; }
+        .lp-cd-note a { color: #7c3aed; text-decoration: none; }
+        .lp-cd-note a:hover { text-decoration: underline; }
         @media (max-width: 640px) {
           .lp-cd-grid { gap: 0.75rem; }
           .lp-cd-box { padding: 1rem 1.25rem; min-width: 80px; }
