@@ -1,5 +1,24 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+
+const UDEMY_URL = "https://www.udemy.com/course/ecoems2026conia/?referralCode=B2F05026985A2564FAAC";
+
+const NAV_LINKS = [
+  { label: 'Inicio',            href: '/',                    external: false },
+  { label: '🎯 Simulador',      href: '/simulador-pro',       external: false },
+  { label: '♾️ Infinito',       href: '/simulador-infinito',  external: false },
+  { label: 'Practica por Tema', href: '/practica-subindice',  external: false },
+  { label: '📖 Guía 2027',      href: '/guia2026',            external: false },
+  { label: '📋 Acordeón',       href: '/acordeon',            external: false },
+  { label: '🃏 Flashcards',     href: '/flashcards',          external: false },
+  { label: 'Curso Udemy',       href: UDEMY_URL,              external: true  },
+];
+
+const NAV_ADMIN = [
+  { label: 'Áreas',    href: '/home#areas' },
+  { label: '⚙️ Admin', href: '/admin'      },
+];
 
 const ECOEMS_TARGET = new Date('2027-06-15T08:00:00');
 
@@ -52,6 +71,12 @@ const p2 = (n: number) => String(n).padStart(2, '0');
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { user, profile } = useAuth();
+  const isAdmin = profile?.is_admin === true
+    || profile?.email?.toLowerCase() === 'pepe750822@gmail.com'
+    || user?.email?.toLowerCase() === 'pepe750822@gmail.com';
+
+  const [menuOpen, setMenuOpen]       = useState(false);
   const [scrollPct, setScrollPct]     = useState(0);
   const [cd, setCd]                   = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [counts, setCounts]           = useState(STATS.map(() => 0));
@@ -131,14 +156,58 @@ export default function LandingPage() {
 
         {/* ── NAV ── */}
         <nav className="lp-nav">
-          <div className="lp-logo">Cyber<span>Edu</span> MX</div>
+          <div className="lp-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+            Cyber<span>Edu</span> MX
+          </div>
+
+          {/* Desktop links */}
           <div className="lp-nav-links">
-            <a href="#features">Características</a>
-            <a href="#materias">Materias</a>
-            <a href="#pricing">Precios</a>
+            {NAV_LINKS.map(link => (
+              link.external
+                ? <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                : <a key={link.href} href={link.href} onClick={e => { e.preventDefault(); navigate(link.href); }}>{link.label}</a>
+            ))}
+            {isAdmin && NAV_ADMIN.map(link => (
+              <a key={link.href} href={link.href} className="lp-nav-admin"
+                onClick={e => { e.preventDefault(); navigate(link.href); }}>
+                {link.label}
+              </a>
+            ))}
             <a href="#pricing" className="lp-nav-cta">Empezar gratis</a>
           </div>
+
+          {/* Hamburger (mobile) */}
+          <button className="lp-hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menú">
+            <span /><span /><span />
+          </button>
         </nav>
+
+        {/* Mobile drawer */}
+        {menuOpen && (
+          <div className="lp-drawer" onClick={() => setMenuOpen(false)}>
+            <div className="lp-drawer-inner" onClick={e => e.stopPropagation()}>
+              <button className="lp-drawer-close" onClick={() => setMenuOpen(false)}>✕</button>
+              {NAV_LINKS.map(link => (
+                link.external
+                  ? <a key={link.href} href={link.href} className="lp-drawer-link" target="_blank" rel="noopener noreferrer">{link.label}</a>
+                  : <a key={link.href} href={link.href} className="lp-drawer-link"
+                      onClick={e => { e.preventDefault(); navigate(link.href); setMenuOpen(false); }}>
+                      {link.label}
+                    </a>
+              ))}
+              {isAdmin && NAV_ADMIN.map(link => (
+                <a key={link.href} href={link.href} className="lp-drawer-link lp-drawer-admin"
+                  onClick={e => { e.preventDefault(); navigate(link.href); setMenuOpen(false); }}>
+                  {link.label}
+                </a>
+              ))}
+              <a href="#pricing" className="lp-btn-pri" style={{ marginTop: '0.5rem', textAlign: 'center', display: 'block' }}
+                onClick={() => setMenuOpen(false)}>
+                Empezar gratis
+              </a>
+            </div>
+          </div>
+        )}
 
         {/* ── HERO ── */}
         <section className="lp-hero">
@@ -310,15 +379,52 @@ export default function LandingPage() {
         }
         .lp-logo { font-size: 1.25rem; font-weight: 700; color: #7c3aed; letter-spacing: -0.5px; }
         .lp-logo span { color: #06b6d4; }
-        .lp-nav-links { display: flex; gap: 0.25rem; }
+        .lp-nav-links { display: flex; gap: 0.15rem; flex-wrap: nowrap; overflow-x: auto; }
         .lp-nav-links a {
-          color: #9ca3af; text-decoration: none; font-size: 0.9rem;
-          padding: 0.4rem 1rem; border-radius: 6px; transition: all 0.2s;
+          color: #9ca3af; text-decoration: none; font-size: 0.82rem;
+          padding: 0.35rem 0.7rem; border-radius: 6px; transition: all 0.2s; white-space: nowrap;
         }
         .lp-nav-links a:hover { color: #f9fafb; background: rgba(124,58,237,0.15); }
+        .lp-nav-admin { color: #f59e0b !important; }
+        .lp-nav-admin:hover { background: rgba(245,158,11,0.15) !important; }
         .lp-nav-cta { background: #7c3aed !important; color: white !important; font-weight: 600 !important; }
         .lp-nav-cta:hover { background: #5b21b6 !important; }
-        @media (max-width: 640px) { .lp-nav-links { display: none; } }
+
+        /* Hamburger */
+        .lp-hamburger {
+          display: none; flex-direction: column; gap: 5px;
+          background: none; border: none; cursor: pointer; padding: 6px;
+        }
+        .lp-hamburger span { display: block; width: 22px; height: 2px; background: #9ca3af; border-radius: 2px; transition: 0.2s; }
+        .lp-hamburger:hover span { background: #f9fafb; }
+
+        /* Mobile drawer */
+        .lp-drawer {
+          position: fixed; inset: 0; z-index: 150;
+          background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+        }
+        .lp-drawer-inner {
+          position: absolute; top: 0; right: 0; bottom: 0; width: min(320px, 90vw);
+          background: #111827; border-left: 1px solid rgba(124,58,237,0.2);
+          padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 0.25rem;
+          overflow-y: auto;
+        }
+        .lp-drawer-close {
+          align-self: flex-end; background: none; border: none; color: #9ca3af;
+          font-size: 1.2rem; cursor: pointer; margin-bottom: 1rem;
+        }
+        .lp-drawer-link {
+          color: #9ca3af; text-decoration: none; font-size: 0.95rem;
+          padding: 0.6rem 0.75rem; border-radius: 8px; transition: all 0.2s;
+        }
+        .lp-drawer-link:hover { color: #f9fafb; background: rgba(124,58,237,0.15); }
+        .lp-drawer-admin { color: #f59e0b !important; }
+        .lp-drawer-admin:hover { background: rgba(245,158,11,0.1) !important; }
+
+        @media (max-width: 900px) {
+          .lp-nav-links { display: none; }
+          .lp-hamburger { display: flex; }
+        }
 
         /* HERO */
         .lp-hero {
