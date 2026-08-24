@@ -28,7 +28,13 @@
       "Bash(grep \"\\\\.tsx$\\\\|\\\\.ts$\")",
       "Bash(grep -v \":0$\")",
       "Bash(grep -rn \"className={\\\\`\" /c/Users/pp_it/cyberedumx.com/cyberedu-mx/src --include=\"*.tsx\")",
-      "Bash(grep -rn \"\\\\${.*cn\\(\" /c/Users/pp_it/cyberedumx.com/cyberedu-mx/src --include=\"*.tsx\")"
+      "Bash(grep -rn \"\\\\${.*cn\\(\" /c/Users/pp_it/cyberedumx.com/cyberedu-mx/src --include=\"*.tsx\")",
+      "Bash(graphify export *)",
+      "Bash(graphify query *)",
+      "Read(//c/Users/pp_it/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"sports betting quiniela predictions dark mobile gaming\" --design-system --motion 8 --variance 7 -p \"Quiniela Metro\" -f markdown)",
+      "Bash(git clone *)",
+      "Read(//c/Users/pp_it/AppData/Local/Temp/claude/C--Users-pp-it-cyberedumx-com-cyberedu-mx/1856903e-7d79-4fa8-971e-b1c545a912c5/tasks/**)"
     ]
   }
 }
