@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 
-const EXAM_DATE = new Date("2026-06-20T08:00:00");
+const EXAM_DATE = new Date("2027-06-20T08:00:00");
 const STORAGE_KEY = "exam_banner_closed";
 
 export default function ExamCountdown() {
@@ -25,7 +25,7 @@ export default function ExamCountdown() {
     <div className="relative z-50 bg-gradient-to-r from-amber-500 to-orange-500 text-white">
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
         <div className="flex-1 text-center text-sm font-medium">
-          ⏰ Faltan <span className="font-black">{days} días</span> para el ECOEMS 2026 — ¡Prepárate ahora!
+          ⏰ Faltan <span className="font-black">{days} días</span> para el ECOEMS 2027 — ¡Prepárate ahora!
         </div>
         <div className="flex items-center gap-3 shrink-0">
           <Link

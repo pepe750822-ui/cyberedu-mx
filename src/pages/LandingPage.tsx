@@ -63,7 +63,7 @@ const LandingPage = () => {
     {
       icon: <Video className="h-6 w-6 text-rose-400" />,
       title: "91 Videos Educativos",
-      description: "Lecciones claras y concisas en alta definición que cubren exactamente el temario oficial del ECOEMS 2026."
+      description: "Lecciones claras y concisas en alta definición que cubren exactamente el temario oficial del ECOEMS 2027."
     },
     {
       icon: <LineChart className="h-6 w-6 text-amber-400" />,
@@ -184,7 +184,7 @@ const LandingPage = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
-              <span className="text-[11px] font-black uppercase tracking-widest">ECOEMS 2026 · 20-28 Junio · Prepárate Ya</span>
+              <span className="text-[11px] font-black uppercase tracking-widest">ECOEMS 2027 · 20-28 Junio · Prepárate Ya</span>
             </div>
           </div>
 
@@ -193,7 +193,7 @@ const LandingPage = () => {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.05] mb-5">
               Aprueba el ECOEMS{" "}
               <span className="relative inline-block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">en 45 Días</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">ECOEMS 2027</span>
                 <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-400/0 via-emerald-400/70 to-emerald-400/0 rounded-full" />
               </span>
             </h1>
