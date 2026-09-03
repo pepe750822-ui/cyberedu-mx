@@ -93,6 +93,18 @@ export default function Videos() {
   const [materiaActiva, setMateriaActiva] = useState<string | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [intro, setIntro] = useState<VideoItem[]>([]);
+  const [introPlaying, setIntroPlaying] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from("cyberedu_videos" as any)
+      .select("*")
+      .eq("materia", "Introducción")
+      .eq("activo", true)
+      .order("orden", { ascending: true })
+      .then(({ data }) => setIntro((data as VideoItem[]) ?? []));
+  }, []);
 
   useEffect(() => {
     if (!materiaActiva) return;
@@ -126,6 +138,54 @@ export default function Videos() {
           </div>
           <p className="text-muted-foreground text-sm">Selecciona una materia para ver los videos por subíndice</p>
         </div>
+
+        {/* Introducción */}
+        {intro.length > 0 && (
+          <div className="mb-10 rounded-2xl border border-violet-500/30 bg-violet-500/5 overflow-hidden">
+            <div className="px-5 pt-5 pb-3 flex items-center gap-2">
+              <Video className="h-5 w-5 text-violet-400" />
+              <h2 className="text-base font-black text-violet-400 uppercase tracking-widest">🎬 Introducción</h2>
+            </div>
+            <div className="px-5 pb-5 flex flex-col gap-4">
+              {intro.map((v) => {
+                const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
+                const playing = introPlaying === v.id;
+                return (
+                  <div key={v.id}>
+                    <p className="font-bold text-foreground text-sm mb-1">{v.titulo}</p>
+                    {v.descripcion && <p className="text-xs text-muted-foreground mb-3">{v.descripcion}</p>}
+                    {ytId && !playing && (
+                      <button
+                        onClick={() => setIntroPlaying(v.id)}
+                        className="w-full aspect-video rounded-xl overflow-hidden relative group bg-black/40 border border-violet-500/20 flex items-center justify-center"
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+                          alt={v.titulo}
+                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                        />
+                        <div className="relative z-10 h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                          <PlayCircle className="h-9 w-9 text-white" />
+                        </div>
+                      </button>
+                    )}
+                    {playing && ytId && (
+                      <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                          title={v.titulo}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Materias grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
