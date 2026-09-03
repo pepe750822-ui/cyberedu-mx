@@ -3,7 +3,7 @@ import { Timer, Zap, Trophy, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const CountdownExam = () => {
-    const targetDate = new Date("2026-06-20T09:00:00").getTime();
+    const targetDate = new Date("2027-06-20T09:00:00").getTime();
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,

@@ -114,7 +114,7 @@ const unlimitedPackage = {
     icon: <Crown className="h-8 w-8 text-amber-500" />
 };
 
-const EXAM_DATE = new Date("2026-06-20T08:00:00");
+const EXAM_DATE = new Date("2027-06-20T08:00:00");
 
 const TokensPage = () => {
   const { user, profile, refreshProfile } = useAuth();

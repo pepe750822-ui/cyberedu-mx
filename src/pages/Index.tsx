@@ -185,7 +185,7 @@ const Index = () => {
   // Real-time countdown to exam
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
   useEffect(() => {
-    const EXAM = new Date("2026-06-20T00:00:00").getTime();
+    const EXAM = new Date("2027-06-20T00:00:00").getTime();
     const tick = () => {
       const diff = EXAM - Date.now();
       if (diff > 0) {
@@ -202,14 +202,14 @@ const Index = () => {
     return () => clearInterval(id);
   }, []);
 
-  // Urgency date logic for ECOEMS 2026
+  // Urgency date logic for ECOEMS 2027
   const nowDate = new Date();
   nowDate.setHours(0, 0, 0, 0);
-  const registroFin = new Date("2026-05-22");
+  const registroFin = new Date("2027-05-22");
   registroFin.setHours(0, 0, 0, 0);
-  const examenFecha = new Date("2026-06-20");
+  const examenFecha = new Date("2027-06-20");
   examenFecha.setHours(0, 0, 0, 0);
-  const resultadosFecha = new Date("2026-08-18");
+  const resultadosFecha = new Date("2027-08-18");
   resultadosFecha.setHours(0, 0, 0, 0);
   const etapa = nowDate <= registroFin ? 'registro'
     : nowDate <= examenFecha ? 'preparacion'
@@ -219,11 +219,11 @@ const Index = () => {
   const daysToExam = Math.ceil((examenFecha.getTime() - nowDate.getTime()) / (1000 * 60 * 60 * 24));
 
   const fechas = [
-    { fecha: "13 Feb 2026",        evento: "Publicación de Convocatoria",          status: "done"    },
-    { fecha: "17 Mar – 14 Abr",    evento: "Registro de Aspirantes",               status: "done"    },
-    { fecha: "18 – 22 May",        evento: "Conclusión de Registro UNAM / IPN",    status: etapa === 'registro' ? "urgent" : "done" },
-    { fecha: "20, 21, 27, 28 Jun", evento: "Aplicación Examen Digital",            status: etapa === 'preparacion' ? "urgent" : etapa === 'registro' ? "pending" : "done" },
-    { fecha: "18 Ago 2026",        evento: "Publicación de Resultados",            status: etapa === 'espera' ? "urgent" : etapa === 'resultados' ? "done" : "pending" },
+    { fecha: "Feb 2027",           evento: "Publicación de Convocatoria",          status: "pending" },
+    { fecha: "Mar – Abr 2027",     evento: "Registro de Aspirantes",               status: "pending" },
+    { fecha: "May 2027",           evento: "Conclusión de Registro UNAM / IPN",    status: etapa === 'registro' ? "urgent" : "pending" },
+    { fecha: "20-28 Jun 2027",     evento: "Aplicación Examen Digital",            status: etapa === 'preparacion' ? "urgent" : etapa === 'registro' ? "pending" : "pending" },
+    { fecha: "Ago 2027",           evento: "Publicación de Resultados",            status: etapa === 'espera' ? "urgent" : "pending" },
   ];
 
   useEffect(() => {
@@ -235,11 +235,11 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    document.title = "CyberEdu MX — Prepárate para el ECOEMS 2026";
+    document.title = "CyberEdu MX — Prepárate para el ECOEMS 2027";
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute("content", "Prepárate para el COMIPEMS 2026 con 44 videos, simulador completo de todos los bancos, Acordeón 2026, área de Subíndices y 150 tokens de Tutor IA. Pago único $90 MXN.");
+      metaDescription.setAttribute("content", "Prepárate para el ECOEMS 2027 con 44 videos, simulador completo de todos los bancos, Acordeón 2027, área de Subíndices y 150 tokens de Tutor IA. Pago único $90 MXN.");
     }
 
     const structuredData = {
@@ -435,7 +435,7 @@ const Index = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-400" />
                 </span>
-                ECOEMS 2026 · 20-28 Junio · Prepárate Ya
+                ECOEMS 2027 · 20-28 Junio · Prepárate Ya
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-white mb-6 leading-tight">
@@ -665,11 +665,11 @@ const Index = () => {
         </section>
       )}
 
-      {/* ── NOVEDADES 2026 ──────────────────────────────── */}
+      {/* ── NOVEDADES 2027 ──────────────────────────────── */}
       <section className="mx-4 mb-6">
         <div className="flex items-center gap-2 mb-4">
-          <h2 className="text-white font-black text-lg">Novedades CyberEdu MX 2026</h2>
-          <span className="text-[9px] font-black bg-violet-600 text-white px-2 py-0.5 rounded-full uppercase tracking-widest shrink-0">2026</span>
+          <h2 className="text-white font-black text-lg">Novedades CyberEdu MX 2027</h2>
+          <span className="text-[9px] font-black bg-violet-600 text-white px-2 py-0.5 rounded-full uppercase tracking-widest shrink-0">2027</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
 

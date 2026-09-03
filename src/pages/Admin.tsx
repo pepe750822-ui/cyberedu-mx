@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, User, Database, Plus, Minus, ShieldCheck, 
+import {
+  Search, User, Database, Plus, Minus, ShieldCheck,
   ArrowLeft, Zap, Flame, Trash2, Calendar, LayoutGrid,
-  CheckCircle, List, BarChart3, TrendingUp, Target, PieChart
+  CheckCircle, List, BarChart3, TrendingUp, Target, PieChart,
+  Video, Pencil, Eye, EyeOff
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,7 +14,7 @@ import { toast } from 'sonner';
 const AdminPage = () => {
   const { user, profile, isLoading } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'challenges' | 'analytics'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'challenges' | 'analytics' | 'videos'>('users');
   
   // User Management State
   const [email, setEmail] = useState('');
@@ -32,6 +33,15 @@ const AdminPage = () => {
   });
   
   const [message, setMessage] = useState('');
+
+  // Videos State
+  const VIDEO_MATERIAS = ['Español','Matemáticas','Biología','Física','Química','Historia','Geografía','Formación Cívica'];
+  const emptyVideoForm = { materia: 'Español', subindice: '', titulo: '', youtube_url: '', descripcion: '', orden: 0, activo: false };
+  const [videos, setVideos] = useState<any[]>([]);
+  const [videoForm, setVideoForm] = useState({ ...emptyVideoForm });
+  const [editingVideoId, setEditingVideoId] = useState<string | null>(null);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [videoFilter, setVideoFilter] = useState('Todas');
 
   // Magic Link state
   const [emailNuevo, setEmailNuevo] = useState('');
@@ -56,12 +66,9 @@ const AdminPage = () => {
   }, [profile, user, isLoading, navigate]);
 
   useEffect(() => {
-    if (activeTab === 'challenges') {
-      fetchChallenges();
-    }
-    if (activeTab === 'analytics') {
-      fetchAnalytics();
-    }
+    if (activeTab === 'challenges') fetchChallenges();
+    if (activeTab === 'analytics') fetchAnalytics();
+    if (activeTab === 'videos') fetchVideos();
   }, [activeTab]);
 
   const fetchAnalytics = async () => {
@@ -197,6 +204,62 @@ const AdminPage = () => {
     if (!error) fetchChallenges();
   };
 
+  const fetchVideos = async () => {
+    setVideoLoading(true);
+    const { data } = await supabase
+      .from('cyberedu_videos' as any)
+      .select('*')
+      .order('materia')
+      .order('orden', { ascending: true });
+    setVideos((data as any[]) ?? []);
+    setVideoLoading(false);
+  };
+
+  const saveVideo = async () => {
+    if (!videoForm.titulo.trim() || !videoForm.subindice.trim()) {
+      toast.error('Título y subíndice son obligatorios');
+      return;
+    }
+    setVideoLoading(true);
+    const payload = {
+      materia: videoForm.materia,
+      subindice: videoForm.subindice.trim(),
+      titulo: videoForm.titulo.trim(),
+      youtube_url: videoForm.youtube_url.trim() || null,
+      descripcion: videoForm.descripcion.trim() || null,
+      orden: Number(videoForm.orden) || 0,
+      activo: videoForm.activo,
+    };
+    if (editingVideoId) {
+      const { error } = await supabase.from('cyberedu_videos' as any).update(payload).eq('id', editingVideoId);
+      if (error) { toast.error('Error: ' + error.message); }
+      else { toast.success('✅ Video actualizado'); setEditingVideoId(null); setVideoForm({ ...emptyVideoForm }); }
+    } else {
+      const { error } = await supabase.from('cyberedu_videos' as any).insert([payload]);
+      if (error) { toast.error('Error: ' + error.message); }
+      else { toast.success('✅ Video agregado'); setVideoForm({ ...emptyVideoForm }); }
+    }
+    fetchVideos();
+    setVideoLoading(false);
+  };
+
+  const toggleVideoActivo = async (id: string, current: boolean) => {
+    await supabase.from('cyberedu_videos' as any).update({ activo: !current }).eq('id', id);
+    fetchVideos();
+  };
+
+  const deleteVideo = async (id: string) => {
+    if (!confirm('¿Eliminar este video?')) return;
+    await supabase.from('cyberedu_videos' as any).delete().eq('id', id);
+    fetchVideos();
+  };
+
+  const startEditVideo = (v: any) => {
+    setEditingVideoId(v.id);
+    setVideoForm({ materia: v.materia, subindice: v.subindice, titulo: v.titulo, youtube_url: v.youtube_url ?? '', descripcion: v.descripcion ?? '', orden: v.orden ?? 0, activo: v.activo });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-primary/30">
       <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-50" />
@@ -238,11 +301,17 @@ const AdminPage = () => {
           >
             <Flame className="h-3.5 w-3.5" /> Retos Diarios
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('analytics')}
             className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'analytics' ? 'bg-primary text-white' : 'text-slate-400 hover:text-white'}`}
           >
             <BarChart3 className="h-3.5 w-3.5" /> Analíticas Académicas
+          </button>
+          <button
+            onClick={() => setActiveTab('videos')}
+            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'videos' ? 'bg-pink-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          >
+            <Video className="h-3.5 w-3.5" /> Videos
           </button>
         </div>
 
@@ -581,6 +650,175 @@ const AdminPage = () => {
                       No hay retos programados
                     </div>
                   )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'videos' && (
+            <div className="grid lg:grid-cols-2 gap-8 items-start animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {/* Form */}
+              <div className="p-8 rounded-3xl bg-white/5 border border-pink-500/20 backdrop-blur-xl space-y-4">
+                <h2 className="text-xl font-bold flex items-center gap-2 text-pink-400">
+                  {editingVideoId ? <Pencil className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+                  {editingVideoId ? 'Editar Video' : 'Agregar Video'}
+                </h2>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Materia</label>
+                    <select
+                      value={videoForm.materia}
+                      onChange={e => setVideoForm({ ...videoForm, materia: e.target.value })}
+                      className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none"
+                    >
+                      {VIDEO_MATERIAS.map(m => <option key={m} value={m} className="bg-slate-900">{m}</option>)}
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Subíndice</label>
+                    <input
+                      value={videoForm.subindice}
+                      onChange={e => setVideoForm({ ...videoForm, subindice: e.target.value })}
+                      placeholder="ej: 1.1 Células"
+                      className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none focus:border-pink-500 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Título del video *</label>
+                  <input
+                    value={videoForm.titulo}
+                    onChange={e => setVideoForm({ ...videoForm, titulo: e.target.value })}
+                    placeholder="Ej: Introducción a las funciones"
+                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none focus:border-pink-500 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">URL de YouTube</label>
+                  <input
+                    value={videoForm.youtube_url}
+                    onChange={e => setVideoForm({ ...videoForm, youtube_url: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none focus:border-pink-500 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Descripción</label>
+                  <textarea
+                    value={videoForm.descripcion}
+                    onChange={e => setVideoForm({ ...videoForm, descripcion: e.target.value })}
+                    placeholder="Descripción breve (opcional)"
+                    rows={2}
+                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none focus:border-pink-500 transition-all resize-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Orden</label>
+                    <input
+                      type="number"
+                      value={videoForm.orden}
+                      onChange={e => setVideoForm({ ...videoForm, orden: Number(e.target.value) })}
+                      className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-sm outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Activo</label>
+                    <button
+                      onClick={() => setVideoForm({ ...videoForm, activo: !videoForm.activo })}
+                      className={`w-full p-3 rounded-xl border text-sm font-black transition-all ${videoForm.activo ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-white/5 border-white/10 text-slate-500'}`}
+                    >
+                      {videoForm.activo ? '✅ Visible' : '⏸ Oculto'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={saveVideo}
+                    disabled={videoLoading}
+                    className="flex-1 py-4 rounded-2xl bg-pink-600 text-white font-black uppercase tracking-widest hover:bg-pink-500 active:scale-95 transition-all disabled:opacity-50"
+                  >
+                    {videoLoading ? 'Guardando...' : editingVideoId ? 'Actualizar' : 'Agregar Video'}
+                  </button>
+                  {editingVideoId && (
+                    <button
+                      onClick={() => { setEditingVideoId(null); setVideoForm({ ...emptyVideoForm }); }}
+                      className="px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-black hover:bg-white/10 transition-all"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* List */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <List className="h-5 w-5 text-pink-400" />
+                    Videos ({videos.length})
+                  </h2>
+                  <select
+                    value={videoFilter}
+                    onChange={e => setVideoFilter(e.target.value)}
+                    className="p-2 rounded-xl bg-white/5 border border-white/10 text-xs outline-none"
+                  >
+                    <option value="Todas" className="bg-slate-900">Todas las materias</option>
+                    {VIDEO_MATERIAS.map(m => <option key={m} value={m} className="bg-slate-900">{m}</option>)}
+                  </select>
+                </div>
+
+                <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+                  {videoLoading && <p className="text-center text-slate-500 py-8 text-sm">Cargando...</p>}
+                  {!videoLoading && videos.filter(v => videoFilter === 'Todas' || v.materia === videoFilter).length === 0 && (
+                    <div className="p-12 text-center text-slate-600 font-bold uppercase tracking-widest text-xs">No hay videos</div>
+                  )}
+                  {videos
+                    .filter(v => videoFilter === 'Todas' || v.materia === videoFilter)
+                    .map((v: any) => (
+                      <div key={v.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-pink-500/30 transition-all group">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
+                              <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-pink-500/20 text-pink-400">{v.materia}</span>
+                              <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-white/10 text-slate-400">{v.subindice}</span>
+                              <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded ${v.activo ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-500'}`}>
+                                {v.activo ? 'Activo' : 'Oculto'}
+                              </span>
+                            </div>
+                            <p className="text-sm font-bold text-white truncate">{v.titulo}</p>
+                            {v.descripcion && <p className="text-xs text-slate-500 truncate mt-0.5">{v.descripcion}</p>}
+                          </div>
+                          <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => toggleVideoActivo(v.id, v.activo)}
+                              title={v.activo ? 'Desactivar' : 'Activar'}
+                              className="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-400 hover:text-emerald-400 transition-all"
+                            >
+                              {v.activo ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            </button>
+                            <button
+                              onClick={() => startEditVideo(v)}
+                              className="p-2 rounded-xl bg-white/5 hover:bg-pink-500/20 text-slate-400 hover:text-pink-400 transition-all"
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => deleteVideo(v.id)}
+                              className="p-2 rounded-xl bg-white/5 hover:bg-rose-500 text-slate-400 hover:text-white transition-all"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
