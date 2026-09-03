@@ -119,13 +119,13 @@ const Index = () => {
   const [loadingPromo, setLoadingPromo] = useState(false);
 
   const irAMercadoPago = async () => {
-    if (!user) { navigate('/auth?ref=promo-ecoems'); return; }
+    if (!user) { navigate('/auth?ref=tokens'); return; }
     setLoadingPromo(true);
     try {
       const res = await fetch('/api/tokens/buy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId: 'promo_ecoems', userId: user.id, userEmail: user.email }),
+        body: JSON.stringify({ packageId: 'paquete_completo', userId: user.id, userEmail: user.email }),
       });
       const data = await res.json();
       if (data.init_point) {

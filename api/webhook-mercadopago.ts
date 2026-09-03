@@ -249,15 +249,17 @@ export default async function handler(req: Request) {
           console.log(`[Webhook] ✅ GUÍA 2026 DESBLOQUEADA → usuario ${guiaId}`);
 
         } else if (metaPackageId === 'paquete_completo') {
-          // ── Paquete Completo ──────────────────────────────────────────
+          // ── Paquete Completo ($200 MXN — acceso total + 200 tokens) ──────
           let paqId = external_reference;
           const { data: paqProfile } = await supabase
-            .from('profiles').select('id').eq('id', external_reference).maybeSingle();
+            .from('profiles').select('id, tokens').eq('id', external_reference).maybeSingle();
           if (!paqProfile && paymentData.payer?.email) {
             const { data: byEmail } = await supabase
-              .from('profiles').select('id').eq('email', paymentData.payer.email).maybeSingle();
+              .from('profiles').select('id, tokens').eq('email', paymentData.payer.email).maybeSingle();
             if (byEmail) { paqId = byEmail.id; console.log(`[Webhook] paquete_completo: usuario encontrado por email → ${paqId}`); }
           }
+
+          const tokensActualesPaq = Number(paqProfile?.tokens) || 0;
 
           const paqUpdates = {
             paquete_completo: true,
@@ -272,6 +274,7 @@ export default async function handler(req: Request) {
             bank12_unlocked: true,
             bank13_unlocked: true,
             guia2026_unlocked: true,
+            tokens: tokensActualesPaq + 200,
             updated_at: new Date().toISOString(),
           };
 
@@ -295,7 +298,7 @@ export default async function handler(req: Request) {
             if (insertError) throw insertError;
           }
 
-          console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → usuario ${paqId}`);
+          console.log(`[Webhook] ✅ PAQUETE COMPLETO DESBLOQUEADO → +200 tokens (${tokensActualesPaq} → ${tokensActualesPaq + 200}) | usuario ${paqId}`);
 
         } else if (metaPackageId === 'practica_subindice') {
           // ── Práctica por Subíndice ────────────────────────────────────

@@ -108,15 +108,16 @@ const LandingPage = () => {
       icon: <Star className="h-6 w-6 text-amber-400" />
     },
     {
-      name: "Pro",
-      price: "120",
-      description: "Estudiantes intensivos",
-      tokens: "160 Tokens",
-      features: ["Todo lo gratuito", "160 interacciones con IA", "Explicaciones extendidas", "Tokens no expiran"],
-      cta: "Comprar Tokens",
+      name: "Acceso Completo",
+      price: "200",
+      description: "Todo incluido — pago único",
+      tokens: "Acceso total + 200 Tokens",
+      features: ["Todos los simuladores desbloqueados", "44 videos Guía 2026", "Práctica por subíndice ilimitada", "200 tokens para Tutor IA incluidos"],
+      cta: "Obtener Acceso Completo",
       action: () => navigate("/tokens"),
       highlight: false,
-      icon: <ShieldCheck className="h-6 w-6 text-blue-400" />
+      badge: "Pago único",
+      icon: <ShieldCheck className="h-6 w-6 text-violet-400" />
     },
     {
       name: "Ilimitado",

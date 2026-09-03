@@ -14,7 +14,7 @@ export const PromoBloqueo = ({ titulo }: PromoBloqueoProps) => {
 
   const irAMercadoPago = async () => {
     if (!user) {
-      navigate('/auth?ref=promo-ecoems');
+      navigate('/auth?ref=tokens');
       return;
     }
     setLoading(true);
@@ -23,7 +23,7 @@ export const PromoBloqueo = ({ titulo }: PromoBloqueoProps) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          packageId: 'promo_ecoems',
+          packageId: 'paquete_completo',
           userId: user.id,
           userEmail: user.email,
         }),
@@ -56,48 +56,39 @@ export const PromoBloqueo = ({ titulo }: PromoBloqueoProps) => {
           este contenido requiere activación.
         </p>
 
-        <div className="bg-[#12121a] border border-orange-500/30 rounded-2xl p-5 mb-4 text-left">
+        <div className="bg-[#12121a] border border-violet-500/30 rounded-2xl p-5 mb-4 text-left">
 
           <div className="flex items-center justify-between mb-3">
-            <span className="text-orange-400 font-bold text-xs uppercase tracking-widest">
-              🔥 Promo ECOEMS 2026
+            <span className="text-violet-400 font-bold text-xs uppercase tracking-widest">
+              👑 Paquete Completo
             </span>
-            <span className="text-xs bg-orange-600/20 border border-orange-600/30 text-orange-400 px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-violet-600/20 border border-violet-600/30 text-violet-400 px-2 py-0.5 rounded-full">
               Permanente ♾️
             </span>
           </div>
 
           <div className="flex items-baseline gap-2 mb-4">
-            <span className="text-slate-500 line-through text-sm">$170 MXN</span>
-            <span className="text-orange-400 font-bold text-3xl">$50 MXN</span>
+            <span className="text-violet-400 font-bold text-3xl">$200 MXN</span>
+            <span className="text-slate-500 text-xs">pago único</span>
           </div>
 
           <div className="space-y-1.5 text-sm text-slate-300 mb-5">
             <p>✅ Todos los bancos del Simulador Pro</p>
             <p>✅ Simulador Infinito (3,680+ preguntas)</p>
-            <p>✅ Práctica por Subíndice</p>
+            <p>✅ Práctica por Subíndice ilimitada</p>
             <p>✅ Acordeón ECOEMS completo</p>
             <p>✅ 44 videos Guía 2026</p>
-            <p>🤖 Tutor IA GRATIS hasta el 29 de junio</p>
-          </div>
-
-          <div className="bg-purple-600/10 border border-purple-500/30 rounded-xl p-3 mb-4 text-center">
-            <p className="text-purple-400 font-bold text-sm">
-              🎁 Tutor IA ilimitado hasta el 29 de junio
-            </p>
-            <p className="text-slate-500 text-xs mt-0.5">
-              Pregunta todo lo que necesites antes del examen
-            </p>
+            <p>🎁 200 tokens para el Tutor IA incluidos</p>
           </div>
 
           <button
             onClick={irAMercadoPago}
             disabled={loading}
-            className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-base hover:bg-orange-500 active:scale-95 transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(234,88,12,0.3)]"
+            className="w-full bg-violet-600 text-white py-4 rounded-xl font-bold text-base hover:bg-violet-500 active:scale-95 transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(124,58,237,0.3)]"
           >
             {loading
               ? '⏳ Conectando con Mercado Pago...'
-              : '💳 Pagar $50 MXN ahora'}
+              : '💳 Pagar $200 MXN ahora'}
           </button>
 
           <p className="text-center text-xs text-slate-600 mt-2">
@@ -105,7 +96,7 @@ export const PromoBloqueo = ({ titulo }: PromoBloqueoProps) => {
           </p>
 
           <a
-            href={`https://wa.me/5552326941?text=${encodeURIComponent('¡Hola! Quiero activar el acceso completo a CyberEdu MX por $50 MXN.\n\nDatos para transferencia:\nBanco: Santander\nCLABE: 014180565546539842\nNombre: JOSE LUIS GONZALEZ PEREZ\n\nTe mando mi comprobante. Mi correo de Google es: ')}`}
+            href={`https://wa.me/5552326941?text=${encodeURIComponent('¡Hola! Quiero activar el Paquete Completo de CyberEdu MX por $200 MXN.\n\nDatos para transferencia:\nBanco: Santander\nCLABE: 014180565546539842\nNombre: JOSE LUIS GONZALEZ PEREZ\n\nTe mando mi comprobante. Mi correo de Google es: ')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-green-600/20 border border-green-500/30 text-green-400 py-3 rounded-xl font-bold text-sm hover:bg-green-600/30 transition-all mt-3"
