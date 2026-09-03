@@ -156,6 +156,12 @@ const Header = () => {
               🃏 Flashcards
             </Link>
             <Link
+              to="/videos"
+              className="text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors flex items-center gap-1"
+            >
+              🎬 Videos
+            </Link>
+            <Link
               to="/#areas"
               onClick={handleAreasClick}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -520,6 +526,13 @@ const Header = () => {
                   >
                     🃏 Flashcards
                     <span className="ml-auto text-[8px] bg-green-600 text-white font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">Nuevo</span>
+                  </Link>
+                  <Link
+                    to="/videos"
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 transition-colors text-pink-400 font-bold border border-pink-500/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    🎬 Videos por Tema
                   </Link>
                   <Link
                     to="/#areas"
