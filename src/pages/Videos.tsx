@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -91,7 +90,6 @@ function SubindiceSection({ subindice, videos, color }: { subindice: string; vid
 }
 
 export default function Videos() {
-  const navigate = useNavigate();
   const [materiaActiva, setMateriaActiva] = useState<string | null>(null);
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -167,8 +165,8 @@ export default function Videos() {
 
             {!loading && videos.length === 0 && (
               <div className="text-center py-12 border border-dashed border-border rounded-2xl">
-                <Video className="h-10 w-10 mx-auto mb-3 text-muted-foreground/40" />
-                <p className="text-muted-foreground text-sm font-bold">Próximamente</p>
+                <Video className="h-10 w-10 mx-auto mb-3 text-muted-foreground/40 animate-pulse" />
+                <p className="text-muted-foreground text-sm font-bold animate-pulse">Próximamente</p>
                 <p className="text-muted-foreground/60 text-xs mt-1">Aún no hay videos publicados para esta materia</p>
               </div>
             )}
