@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ChevronDown, ChevronRight, PlayCircle, Video } from "lucide-react";
+import { Video } from "lucide-react";
 
 interface VideoItem {
   id: string;
@@ -30,61 +30,46 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-function SubindiceSection({ subindice, videos, color }: { subindice: string; videos: VideoItem[]; color: typeof MATERIAS[0] }) {
-  const [open, setOpen] = useState(false);
-  const [playing, setPlaying] = useState<string | null>(null);
-
+function SubindiceCard({ subindice, videos, color }: { subindice: string; videos: VideoItem[]; color: typeof MATERIAS[0] }) {
   return (
-    <div className={`rounded-xl border ${color.border} overflow-hidden`}>
-      <button
-        onClick={() => setOpen(!open)}
-        className={`w-full flex items-center justify-between px-4 py-3 ${color.bg} ${color.hover} transition-colors`}
-      >
-        <span className={`font-bold ${color.text} text-sm`}>{subindice}</span>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] text-muted-foreground font-bold uppercase">{videos.length} video{videos.length !== 1 ? "s" : ""}</span>
-          {open ? <ChevronDown className={`h-4 w-4 ${color.text}`} /> : <ChevronRight className={`h-4 w-4 ${color.text}`} />}
-        </div>
-      </button>
+    <div className={`rounded-2xl border ${color.border} overflow-hidden bg-card/40`}>
+      {/* Header morado/color de materia */}
+      <div className={`px-5 py-3 ${color.bg} border-b ${color.border}`}>
+        <h3 className={`font-black text-base ${color.text} tracking-tight`}>{subindice}</h3>
+      </div>
 
-      {open && (
-        <div className="divide-y divide-border/50">
-          {videos.map((v) => {
-            const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
-            const isPlaying = playing === v.id;
-            return (
-              <div key={v.id} className="p-4 bg-card/50">
-                <div className="flex items-start gap-3 mb-3">
-                  <PlayCircle className={`h-5 w-5 mt-0.5 shrink-0 ${color.text}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-foreground text-sm">{v.titulo}</p>
-                    {v.descripcion && <p className="text-xs text-muted-foreground mt-0.5">{v.descripcion}</p>}
-                  </div>
-                  {ytId && !isPlaying && (
-                    <button
-                      onClick={() => setPlaying(v.id)}
-                      className={`shrink-0 text-[10px] font-black uppercase px-3 py-1.5 rounded-lg ${color.bg} ${color.text} ${color.border} border ${color.hover} transition-colors`}
-                    >
-                      Ver
-                    </button>
-                  )}
+      {/* Videos del subíndice */}
+      <div className="divide-y divide-border/40">
+        {videos.map((v) => {
+          const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
+          return (
+            <div key={v.id} className="px-5 py-4">
+              {/* Descripción breve */}
+              {v.descripcion && (
+                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{v.descripcion}</p>
+              )}
+
+              {/* Embed o Próximamente */}
+              {ytId ? (
+                <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${ytId}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                    title={v.titulo}
+                  />
                 </div>
-                {isPlaying && ytId && (
-                  <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                      title={v.titulo}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
+              ) : (
+                <div className="aspect-video w-full rounded-xl border border-dashed border-border/60 bg-card/60 flex flex-col items-center justify-center gap-2">
+                  <span className="text-3xl animate-pulse">🎬</span>
+                  <p className="text-sm font-bold text-muted-foreground animate-pulse">Próximamente</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -165,7 +150,7 @@ export default function Videos() {
                           className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                         />
                         <div className="relative z-10 h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                          <PlayCircle className="h-9 w-9 text-white" />
+                          <Video className="h-9 w-9 text-white" />
                         </div>
                       </button>
                     )}
@@ -232,9 +217,9 @@ export default function Videos() {
             )}
 
             {!loading && subindices.length > 0 && (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-5">
                 {subindices.map((sub) => (
-                  <SubindiceSection
+                  <SubindiceCard
                     key={sub}
                     subindice={sub}
                     videos={videos.filter((v) => v.subindice === sub)}
