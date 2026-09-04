@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Video } from "lucide-react";
+import { Video, ChevronDown, Zap } from "lucide-react";
 
 interface VideoItem {
   id: string;
@@ -15,14 +16,14 @@ interface VideoItem {
 }
 
 const MATERIAS = [
-  { nombre: "Español",           emoji: "📝", color: "rose",   bg: "bg-rose-500/10",   border: "border-rose-500/30",   text: "text-rose-400",   hover: "hover:bg-rose-500/20" },
-  { nombre: "Matemáticas",       emoji: "🔢", color: "blue",   bg: "bg-blue-500/10",   border: "border-blue-500/30",   text: "text-blue-400",   hover: "hover:bg-blue-500/20" },
-  { nombre: "Biología",          emoji: "🧬", color: "green",  bg: "bg-green-500/10",  border: "border-green-500/30",  text: "text-green-400",  hover: "hover:bg-green-500/20" },
-  { nombre: "Física",            emoji: "⚛️", color: "purple", bg: "bg-purple-500/10", border: "border-purple-500/30", text: "text-purple-400", hover: "hover:bg-purple-500/20" },
-  { nombre: "Química",           emoji: "⚗️", color: "amber",  bg: "bg-amber-500/10",  border: "border-amber-500/30",  text: "text-amber-400",  hover: "hover:bg-amber-500/20" },
-  { nombre: "Historia",          emoji: "📜", color: "orange", bg: "bg-orange-500/10", border: "border-orange-500/30", text: "text-orange-400", hover: "hover:bg-orange-500/20" },
-  { nombre: "Geografía",         emoji: "🌎", color: "teal",   bg: "bg-teal-500/10",   border: "border-teal-500/30",   text: "text-teal-400",   hover: "hover:bg-teal-500/20" },
-  { nombre: "Formación Cívica",  emoji: "🏛️", color: "indigo", bg: "bg-indigo-500/10", border: "border-indigo-500/30", text: "text-indigo-400", hover: "hover:bg-indigo-500/20" },
+  { nombre: "Español",          emoji: "📝", header: "bg-gradient-to-r from-rose-700 to-rose-500"   },
+  { nombre: "Matemáticas",      emoji: "🔢", header: "bg-gradient-to-r from-blue-700 to-blue-500"   },
+  { nombre: "Biología",         emoji: "🧬", header: "bg-gradient-to-r from-green-700 to-green-500" },
+  { nombre: "Física",           emoji: "⚛️", header: "bg-gradient-to-r from-purple-700 to-purple-500" },
+  { nombre: "Química",          emoji: "⚗️", header: "bg-gradient-to-r from-amber-700 to-amber-500" },
+  { nombre: "Historia",         emoji: "📜", header: "bg-gradient-to-r from-orange-700 to-orange-500" },
+  { nombre: "Geografía",        emoji: "🌎", header: "bg-gradient-to-r from-teal-700 to-teal-500"   },
+  { nombre: "Formación Cívica", emoji: "🏛️", header: "bg-gradient-to-r from-indigo-700 to-indigo-500" },
 ];
 
 function getYouTubeId(url: string): string | null {
@@ -30,54 +31,10 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-function SubindiceCard({ subindice, videos, color }: { subindice: string; videos: VideoItem[]; color: typeof MATERIAS[0] }) {
-  return (
-    <div className={`rounded-2xl border ${color.border} overflow-hidden bg-card/40`}>
-      {/* Header morado/color de materia */}
-      <div className={`px-5 py-3 ${color.bg} border-b ${color.border}`}>
-        <h3 className={`font-black text-base ${color.text} tracking-tight`}>{subindice}</h3>
-      </div>
-
-      {/* Videos del subíndice */}
-      <div className="divide-y divide-border/40">
-        {videos.map((v) => {
-          const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
-          return (
-            <div key={v.id} className="px-5 py-4">
-              {/* Descripción breve */}
-              {v.descripcion && (
-                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{v.descripcion}</p>
-              )}
-
-              {/* Embed o Próximamente */}
-              {ytId ? (
-                <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${ytId}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                    title={v.titulo}
-                  />
-                </div>
-              ) : (
-                <div className="aspect-video w-full rounded-xl border border-dashed border-border/60 bg-card/60 flex flex-col items-center justify-center gap-2">
-                  <span className="text-3xl animate-pulse">🎬</span>
-                  <p className="text-sm font-bold text-muted-foreground animate-pulse">Próximamente</p>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 export default function Videos() {
-  const [materiaActiva, setMateriaActiva] = useState<string | null>(null);
-  const [videos, setVideos] = useState<VideoItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [openMateria, setOpenMateria] = useState<string | null>(null);
+  const [videosPorMateria, setVideosPorMateria] = useState<Record<string, VideoItem[]>>({});
+  const [loadingMateria, setLoadingMateria] = useState<string | null>(null);
   const [intro, setIntro] = useState<VideoItem[]>([]);
   const [introPlaying, setIntroPlaying] = useState<string | null>(null);
 
@@ -91,54 +48,70 @@ export default function Videos() {
       .then(({ data }) => setIntro((data as VideoItem[]) ?? []));
   }, []);
 
-  useEffect(() => {
-    if (!materiaActiva) return;
-    setLoading(true);
-    supabase
-      .from("cyberedu_videos" as any)
-      .select("*")
-      .eq("materia", materiaActiva)
-      .eq("activo", true)
-      .order("orden", { ascending: true })
-      .then(({ data }) => {
-        setVideos((data as VideoItem[]) ?? []);
-        setLoading(false);
-      });
-  }, [materiaActiva]);
-
-  const subindices = materiaActiva
-    ? [...new Set(videos.map((v) => v.subindice))]
-    : [];
-
-  const colorActivo = MATERIAS.find((m) => m.nombre === materiaActiva);
+  const toggleMateria = (nombre: string) => {
+    if (openMateria === nombre) {
+      setOpenMateria(null);
+      return;
+    }
+    setOpenMateria(nombre);
+    if (!videosPorMateria[nombre]) {
+      setLoadingMateria(nombre);
+      supabase
+        .from("cyberedu_videos" as any)
+        .select("*")
+        .eq("materia", nombre)
+        .eq("activo", true)
+        .order("orden", { ascending: true })
+        .then(({ data }) => {
+          setVideosPorMateria((prev) => ({ ...prev, [nombre]: (data as VideoItem[]) ?? [] }));
+          setLoadingMateria(null);
+        });
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col cyber-grid">
+      {/* Background blobs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-violet-500/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-500/20 rounded-full blur-[120px]" />
+      </div>
+
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8 max-w-5xl">
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <Video className="h-7 w-7 text-violet-400" />
-            <h1 className="text-3xl font-black text-foreground tracking-tight">Videos por Tema</h1>
+
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 pt-10 pb-24 space-y-8 relative">
+        {/* Page header */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <Zap className="h-3 w-3 text-violet-400" />
+            Videos por Tema · ECOEMS
           </div>
-          <p className="text-muted-foreground text-sm">Selecciona una materia para ver los videos por subíndice</p>
+          <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic leading-none">
+            Videos por{" "}
+            <span className="text-violet-400 not-italic">Subíndice</span>
+          </h1>
+          <p className="text-slate-400 text-base max-w-xl mx-auto">
+            Selecciona una materia para ver los videos organizados por subíndice.
+          </p>
         </div>
 
         {/* Introducción */}
         {intro.length > 0 && (
-          <div className="mb-10 rounded-2xl border border-violet-500/30 bg-violet-500/5 overflow-hidden">
-            <div className="px-5 pt-5 pb-3 flex items-center gap-2">
-              <Video className="h-5 w-5 text-violet-400" />
-              <h2 className="text-base font-black text-violet-400 uppercase tracking-widest">🎬 Introducción</h2>
+          <div className="rounded-2xl border border-violet-500/30 overflow-hidden bg-slate-900/60 backdrop-blur-sm">
+            <div className="px-5 py-4 bg-gradient-to-r from-violet-700 to-violet-500 flex items-center gap-2">
+              <Video className="h-4 w-4 text-white" />
+              <h2 className="text-sm font-black uppercase tracking-wide text-white">🎬 Introducción</h2>
             </div>
-            <div className="px-5 pb-5 flex flex-col gap-4">
+            <div className="px-5 py-5 flex flex-col gap-4">
               {intro.map((v) => {
                 const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
                 const playing = introPlaying === v.id;
                 return (
                   <div key={v.id}>
-                    <p className="font-bold text-foreground text-sm mb-1">{v.titulo}</p>
-                    {v.descripcion && <p className="text-xs text-muted-foreground mb-3">{v.descripcion}</p>}
+                    <p className="font-black text-sm text-white mb-1 uppercase tracking-wide">{v.titulo}</p>
+                    {v.descripcion && (
+                      <p className="text-xs text-slate-400 mb-3 leading-relaxed">{v.descripcion}</p>
+                    )}
                     {ytId && !playing && (
                       <button
                         onClick={() => setIntroPlaying(v.id)}
@@ -172,65 +145,127 @@ export default function Videos() {
           </div>
         )}
 
-        {/* Materias grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        {/* Materias accordion */}
+        <div className="space-y-3">
           {MATERIAS.map((m) => {
-            const active = materiaActiva === m.nombre;
+            const isOpen = openMateria === m.nombre;
+            const videos = videosPorMateria[m.nombre] ?? [];
+            const subindices = [...new Set(videos.map((v) => v.subindice))];
+            const isLoading = loadingMateria === m.nombre;
+
             return (
-              <button
+              <div
                 key={m.nombre}
-                onClick={() => {
-                  setMateriaActiva(active ? null : m.nombre);
-                  setVideos([]);
-                }}
-                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border transition-all font-bold text-sm
-                  ${active
-                    ? `${m.bg} ${m.border} ${m.text} scale-[1.02] shadow-lg`
-                    : `bg-card border-border text-muted-foreground hover:${m.text} ${m.hover} hover:border-transparent`
-                  }`}
+                className="rounded-2xl border border-white/10 overflow-hidden bg-slate-900/60 backdrop-blur-sm"
               >
-                <span className="text-3xl leading-none">{m.emoji}</span>
-                <span className="text-center leading-tight">{m.nombre}</span>
-              </button>
+                {/* Materia header */}
+                <button
+                  onClick={() => toggleMateria(m.nombre)}
+                  className={`w-full flex items-center justify-between px-5 py-4 ${m.header} text-white font-black text-sm uppercase tracking-wide hover:opacity-90 transition-opacity`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-lg">{m.emoji}</span>
+                    {m.nombre}
+                  </span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center"
+                  >
+                    <ChevronDown className="h-4 w-4 opacity-80" />
+                  </motion.span>
+                </button>
+
+                {/* Videos content */}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      {isLoading && (
+                        <div className="px-5 py-8 text-center text-slate-500 text-sm">
+                          Cargando videos...
+                        </div>
+                      )}
+
+                      {!isLoading && videos.length === 0 && (
+                        <div className="px-5 py-10 flex flex-col items-center gap-2">
+                          <span className="text-4xl animate-pulse">🎬</span>
+                          <p className="text-sm font-bold text-slate-500 animate-pulse">Próximamente</p>
+                          <p className="text-xs text-slate-600 mt-1">
+                            Aún no hay videos publicados para esta materia
+                          </p>
+                        </div>
+                      )}
+
+                      {!isLoading && subindices.length > 0 && (
+                        <div>
+                          {subindices.map((sub) => {
+                            const subVideos = videos.filter((v) => v.subindice === sub);
+                            return (
+                              <div key={sub}>
+                                {/* Subindice label */}
+                                <div className="px-5 py-2 bg-white/3 border-t border-white/5">
+                                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                    {sub}
+                                  </p>
+                                </div>
+
+                                {/* Videos for this subindice */}
+                                <div className="divide-y divide-white/5">
+                                  {subVideos.map((v) => {
+                                    const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
+                                    return (
+                                      <div key={v.id} className="px-5 py-4">
+                                        <p className="text-sm font-black text-white mb-1 uppercase tracking-wide leading-snug">
+                                          {v.titulo}
+                                        </p>
+                                        {v.descripcion && (
+                                          <p className="text-[11px] text-slate-400 mb-3 leading-relaxed">
+                                            {v.descripcion}
+                                          </p>
+                                        )}
+                                        {ytId ? (
+                                          <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
+                                            <iframe
+                                              src={`https://www.youtube.com/embed/${ytId}`}
+                                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                              allowFullScreen
+                                              className="w-full h-full"
+                                              title={v.titulo}
+                                            />
+                                          </div>
+                                        ) : (
+                                          <div className="aspect-video w-full rounded-xl border border-dashed border-white/10 bg-white/3 flex flex-col items-center justify-center gap-2">
+                                            <span className="text-3xl animate-pulse">🎬</span>
+                                            <p className="text-sm font-bold text-slate-500 animate-pulse">
+                                              Próximamente
+                                            </p>
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
           })}
         </div>
-
-        {/* Subindices section */}
-        {materiaActiva && colorActivo && (
-          <div>
-            <h2 className={`text-lg font-black mb-4 ${colorActivo.text} flex items-center gap-2`}>
-              <span>{colorActivo.emoji}</span>
-              {materiaActiva}
-            </h2>
-
-            {loading && (
-              <div className="text-center py-12 text-muted-foreground text-sm">Cargando videos...</div>
-            )}
-
-            {!loading && videos.length === 0 && (
-              <div className="text-center py-12 border border-dashed border-border rounded-2xl">
-                <Video className="h-10 w-10 mx-auto mb-3 text-muted-foreground/40 animate-pulse" />
-                <p className="text-muted-foreground text-sm font-bold animate-pulse">Próximamente</p>
-                <p className="text-muted-foreground/60 text-xs mt-1">Aún no hay videos publicados para esta materia</p>
-              </div>
-            )}
-
-            {!loading && subindices.length > 0 && (
-              <div className="flex flex-col gap-5">
-                {subindices.map((sub) => (
-                  <SubindiceCard
-                    key={sub}
-                    subindice={sub}
-                    videos={videos.filter((v) => v.subindice === sub)}
-                    color={colorActivo}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </main>
+
       <Footer />
     </div>
   );
