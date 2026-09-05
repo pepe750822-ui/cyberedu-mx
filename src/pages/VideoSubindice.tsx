@@ -17,12 +17,6 @@ interface VideoItem {
   orden: number | null;
 }
 
-interface ContentBlock {
-  definition: string;
-  bullets: string[];
-  example: string | null;
-}
-
 function createSlug(text: string): string {
   return text
     .toLowerCase()
@@ -37,50 +31,15 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-function buildContent(
-  descripcion: string | null,
-  subindiceTitle: string,
-  seccionTitulo: string,
-  materiaNombre: string
-): ContentBlock {
-  if (descripcion) {
-    const lines = descripcion
-      .split(/\n|•|-\s/)
-      .map((l) => l.trim())
-      .filter(Boolean);
-
-    if (lines.length === 1) {
-      return {
-        definition: lines[0],
-        bullets: autoGenerateBullets(subindiceTitle, materiaNombre),
-        example: null,
-      };
-    }
-
-    const [definition, ...rest] = lines;
-    const bullets = rest.slice(0, 5);
-    const example = rest.length > 5 ? rest.slice(5).join(" ") : null;
-    return { definition, bullets, example };
-  }
-
-  // Auto-generate from temario title
-  const coreTopic = subindiceTitle.split(":")[0].trim();
-  return {
-    definition: `${coreTopic} es un tema del subíndice ${seccionTitulo ? `dentro de "${seccionTitulo}"` : ""} en ${materiaNombre}. Dominar este concepto es clave para resolver preguntas frecuentes en el examen ECOEMS de admisión.`,
-    bullets: autoGenerateBullets(subindiceTitle, materiaNombre),
-    example: null,
-  };
-}
-
-function autoGenerateBullets(title: string, materia: string): string[] {
-  const core = title.split(":")[0].trim();
-  return [
-    `Identificar las características principales de: ${core}`,
-    `Aplicar el concepto en ejercicios tipo ECOEMS`,
-    `Distinguir ${core} de conceptos similares en ${materia}`,
-    `Reconocer ejemplos prácticos en contextos cotidianos`,
-    `Repasar con el simulador para reforzar lo aprendido`,
-  ];
+/** Parse multi-line descripcion into bullets; single line stays as prose. */
+function parseDescripcion(raw: string): { definition: string; bullets: string[] } {
+  const lines = raw
+    .split(/\n|•|-\s/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (lines.length <= 1) return { definition: raw.trim(), bullets: [] };
+  const [definition, ...rest] = lines;
+  return { definition, bullets: rest.slice(0, 5) };
 }
 
 export default function VideoSubindice() {
@@ -90,12 +49,14 @@ export default function VideoSubindice() {
   }>();
 
   const [video, setVideo] = useState<VideoItem | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [videoLoading, setVideoLoading] = useState(true);
+  const [aiContent, setAiContent] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
 
   const area = videoAreas.find((a) => createSlug(a.nombre) === materiaSlug);
   const colors = area ? (colorMap[area.color] ?? colorMap.blue) : colorMap.blue;
 
-  // Find subíndice title and section from temario
+  // Find subíndice title + section from temario
   let subindiceTitle = "";
   let seccionTitulo = "";
   if (area && subNum) {
@@ -111,12 +72,13 @@ export default function VideoSubindice() {
     }
   }
 
+  // ── Load video from Supabase ──────────────────────────────────
   useEffect(() => {
     if (!area || !subNum) {
-      setLoading(false);
+      setVideoLoading(false);
       return;
     }
-    setLoading(true);
+    setVideoLoading(true);
     supabase
       .from("cyberedu_videos" as any)
       .select("*")
@@ -126,22 +88,32 @@ export default function VideoSubindice() {
       .maybeSingle()
       .then(({ data }) => {
         setVideo(data as VideoItem | null);
-        setLoading(false);
+        setVideoLoading(false);
       });
   }, [area?.nombre, subNum]);
+
+  // ── Generate AI content when no DB description ────────────────
+  useEffect(() => {
+    if (videoLoading) return;
+    if (video?.descripcion) return; // BD ya tiene contenido
+    if (!subindiceTitle || !area?.nombre) return;
+
+    setAiLoading(true);
+    fetch("/api/video-content", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ titulo: subindiceTitle, materia: area.nombre }),
+    })
+      .then((r) => r.json())
+      .then((d: { content?: string }) => setAiContent(d.content ?? null))
+      .catch(() => setAiContent(null))
+      .finally(() => setAiLoading(false));
+  }, [videoLoading, video?.descripcion, subindiceTitle, area?.nombre]);
 
   const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
   const displayTitle = video?.titulo || subindiceTitle;
 
-  const content =
-    !loading && subindiceTitle
-      ? buildContent(
-          video?.descripcion ?? null,
-          subindiceTitle,
-          seccionTitulo,
-          area?.nombre ?? ""
-        )
-      : null;
+  const parsed = video?.descripcion ? parseDescripcion(video.descripcion) : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col cyber-grid">
@@ -180,56 +152,71 @@ export default function VideoSubindice() {
             </p>
           )}
           <h1 className="text-2xl md:text-3xl font-black leading-tight text-white">
-            {displayTitle || (loading ? "Cargando..." : "Subíndice no encontrado")}
+            {displayTitle || (videoLoading ? "Cargando..." : "Subíndice no encontrado")}
           </h1>
         </div>
 
-        {/* ── 📚 ¿Qué aprenderás? ─────────────────────────────────── */}
-        {content && (
+        {/* ── 📚 Resumen del tema ───────────────────────────────── */}
+        {!videoLoading && subindiceTitle && (
           <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 backdrop-blur-sm p-5 space-y-4">
             <h2 className="text-sm font-black uppercase tracking-wide text-violet-300">
-              📚 ¿Qué aprenderás?
+              📚 Resumen del tema
             </h2>
 
-            {/* Definición */}
-            <p className="text-sm text-slate-300 leading-relaxed">
-              {content.definition}
-            </p>
-
-            {/* Puntos clave */}
-            {content.bullets.length > 0 && (
-              <ul className="space-y-2">
-                {content.bullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-slate-300 leading-snug">
-                    <span className="shrink-0 mt-px">✅</span>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+            {/* Contenido de BD */}
+            {parsed && (
+              <>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  {parsed.definition}
+                </p>
+                {parsed.bullets.length > 0 && (
+                  <ul className="space-y-2">
+                    {parsed.bullets.map((b, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-slate-300 leading-snug"
+                      >
+                        <span className="shrink-0 mt-px">✅</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
 
-            {/* Ejemplo práctico */}
-            {content.example && (
-              <div className="mt-1 p-3 rounded-xl bg-white/5 border border-white/10">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
-                  Ejemplo práctico
-                </p>
-                <p className="text-sm text-slate-300 leading-relaxed">
-                  {content.example}
-                </p>
+            {/* Generando con DeepSeek */}
+            {!parsed && aiLoading && (
+              <div className="flex items-center gap-3 text-sm text-slate-400">
+                <div className="h-4 w-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin shrink-0" />
+                <span>Generando resumen con IA...</span>
               </div>
+            )}
+
+            {/* Contenido generado por DeepSeek */}
+            {!parsed && !aiLoading && aiContent && (
+              <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                {aiContent}
+              </p>
+            )}
+
+            {/* Sin contenido de ninguna fuente */}
+            {!parsed && !aiLoading && !aiContent && (
+              <p className="text-sm text-slate-500 italic">
+                Resumen no disponible para este subíndice.
+              </p>
             )}
           </div>
         )}
 
-        {/* ── Video embed ─────────────────────────────────────────── */}
-        {loading && (
+        {/* ── Video embed ───────────────────────────────────────── */}
+        {videoLoading && (
           <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex items-center justify-center">
             <p className="text-slate-500 text-sm">Cargando video...</p>
           </div>
         )}
 
-        {!loading && ytId && (
+        {!videoLoading && ytId && (
           <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
             <iframe
               src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
@@ -241,7 +228,7 @@ export default function VideoSubindice() {
           </div>
         )}
 
-        {!loading && !ytId && (
+        {!videoLoading && !ytId && (
           <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex flex-col items-center justify-center gap-3">
             <PlayCircle className="h-12 w-12 text-slate-700" />
             <p className="text-slate-500 text-sm">Video próximamente disponible</p>
