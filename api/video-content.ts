@@ -48,7 +48,7 @@ export default async function handler(req: Request) {
     });
   }
 
-  const cacheKey = `vc:${materia}:${titulo}`.toLowerCase().slice(0, 220);
+  const cacheKey = `vc2:${materia}:${titulo}`.toLowerCase().slice(0, 220);
 
   // ── Cache read (Upstash) ────────────────────────────────────────
   if (UPSTASH_URL && UPSTASH_TOKEN) {
@@ -98,7 +98,8 @@ export default async function handler(req: Request) {
     `Explica el tema "${titulo}" de la materia "${materia}" en 2-3 párrafos claros ` +
     `para un estudiante de secundaria. ` +
     `Incluye un ejemplo práctico del tipo que aparece en el examen ECOEMS. ` +
-    `Responde solo en español, sin markdown.`;
+    `Responde solo en español, sin markdown. ` +
+    `Termina siempre con una oración completa. No dejes oraciones a medias.`;
 
   const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
@@ -109,7 +110,7 @@ export default async function handler(req: Request) {
     body: JSON.stringify({
       model: 'deepseek-v4-flash',
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 800,
+      max_tokens: 1200,
       temperature: 0.7,
     }),
   });
