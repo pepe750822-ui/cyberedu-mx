@@ -91,7 +91,7 @@ export default async function handler(req: Request) {
     body: JSON.stringify({
       model: 'deepseek-v4-flash',
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 600,
+      max_tokens: 800,
       temperature: 0.7,
     }),
   });
