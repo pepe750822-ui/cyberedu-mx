@@ -31,10 +31,23 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-const BOLD_WORDS = ["Autor", "Título", "Editorial", "ECOEMS", "ejemplo", "ficha"];
+// Longest phrases first so "ficha bibliográfica" matches before "ficha"
+const KEYWORDS = [
+  "ficha bibliográfica",
+  "ECOEMS",
+  "Editorial",
+  "Título",
+  "Autor",
+  "ejemplo",
+  "ficha",
+];
+
+function escapeRegex(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 function renderAiContent(text: string) {
-  const regex = new RegExp(`(${BOLD_WORDS.join("|")})`, "gi");
+  const regex = new RegExp(`(${KEYWORDS.map(escapeRegex).join("|")})`, "gi");
   return text
     .split(/\n\n+/)
     .filter((p) => p.trim())
@@ -43,8 +56,8 @@ function renderAiContent(text: string) {
       return (
         <p key={pIdx} className="text-sm leading-relaxed text-slate-300">
           {parts.map((part, i) =>
-            BOLD_WORDS.some((k) => k.toLowerCase() === part.toLowerCase()) ? (
-              <strong key={i} className="text-violet-200 font-bold">
+            KEYWORDS.some((k) => k.toLowerCase() === part.toLowerCase()) ? (
+              <strong key={i} className="text-violet-400 font-semibold">
                 {part}
               </strong>
             ) : (
