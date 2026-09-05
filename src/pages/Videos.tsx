@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Video, ChevronDown, Zap, PlayCircle, X } from "lucide-react";
-import { areas, colorMap } from "@/data/temarioData";
+import { colorMap } from "@/data/temarioData";
+import { videoAreas as areas } from "@/data/temarioVideoData";
 
 interface VideoItem {
   id: string;
@@ -256,7 +257,7 @@ export default function Videos() {
                                 {/* Subíndices */}
                                 <div className="divide-y divide-white/5">
                                   {subindices.map((item, cIdx) => {
-                                    const label = getLabel(item);
+                                    const label = item;
                                     const video = findVideo(videos, item);
                                     const key = `${aIdx}-${sIdx}-${cIdx}`;
                                     const isExpanded = expandedKey === key;
