@@ -17,6 +17,12 @@ interface VideoItem {
   orden: number | null;
 }
 
+interface ContentBlock {
+  definition: string;
+  bullets: string[];
+  example: string | null;
+}
+
 function createSlug(text: string): string {
   return text
     .toLowerCase()
@@ -31,6 +37,52 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
+function buildContent(
+  descripcion: string | null,
+  subindiceTitle: string,
+  seccionTitulo: string,
+  materiaNombre: string
+): ContentBlock {
+  if (descripcion) {
+    const lines = descripcion
+      .split(/\n|•|-\s/)
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    if (lines.length === 1) {
+      return {
+        definition: lines[0],
+        bullets: autoGenerateBullets(subindiceTitle, materiaNombre),
+        example: null,
+      };
+    }
+
+    const [definition, ...rest] = lines;
+    const bullets = rest.slice(0, 5);
+    const example = rest.length > 5 ? rest.slice(5).join(" ") : null;
+    return { definition, bullets, example };
+  }
+
+  // Auto-generate from temario title
+  const coreTopic = subindiceTitle.split(":")[0].trim();
+  return {
+    definition: `${coreTopic} es un tema del subíndice ${seccionTitulo ? `dentro de "${seccionTitulo}"` : ""} en ${materiaNombre}. Dominar este concepto es clave para resolver preguntas frecuentes en el examen ECOEMS de admisión.`,
+    bullets: autoGenerateBullets(subindiceTitle, materiaNombre),
+    example: null,
+  };
+}
+
+function autoGenerateBullets(title: string, materia: string): string[] {
+  const core = title.split(":")[0].trim();
+  return [
+    `Identificar las características principales de: ${core}`,
+    `Aplicar el concepto en ejercicios tipo ECOEMS`,
+    `Distinguir ${core} de conceptos similares en ${materia}`,
+    `Reconocer ejemplos prácticos en contextos cotidianos`,
+    `Repasar con el simulador para reforzar lo aprendido`,
+  ];
+}
+
 export default function VideoSubindice() {
   const { materia: materiaSlug, subindice: subNum } = useParams<{
     materia: string;
@@ -43,7 +95,7 @@ export default function VideoSubindice() {
   const area = videoAreas.find((a) => createSlug(a.nombre) === materiaSlug);
   const colors = area ? (colorMap[area.color] ?? colorMap.blue) : colorMap.blue;
 
-  // Find subíndice title from temario
+  // Find subíndice title and section from temario
   let subindiceTitle = "";
   let seccionTitulo = "";
   if (area && subNum) {
@@ -80,6 +132,16 @@ export default function VideoSubindice() {
 
   const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
   const displayTitle = video?.titulo || subindiceTitle;
+
+  const content =
+    !loading && subindiceTitle
+      ? buildContent(
+          video?.descripcion ?? null,
+          subindiceTitle,
+          seccionTitulo,
+          area?.nombre ?? ""
+        )
+      : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col cyber-grid">
@@ -122,38 +184,45 @@ export default function VideoSubindice() {
           </h1>
         </div>
 
-        {/* Descripción */}
-        {!loading && (
-          <div className="space-y-3 text-sm text-slate-400 leading-relaxed">
-            {video?.descripcion ? (
-              <p>{video.descripcion}</p>
-            ) : subindiceTitle ? (
-              <>
-                <p>
-                  Este tema corresponde al subíndice{" "}
-                  <strong className="text-slate-300">{subNum}</strong> del temario
-                  oficial ECOEMS para{" "}
-                  <strong className="text-slate-300">{area?.nombre}</strong>.
+        {/* ── 📚 ¿Qué aprenderás? ─────────────────────────────────── */}
+        {content && (
+          <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 backdrop-blur-sm p-5 space-y-4">
+            <h2 className="text-sm font-black uppercase tracking-wide text-violet-300">
+              📚 ¿Qué aprenderás?
+            </h2>
+
+            {/* Definición */}
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {content.definition}
+            </p>
+
+            {/* Puntos clave */}
+            {content.bullets.length > 0 && (
+              <ul className="space-y-2">
+                {content.bullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-300 leading-snug">
+                    <span className="shrink-0 mt-px">✅</span>
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* Ejemplo práctico */}
+            {content.example && (
+              <div className="mt-1 p-3 rounded-xl bg-white/5 border border-white/10">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                  Ejemplo práctico
                 </p>
-                <p>
-                  Dominar{" "}
-                  <strong className="text-slate-300">
-                    {subindiceTitle.split(":")[0].trim()}
-                  </strong>{" "}
-                  es parte esencial del examen de admisión. Estudia el video con
-                  atención y repasa los puntos clave antes del examen.
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  {content.example}
                 </p>
-                <p>
-                  Sección:{" "}
-                  <span className="text-slate-300 italic">{seccionTitulo}</span>.
-                  Practica con el simulador para reforzar lo aprendido.
-                </p>
-              </>
-            ) : null}
+              </div>
+            )}
           </div>
         )}
 
-        {/* Video */}
+        {/* ── Video embed ─────────────────────────────────────────── */}
         {loading && (
           <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex items-center justify-center">
             <p className="text-slate-500 text-sm">Cargando video...</p>
