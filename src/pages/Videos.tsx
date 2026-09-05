@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Video, ChevronDown, Zap, PlayCircle, X } from "lucide-react";
+import { Video, ChevronDown, Zap, PlayCircle } from "lucide-react";
 import { colorMap } from "@/data/temarioData";
 import { videoAreas as areas } from "@/data/temarioVideoData";
 
@@ -18,8 +19,10 @@ interface VideoItem {
 }
 
 function createSlug(text: string): string {
-  return text.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
@@ -39,11 +42,9 @@ function getLabel(contenido: string): string {
 }
 
 function findVideo(videos: VideoItem[], subNum: string, contenido: string): VideoItem | null {
-  // Primary: match by numeric subíndice key (e.g. "1.1")
   const byNumber = videos.find((v) => v.subindice.trim() === subNum.trim());
   if (byNumber) return byNumber;
 
-  // Fallback: slug match of title text
   const slug = createSlug(getLabel(contenido));
   return (
     videos.find((v) => createSlug(v.subindice) === slug) ??
@@ -73,7 +74,6 @@ export default function Videos() {
   const [openArea, setOpenArea] = useState<number | null>(null);
   const [videosPorMateria, setVideosPorMateria] = useState<Record<string, VideoItem[]>>({});
   const [loadingMateria, setLoadingMateria] = useState<string | null>(null);
-  const [expandedKey, setExpandedKey] = useState<string | null>(null);
   const [intro, setIntro] = useState<VideoItem[]>([]);
   const [introPlaying, setIntroPlaying] = useState<string | null>(null);
 
@@ -90,11 +90,9 @@ export default function Videos() {
   const toggleArea = (idx: number) => {
     if (openArea === idx) {
       setOpenArea(null);
-      setExpandedKey(null);
       return;
     }
     setOpenArea(idx);
-    setExpandedKey(null);
     const nombre = areas[idx].nombre;
     if (!videosPorMateria[nombre]) {
       setLoadingMateria(nombre);
@@ -112,10 +110,6 @@ export default function Videos() {
           setLoadingMateria(null);
         });
     }
-  };
-
-  const toggleVideo = (key: string) => {
-    setExpandedKey((prev) => (prev === key ? null : key));
   };
 
   return (
@@ -142,6 +136,7 @@ export default function Videos() {
           </p>
         </div>
 
+        {/* Introducción inline (no navega) */}
         {intro.length > 0 && (
           <div className="rounded-2xl border border-violet-500/30 overflow-hidden bg-slate-900/60 backdrop-blur-sm">
             <div className="px-5 py-4 bg-gradient-to-r from-violet-700 to-violet-500 flex items-center gap-2">
@@ -197,6 +192,7 @@ export default function Videos() {
           </div>
         )}
 
+        {/* Acordeón por materia */}
         <div className="space-y-3">
           {areas.map((area, aIdx) => {
             const colors = colorMap[area.color] ?? colorMap.blue;
@@ -204,6 +200,7 @@ export default function Videos() {
             const isOpen = openArea === aIdx;
             const videos = videosPorMateria[area.nombre] ?? [];
             const isLoading = loadingMateria === area.nombre;
+            const materiaSlug = createSlug(area.nombre);
 
             return (
               <div
@@ -262,81 +259,33 @@ export default function Videos() {
                                 {/* Subíndices */}
                                 <div className="divide-y divide-white/5">
                                   {subindices.map((item, cIdx) => {
-                                    const label = item;
                                     const subNum = `${secNum}.${cIdx + 1}`;
                                     const video = findVideo(videos, subNum, item);
-                                    const key = `${aIdx}-${sIdx}-${cIdx}`;
-                                    const isExpanded = expandedKey === key;
-                                    const ytId = video?.youtube_url
-                                      ? getYouTubeId(video.youtube_url)
-                                      : null;
-                                    const hasVideo = !!(video && ytId);
+                                    const hasVideo = !!(video?.youtube_url);
 
                                     return (
-                                      <div key={cIdx}>
-                                        <div className="flex items-center justify-between px-5 py-3.5 gap-4 hover:bg-white/[0.03] transition-colors">
-                                          <div className="flex items-center gap-3 min-w-0">
-                                            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded shrink-0 tabular-nums ${colors.tag}`}>
-                                              {secNum}.{cIdx + 1}
-                                            </span>
-                                            <p className="text-sm font-medium text-slate-200 leading-snug">
-                                              {label}
-                                            </p>
-                                          </div>
-
-                                          {hasVideo && (
-                                            <button
-                                              onClick={() => toggleVideo(key)}
-                                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide shrink-0 transition-all ${
-                                                isExpanded
-                                                  ? `${colors.btn} text-white`
-                                                  : "bg-white/8 text-slate-300 hover:bg-white/15"
-                                              }`}
-                                            >
-                                              {isExpanded ? (
-                                                <>
-                                                  <X className="h-3 w-3" />
-                                                  Cerrar
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <PlayCircle className="h-3.5 w-3.5" />
-                                                  Ver video
-                                                </>
-                                              )}
-                                            </button>
-                                          )}
+                                      <div
+                                        key={cIdx}
+                                        className="flex items-center justify-between px-5 py-3.5 gap-4 hover:bg-white/[0.03] transition-colors"
+                                      >
+                                        <div className="flex items-center gap-3 min-w-0">
+                                          <span className={`text-[10px] font-black px-1.5 py-0.5 rounded shrink-0 tabular-nums ${colors.tag}`}>
+                                            {subNum}
+                                          </span>
+                                          <p className="text-sm font-medium text-slate-200 leading-snug">
+                                            {item}
+                                          </p>
                                         </div>
 
-                                        <AnimatePresence initial={false}>
-                                          {isExpanded && ytId && (
-                                            <motion.div
-                                              key="video"
-                                              initial={{ height: 0, opacity: 0 }}
-                                              animate={{ height: "auto", opacity: 1 }}
-                                              exit={{ height: 0, opacity: 0 }}
-                                              transition={{ duration: 0.25 }}
-                                              className="overflow-hidden"
-                                            >
-                                              <div className="px-5 pb-5 pt-2">
-                                                {video?.descripcion && (
-                                                  <p className="text-xs text-slate-400 mb-3 leading-relaxed">
-                                                    {video.descripcion}
-                                                  </p>
-                                                )}
-                                                <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
-                                                  <iframe
-                                                    src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                    className="w-full h-full"
-                                                    title={video?.titulo ?? label}
-                                                  />
-                                                </div>
-                                              </div>
-                                            </motion.div>
-                                          )}
-                                        </AnimatePresence>
+                                        {hasVideo && (
+                                          <Link
+                                            to={`/videos/${materiaSlug}/${subNum}`}
+                                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide shrink-0 transition-all bg-white/8 text-slate-300 hover:bg-white/15 hover:text-white`}
+                                          >
+                                            <PlayCircle className="h-3.5 w-3.5" />
+                                            Ver video
+                                          </Link>
+                                        )}
                                       </div>
                                     );
                                   })}

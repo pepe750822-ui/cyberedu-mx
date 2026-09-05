@@ -57,6 +57,7 @@ const ReportesSimulador = lazy(() => import("./pages/ReportesSimulador"));
 const Flashcards = lazy(() => import("./pages/Flashcards"));
 const ExaniI = lazy(() => import("./pages/ExaniI"));
 const Videos = lazy(() => import("./pages/Videos"));
+const VideoSubindice = lazy(() => import("./pages/VideoSubindice"));
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -246,6 +247,7 @@ const App = () => (
               <Route path="/flashcards" element={<Flashcards />} />
               <Route path="/exani-i" element={<ExaniI />} />
               <Route path="/videos" element={<Videos />} />
+              <Route path="/videos/:materia/:subindice" element={<VideoSubindice />} />
               <Route path="/sugerencias" element={<Sugerencias />} />
               <Route path="/subscription" element={<Navigate to="/tokens" replace />} />
               <Route path="/tokens" element={<Tokens />} />
