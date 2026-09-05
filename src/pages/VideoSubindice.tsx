@@ -31,16 +31,6 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-/** Parse multi-line descripcion into bullets; single line stays as prose. */
-function parseDescripcion(raw: string): { definition: string; bullets: string[] } {
-  const lines = raw
-    .split(/\n|•|-\s/)
-    .map((l) => l.trim())
-    .filter(Boolean);
-  if (lines.length <= 1) return { definition: raw.trim(), bullets: [] };
-  const [definition, ...rest] = lines;
-  return { definition, bullets: rest.slice(0, 5) };
-}
 
 export default function VideoSubindice() {
   const { materia: materiaSlug, subindice: subNum } = useParams<{
@@ -92,10 +82,9 @@ export default function VideoSubindice() {
       });
   }, [area?.nombre, subNum]);
 
-  // ── Generate AI content when no DB description ────────────────
+  // ── Always generate AI content via DeepSeek ──────────────────
   useEffect(() => {
     if (videoLoading) return;
-    if (video?.descripcion) return; // BD ya tiene contenido
     if (!subindiceTitle || !area?.nombre) return;
 
     setAiLoading(true);
@@ -113,7 +102,14 @@ export default function VideoSubindice() {
   const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
   const displayTitle = video?.titulo || subindiceTitle;
 
-  const parsed = video?.descripcion ? parseDescripcion(video.descripcion) : null;
+  // SEO: use descripcion from DB as meta description
+  useEffect(() => {
+    if (!displayTitle) return;
+    document.title = `${displayTitle} | CyberEdu MX`;
+    const meta = document.querySelector('meta[name="description"]');
+    const content = video?.descripcion ?? `${displayTitle} — ${area?.nombre ?? ""} ECOEMS`;
+    if (meta) meta.setAttribute("content", content);
+  }, [displayTitle, video?.descripcion, area?.nombre]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col cyber-grid">
@@ -163,30 +159,8 @@ export default function VideoSubindice() {
               📚 Resumen del tema
             </h2>
 
-            {/* Contenido de BD */}
-            {parsed && (
-              <>
-                <p className="text-sm text-slate-300 leading-relaxed">
-                  {parsed.definition}
-                </p>
-                {parsed.bullets.length > 0 && (
-                  <ul className="space-y-2">
-                    {parsed.bullets.map((b, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-slate-300 leading-snug"
-                      >
-                        <span className="shrink-0 mt-px">✅</span>
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </>
-            )}
-
             {/* Generando con DeepSeek */}
-            {!parsed && aiLoading && (
+            {aiLoading && (
               <div className="flex items-center gap-3 text-sm text-slate-400">
                 <div className="h-4 w-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin shrink-0" />
                 <span>Generando resumen con IA...</span>
@@ -194,14 +168,14 @@ export default function VideoSubindice() {
             )}
 
             {/* Contenido generado por DeepSeek */}
-            {!parsed && !aiLoading && aiContent && (
+            {!aiLoading && aiContent && (
               <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {aiContent}
               </p>
             )}
 
-            {/* Sin contenido de ninguna fuente */}
-            {!parsed && !aiLoading && !aiContent && (
+            {/* Sin contenido */}
+            {!aiLoading && !aiContent && (
               <p className="text-sm text-slate-500 italic">
                 Resumen no disponible para este subíndice.
               </p>
