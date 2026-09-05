@@ -38,7 +38,12 @@ function getLabel(contenido: string): string {
   return contenido.split(":")[0].trim();
 }
 
-function findVideo(videos: VideoItem[], contenido: string): VideoItem | null {
+function findVideo(videos: VideoItem[], subNum: string, contenido: string): VideoItem | null {
+  // Primary: match by numeric subíndice key (e.g. "1.1")
+  const byNumber = videos.find((v) => v.subindice.trim() === subNum.trim());
+  if (byNumber) return byNumber;
+
+  // Fallback: slug match of title text
   const slug = createSlug(getLabel(contenido));
   return (
     videos.find((v) => createSlug(v.subindice) === slug) ??
@@ -258,7 +263,8 @@ export default function Videos() {
                                 <div className="divide-y divide-white/5">
                                   {subindices.map((item, cIdx) => {
                                     const label = item;
-                                    const video = findVideo(videos, item);
+                                    const subNum = `${secNum}.${cIdx + 1}`;
+                                    const video = findVideo(videos, subNum, item);
                                     const key = `${aIdx}-${sIdx}-${cIdx}`;
                                     const isExpanded = expandedKey === key;
                                     const ytId = video?.youtube_url
