@@ -57,11 +57,29 @@ export default async function handler(req: Request) {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
       });
       if (r.ok) {
-        const d = (await r.json()) as { result: string | null };
+        const d = (await r.json()) as { result: unknown };
         if (d.result) {
-          return new Response(JSON.stringify({ content: d.result, cached: true }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
+          let cached: string;
+          if (typeof d.result === 'string') {
+            // Unwrap if previously stored as double-encoded JSON or array string
+            try {
+              const inner = JSON.parse(d.result);
+              cached = typeof inner === 'string' ? inner
+                : Array.isArray(inner) ? String(inner[0])
+                : d.result;
+            } catch {
+              cached = d.result;
+            }
+          } else if (Array.isArray(d.result)) {
+            cached = String(d.result[0]);
+          } else {
+            cached = String(d.result);
+          }
+          if (cached) {
+            return new Response(JSON.stringify({ content: cached, cached: true }), {
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
         }
       }
     } catch { /* no cache — continue */ }
@@ -111,13 +129,13 @@ export default async function handler(req: Request) {
 
   // ── Cache write (7 days) ────────────────────────────────────────
   if (UPSTASH_URL && UPSTASH_TOKEN && content) {
-    fetch(`${UPSTASH_URL}/set/${encodeURIComponent(cacheKey)}`, {
+    fetch(`${UPSTASH_URL}/pipeline`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${UPSTASH_TOKEN}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify([content, 'EX', 604800]),
+      body: JSON.stringify([['SET', cacheKey, content, 'EX', '604800']]),
     }).catch(() => {});
   }
 

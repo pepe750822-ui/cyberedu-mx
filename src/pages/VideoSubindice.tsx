@@ -31,6 +31,30 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
+const BOLD_WORDS = ["Autor", "Título", "Editorial", "ECOEMS", "ejemplo", "ficha"];
+
+function renderAiContent(text: string) {
+  const regex = new RegExp(`(${BOLD_WORDS.join("|")})`, "gi");
+  return text
+    .split(/\n\n+/)
+    .filter((p) => p.trim())
+    .map((para, pIdx) => {
+      const parts = para.split(regex);
+      return (
+        <p key={pIdx} className="text-sm leading-relaxed text-slate-300">
+          {parts.map((part, i) =>
+            BOLD_WORDS.some((k) => k.toLowerCase() === part.toLowerCase()) ? (
+              <strong key={i} className="text-violet-200 font-bold">
+                {part}
+              </strong>
+            ) : (
+              part
+            )
+          )}
+        </p>
+      );
+    });
+}
 
 export default function VideoSubindice() {
   const { materia: materiaSlug, subindice: subNum } = useParams<{
@@ -46,7 +70,6 @@ export default function VideoSubindice() {
   const area = videoAreas.find((a) => createSlug(a.nombre) === materiaSlug);
   const colors = area ? (colorMap[area.color] ?? colorMap.blue) : colorMap.blue;
 
-  // Find subíndice title + section from temario
   let subindiceTitle = "";
   let seccionTitulo = "";
   if (area && subNum) {
@@ -102,7 +125,7 @@ export default function VideoSubindice() {
   const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
   const displayTitle = video?.titulo || subindiceTitle;
 
-  // SEO: use descripcion from DB as meta description
+  // SEO
   useEffect(() => {
     if (!displayTitle) return;
     document.title = `${displayTitle} | CyberEdu MX`;
@@ -120,7 +143,7 @@ export default function VideoSubindice() {
 
       <Header />
 
-      <main className="flex-1 max-w-3xl mx-auto w-full px-4 pt-8 pb-24 space-y-6 relative">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 pt-8 pb-24 space-y-6 relative">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap">
           <Link to="/videos" className="hover:text-slate-300 transition-colors">
@@ -152,60 +175,64 @@ export default function VideoSubindice() {
           </h1>
         </div>
 
-        {/* ── 📚 Resumen del tema ───────────────────────────────── */}
-        {!videoLoading && subindiceTitle && (
-          <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 backdrop-blur-sm p-5 space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-wide text-violet-300">
-              📚 Resumen del tema
-            </h2>
+        {/* ── Dos columnas: video (izq) + resumen (der) ─────────── */}
+        {!videoLoading && (
+          <div className="grid lg:grid-cols-2 gap-6 items-start">
 
-            {/* Generando con DeepSeek */}
-            {aiLoading && (
-              <div className="flex items-center gap-3 text-sm text-slate-400">
-                <div className="h-4 w-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin shrink-0" />
-                <span>Generando resumen con IA...</span>
+            {/* ── Video embed ───────────────────────────────────── */}
+            <div>
+              {ytId ? (
+                <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                    title={displayTitle}
+                  />
+                </div>
+              ) : (
+                <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex flex-col items-center justify-center gap-3">
+                  <PlayCircle className="h-12 w-12 text-slate-700" />
+                  <p className="text-slate-500 text-sm">Video próximamente disponible</p>
+                </div>
+              )}
+            </div>
+
+            {/* ── 📚 Resumen del tema ───────────────────────────── */}
+            {subindiceTitle && (
+              <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 backdrop-blur-sm p-6 space-y-4">
+                <h2 className="text-sm font-black uppercase tracking-wide text-violet-300">
+                  📚 Resumen del tema
+                </h2>
+
+                {aiLoading && (
+                  <div className="flex items-center gap-3 text-sm text-slate-400">
+                    <div className="h-4 w-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin shrink-0" />
+                    <span>Generando resumen con IA...</span>
+                  </div>
+                )}
+
+                {!aiLoading && aiContent && (
+                  <div className="space-y-3">
+                    {renderAiContent(aiContent)}
+                  </div>
+                )}
+
+                {!aiLoading && !aiContent && (
+                  <p className="text-sm text-slate-500 italic">
+                    Resumen no disponible para este subíndice.
+                  </p>
+                )}
               </div>
-            )}
-
-            {/* Contenido generado por DeepSeek */}
-            {!aiLoading && aiContent && (
-              <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
-                {aiContent}
-              </p>
-            )}
-
-            {/* Sin contenido */}
-            {!aiLoading && !aiContent && (
-              <p className="text-sm text-slate-500 italic">
-                Resumen no disponible para este subíndice.
-              </p>
             )}
           </div>
         )}
 
-        {/* ── Video embed ───────────────────────────────────────── */}
+        {/* Loading state */}
         {videoLoading && (
           <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex items-center justify-center">
             <p className="text-slate-500 text-sm">Cargando video...</p>
-          </div>
-        )}
-
-        {!videoLoading && ytId && (
-          <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-            <iframe
-              src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-              title={displayTitle}
-            />
-          </div>
-        )}
-
-        {!videoLoading && !ytId && (
-          <div className="aspect-video w-full rounded-2xl bg-slate-900/60 border border-white/10 flex flex-col items-center justify-center gap-3">
-            <PlayCircle className="h-12 w-12 text-slate-700" />
-            <p className="text-slate-500 text-sm">Video próximamente disponible</p>
           </div>
         )}
 
