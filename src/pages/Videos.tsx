@@ -75,7 +75,6 @@ export default function Videos() {
   const [videosPorMateria, setVideosPorMateria] = useState<Record<string, VideoItem[]>>({});
   const [loadingMateria, setLoadingMateria] = useState<string | null>(null);
   const [intro, setIntro] = useState<VideoItem[]>([]);
-  const [introPlaying, setIntroPlaying] = useState<string | null>(null);
 
   useEffect(() => {
     supabase
@@ -136,7 +135,7 @@ export default function Videos() {
           </p>
         </div>
 
-        {/* Introducción inline (no navega) */}
+        {/* Introducción — navega a página individual */}
         {intro.length > 0 && (
           <div className="rounded-2xl border border-violet-500/30 overflow-hidden bg-slate-900/60 backdrop-blur-sm">
             <div className="px-5 py-4 bg-gradient-to-r from-violet-700 to-violet-500 flex items-center gap-2">
@@ -148,7 +147,7 @@ export default function Videos() {
             <div className="px-5 py-5 flex flex-col gap-5">
               {intro.map((v) => {
                 const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
-                const playing = introPlaying === v.id;
+                const videoPath = `/videos/introduccion/${encodeURIComponent(v.subindice)}`;
                 return (
                   <div key={v.id}>
                     <p className="font-black text-sm text-white mb-1 uppercase tracking-wide">
@@ -159,10 +158,10 @@ export default function Videos() {
                         {v.descripcion}
                       </p>
                     )}
-                    {ytId && !playing && (
-                      <button
-                        onClick={() => setIntroPlaying(v.id)}
-                        className="w-full aspect-video rounded-xl overflow-hidden relative group bg-black/40 border border-violet-500/20 flex items-center justify-center"
+                    {ytId && (
+                      <Link
+                        to={videoPath}
+                        className="w-full aspect-video rounded-xl overflow-hidden relative group bg-black/40 border border-violet-500/20 flex items-center justify-center block"
                       >
                         <img
                           src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
@@ -170,21 +169,19 @@ export default function Videos() {
                           className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                         />
                         <div className="relative z-10 h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                          <Video className="h-9 w-9 text-white" />
+                          <PlayCircle className="h-9 w-9 text-white" />
                         </div>
-                      </button>
+                      </Link>
                     )}
-                    {playing && ytId && (
-                      <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg">
-                        <iframe
-                          src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                          title={v.titulo}
-                        />
-                      </div>
-                    )}
+                    <div className="mt-3">
+                      <Link
+                        to={videoPath}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide bg-white/8 text-slate-300 hover:bg-white/15 hover:text-white transition-all"
+                      >
+                        <PlayCircle className="h-3.5 w-3.5" />
+                        Ver video
+                      </Link>
+                    </div>
                   </div>
                 );
               })}

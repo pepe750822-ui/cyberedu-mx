@@ -83,6 +83,10 @@ export default function VideoSubindice() {
   const area = videoAreas.find((a) => createSlug(a.nombre) === materiaSlug);
   const colors = area ? (colorMap[area.color] ?? colorMap.blue) : colorMap.blue;
 
+  // Materias not in videoAreas (e.g. Introducción) resolved here
+  const MATERIA_NAMES: Record<string, string> = { introduccion: "Introducción" };
+  const materiaName = area?.nombre ?? MATERIA_NAMES[materiaSlug ?? ""] ?? null;
+
   let subindiceTitle = "";
   let seccionTitulo = "";
   if (area && subNum) {
@@ -100,7 +104,7 @@ export default function VideoSubindice() {
 
   // ── Load video from Supabase ──────────────────────────────────
   useEffect(() => {
-    if (!area || !subNum) {
+    if (!materiaName || !subNum) {
       setVideoLoading(false);
       return;
     }
@@ -108,7 +112,7 @@ export default function VideoSubindice() {
     supabase
       .from("cyberedu_videos" as any)
       .select("*")
-      .eq("materia", area.nombre)
+      .eq("materia", materiaName)
       .eq("subindice", subNum)
       .eq("activo", true)
       .maybeSingle()
@@ -116,34 +120,35 @@ export default function VideoSubindice() {
         setVideo(data as VideoItem | null);
         setVideoLoading(false);
       });
-  }, [area?.nombre, subNum]);
+  }, [materiaName, subNum]);
+
+  const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
+  const displayTitle = video?.titulo || subindiceTitle;
+  const aiTitle = subindiceTitle || video?.titulo || "";
 
   // ── Always generate AI content via DeepSeek ──────────────────
   useEffect(() => {
     if (videoLoading) return;
-    if (!subindiceTitle || !area?.nombre) return;
+    if (!aiTitle || !materiaName) return;
 
     setAiLoading(true);
     fetch("/api/video-content", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ titulo: subindiceTitle, materia: area.nombre }),
+      body: JSON.stringify({ titulo: aiTitle, materia: materiaName }),
     })
       .then((r) => r.json())
       .then((d: { content?: string }) => setAiContent(d.content ?? null))
       .catch(() => setAiContent(null))
       .finally(() => setAiLoading(false));
-  }, [videoLoading, video?.descripcion, subindiceTitle, area?.nombre]);
-
-  const ytId = video?.youtube_url ? getYouTubeId(video.youtube_url) : null;
-  const displayTitle = video?.titulo || subindiceTitle;
+  }, [videoLoading, aiTitle, materiaName]);
 
   // SEO
   useEffect(() => {
     if (!displayTitle) return;
     document.title = `${displayTitle} | CyberEdu MX`;
     const meta = document.querySelector('meta[name="description"]');
-    const content = video?.descripcion ?? `${displayTitle} — ${area?.nombre ?? ""} ECOEMS`;
+    const content = video?.descripcion ?? `${displayTitle} — ${materiaName ?? ""} ECOEMS`;
     if (meta) meta.setAttribute("content", content);
   }, [displayTitle, video?.descripcion, area?.nombre]);
 
@@ -164,7 +169,7 @@ export default function VideoSubindice() {
           </Link>
           <ChevronRight className="h-3 w-3 shrink-0" />
           <Link to="/videos" className="hover:text-slate-300 transition-colors">
-            {area?.nombre ?? materiaSlug}
+            {materiaName ?? materiaSlug}
           </Link>
           <ChevronRight className="h-3 w-3 shrink-0" />
           <span className="text-slate-300 font-bold">{subNum}</span>
@@ -176,7 +181,7 @@ export default function VideoSubindice() {
             className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${colors.tag}`}
           >
             <span>{area?.icono}</span>
-            {area?.nombre} · {subNum}
+            {materiaName ?? materiaSlug} · {subNum}
           </div>
           {seccionTitulo && (
             <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">
@@ -213,7 +218,7 @@ export default function VideoSubindice() {
             </div>
 
             {/* ── 📚 Resumen del tema ───────────────────────────── */}
-            {subindiceTitle && (
+            {displayTitle && (
               <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 backdrop-blur-sm p-6 space-y-4">
                 <h2 className="text-sm font-black uppercase tracking-wide text-violet-300">
                   📚 Resumen del tema
@@ -256,7 +261,7 @@ export default function VideoSubindice() {
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wide transition-all ${colors.btn} text-white`}
           >
             <ArrowLeft className="h-4 w-4" />
-            Volver a {area?.nombre ?? "Videos"}
+            Volver a {materiaName ?? "Videos"}
           </Link>
         </div>
       </main>
