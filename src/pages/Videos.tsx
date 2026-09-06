@@ -135,53 +135,41 @@ export default function Videos() {
           </p>
         </div>
 
-        {/* Introducción — navega a página individual */}
+        {/* Introducción — contraído, solo título + botón */}
         {intro.length > 0 && (
-          <div className="rounded-2xl border border-violet-500/30 overflow-hidden bg-slate-900/60 backdrop-blur-sm">
+          <div className="rounded-2xl border border-white/10 overflow-hidden bg-slate-900/60 backdrop-blur-sm">
             <div className="px-5 py-4 bg-gradient-to-r from-violet-700 to-violet-500 flex items-center gap-2">
               <Video className="h-4 w-4 text-white" />
               <h2 className="text-sm font-black uppercase tracking-wide text-white">
                 🎬 Introducción
               </h2>
             </div>
-            <div className="px-5 py-5 flex flex-col gap-5">
+            <div className="divide-y divide-white/5">
               {intro.map((v) => {
-                const ytId = v.youtube_url ? getYouTubeId(v.youtube_url) : null;
+                const hasVideo = !!v.youtube_url;
                 const videoPath = `/videos/introduccion/${encodeURIComponent(v.subindice)}`;
                 return (
-                  <div key={v.id}>
-                    <p className="font-black text-sm text-white mb-1 uppercase tracking-wide">
-                      {v.titulo}
-                    </p>
-                    {v.descripcion && (
-                      <p className="text-xs text-slate-400 mb-3 leading-relaxed">
-                        {v.descripcion}
+                  <div
+                    key={v.id}
+                    className="flex items-center justify-between px-5 py-3.5 gap-4 hover:bg-white/[0.03] transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-[10px] font-black px-1.5 py-0.5 rounded shrink-0 bg-violet-500/20 text-violet-300">
+                        🎬
+                      </span>
+                      <p className="text-sm font-medium text-slate-200 leading-snug">
+                        {v.titulo}
                       </p>
-                    )}
-                    {ytId && (
+                    </div>
+                    {hasVideo && (
                       <Link
                         to={videoPath}
-                        className="w-full aspect-video rounded-xl overflow-hidden relative group bg-black/40 border border-violet-500/20 flex items-center justify-center block"
-                      >
-                        <img
-                          src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
-                          alt={v.titulo}
-                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
-                        />
-                        <div className="relative z-10 h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                          <PlayCircle className="h-9 w-9 text-white" />
-                        </div>
-                      </Link>
-                    )}
-                    <div className="mt-3">
-                      <Link
-                        to={videoPath}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide bg-white/8 text-slate-300 hover:bg-white/15 hover:text-white transition-all"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wide shrink-0 transition-all bg-white/8 text-slate-300 hover:bg-white/15 hover:text-white"
                       >
                         <PlayCircle className="h-3.5 w-3.5" />
                         Ver video
                       </Link>
-                    </div>
+                    )}
                   </div>
                 );
               })}
