@@ -76,7 +76,7 @@ export default function SimuladorPrepa() {
     if (seleccion !== null) return;
     setSeleccion(letra);
 
-    const esCorrecta = letra === preguntaActual.respuesta_correcta;
+    const esCorrecta = letra.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase();
     if (esCorrecta) setCorrectas((c) => c + 1);
 
     setCargandoExplicacion(true);
@@ -194,7 +194,7 @@ export default function SimuladorPrepa() {
         <div className="space-y-3 mb-6">
           {opciones.map((letra) => {
             const texto = opcionTexto(preguntaActual, letra)!;
-            const esCorrecta = letra === preguntaActual.respuesta_correcta;
+            const esCorrecta = letra.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase();
             const esSeleccionada = seleccion === letra;
 
             let clases =
@@ -232,9 +232,9 @@ export default function SimuladorPrepa() {
         {seleccion !== null && (
           <div className="space-y-4">
             {/* Veredicto */}
-            <div className={`rounded-xl p-4 border ${seleccion === preguntaActual.respuesta_correcta ? "bg-emerald-900/30 border-emerald-500/50" : "bg-red-900/30 border-red-500/50"}`}>
+            <div className={`rounded-xl p-4 border ${seleccion !== null && seleccion.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase() ? "bg-emerald-900/30 border-emerald-500/50" : "bg-red-900/30 border-red-500/50"}`}>
               <p className="font-semibold text-sm">
-                {seleccion === preguntaActual.respuesta_correcta
+                {seleccion !== null && seleccion.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase()
                   ? "✅ ¡Correcto!"
                   : `❌ Incorrecto. La respuesta correcta es: ${opcionTexto(preguntaActual, preguntaActual.respuesta_correcta)}`}
               </p>
