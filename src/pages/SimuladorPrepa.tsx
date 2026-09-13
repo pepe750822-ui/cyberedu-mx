@@ -24,29 +24,18 @@ function opcionTexto(pregunta: Pregunta, letra: string): string | null {
   return pregunta[`opcion_${letra}` as keyof Pregunta] as string | null;
 }
 
-async function pedirExplicacion(pregunta: string, respuesta: string): Promise<string> {
-  const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
-  if (!apiKey) throw new Error("VITE_DEEPSEEK_API_KEY no configurada");
-
-  const prompt = `Eres un profesor de Matemáticas IV de la ENP UNAM. Explica paso a paso cómo resolver este ejercicio para un estudiante de preparatoria: ${pregunta} La respuesta correcta es: ${respuesta} Incluye: 1. Concepto teórico 2. Procedimiento paso a paso 3. Por qué las otras opciones están mal Responde en español, claro y conciso.`;
-
-  const res = await fetch("https://api.deepseek.com/v1/chat/completions", {
+async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
+  const res = await fetch("/api/video-content", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "deepseek-chat",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 800,
-      temperature: 0.3,
+      titulo: pregunta.pregunta,
+      materia: pregunta.materia || "Matemáticas IV ENP UNAM",
     }),
   });
-
-  if (!res.ok) throw new Error(`DeepSeek error: ${res.status}`);
+  if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
   const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? "Sin explicación disponible.";
+  return data.content ?? "Sin explicación disponible.";
 }
 
 export default function SimuladorPrepa() {
@@ -92,8 +81,7 @@ export default function SimuladorPrepa() {
 
     setCargandoExplicacion(true);
     try {
-      const texto = opcionTexto(preguntaActual, preguntaActual.respuesta_correcta) ?? preguntaActual.respuesta_correcta;
-      const exp = await pedirExplicacion(preguntaActual.pregunta, texto);
+      const exp = await pedirExplicacion(preguntaActual);
       setExplicacion(exp);
     } catch {
       setExplicacion("No se pudo obtener la explicación. Intenta de nuevo.");
@@ -248,7 +236,7 @@ export default function SimuladorPrepa() {
               <p className="font-semibold text-sm">
                 {seleccion === preguntaActual.respuesta_correcta
                   ? "✅ ¡Correcto!"
-                  : `❌ Incorrecto. La respuesta correcta es la opción ${etiqueta(preguntaActual.respuesta_correcta)}: ${opcionTexto(preguntaActual, preguntaActual.respuesta_correcta)}`}
+                  : `❌ Incorrecto. La respuesta correcta es: ${opcionTexto(preguntaActual, preguntaActual.respuesta_correcta)}`}
               </p>
             </div>
 
