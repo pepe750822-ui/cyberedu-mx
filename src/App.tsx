@@ -58,6 +58,7 @@ const Flashcards = lazy(() => import("./pages/Flashcards"));
 const ExaniI = lazy(() => import("./pages/ExaniI"));
 const Videos = lazy(() => import("./pages/Videos"));
 const VideoSubindice = lazy(() => import("./pages/VideoSubindice"));
+const SimuladorPrepa = lazy(() => import("./pages/SimuladorPrepa"));
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import PWAInstallBanner from "./components/PWAInstallBanner";
@@ -164,7 +165,7 @@ const AdminResumenRoute = () => {
     : <Navigate to="/" replace />;
 };
 
-const RUTAS_SIN_FLOTANTES = ['/simulador-pro', '/simulador-infinito', '/practica-subindice', '/exani-i'];
+const RUTAS_SIN_FLOTANTES = ['/simulador-pro', '/simulador-infinito', '/practica-subindice', '/exani-i', '/simulador-prepa'];
 
 const AuthenticatedStudyTools = () => {
   const { user, profile } = useAuth();
@@ -246,6 +247,7 @@ const App = () => (
               <Route path="/modalidades" element={<ProtectedRoute><Modalidades /></ProtectedRoute>} />
               <Route path="/flashcards" element={<Flashcards />} />
               <Route path="/exani-i" element={<ExaniI />} />
+              <Route path="/simulador-prepa" element={<SimuladorPrepa />} />
               <Route path="/videos" element={<Videos />} />
               <Route path="/videos/:materia/:subindice" element={<VideoSubindice />} />
               <Route path="/sugerencias" element={<Sugerencias />} />
