@@ -21,7 +21,7 @@ const OPCIONES = ["a", "b", "c", "d", "e"] as const;
 const etiqueta = (letra: string) => letra.toUpperCase();
 
 function opcionTexto(pregunta: Pregunta, letra: string): string | null {
-  return pregunta[`opcion_${letra}` as keyof Pregunta] as string | null;
+  return pregunta[`opcion_${letra.toLowerCase()}` as keyof Pregunta] as string | null;
 }
 
 async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
