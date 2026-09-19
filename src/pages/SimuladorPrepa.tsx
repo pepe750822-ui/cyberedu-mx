@@ -16,6 +16,71 @@ interface Pregunta {
   orden: number | null;
 }
 
+interface EjercicioGenerado {
+  pregunta: string;
+  opcion_a: string;
+  opcion_b: string;
+  opcion_c: string;
+  opcion_d: string;
+  respuesta_correcta: string; // a/b/c/d
+}
+
+async function parseEjercicioTexto(texto: string): Promise<EjercicioGenerado | null> {
+  try {
+    const lines = texto.split('\n').filter(line => line.trim());
+
+    // Find the question line (first line that doesn't start with A/B/C/D)
+    const preguntaLine = lines.find(line => !/^[A-D]\.?\s/i.test(line.trim()) && line.trim() && !/^\d+\.?\s/i.test(line.trim()));
+    if (!preguntaLine) return null;
+
+    // Find option lines
+    const opcionA = lines.find(line => /^A\.?\s/i.test(line.trim()));
+    const opcionB = lines.find(line => /^B\.?\s/i.test(line.trim()));
+    const opcionC = lines.find(line => /^C\.?\s/i.test(line.trim()));
+    const opcionD = lines.find(line => /^D\.?\s/i.test(line.trim()));
+
+    if (!opcionA || !opcionB || !opcionC || !opcionD) return null;
+
+    // Parse correct answer if present
+    let respuestaCorrecta = 'a';
+    const answerMatch = texto.match(new RegExp(/Respuesta correcta:?\s*([a-dA-D])/, 'i'));
+    if (answerMatch) {
+      respuestaCorrecta = answerMatch[1].toLowerCase();
+    } else {
+      // Try to find from the text
+      const match = texto.match(new RegExp(/\b([a-dA-D])\b.*?(?=\.|$)/, 'i'));
+      if (match) respuestaCorrecta = match[1].toLowerCase();
+    }
+
+    return {
+      pregunta: preguntaLine.replace(/^[\d\sA-D\.\-]*\s*/, ''),
+      opcion_a: opcionA.replace(/^[A-D]\.?\s*/i, ''),
+      opcion_b: opcionB.replace(/^[A-D]\.?\s*/i, ''),
+      opcion_c: opcionC.replace(/^[A-D]\.?\s*/i, ''),
+      opcion_d: opcionD.replace(/^[A-D]\.?\s*/i, ''),
+      respuesta_correcta: respuestaCorrecta
+    };
+  } catch (error) {
+    console.error('Error parsing exercise:', error);
+    return null;
+  }
+}
+
+async function pedirExplicacionEjercicio(ejercicio: EjercicioGenerado, materia: string): Promise<string> {
+  const res = await fetch("/api/video-content", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      titulo: ejercicio.pregunta,
+      materia: materia || "Matemáticas IV ENP UNAM",
+      tipo: "ejercicio"
+    }),
+  });
+  if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
+  const data = await res.json();
+  return data.content ?? "Sin explicación disponible.";
+}
+
 const OPCIONES = ["a", "b", "c", "d", "e"] as const;
 
 const etiqueta = (letra: string) => letra.toUpperCase();
@@ -38,7 +103,7 @@ async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
   return data.content ?? "Sin explicación disponible.";
 }
 
-async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string> {
+async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string[]> {
   const res = await fetch("/api/generar-ejercicios", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -46,7 +111,22 @@ async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string> {
   });
   if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
   const data = await res.json();
-  return data.ejercicios ?? "";
+  // Expect data.ejercicios to be the JSON array
+  if (Array.isArray(data.ejercicios)) {
+    return data.ejercicios as string[];
+  }
+  // fallback: if it's a string, try to parse
+  if (typeof data.ejercicios === "string") {
+    try {
+      const parsed = JSON.parse(data.ejercicios);
+      if (Array.isArray(parsed)) {
+        return parsed as string[];
+      }
+    } catch {
+      // ignore
+    }
+  }
+  throw new Error("Formato de ejercicios inesperado");
 }
 
 export default function SimuladorPrepa() {
@@ -56,8 +136,13 @@ export default function SimuladorPrepa() {
   const [seleccion, setSeleccion] = useState<string | null>(null);
   const [explicacion, setExplicacion] = useState<string | null>(null);
   const [cargandoExplicacion, setCargandoExplicacion] = useState(false);
-  const [ejerciciosGenerados, setEjerciciosGenerados] = useState<string | null>(null);
+  const [ejercicios, setEjercicios] = useState<EjercicioGenerado[] | null>(null);
   const [cargandoEjercicios, setCargandoEjercicios] = useState(false);
+  // State for each generated exercise (max 2)
+  const [seleccionEjercicio, setSeleccionEjercicio] = useState<(string | null)[]>([null, null]);
+  const [explicacionEjercicio, setExplicacionEjercicio] = useState<(string | null)[]>([null, null]);
+  const [cargandoExplicacionEjercicio, setCargandoExplicacionEjercicio] = useState<boolean[]>([false, false]);
+  const [ejerciciosGenerados, setEjerciciosGenerados] = useState<(string | EjercicioGenerado)[] | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [terminado, setTerminado] = useState(false);
 
@@ -105,10 +190,21 @@ export default function SimuladorPrepa() {
     // Generar 2 ejercicios similares con el mismo tema
     setCargandoEjercicios(true);
     try {
-      const ejercicios = await pedirEjerciciosSimilares(preguntaActual);
-      setEjerciciosGenerados(ejercicios);
-    } catch {
-      setEjerciciosGenerados("No se pudieron generar los ejercicios similares.");
+      const ejerciciosTexto = await pedirEjerciciosSimilares(preguntaActual);
+      // Parse the text from DeepSeek to extract exercises
+      const parsedEjercicios: EjercicioGenerado[] = [];
+      for (const texto of ejerciciosTexto) {
+        const parsed = await parseEjercicioTexto(texto);
+        if (parsed) {
+          parsedEjercicios.push(parsed);
+          if (parsedEjercicios.length >= 2) break;
+        }
+      }
+      setEjercicios(parsedEjercicios);
+      setEjerciciosGenerados(parsedEjercicios);
+    } catch (error) {
+      console.error('Error generating exercises:', error);
+      setEjerciciosGenerados(null);
     } finally {
       setCargandoEjercicios(false);
     }
@@ -122,6 +218,10 @@ export default function SimuladorPrepa() {
     setIndice((i) => i + 1);
     setSeleccion(null);
     setExplicacion(null);
+    setEjercicios(null);
+    setSeleccionEjercicio([null, null]);
+    setExplicacionEjercicio([null, null]);
+    setCargandoExplicacionEjercicio([false, false]);
   };
 
   const handleReiniciar = () => {
@@ -289,16 +389,112 @@ export default function SimuladorPrepa() {
                     📝 Practica más
                   </span>
                 </div>
-                {cargandoEjercicios ? (
-                  <div className="flex items-center gap-3 text-slate-400 text-sm">
-                    <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin shrink-0" />
-                    Generando ejercicios similares...
+                {ejercicios && (
+                  <div className="space-y-4">
+                    {(ejerciciosGenerados as EjercicioGenerado[]).slice(0, 2).map((ej, index) => {
+                      const seleccionIndex = seleccionEjercicio[index];
+                      const explicacionIndex = explicacionEjercicio[index];
+                      const cargandoExplicacionIndex = cargandoExplicacionEjercicio[index];
+
+                      return (
+                        <div key={index} className="border border-slate-700 rounded-lg p-4 bg-slate-950/50">
+                          <p className="text-white font-semibold mb-3">{ej.pregunta}</p>
+                          <div className="grid grid-cols-2 gap-3">
+                            {[
+                              { letra: 'a', texto: ej.opcion_a },
+                              { letra: 'b', texto: ej.opcion_b },
+                              { letra: 'c', texto: ej.opcion_c },
+                              { letra: 'd', texto: ej.opcion_d }
+                            ].map(({ letra, texto }) => {
+                              const esCorrecta = letra === ej.respuesta_correcta;
+                              const esSeleccionada = seleccionIndex === letra;
+
+                              let clases =
+                                "w-full text-left px-4 py-3 rounded-lg border text-sm font-medium transition-all duration-200 flex items-center gap-3";
+
+                              if (seleccionIndex !== null) {
+                                clases += " cursor-default";
+                                if (esCorrecta) {
+                                  clases += " bg-emerald-900/40 border-emerald-500 text-emerald-300";
+                                } else if (esSeleccionada) {
+                                  clases += " bg-red-900/40 border-red-500 text-red-300";
+                                } else {
+                                  clases += " bg-slate-800/50 border-slate-700/50 text-slate-500";
+                                }
+                              } else {
+                                clases += " bg-slate-800 border-slate-700 hover:border-amber-500 hover:bg-slate-700 cursor-pointer";
+                              }
+
+                              return (
+                                <button
+                                  key={letra}
+                                  className={clases}
+                                  onClick={() => {
+                                    if (seleccionIndex !== null) return;
+                                    setSeleccionEjercicio(prev => {
+                                      const nuevo = [...prev];
+                                      nuevo[index] = letra;
+                                      return nuevo;
+                                    });
+                                    // Generate explanation for this exercise
+                                    setCargandoExplicacionEjercicio(prev => {
+                                      const nuevo = [...prev];
+                                      nuevo[index] = true;
+                                      return nuevo;
+                                    });
+                                    // This would call an API to generate explanation
+                                    // For now, simulate with setTimeout
+                                    setTimeout(() => {
+                                      setExplicacionEjercicio(prev => {
+                                        const nuevo = [...prev];
+                                        nuevo[index] = `Explicación para el ejercicio ${letra}: ${ej.pregunta}`;
+                                        return nuevo;
+                                      });
+                                      setCargandoExplicacionEjercicio(prev => {
+                                        const nuevo = [...prev];
+                                        nuevo[index] = false;
+                                        return nuevo;
+                                      });
+                                    }, 1000);
+                                  }}
+                                  disabled={seleccionIndex !== null}
+                                >
+                                  <span className="shrink-0 w-6 h-6 rounded-full border-2 border-current flex items-center justify-center text-xs font-bold">
+                                    {letra.toUpperCase()}
+                                  </span>
+                                  <span className="flex-1">{texto}</span>
+                                  {seleccionIndex !== null && esCorrecta && <span className="text-emerald-400 shrink-0">✅</span>}
+                                  {seleccionIndex !== null && esSeleccionada && !esCorrecta && <span className="text-red-400 shrink-0">❌</span>}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {seleccionIndex !== null && explicacionIndex && (
+                            <div className="mt-4 bg-slate-950 border border-violet-500/30 rounded-lg p-4">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="text-sm">🤖</span>
+                                <span className="text-violet-400 font-semibold text-xs">
+                                  Explicación del profesor IA
+                                </span>
+                              </div>
+                              {cargandoExplicacionIndex ? (
+                                <div className="flex items-center gap-2 text-slate-400 text-xs">
+                                  <div className="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin shrink-0" />
+                                  Generando explicación...
+                                </div>
+                              ) : (
+                                <p className="text-slate-300 text-xs leading-relaxed">
+                                  {explicacionIndex}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                ) : ejerciciosGenerados ? (
-                  <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
-                    {ejerciciosGenerados}
-                  </p>
-                ) : null}
+                )}
               </div>
             )}
 

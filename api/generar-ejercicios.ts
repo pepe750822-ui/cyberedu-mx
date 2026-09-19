@@ -36,9 +36,23 @@ export default async function handler(req: Request) {
 
   const prompt =
     `Eres un profesor de Matemáticas IV ENP UNAM.\n` +
-    `Genera 2 ejercicios similares al siguiente para que el estudiante practique el mismo concepto:\n` +
-    `${preguntaOriginal}\n` +
-    `Solo escribe los ejercicios numerados con sus opciones A, B, C, D. Sin respuestas. En español.`;
+    `Genera exactamente 2 ejercicios similares al siguiente para que el estudiante practique el mismo concepto:\n` +
+    `${preguntaOriginal}\n\n` +
+    `Para cada ejercicio, proporciona la pregunta seguida de las opciones A, B, C, D en líneas separadas.\n` +
+    `Formato para cada ejercicio:\n` +
+    `1. Texto de la pregunta 1\n` +
+    `   A. Opción A\n` +
+    `   B. Opción B\n` +
+    `   C. Opción C\n` +
+    `   D. Opción D\n` +
+    `   Respuesta correcta: [a/b/c/d]\n\n` +
+    `2. Texto de la pregunta 2\n` +
+    `   A. Opción A\n` +
+    `   B. Opción B\n` +
+    `   C. Opción C\n` +
+    `   D. Opción D\n` +
+    `   Respuesta correcta: [a/b/c/d]\n\n` +
+    `No incluyas texto adicional ni bloques de Markdown fuera de los ejercicios. Solo el texto con el formato especificado.`;
 
   const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
