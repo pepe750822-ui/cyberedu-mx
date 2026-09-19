@@ -36,9 +36,11 @@ export default async function handler(req: Request) {
 
   const prompt =
     `Eres un profesor de Matemáticas IV ENP UNAM.\n` +
+    `Genera 2 ejercicios similares SIN incluir la respuesta correcta dentro de la pregunta ni de las opciones. Solo pregunta y opciones en esas líneas.\n` +
     `Genera exactamente 2 ejercicios similares al siguiente para que el estudiante practique el mismo concepto:\n` +
     `${preguntaOriginal}\n\n` +
     `Para cada ejercicio, proporciona la pregunta seguida de las opciones A, B, C, D en líneas separadas.\n` +
+    `La línea "Respuesta correcta" va SIEMPRE al final de cada ejercicio, en su propia línea, y nunca debe mencionarse ni insinuarse dentro del texto de la pregunta o de las opciones.\n` +
     `Formato para cada ejercicio:\n` +
     `1. Texto de la pregunta 1\n` +
     `   A. Opción A\n` +

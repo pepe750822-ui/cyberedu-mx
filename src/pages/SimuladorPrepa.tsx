@@ -27,10 +27,12 @@ interface EjercicioGenerado {
 
 async function parseEjercicioTexto(texto: string): Promise<EjercicioGenerado | null> {
   try {
-    const lines = texto.split('\n').filter(line => line.trim());
+    // Exclude the "Respuesta correcta" line so it's never mistaken for the
+    // question text and never shown to the student before they answer.
+    const lines = texto.split('\n').filter(line => line.trim() && !/^Respuesta correcta/i.test(line.trim()));
 
     // Find the question line (first line that doesn't start with A/B/C/D)
-    const preguntaLine = lines.find(line => !/^[A-D]\.?\s/i.test(line.trim()) && line.trim() && !/^\d+\.?\s/i.test(line.trim()));
+    const preguntaLine = lines.find(line => !/^[A-D]\.?\s/i.test(line.trim()));
     if (!preguntaLine) return null;
 
     // Find option lines
