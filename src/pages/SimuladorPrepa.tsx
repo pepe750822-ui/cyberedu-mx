@@ -22,50 +22,93 @@ interface EjercicioGenerado {
   opcion_b: string;
   opcion_c: string;
   opcion_d: string;
-  respuesta_correcta: string; // a/b/c/d
+  /** a/b/c/d — null cuando el modelo no indicó cuál es la correcta. */
+  respuesta_correcta: string | null;
 }
 
-async function parseEjercicioTexto(texto: string): Promise<EjercicioGenerado | null> {
-  try {
-    // Exclude the "Respuesta correcta" line so it's never mistaken for the
-    // question text and never shown to the student before they answer.
-    const lines = texto.split('\n').filter(line => line.trim() && !/^Respuesta correcta/i.test(line.trim()));
+/** Opciones realmente presentes (soporta 2, 3 o 4 opciones). */
+function opcionesDe(ejercicio: EjercicioGenerado): { letra: string; texto: string }[] {
+  return (
+    [
+      ["a", ejercicio.opcion_a],
+      ["b", ejercicio.opcion_b],
+      ["c", ejercicio.opcion_c],
+      ["d", ejercicio.opcion_d],
+    ] as const
+  )
+    .filter(([, texto]) => Boolean(texto && texto.trim()))
+    .map(([letra, texto]) => ({ letra, texto }));
+}
 
-    // Find the question line (first line that doesn't start with A/B/C/D)
-    const preguntaLine = lines.find(line => !/^[A-D]\.?\s/i.test(line.trim()));
-    if (!preguntaLine) return null;
+// Parser tolerante de respaldo: se usa solo si el servidor devuelve texto plano
+// (formato antiguo) en lugar del arreglo estructurado.
+const OPCION_TEXTO_RE = /^\s*(?:\(([A-Da-d])\)|([A-Da-d])\s*[.):-])\s*(.+?)\s*$/;
+const RESPUESTA_TEXTO_RE =
+  /^\s*(?:la\s+)?(?:respuesta\s+correcta|respuesta|correcta|clave|inciso|opci[oó]n)\s*(?::|-|—|es\b|=\s*)\s*(?:(?:opci[oó]n|inciso|letra)\s+)?\(?\s*([A-Da-d])\b/i;
 
-    // Find option lines
-    const opcionA = lines.find(line => /^A\.?\s/i.test(line.trim()));
-    const opcionB = lines.find(line => /^B\.?\s/i.test(line.trim()));
-    const opcionC = lines.find(line => /^C\.?\s/i.test(line.trim()));
-    const opcionD = lines.find(line => /^D\.?\s/i.test(line.trim()));
+function parseEjerciciosTexto(texto: string): EjercicioGenerado[] {
+  const limpio = texto.replace(/\r\n?/g, "\n").replace(/\*\*|__/g, "");
+  const ejercicios: EjercicioGenerado[] = [];
+  let pregunta: string[] = [];
+  let opciones = new Map<string, string>();
+  let respuesta: string | null = null;
 
-    if (!opcionA || !opcionB || !opcionC || !opcionD) return null;
+  const cerrar = () => {
+    const textoPregunta = pregunta
+      .join(" ")
+      .replace(/^\s*\d{1,2}\s*[.)-]\s*/, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (textoPregunta && opciones.size >= 2) {
+      ejercicios.push({
+        pregunta: textoPregunta,
+        opcion_a: opciones.get("a") ?? "",
+        opcion_b: opciones.get("b") ?? "",
+        opcion_c: opciones.get("c") ?? "",
+        opcion_d: opciones.get("d") ?? "",
+        respuesta_correcta: respuesta,
+      });
+    }
+    pregunta = [];
+    opciones = new Map<string, string>();
+    respuesta = null;
+  };
 
-    // Parse correct answer if present
-    let respuestaCorrecta = 'a';
-    const answerMatch = texto.match(new RegExp(/Respuesta correcta:?\s*([a-dA-D])/, 'i'));
-    if (answerMatch) {
-      respuestaCorrecta = answerMatch[1].toLowerCase();
-    } else {
-      // Try to find from the text
-      const match = texto.match(new RegExp(/\b([a-dA-D])\b.*?(?=\.|$)/, 'i'));
-      if (match) respuestaCorrecta = match[1].toLowerCase();
+  for (const linea of limpio.split("\n")) {
+    const t = linea.trim();
+    if (!t) continue;
+
+    const numerada = t.match(/^\s*\d{1,2}\s*[.)-]\s+(.*)$/);
+    if (numerada) {
+      cerrar();
+      pregunta = [numerada[1]];
+      continue;
     }
 
-    return {
-      pregunta: preguntaLine.replace(/^[\d\sA-D\.\-]*\s*/, ''),
-      opcion_a: opcionA.replace(/^[A-D]\.?\s*/i, ''),
-      opcion_b: opcionB.replace(/^[A-D]\.?\s*/i, ''),
-      opcion_c: opcionC.replace(/^[A-D]\.?\s*/i, ''),
-      opcion_d: opcionD.replace(/^[A-D]\.?\s*/i, ''),
-      respuesta_correcta: respuestaCorrecta
-    };
-  } catch (error) {
-    console.error('Error parsing exercise:', error);
-    return null;
+    if (RESPUESTA_TEXTO_RE.test(t)) {
+      const m = t.match(RESPUESTA_TEXTO_RE);
+      if (m) respuesta = m[1].toLowerCase();
+      continue;
+    }
+
+    const m = t.match(OPCION_TEXTO_RE);
+    if (m) {
+      const letra = (m[1] ?? m[2]).toLowerCase();
+      const valor = (m[3] ?? "").trim();
+      if (letra === "a" && opciones.has("a")) cerrar();
+      if (valor) opciones.set(letra, valor);
+      continue;
+    }
+
+    if (opciones.size > 0) {
+      cerrar();
+      pregunta = [t];
+    } else {
+      pregunta.push(t);
+    }
   }
+  cerrar();
+  return ejercicios;
 }
 
 async function pedirExplicacionEjercicio(ejercicio: EjercicioGenerado, materia: string): Promise<string> {
@@ -105,28 +148,52 @@ async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
   return data.content ?? "Sin explicación disponible.";
 }
 
-async function fetchEjerciciosDesdeAPI(pregunta: Pregunta): Promise<string> {
+interface RespuestaEjercicios {
+  ok?: boolean;
+  ejercicios?: EjercicioGenerado[] | string;
+  raw?: string;
+  error?: string;
+  detail?: string;
+  stage?: string;
+}
+
+async function fetchEjerciciosDesdeAPI(pregunta: Pregunta): Promise<EjercicioGenerado[]> {
   const res = await fetch("/api/generar-ejercicios", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ pregunta: pregunta.pregunta }),
   });
-  if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
-  const data = await res.json();
-  return data.ejercicios as string;
-}
 
-async function generarYParsearEjercicios(pregunta: Pregunta): Promise<EjercicioGenerado[]> {
-  const contenido = await fetchEjerciciosDesdeAPI(pregunta);
-
-  // Split by "1. ", "2. "
-  const bloques = contenido.split(/(?=\d\.\s)/).filter(b => b.trim());
-  const parsed: EjercicioGenerado[] = [];
-  for (const b of bloques) {
-    const ej = await parseEjercicioTexto(b);
-    if (ej) parsed.push(ej);
+  let data: RespuestaEjercicios | null = null;
+  try {
+    data = (await res.json()) as RespuestaEjercicios;
+  } catch {
+    data = null;
   }
-  return parsed;
+
+  // El servidor ahora devuelve siempre el motivo real del fallo.
+  if (!res.ok || data?.ok === false) {
+    const partes = [data?.error, data?.detail].filter(Boolean) as string[];
+    console.error("[Practica más] El endpoint devolvió un error", {
+      status: res.status,
+      stage: data?.stage,
+      error: data?.error,
+      detail: data?.detail,
+    });
+    throw new Error(partes.length ? partes.join(" — ") : `Error del servidor: ${res.status}`);
+  }
+
+  // Formato nuevo: arreglo ya estructurado por el servidor.
+  if (Array.isArray(data?.ejercicios)) {
+    return data.ejercicios.filter((e) => Boolean(e && e.pregunta));
+  }
+
+  // Compatibilidad con el formato anterior: texto plano que hay que parsear.
+  const texto = typeof data?.ejercicios === "string" ? data.ejercicios : data?.raw ?? "";
+  if (!texto.trim()) {
+    throw new Error("El servidor devolvió una respuesta vacía al generar los ejercicios");
+  }
+  return parseEjerciciosTexto(texto);
 }
 
 export default function SimuladorPrepa() {
@@ -138,6 +205,7 @@ export default function SimuladorPrepa() {
   const [cargandoExplicacion, setCargandoExplicacion] = useState(false);
   const [ejercicios, setEjercicios] = useState<EjercicioGenerado[] | null>(null);
   const [cargandoEjercicios, setCargandoEjercicios] = useState(false);
+  const [errorEjercicios, setErrorEjercicios] = useState<string | null>(null);
   // State for each generated exercise (max 2)
   const [seleccionEjercicio, setSeleccionEjercicio] = useState<(string | null)[]>([null, null]);
   const [explicacionEjercicio, setExplicacionEjercicio] = useState<(string | null)[]>([null, null]);
@@ -169,6 +237,26 @@ export default function SimuladorPrepa() {
 
   const preguntaActual = preguntas[indice];
 
+  const generarEjercicios = async (pregunta: Pregunta) => {
+    setErrorEjercicios(null);
+    setEjercicios(null);
+    setCargandoEjercicios(true);
+    try {
+      const parsed = await fetchEjerciciosDesdeAPI(pregunta);
+      if (parsed.length === 0) {
+        throw new Error("El servidor no devolvió ejercicios con el formato esperado");
+      }
+      setEjercicios(parsed);
+    } catch (error) {
+      const mensaje = error instanceof Error ? error.message : String(error);
+      console.error("[Practica más] Error al generar ejercicios:", error);
+      setErrorEjercicios(mensaje);
+      setEjercicios(null);
+    } finally {
+      setCargandoEjercicios(false);
+    }
+  };
+
   const handleSeleccion = async (letra: string) => {
     if (seleccion !== null) return;
     setSeleccion(letra);
@@ -187,16 +275,7 @@ export default function SimuladorPrepa() {
     }
 
     // Generar 2 ejercicios similares con el mismo tema
-    setCargandoEjercicios(true);
-    try {
-      const parsed = await generarYParsearEjercicios(preguntaActual);
-      setEjercicios(parsed);
-    } catch (error) {
-      console.error('Error generating exercises:', error);
-      setEjercicios(null);
-    } finally {
-      setCargandoEjercicios(false);
-    }
+    await generarEjercicios(preguntaActual);
   };
 
   const handleSiguiente = () => {
@@ -208,6 +287,7 @@ export default function SimuladorPrepa() {
     setSeleccion(null);
     setExplicacion(null);
     setEjercicios(null);
+    setErrorEjercicios(null);
     setSeleccionEjercicio([null, null]);
     setExplicacionEjercicio([null, null]);
     setCargandoExplicacionEjercicio([false, false]);
@@ -217,6 +297,8 @@ export default function SimuladorPrepa() {
     setIndice(0);
     setSeleccion(null);
     setExplicacion(null);
+    setEjercicios(null);
+    setErrorEjercicios(null);
     setCorrectas(0);
     setTerminado(false);
   };
@@ -383,6 +465,21 @@ export default function SimuladorPrepa() {
                     <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin shrink-0" />
                     Generando ejercicios similares...
                   </div>
+                ) : errorEjercicios ? (
+                  <div className="space-y-3">
+                    <p className="text-red-300 text-sm">
+                      No se pudieron generar ejercicios de práctica.
+                    </p>
+                    <p className="text-slate-400 text-xs break-words font-mono bg-slate-950/60 border border-slate-800 rounded-lg p-3">
+                      {errorEjercicios}
+                    </p>
+                    <button
+                      onClick={() => generarEjercicios(preguntaActual)}
+                      className="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200"
+                    >
+                      🔄 Reintentar
+                    </button>
+                  </div>
                 ) : ejercicios && ejercicios.length > 0 ? (
                   <div className="space-y-4">
                     {ejercicios.slice(0, 2).map((ej, index) => {
@@ -394,13 +491,9 @@ export default function SimuladorPrepa() {
                         <div key={index} className="border border-slate-700 rounded-lg p-4 bg-slate-950/50">
                           <p className="text-white font-semibold mb-3">{ej.pregunta}</p>
                           <div className="grid grid-cols-2 gap-3">
-                            {[
-                              { letra: 'a', texto: ej.opcion_a },
-                              { letra: 'b', texto: ej.opcion_b },
-                              { letra: 'c', texto: ej.opcion_c },
-                              { letra: 'd', texto: ej.opcion_d }
-                            ].map(({ letra, texto }) => {
-                              const esCorrecta = letra === ej.respuesta_correcta;
+                            {opcionesDe(ej).map(({ letra, texto }) => {
+                              const esCorrecta =
+                                ej.respuesta_correcta !== null && letra === ej.respuesta_correcta;
                               const esSeleccionada = seleccionIndex === letra;
 
                               let clases =
@@ -464,8 +557,8 @@ export default function SimuladorPrepa() {
                                     {letra.toUpperCase()}
                                   </span>
                                   <span className="flex-1">{texto}</span>
-                                  {seleccionIndex !== null && esCorrecta && <span className="text-emerald-400 shrink-0">✅</span>}
-                                  {seleccionIndex !== null && esSeleccionada && !esCorrecta && <span className="text-red-400 shrink-0">❌</span>}
+                                  {seleccionIndex !== null && ej.respuesta_correcta !== null && esCorrecta && <span className="text-emerald-400 shrink-0">✅</span>}
+                                  {seleccionIndex !== null && ej.respuesta_correcta !== null && esSeleccionada && !esCorrecta && <span className="text-red-400 shrink-0">❌</span>}
                                 </button>
                               );
                             })}
