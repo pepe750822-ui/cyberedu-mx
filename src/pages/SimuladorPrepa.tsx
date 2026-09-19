@@ -120,7 +120,8 @@ async function pedirExplicacionEjercicio(ejercicio: EjercicioGenerado, materia: 
     body: JSON.stringify({
       titulo: ejercicio.pregunta,
       materia: materia || "Matemáticas IV ENP UNAM",
-      tipo: "ejercicio"
+      tipo: "ejercicio",
+      modo: "desarrollo"
     }),
   });
   if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
@@ -143,6 +144,7 @@ async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
     body: JSON.stringify({
       titulo: pregunta.pregunta,
       materia: pregunta.materia || "Matemáticas IV ENP UNAM",
+      modo: "desarrollo",
     }),
   });
   if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
@@ -440,13 +442,13 @@ export default function SimuladorPrepa() {
             {/* Explicación DeepSeek */}
             <div className="bg-slate-900 border border-violet-500/40 rounded-xl p-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-lg">🤖</span>
-                <span className="text-violet-400 font-semibold text-sm">Explicación del profesor IA</span>
+                <span className="text-lg">📐</span>
+                <span className="text-violet-400 font-semibold text-sm">Desarrollo paso a paso</span>
               </div>
               {cargandoExplicacion ? (
                 <div className="flex items-center gap-3 text-slate-400 text-sm">
                   <div className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin shrink-0" />
-                  Generando explicación paso a paso...
+                  Generando desarrollo paso a paso...
                 </div>
               ) : (
                 <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{explicacion}</p>

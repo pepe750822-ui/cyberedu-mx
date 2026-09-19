@@ -1,13 +1,9 @@
 export const config = { runtime: 'edge' };
 
 export default async function handler(req: Request) {
-  // @ts-ignore
   const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-  // @ts-ignore
   const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  // @ts-ignore
   const UPSTASH_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  // @ts-ignore
   const APP_URL = process.env.APP_URL || 'https://cyberedu-mx.vercel.app';
 
   const allowedOrigins = [
@@ -35,11 +31,15 @@ export default async function handler(req: Request) {
     return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
   }
 
-  let titulo: string, materia: string;
+  let titulo: string, materia: string, modo: string;
   try {
     const body = await req.json();
     titulo = String(body.titulo ?? '').trim();
     materia = String(body.materia ?? '').trim();
+    // "desarrollo" → respuesta corta paso a paso (simulador prepa).
+    // Cualquier otro valor (o ausente) → explicación larga de siempre,
+    // que es la que usa /area/... (VideoSubindice).
+    modo = String(body.modo ?? '').trim().toLowerCase();
     if (!titulo || !materia) throw new Error('missing fields');
   } catch {
     return new Response(JSON.stringify({ error: 'titulo y materia son requeridos' }), {
@@ -48,7 +48,11 @@ export default async function handler(req: Request) {
     });
   }
 
-  const cacheKey = `vc2:${materia}:${titulo}`.toLowerCase().slice(0, 220);
+  const esDesarrollo = modo === 'desarrollo';
+
+  // El modo forma parte de la clave para que ambas variantes no se pisen,
+  // y vc3 invalida las respuestas largas ya cacheadas con vc2.
+  const cacheKey = `vc3:${esDesarrollo ? 'des' : 'exp'}:${materia}:${titulo}`.toLowerCase().slice(0, 220);
 
   // ── Cache read (Upstash) ────────────────────────────────────────
   if (UPSTASH_URL && UPSTASH_TOKEN) {
@@ -93,13 +97,18 @@ export default async function handler(req: Request) {
   }
 
   // ── DeepSeek call ───────────────────────────────────────────────
-  const prompt =
-    `Eres un profesor experto en el ECOEMS 2027. ` +
-    `Explica el tema "${titulo}" de la materia "${materia}" en 2-3 párrafos claros ` +
-    `para un estudiante de secundaria. ` +
-    `Incluye un ejemplo práctico del tipo que aparece en el examen ECOEMS. ` +
-    `Responde solo en español, sin markdown. ` +
-    `Termina siempre con una oración completa. No dejes oraciones a medias.`;
+  const prompt = esDesarrollo
+    ? `Eres profesor de Matemáticas IV ENP UNAM.\n` +
+      `Muestra SOLO el desarrollo paso a paso para resolver este ejercicio.\n` +
+      `Máximo 5 líneas. Sin explicar opciones incorrectas.\n` +
+      `Sin introducción. Solo los pasos.\n\n` +
+      `Ejercicio:\n"""${titulo}"""`
+    : `Eres un profesor experto en el ECOEMS 2027. ` +
+      `Explica el tema "${titulo}" de la materia "${materia}" en 2-3 párrafos claros ` +
+      `para un estudiante de secundaria. ` +
+      `Incluye un ejemplo práctico del tipo que aparece en el examen ECOEMS. ` +
+      `Responde solo en español, sin markdown. ` +
+      `Termina siempre con una oración completa. No dejes oraciones a medias.`;
 
   const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
