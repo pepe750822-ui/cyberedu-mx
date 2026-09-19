@@ -101,7 +101,8 @@ export default async function handler(req: Request) {
     ? `Eres profesor de Matemáticas IV ENP UNAM.\n` +
       `Muestra SOLO el desarrollo paso a paso para resolver este ejercicio.\n` +
       `Máximo 5 líneas. Sin explicar opciones incorrectas.\n` +
-      `Sin introducción. Solo los pasos.\n\n` +
+      `Sin introducción. Solo los pasos.\n` +
+      `Sin notación LaTeX. Usa solo texto y símbolos simples como ×, ÷, =, ^, { }\n\n` +
       `Ejercicio:\n"""${titulo}"""`
     : `Eres un profesor experto en el ECOEMS 2027. ` +
       `Explica el tema "${titulo}" de la materia "${materia}" en 2-3 párrafos claros ` +

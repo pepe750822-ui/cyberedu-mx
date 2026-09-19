@@ -108,10 +108,22 @@ describe("POST /api/video-content", () => {
     expect(prompt).toContain("Muestra SOLO el desarrollo paso a paso para resolver este ejercicio.");
     expect(prompt).toContain("Máximo 5 líneas. Sin explicar opciones incorrectas.");
     expect(prompt).toContain("Sin introducción. Solo los pasos.");
+    // El desarrollo se muestra como texto plano: nada de \( \) ni \[ \]
+    expect(prompt).toContain("Sin notación LaTeX.");
+    expect(prompt).toContain("Usa solo texto y símbolos simples como ×, ÷, =, ^, { }");
     // El enunciado del ejercicio viaja en el prompt
     expect(prompt).toContain("Resuelve 2x + 5 = 13");
     // No debe arrastrar el prompt largo
     expect(prompt).not.toContain("ECOEMS 2027");
+  });
+
+  it("no pide la restricción de LaTeX en la explicación larga", async () => {
+    const llamadas = stubRed();
+
+    await handler(post({ titulo: "Ecuaciones", materia: "Matemáticas" }));
+
+    // VideoSubindice mantiene su prompt sin cambios
+    expect(promptEnviado(llamadas)).not.toContain("Sin notación LaTeX");
   });
 
   it("un 'modo' desconocido cae en la explicación larga", async () => {
