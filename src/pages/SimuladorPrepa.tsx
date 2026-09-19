@@ -38,6 +38,17 @@ async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
   return data.content ?? "Sin explicación disponible.";
 }
 
+async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string> {
+  const res = await fetch("/api/generar-ejercicios", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pregunta: pregunta.pregunta }),
+  });
+  if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
+  const data = await res.json();
+  return data.ejercicios ?? "";
+}
+
 export default function SimuladorPrepa() {
   const [preguntas, setPreguntas] = useState<Pregunta[]>([]);
   const [indice, setIndice] = useState(0);
@@ -45,6 +56,8 @@ export default function SimuladorPrepa() {
   const [seleccion, setSeleccion] = useState<string | null>(null);
   const [explicacion, setExplicacion] = useState<string | null>(null);
   const [cargandoExplicacion, setCargandoExplicacion] = useState(false);
+  const [ejerciciosGenerados, setEjerciciosGenerados] = useState<string | null>(null);
+  const [cargandoEjercicios, setCargandoEjercicios] = useState(false);
   const [correctas, setCorrectas] = useState(0);
   const [terminado, setTerminado] = useState(false);
 
@@ -87,6 +100,17 @@ export default function SimuladorPrepa() {
       setExplicacion("No se pudo obtener la explicación. Intenta de nuevo.");
     } finally {
       setCargandoExplicacion(false);
+    }
+
+    // Generar 2 ejercicios similares con el mismo tema
+    setCargandoEjercicios(true);
+    try {
+      const ejercicios = await pedirEjerciciosSimilares(preguntaActual);
+      setEjerciciosGenerados(ejercicios);
+    } catch {
+      setEjerciciosGenerados("No se pudieron generar los ejercicios similares.");
+    } finally {
+      setCargandoEjercicios(false);
     }
   };
 
@@ -256,14 +280,58 @@ export default function SimuladorPrepa() {
               )}
             </div>
 
-            {/* Siguiente */}
+            {/* Ejercicios similares generados por DeepSeek */}
             {!cargandoExplicacion && (
-              <button
-                onClick={handleSiguiente}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold py-4 rounded-xl transition-all duration-200 text-sm"
-              >
-                {indice + 1 >= preguntas.length ? "Ver resultados" : "Siguiente pregunta →"}
-              </button>
+              <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">📝</span>
+                  <span className="text-amber-400 font-semibold text-sm">
+                    📝 Practica más
+                  </span>
+                </div>
+                {cargandoEjercicios ? (
+                  <div className="flex items-center gap-3 text-slate-400 text-sm">
+                    <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin shrink-0" />
+                    Generando ejercicios similares...
+                  </div>
+                ) : ejerciciosGenerados ? (
+                  <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
+                    {ejerciciosGenerados}
+                  </p>
+                ) : null}
+              </div>
+            )}
+
+            {/* ¿Deseas seguir practicando? */}
+            {!cargandoExplicacion && (
+              <div className="space-y-3">
+                <p className="text-center text-slate-400 text-sm font-medium">
+                  ¿Deseas seguir practicando?
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      if (indice + 1 >= preguntas.length) {
+                        setTerminado(true);
+                        return;
+                      }
+                      setIndice((i) => i + 1);
+                      setSeleccion(null);
+                      setExplicacion(null);
+                      setEjerciciosGenerados(null);
+                    }}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold py-4 rounded-xl transition-all duration-200 text-sm"
+                  >
+                    ✅ Sí, siguiente pregunta
+                  </button>
+                  <button
+                    onClick={() => setTerminado(true)}
+                    className="flex-1 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-semibold py-4 rounded-xl transition-all duration-200 text-sm border border-slate-700"
+                  >
+                    📊 Ver resumen
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         )}
