@@ -103,7 +103,7 @@ async function pedirExplicacion(pregunta: Pregunta): Promise<string> {
   return data.content ?? "Sin explicación disponible.";
 }
 
-async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string[]> {
+async function fetchEjerciciosDesdeAPI(pregunta: Pregunta): Promise<string> {
   const res = await fetch("/api/generar-ejercicios", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -111,22 +111,20 @@ async function pedirEjerciciosSimilares(pregunta: Pregunta): Promise<string[]> {
   });
   if (!res.ok) throw new Error(`Error del servidor: ${res.status}`);
   const data = await res.json();
-  // Expect data.ejercicios to be the JSON array
-  if (Array.isArray(data.ejercicios)) {
-    return data.ejercicios as string[];
+  return data.ejercicios as string;
+}
+
+async function generarYParsearEjercicios(pregunta: Pregunta): Promise<EjercicioGenerado[]> {
+  const contenido = await fetchEjerciciosDesdeAPI(pregunta);
+
+  // Split by "1. ", "2. "
+  const bloques = contenido.split(/(?=\d\.\s)/).filter(b => b.trim());
+  const parsed: EjercicioGenerado[] = [];
+  for (const b of bloques) {
+    const ej = await parseEjercicioTexto(b);
+    if (ej) parsed.push(ej);
   }
-  // fallback: if it's a string, try to parse
-  if (typeof data.ejercicios === "string") {
-    try {
-      const parsed = JSON.parse(data.ejercicios);
-      if (Array.isArray(parsed)) {
-        return parsed as string[];
-      }
-    } catch {
-      // ignore
-    }
-  }
-  throw new Error("Formato de ejercicios inesperado");
+  return parsed;
 }
 
 export default function SimuladorPrepa() {
@@ -142,7 +140,6 @@ export default function SimuladorPrepa() {
   const [seleccionEjercicio, setSeleccionEjercicio] = useState<(string | null)[]>([null, null]);
   const [explicacionEjercicio, setExplicacionEjercicio] = useState<(string | null)[]>([null, null]);
   const [cargandoExplicacionEjercicio, setCargandoExplicacionEjercicio] = useState<boolean[]>([false, false]);
-  const [ejerciciosGenerados, setEjerciciosGenerados] = useState<(string | EjercicioGenerado)[] | null>(null);
   const [correctas, setCorrectas] = useState(0);
   const [terminado, setTerminado] = useState(false);
 
@@ -190,21 +187,11 @@ export default function SimuladorPrepa() {
     // Generar 2 ejercicios similares con el mismo tema
     setCargandoEjercicios(true);
     try {
-      const ejerciciosTexto = await pedirEjerciciosSimilares(preguntaActual);
-      // Parse the text from DeepSeek to extract exercises
-      const parsedEjercicios: EjercicioGenerado[] = [];
-      for (const texto of ejerciciosTexto) {
-        const parsed = await parseEjercicioTexto(texto);
-        if (parsed) {
-          parsedEjercicios.push(parsed);
-          if (parsedEjercicios.length >= 2) break;
-        }
-      }
-      setEjercicios(parsedEjercicios);
-      setEjerciciosGenerados(parsedEjercicios);
+      const parsed = await generarYParsearEjercicios(preguntaActual);
+      setEjercicios(parsed);
     } catch (error) {
       console.error('Error generating exercises:', error);
-      setEjerciciosGenerados(null);
+      setEjercicios(null);
     } finally {
       setCargandoEjercicios(false);
     }
@@ -389,9 +376,14 @@ export default function SimuladorPrepa() {
                     📝 Practica más
                   </span>
                 </div>
-                {ejercicios && (
+                {cargandoEjercicios ? (
+                  <div className="flex items-center gap-3 text-slate-400 text-sm">
+                    <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin shrink-0" />
+                    Generando ejercicios similares...
+                  </div>
+                ) : ejercicios && ejercicios.length > 0 ? (
                   <div className="space-y-4">
-                    {(ejerciciosGenerados as EjercicioGenerado[]).slice(0, 2).map((ej, index) => {
+                    {ejercicios.slice(0, 2).map((ej, index) => {
                       const seleccionIndex = seleccionEjercicio[index];
                       const explicacionIndex = explicacionEjercicio[index];
                       const cargandoExplicacionIndex = cargandoExplicacionEjercicio[index];
@@ -429,7 +421,7 @@ export default function SimuladorPrepa() {
                                 <button
                                   key={letra}
                                   className={clases}
-                                  onClick={() => {
+                                  onClick={async () => {
                                     if (seleccionIndex !== null) return;
                                     setSeleccionEjercicio(prev => {
                                       const nuevo = [...prev];
@@ -442,20 +434,27 @@ export default function SimuladorPrepa() {
                                       nuevo[index] = true;
                                       return nuevo;
                                     });
-                                    // This would call an API to generate explanation
-                                    // For now, simulate with setTimeout
-                                    setTimeout(() => {
+
+                                    try {
+                                      const exp = await pedirExplicacionEjercicio(ej, preguntaActual.materia);
                                       setExplicacionEjercicio(prev => {
                                         const nuevo = [...prev];
-                                        nuevo[index] = `Explicación para el ejercicio ${letra}: ${ej.pregunta}`;
+                                        nuevo[index] = exp;
                                         return nuevo;
                                       });
+                                    } catch {
+                                      setExplicacionEjercicio(prev => {
+                                        const nuevo = [...prev];
+                                        nuevo[index] = "No se pudo obtener la explicación del ejercicio.";
+                                        return nuevo;
+                                      });
+                                    } finally {
                                       setCargandoExplicacionEjercicio(prev => {
                                         const nuevo = [...prev];
                                         nuevo[index] = false;
                                         return nuevo;
                                       });
-                                    }, 1000);
+                                    }
                                   }}
                                   disabled={seleccionIndex !== null}
                                 >
@@ -494,6 +493,8 @@ export default function SimuladorPrepa() {
                       );
                     })}
                   </div>
+                ) : (
+                  <p className="text-slate-400 text-sm">No se pudieron generar ejercicios de práctica.</p>
                 )}
               </div>
             )}
@@ -506,16 +507,7 @@ export default function SimuladorPrepa() {
                 </p>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      if (indice + 1 >= preguntas.length) {
-                        setTerminado(true);
-                        return;
-                      }
-                      setIndice((i) => i + 1);
-                      setSeleccion(null);
-                      setExplicacion(null);
-                      setEjerciciosGenerados(null);
-                    }}
+                    onClick={handleSiguiente}
                     className="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold py-4 rounded-xl transition-all duration-200 text-sm"
                   >
                     ✅ Sí, siguiente pregunta
