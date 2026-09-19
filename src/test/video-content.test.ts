@@ -144,10 +144,10 @@ describe("POST /api/video-content", () => {
     const claves = clavesDeCache(llamadas);
     expect(claves).toHaveLength(2);
     expect(claves[0]).not.toBe(claves[1]);
-    expect(claves[0]).toContain("exp:");
-    expect(claves[1]).toContain("des:");
-    // La versión nueva invalida las respuestas largas cacheadas con vc2
-    expect(claves[0]).toContain("vc3:");
+    // El prompt largo no cambió: conserva su caché en vc3
+    expect(claves[0]).toContain("vc3:exp:");
+    // El prompt de desarrollo cambió (anti-LaTeX) → vc4 fuerza regenerar
+    expect(claves[1]).toContain("vc4:des:");
   });
 
   it("rechaza peticiones sin titulo o materia", async () => {

@@ -132,6 +132,9 @@ describe("POST /api/generar-ejercicios", () => {
     expect(prompt).toContain("Sin mencionar opciones incorrectas");
     expect(prompt).toContain("Máximo 5 líneas");
     expect(prompt).toContain('"desarrollo"');
+    expect(prompt).toContain(
+      "Sin notación LaTeX ni símbolos matemáticos especiales. Usa solo texto plano: ×, ÷, =, ^",
+    );
   });
 
   it("el prompt de texto pide el formato con bloque Desarrollo", async () => {
@@ -163,6 +166,9 @@ describe("POST /api/generar-ejercicios", () => {
     expect(prompt).toContain("Máximo 5 líneas por ejercicio");
     expect(prompt).toContain("Desarrollo:");
     expect(prompt).toContain("Respuesta correcta: [letra]");
+    expect(prompt).toContain(
+      "Sin notación LaTeX ni símbolos matemáticos especiales. Usa solo texto plano: ×, ÷, =, ^",
+    );
   });
 
   it("cae al parser de texto cuando el modelo no devuelve JSON", async () => {

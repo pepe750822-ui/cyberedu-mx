@@ -50,9 +50,12 @@ export default async function handler(req: Request) {
 
   const esDesarrollo = modo === 'desarrollo';
 
-  // El modo forma parte de la clave para que ambas variantes no se pisen,
-  // y vc3 invalida las respuestas largas ya cacheadas con vc2.
-  const cacheKey = `vc3:${esDesarrollo ? 'des' : 'exp'}:${materia}:${titulo}`.toLowerCase().slice(0, 220);
+  // El modo forma parte de la clave para que ambas variantes no se pisen.
+  // Versiones independientes: el prompt de "desarrollo" cambió (anti-LaTeX),
+  // así que sube a vc4 para forzar su regeneración; el prompt largo de
+  // VideoSubindice no cambió y conserva su caché en vc3.
+  const versionCache = esDesarrollo ? 'vc4' : 'vc3';
+  const cacheKey = `${versionCache}:${esDesarrollo ? 'des' : 'exp'}:${materia}:${titulo}`.toLowerCase().slice(0, 220);
 
   // ── Cache read (Upstash) ────────────────────────────────────────
   if (UPSTASH_URL && UPSTASH_TOKEN) {

@@ -397,6 +397,7 @@ function promptJson(preguntaOriginal: string): string {
     `- En "desarrollo" muestra SOLO el desarrollo paso a paso para llegar al resultado correcto.\n` +
     `- Sin mencionar opciones incorrectas.\n` +
     `- Máximo 5 líneas en "desarrollo", separadas por \\n y terminando en el resultado.\n` +
+    `- Sin notación LaTeX ni símbolos matemáticos especiales. Usa solo texto plano: ×, ÷, =, ^\n` +
     `- Los ejercicios deben ser distintos entre sí.\n\n` +
     `Responde SOLO con JSON válido, sin markdown ni texto adicional, con este formato exacto:\n` +
     `{"ejercicios":[{"pregunta":"texto de la pregunta","opciones":["texto opción A","texto opción B","texto opción C","texto opción D"],"desarrollo":"paso 1\\npaso 2\\nresultado","correcta":0}]}\n` +
@@ -409,7 +410,8 @@ function promptTexto(preguntaOriginal: string): string {
     `Eres profesor de Matemáticas IV ENP UNAM.\n` +
     `Para cada ejercicio muestra SOLO el desarrollo paso a paso para llegar al resultado correcto.\n` +
     `Sin mencionar opciones incorrectas.\n` +
-    `Máximo 5 líneas por ejercicio.\n\n` +
+    `Máximo 5 líneas por ejercicio.\n` +
+    `Sin notación LaTeX ni símbolos matemáticos especiales. Usa solo texto plano: ×, ÷, =, ^\n\n` +
     `Genera exactamente 2 ejercicios similares al siguiente, para que el estudiante practique el mismo concepto:\n` +
     `"""${preguntaOriginal}"""\n\n` +
     `Formato EXACTO de cada ejercicio:\n` +
