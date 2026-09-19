@@ -24,6 +24,8 @@ interface EjercicioGenerado {
   opcion_d: string;
   /** a/b/c/d — null cuando el modelo no indicó cuál es la correcta. */
   respuesta_correcta: string | null;
+  /** Desarrollo paso a paso generado junto con el ejercicio. Puede venir vacío. */
+  desarrollo?: string;
 }
 
 /** Opciones realmente presentes (soporta 2, 3 o 4 opciones). */
@@ -523,7 +525,22 @@ export default function SimuladorPrepa() {
                                       nuevo[index] = letra;
                                       return nuevo;
                                     });
-                                    // Generate explanation for this exercise
+
+                                    // El desarrollo ya viene generado junto con el
+                                    // ejercicio: es corto (máx. 5 líneas) y no cuesta
+                                    // otra llamada a la IA.
+                                    const desarrollo = ej.desarrollo?.trim();
+                                    if (desarrollo) {
+                                      setExplicacionEjercicio(prev => {
+                                        const nuevo = [...prev];
+                                        nuevo[index] = desarrollo;
+                                        return nuevo;
+                                      });
+                                      return;
+                                    }
+
+                                    // Respaldo: si el modelo no dio desarrollo, se pide
+                                    // la explicación como antes.
                                     setCargandoExplicacionEjercicio(prev => {
                                       const nuevo = [...prev];
                                       nuevo[index] = true;
@@ -567,9 +584,9 @@ export default function SimuladorPrepa() {
                           {seleccionIndex !== null && explicacionIndex && (
                             <div className="mt-4 bg-slate-950 border border-violet-500/30 rounded-lg p-4">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className="text-sm">🤖</span>
+                                <span className="text-sm">{ej.desarrollo?.trim() ? "📐" : "🤖"}</span>
                                 <span className="text-violet-400 font-semibold text-xs">
-                                  Explicación del profesor IA
+                                  {ej.desarrollo?.trim() ? "Desarrollo paso a paso" : "Explicación del profesor IA"}
                                 </span>
                               </div>
                               {cargandoExplicacionIndex ? (
@@ -578,7 +595,7 @@ export default function SimuladorPrepa() {
                                   Generando explicación...
                                 </div>
                               ) : (
-                                <p className="text-slate-300 text-xs leading-relaxed">
+                                <p className="text-slate-300 text-xs leading-relaxed whitespace-pre-wrap">
                                   {explicacionIndex}
                                 </p>
                               )}

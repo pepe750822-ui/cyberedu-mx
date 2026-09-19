@@ -36,6 +36,12 @@ function completion(content: string): DeepSeekStub {
   return { body: { choices: [{ message: { content }, finish_reason: "stop" }] } };
 }
 
+/** Extrae el texto del prompt enviado a DeepSeek. */
+function promptDe(call: Record<string, unknown>): string {
+  const messages = call.messages as { content: string }[] | undefined;
+  return messages?.[0]?.content ?? "";
+}
+
 const TEXTO_VALIDO = [
   "1. Resuelve 3x + 2 = 11",
   "   A. x = 2",
@@ -119,6 +125,44 @@ describe("POST /api/generar-ejercicios", () => {
     // El primer intento debe pedir JSON estructurado
     expect(calls[0].response_format).toEqual({ type: "json_object" });
     expect(calls[0].max_tokens).toBe(1200);
+
+    // El prompt debe pedir un desarrollo breve y sin opciones incorrectas
+    const prompt = promptDe(calls[0]);
+    expect(prompt).toContain("SOLO el desarrollo paso a paso");
+    expect(prompt).toContain("Sin mencionar opciones incorrectas");
+    expect(prompt).toContain("Máximo 5 líneas");
+    expect(prompt).toContain('"desarrollo"');
+  });
+
+  it("el prompt de texto pide el formato con bloque Desarrollo", async () => {
+    const { calls } = stubFetch((body) =>
+      body.response_format
+        ? completion("No puedo generar ejercicios.")
+        : completion(
+            [
+              "Ejercicio 1: Resuelve 2x + 5 = 13",
+              "A) 2 B) 3 C) 4 D) 5",
+              "Desarrollo:",
+              "2x = 8",
+              "x = 4",
+              "Respuesta correcta: C",
+            ].join("\n"),
+          ),
+    );
+
+    const res = await handler(post());
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.mode).toBe("text");
+    expect(calls).toHaveLength(2);
+
+    const prompt = promptDe(calls[1]);
+    expect(prompt).toContain("Eres profesor de Matemáticas IV ENP UNAM");
+    expect(prompt).toContain("Sin mencionar opciones incorrectas");
+    expect(prompt).toContain("Máximo 5 líneas por ejercicio");
+    expect(prompt).toContain("Desarrollo:");
+    expect(prompt).toContain("Respuesta correcta: [letra]");
   });
 
   it("cae al parser de texto cuando el modelo no devuelve JSON", async () => {
@@ -183,6 +227,109 @@ describe("POST /api/generar-ejercicios", () => {
 
     expect(res.status).toBe(200);
     expect(body.ejercicios[0].respuesta_correcta).toBeNull();
+  });
+
+  it("parsea el formato con bloque Desarrollo y opciones en una sola línea", async () => {
+    // Formato exacto que pide el prompt:
+    //   Ejercicio 1: [pregunta]
+    //   A) ... B) ... C) ... D) ...
+    //   Desarrollo: / [paso] / Respuesta correcta: [letra]
+    const formato = [
+      "Ejercicio 1: Resuelve 2x + 5 = 13",
+      "A) 2 B) 3 C) 4 D) 5",
+      "Desarrollo:",
+      "2x = 13 - 5",
+      "2x = 8",
+      "x = 4",
+      "Respuesta correcta: C",
+      "",
+      "Ejercicio 2: Resuelve 3x - 4 = 11",
+      "A) 3 B) 4 C) 5 D) 6",
+      "Desarrollo:",
+      "3x = 11 + 4",
+      "3x = 15",
+      "x = 5",
+      "Respuesta correcta: C",
+    ].join("\n");
+    stubFetch(() => completion(formato));
+
+    const res = await handler(post());
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.ejercicios).toHaveLength(2);
+
+    // Las cuatro opciones se separaron correctamente
+    expect(body.ejercicios[0]).toMatchObject({
+      pregunta: "Resuelve 2x + 5 = 13",
+      opcion_a: "2",
+      opcion_b: "3",
+      opcion_c: "4",
+      opcion_d: "5",
+      respuesta_correcta: "c",
+    });
+
+    // Los pasos NO se mezclaron con la pregunta ni con las opciones
+    expect(body.ejercicios[0].desarrollo).toBe("2x = 13 - 5\n2x = 8\nx = 4");
+    expect(body.ejercicios[0].pregunta).not.toContain("Desarrollo");
+
+    // El segundo ejercicio no se perdió ni se contaminó con el anterior
+    expect(body.ejercicios[1]).toMatchObject({
+      pregunta: "Resuelve 3x - 4 = 11",
+      respuesta_correcta: "c",
+    });
+    expect(body.ejercicios[1].desarrollo).toBe("3x = 11 + 4\n3x = 15\nx = 5");
+  });
+
+  it("lee el desarrollo del JSON cuando el modelo lo devuelve ahí", async () => {
+    const json = JSON.stringify({
+      ejercicios: [
+        {
+          pregunta: "Resuelve x + 1 = 3",
+          opciones: ["1", "2", "3", "4"],
+          desarrollo: "x = 3 - 1\nx = 2",
+          correcta: 1,
+        },
+      ],
+    });
+    stubFetch(() => completion(json));
+
+    const res = await handler(post());
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.mode).toBe("json");
+    expect(body.ejercicios[0].desarrollo).toBe("x = 3 - 1\nx = 2");
+    expect(body.ejercicios[0].respuesta_correcta).toBe("b");
+  });
+
+  it("acepta el desarrollo como arreglo de pasos", async () => {
+    const json = JSON.stringify({
+      ejercicios: [
+        {
+          pregunta: "Resuelve x + 1 = 3",
+          opciones: ["1", "2", "3", "4"],
+          desarrollo: ["x = 3 - 1", "x = 2"],
+          correcta: 1,
+        },
+      ],
+    });
+    stubFetch(() => completion(json));
+
+    const res = await handler(post());
+    const body = await res.json();
+
+    expect(body.ejercicios[0].desarrollo).toBe("x = 3 - 1\nx = 2");
+  });
+
+  it("deja el desarrollo vacío si el modelo no lo incluye", async () => {
+    stubFetch(() => completion(TEXTO_VALIDO));
+
+    const res = await handler(post());
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.ejercicios[0].desarrollo).toBe("");
   });
 
   it("reintenta con el siguiente modelo cuando el primero es rechazado", async () => {

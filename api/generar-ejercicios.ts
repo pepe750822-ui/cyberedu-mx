@@ -22,6 +22,8 @@ type Ejercicio = {
   opcion_c: string;
   opcion_d: string;
   respuesta_correcta: string | null; // 'a'|'b'|'c'|'d' — null si no se pudo determinar
+  /** Desarrollo paso a paso hasta el resultado correcto. Cadena vacía si el modelo no lo dio. */
+  desarrollo: string;
 };
 
 type Attempt = {
@@ -124,6 +126,38 @@ const OPTION_DOT_RE = /^\s*([A-Da-d])\s*[.):-]\s*(.+?)\s*$/;
 const BULLET_RE = /^\s*[-•*]\s+(.+?)\s*$/;
 const ANSWER_LINE_RE =
   /^\s*(?:la\s+)?(?:respuesta\s+correcta|respuesta|correcta|clave|inciso|opci[oó]n)\s*(?::|-|—|es\b|=\s*)\s*(?:(?:opci[oó]n|inciso|letra)\s+)?\(?\s*([A-Da-d])\b/i;
+/** Encabezado que abre el bloque de desarrollo paso a paso. */
+const DESARROLLO_RE = /^\s*(?:desarrollo|procedimiento|soluci[oó]n|resoluci[oó]n|paso\s+a\s+paso)\s*:?\s*$/i;
+/** Encabezado explícito de un ejercicio nuevo, p. ej. "Ejercicio 2: ...". */
+const NUEVO_EJERCICIO_RE = /^\s*(?:ejercicio|problema|pregunta)\s*\d+\s*[.:)-]?\s*(.*)$/i;
+/** Marcador de opción dentro de una línea, p. ej. "A) ", "(B) ", "C. ". */
+const MARCADOR_OPCION_RE = /(?:\(([A-Da-d])\)|([A-Da-d])[.):-])\s*/g;
+
+/**
+ * Algunos modelos escriben las cuatro opciones en una sola línea
+ * ("A) 4  B) 5  C) 6  D) 7"). Solo se separa cuando aparecen las letras
+ * a, b, c, d (o un prefijo ascendente de ellas) en orden, para no partir
+ * texto normal que mencione una letra suelta.
+ */
+function expandirOpcionesEnLinea(linea: string): string[] | null {
+  const matches = [...linea.matchAll(MARCADOR_OPCION_RE)];
+  if (matches.length < 3) return null;
+
+  const letras = matches.map((m) => (m[1] ?? m[2]).toLowerCase());
+  const esperadas = ['a', 'b', 'c', 'd'].slice(0, letras.length);
+  if (letras.join('') !== esperadas.join('')) return null;
+
+  const resultado: string[] = [];
+  const prefijo = linea.slice(0, matches[0].index ?? 0).trim();
+  if (prefijo) resultado.push(prefijo);
+
+  matches.forEach((m, i) => {
+    const inicio = (m.index ?? 0) + m[0].length;
+    const fin = i + 1 < matches.length ? matches[i + 1].index ?? linea.length : linea.length;
+    resultado.push(`${(m[1] ?? m[2]).toUpperCase()}) ${linea.slice(inicio, fin).trim()}`);
+  });
+  return resultado;
+}
 
 function matchOpcion(linea: string): { letra: string; texto: string } | null {
   const m = linea.match(OPTION_PAREN_RE) ?? linea.match(OPTION_DOT_RE);
@@ -137,6 +171,7 @@ function toEjercicio(
   pregunta: string,
   opciones: Map<string, string>,
   respuesta: string | null,
+  desarrollo: string[] = [],
 ): Ejercicio | null {
   const limpia = pregunta
     .replace(/^\s*\d{1,2}\s*[.)-]\s*/, '')
@@ -151,12 +186,14 @@ function toEjercicio(
     opcion_c: opciones.get('c') ?? '',
     opcion_d: opciones.get('d') ?? '',
     respuesta_correcta: respuesta,
+    desarrollo: desarrollo.join('\n').trim(),
   };
 }
 
 /**
  * Parser tolerante: acepta "1." / "1)" / "(A)" / "A." / "A)" / "A:" / viñetas,
- * con o sin numeración, y "Respuesta correcta: x" en cualquiera de sus variantes.
+ * opciones en una sola línea, bloque "Desarrollo:" y "Respuesta correcta: x"
+ * en cualquiera de sus variantes.
  */
 function parseEjerciciosTexto(texto: string): Ejercicio[] {
   const contenido = normalizar(texto);
@@ -166,23 +203,43 @@ function parseEjerciciosTexto(texto: string): Ejercicio[] {
   let pregunta: string[] = [];
   let opciones = new Map<string, string>();
   let respuesta: string | null = null;
+  let desarrollo: string[] = [];
+  let enDesarrollo = false;
   let bullets = 0;
   const letrasBullet = ['a', 'b', 'c', 'd'];
 
   const flush = () => {
-    const ej = toEjercicio(pregunta.join(' '), opciones, respuesta);
+    const ej = toEjercicio(pregunta.join(' '), opciones, respuesta, desarrollo);
     if (ej) ejercicios.push(ej);
     pregunta = [];
     opciones = new Map<string, string>();
     respuesta = null;
+    desarrollo = [];
+    enDesarrollo = false;
     bullets = 0;
   };
 
+  // Separa las opciones que vengan todas en la misma línea
+  const lineas: string[] = [];
   for (const linea of contenido.split('\n')) {
+    const expandidas = expandirOpcionesEnLinea(linea);
+    if (expandidas) lineas.push(...expandidas);
+    else lineas.push(linea);
+  }
+
+  for (const linea of lineas) {
     const trimmed = linea.trim();
     if (!trimmed) continue;
 
-    // 1) Nueva pregunta numerada → cierra la anterior
+    // 1) Encabezado explícito "Ejercicio N: ..." → cierra el anterior
+    const nuevo = trimmed.match(NUEVO_EJERCICIO_RE);
+    if (nuevo) {
+      flush();
+      pregunta = nuevo[1] ? [nuevo[1]] : [];
+      continue;
+    }
+
+    // 2) Nueva pregunta numerada → cierra la anterior
     const numerada = trimmed.match(NUMBER_LINE_RE);
     if (numerada) {
       flush();
@@ -190,24 +247,36 @@ function parseEjerciciosTexto(texto: string): Ejercicio[] {
       continue;
     }
 
-    // 2) Línea de respuesta correcta
+    // 3) Línea de respuesta correcta (va al final, después del desarrollo)
     if (ANSWER_LINE_RE.test(trimmed)) {
       const m = trimmed.match(ANSWER_LINE_RE);
       if (m) respuesta = m[1].toLowerCase();
+      enDesarrollo = false;
       continue;
     }
 
-    // 3) Opción con letra
+    // 4) Encabezado "Desarrollo:" → todo lo que sigue son pasos, no pregunta
+    if (DESARROLLO_RE.test(trimmed)) {
+      enDesarrollo = true;
+      continue;
+    }
+
+    // 5) Dentro del desarrollo, ninguna línea se interpreta como opción ni pregunta
+    if (enDesarrollo) {
+      desarrollo.push(trimmed);
+      continue;
+    }
+
+    // 6) Opción con letra
     const opcion = matchOpcion(trimmed);
     if (opcion) {
       // Una nueva "A" después de haber cerrado las opciones anteriores → nuevo ejercicio
       if (opcion.letra === 'a' && opciones.has('a')) flush();
-      if (opciones.size === 0) respuesta = respuesta ?? null;
       opciones.set(opcion.letra, opcion.texto);
       continue;
     }
 
-    // 4) Viñeta sin letra → se numera como opción mientras no haya letras
+    // 7) Viñeta sin letra → se numera como opción mientras no haya letras
     const bullet = trimmed.match(BULLET_RE);
     if (bullet && opciones.size < 4 && !opciones.has('a')) {
       opciones.set(letrasBullet[bullets] ?? 'a', bullet[1].trim());
@@ -215,7 +284,7 @@ function parseEjerciciosTexto(texto: string): Ejercicio[] {
       continue;
     }
 
-    // 5) Texto libre: continúa la pregunta, o abre una nueva si ya había opciones
+    // 8) Texto libre: continúa la pregunta, o abre una nueva si ya había opciones
     if (opciones.size > 0) {
       flush();
       pregunta = [trimmed];
@@ -293,7 +362,23 @@ function parseJsonItem(item: Record<string, unknown>): Ejercicio | null {
     if (limpias[i]) opciones.set(letra, limpias[i]);
   });
 
-  return toEjercicio(pregunta, opciones, respuesta);
+  // Desarrollo paso a paso (puede venir como string con \n o como arreglo de pasos)
+  const crudo =
+    item.desarrollo ??
+    item.explanation ??
+    item.solucion ??
+    item.solución ??
+    item.solution ??
+    item.procedimiento ??
+    item.steps;
+  let desarrollo = '';
+  if (Array.isArray(crudo)) {
+    desarrollo = crudo.map((p) => String(p ?? '').trim()).filter(Boolean).join('\n');
+  } else if (typeof crudo === 'string') {
+    desarrollo = crudo.trim();
+  }
+
+  return toEjercicio(pregunta, opciones, respuesta, desarrollo ? desarrollo.split('\n') : []);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -302,42 +387,49 @@ function parseJsonItem(item: Record<string, unknown>): Ejercicio | null {
 
 function promptJson(preguntaOriginal: string): string {
   return (
-    `Eres un profesor de Matemáticas IV ENP UNAM.\n` +
+    `Eres profesor de Matemáticas IV ENP UNAM.\n` +
     `Genera exactamente 2 ejercicios de opción múltiple, similares al ejercicio de referencia, ` +
     `para que el estudiante practique el mismo concepto.\n\n` +
     `Ejercicio de referencia:\n"""${preguntaOriginal}"""\n\n` +
     `Reglas:\n` +
     `- Cada ejercicio debe tener exactamente 4 opciones.\n` +
     `- La respuesta correcta NUNCA debe aparecer ni insinuarse dentro del texto de la pregunta ni de las opciones.\n` +
+    `- En "desarrollo" muestra SOLO el desarrollo paso a paso para llegar al resultado correcto.\n` +
+    `- Sin mencionar opciones incorrectas.\n` +
+    `- Máximo 5 líneas en "desarrollo", separadas por \\n y terminando en el resultado.\n` +
     `- Los ejercicios deben ser distintos entre sí.\n\n` +
     `Responde SOLO con JSON válido, sin markdown ni texto adicional, con este formato exacto:\n` +
-    `{"ejercicios":[{"pregunta":"texto de la pregunta","opciones":["texto opción A","texto opción B","texto opción C","texto opción D"],"correcta":0}]}\n` +
+    `{"ejercicios":[{"pregunta":"texto de la pregunta","opciones":["texto opción A","texto opción B","texto opción C","texto opción D"],"desarrollo":"paso 1\\npaso 2\\nresultado","correcta":0}]}\n` +
     `"correcta" es el índice 0-based de la opción correcta (0=A, 1=B, 2=C, 3=D).`
   );
 }
 
 function promptTexto(preguntaOriginal: string): string {
   return (
-    `Eres un profesor de Matemáticas IV ENP UNAM.\n` +
-    `Genera 2 ejercicios similares SIN incluir la respuesta correcta dentro de la pregunta ni de las opciones. Solo pregunta y opciones en esas líneas.\n` +
-    `Genera exactamente 2 ejercicios similares al siguiente para que el estudiante practique el mismo concepto:\n` +
-    `${preguntaOriginal}\n\n` +
-    `Para cada ejercicio, proporciona la pregunta seguida de las opciones A, B, C, D en líneas separadas.\n` +
-    `La línea "Respuesta correcta" va SIEMPRE al final de cada ejercicio, en su propia línea, y nunca debe mencionarse ni insinuarse dentro del texto de la pregunta o de las opciones.\n` +
-    `Formato para cada ejercicio:\n` +
-    `1. Texto de la pregunta 1\n` +
-    `   A. Opción A\n` +
-    `   B. Opción B\n` +
-    `   C. Opción C\n` +
-    `   D. Opción D\n` +
-    `   Respuesta correcta: [a/b/c/d]\n\n` +
-    `2. Texto de la pregunta 2\n` +
-    `   A. Opción A\n` +
-    `   B. Opción B\n` +
-    `   C. Opción C\n` +
-    `   D. Opción D\n` +
-    `   Respuesta correcta: [a/b/c/d]\n\n` +
-    `No incluyas texto adicional ni bloques de Markdown fuera de los ejercicios. Solo el texto con el formato especificado.`
+    `Eres profesor de Matemáticas IV ENP UNAM.\n` +
+    `Para cada ejercicio muestra SOLO el desarrollo paso a paso para llegar al resultado correcto.\n` +
+    `Sin mencionar opciones incorrectas.\n` +
+    `Máximo 5 líneas por ejercicio.\n\n` +
+    `Genera exactamente 2 ejercicios similares al siguiente, para que el estudiante practique el mismo concepto:\n` +
+    `"""${preguntaOriginal}"""\n\n` +
+    `Formato EXACTO de cada ejercicio:\n` +
+    `Ejercicio 1: [pregunta]\n` +
+    `A) ... B) ... C) ... D) ...\n` +
+    `Desarrollo:\n` +
+    `[paso 1]\n` +
+    `[paso 2]\n` +
+    `[resultado]\n` +
+    `Respuesta correcta: [letra]\n\n` +
+    `Ejercicio 2: [pregunta]\n` +
+    `A) ... B) ... C) ... D) ...\n` +
+    `Desarrollo:\n` +
+    `[paso 1]\n` +
+    `[paso 2]\n` +
+    `[resultado]\n` +
+    `Respuesta correcta: [letra]\n\n` +
+    `No incluyas texto adicional ni bloques de Markdown fuera de los ejercicios. ` +
+    `La línea "Respuesta correcta" va SIEMPRE al final de cada ejercicio, en su propia línea, ` +
+    `y nunca debe mencionarse ni insinuarse dentro de la pregunta, de las opciones o del desarrollo.`
   );
 }
 
