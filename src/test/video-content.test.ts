@@ -138,6 +138,17 @@ describe("POST /api/video-content", () => {
     expect(prompt).not.toContain("Matemáticas IV");
   });
 
+  it("añade el nivel ENP UNAM cuando la materia de la tabla viene sin él", async () => {
+    const llamadas = stubRed();
+
+    // "Matemáticas IV" es el valor real que guarda preguntas_prepa.materia
+    await handler(post({ titulo: "Resuelve 2x = 8", materia: "Matemáticas IV", modo: "desarrollo" }));
+
+    const prompt = promptEnviado(llamadas);
+    expect(prompt).toContain("Eres profesor de Matemáticas IV ENP UNAM.");
+    expect(prompt).not.toContain("ENP UNAM ENP UNAM");
+  });
+
   it("un 'modo' desconocido cae en la explicación larga", async () => {
     const llamadas = stubRed();
 

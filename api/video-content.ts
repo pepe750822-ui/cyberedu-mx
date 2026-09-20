@@ -1,5 +1,18 @@
 export const config = { runtime: 'edge' };
 
+/**
+ * Materia tal como debe aparecer en el prompt.
+ *
+ * En la tabla `materia` guarda solo "Matemáticas IV", pero el modelo rinde
+ * mejor sabiendo el nivel (ENP UNAM, preparatoria). Se añade el contexto
+ * únicamente si la materia no lo trae ya, para no repetirlo.
+ */
+function materiaParaPrompt(materia: string): string {
+  const limpia = materia.trim().replace(/\s+/g, ' ');
+  if (!limpia) return 'Matemáticas IV ENP UNAM';
+  return /enp|unam|preparatoria|bachillerato/i.test(limpia) ? limpia : `${limpia} ENP UNAM`;
+}
+
 export default async function handler(req: Request) {
   const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
   const UPSTASH_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
@@ -101,7 +114,7 @@ export default async function handler(req: Request) {
 
   // ── DeepSeek call ───────────────────────────────────────────────
   const prompt = esDesarrollo
-    ? `Eres profesor de ${materia}.\n` +
+    ? `Eres profesor de ${materiaParaPrompt(materia)}.\n` +
       `Muestra SOLO el desarrollo paso a paso para resolver este ejercicio.\n` +
       `Máximo 5 líneas. Sin explicar opciones incorrectas.\n` +
       `Sin introducción. Solo los pasos.\n` +

@@ -357,6 +357,34 @@ describe("POST /api/generar-ejercicios", () => {
     expect(body.ejercicios).toHaveLength(1);
   });
 
+  it("añade el nivel ENP UNAM cuando la materia de la tabla viene sin él", async () => {
+    const json = JSON.stringify({
+      ejercicios: [{ pregunta: "P", opciones: ["a1", "b1", "c1", "d1"], correcta: 0 }],
+    });
+    const { calls } = stubFetch(() => completion(json));
+
+    // "Matemáticas IV" es el valor real que guarda preguntas_prepa.materia
+    await handler(post("Resuelve 2x + 5 = 13", { materia: "Matemáticas IV" }));
+
+    const prompt = promptDe(calls[0]);
+    expect(prompt).toContain("Eres profesor de Matemáticas IV ENP UNAM.");
+    // No debe duplicar el contexto
+    expect(prompt).not.toContain("ENP UNAM ENP UNAM");
+  });
+
+  it("no duplica el nivel si la materia ya lo incluye", async () => {
+    const json = JSON.stringify({
+      ejercicios: [{ pregunta: "P", opciones: ["a1", "b1", "c1", "d1"], correcta: 0 }],
+    });
+    const { calls } = stubFetch(() => completion(json));
+
+    await handler(post("Resuelve x", { materia: "Física IV ENP UNAM" }));
+
+    const prompt = promptDe(calls[0]);
+    expect(prompt).toContain("Eres profesor de Física IV ENP UNAM.");
+    expect(prompt).not.toContain("ENP UNAM ENP UNAM");
+  });
+
   it("conserva Matemáticas IV cuando el cliente no envía materia", async () => {
     const json = JSON.stringify({
       ejercicios: [{ pregunta: "P", opciones: ["a1", "b1", "c1", "d1"], correcta: 0 }],

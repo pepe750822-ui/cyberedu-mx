@@ -55,6 +55,19 @@ const UPSTREAM_TIMEOUT_MS = 20_000;
 // Helpers
 // ─────────────────────────────────────────────────────────────
 
+/**
+ * Materia tal como debe aparecer en el prompt.
+ *
+ * En la tabla `materia` guarda solo "Matemáticas IV", pero el modelo rinde
+ * mejor sabiendo el nivel (ENP UNAM, preparatoria). Se añade el contexto
+ * únicamente si la materia no lo trae ya, para no repetirlo.
+ */
+function materiaParaPrompt(materia: string): string {
+  const limpia = materia.trim().replace(/\s+/g, ' ');
+  if (!limpia) return 'Matemáticas IV ENP UNAM';
+  return /enp|unam|preparatoria|bachillerato/i.test(limpia) ? limpia : `${limpia} ENP UNAM`;
+}
+
 function env(): Record<string, string | undefined> {
   return (typeof process !== 'undefined' ? process.env : {}) as Record<string, string | undefined>;
 }
@@ -600,9 +613,9 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ ok: false, stage: 'request', error: 'pregunta es requerida' }, 400);
   }
 
-  // Materia real de la pregunta (Matemáticas IV, Física, …). Si el cliente no
-  // la manda se conserva el comportamiento anterior.
-  const materiaPrompt = materia || 'Matemáticas IV ENP UNAM';
+  // Materia real de la pregunta (Matemáticas IV, Física IV, …) con su nivel.
+  // Si el cliente no la manda se conserva el comportamiento anterior.
+  const materiaPrompt = materiaParaPrompt(materia);
 
   log('POST inicio', {
     preguntaLen: preguntaOriginal.length,
