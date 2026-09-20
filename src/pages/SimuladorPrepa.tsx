@@ -165,7 +165,10 @@ async function fetchEjerciciosDesdeAPI(pregunta: Pregunta): Promise<EjercicioGen
   const res = await fetch("/api/generar-ejercicios", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pregunta: pregunta.pregunta }),
+    body: JSON.stringify({
+      pregunta: pregunta.pregunta,
+      materia: pregunta.materia || "Matemáticas IV ENP UNAM",
+    }),
   });
 
   let data: RespuestaEjercicios | null = null;
@@ -248,6 +251,8 @@ export default function SimuladorPrepa() {
   const [terminado, setTerminado] = useState(false);
   /** Unidad elegida en el selector. `null` = todavía no se ha empezado. */
   const [unidadFiltro, setUnidadFiltro] = useState<string | null>(null);
+  /** Materia elegida. `null` = selector de materia visible (solo si hay varias). */
+  const [materiaFiltro, setMateriaFiltro] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -271,16 +276,42 @@ export default function SimuladorPrepa() {
     })();
   }, []);
 
-  // Unidades ofrecidas: las de UNIDADES_BASE que tengan preguntas y, si algún
-  // día se agrega otra unidad a la tabla, también aparece en vez de quedar
-  // inaccesible desde el selector.
+  // Materias presentes en la tabla, en orden de aparición. Se derivan de los
+  // datos: al agregar Física (u otra) aparece sola, sin tocar código.
+  const materiasDisponibles = useMemo(() => {
+    const vistas = new Map<string, string>();
+    for (const p of preguntas) {
+      const valor = (p.materia ?? "").trim();
+      const clave = normalizarUnidad(valor);
+      if (clave && !vistas.has(clave)) vistas.set(clave, valor);
+    }
+    return [...vistas.values()];
+  }, [preguntas]);
+
+  // Con una sola materia no tiene sentido preguntar: se elige automáticamente
+  // y la pantalla queda igual que antes de existir el selector de materia.
+  useEffect(() => {
+    if (materiaFiltro === null && materiasDisponibles.length === 1) {
+      setMateriaFiltro(materiasDisponibles[0]);
+    }
+  }, [materiaFiltro, materiasDisponibles]);
+
+  const preguntasDeMateria = useMemo(() => {
+    if (materiaFiltro === null) return [] as Pregunta[];
+    const objetivo = normalizarUnidad(materiaFiltro);
+    return preguntas.filter((p) => normalizarUnidad(p.materia ?? "") === objetivo);
+  }, [preguntas, materiaFiltro]);
+
+  // Unidades ofrecidas dentro de la materia elegida: las de UNIDADES_BASE que
+  // tengan preguntas y, si algún día se agrega otra unidad a la tabla, también
+  // aparece en vez de quedar inaccesible desde el selector.
   const unidadesDisponibles = useMemo(() => {
     const presentes = new Set(
-      preguntas.map((p) => normalizarUnidad(p.unidad ?? "")).filter(Boolean),
+      preguntasDeMateria.map((p) => normalizarUnidad(p.unidad ?? "")).filter(Boolean),
     );
     const extra = [
       ...new Set(
-        preguntas
+        preguntasDeMateria
           .map((p) => (p.unidad ?? "").trim())
           .filter(
             (u) =>
@@ -292,25 +323,25 @@ export default function SimuladorPrepa() {
     return [...UNIDADES_BASE, ...extra].filter((u) =>
       presentes.has(normalizarUnidad(u)),
     );
-  }, [preguntas]);
+  }, [preguntasDeMateria]);
 
   const conteoPorUnidad = useMemo(() => {
     const mapa = new Map<string, number>();
-    for (const p of preguntas) {
+    for (const p of preguntasDeMateria) {
       const clave = normalizarUnidad(p.unidad ?? "");
       if (clave) mapa.set(clave, (mapa.get(clave) ?? 0) + 1);
     }
     return mapa;
-  }, [preguntas]);
+  }, [preguntasDeMateria]);
 
   // Preguntas de la sesión actual. En "Todos los temas" se mezclan una sola vez
   // por sesión (el memo solo se recalcula al cambiar de unidad o al recargar).
   const preguntasSesion = useMemo(() => {
     if (unidadFiltro === null) return [] as Pregunta[];
-    if (unidadFiltro === TODAS_LAS_UNIDADES) return mezclar(preguntas);
+    if (unidadFiltro === TODAS_LAS_UNIDADES) return mezclar(preguntasDeMateria);
     const objetivo = normalizarUnidad(unidadFiltro);
-    return preguntas.filter((p) => normalizarUnidad(p.unidad ?? "") === objetivo);
-  }, [preguntas, unidadFiltro]);
+    return preguntasDeMateria.filter((p) => normalizarUnidad(p.unidad ?? "") === objetivo);
+  }, [preguntasDeMateria, unidadFiltro]);
 
   const preguntaActual = preguntasSesion[indice];
 
@@ -355,9 +386,8 @@ export default function SimuladorPrepa() {
     await generarEjercicios(preguntaActual);
   };
 
-  /** Arranca una sesión nueva. Con `unidad = null` vuelve al selector. */
-  const iniciarSesion = (unidad: string | null) => {
-    setUnidadFiltro(unidad);
+  /** Limpia el progreso de la sesión (no toca materia ni unidad). */
+  const reiniciarProgreso = () => {
     setIndice(0);
     setSeleccion(null);
     setExplicacion(null);
@@ -368,6 +398,19 @@ export default function SimuladorPrepa() {
     setCargandoExplicacionEjercicio([false, false]);
     setCorrectas(0);
     setTerminado(false);
+  };
+
+  /** Elige materia y pasa al selector de unidad de esa materia. */
+  const elegirMateria = (materia: string) => {
+    setMateriaFiltro(materia);
+    setUnidadFiltro(null);
+    reiniciarProgreso();
+  };
+
+  /** Arranca una sesión nueva con la unidad elegida. */
+  const iniciarSesion = (unidad: string) => {
+    setUnidadFiltro(unidad);
+    reiniciarProgreso();
   };
 
   const handleSiguiente = () => {
@@ -385,8 +428,12 @@ export default function SimuladorPrepa() {
     setCargandoExplicacionEjercicio([false, false]);
   };
 
-  /** Vuelve al selector para poder elegir otra unidad. */
-  const handleReiniciar = () => iniciarSesion(null);
+  /** Vuelve al principio para poder elegir otra materia o unidad. */
+  const handleReiniciar = () => {
+    setMateriaFiltro(null);
+    setUnidadFiltro(null);
+    reiniciarProgreso();
+  };
 
   if (cargando) {
     return (
@@ -409,6 +456,41 @@ export default function SimuladorPrepa() {
     );
   }
 
+  // ── Selector de materia (solo aparece cuando hay más de una) ──
+  if (materiaFiltro === null) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full">
+          <div className="text-center mb-6">
+            <div className="text-5xl mb-3">📐</div>
+            <h1 className="text-2xl font-bold text-white mb-1">Simulador Prepa</h1>
+            <p className="text-slate-400 text-sm">ENP UNAM — Preparatoria</p>
+          </div>
+
+          <p className="text-slate-300 text-sm font-medium mb-3">Elige una materia:</p>
+
+          <div className="space-y-3">
+            {materiasDisponibles.map((materia) => {
+              const total = preguntas.filter(
+                (p) => normalizarUnidad(p.materia ?? "") === normalizarUnidad(materia),
+              ).length;
+              return (
+                <button
+                  key={materia}
+                  onClick={() => elegirMateria(materia)}
+                  className="w-full text-left px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-emerald-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
+                >
+                  <span className="flex-1 text-slate-100 font-medium text-sm">{materia}</span>
+                  <span className="shrink-0 text-slate-400 text-xs font-medium">{total}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ── Selector de unidad ────────────────────────────────────────
   if (unidadFiltro === null) {
     return (
@@ -416,8 +498,8 @@ export default function SimuladorPrepa() {
         <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full">
           <div className="text-center mb-6">
             <div className="text-5xl mb-3">📐</div>
-            <h1 className="text-2xl font-bold text-white mb-1">Simulador Prepa</h1>
-            <p className="text-slate-400 text-sm">Matemáticas IV — ENP UNAM</p>
+            <h1 className="text-2xl font-bold text-white mb-1">{materiaFiltro}</h1>
+            <p className="text-slate-400 text-sm">ENP UNAM — Preparatoria</p>
           </div>
 
           <p className="text-slate-300 text-sm font-medium mb-3">Elige una unidad:</p>
@@ -432,7 +514,7 @@ export default function SimuladorPrepa() {
                 Todos los temas (aleatorio)
               </span>
               <span className="shrink-0 text-emerald-400/70 text-xs font-medium">
-                {preguntas.length}
+                {preguntasDeMateria.length}
               </span>
             </button>
 
@@ -449,6 +531,15 @@ export default function SimuladorPrepa() {
               </button>
             ))}
           </div>
+
+          {materiasDisponibles.length > 1 && (
+            <button
+              onClick={handleReiniciar}
+              className="w-full text-center text-slate-400 hover:text-slate-200 text-xs font-medium mt-4 transition-colors"
+            >
+              ← Cambiar de materia
+            </button>
+          )}
         </div>
       </div>
     );
@@ -486,7 +577,7 @@ export default function SimuladorPrepa() {
         <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center">
           <div className="text-6xl mb-4">{pct >= 70 ? "🎉" : "📚"}</div>
           <h2 className="text-2xl font-bold text-white mb-2">Simulacro terminado</h2>
-          <p className="text-slate-400 mb-1">Matemáticas IV — ENP UNAM</p>
+          <p className="text-slate-400 mb-1">{materiaFiltro}</p>
           <p className="text-emerald-400 text-sm mb-6">
             {unidadFiltro === TODAS_LAS_UNIDADES ? "🎲 Todos los temas" : unidadFiltro}
           </p>
@@ -498,7 +589,7 @@ export default function SimuladorPrepa() {
             onClick={handleReiniciar}
             className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition-colors"
           >
-            🔄 Elegir otra unidad
+            🔄 Elegir otro tema
           </button>
         </div>
       </div>
@@ -513,7 +604,7 @@ export default function SimuladorPrepa() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-lg font-bold text-emerald-400">🏫 Matemáticas IV</h1>
+            <h1 className="text-lg font-bold text-emerald-400">🏫 {preguntaActual.materia}</h1>
             <p className="text-xs text-slate-500">ENP UNAM — Preparatoria</p>
           </div>
           <div className="text-right">

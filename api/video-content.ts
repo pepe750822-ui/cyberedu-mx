@@ -101,7 +101,7 @@ export default async function handler(req: Request) {
 
   // ── DeepSeek call ───────────────────────────────────────────────
   const prompt = esDesarrollo
-    ? `Eres profesor de Matemáticas IV ENP UNAM.\n` +
+    ? `Eres profesor de ${materia}.\n` +
       `Muestra SOLO el desarrollo paso a paso para resolver este ejercicio.\n` +
       `Máximo 5 líneas. Sin explicar opciones incorrectas.\n` +
       `Sin introducción. Solo los pasos.\n` +

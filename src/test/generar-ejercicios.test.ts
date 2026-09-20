@@ -24,11 +24,14 @@ function stubFetch(responder: (body: Record<string, unknown>) => DeepSeekStub) {
   return { calls, impl };
 }
 
-function post(pregunta = "Resuelve 2x + 5 = 13"): Request {
+function post(
+  pregunta = "Resuelve 2x + 5 = 13",
+  extra: Record<string, unknown> = {},
+): Request {
   return new Request("https://cyberedumx.com/api/generar-ejercicios", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pregunta }),
+    body: JSON.stringify({ pregunta, ...extra }),
   });
 }
 
@@ -336,6 +339,33 @@ describe("POST /api/generar-ejercicios", () => {
 
     expect(res.status).toBe(200);
     expect(body.ejercicios[0].desarrollo).toBe("");
+  });
+
+  it("usa la materia recibida en el prompt para no sesgar otras materias", async () => {
+    const json = JSON.stringify({
+      ejercicios: [{ pregunta: "P", opciones: ["a1", "b1", "c1", "d1"], correcta: 0 }],
+    });
+    const { calls } = stubFetch(() => completion(json));
+
+    const res = await handler(post("Un bloque de 5 kg cae desde 20 m", { materia: "Física IV ENP UNAM" }));
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    const prompt = promptDe(calls[0]);
+    expect(prompt).toContain("Eres profesor de Física IV ENP UNAM.");
+    expect(prompt).not.toContain("Matemáticas IV");
+    expect(body.ejercicios).toHaveLength(1);
+  });
+
+  it("conserva Matemáticas IV cuando el cliente no envía materia", async () => {
+    const json = JSON.stringify({
+      ejercicios: [{ pregunta: "P", opciones: ["a1", "b1", "c1", "d1"], correcta: 0 }],
+    });
+    const { calls } = stubFetch(() => completion(json));
+
+    await handler(post());
+
+    expect(promptDe(calls[0])).toContain("Eres profesor de Matemáticas IV ENP UNAM.");
   });
 
   it("reintenta con el siguiente modelo cuando el primero es rechazado", async () => {

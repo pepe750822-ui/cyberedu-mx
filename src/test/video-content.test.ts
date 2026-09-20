@@ -126,6 +126,18 @@ describe("POST /api/video-content", () => {
     expect(promptEnviado(llamadas)).not.toContain("Sin notación LaTeX");
   });
 
+  it("el prompt de desarrollo usa la materia recibida, no Matemáticas IV fijo", async () => {
+    const llamadas = stubRed();
+
+    await handler(
+      post({ titulo: "Un bloque cae desde 20 m", materia: "Física IV ENP UNAM", modo: "desarrollo" }),
+    );
+
+    const prompt = promptEnviado(llamadas);
+    expect(prompt).toContain("Eres profesor de Física IV ENP UNAM.");
+    expect(prompt).not.toContain("Matemáticas IV");
+  });
+
   it("un 'modo' desconocido cae en la explicación larga", async () => {
     const llamadas = stubRed();
 

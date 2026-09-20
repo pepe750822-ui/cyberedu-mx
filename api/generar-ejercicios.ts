@@ -385,9 +385,9 @@ function parseJsonItem(item: Record<string, unknown>): Ejercicio | null {
 // Prompts
 // ─────────────────────────────────────────────────────────────
 
-function promptJson(preguntaOriginal: string): string {
+function promptJson(preguntaOriginal: string, materia: string): string {
   return (
-    `Eres profesor de Matemáticas IV ENP UNAM.\n` +
+    `Eres profesor de ${materia}.\n` +
     `Genera exactamente 2 ejercicios de opción múltiple, similares al ejercicio de referencia, ` +
     `para que el estudiante practique el mismo concepto.\n\n` +
     `Ejercicio de referencia:\n"""${preguntaOriginal}"""\n\n` +
@@ -405,9 +405,9 @@ function promptJson(preguntaOriginal: string): string {
   );
 }
 
-function promptTexto(preguntaOriginal: string): string {
+function promptTexto(preguntaOriginal: string, materia: string): string {
   return (
-    `Eres profesor de Matemáticas IV ENP UNAM.\n` +
+    `Eres profesor de ${materia}.\n` +
     `Para cada ejercicio muestra SOLO el desarrollo paso a paso para llegar al resultado correcto.\n` +
     `Sin mencionar opciones incorrectas.\n` +
     `Máximo 5 líneas por ejercicio.\n` +
@@ -588,18 +588,25 @@ export default async function handler(req: Request): Promise<Response> {
 
   // ── Body ────────────────────────────────────────────────────
   let preguntaOriginal: string;
+  let materia: string;
   let debug = false;
   try {
-    const body = (await req.json()) as { pregunta?: unknown; debug?: unknown };
+    const body = (await req.json()) as { pregunta?: unknown; materia?: unknown; debug?: unknown };
     preguntaOriginal = String(body.pregunta ?? '').trim();
+    materia = String(body.materia ?? '').trim();
     debug = body.debug === true;
     if (!preguntaOriginal) throw new Error('missing pregunta');
   } catch {
     return json({ ok: false, stage: 'request', error: 'pregunta es requerida' }, 400);
   }
 
+  // Materia real de la pregunta (Matemáticas IV, Física, …). Si el cliente no
+  // la manda se conserva el comportamiento anterior.
+  const materiaPrompt = materia || 'Matemáticas IV ENP UNAM';
+
   log('POST inicio', {
     preguntaLen: preguntaOriginal.length,
+    materia: materiaPrompt,
     key: keyFingerprint(apiKey),
     keySource,
     models,
@@ -637,7 +644,9 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   for (const paso of plan) {
-    const prompt = paso.mode === 'json' ? promptJson(preguntaOriginal) : promptTexto(preguntaOriginal);
+    const prompt = paso.mode === 'json'
+      ? promptJson(preguntaOriginal, materiaPrompt)
+      : promptTexto(preguntaOriginal, materiaPrompt);
     const inicio = Date.now();
     const r = await llamarDeepSeek(apiKey, paso.model, prompt, paso.mode === 'json');
 
