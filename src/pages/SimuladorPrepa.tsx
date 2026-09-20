@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { MenuBloques, NavegacionReactivo } from "@/components/simulador/Bloques";
+import { iconoDeMateria, type Bloque } from "@/components/simulador/bloques-utils";
 
 interface Pregunta {
   id: string;
@@ -211,6 +213,14 @@ const UNIDADES_BASE = [
   "Números Reales",
 ];
 
+/** Lo que ya se calculó para un reactivo, para no repetirlo al volver a él. */
+interface EstadoRespondido {
+  letra: string;
+  correcta: boolean;
+  explicacion: string | null;
+  ejercicios: EjercicioGenerado[] | null;
+}
+
 /** Valor centinela de la opción "Todos los temas (aleatorio)". */
 const TODAS_LAS_UNIDADES = "__todas__";
 
@@ -247,8 +257,14 @@ export default function SimuladorPrepa() {
   const [seleccionEjercicio, setSeleccionEjercicio] = useState<(string | null)[]>([null, null]);
   const [explicacionEjercicio, setExplicacionEjercicio] = useState<(string | null)[]>([null, null]);
   const [cargandoExplicacionEjercicio, setCargandoExplicacionEjercicio] = useState<boolean[]>([false, false]);
-  const [correctas, setCorrectas] = useState(0);
   const [terminado, setTerminado] = useState(false);
+  /**
+   * Respuestas ya dadas, indexadas por id de reactivo. Almacenar el resultado
+   * por reactivo (y no un simple contador) evita que la puntuación se infle si
+   * el alumno vuelve atrás con la navegación y responde otra vez, y permite
+   * restaurar la respuesta y el desarrollo al regresar a un reactivo.
+   */
+  const [historial, setHistorial] = useState<Record<string, EstadoRespondido>>({});
   /** Unidad elegida en el selector. `null` = todavía no se ha empezado. */
   const [unidadFiltro, setUnidadFiltro] = useState<string | null>(null);
   /** Materia elegida. `null` = selector de materia visible (solo si hay varias). */
@@ -345,6 +361,28 @@ export default function SimuladorPrepa() {
 
   const preguntaActual = preguntasSesion[indice];
 
+  // Puntuación derivada del historial: no se puede inflar respondiendo dos veces.
+  const correctas = useMemo(
+    () => Object.values(historial).filter((h) => h.correcta).length,
+    [historial],
+  );
+  const respondidas = Object.keys(historial).length;
+
+  // Estado visible del reactivo actual: lo recién calculado o, si el alumno
+  // regresó a un reactivo ya contestado, lo que quedó guardado.
+  const guardado = preguntaActual ? historial[preguntaActual.id] : undefined;
+  const seleccionActual = seleccion ?? guardado?.letra ?? null;
+  const explicacionActual = explicacion ?? guardado?.explicacion ?? null;
+  const ejerciciosActuales = ejercicios ?? guardado?.ejercicios ?? null;
+
+  /** Guarda o actualiza lo ya calculado para un reactivo. */
+  const guardarEnHistorial = (id: string, patch: Partial<EstadoRespondido>) => {
+    setHistorial((prev) => ({
+      ...prev,
+      [id]: { letra: "", correcta: false, explicacion: null, ejercicios: null, ...prev[id], ...patch },
+    }));
+  };
+
   const generarEjercicios = async (pregunta: Pregunta) => {
     setErrorEjercicios(null);
     setEjercicios(null);
@@ -355,29 +393,36 @@ export default function SimuladorPrepa() {
         throw new Error("El servidor no devolvió ejercicios con el formato esperado");
       }
       setEjercicios(parsed);
+      guardarEnHistorial(pregunta.id, { ejercicios: parsed });
     } catch (error) {
       const mensaje = error instanceof Error ? error.message : String(error);
       console.error("[Practica más] Error al generar ejercicios:", error);
       setErrorEjercicios(mensaje);
       setEjercicios(null);
+      guardarEnHistorial(pregunta.id, { ejercicios: null });
     } finally {
       setCargandoEjercicios(false);
     }
   };
 
   const handleSeleccion = async (letra: string) => {
-    if (seleccion !== null) return;
+    if (seleccionActual !== null) return;
     setSeleccion(letra);
 
     const esCorrecta = letra.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase();
-    if (esCorrecta) setCorrectas((c) => c + 1);
+    // Se registra de inmediato para que la puntuación no dependa de que la
+    // explicación de la IA responda a tiempo.
+    guardarEnHistorial(preguntaActual.id, { letra, correcta: esCorrecta });
 
     setCargandoExplicacion(true);
     try {
       const exp = await pedirExplicacion(preguntaActual);
       setExplicacion(exp);
+      guardarEnHistorial(preguntaActual.id, { explicacion: exp });
     } catch {
-      setExplicacion("No se pudo obtener la explicación. Intenta de nuevo.");
+      const fallo = "No se pudo obtener la explicación. Intenta de nuevo.";
+      setExplicacion(fallo);
+      guardarEnHistorial(preguntaActual.id, { explicacion: fallo });
     } finally {
       setCargandoExplicacion(false);
     }
@@ -396,8 +441,34 @@ export default function SimuladorPrepa() {
     setSeleccionEjercicio([null, null]);
     setExplicacionEjercicio([null, null]);
     setCargandoExplicacionEjercicio([false, false]);
-    setCorrectas(0);
+    setHistorial({});
     setTerminado(false);
+  };
+
+  /** Limpia sólo el estado "en vuelo" al cambiar de reactivo. */
+  const limpiarReactivoActual = () => {
+    setSeleccion(null);
+    setExplicacion(null);
+    setEjercicios(null);
+    setErrorEjercicios(null);
+    setSeleccionEjercicio([null, null]);
+    setExplicacionEjercicio([null, null]);
+    setCargandoExplicacionEjercicio([false, false]);
+  };
+
+  /** Navegación libre entre reactivos del módulo (anterior / siguiente). */
+  const irAReactivo = (delta: number) => {
+    const destino = indice + delta;
+    if (destino < 0 || destino >= preguntasSesion.length) return;
+    setIndice(destino);
+    limpiarReactivoActual();
+  };
+
+  /** Cierra el módulo y vuelve al menú de bloques. */
+  const regresarAlMenu = () => {
+    setUnidadFiltro(null);
+    setTerminado(false);
+    reiniciarProgreso();
   };
 
   /** Elige materia y pasa al selector de unidad de esa materia. */
@@ -456,92 +527,54 @@ export default function SimuladorPrepa() {
     );
   }
 
-  // ── Selector de materia (solo aparece cuando hay más de una) ──
+  // ── Menú de materias (solo aparece cuando hay más de una) ─────
   if (materiaFiltro === null) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
-        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full">
-          <div className="text-center mb-6">
-            <div className="text-5xl mb-3">📐</div>
-            <h1 className="text-2xl font-bold text-white mb-1">Simulador Prepa</h1>
-            <p className="text-slate-400 text-sm">ENP UNAM — Preparatoria</p>
-          </div>
-
-          <p className="text-slate-300 text-sm font-medium mb-3">Elige una materia:</p>
-
-          <div className="space-y-3">
-            {materiasDisponibles.map((materia) => {
-              const total = preguntas.filter(
-                (p) => normalizarUnidad(p.materia ?? "") === normalizarUnidad(materia),
-              ).length;
-              return (
-                <button
-                  key={materia}
-                  onClick={() => elegirMateria(materia)}
-                  className="w-full text-left px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-emerald-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
-                >
-                  <span className="flex-1 text-slate-100 font-medium text-sm">{materia}</span>
-                  <span className="shrink-0 text-slate-400 text-xs font-medium">{total}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <MenuBloques
+        titulo="Simulador Prepa"
+        subtitulo="ENP UNAM — Preparatoria"
+        icono="📐"
+        pregunta="Elige una materia:"
+        textoBoton="Elegir materia"
+        bloques={materiasDisponibles.map((materia) => ({
+          nombre: materia,
+          cantidad: preguntas.filter(
+            (p) => normalizarUnidad(p.materia ?? "") === normalizarUnidad(materia),
+          ).length,
+          icono: iconoDeMateria(materia),
+        }))}
+        onAbrir={elegirMateria}
+      />
     );
   }
 
-  // ── Selector de unidad ────────────────────────────────────────
+  // ── Menú de bloques (unidades) de la materia elegida ──────────
   if (unidadFiltro === null) {
+    const bloques: Bloque[] = [
+      {
+        nombre: TODAS_LAS_UNIDADES,
+        etiqueta: "Todos los temas (aleatorio)",
+        cantidad: preguntasDeMateria.length,
+        icono: "🎲",
+        destacado: true,
+      },
+      ...unidadesDisponibles.map((unidad) => ({
+        nombre: unidad,
+        cantidad: conteoPorUnidad.get(normalizarUnidad(unidad)) ?? 0,
+      })),
+    ];
+
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
-        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full">
-          <div className="text-center mb-6">
-            <div className="text-5xl mb-3">📐</div>
-            <h1 className="text-2xl font-bold text-white mb-1">{materiaFiltro}</h1>
-            <p className="text-slate-400 text-sm">ENP UNAM — Preparatoria</p>
-          </div>
-
-          <p className="text-slate-300 text-sm font-medium mb-3">Elige una unidad:</p>
-
-          <div className="space-y-3">
-            <button
-              onClick={() => iniciarSesion(TODAS_LAS_UNIDADES)}
-              className="w-full text-left px-4 py-3 rounded-xl border border-emerald-500/40 bg-emerald-600/10 hover:bg-emerald-600/20 hover:border-emerald-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
-            >
-              <span className="shrink-0">🎲</span>
-              <span className="flex-1 text-emerald-300 font-semibold text-sm">
-                Todos los temas (aleatorio)
-              </span>
-              <span className="shrink-0 text-emerald-400/70 text-xs font-medium">
-                {preguntasDeMateria.length}
-              </span>
-            </button>
-
-            {unidadesDisponibles.map((unidad) => (
-              <button
-                key={unidad}
-                onClick={() => iniciarSesion(unidad)}
-                className="w-full text-left px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-slate-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
-              >
-                <span className="flex-1 text-slate-100 font-medium text-sm">{unidad}</span>
-                <span className="shrink-0 text-slate-400 text-xs font-medium">
-                  {conteoPorUnidad.get(normalizarUnidad(unidad)) ?? 0}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          {materiasDisponibles.length > 1 && (
-            <button
-              onClick={handleReiniciar}
-              className="w-full text-center text-slate-400 hover:text-slate-200 text-xs font-medium mt-4 transition-colors"
-            >
-              ← Cambiar de materia
-            </button>
-          )}
-        </div>
-      </div>
+      <MenuBloques
+        titulo={materiaFiltro}
+        subtitulo="ENP UNAM — Preparatoria"
+        icono={iconoDeMateria(materiaFiltro)}
+        pregunta="Elige un bloque:"
+        bloques={bloques}
+        onAbrir={iniciarSesion}
+        onRegresar={materiasDisponibles.length > 1 ? handleReiniciar : undefined}
+        textoRegresar="Cambiar de materia"
+      />
     );
   }
 
@@ -576,21 +609,34 @@ export default function SimuladorPrepa() {
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
         <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center">
           <div className="text-6xl mb-4">{pct >= 70 ? "🎉" : "📚"}</div>
-          <h2 className="text-2xl font-bold text-white mb-2">Simulacro terminado</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">Módulo terminado</h2>
           <p className="text-slate-400 mb-1">{materiaFiltro}</p>
           <p className="text-emerald-400 text-sm mb-6">
             {unidadFiltro === TODAS_LAS_UNIDADES ? "🎲 Todos los temas" : unidadFiltro}
           </p>
-          <div className="bg-slate-800 rounded-xl p-6 mb-6">
+          <div className="bg-slate-800 rounded-xl p-6 mb-4">
             <div className="text-5xl font-bold text-emerald-400 mb-1">{pct}%</div>
             <div className="text-slate-400 text-sm">{correctas} de {total} correctas</div>
           </div>
-          <button
-            onClick={handleReiniciar}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition-colors"
-          >
-            🔄 Elegir otro tema
-          </button>
+          {respondidas < total && (
+            <p className="text-slate-500 text-xs mb-4">
+              Respondiste {respondidas} de {total} reactivos
+            </p>
+          )}
+          <div className="space-y-3">
+            <button
+              onClick={regresarAlMenu}
+              className="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold py-3 rounded-xl transition-all duration-200"
+            >
+              ← Volver a los bloques
+            </button>
+            <button
+              onClick={handleReiniciar}
+              className="w-full bg-slate-800 hover:bg-slate-700 active:scale-[0.98] text-slate-300 font-semibold py-3 rounded-xl border border-slate-700 transition-all duration-200"
+            >
+              🔄 Elegir otra materia
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -598,35 +644,53 @@ export default function SimuladorPrepa() {
 
   const opciones = OPCIONES.filter((l) => opcionTexto(preguntaActual, l) !== null);
 
+  const tituloModulo =
+    unidadFiltro === TODAS_LAS_UNIDADES ? "Todos los temas" : unidadFiltro;
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-lg font-bold text-emerald-400">🏫 {preguntaActual.materia}</h1>
-            <p className="text-xs text-slate-500">ENP UNAM — Preparatoria</p>
+        {/* Header del módulo */}
+        <div className="flex items-center gap-3 mb-6">
+          <button
+            type="button"
+            onClick={regresarAlMenu}
+            className="shrink-0 inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 hover:border-slate-500 text-slate-300 text-sm font-medium active:scale-[0.98] transition-all duration-200"
+          >
+            <span aria-hidden="true">←</span>
+            <span className="hidden xs:inline">Regresar</span>
+          </button>
+
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-bold text-white truncate">{tituloModulo}</h1>
+            <p className="text-xs text-slate-500 truncate">{preguntaActual.materia}</p>
           </div>
-          <div className="text-right">
-            <div className="text-sm text-slate-400">Pregunta</div>
-            <div className="text-xl font-bold text-white">{indice + 1} / {preguntasSesion.length}</div>
+
+          <div className="text-right shrink-0">
+            <div className="text-xs text-slate-400">Reactivo</div>
+            <div className="text-lg font-bold text-white tabular-nums">
+              {indice + 1} / {preguntasSesion.length}
+            </div>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div className="h-2 bg-slate-800 rounded-full mb-8">
+        <div className="h-2 bg-slate-800 rounded-full mb-6">
           <div
             className="h-2 bg-emerald-500 rounded-full transition-all duration-500"
             style={{ width: `${((indice + 1) / preguntasSesion.length) * 100}%` }}
           />
         </div>
 
-        {/* Unidad/materia */}
-        {preguntaActual.unidad && (
-          <div className="text-xs text-slate-500 uppercase tracking-wider mb-3">
-            {preguntaActual.materia} — {preguntaActual.unidad}
-          </div>
-        )}
+        {/* Navegación entre reactivos del módulo */}
+        <div className="mb-8">
+          <NavegacionReactivo
+            indice={indice}
+            total={preguntasSesion.length}
+            onAnterior={() => irAReactivo(-1)}
+            onSiguiente={() => irAReactivo(1)}
+          />
+        </div>
 
         {/* Pregunta */}
         <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 mb-6">
@@ -638,12 +702,12 @@ export default function SimuladorPrepa() {
           {opciones.map((letra) => {
             const texto = opcionTexto(preguntaActual, letra)!;
             const esCorrecta = letra.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase();
-            const esSeleccionada = seleccion === letra;
+            const esSeleccionada = seleccionActual === letra;
 
             let clases =
               "w-full text-left px-5 py-4 rounded-xl border text-sm font-medium transition-all duration-200 flex items-start gap-3";
 
-            if (seleccion === null) {
+            if (seleccionActual === null) {
               clases += " bg-slate-800 border-slate-700 hover:border-emerald-500 hover:bg-slate-700 cursor-pointer";
             } else if (esCorrecta) {
               clases += " bg-emerald-900/40 border-emerald-500 text-emerald-300";
@@ -658,26 +722,26 @@ export default function SimuladorPrepa() {
                 key={letra}
                 className={clases}
                 onClick={() => handleSeleccion(letra)}
-                disabled={seleccion !== null}
+                disabled={seleccionActual !== null}
               >
                 <span className="shrink-0 w-7 h-7 rounded-full border-2 border-current flex items-center justify-center text-xs font-bold">
                   {etiqueta(letra)}
                 </span>
                 <span className="flex-1">{texto}</span>
-                {seleccion !== null && esCorrecta && <span className="text-xl shrink-0">✅</span>}
-                {seleccion !== null && esSeleccionada && !esCorrecta && <span className="text-xl shrink-0">❌</span>}
+                {seleccionActual !== null && esCorrecta && <span className="text-xl shrink-0">✅</span>}
+                {seleccionActual !== null && esSeleccionada && !esCorrecta && <span className="text-xl shrink-0">❌</span>}
               </button>
             );
           })}
         </div>
 
         {/* Resultado + Explicación */}
-        {seleccion !== null && (
+        {seleccionActual !== null && (
           <div className="space-y-4">
             {/* Veredicto */}
-            <div className={`rounded-xl p-4 border ${seleccion !== null && seleccion.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase() ? "bg-emerald-900/30 border-emerald-500/50" : "bg-red-900/30 border-red-500/50"}`}>
+            <div className={`rounded-xl p-4 border ${seleccionActual.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase() ? "bg-emerald-900/30 border-emerald-500/50" : "bg-red-900/30 border-red-500/50"}`}>
               <p className="font-semibold text-sm">
-                {seleccion !== null && seleccion.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase()
+                {seleccionActual.toUpperCase() === preguntaActual.respuesta_correcta.trim().toUpperCase()
                   ? "✅ ¡Correcto!"
                   : `❌ Incorrecto. La respuesta correcta es: ${opcionTexto(preguntaActual, preguntaActual.respuesta_correcta)}`}
               </p>
@@ -695,7 +759,7 @@ export default function SimuladorPrepa() {
                   Generando desarrollo paso a paso...
                 </div>
               ) : (
-                <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{explicacion}</p>
+                <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{explicacionActual}</p>
               )}
             </div>
 
@@ -728,9 +792,9 @@ export default function SimuladorPrepa() {
                       🔄 Reintentar
                     </button>
                   </div>
-                ) : ejercicios && ejercicios.length > 0 ? (
+                ) : ejerciciosActuales && ejerciciosActuales.length > 0 ? (
                   <div className="space-y-4">
-                    {ejercicios.slice(0, 2).map((ej, index) => {
+                    {ejerciciosActuales.slice(0, 2).map((ej, index) => {
                       const seleccionIndex = seleccionEjercicio[index];
                       const explicacionIndex = explicacionEjercicio[index];
                       const cargandoExplicacionIndex = cargandoExplicacionEjercicio[index];
