@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -200,6 +200,36 @@ async function fetchEjerciciosDesdeAPI(pregunta: Pregunta): Promise<EjercicioGen
   return parseEjerciciosTexto(texto);
 }
 
+/** Unidades del simulador, en el orden en que se muestran en el selector. */
+const UNIDADES_BASE = [
+  "Números Naturales",
+  "Números Enteros",
+  "Números Racionales",
+  "Números Reales",
+];
+
+/** Valor centinela de la opción "Todos los temas (aleatorio)". */
+const TODAS_LAS_UNIDADES = "__todas__";
+
+/** Compara unidades ignorando acentos, mayúsculas y espacios sobrantes. */
+function normalizarUnidad(valor: string): string {
+  return valor
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+/** Mezcla aleatoria (Fisher-Yates) sin mutar el arreglo recibido. */
+function mezclar<T>(items: T[]): T[] {
+  const copia = [...items];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
 export default function SimuladorPrepa() {
   const [preguntas, setPreguntas] = useState<Pregunta[]>([]);
   const [indice, setIndice] = useState(0);
@@ -216,6 +246,8 @@ export default function SimuladorPrepa() {
   const [cargandoExplicacionEjercicio, setCargandoExplicacionEjercicio] = useState<boolean[]>([false, false]);
   const [correctas, setCorrectas] = useState(0);
   const [terminado, setTerminado] = useState(false);
+  /** Unidad elegida en el selector. `null` = todavía no se ha empezado. */
+  const [unidadFiltro, setUnidadFiltro] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -239,7 +271,48 @@ export default function SimuladorPrepa() {
     })();
   }, []);
 
-  const preguntaActual = preguntas[indice];
+  // Unidades ofrecidas: las de UNIDADES_BASE que tengan preguntas y, si algún
+  // día se agrega otra unidad a la tabla, también aparece en vez de quedar
+  // inaccesible desde el selector.
+  const unidadesDisponibles = useMemo(() => {
+    const presentes = new Set(
+      preguntas.map((p) => normalizarUnidad(p.unidad ?? "")).filter(Boolean),
+    );
+    const extra = [
+      ...new Set(
+        preguntas
+          .map((p) => (p.unidad ?? "").trim())
+          .filter(
+            (u) =>
+              u &&
+              !UNIDADES_BASE.some((base) => normalizarUnidad(base) === normalizarUnidad(u)),
+          ),
+      ),
+    ];
+    return [...UNIDADES_BASE, ...extra].filter((u) =>
+      presentes.has(normalizarUnidad(u)),
+    );
+  }, [preguntas]);
+
+  const conteoPorUnidad = useMemo(() => {
+    const mapa = new Map<string, number>();
+    for (const p of preguntas) {
+      const clave = normalizarUnidad(p.unidad ?? "");
+      if (clave) mapa.set(clave, (mapa.get(clave) ?? 0) + 1);
+    }
+    return mapa;
+  }, [preguntas]);
+
+  // Preguntas de la sesión actual. En "Todos los temas" se mezclan una sola vez
+  // por sesión (el memo solo se recalcula al cambiar de unidad o al recargar).
+  const preguntasSesion = useMemo(() => {
+    if (unidadFiltro === null) return [] as Pregunta[];
+    if (unidadFiltro === TODAS_LAS_UNIDADES) return mezclar(preguntas);
+    const objetivo = normalizarUnidad(unidadFiltro);
+    return preguntas.filter((p) => normalizarUnidad(p.unidad ?? "") === objetivo);
+  }, [preguntas, unidadFiltro]);
+
+  const preguntaActual = preguntasSesion[indice];
 
   const generarEjercicios = async (pregunta: Pregunta) => {
     setErrorEjercicios(null);
@@ -282,8 +355,23 @@ export default function SimuladorPrepa() {
     await generarEjercicios(preguntaActual);
   };
 
+  /** Arranca una sesión nueva. Con `unidad = null` vuelve al selector. */
+  const iniciarSesion = (unidad: string | null) => {
+    setUnidadFiltro(unidad);
+    setIndice(0);
+    setSeleccion(null);
+    setExplicacion(null);
+    setEjercicios(null);
+    setErrorEjercicios(null);
+    setSeleccionEjercicio([null, null]);
+    setExplicacionEjercicio([null, null]);
+    setCargandoExplicacionEjercicio([false, false]);
+    setCorrectas(0);
+    setTerminado(false);
+  };
+
   const handleSiguiente = () => {
-    if (indice + 1 >= preguntas.length) {
+    if (indice + 1 >= preguntasSesion.length) {
       setTerminado(true);
       return;
     }
@@ -297,15 +385,8 @@ export default function SimuladorPrepa() {
     setCargandoExplicacionEjercicio([false, false]);
   };
 
-  const handleReiniciar = () => {
-    setIndice(0);
-    setSeleccion(null);
-    setExplicacion(null);
-    setEjercicios(null);
-    setErrorEjercicios(null);
-    setCorrectas(0);
-    setTerminado(false);
-  };
+  /** Vuelve al selector para poder elegir otra unidad. */
+  const handleReiniciar = () => iniciarSesion(null);
 
   if (cargando) {
     return (
@@ -328,15 +409,87 @@ export default function SimuladorPrepa() {
     );
   }
 
+  // ── Selector de unidad ────────────────────────────────────────
+  if (unidadFiltro === null) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full">
+          <div className="text-center mb-6">
+            <div className="text-5xl mb-3">📐</div>
+            <h1 className="text-2xl font-bold text-white mb-1">Simulador Prepa</h1>
+            <p className="text-slate-400 text-sm">Matemáticas IV — ENP UNAM</p>
+          </div>
+
+          <p className="text-slate-300 text-sm font-medium mb-3">Elige una unidad:</p>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => iniciarSesion(TODAS_LAS_UNIDADES)}
+              className="w-full text-left px-4 py-3 rounded-xl border border-emerald-500/40 bg-emerald-600/10 hover:bg-emerald-600/20 hover:border-emerald-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
+            >
+              <span className="shrink-0">🎲</span>
+              <span className="flex-1 text-emerald-300 font-semibold text-sm">
+                Todos los temas (aleatorio)
+              </span>
+              <span className="shrink-0 text-emerald-400/70 text-xs font-medium">
+                {preguntas.length}
+              </span>
+            </button>
+
+            {unidadesDisponibles.map((unidad) => (
+              <button
+                key={unidad}
+                onClick={() => iniciarSesion(unidad)}
+                className="w-full text-left px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-slate-500 active:scale-[0.98] transition-all duration-200 flex items-center gap-3"
+              >
+                <span className="flex-1 text-slate-100 font-medium text-sm">{unidad}</span>
+                <span className="shrink-0 text-slate-400 text-xs font-medium">
+                  {conteoPorUnidad.get(normalizarUnidad(unidad)) ?? 0}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Unidad sin preguntas: no debería ocurrir, pero evita una pantalla en blanco.
+  if (preguntasSesion.length === 0) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center">
+          <div className="text-5xl mb-4">📭</div>
+          <p className="text-slate-300 mb-6">
+            Todavía no hay preguntas de{" "}
+            <span className="text-emerald-400 font-semibold">
+              {unidadFiltro === TODAS_LAS_UNIDADES ? "este simulador" : unidadFiltro}
+            </span>
+            .
+          </p>
+          <button
+            onClick={handleReiniciar}
+            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition-colors"
+          >
+            Elegir otra unidad
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (terminado) {
-    const total = preguntas.length;
+    const total = preguntasSesion.length;
     const pct = Math.round((correctas / total) * 100);
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
         <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center">
           <div className="text-6xl mb-4">{pct >= 70 ? "🎉" : "📚"}</div>
           <h2 className="text-2xl font-bold text-white mb-2">Simulacro terminado</h2>
-          <p className="text-slate-400 mb-6">Matemáticas IV — ENP UNAM</p>
+          <p className="text-slate-400 mb-1">Matemáticas IV — ENP UNAM</p>
+          <p className="text-emerald-400 text-sm mb-6">
+            {unidadFiltro === TODAS_LAS_UNIDADES ? "🎲 Todos los temas" : unidadFiltro}
+          </p>
           <div className="bg-slate-800 rounded-xl p-6 mb-6">
             <div className="text-5xl font-bold text-emerald-400 mb-1">{pct}%</div>
             <div className="text-slate-400 text-sm">{correctas} de {total} correctas</div>
@@ -345,7 +498,7 @@ export default function SimuladorPrepa() {
             onClick={handleReiniciar}
             className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition-colors"
           >
-            Reintentar
+            🔄 Elegir otra unidad
           </button>
         </div>
       </div>
@@ -365,7 +518,7 @@ export default function SimuladorPrepa() {
           </div>
           <div className="text-right">
             <div className="text-sm text-slate-400">Pregunta</div>
-            <div className="text-xl font-bold text-white">{indice + 1} / {preguntas.length}</div>
+            <div className="text-xl font-bold text-white">{indice + 1} / {preguntasSesion.length}</div>
           </div>
         </div>
 
@@ -373,7 +526,7 @@ export default function SimuladorPrepa() {
         <div className="h-2 bg-slate-800 rounded-full mb-8">
           <div
             className="h-2 bg-emerald-500 rounded-full transition-all duration-500"
-            style={{ width: `${((indice + 1) / preguntas.length) * 100}%` }}
+            style={{ width: `${((indice + 1) / preguntasSesion.length) * 100}%` }}
           />
         </div>
 
