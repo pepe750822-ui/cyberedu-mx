@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { MenuBloques, NavegacionReactivo } from "@/components/simulador/Bloques";
-import { iconoDeMateria, type Bloque } from "@/components/simulador/bloques-utils";
+import { NavegacionReactivo } from "@/components/simulador/Bloques";
+import { SelectorMaterias } from "@/components/simulador/SelectorMaterias";
+import { SelectorUnidades } from "@/components/simulador/SelectorUnidades";
+import type { Bloque } from "@/components/simulador/bloques-utils";
+import { cargarCatalogo, type Catalogo } from "@/integrations/supabase/catalogo";
 
 interface Pregunta {
   id: string;
@@ -269,6 +272,8 @@ export default function SimuladorPrepa() {
   const [unidadFiltro, setUnidadFiltro] = useState<string | null>(null);
   /** Materia elegida. `null` = selector de materia visible (solo si hay varias). */
   const [materiaFiltro, setMateriaFiltro] = useState<string | null>(null);
+  /** Catálogo de materias/unidades. Vacío si las tablas aún no existen. */
+  const [catalogo, setCatalogo] = useState<Catalogo>({ materias: [], unidades: [] });
 
   useEffect(() => {
     (async () => {
@@ -292,17 +297,45 @@ export default function SimuladorPrepa() {
     })();
   }, []);
 
-  // Materias presentes en la tabla, en orden de aparición. Se derivan de los
-  // datos: al agregar Física (u otra) aparece sola, sin tocar código.
+  // Catálogo de materias/unidades. Va en su propio efecto para que un fallo
+  // aquí (por ejemplo, que la migración SQL todavía no se haya ejecutado) no
+  // impida cargar los reactivos.
+  useEffect(() => {
+    let vivo = true;
+    cargarCatalogo().then((c) => {
+      if (vivo) setCatalogo(c);
+    });
+    return () => {
+      vivo = false;
+    };
+  }, []);
+
+  // Materias a mostrar: manda el catálogo y se le suman las que aparezcan en
+  // los reactivos pero falten en él, para que ningún reactivo quede oculto.
   const materiasDisponibles = useMemo(() => {
+    const enDatos: string[] = [];
     const vistas = new Map<string, string>();
     for (const p of preguntas) {
       const valor = (p.materia ?? "").trim();
       const clave = normalizarUnidad(valor);
-      if (clave && !vistas.has(clave)) vistas.set(clave, valor);
+      if (clave && !vistas.has(clave)) {
+        vistas.set(clave, valor);
+        enDatos.push(valor);
+      }
     }
-    return [...vistas.values()];
-  }, [preguntas]);
+
+    if (catalogo.materias.length === 0) return enDatos;
+
+    const delCatalogo = catalogo.materias.map((m) => m.nombre);
+    const extra = enDatos.filter(
+      (m) => !delCatalogo.some((c) => normalizarUnidad(c) === normalizarUnidad(m)),
+    );
+    return [...delCatalogo, ...extra];
+  }, [catalogo.materias, preguntas]);
+
+  const conteoPorMateria = (materia: string) =>
+    preguntas.filter((p) => normalizarUnidad(p.materia ?? "") === normalizarUnidad(materia))
+      .length;
 
   // Con una sola materia no tiene sentido preguntar: se elige automáticamente
   // y la pantalla queda igual que antes de existir el selector de materia.
@@ -318,28 +351,43 @@ export default function SimuladorPrepa() {
     return preguntas.filter((p) => normalizarUnidad(p.materia ?? "") === objetivo);
   }, [preguntas, materiaFiltro]);
 
-  // Unidades ofrecidas dentro de la materia elegida: las de UNIDADES_BASE que
-  // tengan preguntas y, si algún día se agrega otra unidad a la tabla, también
-  // aparece en vez de quedar inaccesible desde el selector.
+  // Unidades de la materia elegida. Prioridad:
+  //   1. el catálogo (incluye bloques con 0 reactivos, útiles como pendientes)
+  //   2. las unidades presentes en los reactivos
+  //   3. UNIDADES_BASE, para conservar el orden conocido
+  // Siempre se hace la unión de catálogo + datos + base para que ningún
+  // reactivo quede inaccesible aunque el catálogo esté incompleto.
   const unidadesDisponibles = useMemo(() => {
-    const presentes = new Set(
-      preguntasDeMateria.map((p) => normalizarUnidad(p.unidad ?? "")).filter(Boolean),
-    );
-    const extra = [
+    const enDatos = [
       ...new Set(
-        preguntasDeMateria
-          .map((p) => (p.unidad ?? "").trim())
-          .filter(
-            (u) =>
-              u &&
-              !UNIDADES_BASE.some((base) => normalizarUnidad(base) === normalizarUnidad(u)),
-          ),
+        preguntasDeMateria.map((p) => (p.unidad ?? "").trim()).filter(Boolean),
       ),
     ];
-    return [...UNIDADES_BASE, ...extra].filter((u) =>
-      presentes.has(normalizarUnidad(u)),
-    );
-  }, [preguntasDeMateria]);
+
+    const delCatalogo = catalogo.unidades
+      .filter((u) => normalizarUnidad(u.materia) === normalizarUnidad(materiaFiltro ?? ""))
+      .sort((a, b) => a.orden - b.orden)
+      .map((u) => u.nombre);
+
+    const orden: string[] = [];
+    const agregar = (nombre: string) => {
+      if (!nombre) return;
+      if (orden.some((o) => normalizarUnidad(o) === normalizarUnidad(nombre))) return;
+      orden.push(nombre);
+    };
+
+    if (delCatalogo.length > 0) {
+      delCatalogo.forEach(agregar);
+      enDatos.forEach(agregar);
+    } else {
+      // Sin catálogo: se conserva el comportamiento anterior.
+      const presentes = new Set(enDatos.map(normalizarUnidad));
+      UNIDADES_BASE.filter((u) => presentes.has(normalizarUnidad(u))).forEach(agregar);
+      enDatos.forEach(agregar);
+    }
+
+    return orden;
+  }, [catalogo.unidades, materiaFiltro, preguntasDeMateria]);
 
   const conteoPorUnidad = useMemo(() => {
     const mapa = new Map<string, number>();
@@ -527,28 +575,18 @@ export default function SimuladorPrepa() {
     );
   }
 
-  // ── Menú de materias (solo aparece cuando hay más de una) ─────
+  // ── Pantalla 1: selección de materia ──────────────────────────
   if (materiaFiltro === null) {
     return (
-      <MenuBloques
-        titulo="Simulador Prepa"
-        subtitulo="ENP UNAM — Preparatoria"
-        icono="📐"
-        pregunta="Elige una materia:"
-        textoBoton="Elegir materia"
-        bloques={materiasDisponibles.map((materia) => ({
-          nombre: materia,
-          cantidad: preguntas.filter(
-            (p) => normalizarUnidad(p.materia ?? "") === normalizarUnidad(materia),
-          ).length,
-          icono: iconoDeMateria(materia),
-        }))}
-        onAbrir={elegirMateria}
+      <SelectorMaterias
+        materias={materiasDisponibles}
+        conteoPorMateria={conteoPorMateria}
+        onElegir={elegirMateria}
       />
     );
   }
 
-  // ── Menú de bloques (unidades) de la materia elegida ──────────
+  // ── Pantalla 2: selección de unidad de la materia elegida ─────
   if (unidadFiltro === null) {
     const bloques: Bloque[] = [
       {
@@ -565,15 +603,11 @@ export default function SimuladorPrepa() {
     ];
 
     return (
-      <MenuBloques
-        titulo={materiaFiltro}
-        subtitulo="ENP UNAM — Preparatoria"
-        icono={iconoDeMateria(materiaFiltro)}
-        pregunta="Elige un bloque:"
+      <SelectorUnidades
+        materia={materiaFiltro}
         bloques={bloques}
-        onAbrir={iniciarSesion}
+        onElegir={iniciarSesion}
         onRegresar={materiasDisponibles.length > 1 ? handleReiniciar : undefined}
-        textoRegresar="Cambiar de materia"
       />
     );
   }
